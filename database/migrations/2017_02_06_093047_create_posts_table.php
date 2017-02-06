@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersTable extends Migration
+class CreatePostsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,19 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('posts', function (Blueprint $table) {
+            //@TODO: Categories, Permissions
+
             $table->increments('id');
-            $table->string('code_melli' , 20)->nullable()->index();
-            $table->string('email')->nullable()->index();
-            $table->string('mobile')->nullable()->index();
-            $table->string('name_first')->nullable();
-            $table->string('name_last')->nullable();
-            $table->string('name_firm')->nullable();
-            $table->string('password')->nullable();
-            $table->boolean('password_force_change')->default(0);
+            $table->unsignedInteger('parent_id')->default(0)->index() ;
+            $table->string('slug')->unique() ;
+            $table->string('title')->index();
+            $table->string('locale' , 2)->index() ;
+            $table->boolean('is_draft')->default(1);
+            $table->boolean('is_limited')->default(0);
+
             $table->longText('meta')->nullable() ;
-            $table->tinyInteger('gender')->default(0);
-            $table->boolean('newsletter')->default(0);
-            $table->rememberToken();
+
             $table->timestamps();
             $table->softDeletes();
             $table->timestamp('published_at')->nullable();
@@ -35,7 +34,6 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('deleted_by')->default(0) ;
             $table->unsignedInteger('published_by')->default(0) ;
 
-            $table->index(['name_last','name_first']);
             $table->index('created_at');
         });
     }
@@ -47,6 +45,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('posts');
     }
 }
