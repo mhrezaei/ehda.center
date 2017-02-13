@@ -24,6 +24,8 @@ class CreateSettingTable extends Migration
             $table->longText('custom_value')->nullable();
             $table->boolean('developers_only')->default(0);
             $table->boolean('is_resident')->default(0);
+            $table->boolean('is_localized')->default(0);
+//            $table->boolean('is_sensitive')->default(0);
             $table->timestamps();
         });
     }

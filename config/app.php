@@ -185,6 +185,7 @@ return [
 //        App\Providers\SettingServiceProvider::class,
 
         Morilog\Jalali\JalaliServiceProvider::class,
+        \App\Providers\AppServiceProvider::class,
     ],
 
     /*

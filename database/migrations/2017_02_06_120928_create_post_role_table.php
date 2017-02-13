@@ -18,6 +18,9 @@ class CreatePostRoleTable extends Migration
             $table->unsignedInteger('role_id')->index() ;
             $table->unsignedInteger('post_id')->index() ;
             $table->timestamps();
+
+            $table->foreign('role_id')->references('id')->on('roles');
+            $table->foreign('post_id')->references('id')->on('posts');
         });
     }
 

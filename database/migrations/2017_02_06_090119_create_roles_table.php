@@ -17,6 +17,7 @@ class CreateRolesTable extends Migration
             $table->increments('id');
             $table->string('slug')->unique();
             $table->string('title');
+            $table->string('plural');
             $table->longText('modules')->nullable();
             $table->longText('meta')->nullable();
             $table->timestamps();

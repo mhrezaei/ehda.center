@@ -18,6 +18,8 @@ class CreateUsersLogsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
             $table->integer('duration')->default(0);
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

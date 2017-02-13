@@ -34,6 +34,13 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => 'logout']);
+        $this->middleware('guest', ['except' => ['logout' , 'redirectAfterLogin']]);
+    }
+
+    public function redirectAfterLogin()
+    {
+        //@TODO: Complete this based on the user roles
+
+        return redirect('/manage');
     }
 }

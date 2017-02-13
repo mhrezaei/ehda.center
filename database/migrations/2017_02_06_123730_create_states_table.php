@@ -15,6 +15,7 @@ class CreateStatesTable extends Migration
     {
         Schema::create('states', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('country_id')->default(0)->index();
             $table->unsignedInteger('parent_id')->default(0)->index();
             $table->unsignedInteger('capital_id')->default(0)->index();
             $table->string('title')->index();

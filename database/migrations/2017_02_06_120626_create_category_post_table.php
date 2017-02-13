@@ -19,6 +19,9 @@ class CreateCategoryPostTable extends Migration
             $table->unsignedInteger('post_id')->index() ;
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('post_id')->references('id')->on('posts');
+            $table->foreign('category_id')->references('id')->on('categories');
         });
     }
 

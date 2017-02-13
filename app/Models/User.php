@@ -1,13 +1,15 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
+use App\Traits\PermitsTrait;
+use App\Traits\TahaModelTrait;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable , TahaModelTrait , PermitsTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -26,4 +28,17 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relationships
+    |--------------------------------------------------------------------------
+    |
+    */
+    public function roles()
+    {
+        return $this->belongsToMany('App\Models\Role')->withPivot('permissions');
+    }
+
+
 }

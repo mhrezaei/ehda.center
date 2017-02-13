@@ -26,6 +26,9 @@ class CreateCategoriesTable extends Migration
             $table->unsignedInteger('created_by')->default(0)->index() ;
             $table->unsignedInteger('updated_by')->default(0) ;
             $table->unsignedInteger('deleted_by')->default(0) ;
+
+            $table->foreign('branch_id')->references('id')->on('branches');
+
         });
     }
 
