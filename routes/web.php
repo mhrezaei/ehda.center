@@ -34,11 +34,36 @@ Route::get('logout', 'Auth\LoginController@logout');
 */
 Route::group([
 	'prefix' => "manage",
-	'middleware' => ['auth' ],// , 'can:admin'],
+	'middleware' => ['auth' , 'is:admin'],
 	'namespace' => "Manage",
 ], function() {
 	Route::get('/' , 'HomeController@index');
 	Route::get('/index' , 'HomeController@index');
+
+	/*
+	| Admins
+	*/
+
+	Route::group(['prefix'=>'admins', 'middleware' => 'is:super'] , function() {
+		Route::get('/update/{item_id}' , 'AdminsController@update');
+		Route::get('/' , 'AdminsController@browse') ;
+		Route::get('/browse/{request_tab?}' , 'AdminsController@browse') ;
+		Route::get('/create/' , 'AdminsController@editor') ;
+		Route::get('/search' , 'AdminsController@search');
+		Route::get('/{user_id}/edit' , 'AdminsController@editor');
+		Route::get('/{user_id}/{modal_action}' , 'AdminsController@modalActions');
+
+		Route::group(['prefix'=>'save'] , function() {
+			Route::post('/' , 'AdminsController@save');
+
+			Route::post('/change_password' , 'AdminsController@change_password');
+			Route::post('/soft_delete' , 'AdminsController@soft_delete');
+			Route::post('/undelete' , 'AdminsController@undelete');
+			Route::post('/hard_delete' , 'AdminsController@hard_delete');
+			Route::post('/permits' , 'AdminsController@permits');
+		});
+	});
+
 });
 
 

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Schema;
 
 trait TahaModelTrait
 {
+	protected $saved_selector_para = [] ;
 
 	/*
 	|--------------------------------------------------------------------------
@@ -16,6 +17,36 @@ trait TahaModelTrait
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+	public static function counter($parameters, $in_persian = false)
+	{
+		$return = self::selector($parameters)->count();
+		if($in_persian)
+			return pd($return);
+		else
+			return $return ;
+
+	}
+
+	public function counterC($criteria = 'all' , $mood = 'badge')
+	{
+		$return = $this->counter(array_default(['criteria' => $criteria,] , $this->saved_selector_para));
+
+		switch($mood) {
+			case 'badge' :
+				return " [".pd($return)."]" ;
+			case 'persian' :
+				return pd($return);
+			default :
+				return $return ;
+		}
+	}
+
+	public function setSelectorPara($parameters = [])
+	{
+		$this->saved_selector_para = $parameters ;
+	}
+
 	public function getIdAttribute($value)
 	{
 		return intval($value);

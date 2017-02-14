@@ -15,6 +15,23 @@ trait PermitsTrait
 {
 
 	protected static $wildcards = [ '' , 'any' , '*'] ;
+	protected static $default_role = 'admin' ;
+	protected $as_role = 'admin' ;
+	protected static $available_permits = [
+			'browse' ,
+			'process' ,
+			'view',
+			'send',
+			'search',
+			'create',
+			'edit',
+			'publish',
+			'activation',
+			'report',
+			'cats',
+			'delete',
+			'bin',
+	];
 
 	/*
 	|--------------------------------------------------------------------------
@@ -23,7 +40,7 @@ trait PermitsTrait
 	|
 	*/
 
-	public function getRoles()//@TODO: Should be private
+	private function getRoles()//@TODO: Should be private
 	{
 		$revealed_at = session()->get('revealed_at' , false);
 		$roles = session()->get('roles' , false) ;
@@ -66,8 +83,6 @@ trait PermitsTrait
 		$this->update() ;
 		return 1 ;
 
-		//@TODO: Filtering other things if 'super' is included!
-
 	}
 
 	public function detachRoles($roles)
@@ -100,14 +115,15 @@ trait PermitsTrait
 	*/
 	public function isDeveloper()
 	{
+//		return false ;
 		return in_array($this->code_melli , ['0074715623' , '0012071110' ]) ;
 	}
 
 	public function hasRole($requested_roles , $any_of_them = false)
 	{
 		//Developer Exceptions...
-//		if($this->isDeveloper())
-//			return true ;
+		if($this->isDeveloper())
+			return true ;
 
 		if($requested_roles == 'developer')
 			return $this->isDeveloper() ;
@@ -126,15 +142,45 @@ trait PermitsTrait
 
 	}
 
-	public function can($requested_permission=NULL, $requested_role='admin')
+	public function as ($requested_role)
 	{
+		$this->as_role = $requested_role ;
+		return $this ;
+
+		$role = $this->getRoles()->where('slug' , $requested_role)->first();
+		if(!$role)
+			$this->as_role = 'no' ;
+		else
+			$this->as_role = $role->pivot->permissions ;
+
+		return $this ;
+
+	}
+
+	public function can($requested_permission='*', $reserved=false)
+	{
+		//Special Situations...
+		if($requested_permission=='developer' or $requested_permission=='dev')
+			return $this->isDeveloper() ;
+
+		//Simple decisions...
 		if($this->isDeveloper())
 			return true ;
 
-		if($requested_role == 'developer')
-			return $this->isDeveloper() ;
+		if(!$this->hasRole($this->as_role))
+			return false;
 
-		return false ;
+		//Module Check...
+		$permissions = $this->getRoles()->where('slug' , $this->as_role)->first()->pivot->permissions;
+
+		if($permissions == 'super')
+			return true ;
+
+		if(in_array($requested_permission , self::$wildcards))
+			return true;
+
+		return str_contains($permissions , $requested_permission);
+
 
 	}
 }

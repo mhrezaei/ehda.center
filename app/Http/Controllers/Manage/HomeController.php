@@ -24,12 +24,12 @@ class HomeController extends Controller
 //			'admin' => "folan",
 //			'user' => "sdfsdf",
 //		]);
-//		Auth::user()->detachRoles(['admin','user']);
 
-		return view('templates.say' , ['array'=>[
-			'hasRole()' => Auth::user()->hasRole(['super','asd'],1),
+//		return view('templates.say' , ['array'=>[
+//			'as()' => Auth::user()->as('user')->can('folan'),
+//			'can()' => Auth::user()->can('any'),
 //			'original' => Auth::user()->getRoles()->toArray(),
-		]]);
+//		]]);
 
 		return view("manage.home.index",compact('page'));
 

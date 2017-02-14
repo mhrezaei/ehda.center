@@ -1,5 +1,5 @@
 <a class="navbar-brand" href="{{ url ('/') }}">
-	{{ Setting::get('site_title') }}
+	{{ setting('site_title') }}
 </a>
 <span class="navbar-brand">/</span>
 <a class="navbar-brand navbar-brand-sub" href="{{ url ('/manage') }}">

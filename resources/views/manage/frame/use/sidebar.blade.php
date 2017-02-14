@@ -29,20 +29,20 @@
 
 @include('manage.frame.widgets.sidebar-link' , [
 	'icon' => 'universal-access',
-	'caption' => trans('manage.admins'),
+	'caption' => trans('people.admins.title'),
 	'link' => 'admins' ,
-	'permission' => 'admins' ,
+	'permission' => 'super' ,
 ])
 
 @include('manage.frame.widgets.sidebar-link' , [
 	'icon' => 'cogs',
-	'caption' => trans('manage.settings.downstream'),
+	'caption' => trans('settings.downstream'),
 	'link' => 'settings' ,
-	'permission' => 'settings' ,
+	'permission' => 'super' ,
 ])
 @include('manage.frame.widgets.sidebar-link' , [
 	'icon' => 'user-secret',
-	'caption' => trans('manage.settings.upstream'),
+	'caption' => trans('settings.upstream'),
 	'link' => 'upstream' ,
 	'permission' => 'developer' ,
 ])

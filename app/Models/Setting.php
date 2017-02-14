@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Providers\HelperServiceProvider;
 use App\Traits\TahaModelTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
@@ -150,7 +149,7 @@ class Setting extends Model
 	 */
 	public static function get($slug, $para = [])
 	{
-		extract(HelperServiceProvider::array_normalize($para , [
+		extract(array_normalize($para , [
 			'locale' => App::getLocale(),
 			'fresh' => false,
 			'formatted' => true,

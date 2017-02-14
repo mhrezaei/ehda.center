@@ -31,6 +31,14 @@ class ProjectSeeder extends Seeder
 				'name_last' => "رضایی",
 				'password' => bcrypt('11111111'),
 				'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+			],
+			[
+				'code_melli' => "",
+				'email' => "admin@yasnateam.com",
+				'name_first' => "ادمین",
+				'name_last' => "یسنا",
+				'password' => bcrypt('11111111'),
+				'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
 			]
 		]);
 
@@ -97,24 +105,43 @@ class ProjectSeeder extends Seeder
 
 		DB::table('roles')->insert([
 			[
-				'slug' => "super",
-				'title' => "مدیرکل",
-				'plural' => "مدیران کل",
-				'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-			],
-			[
 				'slug' => "admin",
 				'title' => "مدیر",
 				'plural' => "مدیران",
 				'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+				'modules' => json_encode([
+						'posts' => ['create','edit','publish','report','delete','bin'] ,
+				]),
 			],
 			[
 				'slug' => "user",
 				'title' => "کاربر",
 				'plural' => "کاربران",
 				'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+				'modules' => null,
 			],
-			]);
+		]);
+
+		DB::table('role_user')->insert([
+			[
+				'user_id' => 1,
+				'role_id' => 1,
+				'permissions' => "super",
+				'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+			],
+			[
+				'user_id' => 2,
+				'role_id' => 1,
+				'permissions' => "super",
+				'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+			],
+			[
+				'user_id' => 3,
+				'role_id' => 1,
+				'permissions' => "super",
+				'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+			],
+		]);
 
 	}
 }

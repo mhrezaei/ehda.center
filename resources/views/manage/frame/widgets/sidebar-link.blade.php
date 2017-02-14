@@ -1,4 +1,4 @@
-@if(!isset($permission) or Auth::user()->can($permission))
+@if(!isset($permission) or user()->as('admin')->can($permission))
 	<li {{ (Request::is('*'.$link) ? 'class="active"' : '') }}>
 
 		{{--
