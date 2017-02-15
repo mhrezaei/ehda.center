@@ -2,8 +2,42 @@
 namespace App\Traits;
 
 
-trait TahaControllerTrait
+trait ManageControllerTrait
 {
+
+	/*
+	|--------------------------------------------------------------------------
+	| Response Methods
+	|--------------------------------------------------------------------------
+	|
+	*/
+
+
+	/**
+	 * responses to the update-row request from the grid views and depends on the environment variables set in the main controller constructor
+	 * @param $model_id
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
+	public function update($model_id)
+	{
+		//Preparations...
+		$Model = $this->Model ;
+		$model = $Model::withTrashed()->find($model_id);
+		$counter = $this->browse_counter ;
+		$selector = $this->browse_selector ;
+
+		//Run...
+		if(!$model)
+			return view('errors.m410');
+		else
+			return view($this->view_folder.'.browse-row' , compact('model' , 'counter' , 'selector'));
+
+	}
+
+	public function modalActions($model_id , $view_file)
+	{
+		return 12 ;
+	}
 	/*
 	|--------------------------------------------------------------------------
 	| Simple Return

@@ -313,6 +313,7 @@ return [
 				'domain_id' => 'دامنه',
 				'alias' => 'نام مستعار' ,
 				'status' => 'وضعیت' ,
+				'position' => "موقعیت",
 				'current_status' => "وضعیت کنونی",
 				'new_status' => "وضعیت جدید",
 				'level' => 'سطح دسترسی' ,

@@ -1,4 +1,4 @@
-<td>
+<td width="100">
 	@include('manage.frame.widgets.grid-action' , [
 		'id' => $model->id ,
 		'fake' => !isset($refresh_action) ? $refresh_action = true : '' ,

@@ -1,4 +1,4 @@
-@if($model_data->count() == 0)
+@if($models->count() == 0)
 	<tr>
 		<td colspan="{{$colspan or '10'}}">
 			<div class="null">

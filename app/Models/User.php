@@ -37,7 +37,48 @@ class User extends Authenticatable
 
     /*
     |--------------------------------------------------------------------------
-    | Normal Modules
+    | Accessors & Mutators
+    |--------------------------------------------------------------------------
+    |
+    */
+    public function getFullNameAttribute()
+    {
+        return $this->name_first . ' ' . $this->name_last ;
+    }
+
+    public function getAdminPositionAttribute()
+    {
+        if(!$this->hasRole('admin'))
+            return '-' ;
+
+        if($this->isDeveloper())
+            return trans('people.admins.developer');
+        if($this->as('admin')->can('super'))
+            return trans('people.admins.super_admin');
+        else
+            return trans('people.admins.ordinary_admin');
+    }
+
+    public function getStatusAttribute()
+    {
+        switch($this->as_role) {
+            case 'admin' :
+                if($this->trashed())
+                    return 'blocked' ;
+                else
+                    return 'active' ;
+
+            default:
+                  return '-' ;
+        }
+    }
+
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Normal Methods
     |--------------------------------------------------------------------------
     |
     */
@@ -49,6 +90,48 @@ class User extends Authenticatable
         ]);
 
         return $preferences[$slug];
+    }
+
+    public function canEdit()
+    {
+        if($this->isDeveloper() and !user()->isDeveloper())
+            return false ;
+        else
+            return true ;
+    }
+
+    public function canDelete()
+    {
+        if($this->trashed())
+            return false ;
+
+        switch($this->as_role) {
+            case 'admin' :
+                if($this->isDeveloper())
+                    return false;
+                else
+                    return true;
+
+            default :
+                return true;
+        }
+
+    }
+
+    public function canPermit()
+    {
+        switch($this->as_role) {
+            case 'admin' :
+                if($this->isDeveloper())
+                    return false;
+                elseif($this->id == user()->id)
+                    return false;
+                else
+                    return true;
+
+            default :
+                return true;
+        }
     }
 
 

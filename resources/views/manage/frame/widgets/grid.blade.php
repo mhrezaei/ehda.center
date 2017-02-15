@@ -1,6 +1,6 @@
 @include('manage.frame.widgets.grid-start')
 
-	@foreach($model_data as $i => $model)
+	@foreach($models as $i => $model)
 		<tr id="tr-{{$model->id}}" class="grid"
 				@if(isset($selector) and $selector)
 					ondblclick="gridSelector('tr','{{$model->id}}')"
@@ -15,5 +15,5 @@
 	@include('manage.frame.widgets.grid-end')
 
 <div class="paginate">
-	{!! $model_data->render() !!}
+	{!! $models->render() !!}
 </div>

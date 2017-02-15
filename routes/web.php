@@ -50,7 +50,6 @@ Route::group([
 		Route::get('/browse/{request_tab?}' , 'AdminsController@browse') ;
 		Route::get('/create/' , 'AdminsController@editor') ;
 		Route::get('/search' , 'AdminsController@search');
-		Route::get('/{user_id}/edit' , 'AdminsController@editor');
 		Route::get('/{user_id}/{modal_action}' , 'AdminsController@modalActions');
 
 		Route::group(['prefix'=>'save'] , function() {

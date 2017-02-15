@@ -3,17 +3,28 @@
 namespace App\Http\Controllers\Manage;
 
 use App\Models\User;
-use App\Traits\TahaControllerTrait;
+use App\Traits\ManageControllerTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class AdminsController extends Controller
 {
-	use TahaControllerTrait ;
+	use ManageControllerTrait ;
+
+	protected $Model ;
+	protected $browse_counter ;
+	protected $browse_selector ;
+	protected $view_folder ;
 
 	public function __construct()
 	{
 		$this->page[0] = ['admins' , trans('people.admins.title')];
+
+		$this->Model = new User() ;
+		$this->browse_counter = true ;
+		$this->browse_selector = false ;
+		$this->view_folder = "manage.admins" ;
+
 	}
 
 	public function browse($request_tab = 'actives')
@@ -36,4 +47,5 @@ class AdminsController extends Controller
 		return view("manage.admins.browse",compact('page' , 'models' , 'db'));
 
 	}
+
 }

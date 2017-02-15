@@ -15,6 +15,7 @@ return [
 	],
 
 	"button" => [
+		'edit' => "ویرایش",
 		'cancel'	=> 'انصراف' ,
 		'ok' => "بسیار خوب!",
 		'signup'	=> 'ثبت نام',
@@ -109,6 +110,23 @@ return [
 		'gray' => "خاکستری",
 		'dark' => "تیره",
 		'brown' => "قهوه‌ای",
+	],
+
+	'status_text' => [
+		'active' => "فعال",
+		'blocked' => "مسدودشده",
+		'deleted' => "حذف‌شده",
+	],
+
+	'status_color' => [
+		'active' => "success",
+		'blocked' => "danger",
+		'deleted' => "danger",
+	],
+	'status_icon' => [
+		'active' => "check",
+		'blocked' => "times",
+		'deleted' => "times",
 	],
 ];
 

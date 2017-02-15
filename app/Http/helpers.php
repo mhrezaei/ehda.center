@@ -10,7 +10,10 @@
 
 function user()
 {
-	return Auth::user() ;
+	if(Auth::check())
+		return Auth::user() ;
+	else
+		return false ;
 }
 
 /**

@@ -40,14 +40,19 @@ trait PermitsTrait
 	|
 	*/
 
-	private function getRoles()//@TODO: Should be private
+	private function getRoles()
 	{
-		$revealed_at = session()->get('revealed_at' , false);
-		$roles = session()->get('roles' , false) ;
-		if(!$roles or !$revealed_at or $revealed_at < $this->updated_at) {
+		if(user()->id == $this->id) {
+			$revealed_at = session()->get('revealed_at' , false);
+			$roles = session()->get('roles' , false) ;
+			if(!$roles or !$revealed_at or $revealed_at < $this->updated_at) {
+				$roles = collect($this->roles()->get()) ;
+				session()->put('roles' , $roles);
+				session()->put('revealed_at' , Carbon::now()->toDateTimeString() );
+			}
+		}
+		else {
 			$roles = collect($this->roles()->get()) ;
-			session()->put('roles' , $roles);
-			session()->put('revealed_at' , Carbon::now()->toDateTimeString() );
 		}
 
 		return $roles ;

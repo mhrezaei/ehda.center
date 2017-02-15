@@ -2,15 +2,16 @@
 |--------------------------------------------------------------------------
 | Inserts a dropdown action button
 |--------------------------------------------------------------------------
-| Parameters: $id AND $actions = ['fa_icon' , 'caption' , 'link or js_command' , optional permit command , optional boolian condition]
+| Parameters: $id AND $actions = [0:fa_icon , 1:caption , 2:link or js_command , 3:optional boolian condition]
 --}}
 
 <span class="dropdown">
 	<button id="action{{$id}}" class="btn btn-{{$button_class or 'default'}} btn-{{$button_size or 'xs'}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" {{$button_extra or ''}}>
+		<i class="fa fa-angle-down"></i>
 		{{$button_label or trans('forms.button.action')}}
 	</button>
 	<ul class="dropdown-menu" aria-labelledby="action{{$id}}">
-		@foreach($actions as $action)
+		@foreach($actions as $key => $action)
 			@if($action[0]== '-')
 				<li>
 					<hr class="mv5">
@@ -46,24 +47,23 @@
 						$target = $action[2] ;
 					}
 
-					//rest...
-					if(isset($action[3]))
-						$permit = Auth::user()->can($action[3]) ;
-					else
-						$permit = true ;
-
-					if($permit)
-						if(isset($action[4]))
-							$permit = $action[4]  ;
+					//condition...
+					if(!isset($action[3]))
+						$action[3] = true ;
 
 				?>
-				@if($permit)
+				@if($action[3])
 					<li>
 						<a href="{{$target}}" onclick="{{$js_command}}" {{$extra}}>
-							<i class="fa fa-{{$icon or 'circle'}} fa-fw"></i>
+							<i class="fa fa-{{$icon or 'circle'}} fa-fw" style="position: relative;left: +10px"></i>
 							{{ $caption }}
 						</a>
 					</li>
+					{{--@if($key+1 < sizeof($actions))--}}
+					{{--<li>--}}
+						{{--<hr class="mv5">--}}
+					{{--</li>--}}
+					{{--@endif--}}
 				@endif
 			@endif
 		@endforeach
