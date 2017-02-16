@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Manage;
 
 use App\Http\Controllers\Controller;
-use App\Models\Role;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\Manage\ChangeSelfPasswordRequest;
+use App\Models\User;
+use App\Traits\ManageControllerTrait;
+use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
 {
+	use ManageControllerTrait ;
 	private $page = array() ;
 
 
@@ -32,6 +35,42 @@ class HomeController extends Controller
 //		]]);
 
 		return view("manage.home.index",compact('page'));
+
+	}
+
+	public function account()
+	{
+		$page[0] = ['account' , trans('people.commands.change_password')];
+		return view("manage.home.password",compact('page'));
+	}
+
+	public function changePassword(ChangeSelfPasswordRequest $request)
+	{
+		$session_key = 'password_attempts' ;
+		$check = Hash::check($request->current_password , user()->password) ;
+
+
+		if(!$check) {
+			$session_value = $request->session()->get($session_key , 0) ;
+			$request->session()->put($session_key , $session_value+1);
+			if($session_value>3) {
+				$request->session()->flush();
+				$ok = 0 ;
+			}
+			else
+				return $this->jsonFeedback(trans('forms.feed.wrong_current_password'));
+		}
+		else {
+			$request->session()->forget($session_key);
+			user()->password = bcrypt($request->new_password);
+			$ok = user()->update();
+		}
+
+		return $this->jsonAjaxSaveFeedback($ok , [
+			'success_redirect' => url('manage'),
+			'danger_refresh' => true,
+		]);
+
 
 	}
 }

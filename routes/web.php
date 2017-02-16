@@ -39,10 +39,14 @@ Route::group([
 ], function() {
 	Route::get('/' , 'HomeController@index');
 	Route::get('/index' , 'HomeController@index');
+	Route::get('/account' , 'HomeController@account');
+	Route::post('/password' , 'HomeController@changePassword');
 
-	/*
-	| Admins
+	/*-----------------------------------------------
+	| Admins ...
 	*/
+
+
 
 	Route::group(['prefix'=>'admins', 'middleware' => 'is:super'] , function() {
 		Route::get('/update/{item_id}/{adding?}' , 'AdminsController@update');

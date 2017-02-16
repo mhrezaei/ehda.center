@@ -13,6 +13,7 @@ return [
 		'user_not_found' => 'کاربر مورد نظر را نیافتیم.' ,
 		'thing_not_found' => ':thing مورد نظر را نیافتیم.' ,
 		'password_set_to_mobile' => "شماره تلفن همراه به عنوان گذرواژه در نظر گرفته می‌شود.",
+		'wrong_current_password' => "گذرواژه‌ی فعلی اشتباه است.",
 	],
 
 	"button" => [
