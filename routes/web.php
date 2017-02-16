@@ -63,6 +63,29 @@ Route::group([
 		});
 	});
 
+
+	/*-----------------------------------------------
+	| Upstream ...
+	*/
+	Route::group(['prefix' => 'upstream', 'middleware' => 'is:developer'] , function() {
+		Route::get('/{request_tab?}' , 'UpstreamController@index') ;
+		Route::get('/{request_tab}/search/{keyword}' , 'UpstreamController@search') ;
+		Route::get('/edit/{request_tab?}/{item_id?}/{parent_id?}' , 'UpstreamController@editor') ;
+		Route::get('/{request_tab}/{item_id}/{parent_id?}' , 'UpstreamController@item') ;
+
+		Route::group(['prefix' => 'save'] , function() {
+			Route::post('state' , 'UpstreamController@saveProvince');
+			Route::post('city' , 'UpstreamController@saveCity');
+			Route::post('branch' , 'UpstreamController@saveBranch');
+			Route::post('department' , 'UpstreamController@saveDepartment');
+			Route::post('category' , 'UpstreamController@saveCategory');
+			Route::post('downstream' , 'UpstreamController@saveDownstream');
+			Route::post('downstream_value' , 'UpstreamController@setDownstream');
+			Route::post('login_as' , 'UpstreamController@loginAs');
+		});
+	});
+
+
 });
 
 

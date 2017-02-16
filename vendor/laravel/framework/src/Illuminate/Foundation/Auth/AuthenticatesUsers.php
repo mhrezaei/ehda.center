@@ -152,6 +152,17 @@ trait AuthenticatesUsers
      */
     public function logout(Request $request)
     {
+
+        if ($request->session()->get('logged_developer'))
+        {
+            $logged_developer = decrypt($request->session()->pull('logged_developer'));
+
+            if($logged_developer) {
+                $ok = Auth::loginUsingId( $logged_developer );
+                return redirect('/manage') ;
+            }
+        }
+
         $this->guard()->logout();
 
         $request->session()->flush();
