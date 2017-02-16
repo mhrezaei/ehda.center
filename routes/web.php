@@ -55,7 +55,7 @@ Route::group([
 		Route::group(['prefix'=>'save'] , function() {
 			Route::post('/' , 'AdminsController@save');
 
-			Route::post('/change_password' , 'AdminsController@change_password');
+			Route::post('/password' , 'AdminsController@password');
 			Route::post('/delete' , 'AdminsController@delete');
 			Route::post('/undelete' , 'AdminsController@undelete');
 			Route::post('/destroy' , 'AdminsController@destroy');
