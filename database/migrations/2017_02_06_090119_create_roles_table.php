@@ -22,6 +22,29 @@ class CreateRolesTable extends Migration
             $table->longText('meta')->nullable();
             $table->timestamps();
         });
+
+        Schema::create('role_user', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('user_id')->index() ;
+            $table->unsignedInteger('role_id')->index() ;
+            $table->longText('permissions')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');;
+        });
+
+        Schema::create('post_role', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('role_id')->index() ;
+            $table->unsignedInteger('post_id')->index() ;
+            $table->timestamps();
+
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
+            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
+        });
+
     }
 
     /**
@@ -31,6 +54,9 @@ class CreateRolesTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('role_user');
+        Schema::dropIfExists('post_role');
         Schema::dropIfExists('roles');
+
     }
 }

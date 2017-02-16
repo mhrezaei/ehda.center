@@ -28,7 +28,7 @@ trait TahaModelTrait
 
 	}
 
-	public function counterC($criteria = 'all' , $mood = 'badge')
+	public function counterC($criteria = 'all' , $mood = '')
 	{
 		$return = $this->counter(array_default(['criteria' => $criteria,] , $this->saved_selector_para));
 

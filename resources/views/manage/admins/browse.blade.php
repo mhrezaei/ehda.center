@@ -1,7 +1,9 @@
 @extends('manage.frame.use.0')
 
 @section('section')
-	@include('manage.admins.tabs')
+	<div id="divTab">
+		@include('manage.admins.tabs')
+	</div>
 
 	@include("manage.frame.widgets.toolbar" , [
 		'buttons' => [

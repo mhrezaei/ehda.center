@@ -1092,3 +1092,8 @@ function addCardSeparator(nStr) {
 	}
 	return nStr ;
 }
+
+function forms_log($thing)
+{
+	console.log($thing);
+}

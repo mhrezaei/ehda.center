@@ -45,20 +45,20 @@ Route::group([
 	*/
 
 	Route::group(['prefix'=>'admins', 'middleware' => 'is:super'] , function() {
-		Route::get('/update/{item_id}' , 'AdminsController@update');
+		Route::get('/update/{item_id}/{adding?}' , 'AdminsController@update');
 		Route::get('/' , 'AdminsController@browse') ;
 		Route::get('/browse/{request_tab?}' , 'AdminsController@browse') ;
-		Route::get('/create/' , 'AdminsController@editor') ;
+		Route::get('/create/' , 'AdminsController@create') ;
 		Route::get('/search' , 'AdminsController@search');
-		Route::get('/{user_id}/{modal_action}' , 'AdminsController@modalActions');
+		Route::get('/{user_id}/{modal_action}' , 'AdminsController@singleAction');
 
 		Route::group(['prefix'=>'save'] , function() {
 			Route::post('/' , 'AdminsController@save');
 
 			Route::post('/change_password' , 'AdminsController@change_password');
-			Route::post('/soft_delete' , 'AdminsController@soft_delete');
+			Route::post('/delete' , 'AdminsController@delete');
 			Route::post('/undelete' , 'AdminsController@undelete');
-			Route::post('/hard_delete' , 'AdminsController@hard_delete');
+			Route::post('/destroy' , 'AdminsController@destroy');
 			Route::post('/permits' , 'AdminsController@permits');
 		});
 	});

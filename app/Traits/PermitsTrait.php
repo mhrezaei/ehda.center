@@ -40,12 +40,19 @@ trait PermitsTrait
 	|
 	*/
 
-	private function getRoles()
+	private function fakeUpdate()
+	{
+		$this->updated_at = Carbon::now()->toDateTimeString() ;
+		$this->update() ;
+		return $this ;
+	}
+
+	public function getRoles()
 	{
 		if(user()->id == $this->id) {
 			$revealed_at = session()->get('revealed_at' , false);
 			$roles = session()->get('roles' , false) ;
-			if(!$roles or !$revealed_at or $revealed_at < $this->updated_at) {
+			if(1 or !$roles or !$revealed_at or $revealed_at < $this->updated_at) { //@TODO: Remove "1 or"
 				$roles = collect($this->roles()->get()) ;
 				session()->put('roles' , $roles);
 				session()->put('revealed_at' , Carbon::now()->toDateTimeString() );
@@ -60,12 +67,59 @@ trait PermitsTrait
 
 	}
 
+	public function role()
+	{
+		return $this->getRoles()->where('slug',$this->as_role)->first() ;
+	}
+
+	public function pivot()
+	{
+		return $this->getRoles()->where('slug',$this->as_role)->first()->pivot ;
+	}
+
 	/*
 	|--------------------------------------------------------------------------
 	| Attach and Detach Roles
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+	public function enableRole($role)
+	{
+		$role_id = $this->as($role)->role()->id;
+
+		$this->roles()->updateExistingPivot($role_id , [
+				'deleted_at' => null,
+		]);
+
+		//Updating Users row...
+		return $this->fakeUpdate() ;
+
+	}
+
+	/**
+	 * Soft deletes a pivot
+	 * @param $role
+	 * @return PermitsTrait
+	 */
+	public function disableRole($role)
+	{
+		$role_id = $this->as($role)->role()->id;
+
+		$this->roles()->updateExistingPivot($role_id , [
+			'deleted_at' => Carbon::now()->toDateTimeString(),
+		]);
+
+		//Updating Users row...
+		return $this->fakeUpdate() ;
+
+	}
+
+	public function attachRole($roles, $permissions = null)
+	{
+		return $this->attachRoles($roles , $permissions);
+	}
+
 	public function attachRoles($roles, $permissions = null)
 	{
 		//Getting the roles table...
@@ -84,10 +138,12 @@ trait PermitsTrait
 		}
 
 		//Updating Users row...
-		$this->updated_at = Carbon::now()->toDateTimeString() ;
-		$this->update() ;
-		return 1 ;
+		return $this->fakeUpdate() ;
 
+	}
+	public function detachRole($roles)
+	{
+		return $this->detachRoles($roles) ;
 	}
 
 	public function detachRoles($roles)
@@ -106,9 +162,13 @@ trait PermitsTrait
 		$this->roles()->detach($id_list);
 
 		//Updating Users row...
-		$this->updated_at = Carbon::now()->toDateTimeString() ;
-		$this->update() ;
+		return $this->fakeUpdate() ;	
+	}
 
+
+	public function shh()
+	{
+		return null ;
 	}
 
 
@@ -124,8 +184,11 @@ trait PermitsTrait
 		return in_array($this->code_melli , ['0074715623' , '0012071110' ]) ;
 	}
 
-	public function hasRole($requested_roles , $any_of_them = false)
+	public function hasRole($requested_roles=null , $any_of_them = false)
 	{
+		if(!$requested_roles)
+			$requested_roles = $this->as_role ;
+
 		//Developer Exceptions...
 		if($this->isDeveloper())
 			return true ;
@@ -135,11 +198,11 @@ trait PermitsTrait
 
 		//If only one role is requested...
 		if(!is_array($requested_roles))
-			return $this->getRoles()->where('slug',$requested_roles)->count();
+			return $this->getRoles()->where('slug',$requested_roles)->where('pivot.deleted_at' , null)->count();
 
 
 		//If an array of roles is given...
-		$count = $this->getRoles()->whereIn('slug',$requested_roles)->count();
+		$count = $this->getRoles()->whereIn('slug',$requested_roles)->where('pivot.deleted_at' , null)->count();
 		if($any_of_them)
 			return $count ;
 		else
@@ -187,5 +250,10 @@ trait PermitsTrait
 		return str_contains($permissions , $requested_permission);
 
 
+	}
+
+	public function enabled()
+	{
+		return !$this->pivot()->deleted_at ;
 	}
 }

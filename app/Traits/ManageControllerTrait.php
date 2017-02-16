@@ -1,6 +1,8 @@
 <?php
 namespace App\Traits;
 
+use Illuminate\Support\Facades\View;
+
 
 trait ManageControllerTrait
 {
@@ -18,8 +20,16 @@ trait ManageControllerTrait
 	 * @param $model_id
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
 	 */
-	public function update($model_id)
+	public function update($model_id , $adding=null)
 	{
+		//Tab exception...
+		if($model_id=='tab') {
+			$db = $this->Model ;
+			$page = $this->page ;
+			$page[1][0] = str_replace('-','/',$adding) ;
+			return view($this->view_folder.'.tabs' , compact('db' , 'page'));
+		}
+
 		//Preparations...
 		$Model = $this->Model ;
 		$model = $Model::withTrashed()->find($model_id);
@@ -34,9 +44,50 @@ trait ManageControllerTrait
 
 	}
 
-	public function modalActions($model_id , $view_file)
+	public function singleAction($model_id , $view_file)
 	{
-		return 12 ;
+		//Redirect in mass actions...
+		if($model_id == 0)
+			return $this->massAction($view_file);
+
+		//Model...
+		$Model = $this->Model ;
+		$model = $Model::withTrashed()->find($model_id) ;
+
+
+		if(!$model)
+			return view('errors.m410');
+
+		//If Special Method...
+		$special_method = camel_case($view_file."_form") ;
+		if(method_exists($this,$special_method))
+			return $this->$special_method($model) ;
+
+		//If normal view...
+		$view = $this->view_folder . "." .$view_file ;
+
+		if(!View::exists($view)) return view('templates.say' , ['array'=>$view]); //@TODO: REMOVE THIS LINE
+		if(!View::exists($view)) return view('errors.m404');
+
+		return view($view,compact('model'));
+	}
+
+	public function massAction($view_file)
+	{
+		//If Special Method...
+		$special_method = camel_case($view_file."_mass_form") ;
+		if(method_exists($this,$special_method))
+			return $this->$special_method() ;
+
+		//If normal view...
+		$view = $this->view_folder . "." .$view_file . "_bulk" ;
+
+		if(!View::exists($view)) return view('templates.say' , ['array'=>$view]); //@TODO: REMOVE THIS LINE
+		if(!View::exists($view)) return view('errors.m404');
+
+		return view($view) ;
+
+
 	}
 	/*
 	|--------------------------------------------------------------------------

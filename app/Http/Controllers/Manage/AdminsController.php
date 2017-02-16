@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Manage;
 
+use App\Http\Requests\AdminSaveRequest;
 use App\Models\User;
 use App\Traits\ManageControllerTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 
 class AdminsController extends Controller
 {
@@ -21,6 +23,10 @@ class AdminsController extends Controller
 		$this->page[0] = ['admins' , trans('people.admins.title')];
 
 		$this->Model = new User() ;
+		$this->Model->setSelectorPara([
+				'role' => "admin",
+		]);
+
 		$this->browse_counter = true ;
 		$this->browse_selector = false ;
 		$this->view_folder = "manage.admins" ;
@@ -47,5 +53,68 @@ class AdminsController extends Controller
 		return view("manage.admins.browse",compact('page' , 'models' , 'db'));
 
 	}
+
+	public function create()
+	{
+		$model = new User() ;
+		return view("manage.admins.edit",compact('model'));
+	}
+
+	public function save(AdminSaveRequest $request)
+	{
+		//@TODO: Inserting new fields should be more accurate. What if they want to attach the admin role to an already registered user?
+
+		//Preparations...
+		$data = $request->toArray() ;
+
+		if($request->id) {
+			$user = User::find($request->id) ;
+			if(!$user or !$user->as('admin')->canEdit())
+				return $this->jsonFeedback(trans('validation.http.Error403'));
+		}
+		else {
+			$data['password'] = Hash::make($request->mobile);
+			$data['password_force_change'] = 1 ;
+		}
+
+		//Save...
+		$saved = User::store($data);
+
+		//Attach admin role...
+		if($saved and !$request->id) {
+			$user = User::find($saved) ;
+			$user->attachRoles('admin');
+		}
+
+		//Feedback...
+		return $this->jsonAjaxSaveFeedback($saved , [
+				'success_callback' => "rowUpdate('tblAdmins','$request->id')",
+		]);
+
+
+	}
+
+	public function delete(Request $request)
+	{
+		$user = User::find($request->id) ;
+		if(!$user or !$user->as('admin')->canDelete())
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+
+		$user->disableRole('admin');
+		return $this->jsonAjaxSaveFeedback(true , [
+				'success_callback' => "rowHide('tblAdmins','$request->id')",
+		]);
+
+	}
+	public function undelete(Request $request)
+	{
+		$user = User::find($request->id) ;
+		$user->enableRole('admin');
+		return $this->jsonAjaxSaveFeedback(true , [
+				'success_callback' => "rowHide('tblAdmins','$request->id')",
+		]);
+
+	}
+
 
 }

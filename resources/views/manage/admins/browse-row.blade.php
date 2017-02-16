@@ -5,7 +5,7 @@
 <td>
 	@include("manage.frame.widgets.grid-text" , [
 		'text' => $model->full_name,
-		'link' => "modal:manage/admins/-id-/edit",
+		'link' => $model->canEdit()? "modal:manage/admins/-id-/edit" : '',
 	])
 </td>
 
@@ -29,9 +29,9 @@
 	['key' , trans('people.commands.change_password') , "modal:manage/admins/-id-/password" , $model->as('admin')->canEdit() ] ,
 	['shield' , trans('people.commands.permit') , "modal:manage/admins/-id-/permit" , $model->as('admin')->canPermit()],
 
-	['ban' , trans('people.commands.block') , 'modal:manage/admins/-id-/soft_delete' , $model->as('admin')->canDelete()] ,
-	['undo' , trans('people.commands.unblock') , 'modal:manage/admins/-id-/undelete'  , $model->trashed()] ,
-	['times' , trans('forms.button.hard_delete') , 'modal:manage/admins/-id-/hard_delete' , $model->trashed()] ,
+	['ban' , trans('people.commands.block') , 'modal:manage/admins/-id-/delete' , $model->as('admin')->canDelete()] ,
+	['undo' , trans('people.commands.unblock') , 'modal:manage/admins/-id-/undelete'  , !$model->as('admin')->enabled()] ,
+	['times' , trans('forms.button.hard_delete') , 'modal:manage/admins/-id-/destroy' , !$model->as('admin')->enabled()] ,
 
-	['user' , trans('people.commands.login_as') , 'modal:manage/admins/-id-/login_as' , user()->isDeveloper() and !$model->trashed()] ,
+	['user' , trans('people.commands.login_as') , 'modal:manage/admins/-id-/login_as' , user()->isDeveloper() and $model->as('admin')->enabled()] ,
 ]])

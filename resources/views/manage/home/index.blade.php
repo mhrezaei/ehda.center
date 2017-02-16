@@ -9,4 +9,7 @@
 		{{--@endforeach--}}
 	{{--</div>--}}
 
+	{{--@include('templates.say' , ['array'=>user()->as('user')->role()->toArray()])--}}
+	{{--@include('templates.say' , ['array'=>user()->as('user')->can()])--}}
+	{{--@include('templates.say' , ['array'=>user()->enableRole('user')->shh()])--}}
 @endsection

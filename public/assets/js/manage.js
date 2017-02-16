@@ -11,7 +11,7 @@ function rowHide($table_id , $model_id)
 
 	var $row_selector = $table_selector + ' #tr-' + $model_id ;
 	$($row_selector).slideUp() ;
-
+	tabReload();
 }
 
 function rowUpdate($table_id , $model_id)
@@ -41,6 +41,21 @@ function rowUpdate($table_id , $model_id)
 			$($row_selector + ' .-rowCounter ').html($counter) ;
 		});
 	}
+}
+
+function tabReload()
+{
+	$("#divTab").addClass('loading');
+
+	forms_log($("#divTab .refresh").html() );
+	$.ajax({
+		url:$("#divTab .refresh").html() ,
+		cache: false
+	})
+	.done(function(html) {
+		$("#divTab").html(html);
+		$("#divTab").removeClass('loading');
+	});
 }
 function masterModal($url,$size)
 {
@@ -162,8 +177,11 @@ function gridSelector($mood , $id)
 	}
 }
 
-function postEditorFeatures($special_action = null)
+function postEditorFeatures($special_action)
 {
+	if(!$special_action) {
+		$special_action = null ;
+	}
 
 	switch( $special_action) {
 		case 'featured_image_inserted' :

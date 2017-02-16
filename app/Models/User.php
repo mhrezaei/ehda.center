@@ -32,7 +32,7 @@ class User extends Authenticatable
     */
     public function roles()
     {
-        return $this->belongsToMany('App\Models\Role')->withPivot('permissions');
+        return $this->belongsToMany('App\Models\Role')->withPivot('permissions' , 'deleted_at')->withTimestamps();;
     }
 
     /*
@@ -63,10 +63,10 @@ class User extends Authenticatable
     {
         switch($this->as_role) {
             case 'admin' :
-                if($this->trashed())
-                    return 'blocked' ;
-                else
+                if($this->as('admin')->enabled())
                     return 'active' ;
+                else
+                    return 'blocked' ;
 
             default:
                   return '-' ;
@@ -94,15 +94,25 @@ class User extends Authenticatable
 
     public function canEdit()
     {
-        if($this->isDeveloper() and !user()->isDeveloper())
+        if(!$this->enabled() or !$this->hasRole())
             return false ;
-        else
-            return true ;
+
+        switch($this->as_role) {
+            case 'admin' :
+                if($this->isDeveloper() and !user()->isDeveloper())
+                    return false;
+                else
+                    return true;
+
+            default :
+                return true;
+        }
+
     }
 
     public function canDelete()
     {
-        if($this->trashed())
+        if(!$this->enabled() or !$this->hasRole())
             return false ;
 
         switch($this->as_role) {
@@ -120,6 +130,9 @@ class User extends Authenticatable
 
     public function canPermit()
     {
+        if(!$this->enabled() or !$this->hasRole())
+            return false ;
+
         switch($this->as_role) {
             case 'admin' :
                 if($this->isDeveloper())
@@ -156,19 +169,20 @@ class User extends Authenticatable
 
         //Process Criteria....
         switch($criteria) {
-            case 'actives' :
+            case 'actives':
+                $table = $table->wherePivot('deleted_at' , null);
                 break;
 
-            case 'blocked' :
-                $table = $table->onlyTrashed()->whereColumn('deleted_by', '!=', 'id');
-                break;
-
-            case 'deleted' :
-                $table = $table->onlyTrashed()->whereColumn('deleted_by', 'id');
-                break;
+//            case 'blocked' :
+//                $table = $table->onlyTrashed()->whereColumn('deleted_by', '!=', 'id');
+//                break;
+//
+//            case 'deleted' :
+//                $table = $table->onlyTrashed()->whereColumn('deleted_by', 'id');
+//                break;
 
             case 'bin' :
-                $table = $table->onlyTrashed();
+                $table = $table->wherePivot('deleted_at' , '!=' ,null);;
                 break;
 
             default:
