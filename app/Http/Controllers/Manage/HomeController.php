@@ -23,6 +23,11 @@ class HomeController extends Controller
 	{
 		$page = $this->page ;
 
+		$string = "image title  text comment gallery  visibility_choice searchable  template_choice   preview" ;
+		$array = array_filter(explode(' ', $string));
+
+		ss($array);
+
 		return view("manage.home.index",compact('page'));
 
 	}

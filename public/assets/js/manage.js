@@ -177,6 +177,22 @@ function gridSelector($mood , $id)
 	}
 }
 
+function posttypeFeatures($feature)
+{
+	var $button = $("#lblFeature-"+$feature) ;
+	var $input = $("#txtFeatures");
+
+	if($input.val().indexOf($feature)>=0){
+		$input.val($input.val().replaceAll($feature , ''));
+		$button.css('opacity','0.3');
+	}
+	else {
+		$input.val($input.val() + ' ' + $feature + ' ');
+		$button.css('opacity','0.9');
+	}
+//	forms_log($input.val());
+}
+
 function postEditorFeatures($special_action)
 {
 	if(!$special_action) {

@@ -137,7 +137,7 @@ trait TahaModelTrait
 	public function spreadMeta()
 	{
 		//Bypass...
-		if(!self::hasColumn('meta'))
+		if(!self::hasColumn('meta') or !$this->id)
 			return $this ;
 
 		//Retreive...
@@ -148,14 +148,14 @@ trait TahaModelTrait
 
 		//safety...
 		if(!$meta)
-			return ;
+			return $this;
 
 		//Process...
 		foreach($meta as $field => $value) {
 			$this->$field = $value ;
 		}
 
-		return ;
+		return $this;
 
 	}
 

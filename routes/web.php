@@ -80,7 +80,7 @@ Route::group([
 		Route::group(['prefix' => 'save'] , function() {
 			Route::post('state' , 'UpstreamController@saveProvince');
 			Route::post('city' , 'UpstreamController@saveCity');
-			Route::post('branch' , 'UpstreamController@saveBranch');
+			Route::post('posttype' , 'UpstreamController@savePosttype');
 			Route::post('department' , 'UpstreamController@saveDepartment');
 			Route::post('category' , 'UpstreamController@saveCategory');
 			Route::post('downstream' , 'UpstreamController@saveDownstream');

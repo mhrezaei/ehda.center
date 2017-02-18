@@ -37,7 +37,7 @@
 
 ?>
 @if(!isset($condition) or $condition)
-	<span class="ph5 img-rounded bg-{{$color}}" style="opacity:{{$opacity}};padding-top: 2px;padding-bottom: 2px;border: 1px solid rgba(30, 30, 30, 0.2)">
+	<label id="{{$id or ''}}" class="ph5 img-rounded bg-{{$color}}" style="opacity:{{$opacity}};padding-top: 2px;padding-bottom: 2px;border: 1px solid rgba(30, 30, 30, 0.2)">
 		@if(isset($link) and $link)
 			<a href="{{$target}}" onclick="{{$js_command}}" class="{{$class}}" {{$extra}}>
 				@if(isset($icon))
@@ -53,6 +53,6 @@
 				@pd($text)
 			</span>
 		@endif
-	</span>
+	</label>
 
 @endif

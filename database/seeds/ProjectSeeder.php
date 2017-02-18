@@ -42,6 +42,18 @@ class ProjectSeeder extends Seeder
 			]
 		]);
 
+		DB::table('posttypes')->insert([
+			'slug' => "pages",
+			'title' => "برگه‌ها",
+			'header_title' => "",
+			'features' => "image title text comment gallery visibility_choice searchable template_choice preview keyword",
+			'meta' => json_encode([
+				'singular_title' => "برگه",
+				'template' => "post",
+			]),
+			'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+		]);
+
 
 		DB::table('settings')->insert([
 			[

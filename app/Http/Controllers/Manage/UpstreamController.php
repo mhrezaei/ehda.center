@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Manage;
 
 use App\Http\Requests\Manage\DownstreamSaveRequest;
+use App\Http\Requests\Manage\PosttypeSaveRequest;
+use App\Models\Posttype;
 use App\Models\Setting;
 use App\Models\User;
 use App\Traits\ManageControllerTrait;
@@ -38,9 +40,9 @@ class UpstreamController extends Controller
 				$models = State::get_provinces()->orderBy('title')->get();
 				break;
 
-			case 'branches' :
-				$models = Branch::orderBy('plural_title')->get();
-				break ;
+			case 'posttypes':
+				$models = Posttype::orderBy('title')->paginate(user()->preference('max_rows_per_page'));
+				break;
 
 			case 'downstream' :
 				$models = Setting::orderBy('category')->orderBy('title')->paginate(user()->preference('max_rows_per_page')) ;
@@ -208,16 +210,18 @@ class UpstreamController extends Controller
 				break;
 
 
-			case 'branch' :
+			case 'posttype' :
 				if($item_id) {
-					$model = Branch::find($item_id);
+					$model = Posttype::find($item_id);
 					if(!$model)
 						return view('errors.m410');
 				}
 				else {
-					$model = new Branch();
+					$model = new Posttype();
+					$model->template = 'post' ;
+					$model->features = 'title text';
 				}
-				return view('manage.settings.branches-edit', compact('model'));
+				return view('manage.settings.posttypes-edit', compact('model'));
 
 			case 'categories' :
 				if($item_id) {
@@ -265,6 +269,29 @@ class UpstreamController extends Controller
 		]);
 
 	}
+
+	public function savePosttype(PosttypeSaveRequest $request)
+	{
+		//If Save...
+		if($request->_submit == 'save') {
+			return $this->jsonAjaxSaveFeedback(Posttype::store($request) ,[
+					'success_refresh' => 1,
+			]);
+		}
+
+		//If Delete...
+		if($request->_submit == 'delete') {
+			$model = Posttype::find($request->id) ;
+			if(!$model)
+				return $this->jsonFeedback();
+
+			return $this->jsonAjaxSaveFeedback(Posttype::destroy($request->id) ,[
+					'success_refresh' => 1,
+			]);
+		}
+
+	}
+
 
 
 	public function loginAs(Request $request)

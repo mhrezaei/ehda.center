@@ -17,6 +17,7 @@ class CreateBranchesTable extends Migration
             $table->increments('id');
             $table->string('slug')->unique() ;
             $table->string('title');
+            $table->text('features');
             $table->string('header_title'); //necessary for grouping of menus
             $table->longText('meta')->nullable() ;
             $table->timestamps();
