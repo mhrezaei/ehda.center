@@ -15,7 +15,7 @@ class CreateCategoriesTable extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('branch_id')->index() ;
+            $table->unsignedInteger('posttype_id')->index() ;
             $table->unsignedInteger('parent_id')->default(0)->index() ;
             $table->string('slug')->unique() ;
             $table->string('title')->index();
@@ -27,8 +27,7 @@ class CreateCategoriesTable extends Migration
             $table->unsignedInteger('updated_by')->default(0) ;
             $table->unsignedInteger('deleted_by')->default(0) ;
 
-            $table->foreign('branch_id')->references('id')->on('branches');
-
+            $table->foreign('posttype_id')->references('id')->on('posttypes')->onDelete('cascade');
         });
     }
 

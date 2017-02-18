@@ -13,7 +13,7 @@ class CreateBranchesTable extends Migration
      */
     public function up()
     {
-        Schema::create('branches', function (Blueprint $table) {
+        Schema::create('posttypes', function (Blueprint $table) {
             $table->increments('id');
             $table->string('slug')->unique() ;
             $table->string('title');
@@ -31,6 +31,6 @@ class CreateBranchesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('branches');
+        Schema::dropIfExists('posttypes');
     }
 }

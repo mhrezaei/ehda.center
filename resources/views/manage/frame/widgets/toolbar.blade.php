@@ -8,7 +8,7 @@
 			@endforeach
 		@endif
 		@if(isset($search))
-			@include('manage.frame.widgets.toolbar_search_inline' , $search)
+				@include('manage.frame.widgets.toolbar_search_inline' , $search)
 		@endif
 
 	</div>

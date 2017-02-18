@@ -30,7 +30,7 @@ class SettingServiceProvider extends ServiceProvider
 
 	public static function get($slug)
 	{
-		return Setting::get($slug);
+		return Setting::take($slug);
 	}
 
 	public static function isLocale($lang)
@@ -45,6 +45,6 @@ class SettingServiceProvider extends ServiceProvider
 
 	public static function getUrl($lang)
 	{
-		return Setting::get('httpd') . $lang . '.' . Setting::get('domain_name');
+		return Setting::take('httpd') . $lang . '.' . Setting::get('domain_name');
 	}
 }

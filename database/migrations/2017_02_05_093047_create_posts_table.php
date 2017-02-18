@@ -17,6 +17,7 @@ class CreatePostsTable extends Migration
             //@TODO: Categories, Permissions
 
             $table->increments('id');
+            $table->unsignedInteger('posttype_id')->index() ;
             $table->unsignedInteger('parent_id')->default(0)->index() ;
             $table->string('slug')->unique() ;
             $table->string('title')->index();

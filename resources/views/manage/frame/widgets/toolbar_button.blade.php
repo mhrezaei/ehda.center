@@ -8,6 +8,12 @@ elseif(str_contains($target,'(')) {
 	$on_click = $target ;
 	$target = 'javascript:void(0)' ;
 }
+elseif(str_contains($target , 'modal')) {
+	$array = explode(':',$target) ;
+	if(!isset($array[2])) $array[2] = 'lg' ;
+	$on_click = "masterModal('". url($array[1]) ."' , '". $array[2] ."' )" ;
+	$target = 'javascript:void(0)' ;
+}
 else {
 	$target = url($target) ;
 }

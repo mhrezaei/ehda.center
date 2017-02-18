@@ -28,8 +28,7 @@ class AdminsController extends Controller
 				'role' => "admin",
 		]);
 
-		$this->browse_counter = true ;
-		$this->browse_selector = false ;
+		$this->browse_handle = 'counter' ;
 		$this->view_folder = "manage.admins" ;
 
 	}

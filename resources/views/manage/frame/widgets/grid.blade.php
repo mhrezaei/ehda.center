@@ -2,7 +2,7 @@
 
 	@foreach($models as $i => $model)
 		<tr id="tr-{{$model->id}}" class="grid"
-				@if(isset($selector) and $selector)
+				@if(isset($handle) and str_contains($handle , 'selector'))
 					ondblclick="gridSelector('tr','{{$model->id}}')"
 				@endif
 		>

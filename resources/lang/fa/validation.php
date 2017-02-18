@@ -325,11 +325,12 @@ return [
 
 				'branch_id' => 'شاخه' ,
 				'value' => 'مقدار' ,
-				'global_value' => 'مقدار پیش‌فرض' ,
+				'global_value' => 'مقدار سراسری' ,
 				'data_type' => 'نوع داده' ,
 				'available_for_domains' => 'قابلیت خصوصی‌سازی در دامنه‌ها' ,
 				'developers_only' => 'فقط برای استفاده‌ی برنامه‌نویسان' ,
 				'is_resident' => 'ماندگار در حافظه' ,
+				'is_localized' => "زبان‌پذیر",
 				'default_value' => 'مقدار پیش‌فرض' ,
 				'custom_value' => 'مقدار دل‌خواه' ,
 

@@ -17,14 +17,23 @@ function user()
 }
 
 /**
- * A shortcut to the public static module "get" from Setting model
- * @param       $slug
- * @param array $para: [locale=auto , fresh=false , formatted=true , $default=false]
- * @return string
+ * Easier way to call settings with super-minimal parameters (language=auto, cache=on, default=no etc.)
+ * @param $slug
+ * @return array|bool|mixed
  */
-function setting($slug , $para=[])
+function getSetting($slug)
 {
-	return \App\Models\Setting::get($slug , $para);
+	return setting($slug)->gain() ;
+}
+
+/**
+ * a shortcut to fire a chain command to receive setting value
+ * @param $slug
+ * @return \App\Models\Setting
+ */
+function setting($slug)
+{
+	return \App\Models\Setting::builder($slug);
 }
 
 function pd($string)
@@ -74,5 +83,21 @@ function array_normalize($array, $reference)
 	}
 
 	return $result;
+
+}
+
+function isJson($string) {
+	json_decode($string);
+	return  (json_last_error() == JSON_ERROR_NONE);
+}
+
+/**
+ * Says $anything in an acceptable array format, for the debugging purposes.
+ * @param $anything
+ * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+ */
+function ss($anything)
+{
+	echo view('templates.say' , ['array'=>$anything]);
 
 }

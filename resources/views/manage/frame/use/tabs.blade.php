@@ -1,6 +1,8 @@
 {{-- $tabs = [ 0:url 1:caption 2:badge 3:condition 4:badge-color ] --}}
 <ul class="nav nav-tabs">
-	<div class="refresh">{{ url($refresh_url."/".urlencode(str_replace('/','-',$current))) }}</div>
+	@if(isset($refresh_url))
+		<div class="refresh">{{ url($refresh_url."/".urlencode(str_replace('/','-',$current))) }}</div>
+	@endif
 	@foreach($tabs as $tab)
 		<?php
 			$url = $tab[0] ;

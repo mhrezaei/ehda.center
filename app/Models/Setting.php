@@ -3,20 +3,33 @@
 namespace App\Models;
 
 use App\Traits\TahaModelTrait;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Lang;
 
 class Setting extends Model
 {
 	public static $available_data_types = ['text' , 'textarea' , 'boolean' , 'date' , 'photo' , 'array'] ;
 	public static $available_categories = ['upstream' , 'socials' , 'contact' , 'template' , 'database'] ;
-	public static $full_categories = ['socials' , 'contact' , 'template' , 'database' ] ;
+	public static $full_categories = ['upstream' , 'socials' , 'contact' , 'template' , 'database' ] ;
 	public static $default_when_not_found = '-' ;
 	public static $unset_signals = ['unset' , 'default' , '=' , ''] ;
 	public static $reserved_slugs = 'none,setting' ;
 	protected $guarded = ['id' , 'default_value'] ;
 	public $request_locale = null ;
+
+	protected $casts = [
+			'developers_only' => 'boolean' ,
+			'is_resident' => 'boolean' ,
+			'is_localized' => 'boolean' ,
+	];
+
+	protected $request_language = '';
+	protected $request_fresh_reveal = false;
+	protected $request_default = false;
+	protected $request_unformatted = false ;
 
 	use TahaModelTrait ;
 
@@ -26,11 +39,168 @@ class Setting extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
-	public function getValueAttribute()
-	{
-		$value = $this->raw_value ;
 
-		switch($this->data_type) {
+	public function getRawDefaultAttribute()
+	{
+		$value = $this->default_value; //Crypt::decrypt($this->default_value) ;
+		$result = null ;
+
+		if(!$value)
+			return $this->default_when_not_found ;
+		else
+			return $value ;
+
+	}
+
+	public function getSessionKeyAttribute()
+	{
+		return "setting-" . $this->slug ;
+	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Save Methods
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public function saveRequest($request)
+	{
+		//Default Value...
+		if(user()->isDeveloper()){
+			$this->default_value = $this->purify($request->default_value);
+		}
+
+		//Custom Value...
+		if(!$this->is_localized) {
+			$this->custom_value = $this->purify($request->custom_value);
+		}
+		else {
+			$array = [];
+			foreach(setting('site_locales')->nocache()->gain() as $lang){
+				$array[$lang] = $this->purify($request->toArray()[$lang]);
+			}
+			$this->custom_value = json_encode($array);
+		}
+
+		//Save...
+		return $this->save() ;
+
+	}
+
+	protected function purify($value)
+	{
+		switch($this->data_type)
+		{
+			case 'boolean':
+				$value = booleanValue($value) ;
+				break;
+			case 'date':
+				$carbon = new Carbon($value);
+				$value = $carbon->toDateTimeString();
+				break;
+			case 'photo':
+				$value = str_replace(url('') , null , $value);
+
+		}
+		return $value ;
+	}
+
+
+	/*
+	|--------------------------------------------------------------------------
+	| Chain Methods
+	|--------------------------------------------------------------------------
+	| Pattern: Setting::builder('folan')->in('fa')->nocache()->defaultValue()->raw()->gain()
+	| First and last methods are mandatory, while the rest is optional as per required.
+	*/
+	public static function builder($slug)
+	{
+		$model = new self ;
+		$model->slug = $slug ;
+		return $model->reset() ;
+	}
+
+	public function reset()
+	{
+		$this->request_language = App::getLocale() ;
+		$this->request_language = '';
+		$this->request_fresh_reveal = false;
+		$this->request_default = false;
+		$this->request_unformatted = false ;
+		return $this ;
+	}
+
+	public function in($language_code)
+	{
+		$this->request_language = $language_code ;
+		return $this ;
+	}
+
+	public function nocache()
+	{
+		$this->request_fresh_reveal = true ;
+		return $this ;
+	}
+
+	public function defaultValue()
+	{
+		$this->request_default = true ;
+		return $this ;
+	}
+
+	public function raw()
+	{
+		$this->request_unformatted = true ;
+		return $this ;
+	}
+
+	public function gain()
+	{
+		if(!$this->slug)
+			return self::$default_when_not_found ;
+
+		//If already revealed...
+		if($this->id)
+			$record = $this ;
+
+		//Look in session...
+		if(!$this->id) {
+			$record = session()->get($this->session_key , "NO") ;
+			if($this->request_fresh_reveal or $record=="NO") {
+				$record = self::findBySlug($this->slug);
+				if(!$record)
+					return self::$default_when_not_found ;
+				if($record->is_resident)
+					session()->put($this->session_key , $record);
+			}
+		}
+
+		//default...
+		if($this->request_default)
+			$value = $record->raw_default ;
+		else
+			$value = $record->custom_value ;
+
+		//Locales...
+		if($record->is_localized and !$this->request_default) {
+			if(isJson($value)){
+				$value = json_decode($value , true) ;
+				if(array_has($value , $this->request_language))
+					$value = $value[$this->request_language] ;
+				else
+					$value = $this->raw_default ;
+			}
+			else {
+				$value = $this->raw_default ;
+			}
+		}
+
+
+		//format...
+		if($this->request_unformatted)
+			return $value ;
+
+		switch($record->data_type) {
 			case 'boolean' :
 				return boolval($value) ;
 
@@ -43,56 +213,8 @@ class Setting extends Model
 				return $value;
 		}
 
-	}
-
-	public function getRawValueAttribute()
-	{
-		$value = $this->custom_value ;// Crypt::decrypt($this->custom_value) ;
-		$result = null ;
-
-		if($this->is_localized) {
-			$value = json_decode($value , true) ;
-			if(array_has($value , $this->locale))
-				return $value[$this->locale] ;
-			else
-				return $this->raw_default ;
-		}
-		else {
-			if(!$value)
-				return $this->raw_default ;
-			else
-				return $value ;
-		}
 
 	}
-	
-	public function getRawDefaultAttribute()
-	{
-		$value = $this->default_value; //Crypt::decrypt($this->default_value) ;
-		$result = null ;
-
-		if($this->is_localized) {
-			$value = json_decode($value , true) ;
-			if(array_has($value , $this->locale))
-				return $value[$this->locale] ;
-			else
-				return $this->default_when_not_found ;
-		}
-		else {
-			if(!$value)
-				return $this->default_when_not_found ;
-			else
-				return $value ;
-		}
-
-	}
-
-	public function getSessionKeyAttribute()
-	{
-		return "setting-" . $this->slug ;
-	}
-
-
 
 
 	/*
@@ -141,58 +263,6 @@ class Setting extends Model
 		return $model->update() ;
 	}
 
-
-	/**
-	 * @param       $slug
-	 * @param array $para: [locale=auto , fresh=false , formatted=true , $default=false]
-	 * @return string
-	 */
-	public static function get($slug, $para = [])
-	{
-		extract(array_normalize($para , [
-			'locale' => App::getLocale(),
-			'fresh' => false,
-			'formatted' => true,
-			'default' => false,
-		]));
-
-		//Check session...
-		if(!$default and !$fresh) {
-			$value = session()->get("setting-$slug" , "NO") ;
-			if($value != "NO")
-				return $value ;
-		}
-
-
-		//Read Data...
-		$model = self::where('slug', $slug)->first() ;
-
-		//If not found...
-		if(!$model)
-			return self::$default_when_not_found ;
-
-		//Normal Situation...
-		$model->request_locale = $locale ;
-		if($default) {
-			$model->custom_value = $model->default_value ;
-			$model->is_resident = false ;
-		}
-
-		if($formatted)
-			$value = $model->value ;
-		else
-			$value = $model->raw_value ;
-
-		//Session store if required...
-		if($model->is_resident) {
-			session()->put($model->session_key, $value);
-		}
-
-		//Return...
-		return $value ;
-
-	}
-
 	/*
 	|--------------------------------------------------------------------------
 	| Helper Functions
@@ -205,7 +275,7 @@ class Setting extends Model
 
 		// Real Categories...
 		foreach(self::$full_categories as $category)  {
-			$trans = "manage.settings.downstream_settings.category.$category" ;
+			$trans = "settings.categories.$category" ;
 			if(Lang::has($trans))
 				$caption = trans($trans);
 			else
@@ -220,14 +290,13 @@ class Setting extends Model
 		]);
 
 		// Branch Categories...
-		$branches = Branch::selector('category')->get();
-		foreach($branches as $branch) {
-			array_push($return , [
-					'categories/'.$branch->slug ,
-					trans('posts.categories.categories_of').' '.$branch->plural_title
-			]);
-		}
-		//		dd($branches);
+//		$branches = Branch::selector('category')->get();
+//		foreach($branches as $branch) {
+//			array_push($return , [
+//					'categories/'.$branch->slug ,
+//					trans('posts.categories.categories_of').' '.$branch->plural_title
+//			]);
+//		}
 
 		return $return ;
 	}
@@ -236,7 +305,7 @@ class Setting extends Model
 	{
 		$return = [] ;
 		foreach(self::$available_data_types as $data_type)  {
-			$trans = "manage.settings.downstream_settings.data_type.$data_type" ;
+			$trans = "forms.data_type.$data_type" ;
 			if(Lang::has($trans))
 				$caption = trans($trans);
 			else

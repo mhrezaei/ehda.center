@@ -241,7 +241,7 @@ return [
 
          'Taha' => \App\Providers\TahaServiceProvider::class ,
           'NoCaptcha' => 'Anhskohbo\NoCaptcha\Facades\NoCaptcha',
-          'Setting' => \App\Providers\SettingServiceProvider::class,
+//          'Setting' => \App\Providers\SettingServiceProvider::class,
     ],
 
 ];

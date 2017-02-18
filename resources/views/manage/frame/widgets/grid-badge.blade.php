@@ -1,8 +1,10 @@
 <?php
 	//class...
 	!isset($size)? $size = 10 : '' ;
-	!isset($color)? $color = 'grey' : '' ;
+	!isset($color)? $color = '' : '' ;
 	!isset($class)? $class = '' : '' ;
+	!isset($icon)? $icon = 'check' : '' ;
+	!isset($opacity)? $opacity = '0.5' : '' ;
 	$class = " f".$size." text-$color $class" ;
 
 	//target...
@@ -32,20 +34,25 @@
 		}
 	}
 
+
 ?>
 @if(!isset($condition) or $condition)
-	<div class="" style="">
+	<span class="ph5 img-rounded bg-{{$color}}" style="opacity:{{$opacity}};padding-top: 2px;padding-bottom: 2px;border: 1px solid rgba(30, 30, 30, 0.2)">
 		@if(isset($link) and $link)
 			<a href="{{$target}}" onclick="{{$js_command}}" class="{{$class}}" {{$extra}}>
-				<i class="fa fa-{{$icon or 'hand-o-left'}} mhl5"></i>
+				@if(isset($icon))
+					<i class="fa fa-{{$icon}} mhl5"></i>
+				@endif
 				@pd($text)
 			</a>
 		@else
 			<span class="{{$class}}">
-				<i class="fa fa-{{$icon or 'hand-o-left'}} mhl5"></i>
+				@if(isset($icon))
+					<i class="fa fa-{{$icon}} mhl5"></i>
+				@endif
 				@pd($text)
 			</span>
 		@endif
-	</div>
+	</span>
 
 @endif

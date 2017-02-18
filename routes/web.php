@@ -73,7 +73,7 @@ Route::group([
 	*/
 	Route::group(['prefix' => 'upstream', 'middleware' => 'is:developer'] , function() {
 		Route::get('/{request_tab?}' , 'UpstreamController@index') ;
-		Route::get('/{request_tab}/search/{keyword}' , 'UpstreamController@search') ;
+		Route::get('/{request_tab}/search/' , 'UpstreamController@search') ;
 		Route::get('/edit/{request_tab?}/{item_id?}/{parent_id?}' , 'UpstreamController@editor') ;
 		Route::get('/{request_tab}/{item_id}/{parent_id?}' , 'UpstreamController@item') ;
 

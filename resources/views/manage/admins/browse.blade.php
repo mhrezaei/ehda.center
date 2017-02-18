@@ -8,7 +8,7 @@
 	@include("manage.frame.widgets.toolbar" , [
 		'buttons' => [
 			[
-				'target' => 'masterModal("'. url('manage/admins/create') . '") ',
+				'target' => "modal:manage/admins/create",
 				'type' => 'success' ,
 				'caption' => trans('people.admins.create') ,
 				'icon' => 'plus-circle' ,
@@ -24,8 +24,7 @@
 	@include("manage.frame.widgets.grid" , [
 		'table_id' => "tblAdmins",
 		'row_view' => "manage.admins.browse-row",
-		'selector' => false,
-		'counter' => true ,
+		'handle' => "counter",
 		'headings' => [
 			trans('validation.attributes.name_first') ,
 			trans('validation.attributes.position'),

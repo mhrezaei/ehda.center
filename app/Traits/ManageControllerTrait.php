@@ -33,14 +33,13 @@ trait ManageControllerTrait
 		//Preparations...
 		$Model = $this->Model ;
 		$model = $Model::withTrashed()->find($model_id);
-		$counter = $this->browse_counter ;
-		$selector = $this->browse_selector ;
+		$handle = $this->browse_handle ;
 
 		//Run...
 		if(!$model)
 			return view('errors.m410');
 		else
-			return view($this->view_folder.'.browse-row' , compact('model' , 'counter' , 'selector'));
+			return view($this->view_folder.'.browse-row' , compact('model' , 'handle'));
 
 	}
 

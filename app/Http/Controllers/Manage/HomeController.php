@@ -23,17 +23,6 @@ class HomeController extends Controller
 	{
 		$page = $this->page ;
 
-//		Auth::user()->attachRoles([
-//			'admin' => "folan",
-//			'user' => "sdfsdf",
-//		]);
-
-//		return view('templates.say' , ['array'=>[
-//			'as()' => Auth::user()->as('user')->can('folan'),
-//			'can()' => Auth::user()->can('any'),
-//			'original' => Auth::user()->getRoles()->toArray(),
-//		]]);
-
 		return view("manage.home.index",compact('page'));
 
 	}

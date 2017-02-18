@@ -14,7 +14,7 @@
 	@if(isset($page[0][1]))
 		{{$page[0][1]}} |&nbsp;
 	@endif
-	{{ Setting::get('site_title') }}
+	{{ setting('site_title')->defaultValue()->gain() }}
 @endsection
 
 @section('modal')

@@ -3,12 +3,12 @@
 		<table id="{{$table_id or ''}}" class="table tableGrid {{$table_class or 'table-hover'}}">
 			<thead>
 			<tr>
-				@if(isset($selector) and $selector)
+				@if(isset($handle) and str_contains($handle , 'selector'))
 					<td>
 						<input type="checkbox" id="gridSelector-all" onchange="gridSelector('all')">
 					</td>
 				@endif
-				@if(isset($counter) and $counter)
+					@if(isset($handle) and str_contains($handle , 'counter'))
 					<td>#</td>
 				@endif
 				@foreach($headings as $heading)
