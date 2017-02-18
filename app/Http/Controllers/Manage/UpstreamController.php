@@ -41,7 +41,7 @@ class UpstreamController extends Controller
 				break;
 
 			case 'posttypes':
-				$models = Posttype::orderBy('title')->paginate(user()->preference('max_rows_per_page'));
+				$models = Posttype::orderBy('created_at' , 'desc')->paginate(user()->preference('max_rows_per_page'));
 				break;
 
 			case 'downstream' :
@@ -76,6 +76,12 @@ class UpstreamController extends Controller
 			case 'downstream' :
 				$models = Setting::where('title' , 'like' , "%$key%")->orWhere('slug' , 'like' , "%$key%")->orderBy('title')->paginate(user()->preference('max_rows_per_page'));
 				$view .= 'downstream' ;
+				$page[2] = ['search',trans('forms.button.search_for')." $key",''];
+				break;
+
+			case 'posttypes':
+				$models = Posttype::where('title'  , 'like' , "%$key%")->orWhere('slug' , 'like' , "%$key%")->orderBy('created_at' , 'desc')->paginate(user()->preference('max_rows_per_page'));
+				$view .= "posttypes" ;
 				$page[2] = ['search',trans('forms.button.search_for')." $key",''];
 				break;
 
