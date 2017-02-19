@@ -4,16 +4,22 @@
 			<thead>
 			<tr>
 				@if(isset($handle) and str_contains($handle , 'selector'))
-					<td>
+					<td width="50">
 						<input type="checkbox" id="gridSelector-all" onchange="gridSelector('all')">
 					</td>
 				@endif
 					@if(isset($handle) and str_contains($handle , 'counter'))
-					<td>#</td>
+					<td width="50">#</td>
 				@endif
 				@foreach($headings as $heading)
+					<?php
+							if(is_array($heading)) {
+								$switches= $heading ;
+								$heading = $switches[0];
+							}
+					?>
 					@if($heading != 'NO')
-						<td>{{ $heading }}</td>
+						<td width="{{$switches[1] or ''}}">{{ $heading }}</td>
 					@endif
 				@endforeach
 			</tr>

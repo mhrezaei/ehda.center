@@ -50,7 +50,8 @@ return [
 		'send_answer_sheet' => 'ارسال پاسخنامه',
 		'view_and_change' => "مشاهده / ویرایش",
 		'set' => "تنظیم",
-
+		'deactivate_only' => "به جای ذخیره‌سازی، غیرفعال شود",
+		'activate_only' => "به جای ذخیره‌سازی، فعال‌سازی شود",
 	],
 
 	"general" => [
@@ -121,17 +122,20 @@ return [
 		'active' => "فعال",
 		'blocked' => "مسدودشده",
 		'deleted' => "حذف‌شده",
+		'inactive' => "غیرفعال",
 	],
 
 	'status_color' => [
 		'active' => "success",
 		'blocked' => "danger",
 		'deleted' => "danger",
+		'inactive' => "danger",
 	],
 	'status_icon' => [
 		'active' => "check",
 		'blocked' => "times",
 		'deleted' => "times",
+		'inactive' => "times",
 	],
 
 	'lang' => [

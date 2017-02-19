@@ -6,7 +6,9 @@ use App\Http\Requests\Manage\CitySaveRequest;
 use App\Http\Requests\Manage\DownstreamSaveRequest;
 use App\Http\Requests\Manage\PosttypeSaveRequest;
 use App\Http\Requests\Manage\ProvinceSaveRequest;
+use App\Http\Requests\Manage\RoleSaveRequest;
 use App\Models\Posttype;
+use App\Models\Role;
 use App\Models\Setting;
 use App\Models\State;
 use App\Models\User;
@@ -49,6 +51,10 @@ class UpstreamController extends Controller
 
 			case 'downstream' :
 				$models = Setting::orderBy('category')->orderBy('title')->paginate(user()->preference('max_rows_per_page')) ;
+				break;
+
+			case 'roles' :
+				$models = Role::withTrashed()->orderBy('created_at' , 'desc')->paginate(user()->preference('max_rows_per_page')) ;
 				break;
 
 			case 'categories' :
@@ -206,6 +212,18 @@ class UpstreamController extends Controller
 				}
 				return view('manage.settings.downstream-edit' , compact('model'));
 
+			case 'role' :
+				if($item_id>0) {
+					$model = Role::withTrashed()->find($item_id);
+					if(!$model)
+						return trans('validation.invalid');
+				}
+				else {
+					$model = new Role() ;
+				}
+				return view("manage.settings.roles-edit",compact('model'));
+
+
 			case 'department' :
 				if($item_id) {
 					$model = Department::find($item_id) ;
@@ -350,6 +368,30 @@ class UpstreamController extends Controller
 	}
 
 
+	public function saveRole(RoleSaveRequest $request)
+	{
+		switch($request->toArray()['_submit'])
+		{
+			case 'save' :
+				$ok = Role::store($request);
+				break;
+
+			case 'delete' :
+				$ok = Role::where('id' , $request->id)->delete() ;
+				break;
+
+			case 'restore' :
+				$ok = Role::withTrashed()->where('id' , $request->id)->restore();
+				break;
+
+			default:
+				$ok = false ;
+		}
+
+		return $this->jsonAjaxSaveFeedback($ok ,[
+				'success_refresh' => 1,
+		]);
+	}
 
 
 	public function loginAs(Request $request)

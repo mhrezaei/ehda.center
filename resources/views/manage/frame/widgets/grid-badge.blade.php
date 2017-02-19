@@ -4,7 +4,7 @@
 	!isset($color)? $color = '' : '' ;
 	!isset($class)? $class = '' : '' ;
 	!isset($icon)? $icon = 'check' : '' ;
-	!isset($opacity)? $opacity = '0.5' : '' ;
+	!isset($opacity)? $opacity = '0.8' : '' ;
 	$class = " f".$size." text-$color $class" ;
 
 	//target...

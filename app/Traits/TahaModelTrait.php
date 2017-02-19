@@ -223,14 +223,19 @@ trait TahaModelTrait
 
 		//Action...
 		if(isset($data['id']) and $data['id'] > 0) {
-			$affected = Self::where('id', $data['id'])->update($data);
-
 			if(self::hasColumn('updated_by') and !isset($data['updated_by'])) {
 				if( Auth::check())
 					$data['updated_by'] = Auth::user()->id ;
 				else
 					$data['updated_by'] = 0 ;
 			}
+
+			$affected = Self::where('id', $data['id']);
+
+			if(self::hasColumn('deleted_at'))
+					$affected = $affected->withTrashed();
+
+			$affected = $affected->update($data);
 			if($affected) $affected = $data['id'] ;
 		}
 		else {

@@ -1,5 +1,8 @@
 <?php
 return [
+	'person' => "نفر",
+	'people' => "اشخاص",
+	'modules' => "ماژول‌ها",
 
 	'commands' => [
 		'permit' => "تنظیم سطح دسترسی",

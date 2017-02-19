@@ -78,6 +78,7 @@ Route::group([
 		Route::get('/{request_tab}/{item_id}/{parent_id?}' , 'UpstreamController@item') ;
 
 		Route::group(['prefix' => 'save'] , function() {
+			Route::post('role' , 'UpstreamController@saveRole');
 			Route::post('state' , 'UpstreamController@saveProvince');
 			Route::post('city' , 'UpstreamController@saveCity');
 			Route::post('posttype' , 'UpstreamController@savePosttype');

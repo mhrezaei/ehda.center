@@ -119,7 +119,7 @@ class ProjectSeeder extends Seeder
 			[
 				'slug' => "admin",
 				'title' => "مدیر",
-				'plural' => "مدیران",
+				'plural_title' => "مدیران",
 				'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
 				'modules' => json_encode([
 						'posts' => ['create','edit','publish','report','delete','bin'] ,
@@ -128,7 +128,7 @@ class ProjectSeeder extends Seeder
 			[
 				'slug' => "user",
 				'title' => "کاربر",
-				'plural' => "کاربران",
+				'plural_title' => "کاربران",
 				'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
 				'modules' => null,
 			],
