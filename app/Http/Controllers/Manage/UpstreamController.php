@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Manage;
 
+use App\Http\Requests\Manage\CitySaveRequest;
 use App\Http\Requests\Manage\DownstreamSaveRequest;
 use App\Http\Requests\Manage\PosttypeSaveRequest;
+use App\Http\Requests\Manage\ProvinceSaveRequest;
 use App\Models\Posttype;
 use App\Models\Setting;
+use App\Models\State;
 use App\Models\User;
 use App\Traits\ManageControllerTrait;
 use Illuminate\Http\Request;
@@ -37,7 +40,7 @@ class UpstreamController extends Controller
 		//Model...
 		switch($request_tab) {
 			case 'states' :
-				$models = State::get_provinces()->orderBy('title')->get();
+				$models = State::getProvinces()->orderBy('title')->paginate(user()->preference('max_rows_per_page'));
 				break;
 
 			case 'posttypes':
@@ -86,10 +89,10 @@ class UpstreamController extends Controller
 				break;
 
 			case 'states' :
-				$model_data = State::where([
+				$models = State::where([
 						['title' , 'like' , '%'.$key.'%'] ,
 						['parent_id' , '<>' , '0']
-				])->orderBy('title')->get();
+				])->orderBy('title')->paginate(user()->preference('max_rows_per_page'));
 				$view .= "states-cities";
 				$page[2] = ['search',trans('forms.button.search_for')." $key",''];
 				break;
@@ -109,7 +112,7 @@ class UpstreamController extends Controller
 
 		//Preparation...
 		$page = $this->page;
-		$page[1] = [$request_tab , trans("manage.settings.$request_tab")];
+		$page[1] = [$request_tab , trans("settings.$request_tab")];
 		$page[2] = ['edit',null,''];
 		$view = "manage.settings." ;
 
@@ -118,9 +121,9 @@ class UpstreamController extends Controller
 				$province = State::find($item_id) ;
 				if(!$province or !$province->isProvince())
 					return view('errors.410');
-				$model_data = State::get_cities($item_id)->orderBy('title')->get();
-				$page[2][1] = trans('manage.settings.cities_of' , ['province'=>$province->title]) ;
-				return view('manage.settings.states-cities', compact('page', 'model_data' , 'province'));
+				$models = State::getCities($item_id)->orderBy('title')->paginate(user()->preference('max_rows_per_page'));
+				$page[2][1] = trans('settings.cities_of' , ['province'=>$province->title]) ;
+				return view('manage.settings.states-cities', compact('page', 'models' , 'province'));
 				break;
 
 			case 'downstream' :
@@ -170,13 +173,13 @@ class UpstreamController extends Controller
 					if(!$model or $model->isProvince()) {
 						return view('errors.m410');
 					}
-					$provinces = State::get_provinces()->orderBy('title')->get() ;
+					$provinces = State::getProvinces()->orderBy('title')->get() ;
 				}
 				else {
 					if(!$parent_id) {
 						return view('errors.m404');
 					}
-					$provinces = State::get_provinces()->orderBy('title')->get() ;
+					$provinces = State::getProvinces()->orderBy('title')->get() ;
 					$model = new State() ;
 					$model->parent_id = $parent_id ;
 				}
@@ -297,6 +300,55 @@ class UpstreamController extends Controller
 		}
 
 	}
+
+
+
+	public function saveProvince(ProvinceSaveRequest $request)
+	{
+		//If Save...
+		if($request->_submit == 'save') {
+			return $this->jsonAjaxSaveFeedback(State::store($request) ,[
+					'success_refresh' => 1,
+			]);
+		}
+
+		//If Delete...
+		if($request->_submit == 'delete') {
+			$model = State::find($request->id) ;
+			if(!$model or !$model->isProvince() or $model->cities()->count())
+				return $this->jsonFeedback();
+
+			return $this->jsonAjaxSaveFeedback(State::destroy($request->id) ,[
+					'success_refresh' => 1,
+			]);
+		}
+
+
+	}
+
+	public function saveCity(CitySaveRequest $request)
+	{
+		$data = $request->toArray() ;
+
+		//If Save...
+		if($data['_submit'] == 'save') {
+			$data['parent_id'] = $data['province_id'] ;
+			unset($data['province_id']);
+
+			return $this->jsonAjaxSaveFeedback(State::store($data) ,[
+					'success_refresh' => 1,
+			]);
+		}
+
+		//If Delete...
+		if($data['_submit'] == 'delete') {
+			return $this->jsonAjaxSaveFeedback(State::destroy($data['id']) ,[
+					'success_refresh' => 1,
+			]);
+		}
+
+	}
+
 
 
 
