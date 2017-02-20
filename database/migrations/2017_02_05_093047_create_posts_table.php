@@ -20,6 +20,7 @@ class CreatePostsTable extends Migration
             $table->unsignedInteger('posttype_id')->index() ;
             $table->unsignedInteger('parent_id')->default(0)->index() ;
             $table->string('slug')->unique() ;
+            $table->string('posttype')->index() ;
             $table->string('title')->index();
             $table->string('locale' , 2)->index() ;
             $table->float('price' , 15 , 2) ;

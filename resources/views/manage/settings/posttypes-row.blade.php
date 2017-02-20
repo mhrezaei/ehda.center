@@ -5,10 +5,14 @@
 		'text' => $model->title,
 		'link' => "modal:manage/upstream/edit/posttype/-id-",
 	])
+	@include("manage.frame.widgets.grid-tiny" , [
+		'icon' => $model->spreadMeta()->icon,
+		'text' => $model->singular_title,
+	])
 </td>
 
 <td>
-	@foreach($model->available_features as $key => $feature)
+	@foreach(json_decode($model->available_features) as $key => $feature)
 		@if(in_array($key , $model->features_array))
 			@include("manage.frame.widgets.grid-badge" , [
 				'color' => $feature[1],

@@ -46,6 +46,7 @@ class ProjectSeeder extends Seeder
 			'slug' => "pages",
 			'title' => "برگه‌ها",
 			'header_title' => "",
+			'icon' => "file-o",
 			'features' => "image title text comment gallery visibility_choice searchable template_choice preview keyword",
 			'meta' => json_encode([
 				'singular_title' => "برگه",

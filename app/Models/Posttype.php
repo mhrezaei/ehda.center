@@ -13,28 +13,32 @@ class Posttype extends Model
 	protected $guarded = ['id'] ;
 
 	public static $available_features = [
-			'title' => ['header' , 'success' , 'true'],
-			'text' => ['list' , 'success' , 'true'],
-			'image' => ['file-image-o' , 'info' , true],
-			'rss' => ['rss' , 'info' , 'true'],
-			'comment' => ['comments-o' , 'info' , 'true'],
-			'rate' => ['star-half-o' , 'info' , 'true' ] ,
-			'album' => ['address-book-o' , 'info' , 'true'],
-			'category' => ['tasks' , 'info' , 'true'],
-			'searchable' => ['search' , 'info' , 'true'],
-			'preview' => ['eye' , 'info' , 'true'],
-			'digest' => ['fire' , 'info' , 'true'],
-			'schedule' => ['clock-o' , 'info' , 'true'],
-			'keywords' => ['tags' , 'info' , 'true'],
-			'register' => ['user-plus' , 'warning' , 'true'],
-			'visibility_choice' => ['shield' , 'warning' , 'true'],
-			'template_choice' => ['th-large' , 'warning' , 'true'],
-			'developers_only' => ['github-alt' , 'danger' , 'true'],
+			'title' => ['header' , 'success' , []],
+			'text' => ['list' , 'success' , []],
+			'image' => ['file-image-o' , 'info' , ['featured_image:photo']],
+			'download' => ['download' , 'info' , ['download_file:file']],
+			'rss' => ['rss' , 'info' , []],
+			'comment' => ['comments-o' , 'info' , []],
+			'rate' => ['star-half-o' , 'info' , [] ] , //@TODO: feature_fields
+			'album' => ['address-book-o' , 'info'  , ['post_photos:auto']], //@TODO: feature_fields datatype!
+			'category' => ['tasks' , 'info' , [] ],
+			'keywords' => ['tags' , 'info' , []], //@TODO: feature_fields
+			'searchable' => ['search' , 'info' , []],
+			'preview' => ['eye' , 'info' , []],
+			'price' => ['dollar' , 'warning' , [ 'price_after_discount:text' , 'discount_expires_at:text'  , 'unit_measure:text' , 'unit_is_continuous:boolean']],
+			'basket' => ['shopping-basket' , 'warning' , []],
+			'digest' => ['fire' , 'info' , []],
+			'schedule' => ['clock-o' , 'info' , ['original_published_at:auto']],
+			'register' => ['user-plus' , 'warning' , []],
+			'visibility_choice' => ['shield' , 'warning' , []],
+			'template_choice' => ['th-large' , 'warning' , []],
+			'slug' => ['hashtag' , 'danger' , []],
+			'developers_only' => ['github-alt' , 'danger' , []],
 	];
-	public static $available_templates = ['album' , 'post' , 'slideshow' , 'dialogue' , 'faq'] ;
+	public static $available_templates = ['album' , 'post' , 'product' , 'slideshow' , 'dialogue' , 'faq'] ;
 	public static $available_meta_types = ['text' , 'textarea' , 'date' , 'boolean' , 'photo' , 'file'];
 	public static $reserved_slugs = 'root,admin' ;
-	public static $meta_fields = ['features' , 'template' , 'meta_fields' , 'visibility', 'singular_title' , 'icon'];
+	public static $meta_fields = ['features' , 'template' , 'feature_meta' , 'optional_meta' , 'visibility', 'singular_title' , 'icon'];
 
 	/*
 	|--------------------------------------------------------------------------
@@ -71,7 +75,15 @@ class Posttype extends Model
 
 	public function getAvailableFeaturesAttribute()
 	{
-		return self::$available_features ;
+		return json_encode(self::$available_features) ;
+	}
+
+	public function getMetaFieldsAttribute()
+	{
+		$this->spreadMeta() ;
+		return $this->feature_meta . ', ' . $this->optional_meta ;
+		//@TODO: Mix `feature_meta` and `optional_meta`
+
 	}
 
 

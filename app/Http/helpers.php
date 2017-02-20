@@ -7,6 +7,10 @@
 | These are shortcuts of the site models and modules
 */
 
+function getLocale()
+{
+	return \Illuminate\Support\Facades\App::getLocale();
+}
 
 function user()
 {

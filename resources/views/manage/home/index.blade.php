@@ -1,6 +1,7 @@
 @extends('manage.frame.use.0')
 
 @section('section')
+	{{ getLocale() }}
 {{--	@include('manage.index.hello')--}}
 
 	{{--<div class="row">--}}

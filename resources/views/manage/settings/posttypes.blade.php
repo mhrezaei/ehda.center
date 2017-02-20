@@ -24,7 +24,7 @@
 		'row_view' => "manage.settings.posttypes-row",
 		'handle' => "counter",
 		'headings' => [
-			trans('validation.attributes.title'),
+			[trans('validation.attributes.title'),70],
 			trans('posts.features.meaning'),
 			trans('posts.categories.meaning')
 		],

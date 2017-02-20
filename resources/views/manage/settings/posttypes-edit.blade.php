@@ -53,10 +53,18 @@
 	])
 
 	@include('forms.textarea' , [
-		'name' =>	'meta_fields',
+		'id' => "txtMeta",
+		'name' =>	'feature_meta',
 		'class' =>	'ltr form-autoSize',
-		'rows' => "1",
-		'value' =>	$model->meta_fields ,
+		'rows' => "3",
+		'value' =>	$model->feature_meta. ' ' ,
+		'extra' => "readonly",
+	])
+	@include('forms.textarea' , [
+		'name' =>	'optional_meta',
+		'class' =>	'ltr form-autoSize',
+		'rows' => "3",
+		'value' =>	$model->optional_meta ,
 		'hint' =>	trans('posts.types.meta_hint').' '.implode(' , ',$model::$available_meta_types),
 	])
 
@@ -71,7 +79,7 @@
 			'type' => "hidden",
 		])
 
-		@foreach($model->available_features as $feature => $para)
+		@foreach(json_decode($model->available_features) as $feature => $para)
 			@include("manage.frame.widgets.grid-badge" , [
 				'id' => "lblFeature-$feature",
 				'color' => $para[1],
@@ -144,3 +152,6 @@
 
 </div>
 @include('templates.modal.end')
+<script>
+	window.available_features = {!! $model->available_features !!}
+</script>

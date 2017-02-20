@@ -181,14 +181,25 @@ function posttypeFeatures($feature)
 {
 	var $button = $("#lblFeature-"+$feature) ;
 	var $input = $("#txtFeatures");
+	var $meta = $("#txtMeta");
+	var $fields_array = available_features[$feature][2];
+	var $fields = '' ;
+
+	$fields_array.forEach( function($item) {
+		$fields += $item + ", " ;
+	});
+
+	forms_log($fields);
 
 	if($input.val().indexOf($feature)>=0){
 		$input.val($input.val().replaceAll($feature , ''));
 		$button.css('opacity','0.3');
+		$meta.val( $meta.val().replaceAll($fields , '') ) ;
 	}
 	else {
 		$input.val($input.val() + ' ' + $feature + ' ');
 		$button.css('opacity','0.9');
+		$meta.val( $meta.val() + $fields ) ;
 	}
 //	forms_log($input.val());
 }

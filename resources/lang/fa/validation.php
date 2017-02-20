@@ -230,6 +230,9 @@ return [
 	*/
 
 		'attributes' => [
+				'optional_meta' => "متای اختیاری",
+				'feature_meta' => "متای اجباری",
+
 				'template' => 'قالب' ,
 				"action" => 'عملیات' ,
 				"email"	=> "ایمیل",
