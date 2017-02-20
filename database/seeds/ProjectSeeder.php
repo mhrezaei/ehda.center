@@ -44,13 +44,14 @@ class ProjectSeeder extends Seeder
 
 		DB::table('posttypes')->insert([
 			'slug' => "pages",
+			'order' => "1",
 			'title' => "برگه‌ها",
 			'header_title' => "",
-			'icon' => "file-o",
 			'features' => "image title text comment gallery visibility_choice searchable template_choice preview keyword",
 			'meta' => json_encode([
 				'singular_title' => "برگه",
 				'template' => "post",
+				'icon' => "file-o",
 			]),
 			'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
 		]);

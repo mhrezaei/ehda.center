@@ -162,6 +162,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+         \App\Providers\ManageServiceProvider::class,
          'App\Providers\ValidationServiceProvider',
 
         /*
@@ -239,7 +240,7 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
 
-         'Taha' => \App\Providers\TahaServiceProvider::class ,
+         'Manage' => \App\Providers\ManageServiceProvider::class ,
           'NoCaptcha' => 'Anhskohbo\NoCaptcha\Facades\NoCaptcha',
 //          'Setting' => \App\Providers\SettingServiceProvider::class,
     ],

@@ -30,6 +30,12 @@
 	    'hint' =>	trans('validation.hint.persian-only'),
 	])
 
+	@include("forms.input" , [
+		'name' => "order",
+		'class' => "",
+		'value' => $model,
+	])
+
 	@include('forms.input' , [
 	    'name' =>	'icon',
 	    'class' =>	'form-required ltr',

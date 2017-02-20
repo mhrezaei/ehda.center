@@ -57,6 +57,11 @@ class Posttype extends Model
 		return $this->hasMany('App\Models\Category');
 	}
 
+	public static function groups()
+	{
+		return self::orderBy('header_title' , 'desc')->groupBy('header_title') ;
+	}
+
 	/*
 	|--------------------------------------------------------------------------
 	| Accessors and Mutators

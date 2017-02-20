@@ -23,9 +23,9 @@
 	{{--]--}}
 {{--])--}}
 
-{{--@foreach(Taha::sidebarPostsMenu() as $item)--}}
-	{{--@include('manage.frame.widgets.sidebar-link' , $item)--}}
-{{--@endforeach--}}
+@foreach(Manage::sidebarPostsMenu() as $item)
+	@include("manage.frame.widgets.sidebar-link" , $item)
+@endforeach
 
 @include('manage.frame.widgets.sidebar-link' , [
 	'icon' => 'universal-access',

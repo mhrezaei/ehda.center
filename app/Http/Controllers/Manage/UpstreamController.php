@@ -46,7 +46,7 @@ class UpstreamController extends Controller
 				break;
 
 			case 'posttypes':
-				$models = Posttype::orderBy('created_at' , 'desc')->paginate(user()->preference('max_rows_per_page'));
+				$models = Posttype::orderBy('order')->paginate(user()->preference('max_rows_per_page'));
 				break;
 
 			case 'downstream' :
