@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\TahaModelTrait;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Crypt;
@@ -40,7 +41,12 @@ class Post extends Model
 
 	public function posttype()
 	{
-		return $this->belongsTo('App\Models\Posttype') ;
+		$posttype = Posttype::findBySlug($this->type);
+
+		if($posttype)
+			return $posttype ;
+		else
+			return new Posttype() ;
 	}
 
 	public function comments()
@@ -64,6 +70,12 @@ class Post extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+	public function getPosttypeAttribute()
+	{
+		return $this->posttype() ;
+	}
+
 	public function getIddAttribute()
 	{
 		return Crypt::encrypt($this->id);
@@ -151,13 +163,118 @@ class Post extends Model
 	*/
 	public static function selector($parameters = [])
 	{
-		$parameters = array_normalize($parameters , [
+		extract(array_normalize($parameters , [
 			'role' => "user",
 			'criteria' => "published",
-			'lang' => getLocale(),
-			'posttype' => "searchable",
+			'locale' => getLocale(),
+			'type' => "feature:searchable",
 			'category' => "",
-		]);
+			'keyword' => "",
+		]));
+
+		$table = self::where('id' , '>' , '0') ;
+
+		//Process Type...
+		if(str_contains($type , 'feature:')) {
+			$feature = str_replace('feature:' , null , $type) ;
+			$type = Posttype::withFeature($feature);
+		}
+		if(is_array($type)) {
+			$table = $table->whereIn('type' , $type) ;
+		}
+		elseif($type=='all') {
+			// nothing required here :)
+		}
+		else {
+			$table = $table->where('type' , $type);
+		}
+
+		//Process Language...
+		if($locale!='all') {
+			$table = $table->where('locale' , $locale);
+		}
+
+		//Process Criteria...
+		$now = Carbon::now()->toDateTimeString();
+		switch($criteria) {
+			case 'all' :
+				break;
+
+			case 'all_with_trashed' :
+				$table = $table->withTrashed() ;
+				break;
+
+			case 'published':
+				$table = $table->whereDate('published_at','<=',$now)->whereNotNull('published_by') ;
+				break;
+
+			case 'scheduled' :
+				$table = $table->whereDate('published_at','>',$now)->whereNotNull('published_by') ;
+				break;
+
+			case 'pending':
+				$table = $table->whereNull('published_by')->where('is_draft',false) ;
+				break;
+
+			case 'drafts' :
+				$table = $table->where('is_draft',1)->whereNull('published_by');
+				break;
+
+			case 'my_posts' :
+				$table = $table->where('created_by',user()->id);
+				break ;
+
+			case 'my_drafts' :
+				$table = $table->where('created_by',user()->id)->where('is_draft',true)->whereNull('published_by');
+				break;
+
+			case 'bin' :
+				$table = $table->onlyTrashed();
+				break;
+
+			default:
+				$table = $table->where('id' , '0') ;
+				break;
+
+		}
+
+		//Return...
+		return $table ;
+
+	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Helpers
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public static function checkManagePermission($posttype, $criteria)
+	{
+		switch($criteria) {
+			case 'search' :
+				$permit = 'search' ;
+				break;
+
+			case 'pending':
+			case 'drafts' :
+				$permit = 'publish' ;
+				break;
+
+			case 'my_posts' :
+			case 'my_drafts' :
+				$permit = 'create' ;
+				break;
+
+			case 'bin' :
+				$permit = 'bin' ;
+				break;
+
+			default :
+				$permit = '*' ;
+		}
+
+		return user()->as('admin')->can("post-$posttype.$permit");
 	}
 }
 

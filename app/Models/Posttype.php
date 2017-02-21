@@ -39,6 +39,7 @@ class Posttype extends Model
 	public static $available_meta_types = ['text' , 'textarea' , 'date' , 'boolean' , 'photo' , 'file'];
 	public static $reserved_slugs = 'root,admin' ;
 	public static $meta_fields = ['features' , 'template' , 'feature_meta' , 'optional_meta' , 'visibility', 'singular_title' , 'icon'];
+	public static $basement_meta = "moderate_note:text " ;
 
 	/*
 	|--------------------------------------------------------------------------
@@ -55,6 +56,24 @@ class Posttype extends Model
 	public function categories()
 	{
 		return $this->hasMany('App\Models\Category');
+	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Selectors
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public static function withFeature($feature)
+	{
+		$models = self::whereRaw("LOCATE('$feature' , `features`)" )->get() ;
+
+		$result = [] ;
+		foreach($models as $model) {
+			array_push($result , $model->slug);
+		}
+
+		return $result ;
 	}
 
 	public static function groups()
@@ -89,6 +108,17 @@ class Posttype extends Model
 		return $this->feature_meta . ', ' . $this->optional_meta ;
 		//@TODO: Mix `feature_meta` and `optional_meta`
 
+	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Stators
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public function hasFeature($feature)
+	{
+		return str_contains($this->features , $feature);
 	}
 
 

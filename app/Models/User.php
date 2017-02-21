@@ -69,7 +69,7 @@ class User extends Authenticatable
                     return 'blocked' ;
 
             default:
-                  return '-' ;
+                return '-' ;
         }
     }
 
@@ -86,7 +86,7 @@ class User extends Authenticatable
     {
         $this->spreadMeta() ;
         $preferences = array_normalize($this->preferences , [
-            'max_rows_per_page' => "50",
+             'max_rows_per_page' => "50",
         ]);
 
         return $preferences[$slug];
@@ -173,13 +173,13 @@ class User extends Authenticatable
                 $table = $table->wherePivot('deleted_at' , null);
                 break;
 
-//            case 'blocked' :
-//                $table = $table->onlyTrashed()->whereColumn('deleted_by', '!=', 'id');
-//                break;
-//
-//            case 'deleted' :
-//                $table = $table->onlyTrashed()->whereColumn('deleted_by', 'id');
-//                break;
+            //            case 'blocked' :
+            //                $table = $table->onlyTrashed()->whereColumn('deleted_by', '!=', 'id');
+            //                break;
+            //
+            //            case 'deleted' :
+            //                $table = $table->onlyTrashed()->whereColumn('deleted_by', 'id');
+            //                break;
 
             case 'bin' :
                 $table = $table->wherePivot('deleted_at' , '!=' ,null);;

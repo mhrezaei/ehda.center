@@ -17,7 +17,7 @@ function user()
 	if(Auth::check())
 		return Auth::user() ;
 	else
-		return false ;
+		return new \App\Models\User() ;
 }
 
 /**

@@ -18,6 +18,17 @@ trait TahaModelTrait
 	|
 	*/
 
+	public function available()
+	{
+		return booleanValue($this->id);
+	}
+
+	public function getAvailableAttribute()
+	{
+		return $this->available();
+	}
+
+
 	public static function counter($parameters, $in_persian = false)
 	{
 		$return = self::selector($parameters)->count();

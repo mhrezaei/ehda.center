@@ -16,9 +16,13 @@
 							if(is_array($heading)) {
 								$switches= $heading ;
 								$heading = $switches[0];
+								//1:width 2:condition
+							}
+							else {
+								$switches = [] ;
 							}
 					?>
-					@if($heading != 'NO')
+					@if($heading != 'NO' and ( !isset($switches[2]) or $switches[2] ))
 						<td width="{{$switches[1] or ''}}">{{ $heading }}</td>
 					@endif
 				@endforeach

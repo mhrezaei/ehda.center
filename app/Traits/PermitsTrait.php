@@ -178,6 +178,11 @@ trait PermitsTrait
 	|--------------------------------------------------------------------------
 	|
 	*/
+	public function logged()
+	{
+		return booleanValue($this->id);
+	}
+
 	public function isDeveloper()
 	{
 //		return false ;
@@ -232,6 +237,8 @@ trait PermitsTrait
 			return $this->isDeveloper() ;
 
 		//Simple decisions...
+		if(!$this->logged())
+			return false ;
 		if($this->isDeveloper())
 			return true ;
 
@@ -250,6 +257,16 @@ trait PermitsTrait
 		return str_contains($permissions , $requested_permission);
 
 
+	}
+
+	public function cant($requested_permission='*', $reserved=false)
+	{
+		return $this->cannot($requested_permission , $reserved);
+	}
+
+	public function cannot($requested_permission = '*', $reserved = false)
+	{
+		return !$this->can($requested_permission , $reserved);
 	}
 
 	public function enabled()
