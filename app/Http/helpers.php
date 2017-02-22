@@ -111,3 +111,25 @@ function v0()
 {
 	return "javascript:void(0)" ;
 }
+
+/*
+|--------------------------------------------------------------------------
+| Special App Things
+|--------------------------------------------------------------------------
+|
+*/
+function clockArray()
+{
+	$array = [] ;
+	for($hour = 0 ; $hour<24 ; $hour++) {
+		for($minute = 0 ; $minute<60 ; $minute++) {
+			$val = str_pad($hour,2,"0",STR_PAD_LEFT) . ':' . str_pad($minute,2,"0",STR_PAD_LEFT) ;
+			array_push($array , [
+				'id' => $val,
+				'title' => $val ,
+			]);
+		}
+	}
+
+	return $array ;
+}

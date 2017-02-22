@@ -12,8 +12,8 @@
 		@if($command=='-')
 			<li role="separator" class="divider"></li>
 		@else
-			<li>
-				<a href="{{v0()}}" onclick="postSubmit('{{ $command }}')" class="{{$class or ''}}">
+			<li id="{{$id or ''}}">
+				<a href="{{v0()}}" onclick="postsAction('{{ $command }}')" class="{{$class or ''}}">
 					{{ trans("posts.form.$command") }}
 				</a>
 			</li>

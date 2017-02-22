@@ -376,6 +376,7 @@ return [
 				'inventory_low_action' => 'حداقل موجودی' ,
 				'description' => 'توضیحات' ,
 				'properties' => "مشخصات",
+				'published_at' => "تاریخ انتشار",
 				'max_purchasable' => 'محدودیت خرید' ,
 				'product_id' => 'عنوان محصول' ,
 				'product' => "محصول",

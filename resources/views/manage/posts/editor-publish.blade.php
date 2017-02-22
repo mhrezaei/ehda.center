@@ -44,6 +44,8 @@
 			@include("manage.posts.editor-subButton" , [ 'buttons' => [
 				[
 					'command' => "adjust_publish_time",
+					'condition' => $model->has('schedule') and !$model->isPublished() and !$model->isScheduled(),
+					'id' => 'lnkSchedule',
 				],
 				[
 					'command' => "send_for_moderation",
@@ -69,6 +71,13 @@
 					'command' => "delete",
 					'condition' => $model->canDelete(),
 				],
+				[
+					'command' => "-",
+				],
+				[
+					'command' => "history",
+				],
+
 			]])
 		</ul>
 
