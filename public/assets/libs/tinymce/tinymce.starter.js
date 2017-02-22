@@ -45,4 +45,44 @@ var editor_config = {
 
 };
 
+var mini_config = {
+	path_absolute : url(),
+	selector: '.tinyMini' ,
+	menubar: false ,
+//                  theme: 'modern',
+	content_css: assets()+'/css/tinyMCE.min.css',
+	directionality : 'rtl',
+	language: 'fa',
+	plugins: "link,table,textcolor,image,fullscreen,",
+	toolbar: ['bold italic underline strikethrough | removeformat | link unlink | alignleft aligncenter alignright alignjustify | fullscreen',
+	],
+
+	relative_urls: false,
+
+	theme_advanced_buttons1 : "link,unlink" ,
+
+	file_browser_callback : function(field_name, url, type, win) {
+		var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
+		var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
+
+		var cmsURL = editor_config.path_absolute + '/filemanager?field_name=' + field_name;
+		if (type == 'image') {
+			cmsURL = cmsURL + "&type=Images";
+		} else {
+			cmsURL = cmsURL + "&type=Files";
+		}
+
+		tinyMCE.activeEditor.windowManager.open({
+			file : cmsURL,
+			title : 'Filemanager',
+			width : x * 0.8,
+			height : y * 0.8,
+			resizable : "yes",
+			close_previous : "no"
+		});
+	}
+
+};
+
 tinymce.init(editor_config);
+tinymce.init(mini_config);

@@ -94,12 +94,30 @@ span.navbar-brand {
   left: -10px;
 }
 
-/*
-|--------------------------------------------------------------------------
-| Toolbars
-|--------------------------------------------------------------------------
-|
-*/
+
+#sidebarHandle {
+  position: fixed;
+  font-size: 30px;
+  right: 30px;
+  bottom: 30px;
+  //color: #337ab7 ;
+  opacity: 0.3;
+}
+#sidebarHandle.gray {
+  color: #d8d8d8;
+}
+#sidebarHandle:hover {
+  cursor: pointer;
+  color: #23527C ;
+  opacity: 0.6;
+}
+
+  /*
+  |--------------------------------------------------------------------------
+  | Toolbars
+  |--------------------------------------------------------------------------
+  |
+  */
 .panel-toolbar {
   width: 100%;
   margin: auto;

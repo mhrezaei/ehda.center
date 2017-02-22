@@ -81,6 +81,12 @@ class Post extends Model
 		return Crypt::encrypt($this->id);
 	}
 
+	public function getEncryptedTypeAttribute()
+	{
+		return $this->posttype->encrypted_slug ;
+	}
+
+
 	public function getStatusAttribute()
 	{
 
@@ -124,6 +130,16 @@ class Post extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
+	public function has($feature)
+	{
+		return $this->posttype->has($feature);
+	}
+
+	public function hasnot($feature)
+	{
+		return !$this->has($feature);
+	}
+
 	public function canPublish()
 	{
 		

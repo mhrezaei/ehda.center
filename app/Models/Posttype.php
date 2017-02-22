@@ -13,8 +13,10 @@ class Posttype extends Model
 	protected $guarded = ['id'] ;
 
 	public static $available_features = [
-			'title' => ['header' , 'success' , []],
 			'text' => ['list' , 'success' , []],
+			'long_title' => ['text-height' , 'success' , ['long_title:text']],
+			'title2' => ['subscript' , 'success' , ['title2:text']],
+			'abstract' => ['compress' , 'success' , ['abstract:text']],
 			'image' => ['file-image-o' , 'info' , ['featured_image:photo']],
 			'download' => ['download' , 'info' , ['download_file:file']],
 			'rss' => ['rss' , 'info' , []],
@@ -25,6 +27,7 @@ class Posttype extends Model
 			'keywords' => ['tags' , 'info' , []], //@TODO: feature_fields
 			'searchable' => ['search' , 'info' , []],
 			'preview' => ['eye' , 'info' , []],
+			'seo' => ['stethoscope' , 'info' , ['seo_status:text']],
 			'price' => ['dollar' , 'warning' , [ 'price_after_discount:text' , 'discount_expires_at:text'  , 'unit_measure:text' , 'unit_is_continuous:boolean']],
 			'basket' => ['shopping-basket' , 'warning' , []],
 			'digest' => ['fire' , 'info' , []],
@@ -49,7 +52,8 @@ class Posttype extends Model
 	*/
 	public function posts()
 	{
-		return $this->hasMany('App\Models\Post');
+		return Post::where('title' , $this->slug);
+//		return $this->hasMany('App\Models\Post');
 	}
 
 
@@ -121,6 +125,15 @@ class Posttype extends Model
 		return str_contains($this->features , $feature);
 	}
 
+	public function has($feature)
+	{
+		return $this->hasFeature($feature);
+	}
+
+	public function hasnot($feature)
+	{
+		return !$this->has($feature);
+	}
 
 	/*
 	|--------------------------------------------------------------------------

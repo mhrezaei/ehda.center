@@ -1,7 +1,7 @@
 @extends('manage.frame.layouts.plane')
 
 @section('body')
- <div id="wrapper">
+    <div id="wrapper">
 
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0">
@@ -12,7 +12,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-				@yield('navbar-brand')
+                @yield('navbar-brand')
             </div>
             <!-- /.navbar-header -->
 
@@ -33,19 +33,20 @@
         </nav>
 
         <div id="page-wrapper">
-			 <div class="row">
+            <div class="row">
                 <div class="col-lg-12">
                     {{--<h1 class="page-header">@yield('page_heading')</h1>--}}
                     <h1></h1>
                 </div>
                 <!-- /.col-lg-12 -->
-           </div>
-			<div class="row">
-				@yield('section')
-			</div>
-					<!-- /#page-wrapper -->
-			@yield('modal')
-		</div>
- </div>
+            </div>
+            <div class="row">
+                @yield('section')
+            </div>
+            <!-- /#page-wrapper -->
+            @yield('modal')
+        </div>
+    </div>
+	<i id="sidebarHandle" class="fa fa-chevron-right" onclick="sidebarToggle('fast')"></i>
 @endsection
 

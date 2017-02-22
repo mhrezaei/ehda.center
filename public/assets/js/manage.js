@@ -1,6 +1,9 @@
 /**
  * Created by jafar on 7/6/2016 AD.
  */
+$( document ).ready( function() {
+	sidebarInitiate();
+});
 
 function rowHide($table_id , $model_id)
 {
@@ -375,5 +378,43 @@ function paymentProcessEditor()
 			$('#txtConfirmed').val('').parent().parent().hide();
 			break;
 
+	}
+}
+
+function sidebarToggle($speed)
+{
+	if(!$speed) $speed = 0 ;
+	$current_sitation = localStorage.getItem('sidebar') ;
+	if(!$current_sitation) $current_sitation = "shown" ;
+
+	if($current_sitation=="shown") {
+		//hide command:
+		$(".sidebar").hide();
+		$("#sidebarHandle").removeClass('fa-chevron-right').addClass('fa-chevron-left');
+		localStorage.setItem('sidebar' , 'hidden');
+		$("#page-wrapper").animate({
+			"margin-right":0,
+		},$speed);
+	}
+	else {
+		//show command:
+		$("#page-wrapper").animate({
+			"margin-right":200,
+		},$speed , function() {
+			$(".sidebar").show();
+			$("#sidebarHandle").removeClass('fa-chevron-left').addClass('fa-chevron-right');
+		});
+		localStorage.setItem('sidebar' , 'shown');
+	}
+
+	return localStorage.getItem('sidebar') ;
+}
+
+function sidebarInitiate()
+{
+	$current_sitation = localStorage.getItem('sidebar') ;
+	if($current_sitation=='hidden') {
+		localStorage.setItem('sidebar' , 'shown');
+		return sidebarToggle(0);
 	}
 }

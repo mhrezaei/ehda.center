@@ -45,9 +45,6 @@ Route::group([
 	/*-----------------------------------------------
 	| Admins ...
 	*/
-
-
-
 	Route::group(['prefix'=>'admins', 'middleware' => 'is:super'] , function() {
 		Route::get('/update/{item_id}/{adding?}' , 'AdminsController@update');
 		Route::get('/' , 'AdminsController@browse') ;
@@ -69,8 +66,31 @@ Route::group([
 
 
 	/*-----------------------------------------------
-	| Upstream ...
+	| Posts ...
 	*/
+	Route::group(['prefix'=>'posts'] , function() {
+		Route::get('/update/{item_id}' , 'PostsController@update');
+		Route::get('/{posttype}' , 'PostsController@browse') ;
+		Route::get('/{posttype}/create/{locale?}' , 'PostsController@create');
+		Route::get('{posttype}/edit/{post_id}' , 'PostsController@editor');
+		Route::get('{posttype}/searched' , 'PostsController@searchResult');
+		Route::get('{posttype}/search' , 'PostsController@searchPanel');
+		Route::get('/{posttype}/{request_tab?}/{switches?}' , 'PostsController@browse') ;
+
+		Route::group(['prefix'=>'save'] , function() {
+			Route::post('/' , 'PostsController@save');
+			Route::post('/hard_delete' , 'PostsController@hard_delete');
+		});
+
+	});
+
+
+
+
+
+		/*-----------------------------------------------
+		| Upstream ...
+		*/
 	Route::group(['prefix' => 'upstream', 'middleware' => 'is:developer'] , function() {
 		Route::get('/{request_tab?}' , 'UpstreamController@index') ;
 		Route::get('/{request_tab}/search/' , 'UpstreamController@search') ;
