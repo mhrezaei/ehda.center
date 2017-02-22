@@ -1,1 +1,1 @@
-small
+@include("manage.posts.editor-publish")

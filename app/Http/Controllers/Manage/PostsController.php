@@ -75,7 +75,7 @@ class PostsController extends Controller
 		//Model...
 		$model = new Post() ;
 		$model->type = $type_slug ;
-		if(!$model->posttype->available)
+		if(!$model->posttype->exists)
 			return view('errors.410');
 
 		//Page...

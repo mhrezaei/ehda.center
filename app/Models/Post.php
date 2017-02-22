@@ -89,6 +89,25 @@ class Post extends Model
 
 	public function getStatusAttribute()
 	{
+		if(!$this->exists)
+			return 'unsaved' ;
+
+		if($this->trashed())
+			return 'deleted' ;
+
+		if($this->isPublished())
+			return 'published' ;
+
+		if($this->isScheduled())
+			return 'scheduled' ;
+
+		if($this->isDraft())
+			return 'draft';
+
+		if($this->isPending())
+			return 'pending' ;
+
+		return 'unknown' ;
 
 	}
 
@@ -140,34 +159,79 @@ class Post extends Model
 		return !$this->has($feature);
 	}
 
+	public function can($permit)
+	{
+		return user()->as('admin')->can('post-' . $this->type . '.' . $permit) ;
+	}
+
 	public function canPublish()
 	{
-		
+		return $this->can('publish');
 	}
 
 	public function canEdit()
 	{
-		
+		if(!$this->exists)
+			return false ;
+
+		if($this->isOwner() and $this->isDraft() and $this->can('create'))
+			return true ;
+
+		if(!$this->isPublished() and $this->can('publish') and $this->can('edit'))
+			return true ;
+
+		return $this->can('edit');
 	}
 
 	public function canDelete()
 	{
-		
+		if(!$this->exists)
+			return true ;
+
+		if($this->isOwner() and $this->isDraft() and $this->can('create'))
+			return true ;
+
+		return $this->can('delete');
 	}
 
 	public function canBin()
 	{
-		
+		if(!$this->exists)
+			return false ;
+
+		if($this->isOwner() and $this->isDraft() and $this->can('create'))
+			return true ;
+
+		return $this->can('bin');
 	}
 
 	public function isPublished()
 	{
-		
+		return ($this->published_by and $this->published_at and $this->published_at <= Carbon::now()) ;
+
 	}
 
 	public function isScheduled()
 	{
-		
+		return ($this->published_by and $this->published_at and $this->published_at > Carbon::now()) ;
+	}
+
+	public function isDraft()
+	{
+		return $this->is_draft ;
+	}
+
+	public function isPending()
+	{
+		return (!$this->isDraft() and !$this->published_by) ;
+	}
+
+	public function isOwner()
+	{
+		if(!$this->exists)
+			return true ;
+
+		return user()->id == $this->owned_by ;
 	}
 
 

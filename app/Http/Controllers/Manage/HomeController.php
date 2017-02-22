@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Manage;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Manage\ChangeSelfPasswordRequest;
+use App\Models\Post;
+use App\Models\Posttype;
 use App\Models\User;
 use App\Traits\ManageControllerTrait;
 use Illuminate\Support\Facades\Hash;

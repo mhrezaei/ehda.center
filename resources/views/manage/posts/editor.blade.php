@@ -1,7 +1,7 @@
 @extends("manage.frame.use.0")
 
 @section('html_header')
-	{!! Html::script('assets/js/postEditor.js') !!}
+	{!! Html::script('assets/js/postEditorScripts.js') !!}
 @endsection
 
 @section('section')
@@ -20,10 +20,10 @@
 		]])
 
 		<div class="row w100">
-			<div class="col-md-9 col-lg-10" >
+			<div class="col-md-9" >
 				@include("manage.posts.editor-1")
 			</div>
-			<div class="col-md-3 col-lg-2">
+			<div class="col-md-3">
 				@include("manage.posts.editor-2")
 			</div>
 		</div>

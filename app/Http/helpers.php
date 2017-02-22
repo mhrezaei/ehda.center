@@ -105,3 +105,9 @@ function ss($anything)
 	echo view('templates.say' , ['array'=>$anything]);
 
 }
+
+
+function v0()
+{
+	return "javascript:void(0)" ;
+}

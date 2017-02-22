@@ -18,16 +18,6 @@ trait TahaModelTrait
 	|
 	*/
 
-	public function available()
-	{
-		return booleanValue($this->id);
-	}
-
-	public function getAvailableAttribute()
-	{
-		return $this->available();
-	}
-
 
 	public static function counter($parameters, $in_persian = false)
 	{
@@ -197,8 +187,13 @@ trait TahaModelTrait
 
 	public static function findBySlug($slug, $field = 'slug')
 	{
-		if(!$slug) return false ;
-		return self::where($field , $slug)->first() ;
+		if(!$slug) return new self() ;
+		$model = self::where($field , $slug)->first() ;
+
+		if($model)
+			return $model ;
+		else
+			return new self() ;
 
 	}
 

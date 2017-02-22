@@ -20,3 +20,8 @@ function postToggleTitle2()
 	$('#lblTitle2,#txtTitle2').toggle();
 	$("#txtTitle2").focus();
 }
+
+function postSubmit($value)
+{
+	forms_log('submit: '+$value);
+}

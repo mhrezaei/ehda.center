@@ -124,6 +124,12 @@ return [
 		'blocked' => "مسدودشده",
 		'deleted' => "حذف‌شده",
 		'inactive' => "غیرفعال",
+		'unsaved' => "ذخیره‌نشده",
+		'published' => "منتشرشده",
+		'scheduled' => "صف انتشار",
+		'draft' => "پیش‌نویس",
+		'pending' => "منتظر تأیید",
+		'unknown' => "نامشخص",
 	],
 
 	'status_color' => [
@@ -131,12 +137,24 @@ return [
 		'blocked' => "danger",
 		'deleted' => "danger",
 		'inactive' => "danger",
+		'unsaved' => "danger",
+		'published' => "success",
+		'scheduled' => "info",
+		'draft' => "info",
+		'pending' => "warning",
+		'unknown' => "danger",
 	],
 	'status_icon' => [
 		'active' => "check",
 		'blocked' => "times",
 		'deleted' => "times",
 		'inactive' => "times",
+		'unsaved' => "exclamation-triangle",
+		'published' => "check",
+		'scheduled' => "hourglass-half",
+		'draft' => "map-o",
+		'pending' => "legal",
+		'unknown' => "exclamation-triangle",
 	],
 
 	'lang' => [
