@@ -34,6 +34,7 @@ function postToggleSchedule( $mood )
 		case 'show' :
 			$("#divSchedule").slideDown('fast');
 			$("#lnkSchedule").hide();
+			$("#txtPublishDate").focus() ;
 			break;
 
 		case 'hide' :

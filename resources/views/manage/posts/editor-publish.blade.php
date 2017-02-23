@@ -12,7 +12,6 @@
 		{{ trans("forms.status_text.$model->status") }}
 	</div>
 
-
 	{{--
 	|--------------------------------------------------------------------------
 	| Main Publish Button
