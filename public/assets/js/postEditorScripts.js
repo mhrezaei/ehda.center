@@ -17,8 +17,15 @@ function postsInit()
  */
 function postToggleTitle2()
 {
-	$('#lblTitle2,#txtTitle2').toggle();
-	$("#txtTitle2").focus();
+	$txtTitle2 = $('#txtTitle2') ;
+
+	$('#lblTitle2,#txtTitle2-container').toggle();
+	if($txtTitle2.is(':visible')) {
+		$txtTitle2.focus();
+	}
+	else {
+		$txtTitle2.val('');
+	}
 }
 
 function postToggleSchedule( $mood )

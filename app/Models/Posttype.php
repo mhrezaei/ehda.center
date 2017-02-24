@@ -57,9 +57,9 @@ class Posttype extends Model
 	}
 
 
-	public function categories()
+	public function folders()
 	{
-		return $this->hasMany('App\Models\Category');
+		return $this->hasMany('App\Models\Folder');
 	}
 
 	/*

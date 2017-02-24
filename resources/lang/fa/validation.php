@@ -293,7 +293,6 @@ return [
 				'publish_date' => 'زمان انتشار' ,
 				'abstract' => 'چکیده',
 				'text' => 'متن',
-				'category_id' => 'دسته‌بندی',
 				'category' => 'دسته‌بندی',
 				'keywords' => 'کلیدواژه‌ها',
 				'allowed_meta' => 'متاهای مجاز' ,

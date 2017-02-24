@@ -112,24 +112,54 @@ function v0()
 	return "javascript:void(0)" ;
 }
 
+
 /*
 |--------------------------------------------------------------------------
-| Special App Things
+| Temporary
 |--------------------------------------------------------------------------
 |
 */
-function clockArray()
+function dummy()
 {
-	$array = [] ;
-	for($hour = 0 ; $hour<24 ; $hour++) {
-		for($minute = 0 ; $minute<60 ; $minute++) {
-			$val = str_pad($hour,2,"0",STR_PAD_LEFT) . ':' . str_pad($minute,2,"0",STR_PAD_LEFT) ;
-			array_push($array , [
-				'id' => $val,
-				'title' => $val ,
-			]);
-		}
-	}
+	\App\Models\Folder::where('id','>','0')->delete() ;
+	\App\Models\Folder::create([
+		'id' => "1",
+		'posttype_id' => "2",
+		'slug' => "nuts",
+		'title' => "آجیل و خشکبار",
+	]);
+	\App\Models\Folder::create([
+		'id' => "2",
+		'posttype_id' => "2",
+		'slug' => "edible",
+		'title' => "خوردنی‌جات",
+	]);
 
-	return $array ;
+	\App\Models\Category::where('id','>','0')->delete() ;
+	\App\Models\Category::create([
+		'id' => "1",
+		'folder_id' => "1",
+		'slug' => "piths",
+		'title' => "مغزها",
+	]);
+	\App\Models\Category::create([
+		'id' => "2",
+		'folder_id' => "1",
+		'slug' => "tabs",
+		'title' => "برگه‌ها",
+	]);
+	\App\Models\Category::create([
+		'id' => "3",
+		'folder_id' => "2",
+		'slug' => "chocolates",
+		'title' => "شکلات‌ها",
+	]);
+	\App\Models\Category::create([
+		'id' => "4",
+		'folder_id' => "2",
+		'slug' => "nuts",
+		'title' => "خشکبار",
+	]);
+
+
 }
