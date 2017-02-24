@@ -34,7 +34,7 @@ class CreateCategoriesTable extends Migration
 //            $table->unsignedInteger('posttype_id')->index() ;
 //            $table->unsignedInteger('parent_id')->default(0)->index() ;
             $table->unsignedInteger('folder_id')->index() ;
-            $table->string('slug')->unique() ;
+            $table->string('slug')->index() ;
             $table->string('title')->index();
             $table->longText('meta')->nullable() ;
 

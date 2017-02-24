@@ -28,7 +28,7 @@ class Posttype extends Model
 			'searchable' => ['search' , 'info' , []],
 			'preview' => ['eye' , 'info' , []],
 			'seo' => ['stethoscope' , 'info' , ['seo_status:text']],
-			'price' => ['dollar' , 'warning' , [ 'price_after_discount:text' , 'discount_expires_at:text'  , 'unit_measure:text' , 'unit_is_continuous:boolean']],
+			'price' => ['dollar' , 'warning' , [ 'sale_price:text' , 'sale_expires_at:text'  , 'package_id:text']],
 			'basket' => ['shopping-basket' , 'warning' , []],
 			'digest' => ['fire' , 'info' , []],
 			'schedule' => ['clock-o' , 'info' , ['original_published_at:auto']],

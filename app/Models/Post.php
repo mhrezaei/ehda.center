@@ -71,6 +71,15 @@ class Post extends Model
 	|
 	*/
 
+	public function getDiscountPercentAttribute()
+	{
+		if(!$this->price or $this->price == $this->sale_price)
+			return null ;
+
+		return round((($this->price - $this->sale_price) * 100) / $this->price) ;
+	}
+
+
 	public function getPosttypeAttribute()
 	{
 		return $this->posttype() ;
@@ -329,6 +338,10 @@ class Post extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
+	public function packageCombo()
+	{
+		return Package::all() ;
+	}
 	public static function checkManagePermission($posttype, $criteria)
 	{
 		switch($criteria) {

@@ -1,5 +1,9 @@
 @if(!isset($condition) or $condition)
 
+	@if(isset($top_label))
+		<label for="{{$name}}" class="control-label text-gray {{$top_label_class or ''}}" >{{ $top_label }}...</label>
+	@endif
+
 	<select
 		id="{{$id or ''}}"
 		name="{{$name}}" value="{{$value or ''}}"

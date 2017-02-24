@@ -42,20 +42,47 @@ class ProjectSeeder extends Seeder
 			]
 		]);
 
+		/*-----------------------------------------------
+		| Posttypes ...
+		*/
+		
+		
+
 		DB::table('posttypes')->insert([
-			'slug' => "pages",
-			'order' => "1",
-			'title' => "برگه‌ها",
-			'header_title' => "",
-			'features' => "image title text comment gallery visibility_choice searchable template_choice preview keyword",
-			'meta' => json_encode([
-				'singular_title' => "برگه",
-				'template' => "post",
-				'icon' => "file-o",
-			]),
-			'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+			[
+				'slug' => "pages",
+				'order' => "1",
+				'title' => "برگه‌ها",
+				'header_title' => "",
+				'features' => "image title text comment gallery visibility_choice searchable template_choice preview keyword",
+				'meta' => json_encode([
+					'singular_title' => "برگه",
+					'template' => "post",
+					'icon' => "file-o",
+				]),
+				'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+			],
+			[
+				'slug' => "products",
+				'order' => "2",
+				'title' => "محصولات",
+				'header_title' => "",
+				'features' => "title text image  rss    rate  album  category  keywords  searchable  preview        basket  digest  schedule comment     price  download abstract  seo template_choice  slug  title2",
+				'meta' => json_encode([
+					'singular_title' => "محصول",
+					'template' => "product",
+					'icon' => "gift",
+					'feature_meta' => "sale_price:text, sale_expires_at:text, package_id:text , download_file:file, abstract:text, seo_status:text, title2:text",
+				]),
+				'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+			],
 		]);
 
+		/*-----------------------------------------------
+		| Settings ...
+		*/
+		
+		
 
 		DB::table('settings')->insert([
 			[
@@ -67,19 +94,20 @@ class ProjectSeeder extends Seeder
 				'default_value' => 'یسناوب' ,
 				'developers_only' => 1,
 				'is_resident' => 1,
-//				'is_sensitive' => false,
+				'is_localized' => "1",
 				'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
 			],
 			[
 				'slug' => "site_locales",
 				'title' => "زبان‌های سایت",
 				'category' => "upstream",
-				'data_type' => "text",
+				'data_type' => "array",
 //				'default_value' => \Illuminate\Support\Facades\Crypt::encrypt('fa') ,
-				'default_value' => 'fa' ,
+				'default_value' => "fa\r\nen" ,
 				'developers_only' => 1,
 				'is_resident' => 1,
 //				'is_sensitive' => "true",
+				'is_localized' => "0",
 				'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
 			],
 			[
@@ -91,6 +119,7 @@ class ProjectSeeder extends Seeder
 				'default_value' => '1' ,
 				'developers_only' => 1,
 				'is_resident' => "0",
+				'is_localized' => "1",
 				'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
 			],
 			[
@@ -102,6 +131,7 @@ class ProjectSeeder extends Seeder
 //				'default_value' => \Illuminate\Support\Facades\Crypt::encrypt('1') ,
 				'developers_only' => 1,
 				'is_resident' => "0",
+				'is_localized' => "0",
 				'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
 			],
 			[
@@ -113,9 +143,27 @@ class ProjectSeeder extends Seeder
 				'default_value' => '0' ,
 				'developers_only' => 1,
 				'is_resident' => "0",
+				'is_localized' => "0",
+				'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+			],
+			[
+				'slug' => "currency",
+				'title' => "واحد پول",
+				'category' => "template",
+				'data_type' => "text",
+				'default_value' => 'تومان' ,
+				'developers_only' => 0,
+				'is_resident' => "1",
+				'is_localized' => "1",
 				'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
 			],
 		]);
+
+		/*-----------------------------------------------
+		| Roles ...
+		*/
+		
+		
 
 		DB::table('roles')->insert([
 			[
@@ -156,6 +204,33 @@ class ProjectSeeder extends Seeder
 				'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
 			],
 		]);
+
+		/*-----------------------------------------------
+		| Packages ...
+		*/
+		DB::table('packages')->insert([
+			[
+				'slug' => "numbers",
+				'title' => "عدد",
+				'is_continuous' => false,
+			],
+			[
+				'slug' => "packs",
+				'title' => "بسته",
+				'is_continuous' => false,
+			],
+			[
+				'slug' => "gr",
+				'title' => "گرم",
+				'is_continuous' => true,
+			],
+			[
+				'slug' => "kg",
+				'title' => "کیلوگرم",
+				'is_continuous' => true,
+			],
+		]);
+		
 
 	}
 }

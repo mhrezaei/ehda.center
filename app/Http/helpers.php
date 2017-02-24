@@ -110,56 +110,7 @@ function ss($anything)
 function v0()
 {
 	return "javascript:void(0)" ;
-}
-
-
-/*
-|--------------------------------------------------------------------------
-| Temporary
-|--------------------------------------------------------------------------
-|
-*/
-function dummy()
-{
-	\App\Models\Folder::where('id','>','0')->delete() ;
-	\App\Models\Folder::create([
-		'id' => "1",
-		'posttype_id' => "2",
-		'slug' => "nuts",
-		'title' => "آجیل و خشکبار",
-	]);
-	\App\Models\Folder::create([
-		'id' => "2",
-		'posttype_id' => "2",
-		'slug' => "edible",
-		'title' => "خوردنی‌جات",
-	]);
-
-	\App\Models\Category::where('id','>','0')->delete() ;
-	\App\Models\Category::create([
-		'id' => "1",
-		'folder_id' => "1",
-		'slug' => "piths",
-		'title' => "مغزها",
-	]);
-	\App\Models\Category::create([
-		'id' => "2",
-		'folder_id' => "1",
-		'slug' => "tabs",
-		'title' => "برگه‌ها",
-	]);
-	\App\Models\Category::create([
-		'id' => "3",
-		'folder_id' => "2",
-		'slug' => "chocolates",
-		'title' => "شکلات‌ها",
-	]);
-	\App\Models\Category::create([
-		'id' => "4",
-		'folder_id' => "2",
-		'slug' => "nuts",
-		'title' => "خشکبار",
-	]);
 
 
 }
+

@@ -13,5 +13,6 @@ class DatabaseSeeder extends Seeder
 	{
 		$this->call(ProjectSeeder::class);
 		$this->call(StatesSeeder::class);
+		$this->call(DummySeeder::class);
 	}
 }

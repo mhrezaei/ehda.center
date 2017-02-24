@@ -37,6 +37,9 @@ if(isset($disabled) and $disabled) {
 
         <div class="col-sm-10">
             @endif
+            @if(isset($top_label))
+                <label for="{{$name}}" class="control-label mv10 text-gray" >{{ $top_label }}...</label>
+            @endif
             <textarea
                     id="{{$id or ''}}"
                     name="{{$name}}" value="{{$value or ''}}"

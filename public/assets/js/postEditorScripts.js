@@ -15,9 +15,53 @@ function postsInit()
  |--------------------------------------------------------------------------
  |
  */
+function postTogglePrice()
+{
+	$('#btnSale,#divSale').slideToggle('fast' , function() {
+		if($("#divSale").is(':visible')) {
+			$("#txtSalePrice").focus();
+		}
+		else {
+			$(".salePrice").val('');
+		}
+	}) ;
+}
+function postCalcSale(called_from)
+{
+	var $price = $("#txtPrice") ;
+	var $percent = $("#txtSalePercent");
+	var $sale = $("#txtSalePrice");
+
+	var price_val = parseInt(ed($price.val().replaceAll(',',''))) ;
+	var sale_val = parseInt(ed($sale.val()).replaceAll(',','')) ;
+	var percent_val = parseInt(ed($percent.val()).replaceAll(',',''));
+
+	if(called_from == 'price') {
+		called_from = 'sale' ;
+	}
+	if(called_from == 'sale') {
+		if(!price_val || price_val == 0 || !sale_val || sale_val == 0 || sale_val>price_val) {
+			$percent.val('');
+		}
+		else {
+			var result = Math.round((price_val - sale_val) * 100 / price_val);
+			$percent.val( pd(result.toString()) );
+		}
+	}
+	if(called_from == 'percent') {
+		if(!price_val || price_val == 0 || !percent_val || percent_val == 0 || percent_val > 100) {
+			$sale.val('');
+		}
+		else {
+			var result = Math.round( (100 - percent_val) * price_val / 100 ) ;
+			$sale.val( pd(addCommas(result.toString())));
+		}
+	}
+}
+
 function postToggleTitle2()
 {
-	$txtTitle2 = $('#txtTitle2') ;
+	var $txtTitle2 = $('#txtTitle2') ;
 
 	$('#lblTitle2,#txtTitle2-container').toggle();
 	if($txtTitle2.is(':visible')) {

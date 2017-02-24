@@ -951,16 +951,16 @@ function forms_delaiedPageRefresh(time) {
 function forms_pd($string) {
 	if (!$string) return;//safety!
 
-	$string = $string.replace(/1/g, "۱");
-	$string = $string.replace(/2/g, "۲");
-	$string = $string.replace(/3/g, "۳");
-	$string = $string.replace(/4/g, "۴");
-	$string = $string.replace(/5/g, "۵");
-	$string = $string.replace(/6/g, "۶");
-	$string = $string.replace(/7/g, "۷");
-	$string = $string.replace(/8/g, "۸");
-	$string = $string.replace(/9/g, "۹");
-	$string = $string.replace(/0/g, "۰");
+	$string = $string.replaceAll(/1/g, "۱");
+	$string = $string.replaceAll(/2/g, "۲");
+	$string = $string.replaceAll(/3/g, "۳");
+	$string = $string.replaceAll(/4/g, "۴");
+	$string = $string.replaceAll(/5/g, "۵");
+	$string = $string.replaceAll(/6/g, "۶");
+	$string = $string.replaceAll(/7/g, "۷");
+	$string = $string.replaceAll(/8/g, "۸");
+	$string = $string.replaceAll(/9/g, "۹");
+	$string = $string.replaceAll(/0/g, "۰");
 
 	return $string;
 }
@@ -983,6 +983,17 @@ function forms_digit_en(perDigit) {
 			newValue = newValue + String.fromCharCode(ch);
 	}
 	return newValue;
+}
+
+function pd(enDigit)
+{
+	return forms_digit_fa(enDigit) ;
+}
+
+
+function ed(faDigit)
+{
+	return forms_digit_en(faDigit);
 }
 
 function forms_digit_fa(enDigit) {

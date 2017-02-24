@@ -178,8 +178,11 @@ class Setting extends Model
 		//default...
 		if($this->request_default)
 			$value = $record->raw_default ;
-		else
+		else {
 			$value = $record->custom_value ;
+			if(!$value)
+				$value = $record->raw_default ;
+		}
 
 		//Locales...
 		if($record->is_localized and !$this->request_default) {

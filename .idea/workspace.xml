@@ -2,22 +2,30 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="46984444-c09d-4610-9f2b-ef3bb8a2357d" name="Default" comment="            $table-&gt;unsignedInteger('deleted_by')-&gt;default(0) ;&#10;">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/views/manage/posts/editor-categories.blade.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/views/manage/posts/editor-text.blade.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/views/manage/posts/editor-title.blade.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/views/manage/posts/editor-price.blade.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Manage/PostsController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Manage/PostsController.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/helpers.php" afterPath="$PROJECT_DIR$/app/Http/helpers.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/Post.php" afterPath="$PROJECT_DIR$/app/Models/Post.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/Posttype.php" afterPath="$PROJECT_DIR$/app/Models/Posttype.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/Setting.php" afterPath="$PROJECT_DIR$/app/Models/Setting.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/database/migrations/2017_02_05_093047_create_posts_table.php" afterPath="$PROJECT_DIR$/database/migrations/2017_02_05_093047_create_posts_table.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/database/migrations/2017_02_06_092808_create_categories_table.php" afterPath="$PROJECT_DIR$/database/migrations/2017_02_06_092808_create_categories_table.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/assets/css/manage.min.css" afterPath="$PROJECT_DIR$/public/assets/css/manage.min.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/assets/css/manage.min.css.map" afterPath="$PROJECT_DIR$/public/assets/css/manage.min.css.map" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/database/seeds/DatabaseSeeder.php" afterPath="$PROJECT_DIR$/database/seeds/DatabaseSeeder.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/database/seeds/ProjectSeeder.php" afterPath="$PROJECT_DIR$/database/seeds/ProjectSeeder.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/assets/js/forms.js" afterPath="$PROJECT_DIR$/public/assets/js/forms.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/assets/js/postEditorScripts.js" afterPath="$PROJECT_DIR$/public/assets/js/postEditorScripts.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/lang/fa/posts.php" afterPath="$PROJECT_DIR$/resources/lang/fa/posts.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/lang/fa/validation.php" afterPath="$PROJECT_DIR$/resources/lang/fa/validation.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/sass/_basement.scss" afterPath="$PROJECT_DIR$/resources/sass/_basement.scss" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/forms/input-self.blade.php" afterPath="$PROJECT_DIR$/resources/views/forms/input-self.blade.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/forms/select_self.blade.php" afterPath="$PROJECT_DIR$/resources/views/forms/select_self.blade.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/forms/textarea.blade.php" afterPath="$PROJECT_DIR$/resources/views/forms/textarea.blade.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/manage/home/index.blade.php" afterPath="$PROJECT_DIR$/resources/views/manage/home/index.blade.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/manage/posts/editor-1.blade.php" afterPath="$PROJECT_DIR$/resources/views/manage/posts/editor-1.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/manage/posts/editor-2.blade.php" afterPath="$PROJECT_DIR$/resources/views/manage/posts/editor-2.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/manage/posts/editor-schedule.blade.php" afterPath="$PROJECT_DIR$/resources/views/manage/posts/editor-schedule.blade.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/manage/posts/editor-categories.blade.php" afterPath="$PROJECT_DIR$/resources/views/manage/posts/editor-categories.blade.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/manage/posts/editor-text.blade.php" afterPath="$PROJECT_DIR$/resources/views/manage/posts/editor-text.blade.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/vendor/composer/autoload_classmap.php" afterPath="$PROJECT_DIR$/vendor/composer/autoload_classmap.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/vendor/composer/autoload_static.php" afterPath="$PROJECT_DIR$/vendor/composer/autoload_static.php" />
     </list>
     <ignored path="yasna-web.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -38,7 +46,7 @@
     <favorites_list name="yasna-web" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="vertical" split-proportion="0.9">
+    <splitter split-orientation="vertical" split-proportion="0.8977424">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="web.php" pinned="false" current-in-tab="false">
@@ -56,8 +64,8 @@
           <file leaf-file-name="Posttype.php" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/Models/Posttype.php">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="61" column="53" selection-start-line="61" selection-start-column="53" selection-end-line="61" selection-end-column="53" />
+                <state vertical-scroll-proportion="-13.666667">
+                  <caret line="30" column="88" selection-start-line="30" selection-start-column="88" selection-end-line="30" selection-end-column="88" />
                   <folding />
                 </state>
               </provider>
@@ -67,54 +75,40 @@
             <entry file="file://$PROJECT_DIR$/app/Models/Post.php">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="73" column="21" selection-start-line="73" selection-start-column="21" selection-end-line="73" selection-end-column="21" />
+                  <caret line="75" column="63" selection-start-line="75" selection-start-column="63" selection-end-line="75" selection-end-column="63" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="Folder.php" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/Models/Folder.php">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="36" column="6" selection-start-line="36" selection-start-column="6" selection-end-line="36" selection-end-column="6" />
-                  <folding>
-                    <element signature="e#30#60#0#PHP" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="helpers.php" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/Http/helpers.php">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="137" column="58" selection-start-line="137" selection-start-column="58" selection-end-line="137" selection-end-column="58" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="Category.php" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/Models/Category.php">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="10" column="26" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
-                  <folding>
-                    <element signature="e#30#60#0#PHP" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="postEditorScripts.js" pinned="false" current-in-tab="false">
+          <file leaf-file-name="postEditorScripts.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/public/assets/js/postEditorScripts.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+                <state vertical-scroll-proportion="0.5753846">
+                  <caret line="43" column="27" selection-start-line="43" selection-start-column="27" selection-end-line="43" selection-end-column="27" />
                   <folding>
                     <element signature="n#!!doc" expanded="true" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="forms.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/public/assets/js/forms.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="1066" column="18" selection-start-line="1066" selection-start-column="9" selection-end-line="1066" selection-end-column="18" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="editor-2.blade.php" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-2.blade.php">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -123,7 +117,7 @@
             <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Manage/PostsController.php">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="35" column="41" selection-start-line="35" selection-start-column="41" selection-end-line="35" selection-end-column="41" />
+                  <caret line="77" column="58" selection-start-line="77" selection-start-column="58" selection-end-line="77" selection-end-column="58" />
                   <folding>
                     <element signature="e#47#67#0#PHP" expanded="true" />
                   </folding>
@@ -131,20 +125,36 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="editor-title.blade.php" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-title.blade.php">
+          <file leaf-file-name="editor-price.blade.php" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-price.blade.php">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.68202764">
-                  <caret line="52" column="108" selection-start-line="52" selection-start-column="108" selection-end-line="52" selection-end-column="108" />
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="70" column="57" selection-start-line="70" selection-start-column="57" selection-end-line="70" selection-end-column="57" />
                   <folding>
-                    <marker date="1487931996000" expanded="true" signature="311:486" placeholder="..." />
-                    <marker date="1487931996000" expanded="true" signature="333:485" placeholder="..." />
-                    <marker date="1487931996000" expanded="true" signature="504:734" placeholder="..." />
-                    <marker date="1487931996000" expanded="true" signature="524:733" placeholder="..." />
-                    <marker date="1487931996000" expanded="true" signature="1363:1531" placeholder="..." />
-                    <marker date="1487931996000" expanded="true" signature="1385:1530" placeholder="..." />
-                    <marker date="1487931996000" expanded="true" signature="1410:1530" placeholder="..." />
+                    <marker date="1487964533000" expanded="true" signature="469:855" placeholder="..." />
+                    <marker date="1487964533000" expanded="true" signature="491:854" placeholder="..." />
+                    <marker date="1487964533000" expanded="true" signature="947:1225" placeholder="..." />
+                    <marker date="1487964533000" expanded="true" signature="969:1220" placeholder="..." />
+                    <marker date="1487964533000" expanded="true" signature="1514:1919" placeholder="..." />
+                    <marker date="1487964533000" expanded="true" signature="1536:1918" placeholder="..." />
+                    <marker date="1487964533000" expanded="true" signature="1998:2373" placeholder="..." />
+                    <marker date="1487964533000" expanded="true" signature="2020:2372" placeholder="..." />
+                    <marker date="1487964533000" expanded="true" signature="2700:2938" placeholder="..." />
+                    <marker date="1487964533000" expanded="true" signature="2723:2937" placeholder="..." />
+                    <marker date="1487964533000" expanded="true" signature="3021:3433" placeholder="..." />
+                    <marker date="1487964533000" expanded="true" signature="3044:3432" placeholder="..." />
+                    <marker date="1487964533000" expanded="true" signature="3194:3303" placeholder="..." />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="editor-1.blade.php" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-1.blade.php">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -156,8 +166,8 @@
           <file leaf-file-name="validation.php" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/resources/lang/fa/validation.php">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="12.392157">
-                  <caret line="295" column="20" selection-start-line="295" selection-start-column="20" selection-end-line="295" selection-end-column="20" />
+                <state vertical-scroll-proportion="3.4423077">
+                  <caret line="363" column="48" selection-start-line="363" selection-start-column="48" selection-end-line="363" selection-end-column="48" />
                   <folding />
                 </state>
               </provider>
@@ -177,7 +187,7 @@
             <entry file="file://$PROJECT_DIR$/resources/lang/fa/settings.php">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="29" column="7" selection-start-line="29" selection-start-column="7" selection-end-line="29" selection-end-column="7" />
+                  <caret line="4" column="33" selection-start-line="4" selection-start-column="33" selection-end-line="4" selection-end-column="33" />
                   <folding />
                 </state>
               </provider>
@@ -207,7 +217,7 @@
             <entry file="file://$PROJECT_DIR$/resources/lang/fa/posts.php">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="75" column="59" selection-start-line="75" selection-start-column="59" selection-end-line="75" selection-end-column="59" />
+                  <caret line="79" column="38" selection-start-line="79" selection-start-column="38" selection-end-line="79" selection-end-column="38" />
                   <folding />
                 </state>
               </provider>
@@ -231,18 +241,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/resources/views/manage/posts/browse-row.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/manage/frame/widgets/grid-start.blade.php" />
-        <option value="$PROJECT_DIR$/routes/web.php" />
-        <option value="$PROJECT_DIR$/resources/views/manage/posts/browse.blade.php" />
-        <option value="$PROJECT_DIR$/database/migrations/2017_02_06_121215_create_comments_table.php" />
-        <option value="$PROJECT_DIR$/app/Models/User.php" />
-        <option value="$PROJECT_DIR$/app/Traits/PermitsTrait.php" />
-        <option value="$PROJECT_DIR$/resources/views/manage/posts/tabs.blade.php" />
-        <option value="$PROJECT_DIR$/public/assets/js/posts.js" />
-        <option value="$PROJECT_DIR$/resources/views/manage/frame/use/0.blade.php" />
-        <option value="$PROJECT_DIR$/resources/sass/sb-admin.scss" />
-        <option value="$PROJECT_DIR$/resources/views/manage/frame/layouts/plane.blade.php" />
         <option value="$PROJECT_DIR$/public/assets/libs/sb-admin/sb-admin-2.js" />
         <option value="$PROJECT_DIR$/public/assets/libs/sb-admin/sb-admin-2.css" />
         <option value="$PROJECT_DIR$/resources/sass/_t-admin.scss" />
@@ -251,37 +249,49 @@
         <option value="$PROJECT_DIR$/public/assets/libs/tinymce/tinymce.starter.js" />
         <option value="$PROJECT_DIR$/resources/sass/tinyMCE.scss" />
         <option value="$PROJECT_DIR$/public/assets/js/postEditor.js" />
-        <option value="$PROJECT_DIR$/resources/views/manage/home/index.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Manage/HomeController.php" />
         <option value="$PROJECT_DIR$/app/Traits/TahaModelTrait.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Manage/PostsController.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/editor.blade.php" />
         <option value="$PROJECT_DIR$/resources/sass/_tforms.scss" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-publis.blade.php" />
-        <option value="$PROJECT_DIR$/app/Models/Post.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-buttons.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-status.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-subButton.blade.php" />
-        <option value="$PROJECT_DIR$/resources/lang/fa/posts.php" />
         <option value="$PROJECT_DIR$/config/app.php" />
-        <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-publish.blade.php" />
         <option value="$PROJECT_DIR$/resources/lang/fa/forms.php" />
-        <option value="$PROJECT_DIR$/resources/lang/fa/validation.php" />
-        <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-2.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-schedule.blade.php" />
-        <option value="$PROJECT_DIR$/database/migrations/2017_02_05_093047_create_posts_table.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Manage/UpstreamController.php" />
-        <option value="$PROJECT_DIR$/app/Models/Posttype.php" />
         <option value="$PROJECT_DIR$/app/Models/Folder.php" />
         <option value="$PROJECT_DIR$/app/Models/Category.php" />
-        <option value="$PROJECT_DIR$/app/Http/helpers.php" />
-        <option value="$PROJECT_DIR$/database/migrations/2017_02_06_092808_create_categories_table.php" />
         <option value="$PROJECT_DIR$/resources/sass/_basement.scss" />
+        <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-title.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-publish.blade.php" />
+        <option value="$PROJECT_DIR$/database/migrations/2017_02_05_093047_create_posts_table.php" />
+        <option value="$PROJECT_DIR$/database/seeds/DatabaseSeeder.php" />
+        <option value="$PROJECT_DIR$/resources/views/manage/home/index.blade.php" />
+        <option value="$PROJECT_DIR$/app/Providers/DummyServiceProvider.php" />
+        <option value="$PROJECT_DIR$/database/seeds/DummySeeder.php" />
+        <option value="$PROJECT_DIR$/app/Http/helpers.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-categories.blade.php" />
+        <option value="$PROJECT_DIR$/app/Models/Package.php" />
+        <option value="$PROJECT_DIR$/resources/views/forms/textarea.blade.php" />
+        <option value="$PROJECT_DIR$/database/migrations/2017_02_06_092808_create_categories_table.php" />
+        <option value="$PROJECT_DIR$/app/Models/Setting.php" />
+        <option value="$PROJECT_DIR$/resources/views/manage/settings/downstream-value.blade.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Manage/PostsController.php" />
+        <option value="$PROJECT_DIR$/resources/views/forms/select_self.blade.php" />
+        <option value="$PROJECT_DIR$/database/seeds/ProjectSeeder.php" />
+        <option value="$PROJECT_DIR$/app/Models/Posttype.php" />
+        <option value="$PROJECT_DIR$/resources/lang/fa/posts.php" />
+        <option value="$PROJECT_DIR$/resources/lang/fa/validation.php" />
+        <option value="$PROJECT_DIR$/app/Models/Post.php" />
+        <option value="$PROJECT_DIR$/public/assets/js/forms.js" />
+        <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-2.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-1.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-text.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/forms/input-self.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-price.blade.php" />
         <option value="$PROJECT_DIR$/public/assets/js/postEditorScripts.js" />
-        <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-title.blade.php" />
       </list>
     </option>
   </component>
@@ -381,7 +391,7 @@
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.General" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="WebServerToolWindowFactoryState" value="true" />
-    <property name="SearchEverywhereHistoryKey" value=".css&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/css/app.css&#10;basement&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/sass/_basement.scss&#10;forms/ch&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/forms/check.blade.php&#10;createca&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_06_092808_create_categories_table.php&#10;helpers&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/helpers.php&#10;Category&#9;null&#9;null&#10;folder&#9;null&#9;null&#10;upstream&#9;null&#9;null&#10;categor&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_06_092808_create_categories_table.php&#10;categories&#9;null&#9;null&#10;category&#9;null&#9;null&#10;config/app&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/config/app.php&#10;config&#9;null&#9;null&#10;manage.js&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/js/manage.js&#10;manage&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/lang/fa/manage.php&#10;helper&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/helpers.php&#10;basemen&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/sass/_basement.scss&#10;editor&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor.blade.php&#10;home&#9;null&#9;null&#10;homecon&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/Controllers/HomeController.php&#10;index&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/home/index.blade.php&#10;index.php&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/index.php&#10;posttype&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Models/Posttype.php&#10;tinymcestar&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/libs/tinymce/tinymce.starter.js&#10;t-ad&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/sass/_t-admin.scss&#10;dashboa&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/frame/layouts/dashboard.blade.php&#10;manage.scss&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/sass/manage.scss&#10;0&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/frame/use/0.blade.php&#10;sb-admin&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/libs/sb-admin/sb-admin-2.css&#10;sb-admin-2.js&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/libs/sb-admin/sb-admin-2.js&#10;sb-admin-2.css&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/libs/sb-admin/sb-admin-2.css&#10;metis&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/libs/sb-admin/metisMenu.css&#10;plane&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/frame/layouts/plane.blade.php&#10;sbjs&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/libs/sb-admin/sb-admin-2.js&#10;frame/use/0&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/frame/use/0.blade.php&#10;sidebar&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/frame/use/sidebar.blade.php&#10;taha&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Traits/TahaModelTrait.php&#10;tahamodel&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Traits/TahaModelTrait.php&#10;user&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Models/User.php&#10;permits&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Traits/PermitsTrait.php&#10;project&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/seeds/ProjectSeeder.php&#10;create&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;createposts&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;permitstr&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Traits/PermitsTrait.php&#10;brand&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/frame/use/brand.blade.php&#10;manage/admins/browse&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/admins/browse.blade.php&#10;User&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Models/User.php&#10;Post&#9;null&#9;null&#10;AdminsC&#9;null&#9;null&#10;upstre&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/Controllers/Manage/UpstreamController.php" />
+    <property name="SearchEverywhereHistoryKey" value="basement&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/sass/_basement.scss&#10;forms&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/js/forms.js&#10;form.js&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/js/forms.js&#10;projec&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/seeds/ProjectSeeder.php&#10;proje&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/seeds/ProjectSeeder.php&#10;downstream/&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/settings/downstream-value.blade.php&#10;Upst&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/Controllers/Manage/UpstreamController.php&#10;projectsee&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/seeds/ProjectSeeder.php&#10;projecsee&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/seeds/ProjectSeeder.php&#10;Setting&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Models/Setting.php&#10;categories&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_06_092808_create_categories_table.php&#10;project&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/seeds/ProjectSeeder.php&#10;self&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/forms/input-self.blade.php&#10;text&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-text.blade.php&#10;Package&#9;null&#9;null&#10;Upstream&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/Controllers/Manage/UpstreamController.php&#10;index&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/home/index.blade.php&#10;DummyService&#9;null&#9;null&#10;posttable&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;createpost&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_06_120626_create_category_post_table.php&#10;projecs&#9;null&#9;null&#10;post_table&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;.css&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/css/app.css&#10;forms/ch&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/forms/check.blade.php&#10;createca&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_06_092808_create_categories_table.php&#10;helpers&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/helpers.php&#10;Category&#9;null&#9;null&#10;folder&#9;null&#9;null&#10;upstream&#9;null&#9;null&#10;categor&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_06_092808_create_categories_table.php&#10;category&#9;null&#9;null&#10;config/app&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/config/app.php&#10;config&#9;null&#9;null&#10;manage.js&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/js/manage.js&#10;manage&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/lang/fa/manage.php&#10;helper&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/helpers.php&#10;basemen&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/sass/_basement.scss&#10;editor&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor.blade.php&#10;home&#9;null&#9;null&#10;homecon&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/Controllers/HomeController.php&#10;index.php&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/index.php&#10;posttype&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Models/Posttype.php&#10;tinymcestar&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/libs/tinymce/tinymce.starter.js&#10;t-ad&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/sass/_t-admin.scss&#10;dashboa&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/frame/layouts/dashboard.blade.php&#10;manage.scss&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/sass/manage.scss&#10;0&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/frame/use/0.blade.php&#10;sb-admin&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/libs/sb-admin/sb-admin-2.css&#10;sb-admin-2.js&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/libs/sb-admin/sb-admin-2.js&#10;sb-admin-2.css&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/libs/sb-admin/sb-admin-2.css" />
     <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
     <property name="last_opened_file_path" value="$USER_HOME$/watchers.xml" />
     <property name="JavaScriptPreferStrict" value="false" />
@@ -389,17 +399,17 @@
     <property name="FullScreen" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/app/Http/Requests/Manage" />
-      <recent name="$PROJECT_DIR$/app" />
-      <recent name="$PROJECT_DIR$/app/Models" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/resources/views/manage/posts" />
       <recent name="$PROJECT_DIR$/resources/views/manage/admins" />
       <recent name="$PROJECT_DIR$/app/Http/Controllers/Manage" />
       <recent name="$PROJECT_DIR$/app/Http/Requests/Manage" />
       <recent name="$PROJECT_DIR$/resources/views/manage/settings" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/Http/Requests/Manage" />
+      <recent name="$PROJECT_DIR$/app" />
+      <recent name="$PROJECT_DIR$/app/Models" />
     </key>
   </component>
   <component name="RunManager">
@@ -454,7 +464,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297769" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.13944224" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2310757" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -582,17 +592,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/Models/Post.php</url>
-          <line>246</line>
+          <line>255</line>
           <option name="timeStamp" value="71" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/Models/Post.php</url>
-          <line>250</line>
+          <line>259</line>
           <option name="timeStamp" value="75" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/Models/Post.php</url>
-          <line>251</line>
+          <line>260</line>
           <option name="timeStamp" value="76" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
@@ -601,125 +611,16 @@
           <option name="timeStamp" value="77" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="79" />
+      <option name="time" value="80" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/resources/views/forms/input.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5883055">
-          <caret line="45" column="42" selection-start-line="45" selection-start-column="38" selection-end-line="45" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/forms/textarea-self.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/assets/libs/tinymce/tinymce.starter.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.28639618">
-          <caret line="38" column="34" selection-start-line="38" selection-start-column="34" selection-end-line="38" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/sass/tinyMCE.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.46658713">
-          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/forms/textarea.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.24552684">
-          <caret line="26" column="9" selection-start-line="23" selection-start-column="7" selection-end-line="26" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.6003976">
-          <caret line="81" column="11" selection-start-line="81" selection-start-column="11" selection-end-line="81" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/index.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/manage/home/index.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.06858847">
-          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/HomeController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5487078">
-          <caret line="24" column="5" selection-start-line="24" selection-start-column="5" selection-end-line="24" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Manage/HomeController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2972167">
-          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Traits/TahaModelTrait.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.333002">
-          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5715706">
-          <caret line="25" column="32" selection-start-line="25" selection-start-column="32" selection-end-line="25" selection-end-column="32" />
-          <folding>
-            <marker date="1487762050000" expanded="true" signature="155:268" placeholder="..." />
-            <marker date="1487762050000" expanded="true" signature="173:267" placeholder="..." />
-            <marker date="1487762050000" expanded="true" signature="308:408" placeholder="..." />
-            <marker date="1487762050000" expanded="true" signature="327:407" placeholder="..." />
-            <marker date="1487762050000" expanded="true" signature="340:406" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/sass/_tforms.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.39191073">
-          <caret line="60" column="15" selection-start-line="60" selection-start-column="3" selection-end-line="60" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-subButton.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.43962264">
           <caret line="14" column="31" selection-start-line="14" selection-start-column="31" selection-end-line="14" selection-end-column="31" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/assets/js/forms.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33200794">
-          <caret line="360" column="28" selection-start-line="360" selection-start-column="25" selection-end-line="360" selection-end-column="28" />
         </state>
       </provider>
     </entry>
@@ -734,13 +635,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33229813">
           <caret line="296" column="21" selection-start-line="296" selection-start-column="17" selection-end-line="296" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/forms/select_self.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -765,126 +660,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/web.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="77" column="58" selection-start-line="77" selection-start-column="58" selection-end-line="77" selection-end-column="58" />
-          <folding>
-            <element signature="e#7#389#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/lang/fa/validation.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="12.392157">
-          <caret line="295" column="20" selection-start-line="295" selection-start-column="20" selection-end-line="295" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/lang/fa/people.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="29" selection-start-line="4" selection-start-column="29" selection-end-line="4" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/lang/fa/settings.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="29" column="7" selection-start-line="29" selection-start-column="7" selection-end-line="29" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/lang/fa/forms.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="22" column="34" selection-start-line="22" selection-start-column="34" selection-end-line="22" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/lang/fa/manage.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/lang/fa/posts.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="75" column="59" selection-start-line="75" selection-start-column="59" selection-end-line="75" selection-end-column="59" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/database/migrations/2017_02_06_120626_create_category_post_table.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.1580756">
-          <caret line="6" column="6" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/database/migrations/2017_02_05_093047_create_posts_table.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4742268">
-          <caret line="24" column="48" selection-start-line="24" selection-start-column="48" selection-end-line="24" selection-end-column="48" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Manage/UpstreamController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.37285224">
-          <caret line="304" column="45" selection-start-line="304" selection-start-column="45" selection-end-line="304" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-publish.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.035330262">
-          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-          <folding>
-            <marker date="1487868665000" expanded="true" signature="1345:2224" placeholder="..." />
-            <marker date="1487868665000" expanded="true" signature="1380:2223" placeholder="..." />
-            <marker date="1487868665000" expanded="true" signature="1395:2222" placeholder="..." />
-            <marker date="1487868665000" expanded="true" signature="1401:1574" placeholder="..." />
-            <marker date="1487868665000" expanded="true" signature="1576:2222" placeholder="..." />
-            <marker date="1487868665000" expanded="true" signature="1582:1670" placeholder="..." />
-            <marker date="1487868665000" expanded="true" signature="1678:1748" placeholder="..." />
-            <marker date="1487868665000" expanded="true" signature="1756:1858" placeholder="..." />
-            <marker date="1487868665000" expanded="true" signature="1866:1943" placeholder="..." />
-            <marker date="1487868665000" expanded="true" signature="1951:2055" placeholder="..." />
-            <marker date="1487868665000" expanded="true" signature="2063:2137" placeholder="..." />
-            <marker date="1487868665000" expanded="true" signature="2145:2173" placeholder="..." />
-            <marker date="1487868665000" expanded="true" signature="2181:2215" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-2.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.035330262">
-          <caret line="1" column="35" selection-start-line="1" selection-start-column="35" selection-end-line="1" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/database/migrations/2017_02_06_092808_create_categories_table.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.14132105">
-          <caret line="17" column="42" selection-start-line="17" selection-start-column="42" selection-end-line="17" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/css/app.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -905,14 +680,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/sass/_basement.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.85867894">
-          <caret line="56" column="16" selection-start-line="56" selection-start-column="16" selection-end-line="56" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/assets/css/fontiran.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.7772657">
@@ -921,36 +688,255 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/Posttype.php">
+    <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-publish.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="61" column="53" selection-start-line="61" selection-start-column="53" selection-end-line="61" selection-end-column="53" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/Post.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="73" column="21" selection-start-line="73" selection-start-column="21" selection-end-line="73" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/Folder.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="36" column="6" selection-start-line="36" selection-start-column="6" selection-end-line="36" selection-end-column="6" />
+          <caret line="0" column="31" selection-start-line="0" selection-start-column="24" selection-end-line="0" selection-end-column="31" />
           <folding>
-            <element signature="e#30#60#0#PHP" expanded="true" />
+            <marker date="1487936445000" expanded="true" signature="1345:2224" placeholder="..." />
+            <marker date="1487936445000" expanded="true" signature="1380:2223" placeholder="..." />
+            <marker date="1487936445000" expanded="true" signature="1395:2222" placeholder="..." />
+            <marker date="1487936445000" expanded="true" signature="1401:1574" placeholder="..." />
+            <marker date="1487936445000" expanded="true" signature="1576:2222" placeholder="..." />
+            <marker date="1487936445000" expanded="true" signature="1582:1670" placeholder="..." />
+            <marker date="1487936445000" expanded="true" signature="1678:1748" placeholder="..." />
+            <marker date="1487936445000" expanded="true" signature="1756:1858" placeholder="..." />
+            <marker date="1487936445000" expanded="true" signature="1866:1943" placeholder="..." />
+            <marker date="1487936445000" expanded="true" signature="1951:2055" placeholder="..." />
+            <marker date="1487936445000" expanded="true" signature="2063:2137" placeholder="..." />
+            <marker date="1487936445000" expanded="true" signature="2145:2173" placeholder="..." />
+            <marker date="1487936445000" expanded="true" signature="2181:2215" placeholder="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-title.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.8371736">
+          <caret line="52" column="108" selection-start-line="52" selection-start-column="108" selection-end-line="52" selection-end-column="108" />
+          <folding>
+            <marker date="1487931996000" expanded="true" signature="311:486" placeholder="..." />
+            <marker date="1487931996000" expanded="true" signature="333:485" placeholder="..." />
+            <marker date="1487931996000" expanded="true" signature="504:734" placeholder="..." />
+            <marker date="1487931996000" expanded="true" signature="524:733" placeholder="..." />
+            <marker date="1487931996000" expanded="true" signature="1363:1531" placeholder="..." />
+            <marker date="1487931996000" expanded="true" signature="1385:1530" placeholder="..." />
+            <marker date="1487931996000" expanded="true" signature="1410:1530" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Support/Facades/DB.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.322807">
+          <caret line="8" column="6" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/migrations/2017_02_06_120626_create_category_post_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.15904936">
+          <caret line="6" column="6" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/migrations/2017_02_05_093047_create_posts_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="3.4478977">
+          <caret line="84" column="43" selection-start-line="84" selection-start-column="43" selection-end-line="84" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Database/Seeder.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.24686942">
+          <caret line="8" column="15" selection-start-line="8" selection-start-column="15" selection-end-line="8" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/seeds/DatabaseSeeder.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7599119">
+          <caret line="15" column="42" selection-start-line="15" selection-start-column="42" selection-end-line="15" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/web.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="77" column="58" selection-start-line="77" selection-start-column="58" selection-end-line="77" selection-end-column="58" />
+          <folding>
+            <element signature="e#7#389#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Providers/DummyServiceProvider.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6443299">
+          <caret line="88" column="0" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/seeds/DummySeeder.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.44673538">
+          <caret line="25" column="37" selection-start-line="25" selection-start-column="37" selection-end-line="25" selection-end-column="37" />
+          <folding>
+            <element signature="e#7#38#0#PHP" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-categories.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.22809917">
+          <caret line="9" column="40" selection-start-line="9" selection-start-column="40" selection-end-line="9" selection-end-column="40" />
+          <folding>
+            <marker date="1487941875000" expanded="true" signature="611:786" placeholder="..." />
+            <marker date="1487941875000" expanded="true" signature="628:785" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/Package.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5322314">
+          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <folding>
+            <element signature="e#30#60#0#PHP" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/forms/textarea.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.46846846">
+          <caret line="42" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/migrations/2017_02_06_092808_create_categories_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4226804">
+          <caret line="41" column="34" selection-start-line="41" selection-start-column="34" selection-end-line="41" selection-end-column="34" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/helpers.php">
       <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334">
+          <caret line="37" column="9" selection-start-line="37" selection-start-column="9" selection-end-line="37" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Manage/UpstreamController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.39518902">
+          <caret line="19" column="27" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/manage/settings/downstream-value.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6323024">
+          <caret line="33" column="56" selection-start-line="33" selection-start-column="56" selection-end-line="33" selection-end-column="56" />
+          <folding>
+            <marker date="1487944113000" expanded="true" signature="9:154" placeholder="..." />
+            <marker date="1487944113000" expanded="true" signature="36:153" placeholder="..." />
+            <marker date="1487944113000" expanded="true" signature="194:255" placeholder="..." />
+            <marker date="1487944113000" expanded="true" signature="213:254" placeholder="..." />
+            <marker date="1487944113000" expanded="true" signature="226:253" placeholder="..." />
+            <marker date="1487944113000" expanded="true" signature="269:385" placeholder="..." />
+            <marker date="1487944113000" expanded="true" signature="286:384" placeholder="..." />
+            <marker date="1487944113000" expanded="true" signature="399:638" placeholder="..." />
+            <marker date="1487944113000" expanded="true" signature="449:637" placeholder="..." />
+            <marker date="1487944113000" expanded="true" signature="747:939" placeholder="..." />
+            <marker date="1487944113000" expanded="true" signature="797:938" placeholder="..." />
+            <marker date="1487944113000" expanded="true" signature="976:1120" placeholder="..." />
+            <marker date="1487944113000" expanded="true" signature="1026:1119" placeholder="..." />
+            <marker date="1487944113000" expanded="true" signature="1177:1342" placeholder="..." />
+            <marker date="1487944113000" expanded="true" signature="1195:1341" placeholder="..." />
+            <marker date="1487944113000" expanded="true" signature="1357:1490" placeholder="..." />
+            <marker date="1487944113000" expanded="true" signature="1375:1489" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/forms/select_self.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.19392918">
+          <caret line="5" column="4" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
+          <folding>
+            <marker date="1487944751000" expanded="true" signature="1111:1192" placeholder="..." />
+            <marker date="1487944751000" expanded="true" signature="1125:1191" placeholder="..." />
+            <marker date="1487944751000" expanded="true" signature="1143:1188" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/lang/fa/manage.php">
+      <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="137" column="58" selection-start-line="137" selection-start-column="58" selection-end-line="137" selection-end-column="58" />
+          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/lang/fa/forms.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="22" column="34" selection-start-line="22" selection-start-column="34" selection-end-line="22" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/lang/fa/settings.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="4" column="33" selection-start-line="4" selection-start-column="33" selection-end-line="4" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/lang/fa/people.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="4" column="29" selection-start-line="4" selection-start-column="29" selection-end-line="4" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/forms/button.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/seeds/ProjectSeeder.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.60301507">
+          <caret line="71" column="53" selection-start-line="71" selection-start-column="53" selection-end-line="71" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/manage/home/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.25801283">
+          <caret line="7" column="42" selection-start-line="7" selection-start-column="42" selection-end-line="7" selection-end-column="42" />
           <folding />
         </state>
       </provider>
@@ -965,42 +951,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-text.blade.php">
+    <entry file="file://$PROJECT_DIR$/app/Models/Folder.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8423567">
-          <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+        <state vertical-scroll-proportion="-0.17948718">
+          <caret line="14" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
           <folding>
-            <marker date="1487930941000" expanded="true" signature="281:436" placeholder="..." />
-            <marker date="1487930941000" expanded="true" signature="301:435" placeholder="..." />
-            <marker date="1487930941000" expanded="true" signature="779:896" placeholder="..." />
-            <marker date="1487930941000" expanded="true" signature="799:895" placeholder="..." />
+            <element signature="e#30#60#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-1.blade.php">
+    <entry file="file://$PROJECT_DIR$/app/Models/Setting.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.035330262">
-          <caret line="1" column="36" selection-start-line="1" selection-start-column="36" selection-end-line="1" selection-end-column="36" />
+        <state vertical-scroll-proportion="0.7275641">
+          <caret line="197" column="16" selection-start-line="197" selection-start-column="16" selection-end-line="197" selection-end-column="16" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-categories.blade.php">
+    <entry file="file://$PROJECT_DIR$/resources/lang/fa/posts.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2826421">
-          <caret line="8" column="63" selection-start-line="8" selection-start-column="63" selection-end-line="8" selection-end-column="63" />
-          <folding>
-            <marker date="1487930786000" expanded="true" signature="486:656" placeholder="..." />
-            <marker date="1487930786000" expanded="true" signature="503:655" placeholder="..." />
-          </folding>
+        <state vertical-scroll-proportion="0.0">
+          <caret line="79" column="38" selection-start-line="79" selection-start-column="38" selection-end-line="79" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/lang/fa/validation.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="3.4423077">
+          <caret line="363" column="48" selection-start-line="363" selection-start-column="48" selection-end-line="363" selection-end-column="48" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-schedule.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.0706605">
-          <caret line="35" column="60" selection-start-line="35" selection-start-column="20" selection-end-line="35" selection-end-column="60" />
+        <state vertical-scroll-proportion="0.21230769">
+          <caret line="6" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
           <folding>
             <marker date="1487881510000" expanded="true" signature="609:853" placeholder="..." />
             <marker date="1487881510000" expanded="true" signature="631:852" placeholder="..." />
@@ -1008,46 +996,114 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/forms/input-self.blade.php">
+    <entry file="file://$PROJECT_DIR$/app/Models/Posttype.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-13.666667">
+          <caret line="30" column="88" selection-start-line="30" selection-start-column="88" selection-end-line="30" selection-end-column="88" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/Post.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="75" column="63" selection-start-line="75" selection-start-column="63" selection-end-line="75" selection-end-column="63" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-text.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.89384615">
+          <caret line="26" column="20" selection-start-line="26" selection-start-column="20" selection-end-line="26" selection-end-column="20" />
+          <folding>
+            <marker date="1487962966000" expanded="true" signature="219:380" placeholder="..." />
+            <marker date="1487962966000" expanded="true" signature="239:379" placeholder="..." />
+            <marker date="1487962966000" expanded="true" signature="240:379" placeholder="..." />
+            <marker date="1487962966000" expanded="true" signature="634:847" placeholder="..." />
+            <marker date="1487962966000" expanded="true" signature="654:846" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/sass/_basement.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33226323">
+          <caret line="125" column="9" selection-start-line="125" selection-start-column="2" selection-end-line="125" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/forms/input-self.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.42461538">
+          <caret line="12" column="29" selection-start-line="12" selection-start-column="29" selection-end-line="12" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-1.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-price.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="70" column="57" selection-start-line="70" selection-start-column="57" selection-end-line="70" selection-end-column="57" />
+          <folding>
+            <marker date="1487964533000" expanded="true" signature="469:855" placeholder="..." />
+            <marker date="1487964533000" expanded="true" signature="491:854" placeholder="..." />
+            <marker date="1487964533000" expanded="true" signature="947:1225" placeholder="..." />
+            <marker date="1487964533000" expanded="true" signature="969:1220" placeholder="..." />
+            <marker date="1487964533000" expanded="true" signature="1514:1919" placeholder="..." />
+            <marker date="1487964533000" expanded="true" signature="1536:1918" placeholder="..." />
+            <marker date="1487964533000" expanded="true" signature="1998:2373" placeholder="..." />
+            <marker date="1487964533000" expanded="true" signature="2020:2372" placeholder="..." />
+            <marker date="1487964533000" expanded="true" signature="2700:2938" placeholder="..." />
+            <marker date="1487964533000" expanded="true" signature="2723:2937" placeholder="..." />
+            <marker date="1487964533000" expanded="true" signature="3021:3433" placeholder="..." />
+            <marker date="1487964533000" expanded="true" signature="3044:3432" placeholder="..." />
+            <marker date="1487964533000" expanded="true" signature="3194:3303" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Manage/PostsController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="35" column="41" selection-start-line="35" selection-start-column="41" selection-end-line="35" selection-end-column="41" />
+          <caret line="77" column="58" selection-start-line="77" selection-start-column="58" selection-end-line="77" selection-end-column="58" />
           <folding>
             <element signature="e#47#67#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/assets/js/postEditorScripts.js">
+    <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-2.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
+          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-title.blade.php">
+    <entry file="file://$PROJECT_DIR$/public/assets/js/forms.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.68202764">
-          <caret line="52" column="108" selection-start-line="52" selection-start-column="108" selection-end-line="52" selection-end-column="108" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="1066" column="18" selection-start-line="1066" selection-start-column="9" selection-end-line="1066" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/assets/js/postEditorScripts.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5753846">
+          <caret line="43" column="27" selection-start-line="43" selection-start-column="27" selection-end-line="43" selection-end-column="27" />
           <folding>
-            <marker date="1487931996000" expanded="true" signature="311:486" placeholder="..." />
-            <marker date="1487931996000" expanded="true" signature="333:485" placeholder="..." />
-            <marker date="1487931996000" expanded="true" signature="504:734" placeholder="..." />
-            <marker date="1487931996000" expanded="true" signature="524:733" placeholder="..." />
-            <marker date="1487931996000" expanded="true" signature="1363:1531" placeholder="..." />
-            <marker date="1487931996000" expanded="true" signature="1385:1530" placeholder="..." />
-            <marker date="1487931996000" expanded="true" signature="1410:1530" placeholder="..." />
+            <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>

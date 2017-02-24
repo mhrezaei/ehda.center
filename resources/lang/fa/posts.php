@@ -74,5 +74,9 @@ return [
 		'delete' => "انتقال به زباله‌دان",
 		'history' => "تاریخچه",
 		'discard_schedule' => "به صورت خودکار تنظیم شود",
+		'is_available' => "به تعداد کافی",
+		'is_not_available' => "کسر موجودی (توقف فروش)",
+		'sale_settings' => "تنظیم فروش ویژه",
+		'sale_panel' => "فروش ویژه",
 	],
 ];

@@ -13,8 +13,21 @@ class CreatePostsTable extends Migration
 	 */
 	public function up()
 	{
+		Schema::create('packages' , function (Blueprint $table) {
+			$table->increments('id');
+			$table->string('slug')->unique() ;
+			$table->string('title')->index();
+			$table->boolean('is_continuous')->default(0);
+
+			$table->timestamps();
+			$table->softDeletes();
+			$table->unsignedInteger('created_by')->default(0)->index() ;
+			$table->unsignedInteger('updated_by')->default(0) ;
+			$table->unsignedInteger('deleted_by')->default(0) ;
+
+		});
 		Schema::create('posts', function (Blueprint $table) {
-			//@TODO: Categories, Permissions
+			//@TODO: Permissions
 
 			$table->increments('id');
 			$table->unsignedInteger('parent_id')->default(0)->index() ;
@@ -69,5 +82,6 @@ class CreatePostsTable extends Migration
 	{
 		Schema::dropIfExists('postevents');
 		Schema::dropIfExists('posts');
+		Schema::dropIfExists('packages');
 	}
 }
