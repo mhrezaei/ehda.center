@@ -168,6 +168,16 @@ class Post extends Model
 		return !$this->has($feature);
 	}
 
+	public function hasAnyOf($features)
+	{
+		return $this->posttype->hasAnyOf($features);
+	}
+
+	public function hasAllOf($features)
+	{
+		return $this->posttype->hasAllOf($features);
+	}
+
 	public function can($permit)
 	{
 		return user()->as('admin')->can('post-' . $this->type . '.' . $permit) ;

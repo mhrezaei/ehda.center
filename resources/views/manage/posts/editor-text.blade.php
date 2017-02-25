@@ -5,7 +5,7 @@
 |
 --}}
 @if($model->has('text'))
-	<div>
+	<div class="mv20">
 		@include("forms.textarea" , [
 			'name' => "title",
 			'value' => "$model->title",

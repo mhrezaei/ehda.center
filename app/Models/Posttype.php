@@ -17,7 +17,7 @@ class Posttype extends Model
 			'long_title' => ['text-height' , 'success' , ['long_title:text']],
 			'title2' => ['subscript' , 'success' , ['title2:text']],
 			'abstract' => ['compress' , 'success' , ['abstract:text']],
-			'image' => ['file-image-o' , 'info' , ['featured_image:photo']],
+			'featured_image' => ['file-image-o' , 'info' , ['featured_image:photo']],
 			'download' => ['download' , 'info' , ['download_file:file']],
 			'rss' => ['rss' , 'info' , []],
 			'comment' => ['comments-o' , 'info' , []],
@@ -114,6 +114,35 @@ class Posttype extends Model
 
 	}
 
+	public function getOptionalMetaArrayAttribute()
+	{
+		$string = str_replace(' ' , null , $this->spreadMeta()->optional_meta) ;
+		$result = [] ;
+
+		$array = explode(',',$string);
+		foreach($array as $item) {
+			if(str_contains($item , '*')) {
+				$required = true ;
+				$item = str_replace('*' , null , $item) ;
+			}
+			else
+				$required = false ;
+
+			$field = explode(':' , $item) ;
+			if(!$field[0])
+				continue ;
+
+			array_push($result , [
+				'name' => $field[0],
+				'type' => isset($field[1])? $field[1] : 'text' ,
+				'required' => $required ,
+			]);
+		}
+
+		return $result ;
+	}
+
+
 	/*
 	|--------------------------------------------------------------------------
 	| Stators
@@ -133,6 +162,26 @@ class Posttype extends Model
 	public function hasnot($feature)
 	{
 		return !$this->has($feature);
+	}
+
+	public function hasAnyOf($features)
+	{
+		foreach($features as $feature) {
+			if($this->has($feature))
+				return true ;
+		}
+
+		return false ;
+	}
+
+	public function hasAllOf($features)
+	{
+		foreach($features as $feature) {
+			if($this->hasnot($feature))
+				return false ;
+		}
+
+		return true ;
 	}
 
 	/*

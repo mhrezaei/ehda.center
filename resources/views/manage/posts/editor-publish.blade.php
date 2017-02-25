@@ -1,5 +1,6 @@
 <div class="panel panel-default text-center">
 	<div class="panel-heading text-right">{{ trans('posts.form.publish') }}</div>
+	<div class="panel-body bg-ultralight w100">
 
 	{{--
 	|--------------------------------------------------------------------------
@@ -8,7 +9,7 @@
 	|
 	--}}
 
-	<div class="text-center m10 alert alert-{{ trans("forms.status_color.$model->status") }}">
+	<div class="text-center alert alert-{{ trans("forms.status_color.$model->status") }}">
 		{{ trans("forms.status_text.$model->status") }}
 	</div>
 
@@ -18,7 +19,7 @@
 	|--------------------------------------------------------------------------
 	|
 	--}}
-	<div class="btn-group m5">
+	<div class="btn-group">
 
 
 		{{-- Main Button --}}
@@ -90,7 +91,7 @@
 	|
 	--}}
 
-	<div class="row m5">
+	<div class="row">
 		<div class="col-md-7  text-right">
 			<button name="_submit" value="save" class="btn btn-link btn-xs w100 minWidthAuto">{{ trans('posts.form.save_draft') }}</button>
 		</div>
@@ -103,6 +104,6 @@
 
 
 
-
+</div>
 
 </div>

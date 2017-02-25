@@ -1,11 +1,54 @@
 @if($model->has('price'))
-	<div class="panel panel-info">
+	<div class="panel panel-primary mv20">
 		<div class="panel-heading">
 			<i class="fa fa-money mh5"></i>
 			{{ trans('validation.attributes.price') }}
 		</div>
 		
-		<div class="panel-body">
+		<div class="panel-body bg-ultralight">
+
+			{{--
+			|--------------------------------------------------------------------------
+			| Package and Availability
+			|--------------------------------------------------------------------------
+			|
+			--}}
+
+
+			<div class="row">
+				<div class="col-md-6">
+
+					{{-- Package id --}}
+					@include("forms.select_self" , [
+						'name' => "package_id",
+						'top_label' => trans('validation.attributes.package_id'),
+						'top_label_class' => "mv5",
+						'options' => $model->packageCombo(),
+						'value' => $model->package_id,
+					])
+
+				</div>
+				<div class="col-md-6">
+
+					{{-- Availabilty --}}
+					@include("forms.select_self" , [
+						'name' => "is_available",
+						'top_label' => trans('validation.attributes.inventory'),
+						'top_label_class' => "mv5",
+						'options' => [
+							['1' , trans('posts.form.is_available')],
+							['0' , trans('posts.form.is_not_available')],
+						],
+						'value' => $model->is_available,
+						'caption_field' => "1",
+						'value_field' => "0",
+						'class' => "f10",
+					])
+
+				</div>
+			</div>
+			<hr>
+
 
 			{{--
 			|--------------------------------------------------------------------------
@@ -88,41 +131,31 @@
 
 			{{--
 			|--------------------------------------------------------------------------
-			| Package and Availability 
+			| Sale Price Expiry
 			|--------------------------------------------------------------------------
 			|
 			--}}
 
-
 			<div class="row">
 				<div class="col-md-6">
 
-					{{-- Package id --}}
-					@include("forms.select_self" , [
-						'name' => "package_id",
-						'top_label' => trans('validation.attributes.package_id'),
-						'top_label_class' => "mv5",
-						'options' => $model->packageCombo(),
-						'value' => $model->package_id,
+					@include('forms.datepicker' , [
+						'name' => 'sale_expires_at' ,
+						'top_label' => trans('validation.attributes.sale_expires_at'),
+						'value' => $model->sale_expires_at ,
+						'in_form' => 0 ,
+						'class' => "text-center",
 					])
 
 				</div>
 				<div class="col-md-6">
 
-					{{-- Availabilty --}}
-					@include("forms.select_self" , [
-						'name' => "is_available",
-						'top_label' => trans('validation.attributes.inventory'),
-						'top_label_class' => "mv5",
-						'options' => [
-							['1' , trans('posts.form.is_available')],
-							['0' , trans('posts.form.is_not_available')],
-						],
-						'value' => $model->is_available,
-						'caption_field' => "1",
-						'value_field' => "0",
-						'class' => "f10",
-					])
+					<label for="sale_expires_hour" class="control-label text-gray " >&nbsp;</label>
+					<div class="input-group input-group-sm">
+						<input id="txtExpireM" name="sale_expires_minute" value="{{ $model->isScheduled()? jdate($model->sale_expires_at)->format('i') : ''}}" type="text" class="form-control ltr text-center" onblur=""  placeholder="50" min="0" max="59">
+						<span class="input-group-addon">:</span>
+						<input id="txtExpireH" name="sale_expires_hour" value="{{ $model->isScheduled()? jdate($model->sale_expires_at)->format('H') : ''}}" type="text" class="form-control ltr text-center" onblur="$('#txtExpireM').focus()" placeholder="13" min="0" max="23" >
+					</div>
 
 				</div>
 			</div>

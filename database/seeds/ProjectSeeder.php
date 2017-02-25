@@ -54,7 +54,7 @@ class ProjectSeeder extends Seeder
 				'order' => "1",
 				'title' => "برگه‌ها",
 				'header_title' => "",
-				'features' => "image title text comment gallery visibility_choice searchable template_choice preview keyword",
+				'features' => "featured_image title text comment gallery visibility_choice searchable template_choice preview keyword",
 				'meta' => json_encode([
 					'singular_title' => "برگه",
 					'template' => "post",
@@ -67,7 +67,7 @@ class ProjectSeeder extends Seeder
 				'order' => "2",
 				'title' => "محصولات",
 				'header_title' => "",
-				'features' => "title text image  rss    rate  album  category  keywords  searchable  preview        basket  digest  schedule comment     price  download abstract  seo template_choice  slug  title2",
+				'features' => "title text featured_image  rss    rate  album  category  keywords  searchable  preview        basket  digest  schedule comment     price  download abstract  seo template_choice  slug  title2",
 				'meta' => json_encode([
 					'singular_title' => "محصول",
 					'template' => "product",

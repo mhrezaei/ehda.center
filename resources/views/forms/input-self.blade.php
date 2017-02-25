@@ -1,6 +1,6 @@
 @if(!isset($condition) or $condition)
 	@if(isset($top_label))
-		<label for="{{$name}}" class="control-label text-gray {{$top_label_class or ''}}" >{{ $top_label }}...</label>
+		<label for="{{$name}}" class="control-label text-gray {{$top_label_class or ''}}" style="{{$top_level_style or 'margin-top:10px'}}" >{{ $top_label }}...</label>
 	@endif
 	@if(isset($addon))
 		<div class="input-group {{ $group_class or '' }}">
