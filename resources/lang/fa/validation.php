@@ -334,6 +334,8 @@ return [
 				'developers_only' => 'فقط برای استفاده‌ی برنامه‌نویسان' ,
 				'is_resident' => 'ماندگار در حافظه' ,
 				'locales' => "زبان‌ها",
+				'locale' => "زبان",
+				'post_locale' => "زبان این نوشته",
 				'is_localized' => "زبان‌پذیر",
 				'default_value' => 'مقدار پیش‌فرض' ,
 				'custom_value' => 'مقدار دل‌خواه' ,

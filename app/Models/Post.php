@@ -64,6 +64,22 @@ class Post extends Model
 		return self::where('parent_id' , $this->parent_id)->where('is_draft' , 1);
 	}
 
+	public function in($locale)
+	{
+		if($locale==$this->locale)
+			return $this ;
+
+		$model = $this->sisters()->where('locale' , $locale)->first() ;
+		if($model)
+			return $model ;
+		else {
+			$model = new self() ;
+			$model->locale = $locale ;
+			$model->type = $this->type ;
+			return $model ;
+		}
+	}
+
 	/*
 	|--------------------------------------------------------------------------
 	| Accessors & Mutators
@@ -146,6 +162,26 @@ class Post extends Model
 	public function getPreviewLinkAttribute()
 	{
 
+	}
+
+
+	public function getOtherLocalesAttribute()
+	{
+		$array = $this->posttype->locales_array ;
+		$key = array_search($this->locale , $array) ;
+		array_forget($array , $key);
+
+		return $array ;
+	}
+
+	public function getCreateLinkAttribute()
+	{
+		return url("manage/posts/".$this->type."/create/".$this->locale) ;
+	}
+
+	public function getEditLinkAttribute()
+	{
+		return url("manage/posts/".$this->type."/edit/".$this->id) ;
 	}
 
 

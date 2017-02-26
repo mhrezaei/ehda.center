@@ -9,7 +9,7 @@ return [
 
 	'features' => [
 		'meaning' => "ویژگی‌ها" ,
-		'locales' => "ترجمه‌ها",
+		'locales' => "زبان‌های دیگر",
 		'slug' => "تنظیم نامک",
 		'download' => "دانلود فایل",
 		'abstract' => "چکیده",
@@ -82,5 +82,6 @@ return [
 		'sale_panel' => "فروش ویژه",
 		'template' => "قالب نمایش",
 		'options' => "گزینگان",
+		'this_page' => "همین صفحه",
 	],
 ];

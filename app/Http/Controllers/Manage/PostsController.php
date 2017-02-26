@@ -77,8 +77,10 @@ class PostsController extends Controller
 		$model->type = $type_slug ;
 
 		if($model->has('locales')) {
-			if(!$locale or !in_array($locale , $model->posttype->locales_array ))
+			if(!$locale)
 				$model->locale = 'fa' ;
+			elseif(!in_array($locale , $model->posttype->locales_array ))
+				return view('errors.410');
 			else
 				$model->locale = $locale ;
 		}

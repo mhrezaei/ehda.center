@@ -131,6 +131,7 @@ return [
 		'draft' => "پیش‌نویس",
 		'pending' => "منتظر تأیید",
 		'unknown' => "نامشخص",
+		'so_far_absent' => "فعلاً وجود ندارد",
 	],
 
 	'status_color' => [
