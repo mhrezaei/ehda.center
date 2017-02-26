@@ -15,6 +15,13 @@ function postsInit()
  |--------------------------------------------------------------------------
  |
  */
+
+function postToggleCategories(count)
+{
+	if(count>0) {
+		$("#divCategories").slideDown();
+	}
+}
 function postTogglePrice()
 {
 	$('#btnSale,#divSale').slideToggle('fast' , function() {

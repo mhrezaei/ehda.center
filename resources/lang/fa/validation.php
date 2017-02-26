@@ -333,6 +333,7 @@ return [
 				'available_for_domains' => 'قابلیت خصوصی‌سازی در دامنه‌ها' ,
 				'developers_only' => 'فقط برای استفاده‌ی برنامه‌نویسان' ,
 				'is_resident' => 'ماندگار در حافظه' ,
+				'locales' => "زبان‌ها",
 				'is_localized' => "زبان‌پذیر",
 				'default_value' => 'مقدار پیش‌فرض' ,
 				'custom_value' => 'مقدار دل‌خواه' ,

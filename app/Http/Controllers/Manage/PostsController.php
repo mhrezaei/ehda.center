@@ -75,7 +75,14 @@ class PostsController extends Controller
 		//Model...
 		$model = new Post() ;
 		$model->type = $type_slug ;
-		$model->locale = 'fa' ; //@TODO: make it correct
+
+		if($model->has('locales')) {
+			if(!$locale or !in_array($locale , $model->posttype->locales_array ))
+				$model->locale = 'fa' ;
+			else
+				$model->locale = $locale ;
+		}
+
 		$model->template = $model->posttype->spreadMeta()->template ;
 		if(!$model->posttype->exists)
 			return view('errors.410');

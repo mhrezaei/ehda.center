@@ -35,13 +35,14 @@ class Posttype extends Model
 			'register' => ['user-plus' , 'warning' , []],
 			'visibility_choice' => ['shield' , 'warning' , []],
 			'template_choice' => ['th-large' , 'warning' , []],
+//			'locales' => ["globe" , 'danger' , []] ,
 			'slug' => ['hashtag' , 'danger' , []],
 			'developers_only' => ['github-alt' , 'danger' , []],
 	];
 	public static $available_templates = ['album' , 'post' , 'product' , 'slideshow' , 'dialogue' , 'faq'] ;
 	public static $available_meta_types = ['text' , 'textarea' , 'date' , 'boolean' , 'photo' , 'file'];
 	public static $reserved_slugs = 'root,admin' ;
-	public static $meta_fields = ['features' , 'template' , 'feature_meta' , 'optional_meta' , 'visibility', 'singular_title' , 'icon'];
+	public static $meta_fields = ['features' , 'template' , 'feature_meta' , 'optional_meta' , 'visibility', 'singular_title' , 'icon' , 'locales'];
 	public static $basement_meta = "moderate_note:text " ;
 
 	/*
@@ -60,6 +61,7 @@ class Posttype extends Model
 	public function folders()
 	{
 		return $this->hasMany('App\Models\Folder');
+
 	}
 
 	/*
@@ -142,6 +144,26 @@ class Posttype extends Model
 		return $result ;
 	}
 
+	public function getLocalesArrayAttribute()
+	{
+		$this->spreadMeta() ;
+		if(!$this->locales)
+			return ['fa'] ;
+		else {
+			$array = array_filter(explode(',', $this->locales));
+			if(!sizeof($array))
+				return ['fa'] ;
+			else
+				return $array ;
+		}
+	}
+
+	public function getDefaultLocaleAttribute()
+	{
+		return $this->locales_array[0] ;
+	}
+
+
 
 	/*
 	|--------------------------------------------------------------------------
@@ -151,6 +173,12 @@ class Posttype extends Model
 	*/
 	public function hasFeature($feature)
 	{
+		if($feature == 'locales') {
+			if(sizeof($this->locales_array) > 1)
+				return true ;
+			else
+				return false ;
+		}
 		return str_contains($this->features , $feature);
 	}
 

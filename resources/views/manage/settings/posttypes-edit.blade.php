@@ -49,6 +49,13 @@
 		'hint' =>	trans('validation.hint.persian-only'),
 	])
 
+	@include("forms.input" , [
+		'name' => "locales",
+		'value' => $model->locales,
+		'hint' => trans('posts.types.locales_hint'),
+		'class' => "ltr",
+	])
+
 	@include("forms.select" , [
 		'name' => "template",
 		'class' => "form-required",

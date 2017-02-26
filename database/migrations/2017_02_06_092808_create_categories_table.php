@@ -17,6 +17,7 @@ class CreateCategoriesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('posttype_id')->index() ;
             $table->unsignedInteger('parent_id')->default(0)->index() ;
+            $table->string('locale' , 2)->default('fa')->index() ;
             $table->string('slug')->index() ;
             $table->string('title')->index();
             $table->longText('meta')->nullable() ;

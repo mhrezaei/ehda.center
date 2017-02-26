@@ -1,11 +1,11 @@
 @if($model->has('category'))
-	<div class="panel panel-default">
+	<div id="divCategories" class="panel panel-default noDisplay">
 		<div class="panel-heading">
 			{{ trans('validation.attributes.category') }}
 		</div>
 
-		<div class="panel-body">
-			@foreach($model->posttype->folders()->orderBy('title')->get() as $key => $folder)
+		<div class="panel-body" aria-atomic="{{$printed = 0}}">
+			@foreach($model->posttype->folders()->where('locale',$model->locale)->orderBy('title')->get() as $key => $folder)
 				<i class="noDisplay" aria-atomic="{{ booleanValue($categories = $folder->categories()->orderBy('title')) }}"></i>
 				@if($categories->count())
 					<div class="text-bold f11 {{ $key>0? "mv20" : "" }}">
@@ -17,6 +17,7 @@
 									'title' => $category->title,
 									'label' => $category->title,
 									'value' => false,
+									'printed' => $printed++ ,
 								])
 							@endforeach
 						</div>
@@ -25,6 +26,6 @@
 			@endforeach
 		</div>
 
-
 	</div>
+	<script>postToggleCategories({{ $printed }})</script>
 @endif

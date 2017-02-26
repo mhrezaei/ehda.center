@@ -12,6 +12,8 @@
 		'class' => 'js'
 	])
 
+		@include("manage.posts.editor-tabs")
+
 		@include("forms.feed")
 
 		@include("forms.hiddens" , ['fields' => [
@@ -19,7 +21,7 @@
 			['type' , $model->encrypted_type],
 		]])
 
-		<div class="row w100">
+		<div class="row w100" style="margin-bottom: 100px">
 			<div class="col-md-9" >
 				@include("manage.posts.editor-1")
 			</div>

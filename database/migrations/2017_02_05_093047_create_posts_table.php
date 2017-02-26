@@ -34,7 +34,7 @@ class CreatePostsTable extends Migration
 			$table->string('slug')->unique() ;
 			$table->string('type')->index() ;
 			$table->string('title')->index();
-			$table->string('locale' , 2)->index() ;
+			$table->string('locale' , 2)->default('fa')->index() ;
 			$table->float('price' , 15 , 2) ;
 			$table->boolean('is_available')->default(1);
 			$table->boolean('is_draft')->default(1);
