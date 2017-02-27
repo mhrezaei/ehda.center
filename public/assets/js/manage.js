@@ -80,18 +80,18 @@ function modalForm($modal_id , $item_id , $parent_id)
 	if(!$parent_id) $parent_id='0' ;
 	var $modal_selector = '#' + $modal_id ;
 	var $form_selector = $modal_selector + ' form ' ;
-	var $url = $($form_selector+'._0').html().replace('-id-',$item_id).replace('-parent-',$parent_id);
+//	var $url = $($form_selector+'._0').html().replace('-id-',$item_id).replace('-parent-',$parent_id);
 
 	//Form Placement...
-	if($item_id=='0')
-		$($modal_selector + '-title').html($($form_selector+'._2').html());
-	else
-		$($modal_selector + '-title').html($($form_selector+'._1').html());
+//	if($item_id=='0')
+//		$($modal_selector + '-title').html($($form_selector+'._2').html());
+//	else
+//		$($modal_selector + '-title').html($($form_selector+'._1').html());
 
 	//Form Load...
-	$($form_selector + 'div.modal-body').html('....').load($url , function() {
-		$('.selectpicker').selectpicker();
-	});
+//	$($form_selector + 'div.modal-body').html('....').load($url , function() {
+//		$('.selectpicker').selectpicker();
+//	});
 	$($modal_selector).modal() ;
 
 }

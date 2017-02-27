@@ -81,24 +81,28 @@ function postToggleTitle2()
 
 function postToggleSchedule( $mood )
 {
+	var $schedule = $("#divSchedule") ;
+	var $link = $("#lnkSchedule") ;
+	var $date = $("#txtPublishDate") ;
+
 	if(!$mood) {
 		forms_log("mood="+$mood);
-		if($("#divSchedule").is(':visible'))
+		if($($schedule).is(':visible'))
 			$mood = 'hide' ;
 		else
 			$mood = 'show' ;
 	}
 	switch ($mood) {
 		case 'show' :
-			$("#divSchedule").slideDown('fast');
-			$("#lnkSchedule").hide();
-			$("#txtPublishDate").focus() ;
+			$schedule.slideDown('fast');
+			$link.hide();
+			$date.focus() ;
 			break;
 
 		case 'hide' :
-			$("#divSchedule").slideUp('fast');
-			$("#lnkSchedule").show();
-			$("#txtPublishDate").val('');
+			$schedule.slideUp('fast');
+			$link.show();
+			$date.val('');
 			$("#cmbPublishDate").val('08:00');
 			$('.selectpicker').selectpicker('refresh');
 			break;
@@ -111,10 +115,16 @@ function postToggleSchedule( $mood )
 
 function postsAction($command)
 {
+	forms_log('action: '+$command);
 	switch($command) {
 		case 'adjust_publish_time' :
 			postToggleSchedule('show') ;
 			break;
+
+		case 'delete':
+			modalForm("modalPostDeleteWarning" , '1') ;
+			break;
+
+
 	}
-	forms_log('action: '+$command);
 }

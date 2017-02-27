@@ -281,6 +281,11 @@ class Post extends Model
 		return (!$this->isDraft() and !$this->published_by) ;
 	}
 
+	public function isCopy()
+	{
+		return boolval($this->copy_of);
+	}
+
 	public function isOwner()
 	{
 		if(!$this->exists)

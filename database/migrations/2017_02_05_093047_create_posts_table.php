@@ -39,6 +39,7 @@ class CreatePostsTable extends Migration
 			$table->boolean('is_available')->default(1);
 			$table->boolean('is_draft')->default(1);
 			$table->boolean('is_limited')->default(0);
+			$table->unsignedInteger('copy_of')->default(0)->index() ;
 
 			$table->longText('meta')->nullable() ;
 

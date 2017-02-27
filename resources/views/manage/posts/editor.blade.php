@@ -32,5 +32,7 @@
 	
 	@include("forms.closer")
 
+	@include("manage.posts.editor-modal-delete")
+
 	<script>postsInit()</script>
 @endsection

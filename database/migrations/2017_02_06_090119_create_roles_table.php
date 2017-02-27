@@ -36,15 +36,15 @@ class CreateRolesTable extends Migration
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');;
         });
 
-        Schema::create('post_role', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('role_id')->index() ;
-            $table->unsignedInteger('post_id')->index() ;
-            $table->timestamps();
-
-            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
-            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
-        });
+//        Schema::create('post_role', function (Blueprint $table) {
+//            $table->increments('id');
+//            $table->unsignedInteger('role_id')->index() ;
+//            $table->unsignedInteger('post_id')->index() ;
+//            $table->timestamps();
+//
+//            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
+//            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
+//        });
 
     }
 
