@@ -21,7 +21,7 @@
 			['type' , $model->encrypted_type],
 		]])
 
-		<div class="row w100" style="margin-bottom: 100px">
+		<div class="row w100" style="margin-bottom: 50px">
 			<div class="col-md-9" >
 				@include("manage.posts.editor-1")
 			</div>

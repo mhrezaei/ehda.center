@@ -231,7 +231,7 @@ return [
 
 		'attributes' => [
 				'optional_meta' => "متای اختیاری",
-				'feature_meta' => "متای اجباری",
+				'feature_meta' => "متای ویژه",
 
 				'order' => "ترتیب",
 				'template' => 'قالب' ,

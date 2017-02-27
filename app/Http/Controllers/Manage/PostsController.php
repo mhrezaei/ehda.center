@@ -84,6 +84,8 @@ class PostsController extends Controller
 			else
 				$model->locale = $locale ;
 		}
+		else
+			$model->locale = 'fa' ;
 
 		$model->template = $model->posttype->spreadMeta()->template ;
 		if(!$model->posttype->exists)

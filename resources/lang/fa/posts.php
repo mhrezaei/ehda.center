@@ -61,6 +61,12 @@ return [
 		'bin' => "زباله‌دان",
 	],
 
+	'visibility' => [
+		'title' => "رؤیت‌پذیری",
+		'limited' => "محدود",
+		'public' => "عمومی",
+	],
+
 	'form' => [
 		'title_placeholder' => "عنوان را اینجا وارد کنید" ,
 		'title2_placeholder' => "عنوان دوم را در صورت نیاز اینجا وارد کنید",

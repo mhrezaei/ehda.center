@@ -1,4 +1,4 @@
-@if($model->hasAnyOf(['template','slug']))
+@if($model->hasAnyOf(['template_choice','slug','visibility_choice']))
 
 	<div class="panel panel-default">
 		<div class="panel-heading">
@@ -16,7 +16,7 @@
 
 
 			@include("forms.select_self" , [
-				'condition' => $model->has('template'),
+				'condition' => $model->has('template_choice'),
 				'top_label' => trans('posts.form.template'),
 				'name' => "template",
 				'options' => $model->posttype->templatesCombo(),
@@ -40,6 +40,16 @@
 				'class' => "ltr text-center",
 				'placeholder' => "like_this",
 			])
+
+			{{--
+			|--------------------------------------------------------------------------
+			| Visibility
+			|--------------------------------------------------------------------------
+			|
+			--}}
+			<div class="m10"></div>
+			@include("manage.posts.editor-visibility")
+
 
 		</div>
 

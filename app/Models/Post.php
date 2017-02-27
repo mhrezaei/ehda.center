@@ -386,8 +386,17 @@ class Post extends Model
 	*/
 	public function packageCombo()
 	{
-		return Package::all() ;
+		return Package::all();
 	}
+
+	public function visibilityCombo()
+	{
+		return [
+			['public' , trans('posts.visibility.public')],
+			['limited' , trans('posts.visibility.limited')],
+		];
+	}
+
 	public static function checkManagePermission($posttype, $criteria)
 	{
 		switch($criteria) {

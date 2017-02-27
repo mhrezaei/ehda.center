@@ -5,7 +5,10 @@
 		</div>
 
 		<div class="panel-body">
-
+			@include("forms.hidden" , [
+				'name' => "featured_image",
+				'value' => "/img",
+			])
 		</div>
 
 

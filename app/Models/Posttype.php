@@ -34,7 +34,7 @@ class Posttype extends Model
 			'schedule' => ['clock-o' , 'info' , ['original_published_at:auto']],
 			'register' => ['user-plus' , 'warning' , []],
 			'visibility_choice' => ['shield' , 'warning' , []],
-			'template_choice' => ['th-large' , 'warning' , []],
+//			'template_choice' => ['th-large' , 'warning' , []],
 //			'locales' => ["globe" , 'danger' , []] ,
 			'slug' => ['hashtag' , 'danger' , []],
 			'developers_only' => ['github-alt' , 'danger' , []],
