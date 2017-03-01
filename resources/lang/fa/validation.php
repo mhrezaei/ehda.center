@@ -232,6 +232,7 @@ return [
 		'attributes' => [
 				'optional_meta' => "متای اختیاری",
 				'feature_meta' => "متای ویژه",
+				'moderate_note' => "یادداشت سردبیر",
 
 				'order' => "ترتیب",
 				'template' => 'قالب' ,
@@ -290,7 +291,9 @@ return [
 				'cities' => 'شهرها',
 				'create' => 'ایجاد',
 				'publish' => 'انتشار',
-				'publish_date' => 'زمان انتشار' ,
+				'publish_date' => 'تاریخ انتشار' ,
+				'publish_hour' => "ساعت انتشار",
+				'publish_minute' => "دقیقه انتشار",
 				'abstract' => 'چکیده',
 				'text' => 'متن',
 				'category' => 'دسته‌بندی',

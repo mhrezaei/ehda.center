@@ -116,7 +116,7 @@
 
 					@include("forms.input-self" , [
 						'id' => "txtSalePercent",
-						'name' => "sale_discount",
+						'name' => "_sale_discount",
 						'top_label' => trans('validation.attributes.discount_percent'),
 						'class' => "form-number ltr text-center salePrice",
 						'addon' => "%",
@@ -140,7 +140,7 @@
 				<div class="col-md-6">
 
 					@include('forms.datepicker' , [
-						'name' => 'sale_expires_at' ,
+						'name' => 'sale_expires_date' ,
 						'top_label' => trans('validation.attributes.sale_expires_at'),
 						'value' => $model->sale_expires_at ,
 						'in_form' => 0 ,

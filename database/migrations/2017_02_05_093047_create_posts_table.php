@@ -30,7 +30,6 @@ class CreatePostsTable extends Migration
 			//@TODO: Permissions
 
 			$table->increments('id');
-			$table->unsignedInteger('parent_id')->default(0)->index() ;
 			$table->string('slug')->unique() ;
 			$table->string('type')->index() ;
 			$table->string('title')->index();
@@ -40,6 +39,7 @@ class CreatePostsTable extends Migration
 			$table->boolean('is_draft')->default(1);
 			$table->boolean('is_limited')->default(0);
 			$table->unsignedInteger('copy_of')->default(0)->index() ;
+			$table->unsignedInteger('sisterhood')->default(0)->index() ;
 
 			$table->longText('meta')->nullable() ;
 

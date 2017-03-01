@@ -4,8 +4,7 @@
 			<div>
 				@endif
 
-
-			@include('forms.closer')
+				@include('forms.closer')
 			</div>
 		</div>
 	</div>

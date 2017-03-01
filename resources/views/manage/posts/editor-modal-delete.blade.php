@@ -14,7 +14,7 @@
 		| 
 		--}}
 
-		@if(!$model->id)
+		@if($model->exists)
 			@include("forms.note" , [
 				'text' => trans('posts.form.delete_alert_for_unsaved_post'),
 				'shape' => "danger",
@@ -30,12 +30,25 @@
 
 		{{--
 		|--------------------------------------------------------------------------
-		| If model is published
+		| If it's a copied version
 		|--------------------------------------------------------------------------
 		|
 		--}}
 
-		@if($model->isPublished())
+		@if($model->isCopy())
+			@include("forms.note" , [
+				'text' => trans('posts.form.delete_alert_for_copies'),
+				'shape' => "warning",
+			])
+			<div class="text-center m20">
+				<button type="submit" name="_submit" value="delete" class="btn btn-lg btn-warning w50">{{ trans('posts.form.delete_this_copy') }}</button>
+			</div>
+			<div class="text-center m20">
+				<button type="submit" name="_submit" value="delete_original" class="btn btn-lg btn-danger w50">{{ trans('posts.form.delete_original_post') }}</button>
+			</div>
+			<div class="text-center m20">
+				<button class="btn btn-link" onclick='$(".modal").modal("hide")'>{{ trans("forms.button.cancel") }}</button>
+			</div>
 		@endif
 
 
@@ -46,6 +59,17 @@
 		|
 		--}}
 
+		@if(!$model->exists and !$model->isCopy())
+{{--			@include("forms.note" , [--}}
+				{{--'text' => trans('delete'),--}}
+				{{--'shape' => "warning",--}}
+			{{--])--}}
+			<div class="text-center m20">
+				<button type="submit" name="_submit" value="delete" class="btn btn-lg btn-danger w50">{{ trans('forms.button.sure_delete') }}</button>
+			</div>
+			<div class="text-center m20">
+				<button class="btn btn-link" onclick='$(".modal").modal("hide")'>{{ trans("forms.button.cancel") }}</button>
+			</div>
 		@endif
 	</div>
 

@@ -14,7 +14,7 @@
 	])
 @else
 	@include("forms.textarea" , [
-		'name' => "long_title",
+		'name' => "title",
 		'value' => "$model->title",
 		'class' => "form-required form-autoSize tinyMini-",
 		'rows' => "2",
@@ -22,6 +22,7 @@
 		'in_form' => false,
 	])
 @endif
+
 
 {{--
 |--------------------------------------------------------------------------

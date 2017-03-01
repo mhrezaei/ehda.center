@@ -7,9 +7,9 @@
 @if($model->has('text'))
 	<div class="mv20">
 		@include("forms.textarea" , [
-			'name' => "title",
+			'name' => "text",
 			'value' => "$model->title",
-			'class' => "form-required tinyEditor",
+			'class' => "tinyEditor",
 			'rows' => "15",
 			'in_form' => false,
 		])

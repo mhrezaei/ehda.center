@@ -73,6 +73,8 @@ class ProjectSeeder extends Seeder
 					'template' => "product",
 					'icon' => "gift",
 					'feature_meta' => "sale_price:text, sale_expires_at:text, package_id:text , download_file:file, abstract:text, seo_status:text, title2:text",
+					'locales' => "fa,en,ar",
+					'optional_meta' => "edu_city:text , home_address:textarea , home_tel:text", //@TODO: Remove this line on production
 				]),
 				'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
 			],

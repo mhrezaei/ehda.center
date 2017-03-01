@@ -175,6 +175,11 @@ class ValidationServiceProvider extends ServiceProvider
 			case 'sheba' :
 				if(!str_contains($data,'IR'))
 					$data = "IR".$data ;
+				break;
+
+			case 'array' :
+				$data = array_filter(explode(',' , $data)) ;
+				break;
 		}
 
 		$this->input[$key] = $data;

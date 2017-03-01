@@ -56,12 +56,31 @@ class Post extends Model
 
 	public function sisters()
 	{
-		return self::where('parent_id' , $this->parent_id) ;
+		if($this->sisterhood > 0) {
+			return self::where('sisterhood' , $this->sisterhood) ;
+		}
+		else {
+			return self::where('id' , '0');
+		}
 	}
 
-	public function drafts()
+	public function copies()
 	{
-		return self::where('parent_id' , $this->parent_id)->where('is_draft' , 1);
+		return self::where('copy_of' , $this->id) ;
+	}
+
+	public function original()
+	{
+		if($this->copy_of == 0) {
+			return new self();
+		}
+		else {
+			$original = self::find($this->copy_of) ;
+			if($original)
+				return $original ;
+			else
+				return new self();
+		}
 	}
 
 	public function in($locale)
@@ -185,6 +204,21 @@ class Post extends Model
 	}
 
 
+	public function getEditorMoodAttribute()
+	{
+		if(!$this->exists) {
+			$mood = 'new' ;
+		}
+		elseif($this->copy_of) {
+			$mood = 'copy' ;
+		}
+		else{
+			$mood = 'original';
+		}
+
+		return $mood ;
+
+	}
 
 
 
@@ -229,10 +263,10 @@ class Post extends Model
 		if(!$this->exists)
 			return false ;
 
-		if($this->isOwner() and $this->isDraft() and $this->can('create'))
+		if($this->isOwner() and !$this->isApproved() and $this->can('create'))
 			return true ;
 
-		if(!$this->isPublished() and $this->can('publish') and $this->can('edit'))
+		if(!$this->isApproved() and $this->can('publish') and $this->can('edit'))
 			return true ;
 
 		return $this->can('edit');
@@ -243,7 +277,7 @@ class Post extends Model
 		if(!$this->exists)
 			return true ;
 
-		if($this->isOwner() and $this->isDraft() and $this->can('create'))
+		if($this->isOwner() and !$this->isApproved() and $this->can('create'))
 			return true ;
 
 		return $this->can('delete');
@@ -254,7 +288,7 @@ class Post extends Model
 		if(!$this->exists)
 			return false ;
 
-		if($this->isOwner() and $this->isDraft() and $this->can('create'))
+		if($this->isOwner() and !$this->isApproved() and $this->can('create'))
 			return true ;
 
 		return $this->can('bin');
@@ -270,6 +304,12 @@ class Post extends Model
 	{
 		return ($this->published_by and $this->published_at and $this->published_at > Carbon::now()) ;
 	}
+
+	public function isApproved()
+	{
+		return boolval($this->published_by) ;
+	}
+
 
 	public function isDraft()
 	{

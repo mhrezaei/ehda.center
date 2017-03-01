@@ -7,6 +7,8 @@
 | These are shortcuts of the site models and modules
 */
 
+use Carbon\Carbon;
+
 function getLocale()
 {
 	return \Illuminate\Support\Facades\App::getLocale();
@@ -71,7 +73,7 @@ function array_default($array, $defaults)
 }
 
 /**
- * Normalizes the givn $array with the provided $reference, by deleting the extra entries and filling unset ones
+ * Normalizes the given $array with the provided $reference, by deleting the extra entries and filling unset ones
  * @param $array
  * @param $reference
  * @return array
@@ -111,6 +113,14 @@ function v0()
 {
 	return "javascript:void(0)" ;
 
+
+}
+
+function makeDateTimeString($date , $hour=0 , $minute=0 , $seccond=0)
+{
+	$date = "$date $hour:$minute:$seccond";
+	$carbon = new Carbon($date) ;
+	return $carbon->toDateTimeString() ;
 
 }
 

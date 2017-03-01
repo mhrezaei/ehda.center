@@ -121,6 +121,13 @@ function forms_validate(formData, jqForm, options) {
 	//Form Feed...
 	$($feed).removeClass('alert-success').removeClass('alert-danger').html($($feed + "-wait").html()).slideDown();
 
+	//Bypass...
+	var stop = $('#' + $formId).attr('no-validation');
+	if (stop && stop == 1) {
+		return true ;
+	}
+
+
 	$('#' + $formId + ' :input').each(function () {
 		var $val = $(this).val();
 		var $name = $(this).attr('name');
@@ -384,12 +391,6 @@ function forms_validate(formData, jqForm, options) {
 			$errors_msg.push(validate);
 			$errors++;
 		}
-	}
-
-	//result...
-	var stop = $('#' + $formId).attr('no-validation');
-	if (stop && stop == 1) {
-		$errors = 0;
 	}
 
 	if ($errors > 0) {

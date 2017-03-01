@@ -84,6 +84,7 @@ function postToggleSchedule( $mood )
 	var $schedule = $("#divSchedule") ;
 	var $link = $("#lnkSchedule") ;
 	var $date = $("#txtPublishDate") ;
+	var $flag = $("#txtScheduleFlag");
 
 	if(!$mood) {
 		forms_log("mood="+$mood);
@@ -92,9 +93,11 @@ function postToggleSchedule( $mood )
 		else
 			$mood = 'show' ;
 	}
+
 	switch ($mood) {
 		case 'show' :
 			$schedule.slideDown('fast');
+			$flag.val('1');
 			$link.hide();
 			$date.focus() ;
 			break;
@@ -103,6 +106,7 @@ function postToggleSchedule( $mood )
 			$schedule.slideUp('fast');
 			$link.show();
 			$date.val('');
+			$flag.val('');
 			$("#cmbPublishDate").val('08:00');
 			$('.selectpicker').selectpicker('refresh');
 			break;
@@ -121,10 +125,20 @@ function postsAction($command)
 			postToggleSchedule('show') ;
 			break;
 
+		case 'refer_back' :
+			modalForm("modalPostReject" , '1');
+			break;
+
 		case 'delete':
 			modalForm("modalPostDeleteWarning" , '1') ;
 			break;
 
-
 	}
+}
+
+function postsReject()
+{
+	$(".modal").modal("hide") ;
+	$("#txtModerateNote").val( $("#txtModerateNote2").val() );
+	$('#btnReject').click();
 }

@@ -9,17 +9,14 @@
 		'id' => 'frmEditor',
 		'url' => 'manage/posts/save',
 		'files' =>false,
-		'class' => 'js'
+		'class' => 'js',
+		'no_validation' => "1" ,
 	])
 
-		@include("manage.posts.editor-tabs")
-
 		@include("forms.feed")
-
-		@include("forms.hiddens" , ['fields' => [
-			['id' , $model->id] ,
-			['type' , $model->encrypted_type],
-		]])
+		<div class="noDisplay">
+			@include("manage.posts.editor-hiddens")
+		</div>
 
 		<div class="row w100" style="margin-bottom: 50px">
 			<div class="col-md-9" >
@@ -29,10 +26,12 @@
 				@include("manage.posts.editor-2")
 			</div>
 		</div>
-	
+
+
 	@include("forms.closer")
 
-	@include("manage.posts.editor-modal-delete")
+	@include("manage.posts.editor-modals")
+
 
 	<script>postsInit()</script>
 @endsection
