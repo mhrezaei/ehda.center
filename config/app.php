@@ -169,6 +169,7 @@ return [
          * Package Service Providers...
          */
         Laravel\Tinker\TinkerServiceProvider::class,
+         Vinkla\Hashids\HashidsServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -242,7 +243,8 @@ return [
 
          'Manage' => \App\Providers\ManageServiceProvider::class ,
           'NoCaptcha' => 'Anhskohbo\NoCaptcha\Facades\NoCaptcha',
-//          'Setting' => \App\Providers\SettingServiceProvider::class,
+        'Hashids' => Vinkla\Hashids\Facades\Hashids::class,
+        //          'Setting' => \App\Providers\SettingServiceProvider::class,
     ],
 
 ];

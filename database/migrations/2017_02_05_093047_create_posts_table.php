@@ -39,7 +39,7 @@ class CreatePostsTable extends Migration
 			$table->boolean('is_draft')->default(1);
 			$table->boolean('is_limited')->default(0);
 			$table->unsignedInteger('copy_of')->default(0)->index() ;
-			$table->unsignedInteger('sisterhood')->default(0)->index() ;
+			$table->string('sisterhood',30)->default('')->index() ;
 
 			$table->longText('meta')->nullable() ;
 

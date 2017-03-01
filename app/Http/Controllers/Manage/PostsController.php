@@ -8,6 +8,7 @@ use App\Models\Posttype;
 use App\Traits\ManageControllerTrait;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
+use Vinkla\Hashids\Facades\Hashids;
 
 class PostsController extends Controller
 {
