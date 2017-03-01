@@ -68,7 +68,30 @@ class PostsController extends Controller
 
 	}
 
-	public function create($type_slug, $locale = null)
+	public function editor($post_type , $post_id)
+	{
+		//Model...
+		$model = Post::find($post_id);
+		if(!$model or $model->type != $post_type or !$model->posttype->exists) {
+			return view('errors.410');
+		}
+		if(!$model->spreadMeta()->canEdit()) {
+			return view('errors.403');
+		}
+
+		//Page...
+		$page = [
+				'0' => ["posts/$post_type" , $model->posttype->title , "posts/$post_type" ],
+				'1' => ["posts/$post_type/edit/$post_id" , trans('forms.button.edit') , "posts/$post_type/edit/$post_id"],
+		];
+
+		//View...
+		return view("manage.posts.editor",compact('page' , 'model'));
+
+
+	}
+
+	public function create($type_slug, $locale = null , $sisterhood = null)
 	{
 		//Permission...
 		if(user()->as('admin')->cannot("post-$type_slug.create"))
@@ -85,9 +108,14 @@ class PostsController extends Controller
 				return view('errors.410');
 			else
 				$model->locale = $locale ;
+
+			if($sisterhood) {
+				$model->sisterhood = $sisterhood ;
+			}
 		}
-		else
-			$model->locale = 'fa' ;
+		else {
+			$model->locale = 'fa';
+		}
 
 		$model->template = $model->posttype->spreadMeta()->template ;
 		if(!$model->posttype->exists)
@@ -202,8 +230,6 @@ class PostsController extends Controller
 			if(!$data['sale_expires_hour']) $data['sale_expires_hour'] = '00' ;
 			if(!$data['sale_expires_minute']) $data['sale_expires_minute'] = '00' ;
 			$data['sale_expires_at'] = makeDateTimeString($data['sale_expires_date'] , $data['sale_expires_hour'] , $data['sale_expires_minute']);
-			return $this->jsonFeedback($data['sale_expires_at']);
-
 		}
 		unset($data['sale_expires_date']);
 		unset($data['sale_expires_hour']);
@@ -231,9 +257,17 @@ class PostsController extends Controller
 					$data['moderated_By'] = user()->id ;
 					$data['published_at'] = Carbon::now()->toDateTimeString() ;
 					$data['moderated_at'] = Carbon::now()->toDateTimeString() ;
+					$redirect_url = url("manage/posts/".$data['type']."/edit/-ID-") ;
 					break;
 
 				case 'original':
+					if(!$model->isApproved()) {
+						$data['published_by'] = user()->id ;
+						$data['moderated_By'] = user()->id ;
+						$data['published_at'] = Carbon::now()->toDateTimeString() ;
+						$data['moderated_at'] = Carbon::now()->toDateTimeString() ;
+					}
+					$redirect_url = false ;
 					break;
 
 				case 'copy':
@@ -242,30 +276,44 @@ class PostsController extends Controller
 					$data['id'] = $original->id ;
 					$data['moderated_By'] = user()->id ;
 					$data['moderated_at'] = Carbon::now()->toDateTimeString() ;
+					$redirect_url = url("manage/posts/".$data['type']."/edit/".$original->id)  ;
 					break;
+
+				default:
+					return $this->jsonFeedback();
+
 			}
 		}
 
 		/*-----------------------------------------------
 		| In case of Approval command ...
 		*/
-		if($command == 'approval') {
+		elseif($command == 'approval') {
 			$data['is_draft'] = false ;
 			$data['moderate_note'] = null ;
 
 			switch($model->editor_mood) {
 				case 'new':
+					$redirect_url = url("manage/posts/".$data['type']."/edit/-ID-") ;
 					break;
 
 				case 'original':
 					if($model->isApproved()) {
 						$data['copy_of'] = $model->id ;
 						$data['id'] = 0 ;
+						$redirect_url = url("manage/posts/".$data['type']."/edit/-ID-") ;
+					}
+					else {
+						$redirect_url = false ;
 					}
 					break;
 
 				case 'copy':
+					$redirect_url = false ;
 					break;
+
+				default:
+					return $this->jsonFeedback();
 			}
 
 		}
@@ -273,23 +321,32 @@ class PostsController extends Controller
 		/*-----------------------------------------------
 		| In case of Save command ...
 		*/
-		if($command == 'save') {
+		elseif($command == 'save') {
 			$data['is_draft'] = true ;
 			$data['moderate_note'] = null ;
 
 			switch($model->editor_mood) {
 				case 'new':
+					$redirect_url = url("manage/posts/".$data['type']."/edit/-ID-") ;
 					break;
 
 				case 'original':
 					if($model->isApproved()) {
 						$data['copy_of'] = $model->id ;
 						$data['id'] = 0 ;
+						$redirect_url = url("manage/posts/".$data['type']."/edit/-ID-") ;
+					}
+					else {
+						$redirect_url = false ;
 					}
 					break;
 
 				case 'copy':
+					$redirect_url = false ;
 					break;
+
+				default:
+					return $this->jsonFeedback();
 			}
 
 		}
@@ -297,7 +354,7 @@ class PostsController extends Controller
 		/*-----------------------------------------------
 		| In case of Reject command ...
 		*/
-		if($command == 'reject') {
+		elseif($command == 'reject') {
 			$data['is_draft'] = true ;
 			$data['moderated_by'] = user()->id ;
 			$data['moderated_at'] = Carbon::now()->toDateTimeString() ;
@@ -313,12 +370,26 @@ class PostsController extends Controller
 						//this is a never-happening situation!
 						return $this->jsonFeedback();
 					}
+					else {
+						$redirect_url = url("manage/posts/".$data['type']."/pending") ;
+					}
 					break;
 
 				case 'copy':
+					$redirect_url = url("manage/posts/".$data['type']."/pending") ;
 					break;
+
+				default:
+					return $this->jsonFeedback();
 			}
 
+		}
+
+		/*-----------------------------------------------
+		| Safety ...
+		*/
+		else {
+			return $this->jsonFeedback();
 		}
 
 		/*-----------------------------------------------
@@ -366,13 +437,12 @@ class PostsController extends Controller
 		|--------------------------------------------------------------------------
 		|
 		*/
-		if($model->exists) {
-			$redirect_url = null ;
-			$refresh_page = true ;
+		if($redirect_url) {
+			$redirect_url = str_replace('-ID-' , $saved , $redirect_url) ;
+			$refresh_page = false ;
 		}
 		else {
-			$redirect_url = url("manage/posts/".$data['type']."/edit/".$data['id']);
-			$refresh_page = false ;
+			$refresh_page = true ;
 		}
 
 		return $this->jsonAjaxSaveFeedback($saved , [

@@ -24,7 +24,7 @@
 			@include('forms.button' , [
 				'label' => trans('posts.form.refer_back'),
 				'shape' => 'warning',
-				'link' => 'postsReject()',
+				'link' => 'postsAction("submit_reject")',
 			])
 
 			@include('forms.button' , [

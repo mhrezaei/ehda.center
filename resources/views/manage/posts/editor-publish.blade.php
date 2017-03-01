@@ -11,6 +11,9 @@
 
 		<div class="text-center alert alert-{{ trans("forms.status_color.$model->status") }}">
 			{{ trans("forms.status_text.$model->status") }}
+			@if($model->isCopy())
+				<span class="badge badge-inverse f8 mh5" title="{{ trans('posts.form.copy_status_hint') }}">{{ trans('posts.form.copy') }}</span>
+			@endif
 		</div>
 
 		{{--

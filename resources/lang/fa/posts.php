@@ -68,6 +68,8 @@ return [
 	],
 
 	'form' => [
+		'copy' => "رونوشت",
+		'copy_status_hint' => "در حال دستکاری یک رونوشت هستید.",
 		'title_placeholder' => "عنوان را اینجا وارد کنید" ,
 		'title2_placeholder' => "عنوان دوم را در صورت نیاز اینجا وارد کنید",
 		'add_second_title' => "افزودن عنوان دوم",
@@ -77,7 +79,7 @@ return [
 		'send_for_approval' => "ارسال به سردبیر",
 		'adjust_publish_time' => "تنظیم زمان انتشار",
 		'refer_back' => "بازگشت به نویسنده (رد)",
-		'refer_to' => "بازگشت به شخص دیگر",
+		'refer_to' => "ارجاع به شخص دیگر",
 		'unpublish' => "لغو انتشار",
 		'delete' => "انتقال به زباله‌دان",
 		'history' => "تاریخچه",

@@ -8,7 +8,7 @@
 	<div class="mv20">
 		@include("forms.textarea" , [
 			'name' => "text",
-			'value' => "$model->title",
+			'value' => $model->text,
 			'class' => "tinyEditor",
 			'rows' => "15",
 			'in_form' => false,

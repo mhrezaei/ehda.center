@@ -129,16 +129,18 @@ function postsAction($command)
 			modalForm("modalPostReject" , '1');
 			break;
 
+		case 'submit_reject': //called from #modalPostReject
+			$(".modal").modal("hide") ;
+			$("#txtModerateNote").val( $("#txtModerateNote2").val() );
+			$('#btnReject').click();
+			break;
+
 		case 'delete':
 			modalForm("modalPostDeleteWarning" , '1') ;
 			break;
 
-	}
-}
+		case 'send_for_approval' :
+			$("#btnApproval").click();
 
-function postsReject()
-{
-	$(".modal").modal("hide") ;
-	$("#txtModerateNote").val( $("#txtModerateNote2").val() );
-	$('#btnReject').click();
+	}
 }

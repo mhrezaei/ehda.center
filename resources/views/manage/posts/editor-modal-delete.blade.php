@@ -14,7 +14,7 @@
 		| 
 		--}}
 
-		@if($model->exists)
+		@if(!$model->exists)
 			@include("forms.note" , [
 				'text' => trans('posts.form.delete_alert_for_unsaved_post'),
 				'shape' => "danger",

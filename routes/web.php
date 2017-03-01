@@ -71,7 +71,7 @@ Route::group([
 	Route::group(['prefix'=>'posts'] , function() {
 		Route::get('/update/{item_id}' , 'PostsController@update');
 		Route::get('/{posttype}' , 'PostsController@browse') ;
-		Route::get('/{posttype}/create/{locale?}' , 'PostsController@create');
+		Route::get('/{posttype}/create/{locale?}/{sisterhood?}' , 'PostsController@create');
 		Route::get('{posttype}/edit/{post_id}' , 'PostsController@editor');
 		Route::get('{posttype}/searched' , 'PostsController@searchResult');
 		Route::get('{posttype}/search' , 'PostsController@searchPanel');

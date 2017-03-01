@@ -32,11 +32,11 @@ class Post extends Model
 	*/
 	public function categories()
 	{
-		return $this->belongsToMany('App\Models\Category')->withTimestamps();;
+		return $this->belongsToMany('App\Models\Category')->withTimestamps();
 	}
 	public function roles()
 	{
-		return $this->belongsToMany('App\Models\Role')->withTimestamps();; //@TODO: complete with withPivot('permissions' , 'deleted_at') perhaps
+		return $this->belongsToMany('App\Models\Rsole')->withTimestamps();; //@TODO: complete with withPivot('permissions' , 'deleted_at') perhaps
 	}
 
 	public function posttype()
@@ -95,6 +95,7 @@ class Post extends Model
 			$model = new self() ;
 			$model->locale = $locale ;
 			$model->type = $this->type ;
+			$model->sisterhood = $this->sisterhood ;
 			return $model ;
 		}
 	}
@@ -195,7 +196,7 @@ class Post extends Model
 
 	public function getCreateLinkAttribute()
 	{
-		return url("manage/posts/".$this->type."/create/".$this->locale) ;
+		return url("manage/posts/".$this->type."/create/".$this->locale."/".$this->sisterhood) ;
 	}
 
 	public function getEditLinkAttribute()
