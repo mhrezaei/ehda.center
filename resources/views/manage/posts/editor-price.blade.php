@@ -152,9 +152,9 @@
 
 					<label for="sale_expires_hour" class="control-label text-gray " >&nbsp;</label>
 					<div class="input-group input-group-sm">
-						<input id="txtExpireM" name="sale_expires_minute" value="{{ $model->isScheduled()? jdate($model->sale_expires_at)->format('i') : ''}}" type="text" class="form-control ltr text-center" onblur=""  placeholder="50" min="0" max="59">
+						<input id="txtExpireM" name="sale_expires_minute" value="{{ $model->sale_expires_at? jdate($model->sale_expires_at)->format('i') : ''}}" type="text" class="form-control ltr text-center" onblur=""  placeholder="50" min="0" max="59">
 						<span class="input-group-addon">:</span>
-						<input id="txtExpireH" name="sale_expires_hour" value="{{ $model->isScheduled()? jdate($model->sale_expires_at)->format('H') : ''}}" type="text" class="form-control ltr text-center" onblur="$('#txtExpireM').focus()" placeholder="13" min="0" max="23" >
+						<input id="txtExpireH" name="sale_expires_hour" value="{{ $model->sale_expires_at? jdate($model->sale_expires_at)->format('H') : ''}}" type="text" class="form-control ltr text-center" onblur="$('#txtExpireM').focus()" placeholder="13" min="0" max="23" >
 					</div>
 
 				</div>

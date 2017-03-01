@@ -110,13 +110,18 @@ class PostsController extends Controller
 			else
 				$model->locale = $locale ;
 
-			if($sisterhood) {
-				$model->sisterhood = $sisterhood ;
-			}
 		}
 		else {
 			$model->locale = 'fa';
 		}
+
+		if($sisterhood) {
+			$model->sisterhood = $sisterhood ;
+		}
+		else {
+			$model->sisterhood = Hashids::encode(time());
+		}
+
 
 		$model->template = $model->posttype->spreadMeta()->template ;
 		if(!$model->posttype->exists)
@@ -256,8 +261,10 @@ class PostsController extends Controller
 				case 'new':
 					$data['published_by'] = user()->id ;
 					$data['moderated_By'] = user()->id ;
-					$data['published_at'] = Carbon::now()->toDateTimeString() ;
 					$data['moderated_at'] = Carbon::now()->toDateTimeString() ;
+					if(!isset($data['published_at'])) {
+						$data['published_at'] = Carbon::now()->toDateTimeString();
+					}
 					$redirect_url = url("manage/posts/".$data['type']."/edit/-ID-") ;
 					break;
 

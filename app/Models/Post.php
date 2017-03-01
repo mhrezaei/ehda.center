@@ -56,12 +56,7 @@ class Post extends Model
 
 	public function sisters()
 	{
-		if($this->sisterhood > 0) {
-			return self::where('sisterhood' , $this->sisterhood) ;
-		}
-		else {
-			return self::where('id' , '0');
-		}
+		return self::where('sisterhood' , $this->sisterhood) ;
 	}
 
 	public function copies()

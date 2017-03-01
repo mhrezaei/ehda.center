@@ -9,7 +9,7 @@
 	@include("forms.input-self" , [
 		'name' => "title",
 		'value' => $model->title,
-		'class' => "form-required form-default",
+		'class' => "form-required form-default atr",
 		'placeholder' => trans('posts.form.title_placeholder'),
 	])
 @else

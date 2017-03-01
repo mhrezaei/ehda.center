@@ -5,8 +5,8 @@ if(!isset($name))
 if(!isset($id))
 	$id = 'txtDate'.rand(1,1000) ;
 
-if(isset($value) and is_object($value))
-	$value = $value->$name ;
+//if(isset($value) and is_object($value))
+//	$value = $value->$name ;
 
 if(isset($class))
 	$class = 'datepicker '.$class ;

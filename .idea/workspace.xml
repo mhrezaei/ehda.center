@@ -4,14 +4,11 @@
     <list default="true" id="46984444-c09d-4610-9f2b-ef3bb8a2357d" name="Default" comment="            $table-&gt;unsignedInteger('deleted_by')-&gt;default(0) ;&#10;">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Manage/PostsController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Manage/PostsController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/composer.json" afterPath="$PROJECT_DIR$/composer.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/composer.lock" afterPath="$PROJECT_DIR$/composer.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/app.php" afterPath="$PROJECT_DIR$/config/app.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/database/migrations/2017_02_05_093047_create_posts_table.php" afterPath="$PROJECT_DIR$/database/migrations/2017_02_05_093047_create_posts_table.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/vendor/composer/autoload_classmap.php" afterPath="$PROJECT_DIR$/vendor/composer/autoload_classmap.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/vendor/composer/autoload_psr4.php" afterPath="$PROJECT_DIR$/vendor/composer/autoload_psr4.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/vendor/composer/autoload_static.php" afterPath="$PROJECT_DIR$/vendor/composer/autoload_static.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/vendor/composer/installed.json" afterPath="$PROJECT_DIR$/vendor/composer/installed.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/Post.php" afterPath="$PROJECT_DIR$/app/Models/Post.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/forms/datepicker.blade.php" afterPath="$PROJECT_DIR$/resources/views/forms/datepicker.blade.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/manage/posts/editor-hiddens.blade.php" afterPath="$PROJECT_DIR$/resources/views/manage/posts/editor-hiddens.blade.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/manage/posts/editor-price.blade.php" afterPath="$PROJECT_DIR$/resources/views/manage/posts/editor-price.blade.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/manage/posts/editor-title.blade.php" afterPath="$PROJECT_DIR$/resources/views/manage/posts/editor-title.blade.php" />
     </list>
     <ignored path="yasna-web.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -61,17 +58,7 @@
             <entry file="file://$PROJECT_DIR$/app/Models/Post.php">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="202" column="6" selection-start-line="202" selection-start-column="6" selection-end-line="202" selection-end-column="6" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="hashids.php" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/config/hashids.php">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
+                  <caret line="59" column="6" selection-start-line="59" selection-start-column="6" selection-end-line="59" selection-end-column="6" />
                   <folding />
                 </state>
               </provider>
@@ -92,8 +79,8 @@
           <file leaf-file-name="PostsController.php" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Manage/PostsController.php">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.44590163">
-                  <caret line="252" column="46" selection-start-line="252" selection-start-column="46" selection-end-line="252" selection-end-column="46" />
+                <state vertical-scroll-proportion="2.5089285">
+                  <caret line="267" column="0" selection-start-line="267" selection-start-column="0" selection-end-line="267" selection-end-column="0" />
                   <folding>
                     <element signature="e#47#92#0#PHP" expanded="true" />
                   </folding>
@@ -148,18 +135,65 @@
               </provider>
             </entry>
           </file>
+          <file leaf-file-name="editor-title.blade.php" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-title.blade.php">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="11" column="52" selection-start-line="11" selection-start-column="52" selection-end-line="11" selection-end-column="52" />
+                  <folding>
+                    <marker date="1488410857000" expanded="true" signature="311:490" placeholder="..." />
+                    <marker date="1488410857000" expanded="true" signature="333:489" placeholder="..." />
+                    <marker date="1488410857000" expanded="true" signature="508:733" placeholder="..." />
+                    <marker date="1488410857000" expanded="true" signature="528:732" placeholder="..." />
+                    <marker date="1488410857000" expanded="true" signature="1363:1531" placeholder="..." />
+                    <marker date="1488410857000" expanded="true" signature="1385:1530" placeholder="..." />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="editor-schedule.blade.php" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-schedule.blade.php">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="28" column="35" selection-start-line="28" selection-start-column="35" selection-end-line="28" selection-end-column="35" />
+                  <folding>
+                    <marker date="1488411450000" expanded="true" signature="615:734" placeholder="..." />
+                    <marker date="1488411450000" expanded="true" signature="633:733" placeholder="..." />
+                    <marker date="1488411450000" expanded="true" signature="944:1188" placeholder="..." />
+                    <marker date="1488411450000" expanded="true" signature="966:1187" placeholder="..." />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="datepicker.blade.php" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/resources/views/forms/datepicker.blade.php">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="-5.111111">
+                  <caret line="8" column="2" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="2" />
+                  <folding>
+                    <marker date="1488411559000" expanded="true" signature="492:842" placeholder="..." />
+                    <marker date="1488411559000" expanded="true" signature="509:841" placeholder="..." />
+                    <marker date="1488411559000" expanded="true" signature="854:960" placeholder="..." />
+                    <marker date="1488411559000" expanded="true" signature="872:959" placeholder="..." />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file leaf-file-name="editor-locales.blade.php" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-locales.blade.php">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="29" column="116" selection-start-line="29" selection-start-column="116" selection-end-line="29" selection-end-column="116" />
+                  <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
                   <folding>
-                    <marker date="1488385555000" expanded="true" signature="739:974" placeholder="..." />
-                    <marker date="1488385555000" expanded="true" signature="775:973" placeholder="..." />
-                    <marker date="1488385555000" expanded="true" signature="1560:1830" placeholder="..." />
-                    <marker date="1488385555000" expanded="true" signature="1586:1825" placeholder="..." />
-                    <marker date="1488385555000" expanded="true" signature="1876:1945" placeholder="..." />
-                    <marker date="1488385555000" expanded="true" signature="1894:1944" placeholder="..." />
+                    <marker date="1488409367000" expanded="true" signature="739:974" placeholder="..." />
+                    <marker date="1488409367000" expanded="true" signature="775:973" placeholder="..." />
+                    <marker date="1488409367000" expanded="true" signature="1560:1830" placeholder="..." />
+                    <marker date="1488409367000" expanded="true" signature="1586:1825" placeholder="..." />
+                    <marker date="1488409367000" expanded="true" signature="1876:1945" placeholder="..." />
+                    <marker date="1488409367000" expanded="true" signature="1894:1944" placeholder="..." />
                   </folding>
                 </state>
               </provider>
@@ -250,7 +284,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/resources/views/manage/settings/downstream-value.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/forms/select_self.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-template.blade.php" />
         <option value="$PROJECT_DIR$/resources/sass/_basement.scss" />
@@ -271,13 +304,9 @@
         <option value="$PROJECT_DIR$/database/migrations/2017_02_06_090119_create_roles_table.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-2.blade.php" />
         <option value="$PROJECT_DIR$/public/assets/js/forms.js" />
-        <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-title.blade.php" />
         <option value="$PROJECT_DIR$/app/Providers/ValidationServiceProvider.php" />
-        <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-price.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/helpers.php" />
-        <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-schedule.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-meta.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-locales.blade.php" />
         <option value="$PROJECT_DIR$/database/seeds/ProjectSeeder.php" />
         <option value="$PROJECT_DIR$/app/Models/Posttype.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-modals.blade.php" />
@@ -288,19 +317,24 @@
         <option value="$PROJECT_DIR$/app/Http/Requests/Manage/PostSaveRequest.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-text.blade.php" />
         <option value="$PROJECT_DIR$/resources/lang/fa/validation.php" />
-        <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-hiddens.blade.php" />
         <option value="$PROJECT_DIR$/public/assets/js/postEditorScripts.js" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-modal-reject.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-modal-delete.blade.php" />
         <option value="$PROJECT_DIR$/resources/lang/fa/posts.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-publish.blade.php" />
         <option value="$PROJECT_DIR$/routes/web.php" />
-        <option value="$PROJECT_DIR$/app/Models/Post.php" />
         <option value="$PROJECT_DIR$/config/app.php" />
         <option value="$PROJECT_DIR$/vendor/vinkla/hashids/config/hashids.php" />
         <option value="$PROJECT_DIR$/config/hashids.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Manage/PostsController.php" />
         <option value="$PROJECT_DIR$/database/migrations/2017_02_05_093047_create_posts_table.php" />
+        <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-locales.blade.php" />
+        <option value="$PROJECT_DIR$/app/Models/Post.php" />
+        <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-hiddens.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-title.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-price.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-schedule.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/forms/datepicker.blade.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Manage/PostsController.php" />
       </list>
     </option>
   </component>
@@ -601,17 +635,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/Models/Post.php</url>
-          <line>347</line>
+          <line>342</line>
           <option name="timeStamp" value="71" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/Models/Post.php</url>
-          <line>351</line>
+          <line>346</line>
           <option name="timeStamp" value="75" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/Models/Post.php</url>
-          <line>352</line>
+          <line>347</line>
           <option name="timeStamp" value="76" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
@@ -630,17 +664,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-visibility.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="14" selection-start-line="0" selection-start-column="14" selection-end-line="0" selection-end-column="14" />
-          <folding>
-            <marker date="1488208127000" expanded="true" signature="59:284" placeholder="..." />
-            <marker date="1488208127000" expanded="true" signature="82:283" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-image.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.38248336">
@@ -714,21 +737,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-title.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35384616">
-          <caret line="10" column="33" selection-start-line="10" selection-start-column="33" selection-end-line="10" selection-end-column="33" />
-          <folding>
-            <marker date="1488286921000" expanded="true" signature="311:486" placeholder="..." />
-            <marker date="1488286921000" expanded="true" signature="333:485" placeholder="..." />
-            <marker date="1488286921000" expanded="true" signature="504:729" placeholder="..." />
-            <marker date="1488286921000" expanded="true" signature="524:728" placeholder="..." />
-            <marker date="1488286921000" expanded="true" signature="1359:1527" placeholder="..." />
-            <marker date="1488286921000" expanded="true" signature="1381:1526" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/lang/fa/people.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -785,17 +793,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-schedule.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.46">
-          <caret line="22" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding>
-            <marker date="1488384795000" expanded="true" signature="944:1188" placeholder="..." />
-            <marker date="1488384795000" expanded="true" signature="966:1187" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/database/seeds/ProjectSeeder.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6028708">
@@ -809,30 +806,6 @@
         <state vertical-scroll-proportion="3.3261538">
           <caret line="94" column="0" selection-start-line="91" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-price.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2923077">
-          <caret line="142" column="52" selection-start-line="142" selection-start-column="52" selection-end-line="142" selection-end-column="52" />
-          <folding>
-            <marker date="1488358403000" expanded="true" signature="531:769" placeholder="..." />
-            <marker date="1488358403000" expanded="true" signature="554:768" placeholder="..." />
-            <marker date="1488358403000" expanded="true" signature="852:1264" placeholder="..." />
-            <marker date="1488358403000" expanded="true" signature="875:1263" placeholder="..." />
-            <marker date="1488358403000" expanded="true" signature="1025:1134" placeholder="..." />
-            <marker date="1488358403000" expanded="true" signature="1558:1944" placeholder="..." />
-            <marker date="1488358403000" expanded="true" signature="1580:1943" placeholder="..." />
-            <marker date="1488358403000" expanded="true" signature="2036:2314" placeholder="..." />
-            <marker date="1488358403000" expanded="true" signature="2058:2309" placeholder="..." />
-            <marker date="1488358403000" expanded="true" signature="2603:3008" placeholder="..." />
-            <marker date="1488358403000" expanded="true" signature="2625:3007" placeholder="..." />
-            <marker date="1488358403000" expanded="true" signature="3087:3463" placeholder="..." />
-            <marker date="1488358403000" expanded="true" signature="3109:3462" placeholder="..." />
-            <marker date="1488358403000" expanded="true" signature="3755:3989" placeholder="..." />
-            <marker date="1488358403000" expanded="true" signature="3777:3988" placeholder="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -987,24 +960,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-hiddens.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.71692306">
-          <caret line="43" column="24" selection-start-line="43" selection-start-column="24" selection-end-line="43" selection-end-column="24" />
-          <folding>
-            <marker date="1488403155000" expanded="true" signature="184:278" placeholder="..." />
-            <marker date="1488403155000" expanded="true" signature="203:277" placeholder="..." />
-            <marker date="1488403155000" expanded="true" signature="216:276" placeholder="..." />
-            <marker date="1488403155000" expanded="true" signature="482:617" placeholder="..." />
-            <marker date="1488403155000" expanded="true" signature="500:616" placeholder="..." />
-            <marker date="1488403155000" expanded="true" signature="824:923" placeholder="..." />
-            <marker date="1488403155000" expanded="true" signature="844:922" placeholder="..." />
-            <marker date="1488403155000" expanded="true" signature="934:1063" placeholder="..." />
-            <marker date="1488403155000" expanded="true" signature="952:1062" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-text.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.35384616">
@@ -1091,17 +1046,154 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/vinkla/hashids/config/hashids.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6983607">
+          <caret line="42" column="39" selection-start-line="42" selection-start-column="23" selection-end-line="42" selection-end-column="39" />
+          <folding>
+            <element signature="e#7#229#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/migrations/2017_02_05_093047_create_posts_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.49642858">
+          <caret line="43" column="53" selection-start-line="43" selection-start-column="53" selection-end-line="43" selection-end-column="53" />
+          <folding>
+            <element signature="e#7#45#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/hashids.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7163935">
+          <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/assets/js/postEditorScripts.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="124" column="46" selection-start-line="124" selection-start-column="46" selection-end-line="124" selection-end-column="46" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/Posttype.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-11.925926">
+          <caret line="45" column="59" selection-start-line="45" selection-start-column="59" selection-end-line="45" selection-end-column="59" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/Post.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="59" column="6" selection-start-line="59" selection-start-column="6" selection-end-line="59" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-locales.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="29" column="116" selection-start-line="29" selection-start-column="116" selection-end-line="29" selection-end-column="116" />
+          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
           <folding>
-            <marker date="1488385555000" expanded="true" signature="739:974" placeholder="..." />
-            <marker date="1488385555000" expanded="true" signature="775:973" placeholder="..." />
-            <marker date="1488385555000" expanded="true" signature="1560:1830" placeholder="..." />
-            <marker date="1488385555000" expanded="true" signature="1586:1825" placeholder="..." />
-            <marker date="1488385555000" expanded="true" signature="1876:1945" placeholder="..." />
-            <marker date="1488385555000" expanded="true" signature="1894:1944" placeholder="..." />
+            <marker date="1488409367000" expanded="true" signature="739:974" placeholder="..." />
+            <marker date="1488409367000" expanded="true" signature="775:973" placeholder="..." />
+            <marker date="1488409367000" expanded="true" signature="1560:1830" placeholder="..." />
+            <marker date="1488409367000" expanded="true" signature="1586:1825" placeholder="..." />
+            <marker date="1488409367000" expanded="true" signature="1876:1945" placeholder="..." />
+            <marker date="1488409367000" expanded="true" signature="1894:1944" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-hiddens.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.35264054">
+          <caret line="9" column="39" selection-start-line="9" selection-start-column="39" selection-end-line="9" selection-end-column="39" />
+          <folding>
+            <marker date="1488410629000" expanded="true" signature="184:315" placeholder="..." />
+            <marker date="1488410629000" expanded="true" signature="203:314" placeholder="..." />
+            <marker date="1488410629000" expanded="true" signature="216:313" placeholder="..." />
+            <marker date="1488410629000" expanded="true" signature="519:654" placeholder="..." />
+            <marker date="1488410629000" expanded="true" signature="537:653" placeholder="..." />
+            <marker date="1488410629000" expanded="true" signature="861:960" placeholder="..." />
+            <marker date="1488410629000" expanded="true" signature="881:959" placeholder="..." />
+            <marker date="1488410629000" expanded="true" signature="971:1100" placeholder="..." />
+            <marker date="1488410629000" expanded="true" signature="989:1099" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-price.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.58603066">
+          <caret line="155" column="64" selection-start-line="155" selection-start-column="64" selection-end-line="155" selection-end-column="64" />
+          <folding>
+            <marker date="1488411185000" expanded="true" signature="531:769" placeholder="..." />
+            <marker date="1488411185000" expanded="true" signature="554:768" placeholder="..." />
+            <marker date="1488411185000" expanded="true" signature="852:1264" placeholder="..." />
+            <marker date="1488411185000" expanded="true" signature="875:1263" placeholder="..." />
+            <marker date="1488411185000" expanded="true" signature="1025:1134" placeholder="..." />
+            <marker date="1488411185000" expanded="true" signature="1558:1944" placeholder="..." />
+            <marker date="1488411185000" expanded="true" signature="1580:1943" placeholder="..." />
+            <marker date="1488411185000" expanded="true" signature="2036:2314" placeholder="..." />
+            <marker date="1488411185000" expanded="true" signature="2058:2309" placeholder="..." />
+            <marker date="1488411185000" expanded="true" signature="2603:3008" placeholder="..." />
+            <marker date="1488411185000" expanded="true" signature="2625:3007" placeholder="..." />
+            <marker date="1488411185000" expanded="true" signature="3087:3463" placeholder="..." />
+            <marker date="1488411185000" expanded="true" signature="3109:3462" placeholder="..." />
+            <marker date="1488411185000" expanded="true" signature="3755:3989" placeholder="..." />
+            <marker date="1488411185000" expanded="true" signature="3777:3988" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/forms/datepicker.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.111111">
+          <caret line="8" column="2" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="2" />
+          <folding>
+            <marker date="1488411559000" expanded="true" signature="492:842" placeholder="..." />
+            <marker date="1488411559000" expanded="true" signature="509:841" placeholder="..." />
+            <marker date="1488411559000" expanded="true" signature="854:960" placeholder="..." />
+            <marker date="1488411559000" expanded="true" signature="872:959" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-schedule.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="28" column="35" selection-start-line="28" selection-start-column="35" selection-end-line="28" selection-end-column="35" />
+          <folding>
+            <marker date="1488411450000" expanded="true" signature="615:734" placeholder="..." />
+            <marker date="1488411450000" expanded="true" signature="633:733" placeholder="..." />
+            <marker date="1488411450000" expanded="true" signature="944:1188" placeholder="..." />
+            <marker date="1488411450000" expanded="true" signature="966:1187" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/editor-title.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="11" column="52" selection-start-line="11" selection-start-column="52" selection-end-line="11" selection-end-column="52" />
+          <folding>
+            <marker date="1488410857000" expanded="true" signature="311:490" placeholder="..." />
+            <marker date="1488410857000" expanded="true" signature="333:489" placeholder="..." />
+            <marker date="1488410857000" expanded="true" signature="508:733" placeholder="..." />
+            <marker date="1488410857000" expanded="true" signature="528:732" placeholder="..." />
+            <marker date="1488410857000" expanded="true" signature="1363:1531" placeholder="..." />
+            <marker date="1488410857000" expanded="true" signature="1385:1530" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1149,64 +1241,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/vinkla/hashids/config/hashids.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6983607">
-          <caret line="42" column="39" selection-start-line="42" selection-start-column="23" selection-end-line="42" selection-end-column="39" />
-          <folding>
-            <element signature="e#7#229#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/Posttype.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.925926">
-          <caret line="45" column="59" selection-start-line="45" selection-start-column="59" selection-end-line="45" selection-end-column="59" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/database/migrations/2017_02_05_093047_create_posts_table.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.49642858">
-          <caret line="43" column="53" selection-start-line="43" selection-start-column="53" selection-end-line="43" selection-end-column="53" />
-          <folding>
-            <element signature="e#7#45#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/Post.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="202" column="6" selection-start-line="202" selection-start-column="6" selection-end-line="202" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/hashids.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/assets/js/postEditorScripts.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="124" column="46" selection-start-line="124" selection-start-column="46" selection-end-line="124" selection-end-column="46" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Manage/PostsController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.44590163">
-          <caret line="252" column="46" selection-start-line="252" selection-start-column="46" selection-end-line="252" selection-end-column="46" />
+        <state vertical-scroll-proportion="2.5089285">
+          <caret line="267" column="0" selection-start-line="267" selection-start-column="0" selection-end-line="267" selection-end-column="0" />
           <folding>
             <element signature="e#47#92#0#PHP" expanded="true" />
           </folding>
