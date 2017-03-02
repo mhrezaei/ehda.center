@@ -62,4 +62,5 @@
 @include("forms.hidden" , [
 	'name' => "locale",
 	'value' => $model->locale,
+	'id' => "txtLocale",
 ])

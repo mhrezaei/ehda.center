@@ -216,6 +216,10 @@ class Post extends Model
 
 	}
 
+	public function getNormalizedSlugAttribute()
+	{
+		return self::normalizeSlug($this->id , $this->type , $this->locale , $this->slug);
+	}
 
 
 	/*
@@ -425,6 +429,34 @@ class Post extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
+	public static function normalizeSlug($post_id, $post_type, $post_locale, $suggested_slug)
+	{
+		//preparations...
+		$found_a_unique_slug = false ;
+		$tries = 1 ;
+
+		//safety...
+		if(!preg_match('/^[a-zA-Z0-9_\-]/', $suggested_slug) or str_contains("01234567890-_",$suggested_slug[0])) {
+			return '' ;
+		}
+
+		//loop...
+		while(!$found_a_unique_slug) {
+			$used = self::where('id','!=',$post_id)->where('type' , $post_type)->where('locale' , $post_locale)->where('slug' , $suggested_slug)->where('copy_of',0)->withTrashed()->count();
+			if($used) {
+				$tries++ ;
+				$suggested_slug .= "-".strval($tries) ;
+			}
+			else {
+				$found_a_unique_slug = true ;
+			}
+		}
+
+		//return...
+		return $suggested_slug ;
+
+	}
+
 	public function packageCombo()
 	{
 		return Package::all();

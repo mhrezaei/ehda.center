@@ -140,6 +140,18 @@ class PostsController extends Controller
 
 	}
 
+	public function checkSlug($post_id , $post_type , $post_locale , $suggested_slug)
+	{
+		if($suggested_slug) {
+			$approved_slug = Post::normalizeSlug($post_id , $post_type , $post_locale , $suggested_slug);
+		}
+		else {
+			$approved_slug = '' ;
+		}
+		return view("manage.posts.editor-slug-feedback",compact('suggested_slug' , 'approved_slug'));
+
+	}
+
 	public function save(PostSaveRequest $request)
 	{
 		$data = $request->toArray() ;
@@ -160,6 +172,7 @@ class PostsController extends Controller
 		else {
 			$model = new Post() ;
 			$model->type = $request->type ;
+			$model->locale = $data['locale'] ;
 			if(!$model->posttype()) {
 				return $this->jsonFeedback(trans('validation.http.Error410'));
 			}
@@ -205,6 +218,17 @@ class PostsController extends Controller
 		*/
 		if(!$model->exists) {
 			$data['owned_by'] = user()->id ;
+		}
+
+		/*-----------------------------------------------
+		| Slug ...
+		*/
+		if($model->has('slug')) {
+			$model->slug = $data['slug'] ;
+			$data['slug'] = $model->normalized_slug ;
+		}
+		else {
+			$data['slug'] = null ;
 		}
 
 
@@ -450,7 +474,7 @@ class PostsController extends Controller
 			$refresh_page = false ;
 		}
 		else {
-			$refresh_page = true ;
+			$refresh_page = false; //true ;
 		}
 
 		return $this->jsonAjaxSaveFeedback($saved , [
@@ -459,6 +483,7 @@ class PostsController extends Controller
 		]);
 
 	}
+
 
 	public function saveDelete($request)
 	{

@@ -219,6 +219,12 @@ class ValidationServiceProvider extends ServiceProvider
 		$this->app['validator']->extend('persian', function($attribute, $value, $parameters, $validator){
 			return self::persianChar($attribute, $value, $parameters, $validator);
 		});
+		$this->app['validator']->extend('english', function($attribute, $value, $parameters, $validator){
+			return self::englishChar($attribute, $value, $parameters, $validator);
+		});
+		$this->app['validator']->extend('slug', function($attribute, $value, $parameters, $validator){
+			return self::slug($attribute, $value, $parameters, $validator);
+		});
 		$this->app['validator']->extend('fileExists', function($attribute, $value, $parameters, $validator){
 			return self::fileExists($attribute, $value, $parameters, $validator);
 		});
@@ -369,6 +375,22 @@ class ValidationServiceProvider extends ServiceProvider
 		$k2 = ord(substr($k, 1, 1));
 		return $k2 * 256 + $k1;
 	}
+
+	private static function englishChar($attribute, $value, $parameters, $validator)
+	{
+		return preg_match('/^[a-zA-Z0-9_\-]/', $value);
+	}
+
+	private static function slug($attribute, $value, $parameters, $validator)
+	{
+		if(preg_match('/^[a-zA-Z0-9_\-]/', $value) and !str_contains("01234567890-_",$value[0])) {
+			return true ;
+		}
+		else {
+			return false ;
+		}
+	}
+
 
 	private static function persianChar($attribute, $value, $parameters, $validator) {
 		$str = $value;

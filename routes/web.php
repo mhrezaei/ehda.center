@@ -70,6 +70,8 @@ Route::group([
 	*/
 	Route::group(['prefix'=>'posts'] , function() {
 		Route::get('/update/{item_id}' , 'PostsController@update');
+		Route::get('/check_slug/{id}/{type}/{locale}/{slug}' , 'PostsController@checkSlug');
+
 		Route::get('/{posttype}' , 'PostsController@browse') ;
 		Route::get('/{posttype}/create/{locale?}/{sisterhood?}' , 'PostsController@create');
 		Route::get('{posttype}/edit/{post_id}' , 'PostsController@editor');

@@ -5,8 +5,8 @@
 | 
 --}}
 @include("forms.hiddens" , ['fields' => [
-	['id' , $model->id] ,
-	['type' , $model->encrypted_type],
+	['id' , $model->id , 'txtId'] ,
+	['type' , $model->type , 'txtType'],
 	['sisterhood' , $model->sisterhood]
 ]])
 

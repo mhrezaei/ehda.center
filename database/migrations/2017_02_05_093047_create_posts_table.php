@@ -30,7 +30,7 @@ class CreatePostsTable extends Migration
 			//@TODO: Permissions
 
 			$table->increments('id');
-			$table->string('slug')->index() ;
+			$table->string('slug')->nullable()->index() ;
 			$table->string('type')->index() ;
 			$table->string('title')->index();
 			$table->string('locale' , 2)->default('fa')->index() ;

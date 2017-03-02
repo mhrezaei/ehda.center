@@ -97,5 +97,9 @@ return [
 		'delete_alert_for_copies' => "شما در حال دستکاری یک رونوشت هستید. همین رونوشت را به زباله‌دان می‌فرستید؟",
 		'delete_this_copy' => "همین رونوشت پاک شود",
 		'delete_original_post' => "نوشته اصلی پاک شود",
+		'slug' => "نامک (فقط حروف انگلیسی)",
+		'valid_slug' => "نامک مورد قبول است.",
+		'invalid_slug' => "این نامک قبول نیست.",
+		'slug_will_be_changed_to' => "به :approved_slug تغییرش می‌دهیم.",
 	],
 ];

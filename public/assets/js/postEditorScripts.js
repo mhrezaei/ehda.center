@@ -141,6 +141,21 @@ function postsAction($command)
 
 		case 'send_for_approval' :
 			$("#btnApproval").click();
+			break;
+
+		case 'check_slug' :
+			$divFeedback = $("#divSlugFeedback");
+			$divFeedback.html('...').addClass('loading');
+			$.ajax({
+				url: url("manage/posts/check_slug/" + $("#txtId").val() + "/" + $("#txtType").val() + "/" + $("#txtLocale").val() + '/' + $("#txtSlug").val()),
+				cache: false
+			})
+			.done(function (html) {
+				$($divFeedback).html(html);
+				$($divFeedback).removeClass('loading') ;
+			});
+
+			break;
 
 	}
 }

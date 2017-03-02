@@ -34,6 +34,7 @@ class PostSaveRequest extends Request
 			case 'approval' :
 				$rules = [
 					'title' => "required",
+					'slug' => "slug",
 				];
 				if(isset($input['_schedule']) and $input['_schedule']) {
 					$rules = array_merge($rules , [
@@ -69,6 +70,7 @@ class PostSaveRequest extends Request
 			case 'save' :
 				$rules = [
 						'title' => "required",
+						'slug' => "slug",
 				];
 				break;
 
@@ -87,8 +89,9 @@ class PostSaveRequest extends Request
 			'sale_price' => "ed|numeric",
 			'sale_expires_minute' => "ed",
 			'sale_expires_hour' => "ed",
-			'type' => "decrypt",
+//			'type' => "decrypt",
 			'_meta_required_fields' => "decrypt|array",
+			'slug' => "lower",
 		]);
 		return $purified;
 

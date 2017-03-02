@@ -34,12 +34,15 @@
 			--}}
 			@include("forms.input-self" , [
 				'condition' => $model->has('slug'),
-				'top_label' => trans('validation.attributes.slug'),
+				'top_label' => trans('posts.form.slug'),
 				'name' => "slug",
 				'value' => $model->slug,
 				'class' => "ltr text-center",
 				'placeholder' => "like_this",
+				'on_blur' => "postsAction('check_slug')",
+				'id' => "txtSlug",
 			])
+			<div id="divSlugFeedback"></div>
 
 			{{--
 			|--------------------------------------------------------------------------
