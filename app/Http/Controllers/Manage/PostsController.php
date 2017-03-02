@@ -438,6 +438,7 @@ class PostsController extends Controller
 		*/
 
 		if($saved) {
+			$saved_model = Post::find($saved) ;
 
 			/*-----------------------------------------------
 			| Delete Copies ...
@@ -449,7 +450,9 @@ class PostsController extends Controller
 			/*-----------------------------------------------
 			| Categories ...
 			*/
-			//@TODO
+			if($model->has('category')) {
+				$saved_model->saveCategories($data) ;
+			}
 
 			/*-----------------------------------------------
 			| Post History ...

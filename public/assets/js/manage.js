@@ -189,10 +189,10 @@ function posttypeFeatures($feature)
 	/*-----------------------------------------------
 	 | Features that must be together ...
 	 */
-	if($feature=='full_history' && $input.val().indexOf('full_history')>=0 && $input.val().indexOf('short_history')<0) {
-		posttypeFeatures('short_history');
+	if($feature=='full_history' && $input.val().indexOf('full_history')>=0 && $input.val().indexOf('history_system')<0) {
+		posttypeFeatures('history_system');
 	}
-	if($feature=='short_history' && $input.val().indexOf('full_history')>=0 && $input.val().indexOf('short_history')<0) {
+	if($feature=='history_system' && $input.val().indexOf('full_history')>=0 && $input.val().indexOf('history_system')<0) {
 		posttypeFeatures('full_history');
 	}
 

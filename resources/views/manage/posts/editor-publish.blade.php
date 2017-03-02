@@ -76,9 +76,11 @@
 					],
 					[
 						'command' => "-",
+						'condition' => $model->has('history_system'),
 					],
 					[
 						'command' => "history",
+						'condition' => $model->has('history_system'),
 					],
 
 				]])

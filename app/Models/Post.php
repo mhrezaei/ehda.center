@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Crypt;
+use Vinkla\Hashids\Facades\Hashids;
 
 class Post extends Model
 {
@@ -221,6 +222,18 @@ class Post extends Model
 		return self::normalizeSlug($this->id , $this->type , $this->locale , $this->slug);
 	}
 
+	public function getCategoryIdsAttribute()
+	{
+		$categories = $this->categories ;
+		$list = [] ;
+		foreach($categories as $category) {
+			array_push($list , $category->id);
+		}
+
+		return $list ;
+	}
+
+
 
 	/*
 	|--------------------------------------------------------------------------
@@ -228,6 +241,12 @@ class Post extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+	public function isUnder($category)
+	{
+		return (in_array($category->id , $this->category_ids)) ;
+	}
+
 	public function has($feature)
 	{
 		return $this->posttype->has($feature);
@@ -429,6 +448,19 @@ class Post extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
+	public function saveCategories($data)
+	{
+		$selected_categories = [] ;
+		foreach($data as $key => $value) {
+			if(str_contains($key,'category') and $value) {
+				$category_id = str_replace('category-' , null , $key);
+				array_push($selected_categories , Category::realId($category_id));
+			}
+		}
+
+		$this->categories()->sync(  $selected_categories );
+		session()->put('test2' , $selected_categories);
+	}
 	public static function normalizeSlug($post_id, $post_type, $post_locale, $suggested_slug)
 	{
 		//preparations...
