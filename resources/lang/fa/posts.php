@@ -8,6 +8,8 @@ return [
 	],
 
 	'features' => [
+		'short_history' => "تاریخچه گردش کار",
+		'full_history' => "متن کامل در تاریخچه",
 		'meaning' => "ویژگی‌ها" ,
 		'locales' => "زبان‌های دیگر",
 		'slug' => "تنظیم نامک",

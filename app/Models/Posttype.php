@@ -30,6 +30,8 @@ class Posttype extends Model
 			'seo' => ['stethoscope' , 'info' , ['seo_status:text']],
 			'price' => ['dollar' , 'warning' , [ 'sale_price:text' , 'sale_expires_at:text'  , 'package_id:text']],
 			'basket' => ['shopping-basket' , 'warning' , []],
+			'short_history' => ['clock-o' , 'success' , []],
+			'full_history' => ['history' , 'success' , []],
 			'digest' => ['fire' , 'info' , []],
 			'schedule' => ['clock-o' , 'info' , ['original_published_at:auto']],
 			'register' => ['user-plus' , 'warning' , []],

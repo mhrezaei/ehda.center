@@ -35,14 +35,14 @@ function rowUpdate($table_id , $model_id)
 		var $counter = $($row_selector + ' .-rowCounter ').html() ;
 		$($row_selector).addClass('loading') ;
 		$.ajax({
-			url: $url,
-			cache: false ,
-		})
-		.done(function (html) {
-			$($row_selector).html(html);
-			$($row_selector).removeClass('loading') ;
-			$($row_selector + ' .-rowCounter ').html($counter) ;
-		});
+					url: $url,
+					cache: false ,
+				})
+				.done(function (html) {
+					$($row_selector).html(html);
+					$($row_selector).removeClass('loading') ;
+					$($row_selector + ' .-rowCounter ').html($counter) ;
+				});
 	}
 }
 
@@ -52,13 +52,13 @@ function tabReload()
 
 	forms_log($("#divTab .refresh").html() );
 	$.ajax({
-		url:$("#divTab .refresh").html() ,
-		cache: false
-	})
-	.done(function(html) {
-		$("#divTab").html(html);
-		$("#divTab").removeClass('loading');
-	});
+				url:$("#divTab .refresh").html() ,
+				cache: false
+			})
+			.done(function(html) {
+				$("#divTab").html(html);
+				$("#divTab").removeClass('loading');
+			});
 }
 function masterModal($url,$size)
 {
@@ -96,25 +96,6 @@ function modalForm($modal_id , $item_id , $parent_id)
 
 }
 
-
-function postSave($action)
-{
-	var $form_selector = '#frmEditor' ;
-	$('#txtAction').val($action) ;
-	tinyMCE.triggerSave();
-	$($form_selector).submit() ;
-}
-
-function postChange($action)
-{
-	var $form_selector = '#frmEditor' ;
-	var $id = $($form_selector+' [name=id] ').val();
-	var $url = url('manage/posts/'+$id+'/'+$action);
-
-	$($form_selector + ' .form-feed').html('<div class="modal-wait">...</div>').load($url , function() {
-		forms_delaiedPageRefresh(1);
-	}).slideDown('fast');
-}
 
 function search($form_id)
 {
@@ -204,7 +185,25 @@ function posttypeFeatures($feature)
 		$button.css('opacity','0.9');
 		$meta.val( $meta.val() + $fields ) ;
 	}
-//	forms_log($input.val());
+
+	/*-----------------------------------------------
+	 | Features that must be together ...
+	 */
+	if($feature=='full_history' && $input.val().indexOf('full_history')>=0 && $input.val().indexOf('short_history')<0) {
+		posttypeFeatures('short_history');
+	}
+	if($feature=='short_history' && $input.val().indexOf('full_history')>=0 && $input.val().indexOf('short_history')<0) {
+		posttypeFeatures('full_history');
+	}
+
+	if($feature=='basket' && $input.val().indexOf('basket')>=0 && $input.val().indexOf('price')<0) {
+		posttypeFeatures('price');
+	}
+	if($feature=='price' && $input.val().indexOf('basket')>=0 && $input.val().indexOf('price')<0) {
+		posttypeFeatures('basket');
+	}
+
+
 }
 
 function postEditorFeatures($special_action)
@@ -292,94 +291,6 @@ function downstreamPhotoPreview($input_selector)
 		window.open(url($url)) ;
 }
 
-function currencyRateUpdateEditor()
-{
-	$type = $('#cmbEffectiveDate').val() ;
-
-	switch($type) {
-		case 'now' :
-			$('.-custom_time').parent().parent().hide() ;
-			$('input[name=price_to_buy]').focus() ;
-			break;
-
-		case 'custom' : //legal
-			$('.-custom_time').parent().parent().show() ;
-			$('.-individual').parent().parent().hide() ;
-			$('input[name=date]').focus() ;
-	}
-
-}
-
-function customerEditor()
-{
-	$type = $('#cmbCustomerType').val() ;
-
-	switch($type) {
-		case '1' : //individual
-			$('.-individual').parent().parent().show() ;
-			$('.-legal').parent().parent().hide() ;
-			$('input[name=name_first]').focus() ;
-			break;
-
-		case '2' : //legal
-			$('.-legal').parent().parent().show() ;
-			$('.-individual').parent().parent().hide() ;
-			$('input[name=name_firm]').focus() ;
-	}
-
-}
-
-function orderEditor()
-{
-	var $rate = parseFloat($('input[name=rate]').val()) ;
-	var $amount = parseFloat(  forms_digit_en($('input[name=initial_charge]').val().replaceAll(',','') ) )
-	if(!$amount)
-		$amount = 0 ;
-	$invoice = forms_digit_fa(addCommas(Math.round($rate * $amount))) ;
-
-	$('input[name=original_invoice]').val( $invoice ) ;
-	$('input[name=amount_invoiced]').val( $invoice ) ;
-	$('input[name=invoice]').val( $invoice ) ;
-}
-
-function paymentEditor()
-{
-	var $method = $('#cmbMethodSelector').val() ;
-
-	$('.-detail').parent().parent().hide() ;
-	$('.-'+$method).parent().parent().show() ;
-}
-
-function paymentProcessEditor()
-{
-	var $selector_value = $('#cmbStatus').val();
-	$('.saveButton').hide() ;
-
-	switch($selector_value) {
-		case 'confirmed' :
-			$('#btnConfirm').show() ;
-			$('#txtConfirmed').val( $('#txtDeclared').val() ).parent().parent().hide();
-			break;
-
-		case 'rejected' :
-			$('#btnReject').show() ;
-			$('#txtConfirmed').val( '0' ).parent().parent().hide();
-			break;
-
-		case 'custom' :
-			$('#btnSave').show() ;
-			$('#txtConfirmed').val( $('#txtConfirmed').attr('aria-valuenow') ).parent().parent().show();
-			forms_numberFormat('#txtConfirmed');
-			$('#txtConfirmed').focus();
-			break;
-
-		default :
-			$('#btnSave').show() ;
-			$('#txtConfirmed').val('').parent().parent().hide();
-			break;
-
-	}
-}
 
 function sidebarToggle($speed)
 {

@@ -150,7 +150,7 @@
 				</div>
 				<div class="col-md-6">
 
-					<label for="sale_expires_hour" class="control-label text-gray " >&nbsp;</label>
+					<label for="sale_expires_hour" class="control-label text-gray " style="margin-top:10px" >&nbsp;</label>
 					<div class="input-group input-group-sm">
 						<input id="txtExpireM" name="sale_expires_minute" value="{{ $model->sale_expires_at? jdate($model->sale_expires_at)->format('i') : ''}}" type="text" class="form-control ltr text-center" onblur=""  placeholder="50" min="0" max="59">
 						<span class="input-group-addon">:</span>
