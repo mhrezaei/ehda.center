@@ -146,8 +146,10 @@ function postsAction($command)
 		case 'check_slug' :
 			$divFeedback = $("#divSlugFeedback");
 			$divFeedback.html('...').addClass('loading');
+
+				forms_log('['+ $("#txtSlug").val() +']');
 			$.ajax({
-				url: url("manage/posts/check_slug/" + $("#txtId").val() + "/" + $("#txtType").val() + "/" + $("#txtLocale").val() + '/' + $("#txtSlug").val()),
+				url: url("manage/posts/check_slug/" + $("#txtId").val() + "/" + $("#txtType").val() + "/" + $("#txtLocale").val()+'' + '/' + $("#txtSlug").val() + ' /' + 'p'),
 				cache: false
 			})
 			.done(function (html) {

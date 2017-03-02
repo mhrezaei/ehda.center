@@ -1,5 +1,8 @@
 @if(!$suggested_slug)
-	<span>.</span>
+	<span class="text-success f10">
+		<i class="fa fa-smile-o"></i>
+		{{ trans('posts.form.no_slug') }}
+	</span>
 
 @elseif(!$approved_slug)
 	<span class="text-danger f10">

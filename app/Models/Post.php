@@ -461,23 +461,41 @@ class Post extends Model
 		$this->categories()->sync(  $selected_categories );
 		session()->put('test2' , $selected_categories);
 	}
-	public static function normalizeSlug($post_id, $post_type, $post_locale, $suggested_slug)
+	public static function normalizeSlug($post_id, $post_type, $post_locale, $slug)
 	{
 		//preparations...
 		$found_a_unique_slug = false ;
 		$tries = 1 ;
 
-		//safety...
-		if(!preg_match('/^[a-zA-Z0-9_\-]/', $suggested_slug) or str_contains("01234567890-_",$suggested_slug[0])) {
+		//Invalid Patterns...
+		if(!$slug)
+			return '' ;
+
+		//@TODO: check maximum characters!
+		//@TODO: Find a way to completely filter persian chars, even in the middle of an english string
+		if(!preg_match('/^[a-zA-Z0-9]/', $slug)) {
 			return '' ;
 		}
 
+		//General Corrections...
+		$slug = strtolower($slug);
+		if(str_contains("01234567890-_",$slug[0])) {
+			$slug = "p" . $slug ;
+		}
+
+		$purified_original_slug = $slug ;
+		if(in_array($slug , explode(',',self::$reserved_slugs))) {
+			$tries++ ;
+			$slug .= "-".strval($tries) ;
+		}
+
+
 		//loop...
 		while(!$found_a_unique_slug) {
-			$used = self::where('id','!=',$post_id)->where('type' , $post_type)->where('locale' , $post_locale)->where('slug' , $suggested_slug)->where('copy_of',0)->withTrashed()->count();
+			$used = self::where('id','!=',$post_id)->where('type' , $post_type)->where('locale' , $post_locale)->where('slug' , $slug)->where('copy_of',0)->withTrashed()->count();
 			if($used) {
 				$tries++ ;
-				$suggested_slug .= "-".strval($tries) ;
+				$slug = $purified_original_slug ."-".strval($tries) ;
 			}
 			else {
 				$found_a_unique_slug = true ;
@@ -485,7 +503,7 @@ class Post extends Model
 		}
 
 		//return...
-		return $suggested_slug ;
+		return $slug ;
 
 	}
 

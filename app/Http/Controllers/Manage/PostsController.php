@@ -140,8 +140,9 @@ class PostsController extends Controller
 
 	}
 
-	public function checkSlug($post_id , $post_type , $post_locale , $suggested_slug)
+	public function checkSlug($post_id , $post_type , $post_locale , $suggested_slug=null)
 	{
+		$suggested_slug = trim($suggested_slug);
 		if($suggested_slug) {
 			$approved_slug = Post::normalizeSlug($post_id , $post_type , $post_locale , $suggested_slug);
 		}
