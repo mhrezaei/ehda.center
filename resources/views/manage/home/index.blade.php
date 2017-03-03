@@ -2,7 +2,7 @@
 
 @section('section')
 
-	{!! \App\Providers\DummyServiceProvider::englishWord(50) !!}
+	{!! \App\Providers\DummyServiceProvider::email() !!}
 
 	{{--{{ getLocale() }}--}}
 {{--	@include('manage.index.hello')--}}

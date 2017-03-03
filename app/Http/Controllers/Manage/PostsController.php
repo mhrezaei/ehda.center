@@ -236,7 +236,6 @@ class PostsController extends Controller
 		/*-----------------------------------------------
 		| Long Title ...
 		*/
-
 		if($model->has('long_title')) {
 			$data['long_title'] = $data['title'] ;
 			$data['title'] = str_limit($data['title'] , 100);
@@ -265,6 +264,14 @@ class PostsController extends Controller
 		unset($data['sale_expires_date']);
 		unset($data['sale_expires_hour']);
 		unset($data['sale_expires_minute']);
+
+		/*-----------------------------------------------
+		| Language ...
+		*/
+		if(!in_array($data['locale'] , $model->posttype->locales_array)) {
+			return $this->jsonFeedback();
+
+		}
 
 		/*
 		|--------------------------------------------------------------------------

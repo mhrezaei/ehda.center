@@ -503,7 +503,7 @@ class Post extends Model
 		}
 
 		//return...
-		return $slug ;
+		return str_slug($slug) ;
 
 	}
 
@@ -524,7 +524,7 @@ class Post extends Model
 	{
 		switch($criteria) {
 			case 'search' :
-				$permit = 'search' ;
+				$permit = 'browse' ;
 				break;
 
 			case 'pending':
@@ -538,7 +538,7 @@ class Post extends Model
 				break;
 
 			case 'bin' :
-				$permit = 'bin' ;
+				$permit = 'browse' ;
 				break;
 
 			default :
