@@ -1,6 +1,7 @@
 @include('manage.frame.widgets.grid-start')
 
 	@foreach($models as $i => $model)
+		{{ '' , $model->spreadMeta() }}
 		<tr id="tr-{{$model->id}}" class="grid"
 				@if(isset($handle) and str_contains($handle , 'selector'))
 					ondblclick="gridSelector('tr','{{$model->id}}')"

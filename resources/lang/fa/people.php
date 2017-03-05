@@ -3,6 +3,7 @@ return [
 	'person' => "نفر",
 	'people' => "اشخاص",
 	'modules' => "ماژول‌ها",
+	'deleted_user' => "یک کاربر سابق",
 
 	'commands' => [
 		'permit' => "تنظیم سطح دسترسی",

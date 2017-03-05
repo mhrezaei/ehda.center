@@ -37,7 +37,7 @@ function getSetting($slug)
  * @param $slug
  * @return \App\Models\Setting
  */
-function setting($slug)
+function setting($slug=null)
 {
 	return \App\Models\Setting::builder($slug);
 }
@@ -90,6 +90,28 @@ function array_normalize($array, $reference)
 
 	return $result;
 
+}
+
+function array_maker($string , $first_delimiter = '-' , $second_delimiter = ':')
+{
+	$array = explode($first_delimiter,str_replace(' ',null, $string));
+	foreach($array as $key => $switch) {
+		$switch = explode($second_delimiter , $switch) ;
+		unset($array[$key]);
+		if(sizeof($switch)<2) {
+			continue;
+		}
+		$array[ $switch[0] ] = $switch[1] ;
+	}
+
+	return $array ;
+
+}
+
+function array_random($array)
+{
+	$key = rand(0,sizeof($array)-1);
+	return $array[$key];
 }
 
 function isJson($string) {

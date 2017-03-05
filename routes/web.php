@@ -70,7 +70,10 @@ Route::group([
 	*/
 	Route::group(['prefix'=>'posts'] , function() {
 		Route::get('/update/{item_id}' , 'PostsController@update');
+		Route::get('/tab_update/{posttype}/{request_tab?}/{switches?}' , 'PostsController@tabUpdate') ;
+
 		Route::get('/check_slug/{id}/{type}/{locale}/{slug?}/p' , 'PostsController@checkSlug');
+		Route::get('/act/{model_id}/{action}' , 'PostsController@singleAction');
 
 		Route::get('/{posttype}' , 'PostsController@browse') ;
 		Route::get('/{posttype}/create/{locale?}/{sisterhood?}' , 'PostsController@create');
@@ -81,7 +84,9 @@ Route::group([
 
 		Route::group(['prefix'=>'save'] , function() {
 			Route::post('/' , 'PostsController@save');
-			Route::post('/hard_delete' , 'PostsController@hard_delete');
+			Route::post('/delete' , 'PostsController@delete');
+			Route::post('/undelete' , 'PostsController@undelete');
+			Route::post('/destroy' , 'PostsController@destroy');
 		});
 
 	});

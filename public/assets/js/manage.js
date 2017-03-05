@@ -48,16 +48,23 @@ function rowUpdate($table_id , $model_id)
 
 function tabReload()
 {
-	$("#divTab").addClass('loading');
+	var url = $("#divTab .refresh").html() ;
+	var $tab_div = $("#divTab");
 
-	forms_log($("#divTab .refresh").html() );
+	if(!url) {
+		return ;
+	}
+
+	$tab_div.addClass('loading');
+
+	forms_log(url);
 	$.ajax({
-				url:$("#divTab .refresh").html() ,
+				url:url ,
 				cache: false
 			})
 			.done(function(html) {
-				$("#divTab").html(html);
-				$("#divTab").removeClass('loading');
+				$tab_div.html(html);
+				$tab_div.removeClass('loading');
 			});
 }
 function masterModal($url,$size)

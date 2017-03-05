@@ -35,7 +35,7 @@ class PostSaveRequest extends Request
 			case 'approval' :
 				$rules = [
 					'title' => "required",
-					'slug' => 'english|not_in:'.Post::$reserved_slugs,
+//					'slug' => 'english|not_in:'.Post::$reserved_slugs,
 				];
 				if(isset($input['_schedule']) and $input['_schedule']) {
 					$rules = array_merge($rules , [
@@ -71,7 +71,7 @@ class PostSaveRequest extends Request
 			case 'save' :
 				$rules = [
 						'title' => "required",
-						'slug' => "english",
+//						'slug' => "english",
 				];
 				break;
 

@@ -154,30 +154,40 @@ class Post extends Model
 
 	public function getCreatorAttribute()
 	{
-		$user = User::withTrashed()->find($this->created_by) ;
-		if(user)
-			return $user ;
-		else
-			return new User() ;
+		$user = User::find($this->created_by) ;
+		if(!$user) {
+			$user = new User();
+		}
+		return $user ;
 	}
 
 	public function getPublisherAttribute()
 	{
-		$user = User::withTrashed()->find($this->published_by) ;
-		if(user)
-			return $user ;
-		else
-			return new User() ;
+		$user = User::find($this->published_by) ;
+		if(!$user) {
+			$user = new User();
+		}
+		return $user ;
 	}
+
+	public function getDeleterAttribute()
+	{
+		$user = User::find($this->deleted_by) ;
+		if(!$user) {
+			$user = new User();
+		}
+		return $user ;
+	}
+
 
 	public function getSiteLinkAttribute()
 	{
-
+		//@TODO: Site Link
 	}
 
 	public function getPreviewLinkAttribute()
 	{
-
+		//@TODO: Preview Link
 	}
 
 
@@ -279,7 +289,7 @@ class Post extends Model
 
 	public function canEdit()
 	{
-		if(!$this->exists)
+		if(!$this->exists or $this->trashed())
 			return false ;
 
 		if($this->isOwner() and !$this->isApproved() and $this->can('create'))
@@ -315,7 +325,8 @@ class Post extends Model
 
 	public function isPublished()
 	{
-		return ($this->published_by and $this->published_at and $this->published_at <= Carbon::now()) ;
+
+		return (!$this->trashed() and $this->published_by and $this->published_at and $this->published_at <= Carbon::now()) ;
 
 	}
 
@@ -327,6 +338,11 @@ class Post extends Model
 	public function isApproved()
 	{
 		return boolval($this->published_by) ;
+	}
+
+	public function isRejected()
+	{
+		return boolval($this->moderated_by and !$this->published_by);
 	}
 
 
@@ -360,40 +376,73 @@ class Post extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
+	public static function wherePublished()
+	{
+		return self::where('published_by' , '>' , '0');
+	}
+
+	public static function ownedBy($user_id)
+	{
+		return self::where('owned_by' , $user_id);
+	}
+
 	public static function selector($parameters = [])
 	{
 		extract(array_normalize($parameters , [
-			'role' => "user",
+			'role' => "user", //@TODO
 			'criteria' => "published",
 			'locale' => getLocale(),
+			'owner' => 0,
 			'type' => "feature:searchable",
-			'category' => "",
-			'keyword' => "",
+			'category' => "", //@TODO
+			'keyword' => "", //[@TODO
 		]));
 
 		$table = self::where('id' , '>' , '0') ;
 
-		//Process Type...
+		/*-----------------------------------------------
+		| Process Type ...
+		*/
 		if(str_contains($type , 'feature:')) {
 			$feature = str_replace('feature:' , null , $type) ;
-			$type = Posttype::withFeature($feature);
+			$type = Posttype::withFeature($feature); //returns an array of posttypes
 		}
+
+		//when an array of selected posttypes are requested
 		if(is_array($type)) {
 			$table = $table->whereIn('type' , $type) ;
 		}
+
+		//when 'all' posttypes are requested
 		elseif($type=='all') {
 			// nothing required here :)
 		}
+
+		//when an specific type is requested
 		else {
 			$table = $table->where('type' , $type);
 		}
 
-		//Process Language...
-		if($locale!='all') {
+		/*-----------------------------------------------
+		| Process Locale ...
+		*/
+		if(in_array($locale , ['all' , null])) {
+			//nothing to do :)
+		}
+		else {
 			$table = $table->where('locale' , $locale);
 		}
 
-		//Process Criteria...
+		/*-----------------------------------------------
+		| Process Owner ...
+		*/
+		if($owner>0) {
+			$table = $table->where('owned_by',$owner);
+		}
+
+		/*-----------------------------------------------
+		| Process Criteria ...
+		*/
 		$now = Carbon::now()->toDateTimeString();
 		switch($criteria) {
 			case 'all' :
@@ -404,27 +453,31 @@ class Post extends Model
 				break;
 
 			case 'published':
-				$table = $table->whereDate('published_at','<=',$now)->whereNotNull('published_by') ;
+				$table = $table->whereDate('published_at','<=',$now)->where('published_by' , '>' , '0') ;
 				break;
 
 			case 'scheduled' :
-				$table = $table->whereDate('published_at','>',$now)->whereNotNull('published_by') ;
+				$table = $table->whereDate('published_at','>',$now)->where('published_by' , '>' , '0') ;
 				break;
 
 			case 'pending':
-				$table = $table->whereNull('published_by')->where('is_draft',false) ;
+				$table = $table->where('published_by', '0')->where('is_draft',0) ;
 				break;
 
 			case 'drafts' :
-				$table = $table->where('is_draft',1)->whereNull('published_by');
+				$table = $table->where('is_draft',1)->where('published_by' , '0');
+				break;
+
+			case 'rejected' :
+				$table = $table->where('moderated_by' , '>', '0')->where('published_by', '0') ;
 				break;
 
 			case 'my_posts' :
-				$table = $table->where('created_by',user()->id);
+				$table = $table->where('owned_by',user()->id);
 				break ;
 
 			case 'my_drafts' :
-				$table = $table->where('created_by',user()->id)->where('is_draft',true)->whereNull('published_by');
+				$table = $table->where('owned_by',user()->id)->where('is_draft',true)->where('published_by' , '0');
 				break;
 
 			case 'bin' :
@@ -471,11 +524,7 @@ class Post extends Model
 		if(!$slug)
 			return '' ;
 
-		//@TODO: check maximum characters!
-		//@TODO: Find a way to completely filter persian chars, even in the middle of an english string
-		if(!preg_match('/^[a-zA-Z0-9]/', $slug)) {
-			return '' ;
-		}
+		$slug = str_slug(str_limit($slug , 30));
 
 		//General Corrections...
 		$slug = strtolower($slug);
@@ -503,7 +552,7 @@ class Post extends Model
 		}
 
 		//return...
-		return str_slug($slug) ;
+		return $slug ;
 
 	}
 
@@ -529,7 +578,7 @@ class Post extends Model
 
 			case 'pending':
 			case 'drafts' :
-				$permit = 'publish' ;
+				$permit = 'browse' ;
 				break;
 
 			case 'my_posts' :

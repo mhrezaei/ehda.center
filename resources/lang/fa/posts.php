@@ -77,6 +77,8 @@ return [
 		'add_second_title' => "افزودن عنوان دوم",
 		'save_draft' => "ذخیره پیش‌نویس",
 		'preview' => "پیش‌نمایش",
+		'rejected' => "مردود",
+		'view_in_site' => "نمایش در سایت",
 		'publish' => "انتشار",
 		'send_for_approval' => "ارسال به سردبیر",
 		'adjust_publish_time' => "تنظیم زمان انتشار",
@@ -102,5 +104,8 @@ return [
 		'invalid_slug' => "این نامک قبول نیست.",
 		'slug_will_be_changed_to' => "به :approved_slug تغییرش می‌دهیم.",
 		'no_slug' => "نوشته بدون نامک، هیچ اشکالی ندارد.",
+		'discount_percent_in_parentheses' => "(:percent٪ تخفیف)",
+		'quick_edit' => "ویرایش مختصر",
+		'clone' => "رونوشت‌برداری",
 	],
 ];

@@ -43,7 +43,12 @@ class User extends Authenticatable
     */
     public function getFullNameAttribute()
     {
-        return $this->name_first . ' ' . $this->name_last ;
+        if($this->exists) {
+            return $this->name_first . ' ' . $this->name_last ;
+        }
+        else {
+            return trans('people.deleted_user') ;
+        }
     }
 
     public function getAdminPositionAttribute()

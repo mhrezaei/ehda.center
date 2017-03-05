@@ -244,6 +244,8 @@ return [
          'Manage' => \App\Providers\ManageServiceProvider::class ,
           'NoCaptcha' => 'Anhskohbo\NoCaptcha\Facades\NoCaptcha',
         'Hashids' => Vinkla\Hashids\Facades\Hashids::class,
+        'jDate' => Morilog\Jalali\Facades\jDate::class,
+
         //          'Setting' => \App\Providers\SettingServiceProvider::class,
     ],
 

@@ -370,6 +370,7 @@ return [
 				'is_available' => "موجودی کافی",
 				'original_price' => "قیمت اصلی",
 				'discount_percent' => "درصد تخفیف",
+				'discount' => "تخفیف",
 				'sale_price' => "قیمت ویژه",
 				'price_to_sell' => 'بهای فروش' ,
 				'price_to_buy' => 'بهای خرید' ,

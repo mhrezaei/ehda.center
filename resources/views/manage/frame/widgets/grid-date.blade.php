@@ -1,13 +1,18 @@
 <?php
 //class...
-!isset($size)? $size = 8 : '' ;
-!isset($color)? $color = 'grey' : '' ;
+!isset($size)? $size = 10 : '' ;
+!isset($color)? $color = 'gray' : '' ;
 !isset($class)? $class = '' : '' ;
 !isset($default)? $default = 'relative' : '' ;
+!isset($inline)? $inline = false : '' ;
 $class = " f".$size." text-$color $class" ;
 ?>
 
 @if(!isset($condition) or $condition)
+	@if(!$inline)
+		<div>
+	@endif
+
 	<span class="">
 		<a id="{{ $id = "spnDate".rand(10000,99999) }}" href="javascript:void(0)"  class="{{$class}}" onclick="$('#{{$id}} text').toggle()">
 			<i class="fa fa-{{$icon or 'clock-o'}} mhl5"></i>
@@ -18,7 +23,12 @@ $class = " f".$size." text-$color $class" ;
 			<text class="{{ $default=='relative'?'noDisplay':'' }} {{$class or ''}}">
 				@pd(jDate::forge($date)->format('j F Y [H:i]'))
 			</text>
+			{{ $text2 or '' }}
 		</a>
 	</span>
+
+	@if(!$inline)
+		</div>
+	@endif
 
 @endif

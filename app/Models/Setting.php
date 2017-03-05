@@ -113,12 +113,13 @@ class Setting extends Model
 	| Pattern: Setting::builder('folan')->in('fa')->nocache()->defaultValue()->raw()->gain()
 	| First and last methods are mandatory, while the rest is optional as per required.
 	*/
-	public static function builder($slug)
+	public static function builder($slug=null)
 	{
 		$model = new self ;
-		$model->slug = $slug ;
+		$model->ask($slug) ;
 		return $model->reset() ;
 	}
+
 
 	public function reset()
 	{
@@ -136,7 +137,7 @@ class Setting extends Model
 		return $this ;
 	}
 
-	public function nocache()
+	public function noCache()
 	{
 		$this->request_fresh_reveal = true ;
 		return $this ;
@@ -154,17 +155,26 @@ class Setting extends Model
 		return $this ;
 	}
 
-	public function gain()
+	public function ask($slug)
 	{
+		$this->slug = $slug ;
+		return $this ;
+	}
+
+	public function gain($slug=null)
+	{
+		if($slug) {
+			$this->ask($slug) ;
+		}
 		if(!$this->slug)
 			return self::$default_when_not_found ;
 
 		//If already revealed...
-		if($this->id)
+		if($this->exists)
 			$record = $this ;
 
 		//Look in session...
-		if(!$this->id) {
+		else {
 			$record = session()->get($this->session_key , "NO") ;
 			if($this->request_fresh_reveal or $record=="NO") {
 				$record = self::findBySlug($this->slug);
@@ -176,31 +186,33 @@ class Setting extends Model
 		}
 
 		//default...
-		if($this->request_default)
-			$value = $record->raw_default ;
+		if($this->request_default) {
+			$value = $record->raw_default;
+		}
 		else {
 			$value = $record->custom_value ;
-			if(!$value)
+			if(!$value){
 				$value = $record->raw_default ;
+			}
 		}
 
 		//Locales...
-		if($record->is_localized and !$this->request_default) {
+		if($record->is_localized and !$record->request_default) {
 			if(isJson($value)){
 				$value = json_decode($value , true) ;
-				if(array_has($value , $this->request_language))
-					$value = $value[$this->request_language] ;
+				if(array_has($value , $record->request_language))
+					$value = $value[$record->request_language] ;
 				else
-					$value = $this->raw_default ;
+					$value = $record->raw_default ;
 			}
 			else {
-				$value = $this->raw_default ;
+				$value = $record->raw_default ;
 			}
 		}
 
 
 		//format...
-		if($this->request_unformatted)
+		if($record->request_unformatted)
 			return $value ;
 
 		switch($record->data_type) {

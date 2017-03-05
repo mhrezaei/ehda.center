@@ -3,6 +3,7 @@
 @section('section')
 
 	{!! \App\Providers\DummyServiceProvider::email() !!}
+	{{ str_slug('پیمان') }}
 
 	{{--{{ getLocale() }}--}}
 {{--	@include('manage.index.hello')--}}

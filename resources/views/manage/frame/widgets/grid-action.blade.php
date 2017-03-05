@@ -13,9 +13,11 @@
 	<ul class="dropdown-menu" aria-labelledby="action{{$id}}">
 		@foreach($actions as $key => $action)
 			@if($action[0]== '-')
-				<li>
-					<hr class="mv5">
-				</li>
+				@if($action[1])
+					<li>
+						<hr class="mv5">
+					</li>
+				@endif
 			@else
 				<?php
 					//first things first...

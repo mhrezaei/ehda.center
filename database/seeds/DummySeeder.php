@@ -58,11 +58,11 @@ class DummySeeder extends Seeder
 			$price = rand(1,30) * 1000;
 
 			\App\Models\Post::create([
-				'slug' => "dummy-".strtolower(DummyServiceProvider::englishWord()),
+				'slug' => str_slug("dummy-".strtolower(DummyServiceProvider::englishWord())),
 				'type' => "products",
 				'title' => DummyServiceProvider::persianTitle(),
-				'locale' => "fa",
-				'price' => rand(1,30) * 1000,
+				'locale' => array_random(['fa','ar']),
+				'price' => $price,
 				'is_available' => rand(0,1),
 				'is_draft' => $published? 0 : rand(0,1),
 				'sisterhood' => \Vinkla\Hashids\Facades\Hashids::encode( rand(5000 , 500000)),
@@ -72,7 +72,7 @@ class DummySeeder extends Seeder
 					'edu_city' => DummyServiceProvider::persianWord(),
 					'home_address' => DummyServiceProvider::persianWord(5),
 					'package_id' => rand(1,4),
-					'sale_price' => $price * rand(50,99) / 100,
+					'sale_price' => $price * rand(60,99) / 100,
 					'template' => "product",
 				]),
 				'deleted_at' => $deleted? Carbon::now()->toDateTimeString() : null,
