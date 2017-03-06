@@ -62,5 +62,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'DetectLanguage' => \App\Http\Middleware\DetectLanguage::class,
         'UserIpDetect' => \App\Http\Middleware\UserIpDetect::class,
-        'Setting' => \App\Http\Middleware\Setting::class,    ];
+        'Setting' => \App\Http\Middleware\Setting::class,
+    ];
+
 }

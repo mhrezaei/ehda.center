@@ -146,3 +146,8 @@ function makeDateTimeString($date , $hour=0 , $minute=0 , $seccond=0)
 
 }
 
+function url_locale($url_string = '')
+{
+    return url('/' . getLocale() . '/' . $url_string);
+}
+
