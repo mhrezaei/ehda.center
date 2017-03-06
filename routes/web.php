@@ -11,10 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 /*
 |--------------------------------------------------------------------------
 | Authentication Routes
@@ -129,4 +125,13 @@ Route::group([
 |
 */
 
-//Route::get('/home', 'HomeController@index');
+Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Setting']], function () {
+    Route::get('/', 'FrontController@index');
+
+    Route::group(['prefix' => '{lang}', 'middleware' => ['UserIpDetect']], function () {
+
+        Route::get('/', 'FrontController@index');
+
+    });
+
+});

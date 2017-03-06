@@ -1,0 +1,1 @@
+<a href="{{ url_locale('') }}" id="logo-footer"> <img src="{{ url('/assets/images/logo-gray.png') }}"> </a>

@@ -1,68 +1,33 @@
-@extends('layouts.app')
+@include('front.frame.header')
+<body class="auth">
+<div class="auth-wrapper">
+    <div class="auth-col">
+        <a href="{{ url_locale('') }}" class="logo"> <img src="{{ url('/assets/images/logo.png') }}"> </a>
+    </div>
+    <div class="auth-col">
+        <h1 class="auth-title"> {{ trans('front.login') }} </h1>
+        <form class="form-horizontal" role="form" method="POST" action="{{ route('login') }}">
+            {{ csrf_field() }}
+            <div class="field"> <input type="email" name="email" id="email" placeholder="ایمیل" required autofocus> </div>
+            <div class="field"> <input type="password" name="password" id="password" placeholder="رمز عبور" required> </div>
 
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Login</div>
-                <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ route('login') }}">
-                        {{ csrf_field() }}
+            <div class="tal"> <button class="green block"> {{ trans('front.login') }} </button> </div>
+            <hr class="or">
+            <div class="tal"> <a href="{{ url('/register') }}" class="green block"> {{ trans('front.not_member_register_now') }} </a> </div>
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Password</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-8 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Login
-                                </button>
-
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    Forgot Your Password?
-                                </a>
-                            </div>
-                        </div>
-                    </form>
+            @if($errors->all())
+                <div class="alert alert-danger" style="margin-top: 10px;">
+                    @foreach ($errors->all() as $error)
+                        {{ $error }}<br>
+                    @endforeach
                 </div>
-            </div>
-        </div>
+            @endif
+
+        </form>
     </div>
 </div>
-@endsection
+</div>
+@include('front.frame.scripts')
+</body>
+
+</html>
