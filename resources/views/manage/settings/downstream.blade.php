@@ -26,7 +26,7 @@
 		'headings' => [
 			trans('validation.attributes.title'),
 			trans('validation.attributes.data_type'),
-			trans('validation.attributes.category_id'),
+			trans('validation.attributes.properties'),
 			trans('validation.attributes.value')
 		],
 	])

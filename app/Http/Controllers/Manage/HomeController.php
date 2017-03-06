@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Manage\ChangeSelfPasswordRequest;
 use App\Models\Post;
 use App\Models\Posttype;
+use App\Models\State;
 use App\Models\User;
 use App\Traits\ManageControllerTrait;
 use Illuminate\Support\Facades\Hash;
@@ -23,6 +24,14 @@ class HomeController extends Controller
 
 	public function index()
 	{
+		$table = State::whereIn('id' , [12 , 30 , 23 , 2 , 70])->update([
+			'country_id' => "1",
+		]) ;
+		ss($table);
+
+
+
+
 		$page = $this->page ;
 
 		return view("manage.home.index",compact('page'));

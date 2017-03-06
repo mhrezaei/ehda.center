@@ -2,8 +2,7 @@
 
 @section('section')
 
-	{!! \App\Providers\DummyServiceProvider::email() !!}
-	{{ str_slug('پیمان') }}
+	{{ ss(json_decode('sdf')) }}
 
 	{{--{{ getLocale() }}--}}
 {{--	@include('manage.index.hello')--}}
