@@ -1,8 +1,4 @@
 .env
 .idea/*
-.idea/workspace.xml
-.idea/workspace.xml
-.idea/workspace.xml
-.idea/yasna-web.iml
-.idea/workspace.xml
-.idea/workspace.xml
+.*
+!/.gitignore
