@@ -127,6 +127,7 @@ Route::group([
 
 Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Setting']], function () {
     Route::get('/', 'FrontController@index');
+    Route::post('/register/new', 'FrontController@register');
 
     Route::group(['prefix' => '{lang}', 'middleware' => ['UserIpDetect']], function () {
 
