@@ -1,0 +1,83 @@
+div.tForms {
+
+  //width: 800px;
+  max-width: 95%;
+  margin: auto;
+
+  .title {
+    margin: 40px 0 10px 0;
+    padding: 0;
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  .form-group {
+    padding-top: 5px;
+
+  }
+  .control-label {
+    font-family: "IRANSans";
+    font-weight: 400;
+  }
+
+  .form-control {
+    font-family: "IRANSans";
+    font-weight: 200;
+
+  }
+
+  .help-flag {
+    //border-bottom: 1px dashed #ba4c2a;
+    color: #ba4c2a;
+    font-weight: 400 !important;
+  }
+
+  .help-block {
+    font-family: "IRANSans";
+    font-weight: 100;
+    font-size: 9px;
+  }
+
+  .form-ps {
+    font-family: "IRANSans";
+    font-weight: 400;
+    font-size: 12px;
+    padding: 5px;
+  }
+
+  .form-feed {
+    font-family: "IRANSans";
+    font-weight: 400;
+    //display: none;
+    font-size: 11px;
+    line-height: 2.0;
+  }
+
+  .btn {
+    min-width: 150px;
+    font-family: Yekan;
+  }
+
+  .minWidthAuto {
+    min-width: auto;
+  }
+
+  .required-sign {
+    color: red;
+    font-size: 8px;
+  }
+
+  .ltr {
+    direction: ltr;
+  }
+
+  .form-note {
+    font-weight: 200;
+    font-size: 12px;
+
+    i {
+     margin: 0 10px 0 20px ;
+      font-size: 14px;
+    }
+  }
+}

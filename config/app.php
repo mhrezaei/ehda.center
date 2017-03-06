@@ -64,7 +64,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Iran',
 
     /*
     |--------------------------------------------------------------------------
@@ -162,11 +162,14 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+         \App\Providers\ManageServiceProvider::class,
+         'App\Providers\ValidationServiceProvider',
 
         /*
          * Package Service Providers...
          */
         Laravel\Tinker\TinkerServiceProvider::class,
+         Vinkla\Hashids\HashidsServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -185,6 +188,7 @@ return [
 //        App\Providers\SettingServiceProvider::class,
 
         Morilog\Jalali\JalaliServiceProvider::class,
+        \App\Providers\AppServiceProvider::class,
     ],
 
     /*
@@ -237,9 +241,12 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
 
-         'Taha' => \App\Providers\TahaServiceProvider::class ,
+         'Manage' => \App\Providers\ManageServiceProvider::class ,
           'NoCaptcha' => 'Anhskohbo\NoCaptcha\Facades\NoCaptcha',
-          'Setting' => \App\Providers\SettingServiceProvider::class,
+        'Hashids' => Vinkla\Hashids\Facades\Hashids::class,
+        'jDate' => Morilog\Jalali\Facades\jDate::class,
+
+        //          'Setting' => \App\Providers\SettingServiceProvider::class,
     ],
 
 ];

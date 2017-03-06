@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Schema;
 
 trait TahaModelTrait
 {
+	protected $saved_selector_para = [] ;
 
 	/*
 	|--------------------------------------------------------------------------
@@ -16,6 +17,37 @@ trait TahaModelTrait
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+
+	public static function counter($parameters, $in_persian = false)
+	{
+		$return = self::selector($parameters)->count();
+		if($in_persian)
+			return pd($return);
+		else
+			return $return ;
+
+	}
+
+	public function counterC($criteria = 'all' , $mood = '')
+	{
+		$return = $this->counter(array_default(['criteria' => $criteria,] , $this->saved_selector_para));
+
+		switch($mood) {
+			case 'badge' :
+				return " [".pd($return)."]" ;
+			case 'persian' :
+				return pd($return);
+			default :
+				return $return ;
+		}
+	}
+
+	public function setSelectorPara($parameters = [])
+	{
+		$this->saved_selector_para = $parameters ;
+	}
+
 	public function getIdAttribute($value)
 	{
 		return intval($value);
@@ -106,7 +138,7 @@ trait TahaModelTrait
 	public function spreadMeta()
 	{
 		//Bypass...
-		if(!self::hasColumn('meta'))
+		if(!self::hasColumn('meta') or !$this->id)
 			return $this ;
 
 		//Retreive...
@@ -117,14 +149,14 @@ trait TahaModelTrait
 
 		//safety...
 		if(!$meta)
-			return ;
+			return $this;
 
 		//Process...
 		foreach($meta as $field => $value) {
 			$this->$field = $value ;
 		}
 
-		return ;
+		return $this;
 
 	}
 
@@ -155,8 +187,13 @@ trait TahaModelTrait
 
 	public static function findBySlug($slug, $field = 'slug')
 	{
-		if(!$slug) return false ;
-		return self::where($field , $slug)->first() ;
+		if(!$slug) return new self() ;
+		$model = self::where($field , $slug)->first() ;
+
+		if($model)
+			return $model ;
+		else
+			return new self() ;
 
 	}
 
@@ -192,14 +229,19 @@ trait TahaModelTrait
 
 		//Action...
 		if(isset($data['id']) and $data['id'] > 0) {
-			$affected = Self::where('id', $data['id'])->update($data);
-
 			if(self::hasColumn('updated_by') and !isset($data['updated_by'])) {
 				if( Auth::check())
 					$data['updated_by'] = Auth::user()->id ;
 				else
 					$data['updated_by'] = 0 ;
 			}
+
+			$affected = Self::where('id', $data['id']);
+
+			if(self::hasColumn('deleted_at'))
+					$affected = $affected->withTrashed();
+
+			$affected = $affected->update($data);
 			if($affected) $affected = $data['id'] ;
 		}
 		else {
