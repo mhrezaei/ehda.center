@@ -99,8 +99,8 @@ class PostsController extends Controller
 		}
 
 		$models = Post::selector($selector_switches)->orderBy('created_at', 'desc')->paginate(user()->preference('max_rows_per_page'));
-//		$models->appends(['sort' => 'votes'])->links() ;
-		$db     = $this->Model;
+		//		$models->appends(['sort' => 'votes'])->links() ;
+		$db = $this->Model;
 
 		/*-----------------------------------------------
 		| View ...
@@ -561,9 +561,9 @@ class PostsController extends Controller
 			return $this->jsonFeedback(trans('validation.http.Error403'));
 		}
 
-		return $this->jsonAjaxSaveFeedback( $model->delete() , [
-				'success_callback' => "rowHide('tblPosts' , '$request->id')",
-				'success_refresh' => false,
+		return $this->jsonAjaxSaveFeedback($model->delete(), [
+			'success_callback' => "rowHide('tblPosts' , '$request->id')",
+			'success_refresh'  => false,
 		]);
 
 	}
@@ -579,12 +579,13 @@ class PostsController extends Controller
 			return $this->jsonFeedback(trans('validation.http.Error403'));
 		}
 
-		return $this->jsonAjaxSaveFeedback( $model->restore() , [
-				'success_callback' => "rowHide('tblPosts' , '$request->id')",
-				'success_refresh' => false,
+		return $this->jsonAjaxSaveFeedback($model->restore(), [
+			'success_callback' => "rowHide('tblPosts' , '$request->id')",
+			'success_refresh'  => false,
 		]);
 
 	}
+
 	public function destroy(Request $request)
 	{
 		$model = Post::onlyTrashed()->find($request->id);
@@ -596,10 +597,82 @@ class PostsController extends Controller
 			return $this->jsonFeedback(trans('validation.http.Error403'));
 		}
 
-		return $this->jsonAjaxSaveFeedback( $model->forceDelete() , [
-				'success_callback' => "rowHide('tblPosts' , '$request->id')",
-				'success_refresh' => false,
+		return $this->jsonAjaxSaveFeedback($model->forceDelete(), [
+			'success_callback' => "rowHide('tblPosts' , '$request->id')",
+			'success_refresh'  => false,
 		]);
+
+	}
+
+	public function makeClone(Request $request)
+	{
+		$data = $request->toArray();
+
+		/*-----------------------------------------------
+		| Model Retrieving and Security Check ...
+		*/
+		$model = Post::withTrashed()->find($request->id);
+		if(!$model) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+
+		if(!$model->can('create')) {
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+		}
+
+		/*-----------------------------------------------
+		| Validation ...
+		*/
+		if($model->has('locales')) {
+			if(!in_array($data['locale'], $model->posttype->locales_array)) {
+				return $this->jsonFeedback();
+			}
+			if($data['is_sister']) {
+				$sister = $model->in($data['locale']);
+				if($sister->exists) {
+					return $this->jsonFeedback(trans('posts.form.translation_already_made'));
+				}
+			}
+		}
+		else {
+			//(to be safe)
+			$data['is_sister'] = 0;
+			$data['locale']    = $model->locale;
+		}
+
+		/*-----------------------------------------------
+		| Save ...
+		*/
+		$new_model = new Post();
+		$new_model = $model->replicate();
+		if($model->has('locales')) {
+			$new_model->locale = $data['locale'];
+		}
+		if(!$data['is_sister']) {
+			$new_model->sisterhood = Hashids::encode(time());
+		}
+		$new_model->slug         = $new_model->normalized_slug;
+		$new_model->is_draft     = 1;
+		$new_model->copy_of      = 0;
+		$new_model->published_at = null;
+		$new_model->moderated_at = null;
+		$new_model->created_by   = 0;
+		$new_model->published_by = 0;
+		$new_model->moderated_by = 0;
+		$new_model->owned_by     = user()->id;
+		$new_model->created_by   = user()->id;
+
+		$new_model->save() ;
+
+
+		/*-----------------------------------------------
+		| Feedback ...
+		*/
+		return $this->jsonAjaxSaveFeedback( $new_model->id>0 , [
+				'success_callback' => "rowUpdate('tblAdmins','$request->id')",
+				'success_redirect' => $data['_submit'] == 'redirect_after_save'? $new_model->edit_link : '',
+		]);
+
 
 	}
 

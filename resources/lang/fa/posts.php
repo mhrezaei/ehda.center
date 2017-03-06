@@ -107,5 +107,11 @@ return [
 		'discount_percent_in_parentheses' => "(:percent٪ تخفیف)",
 		'quick_edit' => "ویرایش مختصر",
 		'clone' => "رونوشت‌برداری",
+	     'make_a_clone' => "رونوشت را بساز",
+	     'make_a_clone_and_save_to_drafts' => "فقط رونوشت را بساز",
+	     'make_a_clone_and_get_me_there' => "رونوشت را بساز و صفحه‌اش را باز کن",
+	     'clone_made_feedback' => "رونوشت را ساختیم و به عنوان پیش‌نویس شما ذخیره کردیم.",
+	     'clone_is_a_sister' => "این رونوشت، ترجمه‌ای از همین مطلب کنونی‌ست.",
+	     'translation_already_made' => "ترجمه با این زبان وجود دارد.",
 	],
 ];

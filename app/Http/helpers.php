@@ -127,7 +127,7 @@ function isJson($string) {
 function ss($anything)
 {
 	echo view('templates.say' , ['array'=>$anything]);
-
+	return '' ;
 }
 
 

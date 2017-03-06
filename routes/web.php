@@ -87,6 +87,7 @@ Route::group([
 			Route::post('/delete' , 'PostsController@delete');
 			Route::post('/undelete' , 'PostsController@undelete');
 			Route::post('/destroy' , 'PostsController@destroy');
+			Route::post('/clone' , 'PostsController@makeClone');
 		});
 
 	});

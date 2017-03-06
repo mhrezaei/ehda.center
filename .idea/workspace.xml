@@ -2,36 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="46984444-c09d-4610-9f2b-ef3bb8a2357d" name="Default" comment="            $table-&gt;unsignedInteger('deleted_by')-&gt;default(0) ;&#10;">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/views/manage/posts/delete.blade.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/views/manage/posts/destroy.blade.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/views/manage/posts/undelete.blade.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/views/manage/posts/clone.blade.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Manage/PostsController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Manage/PostsController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Requests/Manage/PostSaveRequest.php" afterPath="$PROJECT_DIR$/app/Http/Requests/Manage/PostSaveRequest.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/helpers.php" afterPath="$PROJECT_DIR$/app/Http/helpers.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/Post.php" afterPath="$PROJECT_DIR$/app/Models/Post.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/Setting.php" afterPath="$PROJECT_DIR$/app/Models/Setting.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/User.php" afterPath="$PROJECT_DIR$/app/Models/User.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Providers/ValidationServiceProvider.php" afterPath="$PROJECT_DIR$/app/Providers/ValidationServiceProvider.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/app.php" afterPath="$PROJECT_DIR$/config/app.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/database/seeds/DummySeeder.php" afterPath="$PROJECT_DIR$/database/seeds/DummySeeder.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/assets/css/manage.min.css" afterPath="$PROJECT_DIR$/public/assets/css/manage.min.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/assets/css/manage.min.css.map" afterPath="$PROJECT_DIR$/public/assets/css/manage.min.css.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/assets/js/manage.js" afterPath="$PROJECT_DIR$/public/assets/js/manage.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/lang/fa/forms.php" afterPath="$PROJECT_DIR$/resources/lang/fa/forms.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/lang/fa/people.php" afterPath="$PROJECT_DIR$/resources/lang/fa/people.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/Posttype.php" afterPath="$PROJECT_DIR$/app/Models/Posttype.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/lang/fa/posts.php" afterPath="$PROJECT_DIR$/resources/lang/fa/posts.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/lang/fa/validation.php" afterPath="$PROJECT_DIR$/resources/lang/fa/validation.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/sass/_basement.scss" afterPath="$PROJECT_DIR$/resources/sass/_basement.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/manage/frame/widgets/grid-action.blade.php" afterPath="$PROJECT_DIR$/resources/views/manage/frame/widgets/grid-action.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/manage/frame/widgets/grid-date.blade.php" afterPath="$PROJECT_DIR$/resources/views/manage/frame/widgets/grid-date.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/manage/frame/widgets/grid.blade.php" afterPath="$PROJECT_DIR$/resources/views/manage/frame/widgets/grid.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/manage/home/index.blade.php" afterPath="$PROJECT_DIR$/resources/views/manage/home/index.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/manage/posts/browse-row.blade.php" afterPath="$PROJECT_DIR$/resources/views/manage/posts/browse-row.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/manage/posts/browse.blade.php" afterPath="$PROJECT_DIR$/resources/views/manage/posts/browse.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/manage/posts/editor-options.blade.php" afterPath="$PROJECT_DIR$/resources/views/manage/posts/editor-options.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/manage/posts/tabs.blade.php" afterPath="$PROJECT_DIR$/resources/views/manage/posts/tabs.blade.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/web.php" afterPath="$PROJECT_DIR$/routes/web.php" />
     </list>
     <ignored path="yasna-web.iws" />
@@ -53,7 +29,7 @@
     <favorites_list name="yasna-web" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="vertical" split-proportion="0.8015489">
+    <splitter split-orientation="vertical" split-proportion="0.8054211">
       <split-first>
         <splitter split-orientation="horizontal" split-proportion="0.5579825">
           <split-first>
@@ -62,7 +38,7 @@
                 <entry file="file://$PROJECT_DIR$/routes/web.php">
                   <provider selected="true" editor-type-id="text-editor">
                     <state vertical-scroll-proportion="0.0">
-                      <caret line="88" column="64" selection-start-line="88" selection-start-column="64" selection-end-line="88" selection-end-column="64" />
+                      <caret line="89" column="64" selection-start-line="89" selection-start-column="64" selection-end-line="89" selection-end-column="64" />
                       <folding>
                         <element signature="e#7#389#0#PHP" expanded="true" />
                       </folding>
@@ -74,7 +50,7 @@
                 <entry file="file://$PROJECT_DIR$/app/Models/Posttype.php">
                   <provider selected="true" editor-type-id="text-editor">
                     <state vertical-scroll-proportion="0.0">
-                      <caret line="175" column="21" selection-start-line="175" selection-start-column="21" selection-end-line="175" selection-end-column="21" />
+                      <caret line="258" column="25" selection-start-line="258" selection-start-column="25" selection-end-line="258" selection-end-column="25" />
                       <folding />
                     </state>
                   </provider>
@@ -83,8 +59,8 @@
               <file leaf-file-name="Post.php" pinned="false" current-in-tab="false">
                 <entry file="file://$PROJECT_DIR$/app/Models/Post.php">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state vertical-scroll-proportion="0.0">
-                      <caret line="483" column="48" selection-start-line="483" selection-start-column="37" selection-end-line="483" selection-end-column="48" />
+                    <state vertical-scroll-proportion="-9.592592">
+                      <caret line="229" column="21" selection-start-line="229" selection-start-column="21" selection-end-line="229" selection-end-column="21" />
                       <folding>
                         <element signature="e#30#60#0#PHP" expanded="true" />
                       </folding>
@@ -95,8 +71,8 @@
               <file leaf-file-name="PostsController.php" pinned="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Manage/PostsController.php">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state vertical-scroll-proportion="0.76258063">
-                      <caret line="598" column="65" selection-start-line="598" selection-start-column="65" selection-end-line="598" selection-end-column="65" />
+                    <state vertical-scroll-proportion="0.9409499">
+                      <caret line="670" column="0" selection-start-line="670" selection-start-column="0" selection-end-line="670" selection-end-column="0" />
                       <folding>
                         <element signature="e#47#92#0#PHP" expanded="true" />
                       </folding>
@@ -104,35 +80,12 @@
                   </provider>
                 </entry>
               </file>
-              <file leaf-file-name="browse.blade.php" pinned="false" current-in-tab="false">
-                <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/browse.blade.php">
+              <file leaf-file-name="manage.js" pinned="false" current-in-tab="false">
+                <entry file="file://$PROJECT_DIR$/public/assets/js/manage.js">
                   <provider selected="true" editor-type-id="text-editor">
                     <state vertical-scroll-proportion="0.0">
-                      <caret line="24" column="38" selection-start-line="24" selection-start-column="38" selection-end-line="24" selection-end-column="38" />
-                      <folding>
-                        <marker date="1488706398000" expanded="true" signature="122:626" placeholder="..." />
-                        <marker date="1488706398000" expanded="true" signature="156:625" placeholder="..." />
-                        <marker date="1488706398000" expanded="true" signature="237:442" placeholder="..." />
-                        <marker date="1488706398000" expanded="true" signature="242:437" placeholder="..." />
-                        <marker date="1488706398000" expanded="true" signature="460:621" placeholder="..." />
-                        <marker date="1488706398000" expanded="true" signature="639:949" placeholder="..." />
-                        <marker date="1488706398000" expanded="true" signature="670:948" placeholder="..." />
-                        <marker date="1488706398000" expanded="true" signature="785:944" placeholder="..." />
-                      </folding>
-                    </state>
-                  </provider>
-                </entry>
-              </file>
-              <file leaf-file-name="tabs.blade.php" pinned="false" current-in-tab="false">
-                <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/tabs.blade.php">
-                  <provider selected="true" editor-type-id="text-editor">
-                    <state vertical-scroll-proportion="0.0">
-                      <caret line="1" column="2" selection-start-line="1" selection-start-column="2" selection-end-line="1" selection-end-column="2" />
-                      <folding>
-                        <marker date="1488740647000" expanded="true" signature="9:572" placeholder="..." />
-                        <marker date="1488740647000" expanded="true" signature="36:571" placeholder="..." />
-                        <marker date="1488740647000" expanded="true" signature="195:567" placeholder="..." />
-                      </folding>
+                      <caret line="19" column="9" selection-start-line="19" selection-start-column="9" selection-end-line="19" selection-end-column="9" />
+                      <folding />
                     </state>
                   </provider>
                 </entry>
@@ -140,109 +93,69 @@
               <file leaf-file-name="browse-row.blade.php" pinned="false" current-in-tab="false">
                 <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/browse-row.blade.php">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state vertical-scroll-proportion="-16.185184">
-                      <caret line="40" column="49" selection-start-line="40" selection-start-column="49" selection-end-line="40" selection-end-column="49" />
+                    <state vertical-scroll-proportion="-18.518518">
+                      <caret line="122" column="80" selection-start-line="122" selection-start-column="80" selection-end-line="122" selection-end-column="80" />
                       <folding>
-                        <marker date="1488738529000" expanded="true" signature="9:103" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="50:102" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="339:485" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="375:484" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="498:1329" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="536:1328" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="547:1327" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="551:676" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="678:1327" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="682:855" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="861:992" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="998:1202" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="1208:1324" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="1342:1536" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="1378:1535" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="1549:1789" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="1585:1788" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="1802:2055" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="1838:2054" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="2331:2506" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="2502:2505" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="2502:2506" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="2520:2797" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="2556:2796" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="2810:3040" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="2846:3039" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="3053:3131" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="3053:3288" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="3504:4736" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="3545:4735" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="3560:4734" placeholder="..." />
-                        <marker date="1488738529000" expanded="true" signature="3816:4734" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="9:103" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="50:102" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="339:485" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="375:484" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="498:1329" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="536:1328" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="547:1327" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="551:676" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="678:1327" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="682:855" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="861:992" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="998:1202" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="1208:1324" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="1342:1536" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="1378:1535" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="1549:1789" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="1585:1788" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="1802:2055" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="1838:2054" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="2331:2506" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="2502:2505" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="2502:2506" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="2520:2797" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="2556:2796" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="2810:3040" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="2846:3039" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="3053:3131" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="3053:3288" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="3504:4736" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="3545:4735" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="3560:4734" placeholder="..." />
+                        <marker date="1488779652000" expanded="true" signature="3816:4734" placeholder="..." />
                       </folding>
                     </state>
                   </provider>
                 </entry>
               </file>
-              <file leaf-file-name="delete.blade.php" pinned="false" current-in-tab="false">
-                <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/delete.blade.php">
+              <file leaf-file-name="clone.blade.php" pinned="false" current-in-tab="false">
+                <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/clone.blade.php">
                   <provider selected="true" editor-type-id="text-editor">
                     <state vertical-scroll-proportion="0.0">
-                      <caret line="27" column="46" selection-start-line="27" selection-start-column="46" selection-end-line="27" selection-end-column="46" />
+                      <caret line="39" column="39" selection-start-line="39" selection-start-column="20" selection-end-line="39" selection-end-column="39" />
                       <folding>
-                        <marker date="1488736846000" expanded="true" signature="9:139" placeholder="..." />
-                        <marker date="1488736846000" expanded="true" signature="36:138" placeholder="..." />
-                        <marker date="1488736846000" expanded="true" signature="177:237" placeholder="..." />
-                        <marker date="1488736846000" expanded="true" signature="196:236" placeholder="..." />
-                        <marker date="1488736846000" expanded="true" signature="209:235" placeholder="..." />
-                        <marker date="1488736846000" expanded="true" signature="250:392" placeholder="..." />
-                        <marker date="1488736846000" expanded="true" signature="267:391" placeholder="..." />
-                        <marker date="1488736846000" expanded="true" signature="437:552" placeholder="..." />
-                        <marker date="1488736846000" expanded="true" signature="455:551" placeholder="..." />
-                        <marker date="1488736846000" expanded="true" signature="564:690" placeholder="..." />
-                        <marker date="1488736846000" expanded="true" signature="582:689" placeholder="..." />
-                      </folding>
-                    </state>
-                  </provider>
-                </entry>
-              </file>
-              <file leaf-file-name="undelete.blade.php" pinned="false" current-in-tab="false">
-                <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/undelete.blade.php">
-                  <provider selected="true" editor-type-id="text-editor">
-                    <state vertical-scroll-proportion="0.0">
-                      <caret line="21" column="27" selection-start-line="21" selection-start-column="27" selection-end-line="21" selection-end-column="27" />
-                      <folding>
-                        <marker date="1488741187000" expanded="true" signature="9:138" placeholder="..." />
-                        <marker date="1488741187000" expanded="true" signature="36:137" placeholder="..." />
-                        <marker date="1488741187000" expanded="true" signature="176:236" placeholder="..." />
-                        <marker date="1488741187000" expanded="true" signature="195:235" placeholder="..." />
-                        <marker date="1488741187000" expanded="true" signature="208:234" placeholder="..." />
-                        <marker date="1488741187000" expanded="true" signature="249:391" placeholder="..." />
-                        <marker date="1488741187000" expanded="true" signature="266:390" placeholder="..." />
-                        <marker date="1488741187000" expanded="true" signature="436:549" placeholder="..." />
-                        <marker date="1488741187000" expanded="true" signature="454:548" placeholder="..." />
-                        <marker date="1488741187000" expanded="true" signature="561:687" placeholder="..." />
-                        <marker date="1488741187000" expanded="true" signature="579:686" placeholder="..." />
-                      </folding>
-                    </state>
-                  </provider>
-                </entry>
-              </file>
-              <file leaf-file-name="destroy.blade.php" pinned="false" current-in-tab="false">
-                <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/destroy.blade.php">
-                  <provider selected="true" editor-type-id="text-editor">
-                    <state vertical-scroll-proportion="0.0">
-                      <caret line="35" column="31" selection-start-line="35" selection-start-column="31" selection-end-line="35" selection-end-column="31" />
-                      <folding>
-                        <marker date="1488741438000" expanded="true" signature="9:140" placeholder="..." />
-                        <marker date="1488741438000" expanded="true" signature="36:139" placeholder="..." />
-                        <marker date="1488741438000" expanded="true" signature="178:238" placeholder="..." />
-                        <marker date="1488741438000" expanded="true" signature="197:237" placeholder="..." />
-                        <marker date="1488741438000" expanded="true" signature="210:236" placeholder="..." />
-                        <marker date="1488741438000" expanded="true" signature="251:393" placeholder="..." />
-                        <marker date="1488741438000" expanded="true" signature="268:392" placeholder="..." />
-                        <marker date="1488741438000" expanded="true" signature="406:502" placeholder="..." />
-                        <marker date="1488741438000" expanded="true" signature="422:501" placeholder="..." />
-                        <marker date="1488741438000" expanded="true" signature="547:667" placeholder="..." />
-                        <marker date="1488741438000" expanded="true" signature="565:666" placeholder="..." />
-                        <marker date="1488741438000" expanded="true" signature="679:805" placeholder="..." />
-                        <marker date="1488741438000" expanded="true" signature="697:804" placeholder="..." />
+                        <marker date="1488781931000" expanded="true" signature="9:130" placeholder="..." />
+                        <marker date="1488781931000" expanded="true" signature="36:129" placeholder="..." />
+                        <marker date="1488781931000" expanded="true" signature="168:228" placeholder="..." />
+                        <marker date="1488781931000" expanded="true" signature="187:227" placeholder="..." />
+                        <marker date="1488781931000" expanded="true" signature="200:226" placeholder="..." />
+                        <marker date="1488781931000" expanded="true" signature="241:383" placeholder="..." />
+                        <marker date="1488781931000" expanded="true" signature="258:382" placeholder="..." />
+                        <marker date="1488781931000" expanded="true" signature="396:608" placeholder="..." />
+                        <marker date="1488781931000" expanded="true" signature="414:607" placeholder="..." />
+                        <marker date="1488781931000" expanded="true" signature="621:787" placeholder="..." />
+                        <marker date="1488781931000" expanded="true" signature="643:786" placeholder="..." />
+                        <marker date="1488781931000" expanded="true" signature="832:1000" placeholder="..." />
+                        <marker date="1488781931000" expanded="true" signature="850:999" placeholder="..." />
+                        <marker date="1488781931000" expanded="true" signature="1012:1172" placeholder="..." />
+                        <marker date="1488781931000" expanded="true" signature="1030:1171" placeholder="..." />
+                        <marker date="1488781931000" expanded="true" signature="1184:1310" placeholder="..." />
+                        <marker date="1488781931000" expanded="true" signature="1202:1309" placeholder="..." />
                       </folding>
                     </state>
                   </provider>
@@ -255,8 +168,8 @@
               <file leaf-file-name="AdminsController.php" pinned="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Manage/AdminsController.php">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state vertical-scroll-proportion="0.340399">
-                      <caret line="43" column="33" selection-start-line="43" selection-start-column="33" selection-end-line="43" selection-end-column="33" />
+                    <state vertical-scroll-proportion="0.39578164">
+                      <caret line="90" column="81" selection-start-line="90" selection-start-column="42" selection-end-line="90" selection-end-column="81" />
                       <folding>
                         <element signature="e#47#93#0#PHP" expanded="true" />
                       </folding>
@@ -270,10 +183,10 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="validation.php" pinned="false" current-in-tab="true">
+          <file leaf-file-name="validation.php" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/resources/lang/fa/validation.php">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.7385621">
+                <state vertical-scroll-proportion="0.9259259">
                   <caret line="340" column="20" selection-start-line="340" selection-start-column="20" selection-end-line="340" selection-end-column="20" />
                   <folding>
                     <element signature="e#7190#8387#1#PHP" expanded="false" />
@@ -283,11 +196,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="posts.php" pinned="false" current-in-tab="false">
+          <file leaf-file-name="posts.php" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/resources/lang/fa/posts.php">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="49.53846">
-                  <caret line="13" column="18" selection-start-line="13" selection-start-column="11" selection-end-line="13" selection-end-column="18" />
+                <state vertical-scroll-proportion="0.66">
+                  <caret line="114" column="71" selection-start-line="114" selection-start-column="71" selection-end-line="114" selection-end-column="71" />
                   <folding />
                 </state>
               </provider>
@@ -311,8 +224,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/resources/views/templates/modal/start.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/templates/modal/end.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/forms/opener.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/editor.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-text.blade.php" />
@@ -329,7 +240,6 @@
         <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-hiddens.blade.php" />
         <option value="$PROJECT_DIR$/app/Models/Category.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-categories.blade.php" />
-        <option value="$PROJECT_DIR$/app/Models/Posttype.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-publish.blade.php" />
         <option value="$PROJECT_DIR$/public/assets/js/postEditorScripts.js" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-slug-feedback.blade.php" />
@@ -344,23 +254,26 @@
         <option value="$PROJECT_DIR$/resources/views/manage/frame/widgets/grid.blade.php" />
         <option value="$PROJECT_DIR$/app/Models/Setting.php" />
         <option value="$PROJECT_DIR$/resources/lang/fa/validation.php" />
-        <option value="$PROJECT_DIR$/app/Http/helpers.php" />
         <option value="$PROJECT_DIR$/database/seeds/DummySeeder.php" />
         <option value="$PROJECT_DIR$/resources/sass/_basement.scss" />
         <option value="$PROJECT_DIR$/resources/lang/fa/people.php" />
         <option value="$PROJECT_DIR$/app/Models/User.php" />
         <option value="$PROJECT_DIR$/resources/lang/fa/forms.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/frame/widgets/grid-action.blade.php" />
-        <option value="$PROJECT_DIR$/resources/lang/fa/posts.php" />
         <option value="$PROJECT_DIR$/app/Models/Post.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/delete.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/manage/posts/browse-row.blade.php" />
         <option value="$PROJECT_DIR$/public/assets/js/manage.js" />
         <option value="$PROJECT_DIR$/resources/views/manage/frame/use/tabs.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/tabs.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/undelete.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/destroy.blade.php" />
+        <option value="$PROJECT_DIR$/app/Http/helpers.php" />
+        <option value="$PROJECT_DIR$/resources/views/manage/posts/copy.blade.php" />
+        <option value="$PROJECT_DIR$/app/Models/Posttype.php" />
         <option value="$PROJECT_DIR$/routes/web.php" />
+        <option value="$PROJECT_DIR$/resources/views/manage/posts/browse-row.blade.php" />
+        <option value="$PROJECT_DIR$/resources/lang/fa/posts.php" />
+        <option value="$PROJECT_DIR$/resources/views/manage/posts/clone.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Manage/PostsController.php" />
       </list>
     </option>
@@ -515,10 +428,10 @@
     <property name="options.lastSelected" value="configurable.group.appearance" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="editing.templates" />
+    <property name="settings.editor.selected.configurable" value="reference.settings.ide.settings.spelling" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="WebServerToolWindowFactoryState" value="true" />
-    <property name="SearchEverywhereHistoryKey" value="manage.js&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/js/manage.js&#10;basement&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/sass/_basement.scss&#10;poststa&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;serv&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Providers/DummyServiceProvider.php&#10;admins/brow&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/admins/browse-row.blade.php&#10;helper&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/helpers.php&#10;dummy&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/seeds/DummySeeder.php&#10;config/app&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/config/app.php&#10;helpe&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/vendor/laravel/framework/src/Illuminate/Support/helpers.php&#10;postsavere&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/Requests/Manage/PostSaveRequest.php&#10;validationser&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Providers/ValidationServiceProvider.php&#10;postsave&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/Requests/Manage/PostSaveRequest.php&#10;homeco&#9;null&#9;null&#10;dummysee&#9;null&#9;null&#10;dummyser&#9;null&#9;null&#10;postscon&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/Controllers/Manage/PostsController.php&#10;posts/bro&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/browse.blade.php&#10;reques&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/Requests/Manage/PostSaveRequest.php&#10;createpo&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;validation&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Providers/ValidationServiceProvider.php&#10;edit&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-categories.blade.php&#10;edit-cate&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-categories.blade.php&#10;manage&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/js/manage.js&#10;poststab&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;config/has&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/config/hashids.php&#10;config/hash&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/vendor/vinkla/hashids/config/hashids.php&#10;posttable&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;modalrej&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-modal-reject.blade.php&#10;poststable&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;proje&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/seeds/ProjectSeeder.php&#10;post&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;helpers&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/vendor/laravel/framework/src/Illuminate/Support/helpers.php&#10;forms.js&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/js/forms.js&#10;formsjs&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/js/forms.js&#10;editopub&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-publish.blade.php&#10;createpost&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;manaje.js&#9;null&#9;null&#10;upst&#9;null&#9;null&#10;projecseeder&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/seeds/ProjectSeeder.php&#10;editorop&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-options.blade.php&#10;editcate&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-categories.blade.php&#10;editorl&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-locales.blade.php&#10;projec&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/seeds/ProjectSeeder.php&#10;614a196b123889b02df0f7dc3882bb4b0601dd7a&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/storage/framework/views/614a196b123889b02df0f7dc3882bb4b0601dd7a.php&#10;tahamod&#9;null&#9;null&#10;Permits&#9;null&#9;null&#10;.env&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/.env&#10;Setting&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/lang/fa/settings.php&#10;posttypeed&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/settings/posttypes-edit.blade.php&#10;createcate&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_06_092808_create_categories_table.php" />
+    <property name="SearchEverywhereHistoryKey" value="manage.js&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/js/manage.js&#10;manage,js&#9;null&#9;null&#10;plane&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/frame/layouts/plane.blade.php&#10;helper&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/helpers.php&#10;basement&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/sass/_basement.scss&#10;poststa&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;serv&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Providers/DummyServiceProvider.php&#10;admins/brow&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/admins/browse-row.blade.php&#10;dummy&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/seeds/DummySeeder.php&#10;config/app&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/config/app.php&#10;helpe&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/vendor/laravel/framework/src/Illuminate/Support/helpers.php&#10;postsavere&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/Requests/Manage/PostSaveRequest.php&#10;validationser&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Providers/ValidationServiceProvider.php&#10;postsave&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/Requests/Manage/PostSaveRequest.php&#10;homeco&#9;null&#9;null&#10;dummysee&#9;null&#9;null&#10;dummyser&#9;null&#9;null&#10;postscon&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/Controllers/Manage/PostsController.php&#10;posts/bro&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/browse.blade.php&#10;reques&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/Requests/Manage/PostSaveRequest.php&#10;createpo&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;validation&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Providers/ValidationServiceProvider.php&#10;edit&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-categories.blade.php&#10;edit-cate&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-categories.blade.php&#10;manage&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/js/manage.js&#10;poststab&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;config/has&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/config/hashids.php&#10;config/hash&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/vendor/vinkla/hashids/config/hashids.php&#10;posttable&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;modalrej&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-modal-reject.blade.php&#10;poststable&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;proje&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/seeds/ProjectSeeder.php&#10;post&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;helpers&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/vendor/laravel/framework/src/Illuminate/Support/helpers.php&#10;forms.js&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/js/forms.js&#10;formsjs&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/js/forms.js&#10;editopub&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-publish.blade.php&#10;createpost&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;manaje.js&#9;null&#9;null&#10;upst&#9;null&#9;null&#10;projecseeder&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/seeds/ProjectSeeder.php&#10;editorop&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-options.blade.php&#10;editcate&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-categories.blade.php&#10;editorl&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-locales.blade.php&#10;projec&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/seeds/ProjectSeeder.php&#10;614a196b123889b02df0f7dc3882bb4b0601dd7a&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/storage/framework/views/614a196b123889b02df0f7dc3882bb4b0601dd7a.php&#10;tahamod&#9;null&#9;null&#10;Permits&#9;null&#9;null&#10;.env&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/.env&#10;Setting&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/lang/fa/settings.php" />
     <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
     <property name="last_opened_file_path" value="$USER_HOME$/watchers.xml" />
     <property name="JavaScriptPreferStrict" value="false" />
@@ -658,17 +571,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/routes/web.php</url>
-          <line>106</line>
+          <line>107</line>
           <option name="timeStamp" value="40" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/routes/web.php</url>
-          <line>111</line>
+          <line>112</line>
           <option name="timeStamp" value="44" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/routes/web.php</url>
-          <line>112</line>
+          <line>113</line>
           <option name="timeStamp" value="45" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
@@ -717,50 +630,11 @@
           <option name="timeStamp" value="80" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="84" />
+      <option name="time" value="85" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/GuardsAttributes.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21198156">
-          <caret line="6" column="6" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/HasEvents.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.6743472">
-          <caret line="6" column="6" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/HasGlobalScopes.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21198156">
-          <caret line="9" column="6" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/HasAttributes.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21198156">
-          <caret line="13" column="6" selection-start-line="13" selection-start-column="6" selection-end-line="13" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Support/Collection.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.29800308">
-          <caret line="318" column="20" selection-start-line="318" selection-start-column="20" selection-end-line="318" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Collection.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.21198156">
@@ -819,14 +693,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.46005508">
           <caret line="216" column="13" selection-start-line="216" selection-start-column="13" selection-end-line="216" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/helpers.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.47933885">
-          <caret line="112" column="14" selection-start-line="112" selection-start-column="14" selection-end-line="112" selection-end-column="14" />
           <folding />
         </state>
       </provider>
@@ -949,14 +815,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/lang/fa/posts.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="49.53846">
-          <caret line="13" column="18" selection-start-line="13" selection-start-column="11" selection-end-line="13" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/manage/frame/widgets/grid-action.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.58111703">
@@ -1047,14 +905,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/assets/js/manage.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5880399">
-          <caret line="58" column="0" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/manage/frame/use/tabs.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.050941307">
@@ -1065,7 +915,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/lang/fa/validation.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7385621">
+        <state vertical-scroll-proportion="0.9259259">
           <caret line="340" column="20" selection-start-line="340" selection-start-column="20" selection-end-line="340" selection-end-column="20" />
           <folding>
             <element signature="e#7190#8387#1#PHP" expanded="false" />
@@ -1082,16 +932,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Manage/AdminsController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.340399">
-          <caret line="43" column="33" selection-start-line="43" selection-start-column="33" selection-end-line="43" selection-end-column="33" />
-          <folding>
-            <element signature="e#47#93#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/forms/note.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1102,7 +942,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/destroy.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.7456359">
           <caret line="35" column="31" selection-start-line="35" selection-start-column="31" selection-end-line="35" selection-end-column="31" />
           <folding>
             <marker date="1488741438000" expanded="true" signature="9:140" placeholder="..." />
@@ -1124,7 +964,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/undelete.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.55236906">
           <caret line="21" column="27" selection-start-line="21" selection-start-column="27" selection-end-line="21" selection-end-column="27" />
           <folding>
             <marker date="1488741187000" expanded="true" signature="9:138" placeholder="..." />
@@ -1142,9 +982,21 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/tabs.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.028678304">
+          <caret line="1" column="2" selection-start-line="1" selection-start-column="2" selection-end-line="1" selection-end-column="2" />
+          <folding>
+            <marker date="1488740647000" expanded="true" signature="9:572" placeholder="..." />
+            <marker date="1488740647000" expanded="true" signature="36:571" placeholder="..." />
+            <marker date="1488740647000" expanded="true" signature="195:567" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/delete.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.7743142">
           <caret line="27" column="46" selection-start-line="27" selection-start-column="46" selection-end-line="27" selection-end-column="46" />
           <folding>
             <marker date="1488736846000" expanded="true" signature="9:139" placeholder="..." />
@@ -1162,62 +1014,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/browse-row.blade.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/helpers.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-16.185184">
-          <caret line="40" column="49" selection-start-line="40" selection-start-column="49" selection-end-line="40" selection-end-column="49" />
+        <state vertical-scroll-proportion="0.5947631">
+          <caret line="129" column="16" selection-start-line="129" selection-start-column="16" selection-end-line="129" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/forms/select_self.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.08603492">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1488738529000" expanded="true" signature="9:103" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="50:102" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="339:485" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="375:484" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="498:1329" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="536:1328" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="547:1327" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="551:676" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="678:1327" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="682:855" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="861:992" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="998:1202" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="1208:1324" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="1342:1536" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="1378:1535" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="1549:1789" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="1585:1788" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="1802:2055" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="1838:2054" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="2331:2506" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="2502:2505" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="2502:2506" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="2520:2797" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="2556:2796" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="2810:3040" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="2846:3039" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="3053:3131" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="3053:3288" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="3504:4736" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="3545:4735" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="3560:4734" placeholder="..." />
-            <marker date="1488738529000" expanded="true" signature="3816:4734" placeholder="..." />
+            <marker date="1487944751000" expanded="true" signature="1111:1192" placeholder="..." />
+            <marker date="1487944751000" expanded="true" signature="1125:1191" placeholder="..." />
+            <marker date="1487944751000" expanded="true" signature="1143:1188" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/tabs.blade.php">
+    <entry file="file://$PROJECT_DIR$/resources/views/forms/select.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1" column="2" selection-start-line="1" selection-start-column="2" selection-end-line="1" selection-end-column="2" />
-          <folding>
-            <marker date="1488740647000" expanded="true" signature="9:572" placeholder="..." />
-            <marker date="1488740647000" expanded="true" signature="36:571" placeholder="..." />
-            <marker date="1488740647000" expanded="true" signature="195:567" placeholder="..." />
-          </folding>
+        <state vertical-scroll-proportion="0.62718207">
+          <caret line="32" column="36" selection-start-line="32" selection-start-column="36" selection-end-line="32" selection-end-column="36" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/browse.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.5217903">
           <caret line="24" column="38" selection-start-line="24" selection-start-column="38" selection-end-line="24" selection-end-column="38" />
           <folding>
             <marker date="1488706398000" expanded="true" signature="122:626" placeholder="..." />
@@ -1232,10 +1059,119 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/resources/lang/fa/posts.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.66">
+          <caret line="114" column="71" selection-start-line="114" selection-start-column="71" selection-end-line="114" selection-end-column="71" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/manage/frame/layouts/dashboard.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.80024815">
+          <caret line="49" column="71" selection-start-line="49" selection-start-column="71" selection-end-line="49" selection-end-column="71" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/manage/frame/layouts/plane.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.6848635">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Manage/AdminsController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.39578164">
+          <caret line="90" column="81" selection-start-line="90" selection-start-column="42" selection-end-line="90" selection-end-column="81" />
+          <folding>
+            <element signature="e#47#93#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/clone.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="39" column="39" selection-start-line="39" selection-start-column="20" selection-end-line="39" selection-end-column="39" />
+          <folding>
+            <marker date="1488781931000" expanded="true" signature="9:130" placeholder="..." />
+            <marker date="1488781931000" expanded="true" signature="36:129" placeholder="..." />
+            <marker date="1488781931000" expanded="true" signature="168:228" placeholder="..." />
+            <marker date="1488781931000" expanded="true" signature="187:227" placeholder="..." />
+            <marker date="1488781931000" expanded="true" signature="200:226" placeholder="..." />
+            <marker date="1488781931000" expanded="true" signature="241:383" placeholder="..." />
+            <marker date="1488781931000" expanded="true" signature="258:382" placeholder="..." />
+            <marker date="1488781931000" expanded="true" signature="396:608" placeholder="..." />
+            <marker date="1488781931000" expanded="true" signature="414:607" placeholder="..." />
+            <marker date="1488781931000" expanded="true" signature="621:787" placeholder="..." />
+            <marker date="1488781931000" expanded="true" signature="643:786" placeholder="..." />
+            <marker date="1488781931000" expanded="true" signature="832:1000" placeholder="..." />
+            <marker date="1488781931000" expanded="true" signature="850:999" placeholder="..." />
+            <marker date="1488781931000" expanded="true" signature="1012:1172" placeholder="..." />
+            <marker date="1488781931000" expanded="true" signature="1030:1171" placeholder="..." />
+            <marker date="1488781931000" expanded="true" signature="1184:1310" placeholder="..." />
+            <marker date="1488781931000" expanded="true" signature="1202:1309" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/manage/posts/browse-row.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-18.518518">
+          <caret line="122" column="80" selection-start-line="122" selection-start-column="80" selection-end-line="122" selection-end-column="80" />
+          <folding>
+            <marker date="1488779652000" expanded="true" signature="9:103" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="50:102" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="339:485" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="375:484" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="498:1329" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="536:1328" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="547:1327" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="551:676" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="678:1327" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="682:855" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="861:992" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="998:1202" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="1208:1324" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="1342:1536" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="1378:1535" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="1549:1789" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="1585:1788" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="1802:2055" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="1838:2054" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="2331:2506" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="2502:2505" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="2502:2506" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="2520:2797" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="2556:2796" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="2810:3040" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="2846:3039" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="3053:3131" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="3053:3288" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="3504:4736" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="3545:4735" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="3560:4734" placeholder="..." />
+            <marker date="1488779652000" expanded="true" signature="3816:4734" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/assets/js/manage.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="19" column="9" selection-start-line="19" selection-start-column="9" selection-end-line="19" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/routes/web.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="88" column="64" selection-start-line="88" selection-start-column="64" selection-end-line="88" selection-end-column="64" />
+          <caret line="89" column="64" selection-start-line="89" selection-start-column="64" selection-end-line="89" selection-end-column="64" />
           <folding>
             <element signature="e#7#389#0#PHP" expanded="true" />
           </folding>
@@ -1245,15 +1181,15 @@
     <entry file="file://$PROJECT_DIR$/app/Models/Posttype.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="175" column="21" selection-start-line="175" selection-start-column="21" selection-end-line="175" selection-end-column="21" />
+          <caret line="258" column="25" selection-start-line="258" selection-start-column="25" selection-end-line="258" selection-end-column="25" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Models/Post.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="483" column="48" selection-start-line="483" selection-start-column="37" selection-end-line="483" selection-end-column="48" />
+        <state vertical-scroll-proportion="-9.592592">
+          <caret line="229" column="21" selection-start-line="229" selection-start-column="21" selection-end-line="229" selection-end-column="21" />
           <folding>
             <element signature="e#30#60#0#PHP" expanded="true" />
           </folding>
@@ -1262,8 +1198,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Manage/PostsController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.76258063">
-          <caret line="598" column="65" selection-start-line="598" selection-start-column="65" selection-end-line="598" selection-end-column="65" />
+        <state vertical-scroll-proportion="0.9409499">
+          <caret line="670" column="0" selection-start-line="670" selection-start-column="0" selection-end-line="670" selection-end-column="0" />
           <folding>
             <element signature="e#47#92#0#PHP" expanded="true" />
           </folding>
