@@ -37,7 +37,7 @@ class DummySeeder extends Seeder
 		*/
 		for($i=1 ; $i<=10 ; $i++) {
 			\Illuminate\Foundation\Auth\User::create([
-				'code_melli' => rand(1000000000 , 9999999999) ,
+				'code_melli' => rand(1000000000 , mt_getrandmax()) ,
 				'email' => DummyServiceProvider::email(),
 				'name_first' => DummyServiceProvider::persianWord(),
 				'name_last' => DummyServiceProvider::persianWord(),

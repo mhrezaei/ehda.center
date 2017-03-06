@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="46984444-c09d-4610-9f2b-ef3bb8a2357d" name="Default" comment="            $table-&gt;unsignedInteger('deleted_by')-&gt;default(0) ;&#10;">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/database/seeds/DummySeeder.php" afterPath="$PROJECT_DIR$/database/seeds/DummySeeder.php" />
     </list>
     <ignored path="yasna-web.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -25,7 +26,18 @@
     <favorites_list name="yasna-web" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name=".env" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.env">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="189">
+              <caret line="7" column="17" lean-forward="false" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -35,13 +47,17 @@
       </list>
     </option>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>rand</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/resources/views/manage/posts/editor.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-text.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-modal-reject.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/editor-modal-delete.blade.php" />
@@ -70,7 +86,6 @@
         <option value="$PROJECT_DIR$/resources/views/manage/frame/widgets/grid.blade.php" />
         <option value="$PROJECT_DIR$/app/Models/Setting.php" />
         <option value="$PROJECT_DIR$/resources/lang/fa/validation.php" />
-        <option value="$PROJECT_DIR$/database/seeds/DummySeeder.php" />
         <option value="$PROJECT_DIR$/resources/sass/_basement.scss" />
         <option value="$PROJECT_DIR$/resources/lang/fa/people.php" />
         <option value="$PROJECT_DIR$/app/Models/User.php" />
@@ -83,7 +98,6 @@
         <option value="$PROJECT_DIR$/resources/views/manage/posts/tabs.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/undelete.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/destroy.blade.php" />
-        <option value="$PROJECT_DIR$/app/Http/helpers.php" />
         <option value="$PROJECT_DIR$/resources/views/manage/posts/copy.blade.php" />
         <option value="$PROJECT_DIR$/app/Models/Posttype.php" />
         <option value="$PROJECT_DIR$/routes/web.php" />
@@ -92,6 +106,9 @@
         <option value="$PROJECT_DIR$/resources/views/manage/posts/clone.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Manage/PostsController.php" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/.env" />
+        <option value="$PROJECT_DIR$/app/Http/helpers.php" />
+        <option value="$PROJECT_DIR$/database/seeds/DummySeeder.php" />
       </list>
     </option>
   </component>
@@ -318,6 +335,38 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="yasna-web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="yasna-web" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="yasna-web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="yasna-web" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="Scope" />
@@ -331,7 +380,7 @@
     <property name="settings.editor.selected.configurable" value="reference.settings.ide.settings.spelling" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="WebServerToolWindowFactoryState" value="true" />
-    <property name="SearchEverywhereHistoryKey" value="manage.js&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/js/manage.js&#10;manage,js&#9;null&#9;null&#10;plane&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/frame/layouts/plane.blade.php&#10;helper&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/helpers.php&#10;basement&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/sass/_basement.scss&#10;poststa&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;serv&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Providers/DummyServiceProvider.php&#10;admins/brow&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/admins/browse-row.blade.php&#10;dummy&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/seeds/DummySeeder.php&#10;config/app&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/config/app.php&#10;helpe&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/vendor/laravel/framework/src/Illuminate/Support/helpers.php&#10;postsavere&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/Requests/Manage/PostSaveRequest.php&#10;validationser&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Providers/ValidationServiceProvider.php&#10;postsave&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/Requests/Manage/PostSaveRequest.php&#10;homeco&#9;null&#9;null&#10;dummysee&#9;null&#9;null&#10;dummyser&#9;null&#9;null&#10;postscon&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/Controllers/Manage/PostsController.php&#10;posts/bro&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/browse.blade.php&#10;reques&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/Requests/Manage/PostSaveRequest.php&#10;createpo&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;validation&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Providers/ValidationServiceProvider.php&#10;edit&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-categories.blade.php&#10;edit-cate&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-categories.blade.php&#10;manage&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/js/manage.js&#10;poststab&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;config/has&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/config/hashids.php&#10;config/hash&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/vendor/vinkla/hashids/config/hashids.php&#10;posttable&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;modalrej&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-modal-reject.blade.php&#10;poststable&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;proje&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/seeds/ProjectSeeder.php&#10;post&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;helpers&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/vendor/laravel/framework/src/Illuminate/Support/helpers.php&#10;forms.js&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/js/forms.js&#10;formsjs&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/js/forms.js&#10;editopub&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-publish.blade.php&#10;createpost&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;manaje.js&#9;null&#9;null&#10;upst&#9;null&#9;null&#10;projecseeder&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/seeds/ProjectSeeder.php&#10;editorop&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-options.blade.php&#10;editcate&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-categories.blade.php&#10;editorl&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-locales.blade.php&#10;projec&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/seeds/ProjectSeeder.php&#10;614a196b123889b02df0f7dc3882bb4b0601dd7a&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/storage/framework/views/614a196b123889b02df0f7dc3882bb4b0601dd7a.php&#10;tahamod&#9;null&#9;null&#10;Permits&#9;null&#9;null&#10;.env&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/.env&#10;Setting&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/lang/fa/settings.php" />
+    <property name="SearchEverywhereHistoryKey" value="dummy&#9;FILE&#9;file://C:/xampp/htdocs/yasna-web/database/seeds/DummySeeder.php&#10;manage.js&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/js/manage.js&#10;manage,js&#9;null&#9;null&#10;plane&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/frame/layouts/plane.blade.php&#10;helper&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/helpers.php&#10;basement&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/sass/_basement.scss&#10;poststa&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;serv&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Providers/DummyServiceProvider.php&#10;admins/brow&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/admins/browse-row.blade.php&#10;config/app&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/config/app.php&#10;helpe&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/vendor/laravel/framework/src/Illuminate/Support/helpers.php&#10;postsavere&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/Requests/Manage/PostSaveRequest.php&#10;validationser&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Providers/ValidationServiceProvider.php&#10;postsave&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/Requests/Manage/PostSaveRequest.php&#10;homeco&#9;null&#9;null&#10;dummysee&#9;null&#9;null&#10;dummyser&#9;null&#9;null&#10;postscon&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/Controllers/Manage/PostsController.php&#10;posts/bro&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/browse.blade.php&#10;reques&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Http/Requests/Manage/PostSaveRequest.php&#10;createpo&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;validation&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/app/Providers/ValidationServiceProvider.php&#10;edit&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-categories.blade.php&#10;edit-cate&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-categories.blade.php&#10;manage&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/js/manage.js&#10;poststab&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;config/has&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/config/hashids.php&#10;config/hash&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/vendor/vinkla/hashids/config/hashids.php&#10;posttable&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;modalrej&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-modal-reject.blade.php&#10;poststable&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;proje&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/seeds/ProjectSeeder.php&#10;post&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;helpers&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/vendor/laravel/framework/src/Illuminate/Support/helpers.php&#10;forms.js&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/js/forms.js&#10;formsjs&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/public/assets/js/forms.js&#10;editopub&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-publish.blade.php&#10;createpost&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/migrations/2017_02_05_093047_create_posts_table.php&#10;manaje.js&#9;null&#9;null&#10;upst&#9;null&#9;null&#10;projecseeder&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/seeds/ProjectSeeder.php&#10;editorop&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-options.blade.php&#10;editcate&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-categories.blade.php&#10;editorl&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/views/manage/posts/editor-locales.blade.php&#10;projec&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/database/seeds/ProjectSeeder.php&#10;614a196b123889b02df0f7dc3882bb4b0601dd7a&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/storage/framework/views/614a196b123889b02df0f7dc3882bb4b0601dd7a.php&#10;tahamod&#9;null&#9;null&#10;Permits&#9;null&#9;null&#10;.env&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/.env&#10;Setting&#9;FILE&#9;file:///Applications/MAMP/htdocs/taha/yasna-web/resources/lang/fa/settings.php" />
     <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
     <property name="last_opened_file_path" value="$USER_HOME$/watchers.xml" />
     <property name="JavaScriptPreferStrict" value="false" />
@@ -339,28 +388,45 @@
     <property name="FullScreen" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\yasna-web" />
+      <recent name="$PROJECT_DIR$/resources/views/manage/posts" />
+      <recent name="$PROJECT_DIR$/app/Http/Requests/Manage" />
+      <recent name="$PROJECT_DIR$/resources/views/manage/admins" />
+      <recent name="$PROJECT_DIR$/app/Http/Controllers/Manage" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app/Http/Requests/Manage" />
       <recent name="$PROJECT_DIR$/app" />
       <recent name="$PROJECT_DIR$/app/Models" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/resources/views/manage/posts" />
-      <recent name="$PROJECT_DIR$/app/Http/Requests/Manage" />
-      <recent name="$PROJECT_DIR$/resources/views/manage/admins" />
-      <recent name="$PROJECT_DIR$/app/Http/Controllers/Manage" />
-      <recent name="$PROJECT_DIR$/resources/views/manage/settings" />
-    </key>
   </component>
   <component name="RunManager">
+    <configuration default="true" type="JavaScriptTestRunnerProtractor" factoryName="Protractor">
+      <config-file value="" />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
     <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" working-dir="">
       <method />
     </configuration>
     <configuration default="true" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
       <TestRunner />
       <method />
     </configuration>
+    <configuration default="true" type="PhpBehatConfigurationType" factoryName="Behat">
+      <BehatRunner />
+      <method />
+    </configuration>
     <configuration default="true" type="PhpLocalRunConfigurationType" factoryName="PHP Console">
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpSpecConfigurationType" factoryName="PHPSpec">
+      <PhpTestRunnerSettings />
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
@@ -379,6 +445,19 @@
       <envs />
       <method />
     </configuration>
+    <configuration default="true" type="mocha-javascript-test-runner" factoryName="Mocha">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <working-directory />
+      <pass-parent-env>true</pass-parent-env>
+      <envs />
+      <ui />
+      <extra-mocha-options />
+      <test-kind>DIRECTORY</test-kind>
+      <test-directory />
+      <recursive>false</recursive>
+      <method />
+    </configuration>
   </component>
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
@@ -394,12 +473,12 @@
       <option name="presentableId" value="Default" />
       <updated>1485880196572</updated>
       <workItem from="1488787219665" duration="254000" />
-      <workItem from="1488787613587" duration="73000" />
+      <workItem from="1488787613587" duration="1305000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="327000" />
+    <option name="totallyTimeSpent" value="1559000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -412,17 +491,17 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1080" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1337953" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1337953" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32934928" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25847048" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25768086" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -548,20 +627,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Relations/BelongsToMany.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="8" column="40" lean-forward="false" selection-start-line="8" selection-start-column="40" selection-end-line="8" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="2" column="33" lean-forward="false" selection-start-line="2" selection-start-column="33" selection-end-line="2" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Support/helpers.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -585,13 +650,6 @@
       </provider>
     </entry>
     <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/com/jetbrains/php/lang/psi/stubs/data/standard_9.php" />
-    <entry file="file://$PROJECT_DIR$/database/seeds/DummySeeder.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="80" column="61" lean-forward="false" selection-start-line="80" selection-start-column="61" selection-end-line="80" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Providers/DummyServiceProvider.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -786,13 +844,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/helpers.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="129" column="16" lean-forward="false" selection-start-line="129" selection-start-column="16" selection-end-line="129" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/forms/select_self.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -841,7 +892,7 @@
         <state relative-caret-position="351">
           <caret line="90" column="78" lean-forward="false" selection-start-line="90" selection-start-column="42" selection-end-line="90" selection-end-column="78" />
           <folding>
-            <element signature="e#47#93#0#PHP" expanded="true" />
+            <element signature="e#47#93#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -883,7 +934,7 @@
         <state relative-caret-position="4545">
           <caret line="670" column="0" lean-forward="false" selection-start-line="670" selection-start-column="0" selection-end-line="670" selection-end-column="0" />
           <folding>
-            <element signature="e#47#92#0#PHP" expanded="true" />
+            <element signature="e#47#92#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -893,7 +944,7 @@
         <state relative-caret-position="27">
           <caret line="229" column="21" lean-forward="false" selection-start-line="229" selection-start-column="21" selection-end-line="229" selection-end-column="21" />
           <folding>
-            <element signature="e#30#60#0#PHP" expanded="true" />
+            <element signature="e#30#60#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -911,8 +962,40 @@
         <state relative-caret-position="27">
           <caret line="89" column="64" lean-forward="false" selection-start-line="89" selection-start-column="64" selection-end-line="89" selection-end-column="64" />
           <folding>
-            <element signature="e#7#389#0#PHP" expanded="true" />
+            <element signature="e#7#389#0#PHP" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/helpers.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="609">
+          <caret line="115" column="0" lean-forward="true" selection-start-line="115" selection-start-column="0" selection-end-line="115" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/stubs/standard/standard_2.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="159">
+          <caret line="1019" column="9" lean-forward="false" selection-start-line="1019" selection-start-column="9" selection-end-line="1019" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/seeds/DummySeeder.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="337">
+          <caret line="39" column="56" lean-forward="false" selection-start-line="39" selection-start-column="56" selection-end-line="39" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="7" column="17" lean-forward="false" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
+          <folding />
         </state>
       </provider>
     </entry>
