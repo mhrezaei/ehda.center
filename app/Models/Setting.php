@@ -49,7 +49,7 @@ class Setting extends Model
 
 	public function reset()
 	{
-		$this->request_language     = App::getLocale();
+		//		$this->request_language     = App::getLocale();
 		$this->request_language     = '';
 		$this->request_fresh_reveal = false;
 		$this->request_default      = false;
@@ -187,11 +187,15 @@ class Setting extends Model
 			return self::$default_when_not_found;
 		}
 
+		//Language decision...
+		if(!$this->request_language){
+			$this->request_language= getLocale() ;
+		}
+
 		//If already revealed...
 		if($this->exists) {
 			$record = $this;
 		}
-
 		//Look in session...
 		else {
 			$record = session()->get($this->session_key, "NO");
@@ -218,19 +222,17 @@ class Setting extends Model
 		}
 
 		//Locales...
-
-		if($record->is_localized and !$record->request_default) {
+		if($record->is_localized and !$this->request_default) {
 			if(isJson($value) and !is_numeric($value)) {
 				$value = json_decode($value, true);
-				if(array_has($value, $record->request_language)) {
-					$value = $value[$record->request_language];
+				if(array_has($value, $this->request_language)) {
+					$value = $value[$this->request_language];
 				}
 				else {
 					$value = $record->raw_default;
 				}
 			}
 			else {
-				session()->put('a',13);
 				$value = $record->raw_default;
 			}
 		}
@@ -258,6 +260,7 @@ class Setting extends Model
 
 	public function ask($slug)
 	{
+
 		$this->slug = $slug;
 
 		return $this;
