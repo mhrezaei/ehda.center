@@ -24,14 +24,6 @@ class HomeController extends Controller
 
 	public function index()
 	{
-		$table = State::whereIn('id' , [12 , 30 , 23 , 2 , 70])->update([
-			'country_id' => "1",
-		]) ;
-		ss($table);
-
-
-
-
 		$page = $this->page ;
 
 		return view("manage.home.index",compact('page'));
