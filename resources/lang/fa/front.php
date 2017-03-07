@@ -20,6 +20,8 @@ return [
     'drawing_check_code_fail' => 'کد وارد شده معتبر نیست',
     'login' => 'ورود',
     'not_member_register_now' => 'عضو نیستید؟ ثبت‌نام کنید',
+    'register' => 'ثبت نام',
+    'member_login' => 'عضو سایت هستید؟ وارد شوید',
 
 
 

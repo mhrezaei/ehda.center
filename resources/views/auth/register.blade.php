@@ -1,76 +1,80 @@
-@extends('layouts.app')
+@include('front.frame.header')
+<title>
+    {{ setting()->ask('site_title')->gain() }} | {{ trans('front.register') }}
+</title>
+<body class="auth">
+<div class="auth-wrapper">
+    <div class="auth-col">
+        <a href="{{ url_locale('') }}" class="logo"> <img src="{{ url('/assets/images/logo.png') }}"> </a>
+    </div>
+    <div class="auth-col">
+        <h1 class="auth-title"> {{ trans('front.register') }} </h1>
+            {!! Form::open([
+                'url'	=> '/register/new' ,
+                'method'=> 'post',
+                'class' => 'form-horizontal js',
+                'name' => 'registerForm',
+                'id' => 'registerForm',
+            ]) !!}
 
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Register</div>
-                <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ route('register') }}">
-                        {{ csrf_field() }}
+            @include('auth.field', [
+                'name' => 'name_first',
+                'other' => 'autofocus',
+                'type' => 'text',
+                'value' => old('name_first'),
+                'class' => 'form-required form-persian',
+                'min' => 2,
+            ])
 
-                        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label">Name</label>
+            @include('auth.field', [
+                'name' => 'name_last',
+                'type' => 'text',
+                'value' => old('name_last'),
+                'class' => 'form-required form-persian',
+                'min' => 2,
+            ])
 
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
+            @include('auth.field', [
+                'name' => 'code_melli',
+                'type' => 'text',
+                'value' => old('code_melli'),
+                'class' => 'form-required form-national',
+            ])
 
-                                @if ($errors->has('name'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
+            @include('auth.field', [
+                'name' => 'mobile',
+                'type' => 'text',
+                'value' => old('mobile'),
+                'class' => 'form-required form-mobile',
+            ])
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+            @include('auth.field', [
+                'name' => 'password',
+                'type' => 'password',
+                'value' => old('password'),
+                'class' => 'form-required form-password',
+            ])
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+            @include('auth.field', [
+                'name' => 'password2',
+                'type' => 'password',
+                'value' => old('password2'),
+            ])
 
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Password</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Register
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+            <div class="tal" style="margin-bottom: 15px;">
+                <button class="green block" type="submit"> {{ trans('front.register') }} </button>
             </div>
-        </div>
+            @include('forms.feed')
+            <hr class="or">
+            <div class="tal" style="margin-bottom: 15px;">
+                <button onclick="window.location = '{{ url('/login') }}';" class="blue block"> {{ trans('front.member_login') }} </button>
+            </div>
+
+        {!! Form::close() !!}
     </div>
 </div>
-@endsection
+</div>
+@include('front.frame.scripts')
+</body>
+
+</html>
