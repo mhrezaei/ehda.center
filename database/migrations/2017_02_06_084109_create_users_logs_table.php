@@ -19,7 +19,7 @@ class CreateUsersLogsTable extends Migration
             $table->softDeletes();
             $table->integer('duration')->default(0);
 
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

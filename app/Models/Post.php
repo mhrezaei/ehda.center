@@ -35,6 +35,10 @@ class Post extends Model
 	{
 		return $this->belongsToMany('App\Models\Category')->withTimestamps();
 	}
+	public function folders()
+	{
+		return $this->belongsToMany('App\Models\Folder')->withTimestamps();
+	}
 	public function roles()
 	{
 		return $this->belongsToMany('App\Models\Rsole')->withTimestamps();; //@TODO: complete with withPivot('permissions' , 'deleted_at') perhaps
@@ -504,15 +508,22 @@ class Post extends Model
 	public function saveCategories($data)
 	{
 		$selected_categories = [] ;
+		$selected_folders = [] ;
 		foreach($data as $key => $value) {
 			if(str_contains($key,'category') and $value) {
-				$category_id = str_replace('category-' , null , $key);
-				array_push($selected_categories , Category::realId($category_id));
+				$category_id = Category::realId(str_replace('category-' , null , $key));
+				$category = Category::find($category_id) ;
+				if($category) {
+					array_push($selected_categories , $category->id);
+					array_push($selected_folders , $category->folder_id);
+				}
 			}
 		}
 
 		$this->categories()->sync(  $selected_categories );
-		session()->put('test2' , $selected_categories);
+		$this->folders()->sync( $selected_folders );
+
+
 	}
 	public static function normalizeSlug($post_id, $post_type, $post_locale, $slug)
 	{
