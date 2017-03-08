@@ -12,7 +12,7 @@ class Folder extends Model
 
 	protected $guarded = ['id'] ;
 	public static $reserved_slugs = 'root,admin' ;
-//	public static $meta_fields = [];
+	public static $meta_fields = ['image'];
 
 	/*
 	|--------------------------------------------------------------------------
