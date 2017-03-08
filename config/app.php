@@ -189,6 +189,8 @@ return [
 
         Morilog\Jalali\JalaliServiceProvider::class,
         \App\Providers\AppServiceProvider::class,
+        Unisharp\Laravelfilemanager\LaravelFilemanagerServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
     ],
 
     /*
@@ -245,6 +247,7 @@ return [
           'NoCaptcha' => 'Anhskohbo\NoCaptcha\Facades\NoCaptcha',
         'Hashids' => Vinkla\Hashids\Facades\Hashids::class,
         'jDate' => Morilog\Jalali\Facades\jDate::class,
+        'Image' => Intervention\Image\Facades\Image::class,
 
         //          'Setting' => \App\Providers\SettingServiceProvider::class,
     ],

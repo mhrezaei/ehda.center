@@ -49,7 +49,6 @@ class Setting extends Model
 
 	public function reset()
 	{
-		//		$this->request_language     = App::getLocale();
 		$this->request_language     = '';
 		$this->request_fresh_reveal = false;
 		$this->request_default      = false;

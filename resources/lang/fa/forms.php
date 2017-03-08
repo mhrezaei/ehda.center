@@ -30,6 +30,7 @@ return [
 		'send_and_save' => 'ذخیره و ارسال' ,
 		'undo_changes' => 'لغو تغییرات' ,
 		'browse_image' => 'انتخاب عکس' ,
+		'flush_image' => "تخلیه عکس",
 		'login'		=> 'ورود',
 		'refresh'      => 'بازخوانی' ,
 		'add'		=> 'افزودن',

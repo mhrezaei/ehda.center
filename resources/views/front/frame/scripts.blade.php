@@ -5,3 +5,5 @@
 {!! Html::script ('assets/js/slick.js') !!}
 {!! Html::script ('assets/js/persian.js') !!}
 {!! Html::script ('assets/js/app.js') !!}
+{!! Html::script ('assets/js/jquery.form.min.js') !!}
+{!! Html::script ('assets/js/forms.js') !!}

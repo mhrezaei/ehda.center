@@ -4,8 +4,13 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
+    "hash": "4ac312bfe535fa61ea25d778a0335c58",
+    "content-hash": "6c438280a2e6dd5cf5a64c3d84845fc4",
+=======
     "hash": "49b47d2a8fceaedd89f1654b1de1fc7f",
     "content-hash": "2f002bfd88445db037a076a471eff9c9",
+>>>>>>> master
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
@@ -548,6 +553,68 @@
                 "youtube"
             ],
             "time": "2017-01-01 13:33:33"
+        },
+        {
+            "name": "intervention/image",
+            "version": "2.3.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Intervention/image.git",
+                "reference": "e8881fd99b9804b29e02d6d1c2c15ee459335cf1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Intervention/image/zipball/e8881fd99b9804b29e02d6d1c2c15ee459335cf1",
+                "reference": "e8881fd99b9804b29e02d6d1c2c15ee459335cf1",
+                "shasum": ""
+            },
+            "require": {
+                "ext-fileinfo": "*",
+                "guzzlehttp/psr7": "~1.1",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9.2",
+                "phpunit/phpunit": "3.*"
+            },
+            "suggest": {
+                "ext-gd": "to use GD library based image processing.",
+                "ext-imagick": "to use Imagick based image processing.",
+                "intervention/imagecache": "Caching extension for the Intervention Image library"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Intervention\\Image\\": "src/Intervention/Image"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Oliver Vogel",
+                    "email": "oliver@olivervogel.net",
+                    "homepage": "http://olivervogel.net/"
+                }
+            ],
+            "description": "Image handling and manipulation library with support for Laravel integration",
+            "homepage": "http://image.intervention.io/",
+            "keywords": [
+                "gd",
+                "image",
+                "imagick",
+                "laravel",
+                "thumbnail",
+                "watermark"
+            ],
+            "time": "2017-02-04 10:37:19"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -3965,6 +4032,70 @@
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
             "time": "2017-02-16 22:46:52"
+<<<<<<< HEAD
+        },
+        {
+            "name": "unisharp/laravel-filemanager",
+            "version": "v1.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/UniSharp/laravel-filemanager.git",
+                "reference": "f80d6623cb33c446e499c24de92f5d58a2678bf5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/UniSharp/laravel-filemanager/zipball/f80d6623cb33c446e499c24de92f5d58a2678bf5",
+                "reference": "f80d6623cb33c446e499c24de92f5d58a2678bf5",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": ">=4.2.0",
+                "intervention/image": "2.*",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "~3.0",
+                "phpspec/phpspec": "~2.1",
+                "phpunit/phpunit": "~4.8"
+            },
+            "suggest": {
+                "ext-gd": "to use GD library based image processing.",
+                "ext-imagick": "to use Imagick based image processing."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Unisharp\\Laravelfilemanager\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Trevor Sawler",
+                    "email": "trevor.sawler@gmail.com"
+                },
+                {
+                    "name": "UniSharp Ltd.",
+                    "email": "unisharp-service@unisharp.com"
+                }
+            ],
+            "description": "A file upload/editor intended for use with Laravel 5 and CKEditor / TinyMCE",
+            "keywords": [
+                "CKEditor",
+                "file",
+                "filemanager",
+                "image",
+                "laravel",
+                "manager",
+                "tinymce",
+                "upload"
+            ],
+            "time": "2017-02-17 08:42:40"
+=======
+>>>>>>> master
         },
         {
             "name": "webmozart/assert",

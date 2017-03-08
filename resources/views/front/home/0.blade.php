@@ -1,7 +1,7 @@
 @extends('front.frame.frame')
 
-@section('title')
-    {{ trans('front.home') }}
+@section('head')
+    <title>{{ setting()->ask('site_title')->gain() }} | {{ trans('front.home') }}</title>
 @endsection
 
 @section('content')
