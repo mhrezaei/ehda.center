@@ -57,8 +57,8 @@
 {{--	{!! HTML::script ('assets/libs/jquery-sortable/jquery-sortable.js') !!}--}}
 
 
-	{{-- Laravel File-Manage --}}
-	{{--{!! HTML::script ('/vendor/laravel-filemanager/js/lfm.js') !!}--}}
+	 Laravel File-Manage
+	{!! HTML::script ('/vendor/laravel-filemanager/js/lfm.js') !!}
 
 	{{-- Custom --}}
 	{!! Html::style('assets/css/manage.min.css') !!}

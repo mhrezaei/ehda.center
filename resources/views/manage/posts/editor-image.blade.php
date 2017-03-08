@@ -4,13 +4,26 @@
 			{{ trans('validation.attributes.featured_image') }}
 		</div>
 
-		<div class="panel-body">
-			@include("forms.hidden" , [
-				'name' => "featured_image",
-				'value' => "/img",
-			])
+		<div class="m10 text-center" style="">
+			<button type="button" id="btnFeaturedImage" data-input="txtFeaturedImage" data-preview="imgFeaturedImage" data-callback="featuredImage('inserted')" class="btn btn-{{ $model->featured_image? 'default' : 'primary' }}">
+				{{ trans('forms.button.browse_image') }}
+			</button>
+			<input id="txtFeaturedImage" type="hidden" name="featured_image" value="{{ $model->featured_image? url($model->featured_image) : '' }}">
+			<div id="divFeaturedImage" class="{{ $model->featured_image? '' : 'noDisplay' }}">
+				<div class="text-center">
+					<img id="imgFeaturedImage" src="{{ $model->featured_image? url($model->featured_image) : '' }}" style="margin-top:15px;max-height:100px;max-width: 100%">
+				</div>
+				<button type="button" id="btnDeleteFeaturedImage" class="btn btn-link btn-xs">
+				<span class="text-danger clickable" onclick="featuredImage('deleted')">
+					{{ trans('forms.button.flush_image') }}
+				</span>
+				</button>
+			</div>
 		</div>
 
+		<script>
+		  $('#btnFeaturedImage').filemanager('image');
+		</script>
 
 	</div>
 @endif

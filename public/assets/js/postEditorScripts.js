@@ -161,3 +161,21 @@ function postsAction($command)
 
 	}
 }
+
+function featuredImage(event)
+{
+	switch(event) {
+		case 'inserted' :
+			$('#divFeaturedImage').slideDown() ;
+			$('#btnFeaturedImage').addClass('btn-default').removeClass('btn-primary');
+			break;
+
+		case 'deleted' :
+			$('#divFeaturedImage').slideUp('fast') ;
+			$('#txtFeaturedImage').val('');
+			$('#imgFeaturedImage').attr('src','');
+			$('#btnFeaturedImage').addClass('btn-primary').removeClass('btn-default');
+			break;
+
+	}
+}

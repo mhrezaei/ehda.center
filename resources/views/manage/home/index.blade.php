@@ -2,8 +2,6 @@
 
 @section('section')
 
-	{{ ss(json_decode('sdf')) }}
-
 	{{--{{ getLocale() }}--}}
 {{--	@include('manage.index.hello')--}}
 
