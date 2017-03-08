@@ -134,6 +134,11 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
 
         Route::get('/', 'FrontController@index');
 
+        // user Route
+        Route::group(['prefix' => 'user', 'middleware' => 'is:user'], function (){
+            Route::get('/dashboard', 'UserController@index');
+        });
+
     });
 
 });
