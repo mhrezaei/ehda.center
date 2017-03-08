@@ -189,6 +189,45 @@ trait PermitsTrait
 		return in_array($this->code_melli , ['0074715623' , '0012071110' ]) ;
 	}
 
+	public function is_a($requested_role)
+	{
+		return $this->hasRole($requested_role);
+	}
+
+	public function is_an($requested_role)
+	{
+		return $this->hasRole($requested_role);
+	}
+
+	public function is_not_a($requested_role)
+	{
+		return !$this->hasRole($requested_role);
+	}
+	public function is_not_an($requested_role)
+	{
+		return !$this->hasRole($requested_role);
+	}
+
+	public function is_any_of($requested_roles)
+	{
+		return $this->hasRole($requested_roles , true);
+	}
+
+	public function is_all_of($requested_roles)
+	{
+		return $this->hasRole($requested_roles , false);
+	}
+
+	public function is_not_any_of($requested_roles)
+	{
+		return !$this->is_any_of($requested_roles) ;
+	}
+
+	public function is_not_all_of($requested_roles)
+	{
+		return !$this->is_all_of($requested_roles); 
+	}
+
 	public function hasRole($requested_roles=null , $any_of_them = false)
 	{
 		if(!$requested_roles)
