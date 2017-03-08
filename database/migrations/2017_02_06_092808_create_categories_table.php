@@ -45,7 +45,6 @@ class CreateCategoriesTable extends Migration
             $table->unsignedInteger('updated_by')->default(0) ;
             $table->unsignedInteger('deleted_by')->default(0) ;
 
-//            $table->foreign('posttype_id')->references('id')->on('posttypes')->onDelete('cascade');
             $table->foreign('folder_id')->references('id')->on('folders')->onDelete('cascade');
         });
     }
