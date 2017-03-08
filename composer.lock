@@ -4027,6 +4027,7 @@
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
             "time": "2017-02-16 22:46:52"
+<<<<<<< HEAD
         },
         {
             "name": "unisharp/laravel-filemanager",
@@ -4088,6 +4089,8 @@
                 "upload"
             ],
             "time": "2017-02-17 08:42:40"
+=======
+>>>>>>> master
         },
         {
             "name": "webmozart/assert",
