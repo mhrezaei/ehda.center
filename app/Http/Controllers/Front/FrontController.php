@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Requests\Front\RegisterSaveRequest;
+use App\Models\Post;
 use App\Traits\TahaControllerTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
