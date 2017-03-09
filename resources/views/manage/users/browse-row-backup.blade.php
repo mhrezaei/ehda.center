@@ -1,5 +1,5 @@
 @include('manage.frame.widgets.grid-rowHeader' , [
-	'refresh_url' => "manage/users/update/$model->id"
+	'refresh_url' => "manage/admins/update/$model->id"
 ])
 
 {{--
@@ -17,6 +17,23 @@
 </td>
 
 
+
+{{--
+|--------------------------------------------------------------------------
+| Position
+|--------------------------------------------------------------------------
+| only applicable to admins
+--}}
+@if($request_role=='admin')
+	<td>
+		@include("manage.frame.widgets.grid-text" , [
+			'text' => $model->admin_position,
+			'link' => $model->canPermit()? 'modal:manage/admins/-id-/permit' : '',
+		])
+	</td>
+@endif
+
+
 {{--
 |--------------------------------------------------------------------------
 | Status
@@ -25,7 +42,7 @@
 --}}
 <td>
 	{{-- when specific role is given.--}}
-	@if(false)  {{--and $request_role!='all')--}}
+	@if($request_role!='all')
 		@include("manage.frame.widgets.grid-text" , [
 			'fake' => $status = $model->as($request_role)->status ,
 			'text' => trans("forms.status_text.$status"),
@@ -70,8 +87,8 @@
 --}}
 
 @include("manage.frame.widgets.grid-actionCol" , [ 'actions' => [
-	['pencil' , trans('forms.button.edit') , "modal:manage/users/act/-id-/edit" , $model->canEdit()],
-	['key' , trans('people.commands.change_password') , "modal:manage/users/act/-id-/password" , !$model->trashed() and $model->canEdit() ] ,
+	['pencil' , trans('forms.button.edit') , "modal:manage/users/act/-id-/edit" , $model->as($request_role)->canEdit()],
+	['key' , trans('people.commands.change_password') , "modal:manage/users/act/-id-/password" , !$model->trashed() and $model->as($request_role)->canEdit() ] ,
 	['shield' , trans('people.commands.permit') , "modal:manage/users/act/-id-/permit" , $model->is_not_a('dev') and $model->canPermit()],
 
 //	['ban' , trans('people.commands.block') , 'modal:manage/users/act/-id-/roles' ,  $model->as($request_role)->canDelete()] ,

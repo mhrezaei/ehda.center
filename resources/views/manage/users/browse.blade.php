@@ -27,8 +27,9 @@
 		'handle' => "counter",
 		'headings' => [
 			trans('validation.attributes.name_first') ,
-			$request_role=='admin'? trans('validation.attributes.position') : 'NO',
-			$request_role=='all'? trans('people.user_role') : trans('validation.attributes.status'),
+//			$request_role=='admin'? trans('validation.attributes.position') : 'NO',
+//			$request_role=='all'? trans('people.user_role') : trans('validation.attributes.status'),
+			trans('people.user_role'),
 			trans('forms.button.action'),
 		],
 	])
