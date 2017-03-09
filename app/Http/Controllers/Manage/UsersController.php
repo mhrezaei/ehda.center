@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Manage;
 
+use App\Http\Requests\Manage\UserPasswordChangeRequest;
 use App\Models\Role;
 use App\Models\User;
+use App\Providers\SmsServiceProvider;
 use App\Traits\ManageControllerTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+
 
 class UsersController extends Controller
 {
@@ -82,5 +86,38 @@ class UsersController extends Controller
 	public function create($role_slug)
 	{
 		dd("create ".$role_slug);
+	}
+
+	public function savePassword(UserPasswordChangeRequest $request)
+	{
+		/*-----------------------------------------------
+		| Preparations ...
+		*/
+		$model = User::find($request->id);
+		if(!$model)
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		if(!$model->canEdit())
+			return $this->jsonFeedback(trans('validation.http.Error403')); //@TODO: Only superadmins can change password. This is not correct!
+
+		/*-----------------------------------------------
+		| Save ...
+		*/
+		$model->password = Hash::make($request->password);
+		$model->password_force_change = 1 ;
+		$is_saved = $model->save();
+
+		if($is_saved and $request->sms_notify) {
+			SmsServiceProvider::send($model->mobile , trans('people.form.password_change_sms' , [
+				'site_title' => setting()->ask('site_title')->in('fa')->gain(),
+			     'new_password' => $request->password,
+			]));
+		}
+
+		/*-----------------------------------------------
+		| Feedback ...
+		*/
+		return $this->jsonAjaxSaveFeedback($is_saved);
+
+
 	}
 }

@@ -68,6 +68,11 @@ Route::group([
 			Route::get('browse/{role}/{request_tab?}' , 'UsersController@browse');
 			Route::get('create/{role}' , 'UsersController@create');
 			Route::get('/act/{model_id}/{action}/{option?}' , 'UsersController@singleAction');
+
+			Route::group(['prefix'=>'save'] , function() {
+				Route::post('/' , 'UsersController@save');
+				Route::post('/password' , 'UsersController@savePassword');
+			});
 		});
 
 
