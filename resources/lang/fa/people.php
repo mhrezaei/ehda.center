@@ -4,13 +4,20 @@ return [
 	'people' => "اشخاص",
 	'modules' => "ماژول‌ها",
 	'deleted_user' => "یک کاربر سابق",
+	'user' => "کاربر",
+	'users' => "کاربران",
+	'site_users' => "کاربران مجموعه",
+	'user_role' => "نقش کاربری",
+	'without_role' => "بدون نقش",
 
 	'commands' => [
-		'permit' => "تنظیم سطح دسترسی",
+		'permit' => "نقش‌ها و مجوزها",
 		'change_password' => "تغییر گذرواژه",
 		'block' => "مسدودسازی",
 		'unblock' => "رفع مسدودی",
 		'login_as' => "لاگین به جای ایشان",
+	     'create_new_user' => "افزودن :role_title جدید",
+	     'all_users' => "همه کاربران",
 	],
 
 	'admins' => [
@@ -19,6 +26,13 @@ return [
 		'super_admin' => "مدیر کل",
 		'ordinary_admin' => "مدیر عملیات",
 		'developer' => "برنامه‌نویس",
+	],
+
+	'criteria' => [
+		'all' => "همه" ,
+		'actives' => "فعال‌ها",
+		'pending' => "منتظر تأیید",
+	     'banned' => "مسدودها",
 	],
 
 	"form" => [

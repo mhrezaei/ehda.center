@@ -27,6 +27,10 @@
 	@include("manage.frame.widgets.sidebar-link" , $item)
 @endforeach
 
+@foreach(Manage::sidebarUsersMenu() as $item)
+	@include("manage.frame.widgets.sidebar-link" , $item)
+@endforeach
+
 @include('manage.frame.widgets.sidebar-link' , [
 	'icon' => 'universal-access',
 	'caption' => trans('people.admins.title'),

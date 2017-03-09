@@ -16,7 +16,7 @@
 							if(is_array($heading)) {
 								$switches= $heading ;
 								$heading = $switches[0];
-								//1:width 2:condition
+								// ~~> 1:width 2:condition <~~
 							}
 							else {
 								$switches = [] ;

@@ -60,6 +60,18 @@ Route::group([
 		});
 	});
 
+	/*-----------------------------------------------
+	| Users ...
+	*/
+		Route::group(['prefix' => "users", 'middleware' => "can:users",] , function() {
+			Route::get('/update/{item_id}' , 'UsersController@update');
+			Route::get('browse/{role}/{request_tab?}' , 'UsersController@browse');
+			Route::get('create/{role}' , 'UsersController@create');
+			Route::get('/act/{model_id}/{action}/{option?}' , 'UsersController@singleAction');
+		});
+
+
+
 
 	/*-----------------------------------------------
 	| Posts ...

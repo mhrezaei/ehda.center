@@ -43,11 +43,11 @@ trait ManageControllerTrait
 
 	}
 
-	public function singleAction($model_id , $view_file)
+	public function singleAction($model_id , $view_file , $option=null)
 	{
 		//Redirect in mass actions...
 		if($model_id == 0)
-			return $this->massAction($view_file);
+			return $this->massAction($view_file,$option);
 
 		//Model...
 		$Model = $this->Model ;
