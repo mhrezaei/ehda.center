@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Requests\Front\RegisterSaveRequest;
+use App\Models\Folder;
 use App\Models\Post;
 use App\Models\User;
 use App\Traits\TahaControllerTrait;
@@ -17,7 +18,9 @@ class FrontController extends Controller
     public function index()
     {
         $slideshow = Post::selector(['type' => 'slideshow'])->orderBy('id', 'desc')->get();
-        return view('front.home.0', compact('slideshow'));
+        $categories = Folder::where('posttype_id', 2)
+            ->where('locale', getLocale())->get();
+        return view('front.home.0', compact('slideshow', 'categories'));
     }
 
     public function register(RegisterSaveRequest $request)
