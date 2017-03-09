@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Models\Category;
 use App\Models\Folder;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -264,13 +265,27 @@ class TestController extends Controller
 //        $data[11]['title'] = 'وجبات خفيفة';
 //        $data[11]['image'] = '/photos/shares/snack.jpg';
 
-        user()->attachRole('customer');
-        user()->hasRole('customer');
+//        user()->attachRole('customer');
+//        user()->hasRole('customer');
 
-        for ($i = 0; $i < count($data); $i++)
-        {
-            Folder::store($data[$i]);
-        }
+
+
+//        for ($i = 0; $i < count($data); $i++)
+//        {
+//            Folder::store($data[$i]);
+//        }
+
+//        $folders = Folder::all();
+//
+//        foreach ($folders as $folder)
+//        {
+//            $store = [
+//                'folder_id' => $folder->id,
+//                'slug' => $folder->slug,
+//                'title' => $folder->title,
+//            ];
+//            Category::store($store);
+//        }
 
     }
 }

@@ -9,6 +9,11 @@ class UserController extends Controller
 {
     public function index()
     {
-        return dd(user());
+        return view('front.user.dashboard.0');
+    }
+
+    public function profile()
+    {
+        return view('front.user.profile.0');
     }
 }

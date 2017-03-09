@@ -15,7 +15,7 @@ class User extends Authenticatable
     protected $guarded = ['id'];
     protected $hidden = ['password', 'remember_token'];
 
-    public static $meta_fields = ['preferences'] ;
+    public static $meta_fields = ['preferences', 'name_father', 'marital'] ;
 
     protected $casts = [
          'meta' => 'array' ,
