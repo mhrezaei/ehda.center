@@ -116,27 +116,6 @@ class AdminsController extends Controller
 
 	}
 
-	public function password(UserPasswordChangeRequest $request)
-	{
-		//Preparations....
-		$model = User::find($request->id);
-		if(!$model)
-			return $this->jsonFeedback(trans('validation.http.Error410'));
-		if(!$model->as('admin')->canEdit())
-			return $this->jsonFeedback(trans('validation.http.Error403'));
-
-		//Save...
-		$model->password = Hash::make($request->password);
-		$model->password_force_change = 1 ;
-		$is_saved = $model->save();
-
-		if($is_saved and $request->sms_notify)
-			;//@TODO: Call the event
-		//Event::fire(new VolunteerPasswordManualReset($model , $request->password));
-
-		return $this->jsonAjaxSaveFeedback($is_saved);
-
-	}
 
 
 }

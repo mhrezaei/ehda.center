@@ -137,6 +137,7 @@ return [
 	],
 
 	'status_color' => [
+		'without' => "default",
 		'active' => "success",
 		'blocked' => "danger",
 		'deleted' => "danger",
@@ -149,8 +150,9 @@ return [
 		'unknown' => "danger",
 	],
 	'status_icon' => [
+		'without' => "times",
 		'active' => "check",
-		'blocked' => "times",
+		'blocked' => "ban",
 		'deleted' => "times",
 		'inactive' => "times",
 		'unsaved' => "exclamation-triangle",

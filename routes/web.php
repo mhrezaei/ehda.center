@@ -72,6 +72,7 @@ Route::group([
 			Route::group(['prefix'=>'save'] , function() {
 				Route::post('/' , 'UsersController@save');
 				Route::post('/password' , 'UsersController@savePassword');
+				Route::post('/role' , 'UsersController@saveRole');
 			});
 		});
 

@@ -44,9 +44,11 @@
 	{{-- when specific role is given.--}}
 	@if($request_role!='all')
 		@include("manage.frame.widgets.grid-text" , [
-			'text' => trans("forms.status_text.". $model->as($request_role)->status),
-			'color' => trans("forms.status_color.". $model->as($request_role)->status),
-			'icon' => trans("forms.status_icon.". $model->as($request_role)->status),
+			'fake' => $status = $model->as($request_role)->status ,
+			'text' => trans("forms.status_text.$status"),
+			'color' => trans("forms.status_color.$status"),
+			'icon' => trans("forms.status_icon.$status"),
+			'link' => $model->is_not_a('dev')? "modal:manage/users/act/-id-/roles/" : '',
 		])
 
 	{{-- When viewing all users --}}
@@ -56,9 +58,11 @@
 		@if($roles->count() > 0) {{-- <~~ when at least one role is defined. --}}
 			@foreach($roles->get() as $role)
 				@include("manage.frame.widgets.grid-text" , [
-					'text' => $role->title . ': ' . trans("forms.status_text.". $model->as($request_role)->status),
-					'color' => trans("forms.status_color.". $model->as($request_role)->status),
-					'icon' => trans("forms.status_icon.". $model->as($request_role)->status),
+					'fake' => $status = $model->as($role->slug)->status ,
+					'text' => $role->title . ': ' . trans("forms.status_text.$status"),
+					'color' => trans("forms.status_color.$status"),
+					'icon' => trans("forms.status_icon.$status"),
+					'link' => $model->is_not_a('dev')? "modal:manage/users/act/-id-/roles/" : '',
 				])
 			@endforeach
 
@@ -68,6 +72,7 @@
 				'text' => trans('people.without_role'),
 				'color' => "gray",
 				'size' => "10",
+				'link' => $model->is_not_a('dev')? "modal:manage/users/act/-id-/roles/" : '',
 			])
 		@endif
 	@endif

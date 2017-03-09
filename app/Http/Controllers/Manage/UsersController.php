@@ -7,31 +7,31 @@ use App\Models\Role;
 use App\Models\User;
 use App\Providers\SmsServiceProvider;
 use App\Traits\ManageControllerTrait;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 
 class UsersController extends Controller
 {
-	use ManageControllerTrait ;
+	use ManageControllerTrait;
 
-	protected $Model ;
-	protected $browse_counter ;
-	protected $browse_selector ;
-	protected $view_folder ;
+	protected $Model;
+	protected $browse_counter;
+	protected $browse_selector;
+	protected $view_folder;
 
 	public function __construct()
 	{
-		$this->page[0] = ['users' , trans('people.site_users')];
+		$this->page[0] = ['users', trans('people.site_users')];
 
-		$this->Model = new User() ;
+		$this->Model = new User();
 		$this->Model->setSelectorPara([
 			'role' => "admin",
 		]);
 
-		$this->browse_handle = 'counter' ;
-		$this->view_folder = 'manage.users' ;
+		$this->browse_handle = 'counter';
+		$this->view_folder   = 'manage.users';
 	}
 
 	public function browse($request_role, $request_tab = 'actives')
@@ -39,21 +39,21 @@ class UsersController extends Controller
 		/*-----------------------------------------------
 		| Check Permission ...
 		*/
-		if(!Role::checkManagePermission($request_role , $request_tab)) {
+		if(!Role::checkManagePermission($request_role, $request_tab)) {
 			return view('errors.403');
 		}
 
 		/*-----------------------------------------------
 		| Revealing the Role...
 		*/
-		if($request_role!='all') {
+		if($request_role != 'all') {
 			$role = Role::findBySlug($request_role);
 			if(!$role->exists) {
 				return view('errors.404');
 			}
 		}
 		else {
-			$role = new Role() ;
+			$role               = new Role();
 			$role->plural_title = trans('people.commands.all_users');
 		}
 
@@ -61,31 +61,32 @@ class UsersController extends Controller
 		| Page Browse ...
 		*/
 		$page = [
-			'0' => ["users/browse/$request_role" , $role->plural_title , "users/browse/$request_role"],
-		     '1' => [$request_tab , trans("people.criteria.$request_tab") , "users/browse/$request_role/$request_tab" ],
+			'0' => ["users/browse/$request_role", $role->plural_title, "users/browse/$request_role"],
+			'1' => [$request_tab, trans("people.criteria.$request_tab"), "users/browse/$request_role/$request_tab"],
 		];
 
 		/*-----------------------------------------------
 		| Model ...
 		*/
 		$selector_switches = [
-			'role' => $request_role,
-		     'criteria' => $request_tab ,
+			'role'     => $request_role,
+			'criteria' => $request_tab,
 		];
 
 		$models = User::selector($selector_switches)->orderBy('created_at', 'desc')->paginate(user()->preference('max_rows_per_page'));
-		$db = $this->Model ;
+		$db     = $this->Model;
 
 		/*-----------------------------------------------
 		| Views ...
 		*/
-		return view($this->view_folder . ".browse",compact('page','models','db','request_role','role'));
+
+		return view($this->view_folder . ".browse", compact('page', 'models', 'db', 'request_role', 'role'));
 
 	}
 
 	public function create($role_slug)
 	{
-		dd("create ".$role_slug);
+		dd("create " . $role_slug);
 	}
 
 	public function savePassword(UserPasswordChangeRequest $request)
@@ -94,29 +95,87 @@ class UsersController extends Controller
 		| Preparations ...
 		*/
 		$model = User::find($request->id);
-		if(!$model)
+		if(!$model) {
 			return $this->jsonFeedback(trans('validation.http.Error410'));
-		if(!$model->canEdit())
-			return $this->jsonFeedback(trans('validation.http.Error403')); //@TODO: Only superadmins can change password. This is not correct!
+		}
+		if(!$model->canEdit()) {
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+		} //@TODO: Only superadmins can change password. This is not correct!
 
 		/*-----------------------------------------------
 		| Save ...
 		*/
-		$model->password = Hash::make($request->password);
-		$model->password_force_change = 1 ;
-		$is_saved = $model->save();
+		$model->password              = Hash::make($request->password);
+		$model->password_force_change = 1;
+		$is_saved                     = $model->save();
 
 		if($is_saved and $request->sms_notify) {
-			SmsServiceProvider::send($model->mobile , trans('people.form.password_change_sms' , [
-				'site_title' => setting()->ask('site_title')->in('fa')->gain(),
-			     'new_password' => $request->password,
+			SmsServiceProvider::send($model->mobile, trans('people.form.password_change_sms', [
+				'site_title'   => setting()->ask('site_title')->in('fa')->gain(),
+				'new_password' => $request->password,
 			]));
 		}
 
 		/*-----------------------------------------------
 		| Feedback ...
 		*/
+
 		return $this->jsonAjaxSaveFeedback($is_saved);
+
+
+	}
+
+	public function saveRole(Request $request)
+	{
+		/*-----------------------------------------------
+		| Command ...
+		*/
+		list($command, $role_id) = explode('-', $request->toArray()['_submit']);
+
+		/*-----------------------------------------------
+		| Model Reveal and Permission...
+		*/
+		$model = User::find($request->id);
+		$role  = Role::find($role_id);
+
+		if(!$model or !$role) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+		if(!$model->as($role->slug)->canPermit()) {
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+		}
+
+		/*-----------------------------------------------
+		| Save ...
+		*/
+		switch ($command) {
+			case 'attach' :
+				$saved = $model->attachRole($role->slug);
+				break;
+
+			case 'detach' :
+				$saved = $model->detachRole($role->slug);
+				break;
+
+			case 'unblock':
+				$saved = $model->enableRole($role->slug);
+				break;
+
+			case 'block':
+				$saved = $model->disableRole($role->slug);
+				break;
+
+			default:
+				$saved = false ;
+		}
+
+		/*-----------------------------------------------
+		| Feedback ...
+		*/
+
+		return $this->jsonAjaxSaveFeedback($saved, [
+			'success_callback' => "rowUpdate('tblUsers','$request->id')",
+		]);
 
 
 	}

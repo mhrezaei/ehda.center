@@ -14,9 +14,9 @@ use Carbon\Carbon;
 trait PermitsTrait
 {
 
-	protected static $wildcards         = ['', 'any', '*'];
-	protected static $default_role      = 'admin';
-	protected static $available_permits = [
+	protected static $wildcards                 = ['', 'any', '*'];
+	protected static $default_role              = 'admin';
+	protected static $available_permits         = [
 		'browse',
 		'process',
 		'view',
@@ -31,7 +31,8 @@ trait PermitsTrait
 		'delete',
 		'bin',
 	];
-	protected        $as_role           = 'admin';
+	protected        $as_role                   = 'admin';
+	protected        $has_role_even_if_disabled = false;
 
 	/*
 	|--------------------------------------------------------------------------
@@ -81,13 +82,23 @@ trait PermitsTrait
 
 	public function as ($requested_role)
 	{
-		if($requested_role=='all'){
-			$requested_role = null ;
+		if($requested_role == 'all') {
+			$requested_role = null;
 		}
 
 		$this->as_role = $requested_role;
+
 		return $this;
 	}
+
+	private function fakeUpdate()
+	{
+		$this->updated_at = Carbon::now()->toDateTimeString();
+		$this->update();
+
+		return $this;
+	}
+
 
 	/*
 	|--------------------------------------------------------------------------
@@ -96,10 +107,9 @@ trait PermitsTrait
 	|
 	*/
 
-	private function fakeUpdate()
+	public function includeDisabled()
 	{
-		$this->updated_at = Carbon::now()->toDateTimeString();
-		$this->update();
+		$this->has_role_even_if_disabled = true;
 
 		return $this;
 	}
@@ -198,6 +208,10 @@ trait PermitsTrait
 
 	public function hasRole($requested_roles = null, $any_of_them = false)
 	{
+		//parameter reset...
+		$even_if_disabled                = $this->has_role_even_if_disabled;
+		$this->has_role_even_if_disabled = false;
+
 		if(!$this->exists) {
 			return false;
 		}
@@ -210,22 +224,33 @@ trait PermitsTrait
 			return true;
 		}
 
-		if( in_array($requested_roles , ['developer' , 'dev'])) {
+		if(in_array($requested_roles, ['developer', 'dev'])) {
 			return $this->isDeveloper();
 		}
 
-		if( in_array($requested_roles , ['super' , 'superadmin'])) {
-			return $this->isSuper() ;
+		if(in_array($requested_roles, ['super', 'superadmin'])) {
+			return $this->isSuper();
 		}
 
 		//If only one role is requested...
 		if(!is_array($requested_roles)) {
-			return $this->getRoles()->where('slug', $requested_roles)->where('pivot.deleted_at', null)->count();
+			$record = $this->getRoles()->where('slug', $requested_roles);
+			if(!$even_if_disabled) {
+				$record = $record->where('pivot.deleted_at', null);
+			}
+
+			return $record->count();
 		}
 
 
 		//If an array of roles is given...
-		$count = $this->getRoles()->whereIn('slug', $requested_roles)->where('pivot.deleted_at', null)->count();
+		$record = $this->getRoles()->whereIn('slug', $requested_roles) ;
+		if(!$even_if_disabled) {
+			$record = $record->where('pivot.deleted_at', null);
+		}
+		$count = $record->count() ;
+
+		//return...
 		if($any_of_them) {
 			return $count;
 		}
@@ -244,6 +269,53 @@ trait PermitsTrait
 	public function isSuper()
 	{
 		return $this->as('admin')->can('super');
+	}
+
+	public function can($requested_permission = '*', $reserved = false)
+	{
+		//Special Situations...
+		if($requested_permission == 'developer' or $requested_permission == 'dev') {
+			return $this->isDeveloper();
+		}
+
+		//Simple decisions...
+		if(!$this->exists) {
+			return false;
+		}
+		if($this->isDeveloper()) {
+			return true;
+		}
+		if(!$this->hasRole($this->as_role)) {
+			return false;
+		}
+		if($this->disabled()) {
+			return false;
+		}
+
+		//Module Check...
+		$permissions = $this->getRoles()->where('slug', $this->as_role)->first()->pivot->permissions;
+
+		if($permissions == 'super') {
+			return true;
+		}
+
+		if(in_array($requested_permission, self::$wildcards)) {
+			return true;
+		}
+
+		return str_contains($permissions, $requested_permission);
+
+
+	}
+
+	public function disabled()
+	{
+		return boolval($this->pivot()->deleted_at);
+	}
+
+	public function pivot()
+	{
+		return $this->getRoles()->where('slug', $this->as_role)->first()->pivot;
 	}
 
 	public function is_an($requested_role)
@@ -291,59 +363,13 @@ trait PermitsTrait
 		return !$this->can($requested_permission, $reserved);
 	}
 
-	public function can($requested_permission = '*', $reserved = false)
-	{
-		//Special Situations...
-		if($requested_permission == 'developer' or $requested_permission == 'dev') {
-			return $this->isDeveloper();
-		}
-
-		//Simple decisions...
-		if(!$this->exists) {
-			return false;
-		}
-		if($this->isDeveloper()) {
-			return true;
-		}
-		if(!$this->hasRole($this->as_role)) {
-			return false;
-		}
-		if($this->disabled())
-			return false ;
-
-		//Module Check...
-		$permissions = $this->getRoles()->where('slug', $this->as_role)->first()->pivot->permissions;
-
-		if($permissions == 'super') {
-			return true;
-		}
-
-		if(in_array($requested_permission, self::$wildcards)) {
-			return true;
-		}
-
-		return str_contains($permissions, $requested_permission);
-
-
-	}
-
 	public function logged()
 	{
-		return boolval($this->id == user()->id) ;
+		return boolval($this->id == user()->id);
 	}
 
 	public function enabled()
 	{
-		return !$this->disabled() ;
-	}
-
-	public function disabled()
-	{
-		return boolval($this->pivot()->deleted_at);
-	}
-
-	public function pivot()
-	{
-		return $this->getRoles()->where('slug', $this->as_role)->first()->pivot;
+		return !$this->disabled();
 	}
 }

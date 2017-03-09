@@ -13,9 +13,9 @@ class User extends Authenticatable
 	use Notifiable, TahaModelTrait, PermitsTrait, SoftDeletes;
 
 	public static $meta_fields = ['preferences'];
-	protected $guarded = ['id'];
-	protected $hidden  = ['password', 'remember_token'];
-	protected $casts = [
+	protected     $guarded     = ['id'];
+	protected     $hidden      = ['password', 'remember_token'];
+	protected     $casts       = [
 		'meta'                  => 'array',
 		'newsletter'            => 'boolean',
 		'password_force_change' => 'boolean',
@@ -29,17 +29,6 @@ class User extends Authenticatable
 	|
 	*/
 
-	public function roles()
-	{
-		return $this->belongsToMany('App\Models\Role')->withPivot('permissions', 'deleted_at')->withTimestamps();;
-	}
-
-	/*
-	|--------------------------------------------------------------------------
-	| Selectors
-	|--------------------------------------------------------------------------
-	|
-	*/
 	public static function selector($parameters = [])
 	{
 		extract(array_normalize($parameters, [
@@ -51,11 +40,12 @@ class User extends Authenticatable
 		| Process Roles...
 		*/
 		if($role == 'all') {
-			$table = User::where('id' , '>' , '0');
-			$related_table = false ;
-		} else {
-			$table = Role::findBySlug($role)->users();
-			$related_table = true ;
+			$table         = User::where('id', '>', '0');
+			$related_table = false;
+		}
+		else {
+			$table         = Role::findBySlug($role)->users();
+			$related_table = true;
 		}
 
 		/*-----------------------------------------------
@@ -83,7 +73,7 @@ class User extends Authenticatable
 					$table = $table->wherePivot('deleted_at', '!=', null);
 				}
 				else {
-					$table = $table->onlyTrashed() ;
+					$table = $table->onlyTrashed();
 				}
 				break;
 
@@ -92,7 +82,7 @@ class User extends Authenticatable
 					$table = $table->wherePivot('deleted_at', '!=', null);
 				}
 				else {
-					$table = $table->onlyTrashed() ;
+					$table = $table->onlyTrashed();
 				}
 				break;
 
@@ -101,7 +91,7 @@ class User extends Authenticatable
 					$table = $table->where('users.id', '0');
 				}
 				else {
-					$table = $table->where('id' , 0);
+					$table = $table->where('id', 0);
 				}
 
 		}
@@ -109,7 +99,20 @@ class User extends Authenticatable
 		/*-----------------------------------------------
 		| Return  ...
 		*/
+
 		return $table;
+	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Selectors
+	|--------------------------------------------------------------------------
+	|
+	*/
+
+	public function roles()
+	{
+		return $this->belongsToMany('App\Models\Role')->withPivot('permissions', 'deleted_at')->withTimestamps();;
 	}
 
 	/*
@@ -149,7 +152,10 @@ class User extends Authenticatable
 	public function getStatusAttribute()
 	{
 		if($this->as_role) {
-			if($this->enabled()) {
+			if(!$this->includeDisabled()->hasRole()) {
+				return 'without';
+			}
+			elseif($this->enabled()) {
 				return 'active';
 			}
 			else {
@@ -188,10 +194,10 @@ class User extends Authenticatable
 		/*-----------------------------------------------
 		| Power users ...
 		*/
-		if($this->is_a('developer')){
+		if($this->is_a('developer')) {
 			return user()->is_a('developer');
 		}
-		elseif($this->is_an('admin')){
+		elseif($this->is_an('admin')) {
 			return user()->is_a('superadmin');
 		}
 
@@ -202,7 +208,7 @@ class User extends Authenticatable
 			return user()->is_a('superadmin');
 		}
 		else {
-			return Role::checkManagePermission($this->as_role , 'edit');
+			return Role::checkManagePermission($this->as_role, 'edit');
 		}
 	}
 
@@ -211,16 +217,17 @@ class User extends Authenticatable
 		/*-----------------------------------------------
 		| Power users ...
 		*/
-		if($this->is_a('developer')){
+		if($this->is_a('developer')) {
 			return user()->is_a('developer');
 		}
-		elseif($this->is_an('admin')){
+		elseif($this->is_an('admin')) {
 			return user()->is_a('superadmin');
 		}
 
 		/*-----------------------------------------------
 		| Other users ... @TODO: complete this part
 		*/
+
 		return user()->is_a('superadmin');
 
 	}
@@ -231,18 +238,38 @@ class User extends Authenticatable
 		/*-----------------------------------------------
 		| Power users ...
 		*/
-		if($this->is_a('developer')){
+		if($this->is_a('developer')) {
 			return user()->is_a('developer');
 		}
-		elseif($this->is_an('admin')){
+		elseif($this->is_an('admin')) {
 			return user()->is_a('superadmin');
 		}
 
 		/*-----------------------------------------------
 		| Other users ... @TODO: complete this part
 		*/
+
 		return user()->is_a('superadmin');
 	}
 
+	/*
+	|--------------------------------------------------------------------------
+	| Helpers
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public function rolesTable()
+	{
+		return Role::all();
+	}
 
+	public function roleStatusCombo()
+	{
+		return [
+			['' , trans('people.without_role')],
+			['active' , trans('forms.status_text.active')],
+			['blocked' , trans('forms.status_text.blocked')],
+		];
+
+	}
 }

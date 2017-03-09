@@ -393,6 +393,7 @@ class Post extends Model
 	public static function selector($parameters = [])
 	{
 		extract(array_normalize($parameters , [
+			'slug' => "",
 			'role' => "user", //@TODO
 			'criteria' => "published",
 			'locale' => getLocale(),
@@ -403,6 +404,13 @@ class Post extends Model
 		]));
 
 		$table = self::where('id' , '>' , '0') ;
+
+		/*-----------------------------------------------
+		| Slug ...
+		*/
+		if($slug) {
+			$table = $table->where('slug' , $slug) ;
+		}
 
 		/*-----------------------------------------------
 		| Process Type ...
