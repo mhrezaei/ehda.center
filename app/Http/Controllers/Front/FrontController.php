@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Requests\Front\RegisterSaveRequest;
+use App\Models\Post;
 use App\Models\User;
 use App\Traits\TahaControllerTrait;
 use Illuminate\Http\Request;
@@ -15,7 +16,8 @@ class FrontController extends Controller
     use TahaControllerTrait;
     public function index()
     {
-        return view('front.home.0');
+        $slideshow = Post::selector(['type' => 'slideshow'])->orderBy('id', 'desc')->get();
+        return view('front.home.0', compact('slideshow'));
     }
 
     public function register(RegisterSaveRequest $request)
