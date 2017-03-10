@@ -133,6 +133,8 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
     Route::group(['prefix' => '{lang}', 'middleware' => ['UserIpDetect']], function () {
 
         Route::get('/', 'FrontController@index');
+        Route::get('/products', 'ProductsController@index');
+        Route::get('/page/{slug}', 'PostController@page');
 
         // user Route
         Route::group(['prefix' => 'user', 'middleware' => 'is:user'], function (){

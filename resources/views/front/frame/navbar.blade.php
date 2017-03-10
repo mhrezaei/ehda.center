@@ -8,5 +8,8 @@
                 @endforeach
             @endif
         </ul>
+        @if(isset($title))
+            <div class="title"> {{ $title or '' }} </div>
+        @endif
     </div>
 </div>
