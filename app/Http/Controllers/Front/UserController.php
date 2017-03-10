@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Models\Post;
 use App\Models\Receipt;
 use App\Providers\DrawingCodeServiceProvider;
 use Carbon\Carbon;
@@ -47,5 +48,11 @@ class UserController extends Controller
             $request->session()->forget('drawing_try');
         }
         return view('front.user.drawing.0');
+    }
+
+    public function events()
+    {
+        $events = Post::selector(['type' => 'events'])->get();
+        return view('front.user.events.0', compact('events'));
     }
 }

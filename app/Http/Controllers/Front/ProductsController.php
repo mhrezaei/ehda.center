@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Models\Folder;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -19,10 +20,12 @@ class ProductsController extends Controller
     public function products($lang, $slug)
     {
         $folder = Folder::findBySlug($slug)->first();
-        ss($folder->posts());
+        $products = Post::selector(['type' => 'products'])
+            ->orderBy('published_at', 'desc')
+            ->paginate(20);
         if (! $folder)
             return redirect(url_locale(''));
 
-        return view('front.products.products.0', compact('folder'));
+        return view('front.products.products.0', compact('folder', 'products'));
     }
 }

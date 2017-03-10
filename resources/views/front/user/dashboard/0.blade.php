@@ -1,7 +1,7 @@
 @extends('front.frame.frame')
 
 @section('head')
-    <title>{{ setting()->ask('site_title')->gain() }} | {{ trans('front.home') }}</title>
+    <title>{{ setting()->ask('site_title')->gain() }} | {{ trans('manage.dashboard') }}</title>
 @endsection
 
 @section('navbar')
@@ -18,6 +18,6 @@
 @section('content')
     <div class="page-content profile">
         @include('front.user.frame.user_dashboars_header', ['dashboard' => 'active'])
-        @include('front.user.dashboard.add_comment')
+        {{--@include('front.user.dashboard.add_comment')--}}
     </div>
 @endsection

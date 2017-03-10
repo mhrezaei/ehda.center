@@ -30,6 +30,11 @@ class Folder extends Model
 		return $this->hasMany('App\Models\Category');
 	}
 
+    public function posts()
+    {
+        return $this->belongsToMany('App\Models\Post')->withTimestamps();
+    }
+
 	/*
 	|--------------------------------------------------------------------------
 	| Accessors & Mutators

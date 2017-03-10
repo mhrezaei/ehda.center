@@ -32,7 +32,7 @@ class User extends Authenticatable
     */
     public function roles()
     {
-        return $this->belongsToMany('App\Models\Role')->withPivot('permissions' , 'deleted_at')->withTimestamps();;
+        return $this->belongsToMany('App\Models\Role')->withPivot('permissions' , 'deleted_at')->withTimestamps();
     }
 
     public function receipts()

@@ -44,6 +44,16 @@ return [
     'price' => 'مبلغ',
     'drawing_code_not_found' => 'تاکنونی کدی ثبت نشده است.',
     'rials' => 'ریال',
-    
+    'sort' => 'مرتب‌سازی',
+    'price_max_to_min' => 'قیمت زیاد » کم',
+    'price_min_to_max' => 'قیمت کم » زیاد',
+    'best_seller' => 'پرفروش‌ترین‌ها',
+    'favorites' => 'محبوب‌ترین‌ها',
+    'search' => 'جستجو',
+    'toman' => 'تومان',
+    'to' => 'تا',
+
+
+
 
 ];

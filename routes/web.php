@@ -145,6 +145,7 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
             Route::get('/dashboard', 'UserController@index');
             Route::get('/profile', 'UserController@profile');
             Route::get('/drawing', 'UserController@drawing');
+            Route::get('/events', 'UserController@events');
         });
 
     });

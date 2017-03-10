@@ -1,7 +1,7 @@
 @extends('front.frame.frame')
 
 @section('head')
-    <title>{{ setting()->ask('site_title')->gain() }} | {{ trans('front.home') }}</title>
+    <title>{{ setting()->ask('site_title')->gain() }} | {{ trans('front.edit_profile') }}</title>
 @endsection
 
 @section('navbar')

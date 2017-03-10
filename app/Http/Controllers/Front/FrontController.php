@@ -26,7 +26,11 @@ class FrontController extends Controller
             'slug' => 'about',
         ])->first();
 
-        return view('front.home.0', compact('slideshow', 'categories', 'about'));
+        $event = Post::selector(['type' => 'events'])
+            ->orderBy('id', 'desc')
+            ->first();
+
+        return view('front.home.0', compact('slideshow', 'categories', 'about', 'event'));
     }
 
     public function register(RegisterSaveRequest $request)
