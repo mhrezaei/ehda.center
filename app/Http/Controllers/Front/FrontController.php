@@ -19,8 +19,14 @@ class FrontController extends Controller
     {
         $slideshow = Post::selector(['type' => 'slideshow'])->orderBy('id', 'desc')->get();
         $categories = Folder::where('posttype_id', 2)
-            ->where('locale', getLocale())->get();
-        return view('front.home.0', compact('slideshow', 'categories'));
+            ->where('locale', getLocale())->orderBy('title', 'asc')->get();
+        $about = Post::selector([
+            'type' => 'pages',
+            'locale' => getLocale(),
+            'slug' => 'about',
+        ])->first();
+
+        return view('front.home.0', compact('slideshow', 'categories', 'about'));
     }
 
     public function register(RegisterSaveRequest $request)
