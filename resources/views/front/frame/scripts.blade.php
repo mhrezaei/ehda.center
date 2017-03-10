@@ -7,3 +7,4 @@
 {!! Html::script ('assets/js/app.js') !!}
 {!! Html::script ('assets/js/jquery.form.min.js') !!}
 {!! Html::script ('assets/js/forms.js') !!}
+{!! Html::script ('assets/js/front.js') !!}

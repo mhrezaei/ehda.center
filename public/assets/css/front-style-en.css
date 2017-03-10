@@ -7017,45 +7017,63 @@ a.category-item img {
 	transition: all .6s ease-out;
 }
 a.category-item .cat-name {
-	font-family: "Yekan", IRANSans, sans-serif;
-	font-size: 1rem;
-	line-height: normal;
-
 	position: absolute;
 	z-index: 2; 
 	right: 0;
 	bottom: 15px;
 
 	width: 60%;
-	padding: 2px 20px 8px 0;
+}
+a.category-item .cat-name svg {
+	vertical-align: middle;
+}
+a.category-item .cat-name span {
+	font-family: "Yekan", IRANSans, sans-serif;
+	font-size: 1rem;
+
+	position: absolute;
+	top: 50%;
+	right: 15px;
+
+	margin-top: -2px;
+
+	-webkit-transform: translateY(-50%);
+	    -ms-transform: translateY(-50%);
+	        transform: translateY(-50%);
 
 	color: #ffffff;
-	background: rgba(49, 65, 91, .8);
-
-	-webkit-clip-path: polygon(25% 0%, 100% 0%, 100% 99%, 0% 100%);
-	        clip-path: polygon(25% 0%, 100% 0%, 100% 99%, 0% 100%);
 }
 a.category-item .more {
-	font-family: "Yekan", IRANSans, sans-serif;
-	font-size: .8125rem;
 	line-height: normal;
 
 	position: absolute;
 	z-index: 2; 
+	right: 100%;
 	bottom: 15px;
-	left: -70%;
 
 	width: 60%;
-	padding: 6px 50px 10px 0;
 
 	transition: all .2s ease;
 	white-space: nowrap;
+}
+a.category-item .more svg {
+	vertical-align: middle;
+}
+a.category-item .more span {
+	font-family: "Yekan", IRANSans, sans-serif;
+	font-size: .8125rem;
+
+	position: absolute;
+	top: 50%;
+	right: 40px;
+
+	margin-top: -2px;
+
+	-webkit-transform: translateY(-50%);
+	    -ms-transform: translateY(-50%);
+	        transform: translateY(-50%);
 
 	color: #ffffff;
-	background: rgba(24, 24, 24, .8);
-
-	-webkit-clip-path: polygon(0 0, 100% 0%, 75% 99%, 0% 100%);
-	        clip-path: polygon(0 0, 100% 0%, 75% 99%, 0% 100%);
 }
 a.category-item:hover:after {
 	opacity: 1;
@@ -7066,7 +7084,7 @@ a.category-item:hover img {
 	        transform: scale(1.2) rotate(-5deg);
 }
 a.category-item:hover .more {
-	left: -6%;
+	right: 49%;
 }
 #gift {
 	position: relative;
@@ -8397,4 +8415,14 @@ section.panel.add-code article .result .result-item {
 	font-weight: bold;
 
 	color: #e75668;
+}
+
+.event-item header .title {
+	font-weight: bold !important;
+
+	color: #e75668 !important;
+}
+
+.event-item article .video {
+	margin-bottom: 20px;
 }

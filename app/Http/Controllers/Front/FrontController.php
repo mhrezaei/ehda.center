@@ -70,7 +70,7 @@ class FrontController extends Controller
             Auth::loginUsingId($store);
 
             // add customer role
-            user()->attachRole('user');
+            user()->attachRole('customer');
 
             return $this->jsonFeedback(null, [
                 'ok' => 1,

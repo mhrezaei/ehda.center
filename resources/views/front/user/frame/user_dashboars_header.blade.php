@@ -2,7 +2,7 @@
     <div class="container">
         <div class="avatar tac"> <img src="{{ url('/assets/images/user.svg') }}" width="64"> </div>
         <h2 class="name"> {{ user()->full_name }} </h2>
-        <span class="label alt green md"> {{ trans('front.all_user_score') }} <strong>۳۵۴۵</strong> </span>
+        <span class="label alt green md"> {{ trans('front.all_user_score') }} <strong>{{ pd(floor(user()->sum_receipt_amount / 500000)) }}</strong> </span>
         <div class="profile-tabs">
             <div class="tab {{ $dashboard or '' }}">
                 <a href="{{ url_locale('user/dashboard') }}"> <span class="icon-dashboard"></span> {{ trans('manage.dashboard') }} </a>

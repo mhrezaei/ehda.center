@@ -35,6 +35,15 @@ return [
     'marital' => 'وضعیت تاهل',
     'single' => 'مجرد',
     'married' => 'متاهل',
-
+    'drawing_code_success_receive_please_wait' => 'کد مورد پذیرش است، چند لحظه تامل بفرمایید.',
+    'drawing_code_fail_receive' => 'کد تکراری می باشد.',
+    'add_code' => 'افزودن کد',
+    'code' => 'کد',
+    'created_at' => 'تاریخ ثبت',
+    'purchased_at' => 'تاریخ فاکتور',
+    'price' => 'مبلغ',
+    'drawing_code_not_found' => 'تاکنونی کدی ثبت نشده است.',
+    'rials' => 'ریال',
+    
 
 ];

@@ -130,16 +130,21 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
     Route::get('/hadi', 'TestController@index');
     Route::post('/register/new', 'FrontController@register');
 
+    // drawing code
+    Route::post('/drawing/check', 'DrawingCodeController@sumbitCode');
+
     Route::group(['prefix' => '{lang}', 'middleware' => ['UserIpDetect']], function () {
 
         Route::get('/', 'FrontController@index');
         Route::get('/products', 'ProductsController@index');
+        Route::get('/products/categories/{slug}', 'ProductsController@products');
         Route::get('/page/{slug}', 'PostController@page');
 
         // user Route
-        Route::group(['prefix' => 'user', 'middleware' => 'is:user'], function (){
+        Route::group(['prefix' => 'user', 'middleware' => 'is:customer'], function (){
             Route::get('/dashboard', 'UserController@index');
             Route::get('/profile', 'UserController@profile');
+            Route::get('/drawing', 'UserController@drawing');
         });
 
     });

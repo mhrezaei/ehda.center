@@ -41,6 +41,13 @@ class LoginController extends Controller
     {
         //@TODO: Complete this based on the user roles
 
-        return redirect('/manage');
+        if (user()->is_an('admin'))
+        {
+            return redirect('/manage');
+        }
+        else
+        {
+            return redirect(url_locale('user/dashboard'));
+        }
     }
 }

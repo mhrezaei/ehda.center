@@ -15,4 +15,14 @@ class ProductsController extends Controller
 
         return view('front.products.folders.0', compact('categories'));
     }
+
+    public function products($lang, $slug)
+    {
+        $folder = Folder::findBySlug($slug)->first();
+        ss($folder->posts());
+        if (! $folder)
+            return redirect(url_locale(''));
+
+        return view('front.products.products.0', compact('folder'));
+    }
 }

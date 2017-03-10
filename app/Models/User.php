@@ -35,6 +35,11 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\Role')->withPivot('permissions' , 'deleted_at')->withTimestamps();;
     }
 
+    public function receipts()
+    {
+        return Receipt::where('user_id', $this->id)->get();
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Accessors & Mutators
@@ -78,7 +83,10 @@ class User extends Authenticatable
         }
     }
 
-
+    public function getSumReceiptAmountAttribute()
+    {
+        return Receipt::where('user_id', $this->id)->sum('purchased_amount');
+    }
 
 
     /*
