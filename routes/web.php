@@ -73,6 +73,9 @@ Route::group([
 				Route::post('/' , 'UsersController@save');
 				Route::post('/password' , 'UsersController@savePassword');
 				Route::post('/role' , 'UsersController@saveRole');
+				Route::post('/delete' , 'UsersController@delete');
+				Route::post('/undelete' , 'UsersController@undelete');
+				Route::post('/destroy' , 'UsersController@destroy');
 			});
 		});
 
@@ -110,9 +113,9 @@ Route::group([
 
 
 
-		/*-----------------------------------------------
-		| Upstream ...
-		*/
+	/*-----------------------------------------------
+	| Upstream ...
+	*/
 	Route::group(['prefix' => 'upstream', 'middleware' => 'is:developer'] , function() {
 		Route::get('/{request_tab?}' , 'UpstreamController@index') ;
 		Route::get('/{request_tab}/search/' , 'UpstreamController@search') ;

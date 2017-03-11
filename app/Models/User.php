@@ -232,9 +232,36 @@ class User extends Authenticatable
 
 	}
 
+	public function canBin()
+	{
+		/*-----------------------------------------------
+		| Power users ...
+		*/
+		if($this->is_a('developer')) {
+			return user()->is_a('developer');
+		}
+		elseif($this->is_an('admin')) {
+			return user()->is_a('superadmin');
+		}
+
+		/*-----------------------------------------------
+		| Other users ... @TODO: complete this part
+		*/
+
+		return user()->is_a('superadmin');
+
+	}
+
 
 	public function canPermit()
 	{
+		/*-----------------------------------------------
+		| Simple Decisions ...
+		*/
+		if($this->trashed()) {
+			return false;
+		}
+
 		/*-----------------------------------------------
 		| Power users ...
 		*/

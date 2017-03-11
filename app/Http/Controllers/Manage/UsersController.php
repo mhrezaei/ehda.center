@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Manage;
 
 use App\Http\Requests\Manage\UserPasswordChangeRequest;
+use App\Http\Requests\Manage\UserSaveRequest;
 use App\Models\Role;
 use App\Models\User;
 use App\Providers\SmsServiceProvider;
@@ -84,9 +85,48 @@ class UsersController extends Controller
 
 	}
 
-	public function create($role_slug)
+	public function create($role_to_be_attached = null)
 	{
-		dd("create " . $role_slug);
+		$model = new User();
+		$model->role_to_be_attached = $role_to_be_attached ;
+		return view("manage.users.edit",compact('model'));
+	}
+
+	public function save(UserSaveRequest $request)
+	{
+		/*-----------------------------------------------
+		| Preparations ...
+		*/
+		$data = $request->toArray() ;
+
+		if($request->id) {
+			$model = User::find($request->id);
+			if(!$model or !$model->canEdit()) {
+				return $this->jsonFeedback(trans('validation.http.Error403'));
+			}
+		}
+		else {
+			$data['password'] = Hash::make($request->mobile);
+			$data['password_force_change'] = 1 ;
+		}
+
+		/*-----------------------------------------------
+		| Save ...
+		*/
+		$saved = User::store($data) ;
+		$role_to_be_attached = $data['_role_to_be_attached'] ;
+		if($saved and !$request->id and $role_to_be_attached and $role_to_be_attached != 'all') {
+			$model = User::find($saved);
+			$model->attachRoles($data['_role_to_be_attached']);
+		}
+
+		/*-----------------------------------------------
+		| Feedback ...
+		*/
+		return $this->jsonAjaxSaveFeedback($saved , [
+			'success_callback' => "rowUpdate('tblUsers','$request->id')",
+		]);
+
 	}
 
 	public function savePassword(UserPasswordChangeRequest $request)
@@ -177,6 +217,42 @@ class UsersController extends Controller
 			'success_callback' => "rowUpdate('tblUsers','$request->id')",
 		]);
 
+
+	}
+
+	public function delete(Request $request)
+	{
+		$user = User::find($request->id) ;
+		if(!$user or !$user->canDelete())
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+
+		return $this->jsonAjaxSaveFeedback($user->delete() , [
+			'success_callback' => "rowHide('tblUsers','$request->id')",
+		]);
+
+	}
+
+	public function undelete(Request $request)
+	{
+		$user = User::onlyTrashed()->find($request->id) ;
+		if(!$user or !$user->canBin())
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+
+		return $this->jsonAjaxSaveFeedback($user->restore() , [
+			'success_callback' => "rowHide('tblUsers','$request->id')",
+		]);
+
+	}
+
+	public function destroy(Request $request)
+	{
+		$user = User::onlyTrashed()->find($request->id) ;
+		if(!$user or !$user->canBin())
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+
+		return $this->jsonAjaxSaveFeedback($user->forceDelete() , [
+			'success_callback' => "rowHide('tblUsers','$request->id')",
+		]);
 
 	}
 }
