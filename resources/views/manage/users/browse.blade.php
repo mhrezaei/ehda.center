@@ -15,7 +15,7 @@
 			],
 		],
 		'search' =>[
-			'target' => url('manage/admins/search/') ,
+			'target' => url("manage/users/browse/$request_role/search") ,
 			'label' => trans('forms.button.search') ,
 			'value' => isset($keyword)? $keyword : '' ,
 		]

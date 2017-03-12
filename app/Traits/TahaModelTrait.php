@@ -89,6 +89,20 @@ trait TahaModelTrait
 		return $result ;
 	}
 
+	public static function searchRawQuery($keyword, $fields = null)
+	{
+		if(!$fields) {
+			$fields = self::$search_fields ;
+		}
+
+		$concat_string = " " ;
+		foreach($fields as $field) {
+			$concat_string .= " , `$field` " ;
+		}
+
+		return " LOCATE('$keyword' , CONCAT_WS(' ' $concat_string)) " ;
+ 	}
+
 	/*
 	|--------------------------------------------------------------------------
 	| Meta Enrichment Methods

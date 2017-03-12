@@ -12,10 +12,11 @@ class User extends Authenticatable
 {
 	use Notifiable, TahaModelTrait, PermitsTrait, SoftDeletes;
 
-	public static $meta_fields = ['preferences'];
-	protected     $guarded     = ['id'];
-	protected     $hidden      = ['password', 'remember_token'];
-	protected     $casts       = [
+	public static $meta_fields   = ['preferences'];
+	public static $search_fields = ['name_first', 'name_last', 'name_firm', 'code_melli', 'email', 'mobile'];
+	protected     $guarded       = ['id'];
+	protected     $hidden        = ['password', 'remember_token'];
+	protected     $casts         = [
 		'meta'                  => 'array',
 		'newsletter'            => 'boolean',
 		'password_force_change' => 'boolean',
@@ -28,12 +29,24 @@ class User extends Authenticatable
 	|--------------------------------------------------------------------------
 	|
 	*/
+	public function roles()
+	{
+		return $this->belongsToMany('App\Models\Role')->withPivot('permissions', 'deleted_at')->withTimestamps();;
+	}
 
+
+	/*
+	|--------------------------------------------------------------------------
+	| Selectors
+	|--------------------------------------------------------------------------
+	|
+	*/
 	public static function selector($parameters = [])
 	{
 		extract(array_normalize($parameters, [
 			'role'     => "customer",
 			'criteria' => "actives",
+			'search'   => "",
 		]));
 
 		/*-----------------------------------------------
@@ -59,6 +72,10 @@ class User extends Authenticatable
 		| Process Criteria ...
 		*/
 		switch ($criteria) {
+			case 'all' :
+				//nothing to do :)
+				break;
+
 			case 'actives':
 				if($related_table) {
 					$table = $table->wherePivot('deleted_at', null);
@@ -97,23 +114,18 @@ class User extends Authenticatable
 		}
 
 		/*-----------------------------------------------
+		| Process Search ...
+		*/
+		$table = $table->whereRaw(self::searchRawQuery($search));
+
+
+		/*-----------------------------------------------
 		| Return  ...
 		*/
 
 		return $table;
 	}
 
-	/*
-	|--------------------------------------------------------------------------
-	| Selectors
-	|--------------------------------------------------------------------------
-	|
-	*/
-
-	public function roles()
-	{
-		return $this->belongsToMany('App\Models\Role')->withPivot('permissions', 'deleted_at')->withTimestamps();;
-	}
 
 	/*
 	|--------------------------------------------------------------------------
@@ -134,7 +146,7 @@ class User extends Authenticatable
 
 	public function getStatusAttribute()
 	{
-		$request_role = $this->getAndResetAsRole() ;
+		$request_role = $this->getAndResetAsRole();
 		if($request_role) {
 			if(!$this->as($request_role)->includeDisabled()->hasRole()) {
 				return 'without';
@@ -171,12 +183,12 @@ class User extends Authenticatable
 			'max_rows_per_page' => "50",
 		]);
 
-		return $preferences[$slug];
+		return $preferences[ $slug ];
 	}
 
 	public function canEdit()
 	{
-		$request_role = $this->getAndResetAsRole() ;
+		$request_role = $this->getAndResetAsRole();
 
 		/*-----------------------------------------------
 		| Power users ...
@@ -201,7 +213,7 @@ class User extends Authenticatable
 
 	public function canDelete()
 	{
-		$request_role = $this->getAndResetAsRole() ;
+		$request_role = $this->getAndResetAsRole();
 
 		/*-----------------------------------------------
 		| Power users ...
@@ -223,7 +235,7 @@ class User extends Authenticatable
 
 	public function canBin()
 	{
-		$request_role = $this->getAndResetAsRole() ;
+		$request_role = $this->getAndResetAsRole();
 
 		/*-----------------------------------------------
 		| Power users ...
@@ -246,7 +258,7 @@ class User extends Authenticatable
 
 	public function canPermit()
 	{
-		$request_role = $this->getAndResetAsRole() ;
+		$request_role = $this->getAndResetAsRole();
 
 		/*-----------------------------------------------
 		| Simple Decisions ...
@@ -255,16 +267,17 @@ class User extends Authenticatable
 			return false;
 		}
 		if($this->id == user()->id) {
-			return false ;
+			return false;
 		}
 
 		if($request_role) {
 			if($this->as($request_role)->disabled()) {
-				return false ;
+				return false;
 			}
-			$role = Role::findBySlug($request_role) ;
-			if(!$role or !$role->has_modules)
-				return false ;
+			$role = Role::findBySlug($request_role);
+			if(!$role or !$role->has_modules) {
+				return false;
+			}
 		}
 
 		/*-----------------------------------------------
@@ -298,9 +311,9 @@ class User extends Authenticatable
 	public function roleStatusCombo()
 	{
 		return [
-			['' , trans('people.without_role')],
-			['active' , trans('forms.status_text.active')],
-			['blocked' , trans('forms.status_text.blocked')],
+			['', trans('people.without_role')],
+			['active', trans('forms.status_text.active')],
+			['blocked', trans('forms.status_text.blocked')],
 		];
 
 	}

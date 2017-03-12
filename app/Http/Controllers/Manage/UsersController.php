@@ -36,6 +36,57 @@ class UsersController extends Controller
 		$this->view_folder   = 'manage.users';
 	}
 
+	public function search($request_role, Request $request)
+	{
+		/*-----------------------------------------------
+		| Check Permission ...
+		*/
+		if(!Role::checkManagePermission($request_role, 'search')) {
+			return view('errors.403');
+		}
+
+		/*-----------------------------------------------
+		| Revealing the Role...
+		*/
+		if($request_role != 'all') {
+			$role = Role::findBySlug($request_role);
+			if(!$role->exists) {
+				return view('errors.404');
+			}
+		}
+		else {
+			$role               = new Role();
+			$role->plural_title = trans('people.commands.all_users');
+		}
+
+		/*-----------------------------------------------
+		| Page Browse ...
+		*/
+		$page = [
+			'0' => ["users/browse/$request_role", $role->plural_title, "users/browse/$request_role"],
+			'1' => ['search', trans('forms.button.search_for')." $request->keyword ", "users/search/$request_role"],
+		];
+
+		/*-----------------------------------------------
+		| Model ...
+		*/
+		$selector_switches = [
+			'role'     => $request_role,
+			'criteria' => 'all',
+		     'search' => $keyword = $request->keyword,
+		];
+
+		$models = User::selector($selector_switches)->orderBy('created_at', 'desc')->paginate(user()->preference('max_rows_per_page'));
+		$db     = $this->Model;
+
+		/*-----------------------------------------------
+		| Views ...
+		*/
+
+		return view($this->view_folder . ".browse", compact('page', 'models', 'db', 'request_role', 'role' , 'keyword'));
+
+	}
+
 	public function browse($request_role, $request_tab = 'actives')
 	{
 		/*-----------------------------------------------
