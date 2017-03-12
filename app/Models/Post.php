@@ -14,7 +14,7 @@ class Post extends Model
 	use TahaModelTrait , SoftDeletes ;
 
 	protected $guarded= ['id'];
-	protected static $search_fields = ['title' , 'keywords' , 'slug'] ;
+	protected static $search_fields = ['title' , 'slug'] ;
 	public static $reserved_slugs = "none,without"; //to be used in Requests
 
 	protected $casts = [
@@ -401,6 +401,7 @@ class Post extends Model
 			'type' => "feature:searchable",
 			'category' => "", //@TODO
 			'keyword' => "", //[@TODO
+		     'search' => "",
 		]));
 
 		$table = self::where('id' , '>' , '0') ;
@@ -501,6 +502,13 @@ class Post extends Model
 				break;
 
 		}
+
+
+		/*-----------------------------------------------
+		| Process Search ...
+		*/
+		$table = $table->whereRaw(self::searchRawQuery($search));
+
 
 		//Return...
 		return $table ;

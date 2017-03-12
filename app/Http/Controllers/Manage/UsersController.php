@@ -64,8 +64,19 @@ class UsersController extends Controller
 		*/
 		$page = [
 			'0' => ["users/browse/$request_role", $role->plural_title, "users/browse/$request_role"],
-			'1' => ['search', trans('forms.button.search_for')." $request->keyword ", "users/search/$request_role"],
+			'1' => ['search', trans('forms.button.search_for') . " $request->keyword ", "users/search/$request_role"],
 		];
+
+		/*-----------------------------------------------
+		| Only Panel ...
+		*/
+		if(strlen($request->keyword) < 3) {
+			$db         = $this->Model;
+			$page[1][1] = trans('forms.button.search');
+
+			return view($this->view_folder . ".search", compact('page', 'models', 'db', 'request_role', 'role'));
+		}
+
 
 		/*-----------------------------------------------
 		| Model ...
@@ -73,7 +84,7 @@ class UsersController extends Controller
 		$selector_switches = [
 			'role'     => $request_role,
 			'criteria' => 'all',
-		     'search' => $keyword = $request->keyword,
+			'search'   => $keyword = $request->keyword,
 		];
 
 		$models = User::selector($selector_switches)->orderBy('created_at', 'desc')->paginate(user()->preference('max_rows_per_page'));
@@ -83,7 +94,7 @@ class UsersController extends Controller
 		| Views ...
 		*/
 
-		return view($this->view_folder . ".browse", compact('page', 'models', 'db', 'request_role', 'role' , 'keyword'));
+		return view($this->view_folder . ".browse", compact('page', 'models', 'db', 'request_role', 'role', 'keyword'));
 
 	}
 
@@ -139,9 +150,10 @@ class UsersController extends Controller
 
 	public function create($role_to_be_attached = null)
 	{
-		$model = new User();
-		$model->role_to_be_attached = $role_to_be_attached ;
-		return view("manage.users.edit",compact('model'));
+		$model                      = new User();
+		$model->role_to_be_attached = $role_to_be_attached;
+
+		return view("manage.users.edit", compact('model'));
 	}
 
 	public function permitsForm($model, $role_id)
@@ -150,25 +162,25 @@ class UsersController extends Controller
 		if(!$request_role) {
 			return view('errors.m410');
 		}
-		$modules = $request_role->modules_array ;
+		$modules = $request_role->modules_array;
 
 		$posttypes = Posttype::all();
-		$roles = Role::where('slug' , '!=' , 'admin')->get();
+		$roles     = Role::where('slug', '!=', 'admin')->get();
 
-		return view("manage.users.permits",compact('model','request_role','roles','posttypes','modules'));
+		return view("manage.users.permits", compact('model', 'request_role', 'roles', 'posttypes', 'modules'));
 
 	}
 
 	public function savePermits(Request $request)
 	{
-		$data = $request->toArray() ;
+		$data = $request->toArray();
 
 		/*-----------------------------------------------
 		| Models & Security Check...
 		*/
 		$model_user = User::find($request->id);
-		$model_role = Role::find($request->role_id) ;
-		$as = $model_role->slug ; //just for the easier use
+		$model_role = Role::find($request->role_id);
+		$as         = $model_role->slug; //just for the easier use
 
 		if(!$model_user or !$model_role or !$model_role) {
 			return $this->jsonFeedback(trans('validation.http.Error410'));
@@ -180,32 +192,32 @@ class UsersController extends Controller
 		/*-----------------------------------------------
 		| Browse available modules and permissions...
 		*/
-		$modules = $model_role->modules_array ;
-		$result_string = "" ;
+		$modules       = $model_role->modules_array;
+		$result_string = "";
 
 		//Users Modules...
-		if($permissions = array_pull($modules , 'users')) {
-			foreach(Role::where('slug' , '!=' , 'admin')->get() as $role) {
+		if($permissions = array_pull($modules, 'users')) {
+			foreach(Role::where('slug', '!=', 'admin')->get() as $role) {
 				foreach($permissions as $permission) {
-					$field_name = "role~users-$role->slug~$permission" ;
-					$permit = "users-$role->slug.$permission" ;
+					$field_name = "role~users-$role->slug~$permission";
+					$permit     = "users-$role->slug.$permission";
 
-					if($data[$field_name] and user()->as($as)->can($permit)) {
-						$result_string .= " $permit " ;
+					if($data[ $field_name ] and user()->as($as)->can($permit)) {
+						$result_string .= " $permit ";
 					}
 				}
 			}
 		}
 
 		//posts...
-		if($permissions = array_pull($modules , 'posts')) {
+		if($permissions = array_pull($modules, 'posts')) {
 			foreach(Posttype::all() as $posttype) {
 				foreach($permissions as $permission) {
-					$field_name = "role~posts-$posttype->slug~$permission" ;
-					$permit = "posts-$posttype->slug.$permission" ;
+					$field_name = "role~posts-$posttype->slug~$permission";
+					$permit     = "posts-$posttype->slug.$permission";
 
-					if($data[$field_name] and user()->as($as)->can($permit)) {
-						$result_string .= " $permit " ;
+					if($data[ $field_name ] and user()->as($as)->can($permit)) {
+						$result_string .= " $permit ";
 					}
 				}
 			}
@@ -214,11 +226,11 @@ class UsersController extends Controller
 		//other modules...
 		foreach($modules as $module => $permissions) {
 			foreach($permissions as $permission) {
-				$field_name = "role~$module~$permission" ;
-				$permit = "$module.$permission" ;
+				$field_name = "role~$module~$permission";
+				$permit     = "$module.$permission";
 
-				if($data[$field_name] and user()->as($as)->can($permit)) {
-					$result_string .= " $permit " ;
+				if($data[ $field_name ] and user()->as($as)->can($permit)) {
+					$result_string .= " $permit ";
 				}
 			}
 		}
@@ -227,15 +239,14 @@ class UsersController extends Controller
 		| Superadmin ...
 		*/
 		if($as == 'admin' and $data['level'] == 'super' and user()->isSuper()) {
-			$result_string .= " users-admin " ;
+			$result_string .= " users-admin ";
 		}
 
 		/*-----------------------------------------------
 		| Save and Feedback ...
 		*/
 
-		return $this->jsonAjaxSaveFeedback( $model_user->setPermits($result_string , $model_role->id) );
-
+		return $this->jsonAjaxSaveFeedback($model_user->setPermits($result_string, $model_role->id));
 
 
 	}
@@ -245,7 +256,7 @@ class UsersController extends Controller
 		/*-----------------------------------------------
 		| Preparations ...
 		*/
-		$data = $request->toArray() ;
+		$data = $request->toArray();
 
 		if($request->id) {
 			$model = User::find($request->id);
@@ -254,15 +265,15 @@ class UsersController extends Controller
 			}
 		}
 		else {
-			$data['password'] = Hash::make($request->mobile);
-			$data['password_force_change'] = 1 ;
+			$data['password']              = Hash::make($request->mobile);
+			$data['password_force_change'] = 1;
 		}
 
 		/*-----------------------------------------------
 		| Save ...
 		*/
-		$saved = User::store($data) ;
-		$role_to_be_attached = $data['_role_to_be_attached'] ;
+		$saved               = User::store($data);
+		$role_to_be_attached = $data['_role_to_be_attached'];
 		if($saved and !$request->id and $role_to_be_attached and $role_to_be_attached != 'all') {
 			$model = User::find($saved);
 			$model->attachRoles($data['_role_to_be_attached']);
@@ -271,7 +282,8 @@ class UsersController extends Controller
 		/*-----------------------------------------------
 		| Feedback ...
 		*/
-		return $this->jsonAjaxSaveFeedback($saved , [
+
+		return $this->jsonAjaxSaveFeedback($saved, [
 			'success_callback' => "rowUpdate('tblUsers','$request->id')",
 		]);
 
@@ -355,7 +367,7 @@ class UsersController extends Controller
 				break;
 
 			default:
-				$saved = false ;
+				$saved = false;
 		}
 
 		/*-----------------------------------------------
@@ -371,11 +383,12 @@ class UsersController extends Controller
 
 	public function delete(Request $request)
 	{
-		$user = User::find($request->id) ;
-		if(!$user or !$user->canDelete())
+		$user = User::find($request->id);
+		if(!$user or !$user->canDelete()) {
 			return $this->jsonFeedback(trans('validation.http.Error403'));
+		}
 
-		return $this->jsonAjaxSaveFeedback($user->delete() , [
+		return $this->jsonAjaxSaveFeedback($user->delete(), [
 			'success_callback' => "rowHide('tblUsers','$request->id')",
 		]);
 
@@ -383,11 +396,12 @@ class UsersController extends Controller
 
 	public function undelete(Request $request)
 	{
-		$user = User::onlyTrashed()->find($request->id) ;
-		if(!$user or !$user->canBin())
+		$user = User::onlyTrashed()->find($request->id);
+		if(!$user or !$user->canBin()) {
 			return $this->jsonFeedback(trans('validation.http.Error403'));
+		}
 
-		return $this->jsonAjaxSaveFeedback($user->restore() , [
+		return $this->jsonAjaxSaveFeedback($user->restore(), [
 			'success_callback' => "rowHide('tblUsers','$request->id')",
 		]);
 
@@ -395,11 +409,12 @@ class UsersController extends Controller
 
 	public function destroy(Request $request)
 	{
-		$user = User::onlyTrashed()->find($request->id) ;
-		if(!$user or !$user->canBin())
+		$user = User::onlyTrashed()->find($request->id);
+		if(!$user or !$user->canBin()) {
 			return $this->jsonFeedback(trans('validation.http.Error403'));
+		}
 
-		return $this->jsonAjaxSaveFeedback($user->forceDelete() , [
+		return $this->jsonAjaxSaveFeedback($user->forceDelete(), [
 			'success_callback' => "rowHide('tblUsers','$request->id')",
 		]);
 

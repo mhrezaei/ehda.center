@@ -42,7 +42,76 @@ class PostsController extends Controller
 
 	}
 
-	public function browse($type, $request_tab = 'published', $switches = null)
+	public function search($type, $locale , Request $request)
+	{
+		/*-----------------------------------------------
+		| Check Permission ...
+		*/
+		if(!Post::checkManagePermission($type, 'search')) {
+			return view('errors.403');
+		}
+
+		/*-----------------------------------------------
+		| Revealing the Posttype...
+		*/
+		$posttype = Posttype::findBySlug($type);
+		if(!$posttype) {
+			return view('errors.404');
+		}
+
+		/*-----------------------------------------------
+		| Locale ...
+		*/
+		if(!in_array($locale, $posttype->locales_array)) {
+			$locale = 'all';
+		}
+
+		/*-----------------------------------------------
+		| Page Browse ...
+		*/
+		$page = [
+			'0' => ["posts/$posttype->slug", $posttype->title, "posts/$posttype->slug"],
+			'1' => ["$locale/search", trans('forms.button.search_for') . " $request->keyword ", "posts/$type/$locale/"],
+		];
+
+		/*-----------------------------------------------
+		| Only Panel ...
+		*/
+		if(strlen($request->keyword) < 3) {
+			$db         = $this->Model;
+			$page[1][1] = trans('forms.button.search');
+
+			return view($this->view_folder . ".search", compact('page', 'models', 'db', 'locale', 'posttype'));
+		}
+
+		/*-----------------------------------------------
+		| Model ...
+		*/
+		$selector_switches = [
+			'type'     => $type,
+			'locale'   => $locale,
+			'criteria' => 'all',
+		     'search' => $keyword = $request->keyword,
+		];
+
+		//if(in_array($request_tab, ['pending', 'bin']) and user()->as('admin')->cant("post-$type.publish")) {
+		//	$selector_switches['owner'] = user()->id;
+		//}
+
+		$models = Post::selector($selector_switches)->orderBy('created_at', 'desc')->paginate(user()->preference('max_rows_per_page'));
+		$db = $this->Model;
+
+		/*-----------------------------------------------
+		| View ...
+		*/
+
+		return view($this->view_folder . ".browse", compact('page', 'models', 'db', 'locale', 'posttype' , 'keyword'));
+
+
+
+	}
+
+		public function browse($type, $request_tab = 'published', $switches = null)
 	{
 		/*-----------------------------------------------
 		| Check Permission ...

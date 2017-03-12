@@ -97,8 +97,8 @@ Route::group([
 		Route::get('/{posttype}' , 'PostsController@browse') ;
 		Route::get('/{posttype}/create/{locale?}/{sisterhood?}' , 'PostsController@create');
 		Route::get('{posttype}/edit/{post_id}' , 'PostsController@editor');
-		Route::get('{posttype}/searched' , 'PostsController@searchResult');
-		Route::get('{posttype}/search' , 'PostsController@searchPanel');
+//		Route::get('{posttype}/searched' , 'PostsController@searchResult');
+		Route::get('{posttype}/{locale}/search' , 'PostsController@search');
 		Route::get('/{posttype}/{request_tab?}/{switches?}' , 'PostsController@browse') ;
 
 		Route::group(['prefix'=>'save'] , function() {
