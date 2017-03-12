@@ -4,7 +4,7 @@
 			{{ trans('validation.attributes.category') }}
 		</div>
 
-		<div class="panel-body"  style="max-height: 200px;overflow-y: scroll">
+		<div class="panel-body"  style="max-height: 200px;overflow-y: scroll;overflow-x: hidden">
 			{{ '' , $printed = 0 }}
 
 			{{--
