@@ -287,5 +287,10 @@ class TestController extends Controller
 //            Category::store($store);
 //        }
 
+        $folder = Folder::find(5)->posts()->get();
+
+        $folder = Folder::findBySlug('nuts')->posts()->get();
+
+        ss($folder);
     }
 }

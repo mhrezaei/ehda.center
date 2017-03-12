@@ -19,10 +19,12 @@ class ProductsController extends Controller
 
     public function products($lang, $slug)
     {
-        $folder = Folder::findBySlug($slug)->first();
-        $products = Post::selector(['type' => 'products'])
+        $folder = Folder::findBySlug($slug);
+        $products = $folder->posts()
             ->orderBy('published_at', 'desc')
             ->paginate(20);
+
+        {{}}
         if (! $folder)
             return redirect(url_locale(''));
 
