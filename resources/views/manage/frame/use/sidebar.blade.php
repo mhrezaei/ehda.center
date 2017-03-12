@@ -30,13 +30,7 @@
 @foreach(Manage::sidebarUsersMenu() as $item)
 	@include("manage.frame.widgets.sidebar-link" , $item)
 @endforeach
-
-@include('manage.frame.widgets.sidebar-link' , [
-	'icon' => 'universal-access',
-	'caption' => trans('people.admins.title'),
-	'link' => 'admins' ,
-	'permission' => 'super' ,
-])
+{{ $item['permission'] }}
 
 @include('manage.frame.widgets.sidebar-link' , [
 	'icon' => 'cogs',

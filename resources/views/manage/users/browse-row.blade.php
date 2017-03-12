@@ -12,7 +12,7 @@
 <td>
 	@include("manage.frame.widgets.grid-text" , [
 		'text' => $model->full_name,
-		'link' => $model->canEdit()? "modal:manage/users/act/-id-/edit" : '',
+//		'link' => $model->canEdit()? "modal:manage/users/act/-id-/edit" : '',
 	])
 </td>
 
@@ -34,7 +34,7 @@
 				'color' => trans("forms.status_color.$status"),
 				'icon' => trans("forms.status_icon.$status"),
 				'class' => $model->trashed()? "deleted-content" : '',
-				'link' => $model->is_not_a('dev') and !$model->as($role->slug)->canPermit() ? "modal:manage/users/act/-id-/roles/" : '',
+				'link' => ($model->is_not_a('dev') and $model->as($role->slug)->canPermit()) ? "modal:manage/users/act/-id-/permits/".$role->id : '',
 			])
 		@endforeach
 	@else  {{-- <~~ when no role is defined. --}}

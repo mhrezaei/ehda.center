@@ -10,6 +10,8 @@ namespace App\Traits;
 
 use App\Models\Role;
 use Carbon\Carbon;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\Crypt;
 
 trait PermitsTrait
 {
@@ -25,13 +27,13 @@ trait PermitsTrait
 		'create',
 		'edit',
 		'publish',
-		'activation',
+		'activate',
 		'report',
-		'cats',
+		'category',
 		'delete',
 		'bin',
 	];
-	protected        $as_role                   = 'admin';
+	protected        $as_role                   = null;
 	protected        $has_role_even_if_disabled = false;
 
 	/*
@@ -51,13 +53,14 @@ trait PermitsTrait
 		;
 
 		//Updating Users row...
-		return $this->fakeUpdate();
+		return $this->resetAsRole()->fakeUpdate();
 
 	}
 
 	public function role()
 	{
-		return $this->getRoles()->where('slug', $this->as_role)->first();
+		$request_role = $this->getAndResetAsRole() ;
+		return $this->getRoles()->where('slug', $request_role)->first();
 	}
 
 	public function getRoles()
@@ -80,15 +83,51 @@ trait PermitsTrait
 
 	}
 
+	public function setPermits($permits , $role_id)
+	{
+		if(!$role_id) {
+//			$role_id = $this->as($role)->role()->id;
+		}
+
+		$this->roles()->updateExistingPivot($role_id, [
+			'permissions' => Crypt::encrypt($permits),
+		]);
+
+		//Updating Users row...
+		return $this->resetAsRole()->fakeUpdate();
+	}
+
+	public function setRoles($permits)
+	{
+		//1. get data
+		//1.5 check security?
+		//2. encrypt
+		//3. save to the pivot
+		//4. fakeUpdate()
+		//5. reset
+	}
+
 	public function as ($requested_role)
 	{
 		if($requested_role == 'all') {
-			$requested_role = null;
+			$this->resetAsRole() ;
 		}
 
 		$this->as_role = $requested_role;
-
 		return $this;
+	}
+
+	private function resetAsRole()
+	{
+		$this->as_role = null ;
+		return $this ;
+	}
+
+	private function getAndResetAsRole()
+	{
+		$return = $this->as_role ;
+		$this->resetAsRole() ;
+		return $return ;
 	}
 
 	private function fakeUpdate()
@@ -125,11 +164,10 @@ trait PermitsTrait
 
 		$this->roles()->updateExistingPivot($role_id, [
 			'deleted_at' => Carbon::now()->toDateTimeString(),
-		])
-		;
+		]);
 
 		//Updating Users row...
-		return $this->fakeUpdate();
+		return $this->resetAsRole()->fakeUpdate();
 
 	}
 
@@ -201,6 +239,11 @@ trait PermitsTrait
 	|
 	*/
 
+	public function iss($requested_role)
+	{
+		return $this->hasRole($requested_role);
+	}
+
 	public function is_a($requested_role)
 	{
 		return $this->hasRole($requested_role);
@@ -268,14 +311,43 @@ trait PermitsTrait
 
 	public function isSuper()
 	{
-		return $this->as('admin')->can('super');
+		if($this->is_an('admin'))
+			return $this->as('admin')->can('super');
+		else
+			return false ;
 	}
+
+	public function can_any($permissions)
+	{
+		foreach($permissions as $permission) {
+			if($this->can($permission))
+				return true ;
+		}
+		return false ;
+	}
+
+	public function can_all($permissions)
+	{
+		foreach($permissions as $permission) {
+			if(!$this->can($permission))
+				return false ;
+		}
+		return true ;
+	}
+
 
 	public function can($requested_permission = '*', $reserved = false)
 	{
+		$request_role = $this->getAndResetAsRole();
+		if(!$request_role)
+			$request_role = 'admin' ;
+
 		//Special Situations...
 		if($requested_permission == 'developer' or $requested_permission == 'dev') {
 			return $this->isDeveloper();
+		}
+		if($requested_permission == 'super' or $requested_permission == 'superadmin') {
+			$requested_permission = 'users-admin' ;
 		}
 
 		//Simple decisions...
@@ -285,23 +357,37 @@ trait PermitsTrait
 		if($this->isDeveloper()) {
 			return true;
 		}
-		if(!$this->hasRole($this->as_role)) {
+//		if($this->isSuper() and $requested_permission!='users-admin') {
+//			return true ;
+//		}
+		if(!$this->as($request_role)->hasRole($request_role)) {
 			return false;
 		}
-		if($this->disabled()) {
+		if($this->as($request_role)->disabled()) {
 			return false;
 		}
+		if(in_array($requested_permission , self::$wildcards)) {
+			return true ;
+		}
+
+		//Wildcards...
+		foreach(self::$wildcards as $wildcard) {
+			$requested_permission = str_replace($wildcard,null,$requested_permission);
+		}
+		$requested_permission = rtrim($requested_permission , '*') ;
 
 		//Module Check...
-		$permissions = $this->getRoles()->where('slug', $this->as_role)->first()->pivot->permissions;
-
-		if($permissions == 'super') {
-			return true;
+		$permissions = $this->getRoles()->where('slug', $request_role)->first()->pivot->permissions;
+		try {
+			$permissions = Crypt::decrypt($permissions);
+		}
+		catch (DecryptException $e) {
+			$permissions = '' ;
 		}
 
-		if(in_array($requested_permission, self::$wildcards)) {
-			return true;
-		}
+//		if(str_contains($permissions , 'users-admin')) {
+//			return true;
+//		}
 
 		return str_contains($permissions, $requested_permission);
 
@@ -315,7 +401,8 @@ trait PermitsTrait
 
 	public function pivot()
 	{
-		return $this->getRoles()->where('slug', $this->as_role)->first()->pivot;
+		$request_role = $this->getAndResetAsRole() ;
+		return $this->getRoles()->where('slug', $request_role)->first()->pivot;
 	}
 
 	public function is_an($requested_role)

@@ -4,6 +4,7 @@
 	@include("manage.frame.widgets.grid-text" , [
 		'text' => $model->title,
 		'link' => "modal:manage/upstream/edit/role/-id-",
+		'icon' => $model->icon,
 	])
 </td>
 

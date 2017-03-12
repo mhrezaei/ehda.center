@@ -9,23 +9,25 @@ return [
 	'site_users' => "کاربران مجموعه",
 	'user_role' => "نقش کاربری",
 	'without_role' => "بدون نقش",
+	
 
 	'commands' => [
-		'permit' => "نقش‌ها و مجوزها",
+		'permit' => "سطح دسترسی",
 		'change_password' => "تغییر گذرواژه",
 		'block' => "مسدودسازی",
 		'unblock' => "رفع مسدودی",
 		'login_as' => "لاگین به جای ایشان",
 	     'create_new_user' => "افزودن :role_title جدید",
 	     'all_users' => "همه کاربران",
+
 	],
 
 	'admins' => [
-		'title' => "مدیران مجموعه",
-		'create' => "افزون مدیر جدید",
+		'admin_type' => "منصب مدیریت",
 		'super_admin' => "مدیر کل",
 		'ordinary_admin' => "مدیر عملیات",
 		'developer' => "برنامه‌نویس",
+		'superAdmin_hint' => 'مدیر کل علاوه بر دسترسی‌های داده‌شده، می‌تواند به تنظیمات سایت و اطلاعات مدیران دیگر دست‌رسی داشته باشد.' ,
 	],
 
 	'criteria' => [

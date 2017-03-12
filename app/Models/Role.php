@@ -53,6 +53,22 @@ class Role extends Model
 		}
 	}
 
+	public function getHasModulesAttribute()
+	{
+		return isJson($this->modules);
+	}
+
+	public function getModulesArrayAttribute()
+	{
+		if(!$this->has_modules) {
+			return [] ;
+		}
+		else {
+			return json_decode($this->modules , true);
+		}
+	}
+
+
 	/*
 	|--------------------------------------------------------------------------
 	| Helpers
@@ -65,18 +81,13 @@ class Role extends Model
 			return user()->isSuper() ;
 		}
 		switch($criteria) {
-			case 'search' :
-			case 'browse' :
-				$permit = 'browse' ;
-				break;
-
 			case 'bin' :
 			case 'banned' :
 				$permit = 'bin' ;
 				break;
 
 			default:
-				$permit = $criteria ;
+				$permit = '*' ;
 		}
 
 		return user()->as('admin')->can("users-$role_slug.$permit");

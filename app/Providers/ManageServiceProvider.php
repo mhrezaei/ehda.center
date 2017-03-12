@@ -103,16 +103,18 @@ class ManageServiceProvider extends ServiceProvider
 		/*-----------------------------------------------
 		| Adding the "all users" button to both folded and unfolded arrays ...
 		*/
-		array_push($unfolded_menu , [
-			'icon' => "address-book",
-		     'caption' => trans('people.commands.all_users'),
-		     'link' => "users/browse/all",
-		]);
-		array_push($folded_menu , [
-			"users/browse/all",
-			trans('people.commands.all_users'),
-			"address-book"
-		]);
+		if(user()->isSuper()) {
+			array_push($unfolded_menu, [
+				'icon'    => "address-book",
+				'caption' => trans('people.commands.all_users'),
+				'link'    => "users/browse/all",
+			]);
+			array_push($folded_menu, [
+				"users/browse/all",
+				trans('people.commands.all_users'),
+				"address-book"
+			]);
+		}
 
 		/*-----------------------------------------------
 		| Conditionally returning the correct array ...
@@ -123,7 +125,7 @@ class ManageServiceProvider extends ServiceProvider
 			     'caption' => trans('people.site_users'),
 			     'link' => "asd",
 			     'sub_menus' => $folded_menu,
-			     'permission' => sizeof($folded_menu)? '' : 'dev',
+			     'permission' => count($folded_menu)? '' : 'dev',
 			]];
 		}
 		else {

@@ -60,7 +60,7 @@ trait ManageControllerTrait
 		//If Special Method...
 		$special_method = camel_case($view_file."_form") ;
 		if(method_exists($this,$special_method))
-			return $this->$special_method($model) ;
+			return $this->$special_method($model , $option) ;
 
 		//If normal view...
 		$view = $this->view_folder . "." .$view_file ;
@@ -68,7 +68,7 @@ trait ManageControllerTrait
 		if(!View::exists($view)) return view('templates.say' , ['array'=>$view]); //@TODO: REMOVE THIS LINE
 		if(!View::exists($view)) return view('errors.m404');
 
-		return view($view,compact('model'));
+		return view($view,compact('model' , 'option'));
 	}
 
 	public function massAction($view_file)

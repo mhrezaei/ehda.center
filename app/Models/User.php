@@ -132,27 +132,11 @@ class User extends Authenticatable
 		}
 	}
 
-	public function getAdminPositionAttribute()
-	{
-		if(!$this->hasRole('admin')) {
-			return '-';
-		}
-
-		if($this->isDeveloper()) {
-			return trans('people.admins.developer');
-		}
-		if($this->as('admin')->can('super')) {
-			return trans('people.admins.super_admin');
-		}
-		else {
-			return trans('people.admins.ordinary_admin');
-		}
-	}
-
 	public function getStatusAttribute()
 	{
-		if($this->as_role) {
-			if(!$this->includeDisabled()->hasRole()) {
+		$request_role = $this->getAndResetAsRole() ;
+		if($request_role) {
+			if(!$this->as($request_role)->includeDisabled()->hasRole()) {
 				return 'without';
 			}
 			elseif($this->enabled()) {
@@ -170,6 +154,7 @@ class User extends Authenticatable
 				return 'blocked';
 			}
 		}
+
 	}
 
 	/*
@@ -191,6 +176,8 @@ class User extends Authenticatable
 
 	public function canEdit()
 	{
+		$request_role = $this->getAndResetAsRole() ;
+
 		/*-----------------------------------------------
 		| Power users ...
 		*/
@@ -204,16 +191,18 @@ class User extends Authenticatable
 		/*-----------------------------------------------
 		| Other Users ...
 		*/
-		if(!$this->as_role or $this->as_role == 'admin') {
+		if(!$request_role or $request_role == 'admin') {
 			return user()->is_a('superadmin');
 		}
 		else {
-			return Role::checkManagePermission($this->as_role, 'edit');
+			return Role::checkManagePermission($request_role, 'edit');
 		}
 	}
 
 	public function canDelete()
 	{
+		$request_role = $this->getAndResetAsRole() ;
+
 		/*-----------------------------------------------
 		| Power users ...
 		*/
@@ -234,6 +223,8 @@ class User extends Authenticatable
 
 	public function canBin()
 	{
+		$request_role = $this->getAndResetAsRole() ;
+
 		/*-----------------------------------------------
 		| Power users ...
 		*/
@@ -255,11 +246,25 @@ class User extends Authenticatable
 
 	public function canPermit()
 	{
+		$request_role = $this->getAndResetAsRole() ;
+
 		/*-----------------------------------------------
 		| Simple Decisions ...
 		*/
 		if($this->trashed()) {
 			return false;
+		}
+		if($this->id == user()->id) {
+			return false ;
+		}
+
+		if($request_role) {
+			if($this->as($request_role)->disabled()) {
+				return false ;
+			}
+			$role = Role::findBySlug($request_role) ;
+			if(!$role or !$role->has_modules)
+				return false ;
 		}
 
 		/*-----------------------------------------------

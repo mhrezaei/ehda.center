@@ -127,7 +127,7 @@ function isJson($string) {
 function ss($anything)
 {
 	echo view('templates.say' , ['array'=>$anything]);
-	return '' ;
+	return null ;
 }
 
 
@@ -151,3 +151,8 @@ function url_locale($url_string = '')
     return url('/' . getLocale() . '/' . $url_string);
 }
 
+function login($id) //@TODO: Remove this function on production
+{
+	\Illuminate\Support\Facades\Auth::loginUsingId($id);
+	return user()->full_name ;
+}

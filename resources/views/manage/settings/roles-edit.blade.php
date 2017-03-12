@@ -31,6 +31,14 @@
 			'hint' =>	trans('validation.hint.unique').' | '.trans('validation.hint.persian-only'),
 		])
 
+		@include('forms.input' , [
+			'name' =>	'icon',
+			'class' =>	'ltr',
+			'value' =>	$model->icon ,
+			'hint' =>	trans('validation.hint.icon_hint'),
+		])
+
+
 		@include("manage.frame.widgets.input-textarea" , [
 			'label' => trans('people.modules'),
 			'name' => "modules",
@@ -51,7 +59,7 @@
 			@if($model->id)
 
 				@include('forms.button' , [
-					'condition' => !$model->trashed(),
+					'condition' => !$model->trashed() and $model->slug!='admin',
 					'label' => trans('forms.button.deactivate_only'),
 					'shape' => 'danger',
 					'value' => 'delete' ,

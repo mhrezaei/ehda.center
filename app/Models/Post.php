@@ -592,12 +592,12 @@ class Post extends Model
 	{
 		switch($criteria) {
 			case 'search' :
-				$permit = 'browse' ;
+				$permit = '*' ;
 				break;
 
 			case 'pending':
 			case 'drafts' :
-				$permit = 'browse' ;
+				$permit = '*' ;
 				break;
 
 			case 'my_posts' :
@@ -606,14 +606,14 @@ class Post extends Model
 				break;
 
 			case 'bin' :
-				$permit = 'browse' ;
+				$permit = '*' ;
 				break;
 
 			default :
 				$permit = '*' ;
 		}
 
-		return user()->as('admin')->can("post-$posttype.$permit");
+		return user()->as('admin')->can("posts-$posttype.$permit");
 	}
 }
 
