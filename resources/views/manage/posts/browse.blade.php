@@ -27,6 +27,7 @@
 		'row_view' => "manage.posts.browse-row",
 		'handle' => "selector",
 		'headings' => [
+			[trans('validation.attributes.featured_image') , '' , $posttype->hasFeature('featured_image')],
 			trans('validation.attributes.properties'),
 			[trans('validation.attributes.price'),'', $posttype->hasFeature('price')],
 			trans('forms.button.action')

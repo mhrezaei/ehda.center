@@ -26,7 +26,7 @@
 			if(str_contains($link , 'urlN'))
 				$extra .= ' target="_blank" ';
 		}
-		elseif($link = '') {
+		elseif($link == '') {
 			$js_command = null ;
 			$target = null ;
 		}

@@ -2,6 +2,19 @@
 	'refresh_url' => "manage/posts/update/$model->id"
 ])
 
+{{--
+|--------------------------------------------------------------------------
+| Featured_image
+|--------------------------------------------------------------------------
+| available for the posttypes with the 'featured_image' feature
+--}}
+@if($model->has('featured_image'))
+	<td>
+		<div class="featured_image">
+			<img src="{{$model->image}}">
+		</div>
+	</td>
+@endif
 
 {{--
 |--------------------------------------------------------------------------

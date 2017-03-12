@@ -219,3 +219,26 @@ div.grid_count {
   }
 
 }
+
+/*
+|--------------------------------------------------------------------------
+| Other Things
+|--------------------------------------------------------------------------
+|
+*/
+div.featured_image {
+  width: 150px;
+  height: 100px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  text-align: center;
+  padding: 5px;
+
+  img{
+    border-radius: 5px;
+    max-width: 140px;
+    max-height: 90px;
+  }
+
+}
+

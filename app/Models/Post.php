@@ -107,6 +107,16 @@ class Post extends Model
 	|
 	*/
 
+	public function getImageAttribute()
+	{
+		$image_url = $this->spreadMeta()->featured_image ;
+		if(!$image_url)
+			$image_url = 'assets/images/close.png';
+
+		return asset($image_url);
+	}
+
+
 	public function getDiscountPercentAttribute()
 	{
 		if(!$this->price or $this->price == $this->sale_price)
