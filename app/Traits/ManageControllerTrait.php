@@ -32,7 +32,12 @@ trait ManageControllerTrait
 
 		//Preparations...
 		$Model = $this->Model ;
-		$model = $Model::withTrashed()->find($model_id);
+		if($Model->hasColumn('deleted_at')) {
+			$model = $Model::withTrashed()->find($model_id) ;
+		}
+		else {
+			$model = $Model::find($model_id);
+		}
 		$handle = $this->browse_handle ;
 
 		//Run...
@@ -51,7 +56,12 @@ trait ManageControllerTrait
 
 		//Model...
 		$Model = $this->Model ;
-		$model = $Model::withTrashed()->find($model_id) ;
+		if($Model->hasColumn('deleted_at')) {
+			$model = $Model::withTrashed()->find($model_id) ;
+		}
+		else {
+			$model = $Model::find($model_id);
+		}
 
 
 		if(!$model)

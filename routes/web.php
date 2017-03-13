@@ -112,12 +112,26 @@ Route::group([
 	});
 
 
-
-
-
 	/*-----------------------------------------------
-	| Upstream ...
+	| Settings ...
 	*/
+	Route::group(['prefix'=>'settings'  , 'middleware' => 'can:super'], function() {
+		Route::get('/' , 'SettingsController@index') ;
+		Route::get('/tab/{request_tab?}' , 'SettingsController@index') ;
+		Route::get('/search' , 'SettingsController@search');
+		Route::get('/update/{model_id}' , 'SettingsController@update');
+		Route::get('/act/{model_id}/{action}/{option?}' , 'SettingsController@singleAction');
+
+		Route::group(['prefix' => 'save'] , function() {
+			Route::post('/', 'SettingsController@save');
+		});
+	});
+
+
+
+		/*-----------------------------------------------
+		| Upstream ...
+		*/
 	Route::group(['prefix' => 'upstream', 'middleware' => 'is:developer'] , function() {
 		Route::get('/{request_tab?}' , 'UpstreamController@index') ;
 		Route::get('/{request_tab}/search/' , 'UpstreamController@search') ;
@@ -132,7 +146,6 @@ Route::group([
 			Route::post('department' , 'UpstreamController@saveDepartment');
 			Route::post('category' , 'UpstreamController@saveCategory');
 			Route::post('downstream' , 'UpstreamController@saveDownstream');
-			Route::post('downstream_value' , 'UpstreamController@setDownstream');
 			Route::post('login_as' , 'UpstreamController@loginAs');
 		});
 	});

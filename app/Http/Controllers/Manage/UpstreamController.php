@@ -308,20 +308,6 @@ class UpstreamController extends Controller
 		}
 	}
 
-	public function setDownstream(Request $request)
-	{
-		//Preparations...
-		$data  = $request->toArray();
-		$model = Setting::find($request->id);
-		if(!$model) {
-			return $this->jsonFeedback(trans('validation.http.Eror410'));
-		}
-
-		return $this->jsonAjaxSaveFeedback($model->saveRequest($request), [
-			'success_refresh' => 0,
-		]);
-
-	}
 
 	public function savePosttype(PosttypeSaveRequest $request)
 	{
