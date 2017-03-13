@@ -20,7 +20,7 @@
 	@foreach($model->categories as $category)
 		@include("manage.frame.widgets.grid-badge" , [
 			'text' => $category->title,
-			'link' => "modal:manage/categories/edit/-id-",
+			'link' => "modal:manage/categories/edit/".$category->id,
 			'opacity' => "1.0",
 			'color' => "info",
 			'icon' => "check",

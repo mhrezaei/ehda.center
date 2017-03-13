@@ -133,6 +133,7 @@ Route::group([
 		Route::get('/update/{id}' , 'CategoriesController@update');
 		Route::get('/browse/{type}/{locale}' , 'CategoriesController@index');
 		Route::get('/create/folder/{type}/{locale}' , 'CategoriesController@createFolder');
+		Route::get('/create/{folder_id}/' , 'CategoriesController@createCategory');
 		Route::get('/edit/folder/{folder_id}' , 'CategoriesController@editFolder');
 		Route::get('/edit/{category_id}' , 'CategoriesController@editCategory');
 		Route::group(['prefix' => 'save'], function () {

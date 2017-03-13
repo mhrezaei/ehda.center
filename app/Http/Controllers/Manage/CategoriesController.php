@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Manage;
 
+use App\Http\Requests\Manage\CategorySaveRequest;
 use App\Http\Requests\Manage\FolderSaveRequest;
 use App\Models\Category;
 use App\Models\Folder;
@@ -78,6 +79,104 @@ class CategoriesController extends Controller
 
 	}
 
+	public function createCategory($folder_id)
+	{
+		$folder = Folder::find($folder_id) ;
+		if(!$folder) {
+			return view('errors.410');
+		}
+		$type = $folder->posttype ;
+		if($type->cannot('category')) {
+			return view('errors.403');
+		}
+
+
+		$model = new Category();
+		$model->folder_id = $folder_id ;
+		
+		return view("manage.settings.categories-edit",compact('model' , 'type'));
+		
+	}
+
+	public function editCategory($id)
+	{
+		$model = Category::find($id) ;
+		if(!$model) {
+			return view('errors.410');
+		}
+		$type = $model->spreadMeta()->folder->posttype ;
+		if($type->cannot('category')) {
+			return view('errors.403');
+		}
+
+		return view("manage.settings.categories-edit",compact('model','type'));
+
+	}
+
+	public function saveCategory(CategorySaveRequest $request)
+	{
+		$data = $request->toArray() ;
+
+		/*-----------------------------------------------
+		| Delete Situation ...
+		*/
+		if($request->_submit == 'delete') {
+			return $this->jsonAjaxSaveFeedback(Category::destroy($request->id), [
+				'success_refresh' => 1,
+			]);
+		}
+
+		/*-----------------------------------------------
+		| Save Situation Validation ...
+		*/
+		if($request->id) {
+			$model = Category::find($request->id);
+			if(!$model) {
+				return $this->jsonFeedback(trans('validation.http.Error410'));
+			}
+			$type = $model->folder->posttype;
+			$unset_before_save = ['folder_id'];
+		}
+		else {
+			$folder = Folder::find($request->folder_id);
+			if(!$folder) {
+				return $this->jsonFeedback(trans('validation.http.Error410'));
+			}
+			else {
+				$type = $folder->posttype ;
+			}
+			$unset_before_save = [];
+		}
+		if($type->cannot('category')) {
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+		}
+
+		$duplicate_query = Category::where('folder_id' , $request->folder_id)->where('id' , '!=' , $request->id) ;
+		$duplicate_title = $duplicate_query->where('title' , $request->title)->first() ;
+		$duplicate_slug = $duplicate_query->where('slug' , $request->slug)->first() ;
+
+
+		if($duplicate_title) {
+			return $this->jsonFeedback(trans('validation.unique' , [
+				'attribute' => trans('validation.attributes.title'),
+			]));
+		}
+		if($duplicate_slug) {
+			return $this->jsonFeedback(trans('validation.unique' , [
+				'attribute' => trans('validation.attributes.slug'),
+			]));
+		}
+
+		/*-----------------------------------------------
+		| Actual Save and its feedback...
+		*/
+
+		return $this->jsonAjaxSaveFeedback(Category::store($request , $unset_before_save), [
+			'success_callback' => "rowUpdate('tblFolders','$request->folder_id')",
+		]);
+
+	}
+
 	public function createFolder($type_id, $locale)
 	{
 		$type = Posttype::find($type_id);
@@ -89,7 +188,7 @@ class CategoriesController extends Controller
 		$model->posttype_id = $type->id;
 		$model->locale      = $locale;
 
-		return view("manage.settings.folders-edit", compact('model', 'type'));
+		return view("manage.settings.categories-folders-edit", compact('model', 'type'));
 
 	}
 
@@ -104,7 +203,7 @@ class CategoriesController extends Controller
 			return view('errors.403');
 		}
 
-		return view("manage.settings.folders-edit", compact('model', 'type'));
+		return view("manage.settings.categories-folders-edit", compact('model', 'type'));
 
 	}
 

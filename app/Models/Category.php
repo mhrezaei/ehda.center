@@ -9,7 +9,7 @@ use Vinkla\Hashids\Facades\Hashids;
 
 class Category extends Model
 {
-	use TahaModelTrait , SoftDeletes ;
+	use TahaModelTrait ;//, SoftDeletes ;
 
 	protected $guarded = ['id'] ;
 	public static $reserved_slugs = 'root,admin' ;
