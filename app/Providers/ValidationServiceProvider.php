@@ -79,6 +79,10 @@ class ValidationServiceProvider extends ServiceProvider
 				$data = urldecode($data);
 				break;
 
+			case 'slug':
+				$data = strtolower(str_slug($data)) ;
+				break;
+
 			case 'stripArabic': //persian characters
 				$data = str_replace("ي", "ی", $data);
 				$data = str_replace("ك", "ک", $data);

@@ -21,7 +21,8 @@ class Posttype extends Model
 		'comment'           => ['comments-o', 'info', []],
 		'rate'              => ['star-half-o', 'info', []], //@TODO: feature_fields
 		'album'             => ['address-book-o', 'info', ['post_photos:auto']], //@TODO: feature_fields datatype!
-		'category'          => ['tasks', 'info', []],
+		'category'          => ['folder-o', 'info', []],
+		'cat_image'         => ['file-image-o' , 'info' , []],
 		'keywords'          => ['tags', 'info', []], //@TODO: feature_fields
 		'searchable'        => ['search', 'info', []],
 		'preview'           => ['eye', 'info', []],
@@ -63,6 +64,19 @@ class Posttype extends Model
 		}
 
 		return $result;
+	}
+
+	public static function withoutFeature($feature)
+	{
+		$models = self::whereRaw("LOCATE('$feature' , `features`)")->get();
+
+		$result = [];
+		foreach($models as $model) {
+			array_push($result, $model->slug);
+		}
+
+		return $result;
+
 	}
 
 	public static function groups()
@@ -224,6 +238,26 @@ class Posttype extends Model
 	public function hasnot($feature)
 	{
 		return !$this->has($feature);
+	}
+
+	public function can($permit = '*' , $as = 'admin')
+	{
+		return user()->as($as)->can("posts-".$this->slug.'.'.$permit) ;
+	}
+
+	public function cannot($permit, $as = 'admin')
+	{
+		return !$this->can($permit , $as) ;
+	}
+
+	public function normalizeRequestLocale($request_locale)
+	{
+		if(!$request_locale or !in_array($request_locale, $this->locales_array)) {
+			$locale = $this->locales_array[0] ;
+		}
+		else {
+			return $request_locale ;
+		}
 	}
 
 	/*

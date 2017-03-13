@@ -69,6 +69,9 @@ trait TahaModelTrait
 
 	public static function hasColumn($field_name)
 	{
+		if($field_name == 'deleted_at') {
+			return method_exists( new self() , 'withTrashed');
+		}
 		return Schema::hasColumn(self::tableName(), $field_name);
 	}
 
