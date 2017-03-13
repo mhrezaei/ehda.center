@@ -8,6 +8,7 @@ use App\Http\Requests\Manage\PackageSaveRequest;
 use App\Http\Requests\Manage\PosttypeSaveRequest;
 use App\Http\Requests\Manage\ProvinceSaveRequest;
 use App\Http\Requests\Manage\RoleSaveRequest;
+use App\Models\Folder;
 use App\Models\Package;
 use App\Models\Posttype;
 use App\Models\Role;
@@ -323,6 +324,7 @@ class UpstreamController extends Controller
 		//If Save...
 		if($request->_submit == 'save') {
 			return $this->jsonAjaxSaveFeedback(Posttype::store($request), [
+				'fake' => $request->id? '' : Folder::updateDefaultFolders(),
 				'success_refresh' => 1,
 			]);
 		}

@@ -57,6 +57,7 @@ return [
 	     'new_category' => "افزودن دسته جدید",
 	     'folder_delete_notice' => "دسته‌بندی‌های زیرمجموعه، بدون پوشه خواهند شد.",
 	     'no_folder' => "بدون پوشه‌ها",
+	     'category_enabled_content' => "محتوای قابل دسته‌بندی",
 	],
 
 	'criteria' => [

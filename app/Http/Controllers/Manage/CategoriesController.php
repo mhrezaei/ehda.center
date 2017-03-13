@@ -42,7 +42,7 @@ class CategoriesController extends Controller
 		/*-----------------------------------------------
 		| Posttypes ...
 		*/
-		$posttypes = Posttype::whereRaw("LOCATE('category' , `features`)")->orderBy('order')->get();
+		$posttypes = Posttype::whereRaw("LOCATE('category' , `features`)")->orderBy('order')->paginate(100);
 		Folder::updateDefaultFolders() ;
 
 		/*-----------------------------------------------
@@ -75,7 +75,7 @@ class CategoriesController extends Controller
 		| View ...
 		*/
 
-		return view("manage.settings.categories-posttypes", compact('page', 'posttypes', 'locale', 'type'));
+		return view("manage.settings.categories-index", compact('page', 'posttypes', 'locale', 'type'));
 
 	}
 
