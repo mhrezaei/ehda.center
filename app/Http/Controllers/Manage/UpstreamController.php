@@ -4,18 +4,22 @@ namespace App\Http\Controllers\Manage;
 
 use App\Http\Requests\Manage\CitySaveRequest;
 use App\Http\Requests\Manage\DownstreamSaveRequest;
+use App\Http\Requests\Manage\PackageSaveRequest;
 use App\Http\Requests\Manage\PosttypeSaveRequest;
 use App\Http\Requests\Manage\ProvinceSaveRequest;
 use App\Http\Requests\Manage\RoleSaveRequest;
+use App\Models\Package;
 use App\Models\Posttype;
 use App\Models\Role;
 use App\Models\Setting;
 use App\Models\State;
 use App\Models\User;
 use App\Traits\ManageControllerTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+
 
 class UpstreamController extends Controller
 {
@@ -57,10 +61,9 @@ class UpstreamController extends Controller
 				$models = Role::withTrashed()->orderBy('created_at', 'desc')->paginate(user()->preference('max_rows_per_page'));
 				break;
 
-			case 'categories' :
-				$models = State::get_provinces()->orderBy('title')->get();
+			case 'packages':
+				$models = Package::withTrashed()->orderBy('deleted_at')->orderBy('created_at', 'desc')->paginate(user()->preference('max_rows_per_page'));
 				break;
-
 
 			default :
 				return view('errors.404');
@@ -145,42 +148,32 @@ class UpstreamController extends Controller
 				return view('manage.settings.downstream-value', compact('model'));
 				break;
 
-			case 'branches' :
-				$branch = Branch::find($item_id);
-				if(!$branch) {
-					return view('errors.410');
-				}
-				$model_data = $branch->categories()->get();
-				$page[1]    = [$request_tab, trans("manage.settings.categories")];
-				$page[2]    = ['categories', $branch->title(), $item_id];
-
-				return view('manage.settings.categories', compact('page', 'model_data', 'branch'));
-				break;
-
 			default:
 				return view('templates.say', ['array' => "What the hell is $request_tab?"]); //@TODO: REMOVE THIS
 
 		}
-
-
-		if(!View::exists($view)) {
-			return view('templates.say', ['array' => "View '$view' is not found."]);
-		} //@TODO: REMOVE THIS
-
-
-		if(!isset($model_data) or !$model_data or !View::exists($view)) {
-			return view('errors.m404');
-		}
-
-		//View...
-		return view($view, compact('page', 'model_data'));
-
 	}
 
 
 	public function editor($request_tab, $item_id = 0, $parent_id = 0)
 	{
 		switch ($request_tab) {
+			case 'package':
+				if($item_id) {
+					$model = Package::withTrashed()->find($item_id);
+					if(!$model) {
+						return view('errors.410');
+					}
+				}
+				else {
+					$model = new Package() ;
+					$model->is_continuous = 0 ;
+				}
+
+				return view("manage.settings.packages-edit", compact('model'));
+
+				break;
+
 			case 'city' :
 				if($item_id) {
 					$model = State::find($item_id);
@@ -292,6 +285,22 @@ class UpstreamController extends Controller
 				return view('errors.m404');
 		}
 
+	}
+
+	public function savePackage(PackageSaveRequest $request)
+	{
+		$data = $request->toArray();
+		if($request->_submit == 'active') {
+			$data['deleted_at'] = null;
+		}
+		elseif(!$data['deleted_at']) {
+			$data['deleted_at'] = Carbon::now()->toDateTimeString();
+		}
+
+		return $this->jsonAjaxSaveFeedback( Package::store($data) , [
+				'success_callback' => "",
+				'success_refresh' => "1",
+		]);
 	}
 
 	public function saveDownstream(DownstreamSaveRequest $request)

@@ -129,9 +129,9 @@ Route::group([
 
 
 
-		/*-----------------------------------------------
-		| Upstream ...
-		*/
+	/*-----------------------------------------------
+	| Upstream ...
+	*/
 	Route::group(['prefix' => 'upstream', 'middleware' => 'is:developer'] , function() {
 		Route::get('/{request_tab?}' , 'UpstreamController@index') ;
 		Route::get('/{request_tab}/search/' , 'UpstreamController@search') ;
@@ -146,6 +146,7 @@ Route::group([
 			Route::post('department' , 'UpstreamController@saveDepartment');
 			Route::post('category' , 'UpstreamController@saveCategory');
 			Route::post('downstream' , 'UpstreamController@saveDownstream');
+			Route::post('package' , 'UpstreamController@savePackage');
 			Route::post('login_as' , 'UpstreamController@loginAs');
 		});
 	});

@@ -30,17 +30,27 @@
 @foreach(Manage::sidebarUsersMenu() as $item)
 	@include("manage.frame.widgets.sidebar-link" , $item)
 @endforeach
-{{ $item['permission'] }}
 
-@include('manage.frame.widgets.sidebar-link' , [
-	'icon' => 'cogs',
-	'caption' => trans('settings.downstream'),
-	'link' => 'settings' ,
-	'permission' => 'super' ,
+@include("manage.frame.widgets.sidebar-link" , [
+	'icon' => "cogs",
+	'link' => "asd",
+	'sub_menus' => [
+		['account' , trans('settings.account') , 'sliders'],
+		['settings' , trans('settings.downstream') , 'cog' , user()->isSuper()],
+		['upstream' , trans('settings.upstream') , 'github-alt' , user()->isDeveloper()],
+	],
+	'caption' => trans('settings.site_settings'),
 ])
-@include('manage.frame.widgets.sidebar-link' , [
-	'icon' => 'user-secret',
-	'caption' => trans('settings.upstream'),
-	'link' => 'upstream' ,
-	'permission' => 'developer' ,
-])
+
+{{--@include('manage.frame.widgets.sidebar-link' , [--}}
+	{{--'icon' => 'cogs',--}}
+	{{--'caption' => trans('settings.downstream'),--}}
+	{{--'link' => 'settings' ,--}}
+	{{--'permission' => 'super' ,--}}
+{{--])--}}
+{{--@include('manage.frame.widgets.sidebar-link' , [--}}
+	{{--'icon' => 'user-secret',--}}
+	{{--'caption' => trans('settings.upstream'),--}}
+	{{--'link' => 'upstream' ,--}}
+	{{--'permission' => 'developer' ,--}}
+{{--])--}}

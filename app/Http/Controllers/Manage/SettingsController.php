@@ -29,7 +29,7 @@ class SettingsController extends Controller
 		| Page ...
 		*/
 		$page = [
-			'0' => ['settings' , trans('settings.site.title')],
+			'0' => ['settings' , trans('settings.downstream')],
 		     '1' => ["tab/$request_tab" , trans("settings.categories.$request_tab")],
 		];
 
