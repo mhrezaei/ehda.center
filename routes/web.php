@@ -21,6 +21,7 @@
 Auth::routes();
 Route::get('home', 'Auth\LoginController@redirectAfterLogin');
 Route::get('logout', 'Auth\LoginController@logout');
+Route::get('manage/heyCheck' , 'Front\FrontController@heyCheck');
 
 /*
 |--------------------------------------------------------------------------
@@ -37,7 +38,6 @@ Route::group([
 	Route::get('/index', 'HomeController@index');
 	Route::get('/account', 'HomeController@account');
 	Route::post('/password', 'HomeController@changePassword');
-	Route::get('/heyCheck' , 'HomeController@heyCheck');
 
 	/*-----------------------------------------------
 	| Admins ...

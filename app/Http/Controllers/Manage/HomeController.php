@@ -66,12 +66,4 @@ class HomeController extends Controller
 
 	}
 
-	public function heyCheck()
-	{
-		return $this->jsonFeedback([
-			'ok' => user()->exists,
-		]);
-		//return 12 ;
-
-	}
 }

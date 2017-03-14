@@ -3,7 +3,7 @@
  */
 $( document ).ready( function() {
 	sidebarInitiate();
-	heyCheck() ;
+// 	heyCheck() ;
 });
 
 function rowHide($table_id , $model_id)

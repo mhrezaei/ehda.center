@@ -39,5 +39,5 @@
 		</div>
 	</div>
 
-	@include("manage.frame.use.heyCheck")
+	{{--@include("manage.frame.use.heyCheck")--}}
 @endsection

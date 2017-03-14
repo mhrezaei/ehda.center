@@ -24,4 +24,14 @@ class FrontController extends Controller
             'message' => trans('forms.feed.wait'),
         ]);
     }
+
+	public function heyCheck()
+	{
+		return $this->jsonFeedback([
+			'ok' => user()->exists,
+		]);
+		//return 12 ;
+
+	}
+
 }
