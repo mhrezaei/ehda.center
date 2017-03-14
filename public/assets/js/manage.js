@@ -3,6 +3,7 @@
  */
 $( document ).ready( function() {
 	sidebarInitiate();
+	heyCheck() ;
 });
 
 function rowHide($table_id , $model_id)
@@ -15,6 +16,53 @@ function rowHide($table_id , $model_id)
 	var $row_selector = $table_selector + ' #tr-' + $model_id ;
 	$($row_selector).slideUp() ;
 	tabReload();
+}
+
+function heyCheck()
+{
+	// Last Run...
+	in_server = false ;
+	now = new Date() ;
+	heyChecked = parseInt(localStorage.getItem('heyChecked'));
+	if(now.getTime() - heyChecked > 1000*60*10) {
+		in_server = true ;
+		localStorage.setItem('heyChecked' , now.getTime());
+	}
+
+	// Check Process
+	if(in_server) {
+		$.ajax({
+			url:url('manage/heyCheck') ,
+			dataType: "json",
+			cache: false
+		})
+		.done(function(result) {
+			forms_log(result);
+			localStorage.setItem( 'heyCheck' , result.ok);
+		});
+	}
+
+	// Action...
+	if(localStorage.getItem('heyCheck') == 'false') {
+		loginAlert('on');
+	}
+	else {
+		loginAlert('off') ;
+	}
+
+	setTimeout('heyCheck()' , 1000) ;
+// 	forms_log( "heyCheck #" + localStorage.getItem('heyChecked') + "; in_server:" + in_server + "; result: " + localStorage.getItem('heyCheck') );
+}
+
+function loginAlert(mood)
+{
+	$alert = $('#divHeyCheck') ;
+	if(mood=='on') {
+		$alert.fadeIn('fast');
+	}
+	else {
+		$alert.fadeOut('fast');
+	}
 }
 
 function rowUpdate($table_id , $model_id)

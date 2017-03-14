@@ -9,9 +9,9 @@
 | available for the posttypes with the 'featured_image' feature
 --}}
 @if($model->has('featured_image'))
-	<td>
+	<td style="vertical-align: middle;text-align: center">
 		<div class="featured_image">
-			<img src="{{$model->image}}">
+			<img class="featured_image-" src="{{$model->image}}">
 		</div>
 	</td>
 @endif

@@ -39,4 +39,5 @@
 		</div>
 	</div>
 
+	@include("manage.frame.use.heyCheck")
 @endsection

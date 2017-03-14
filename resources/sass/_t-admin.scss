@@ -226,6 +226,8 @@ div.grid_count {
 |--------------------------------------------------------------------------
 |
 */
+
+
 div.featured_image {
   width: 150px;
   height: 100px;
@@ -240,5 +242,35 @@ div.featured_image {
     max-height: 90px;
   }
 
+}
+
+//img.featured_image {
+//  max-width: 140px;
+//  max-height: 90px;
+//  margin: auto;
+//  border-radius: 5px;
+//  border: 1px solid gray;
+//  padding: 10px;
+//}
+
+#divHeyCheck {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 1px solid;
+  left: 0;
+  top: 0;
+  z-index: 5000;
+  background-color: whitesmoke;
+  opacity: 0.9;
+  padding: 100px;
+  display: none;
+
+  iframe {
+    margin: auto;
+    width: 100%;
+    height: 500px;
+    display: none;
+  }
 }
 

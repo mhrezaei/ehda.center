@@ -1,0 +1,28 @@
+<div id="modal-heyCheck" class="modal fade">
+	<div class="modal-dialog" >
+		<div class="modal-content modal-lg">
+
+			@include('templates.modal.start' , [
+//				'form_url' => url('manage/categories/save/'),
+				'modal_title' => trans('manage.login_again'),
+///				'no_validation' => true ,
+			])
+				<div class="m20">
+
+					@include("forms.note" , [
+						'text' => trans("manage.session_expired_notice"),
+						'shape' => "danger",
+					])
+
+					<a class="btn btn-lg btn-primary" href="{{ url('/login') }}" target="_blank">{{ trans('forms.button.login') }}</a>
+
+				</div>
+
+
+			@include("templates.modal.end")
+
+		</div>
+	</div>
+</div>
+
+

@@ -37,6 +37,7 @@ Route::group([
 	Route::get('/index', 'HomeController@index');
 	Route::get('/account', 'HomeController@account');
 	Route::post('/password', 'HomeController@changePassword');
+	Route::get('/heyCheck' , 'HomeController@heyCheck');
 
 	/*-----------------------------------------------
 	| Admins ...
