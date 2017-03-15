@@ -135,7 +135,6 @@ class CategoriesController extends Controller
 				return $this->jsonFeedback(trans('validation.http.Error410'));
 			}
 			$type = $model->folder->posttype;
-			$unset_before_save = ['folder_id'];
 		}
 		else {
 			$folder = Folder::find($request->folder_id);
@@ -145,7 +144,6 @@ class CategoriesController extends Controller
 			else {
 				$type = $folder->posttype ;
 			}
-			$unset_before_save = [];
 		}
 		if($type->cannot('category')) {
 			return $this->jsonFeedback(trans('validation.http.Error403'));
@@ -170,9 +168,13 @@ class CategoriesController extends Controller
 		/*-----------------------------------------------
 		| Actual Save and its feedback...
 		*/
+		$success_callback = "rowUpdate('tblFolders','$request->folder_id')" ;
+		if($request->_current_folder_id != $request->folder_id) {
+			$success_callback .= ";rowUpdate('tblFolders','$request->_current_folder_id')" ;
+		}
 
-		return $this->jsonAjaxSaveFeedback(Category::store($request , $unset_before_save), [
-			'success_callback' => "rowUpdate('tblFolders','$request->folder_id')",
+		return $this->jsonAjaxSaveFeedback(Category::store($request), [
+			'success_callback' => $success_callback ,
 		]);
 
 	}

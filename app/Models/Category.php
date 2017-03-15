@@ -48,5 +48,11 @@ class Category extends Model
 		return Hashids::decode($hash_id)[0];
 	}
 
+	public function foldersCombo()
+	{
+		$folders = Folder::where('posttype_id' , $this->folder->posttype_id)->where('locale' , $this->folder->locale)->orderBy('title')->get() ;
+		return $folders ;
+	}
+
 
 }

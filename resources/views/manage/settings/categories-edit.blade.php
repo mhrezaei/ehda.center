@@ -7,8 +7,14 @@
 
 	@include('forms.hiddens' , ['fields' => [
 		['id' , $model->id],
-		['folder_id' , $model->folder_id],
+		['_current_folder_id' , $model->folder_id],
 	]])
+
+	@include("forms.select" , [
+		'name' => "folder_id",
+		'value' => $model->folder_id,
+		'options' => $model->foldersCombo(),
+	])
 
 	@include('forms.input' , [
 	    'name' =>	'title',
