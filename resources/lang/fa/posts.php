@@ -28,6 +28,7 @@ return [
 		'rate' => "پذیرش بازخورد",
 		'album' => "ایجاد آلبوم عکس",
 		'category' => "دسته‌بندی",
+		'cat_image' => "عکس دسته‌بندی",
 		'searchable' => "قابل جست‌وجو",
 		'preview' => "پیش‌نمایش در حین ایجاد",
 		'digest' => "نمایش در پیشخوان",
@@ -50,6 +51,13 @@ return [
 
 	'categories' => [
 		'meaning' => "دسته‌بندی‌ها" ,
+	     'folder' => "پوشه",
+	     'folders' => "پوشه‌ها",
+	     'new_folder' => "افزودن پوشه جدید",
+	     'new_category' => "افزودن دسته جدید",
+	     'folder_delete_notice' => "دسته‌بندی‌های زیرمجموعه، بدون پوشه خواهند شد.",
+	     'no_folder' => "بدون پوشه‌ها",
+	     'category_enabled_content' => "محتوای قابل دسته‌بندی",
 	],
 
 	'criteria' => [

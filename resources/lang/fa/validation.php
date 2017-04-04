@@ -235,6 +235,7 @@ return [
 				'optional_meta' => "متای اختیاری",
 				'feature_meta' => "متای ویژه",
 				'moderate_note' => "یادداشت سردبیر",
+				'folder_id' => "پوشه",
 
 				'order' => "ترتیب",
 				'template' => 'قالب' ,

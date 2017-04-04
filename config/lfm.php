@@ -72,7 +72,7 @@ return [
     // If true, non-alphanumeric folder name will be rejected.
     'alphanumeric_directory' => false,
 
-    'max_image_size' => 500,
+    'max_image_size' => 2000,
     'max_file_size' => 1000,
 
     // available since v1.3.0

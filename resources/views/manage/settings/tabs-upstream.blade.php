@@ -5,6 +5,7 @@
 		['downstream' , trans('settings.downstream')],
 		['posttypes' , trans('settings.posttypes')],
 		['roles' , trans('settings.roles')],
+		['packages' , trans('settings.packages')],
 		['states' , trans('settings.states')],
 	] ,
 ])

@@ -1,5 +1,5 @@
 @include('templates.modal.start' , [
-	'form_url' => url('manage/admins/save/password'),
+	'form_url' => url('manage/users/save/password'),
 	'modal_title' => trans('people.commands.change_password'),
 ])
 <div class='modal-body'>
@@ -30,15 +30,15 @@
 		'hint' => trans('people.form.password_hint')
 	])
 
-	{{--@include('forms.group-start')--}}
+	@include('forms.group-start')
 
-	{{--@include('forms.check' , [--}}
-	{{--'name' => 'sms_notify',--}}
-	{{--'label' => trans('people.form.notify-with-sms'),--}}
-	{{--'value' => 1,--}}
-	{{--])--}}
+	@include('forms.check' , [
+		'name' => 'sms_notify',
+		'label' => trans('people.form.notify-with-sms'),
+		'value' => 1,
+		])
 
-	{{--@include('forms.group-end')--}}
+	@include('forms.group-end')
 
 
 	@include('forms.group-start')

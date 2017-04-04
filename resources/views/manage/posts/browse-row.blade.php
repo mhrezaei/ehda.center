@@ -2,6 +2,19 @@
 	'refresh_url' => "manage/posts/update/$model->id"
 ])
 
+{{--
+|--------------------------------------------------------------------------
+| Featured_image
+|--------------------------------------------------------------------------
+| available for the posttypes with the 'featured_image' feature
+--}}
+@if($model->has('featured_image'))
+	<td style="vertical-align: middle;text-align: center">
+		<div class="featured_image">
+			<img class="featured_image-" src="{{$model->image}}">
+		</div>
+	</td>
+@endif
 
 {{--
 |--------------------------------------------------------------------------
@@ -81,13 +94,13 @@
 @if($model->has('price'))
 	<td>
 		@include("manage.frame.widgets.grid-text" , [
-			'condition' => $model->price,
-			'text' => number_format($model->price).' '.setting()->ask('currency')->in($model->locale)->gain(),
+			'condition' => $model->price >0,
+			'text' => number_format(intval($model->price)).' '.setting()->ask('currency')->in($model->locale)->gain(),
 		])
 
 		@include("manage.frame.widgets.grid-tiny" , [
 			'condition' => $model->sale_price > 0,
-			'text' => trans('validation.attributes.sale_price').': '. number_format($model->sale_price). ' ' . setting()->in('model->locale')->gain('currency'),
+			'text' => trans('validation.attributes.sale_price').': '. number_format(intval($model->sale_price)). ' ' . setting()->in('model->locale')->gain('currency'),
 			'color' => "teal",
 			'icon' => "bolt",
 		])

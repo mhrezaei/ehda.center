@@ -1,13 +1,12 @@
 @include('templates.modal.start' , [
-	'form_url' => url('manage/upstream/save/login_as'),
-	'modal_title' => trans('people.commands.login_as'),
+	'form_url' => url('manage/users/save/destroy'),
+	'modal_title' => trans('forms.button.hard_delete'),
 ])
 <div class='modal-body'>
 
 	@include('forms.hiddens' , ['fields' => [
 		['id' , $model->id ],
 	]])
-
 
 	@include('forms.input' , [
 		'name' => '',
@@ -16,11 +15,16 @@
 		'extra' => 'disabled' ,
 	])
 
+	@include("forms.note" , [
+		'text' => trans('people.form.hard_delete_notice'),
+		'shape' => "danger",
+	])
+	
 	@include('forms.group-start')
 
 	@include('forms.button' , [
-		'label' => trans('people.commands.login_as'),
-		'shape' => 'warning',
+		'label' => trans('forms.button.sure_hard_delete'),
+		'shape' => 'danger',
 		'type' => 'submit' ,
 	])
 	@include('forms.button' , [

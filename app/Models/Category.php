@@ -9,7 +9,7 @@ use Vinkla\Hashids\Facades\Hashids;
 
 class Category extends Model
 {
-	use TahaModelTrait , SoftDeletes ;
+	use TahaModelTrait ;//, SoftDeletes ;
 
 	protected $guarded = ['id'] ;
 	public static $reserved_slugs = 'root,admin' ;
@@ -46,6 +46,12 @@ class Category extends Model
 	public static function realId($hash_id)
 	{
 		return Hashids::decode($hash_id)[0];
+	}
+
+	public function foldersCombo()
+	{
+		$folders = Folder::where('posttype_id' , $this->folder->posttype_id)->where('locale' , $this->folder->locale)->orderBy('title')->get() ;
+		return $folders ;
 	}
 
 

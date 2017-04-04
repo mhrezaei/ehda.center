@@ -17,9 +17,10 @@ class Setting extends Model
 	public static $default_when_not_found = '-';
 	public static $unset_signals          = ['unset', 'default', '=', ''];
 	public static $reserved_slugs         = 'none,setting';
+	public static $search_fields          = ['title' , 'slug'];
 	public        $request_locale         = null;
 	protected     $guarded                = ['id', 'default_value'];
-	protected $casts = [
+	protected     $casts                  = [
 		'developers_only' => 'boolean',
 		'is_resident'     => 'boolean',
 		'is_localized'    => 'boolean',
@@ -38,24 +39,30 @@ class Setting extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
-
-	public static function builder($slug = null)
+	public function getSessionKeyAttribute()
 	{
-		$model = new self;
-		$model->ask($slug);
-
-		return $model->reset();
+		return "setting-" . $this->slug;
 	}
 
-	public function reset()
+	public function getRawDefaultAttribute()
 	{
-		$this->request_language     = '';
-		$this->request_fresh_reveal = false;
-		$this->request_default      = false;
-		$this->request_unformatted  = false;
+		$value  = $this->default_value; //Crypt::decrypt($this->default_value) ;
+		$result = null;
 
-		return $this;
+		if(!$value) {
+			return $this->default_when_not_found;
+		}
+		else {
+			return $value;
+		}
+
 	}
+
+	public function getIsSetAttribute()
+	{
+		return boolval($this->custom_value);
+	}
+
 
 	/*
 	|--------------------------------------------------------------------------
@@ -81,14 +88,14 @@ class Setting extends Model
 		//Read Data...
 		if($model->is_localized) {
 			if($set_for_default) {
-				$default_value          = json_decode($model->default_value, 1);
-				$default_value[$locale] = $new_value;
-				$model->default_value   = json_encode($default_value);
+				$default_value            = json_decode($model->default_value, 1);
+				$default_value[ $locale ] = $new_value;
+				$model->default_value     = json_encode($default_value);
 			}
 			else {
-				$custom_value          = json_decode($model->custom_value, 1);
-				$custom_value[$locale] = $new_value;
-				$model->custom_value   = json_encode($custom_value);
+				$custom_value            = json_decode($model->custom_value, 1);
+				$custom_value[ $locale ] = $new_value;
+				$model->custom_value     = json_encode($custom_value);
 			}
 		}
 		else {
@@ -107,34 +114,6 @@ class Setting extends Model
 		return $model->update();
 	}
 
-	public function getRawDefaultAttribute()
-	{
-		$value  = $this->default_value; //Crypt::decrypt($this->default_value) ;
-		$result = null;
-
-		if(!$value) {
-			return $this->default_when_not_found;
-		}
-		else {
-			return $value;
-		}
-
-	}
-
-
-	/*
-	|--------------------------------------------------------------------------
-	| Chain Methods
-	|--------------------------------------------------------------------------
-	| Pattern: Setting::builder('folan')->in('fa')->nocache()->defaultValue()->raw()->gain()
-	| First and last methods are mandatory, while the rest is optional as per required.
-	*/
-
-	public function getSessionKeyAttribute()
-	{
-		return "setting-" . $this->slug;
-	}
-
 	public function saveRequest($request)
 	{
 		//Default Value...
@@ -149,7 +128,7 @@ class Setting extends Model
 		else {
 			$array = [];
 			foreach(setting('site_locales')->nocache()->gain() as $lang) {
-				$array[$lang] = $this->purify($request->toArray()[$lang]);
+				$array[ $lang ] = $this->purify($request->toArray()[ $lang ]);
 			}
 			$this->custom_value = json_encode($array);
 		}
@@ -158,6 +137,33 @@ class Setting extends Model
 		return $this->save();
 
 	}
+
+
+	/*
+	|--------------------------------------------------------------------------
+	| Chain Methods
+	|--------------------------------------------------------------------------
+	| Pattern: Setting::builder('folan')->in('fa')->nocache()->defaultValue()->raw()->gain()
+	| First and last methods are mandatory, while the rest is optional as per required.
+	*/
+	public static function builder($slug = null)
+	{
+		$model = new self;
+		$model->ask($slug);
+
+		return $model->reset();
+	}
+
+	public function reset()
+	{
+		$this->request_language     = '';
+		$this->request_fresh_reveal = false;
+		$this->request_default      = false;
+		$this->request_unformatted  = false;
+
+		return $this;
+	}
+
 
 	protected function purify($value)
 	{
@@ -187,8 +193,8 @@ class Setting extends Model
 		}
 
 		//Language decision...
-		if(!$this->request_language){
-			$this->request_language= getLocale() ;
+		if(!$this->request_language) {
+			$this->request_language = getLocale();
 		}
 
 		//If already revealed...
@@ -225,7 +231,7 @@ class Setting extends Model
 			if(isJson($value) and !is_numeric($value)) {
 				$value = json_decode($value, true);
 				if(array_has($value, $this->request_language)) {
-					$value = $value[$this->request_language];
+					$value = $value[ $this->request_language ];
 				}
 				else {
 					$value = $record->raw_default;
@@ -286,14 +292,6 @@ class Setting extends Model
 		return $this;
 	}
 
-
-	/*
-	|--------------------------------------------------------------------------
-	| Static Set & Get
-	|--------------------------------------------------------------------------
-	|
-	*/
-
 	public function raw()
 	{
 		$this->request_unformatted = true;
@@ -303,17 +301,25 @@ class Setting extends Model
 
 	/*
 	|--------------------------------------------------------------------------
-	| Helper Functions
+	| Static Set & Get
 	|--------------------------------------------------------------------------
 	|
 	*/
 
+
+	/*
+	|--------------------------------------------------------------------------
+	| Helper Functions
+	|--------------------------------------------------------------------------
+	|
+	*/
 	public function categories()
 	{
 		$return = [];
-
-		// Real Categories...
 		foreach(self::$full_categories as $category) {
+			if($category == 'upstream') {
+				continue;
+			}
 			$trans = "settings.categories.$category";
 			if(Lang::has($trans)) {
 				$caption = trans($trans);
@@ -324,11 +330,34 @@ class Setting extends Model
 			array_push($return, [$category, $caption]);
 		}
 
+		return $return;
+
+	}
+
+	public function tabs()
+	{
+		$return = [];
+
+		// Settings Categories...
+		foreach(self::$full_categories as $category) {
+			if($category == 'upstream') {
+				continue;
+			}
+			$trans = "settings.categories.$category";
+			if(Lang::has($trans)) {
+				$caption = trans($trans);
+			}
+			else {
+				$caption = $category;
+			}
+			array_push($return, ['tab/' . $category, $caption]);
+		}
+
 		// Entry Categories...
-		array_push($return, [
-			'handles',
-			trans('calendar.handles'),
-		]);
+		//array_push($return, [
+		//	'handles',
+		//	trans('calendar.handles'),
+		//]);
 
 		// Branch Categories...
 		//		$branches = Branch::selector('category')->get();

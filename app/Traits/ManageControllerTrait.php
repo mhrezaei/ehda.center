@@ -32,7 +32,12 @@ trait ManageControllerTrait
 
 		//Preparations...
 		$Model = $this->Model ;
-		$model = $Model::withTrashed()->find($model_id);
+		if($Model->hasColumn('deleted_at')) {
+			$model = $Model::withTrashed()->find($model_id) ;
+		}
+		else {
+			$model = $Model::find($model_id);
+		}
 		$handle = $this->browse_handle ;
 
 		//Run...
@@ -43,15 +48,20 @@ trait ManageControllerTrait
 
 	}
 
-	public function singleAction($model_id , $view_file)
+	public function singleAction($model_id , $view_file , $option=null)
 	{
 		//Redirect in mass actions...
 		if($model_id == 0)
-			return $this->massAction($view_file);
+			return $this->massAction($view_file,$option);
 
 		//Model...
 		$Model = $this->Model ;
-		$model = $Model::withTrashed()->find($model_id) ;
+		if($Model->hasColumn('deleted_at')) {
+			$model = $Model::withTrashed()->find($model_id) ;
+		}
+		else {
+			$model = $Model::find($model_id);
+		}
 
 
 		if(!$model)
@@ -60,7 +70,7 @@ trait ManageControllerTrait
 		//If Special Method...
 		$special_method = camel_case($view_file."_form") ;
 		if(method_exists($this,$special_method))
-			return $this->$special_method($model) ;
+			return $this->$special_method($model , $option) ;
 
 		//If normal view...
 		$view = $this->view_folder . "." .$view_file ;
@@ -68,7 +78,7 @@ trait ManageControllerTrait
 		if(!View::exists($view)) return view('templates.say' , ['array'=>$view]); //@TODO: REMOVE THIS LINE
 		if(!View::exists($view)) return view('errors.m404');
 
-		return view($view,compact('model'));
+		return view($view,compact('model' , 'option'));
 	}
 
 	public function massAction($view_file)

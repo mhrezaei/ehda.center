@@ -5,7 +5,7 @@ namespace App\Http\Requests\Manage;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Providers\ValidationServiceProvider ;
 
-class AdminSaveRequest extends FormRequest
+class UserSaveRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,6 +30,7 @@ class AdminSaveRequest extends FormRequest
              'name_first' => 'required' ,
              'name_last' => 'required' ,
              'email' => 'required|email|unique:users,email,'.$input['id'].',id',
+             'code_melli' => "required|code_melli|unique:users,code_melli,".$input['id'].",id",
              'mobile' => 'required|phone:mobile' ,
         ];
     }
@@ -41,6 +42,7 @@ class AdminSaveRequest extends FormRequest
              'id'  =>  'ed|numeric',
              'action'  =>  'lower',
              'mobile' => 'ed' ,
+             'code_melli' => "ed",
         ]);
         return $purified;
 

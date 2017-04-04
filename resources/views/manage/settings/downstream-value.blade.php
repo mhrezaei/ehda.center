@@ -1,6 +1,6 @@
 @include('templates.modal.start' , [
 	'partial' => true ,
-	'form_url' => url('manage/upstream/save/downstream_value'),
+	'form_url' => url('manage/settings/save/'),
 	'modal_title' => $model->title ,
 ])
 	<div class='modal-body'>
@@ -16,6 +16,7 @@
 		])
 
 		@include("manage.frame.widgets.input-$model->data_type" , [
+			'condition' => user()->isDeveloper(),
 			'value' => $model->defaultValue()->nocache()->raw()->gain() ,
 			'name' => 'default_value' ,
 			'label' => trans('validation.attributes.default_value'),

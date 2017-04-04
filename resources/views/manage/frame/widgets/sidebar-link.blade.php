@@ -32,8 +32,8 @@
 
 		@if(isset($sub_menus))
 			<ul class="nav nav-second-level">
-				@foreach($sub_menus as $sub_menu)  {{--  [0:target 1:caption 2:icon 3:permission  --}}
-					@if(!isset($sub_menu[3]) or Auth::user()->can($sub_menu[3]))
+				@foreach($sub_menus as $sub_menu)  {{--  [0:target 1:caption 2:icon 3:condition  --}}
+					@if(!isset($sub_menu[3]) or $sub_menu[3])
 						<li {{ (Request::is('*'.$sub_menu[0]) ? 'class="active"' : '') }}>
 							<a href="{{ url ("manage/".$sub_menu[0]) }}">
 								<i class="fa fa-{{ $sub_menu[2] or 'dot-circle-o' }} fa-fw" style="width: 20px"></i>

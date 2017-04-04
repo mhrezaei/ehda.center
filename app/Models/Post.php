@@ -14,7 +14,7 @@ class Post extends Model
 	use TahaModelTrait , SoftDeletes ;
 
 	protected $guarded= ['id'];
-	protected static $search_fields = ['title' , 'keywords' , 'slug'] ;
+	protected static $search_fields = ['title' , 'slug'] ;
 	public static $reserved_slugs = "none,without"; //to be used in Requests
 
 	protected $casts = [
@@ -34,6 +34,10 @@ class Post extends Model
 	public function categories()
 	{
 		return $this->belongsToMany('App\Models\Category')->withTimestamps();
+	}
+	public function folders()
+	{
+		return $this->belongsToMany('App\Models\Folder')->withTimestamps();
 	}
 	public function roles()
 	{
@@ -102,6 +106,16 @@ class Post extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+	public function getImageAttribute()
+	{
+		$image_url = $this->spreadMeta()->featured_image ;
+		if(!$image_url)
+			$image_url = 'assets/images/close.png';
+
+		return asset($image_url);
+	}
+
 
 	public function getDiscountPercentAttribute()
 	{
@@ -389,6 +403,7 @@ class Post extends Model
 	public static function selector($parameters = [])
 	{
 		extract(array_normalize($parameters , [
+			'slug' => "",
 			'role' => "user", //@TODO
 			'criteria' => "published",
 			'locale' => getLocale(),
@@ -396,9 +411,17 @@ class Post extends Model
 			'type' => "feature:searchable",
 			'category' => "", //@TODO
 			'keyword' => "", //[@TODO
+		     'search' => "",
 		]));
 
 		$table = self::where('id' , '>' , '0') ;
+
+		/*-----------------------------------------------
+		| Slug ...
+		*/
+		if($slug) {
+			$table = $table->where('slug' , $slug) ;
+		}
 
 		/*-----------------------------------------------
 		| Process Type ...
@@ -490,6 +513,13 @@ class Post extends Model
 
 		}
 
+
+		/*-----------------------------------------------
+		| Process Search ...
+		*/
+		$table = $table->whereRaw(self::searchRawQuery($search));
+
+
 		//Return...
 		return $table ;
 
@@ -504,15 +534,22 @@ class Post extends Model
 	public function saveCategories($data)
 	{
 		$selected_categories = [] ;
+		$selected_folders = [] ;
 		foreach($data as $key => $value) {
 			if(str_contains($key,'category') and $value) {
-				$category_id = str_replace('category-' , null , $key);
-				array_push($selected_categories , Category::realId($category_id));
+				$category_id = Category::realId(str_replace('category-' , null , $key));
+				$category = Category::find($category_id) ;
+				if($category) {
+					array_push($selected_categories , $category->id);
+					array_push($selected_folders , $category->folder_id);
+				}
 			}
 		}
 
 		$this->categories()->sync(  $selected_categories );
-		session()->put('test2' , $selected_categories);
+		$this->folders()->sync( $selected_folders );
+
+
 	}
 	public static function normalizeSlug($post_id, $post_type, $post_locale, $slug)
 	{
@@ -573,12 +610,12 @@ class Post extends Model
 	{
 		switch($criteria) {
 			case 'search' :
-				$permit = 'browse' ;
+				$permit = '*' ;
 				break;
 
 			case 'pending':
 			case 'drafts' :
-				$permit = 'browse' ;
+				$permit = '*' ;
 				break;
 
 			case 'my_posts' :
@@ -587,14 +624,14 @@ class Post extends Model
 				break;
 
 			case 'bin' :
-				$permit = 'browse' ;
+				$permit = '*' ;
 				break;
 
 			default :
 				$permit = '*' ;
 		}
 
-		return user()->as('admin')->can("post-$posttype.$permit");
+		return user()->as('admin')->can("posts-$posttype.$permit");
 	}
 }
 

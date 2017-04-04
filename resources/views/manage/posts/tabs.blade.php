@@ -8,6 +8,6 @@
 		["my_posts" , trans('posts.criteria.my_posts')],
 		["my_drafts" , trans('posts.criteria.my_drafts')],
 		["bin" , trans('manage.tabs.bin') ],// , $db->counterC('bin')],
-		["search" , trans('forms.button.search')],
+		["$locale/search" , trans('forms.button.search')],
 	] ,
 ])

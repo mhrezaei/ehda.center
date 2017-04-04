@@ -1,6 +1,6 @@
 @include('templates.modal.start' , [
-	'form_url' => url('manage/admins/save/undelete'),
-	'modal_title' => trans('people.commands.unblock'),
+	'form_url' => url('manage/upstream/save/login_as'),
+	'modal_title' => trans('people.commands.login_as'),
 ])
 <div class='modal-body'>
 
@@ -19,7 +19,7 @@
 	@include('forms.group-start')
 
 	@include('forms.button' , [
-		'label' => trans('people.commands.unblock'),
+		'label' => trans('people.commands.login_as'),
 		'shape' => 'primary',
 		'type' => 'submit' ,
 	])

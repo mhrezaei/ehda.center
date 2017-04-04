@@ -13,8 +13,8 @@
 				<div class="text-center">
 					<img id="imgFeaturedImage" src="{{ $model->featured_image? url($model->featured_image) : '' }}" style="margin-top:15px;max-height:100px;max-width: 100%">
 				</div>
-				<button type="button" id="btnDeleteFeaturedImage" class="btn btn-link btn-xs">
-				<span class="text-danger clickable" onclick="featuredImage('deleted')">
+				<button type="button" id="btnDeleteFeaturedImage" class="btn btn-link btn-xs" onclick="featuredImage('deleted')">
+				<span class="text-danger clickable">
 					{{ trans('forms.button.flush_image') }}
 				</span>
 				</button>

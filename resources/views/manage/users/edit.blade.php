@@ -1,11 +1,12 @@
 @include('templates.modal.start' , [
-	'form_url' => url('manage/admins/save/'),
-	'modal_title' => $model->id? trans('forms.button.edit')  : trans('people.admins.create'),
+	'form_url' => url('manage/users/save/'),
+	'modal_title' => $model->id? trans('forms.button.edit')  : trans('people.commands.create_new_user' , ['role_title' => trans('people.user'),]),
 ])
 <div class='modal-body'>
 
 	@include('forms.hiddens' , ['fields' => [
 		['id' , $model->id ],
+		['_role_to_be_attached' , $model->role_to_be_attached]
 	]])
 
 	@include('forms.input' , [
@@ -21,6 +22,12 @@
 	])
 
 	@include('forms.input' , [
+	    'name' => 'code_melli',
+	    'class' => 'form-required',
+	    'value' => $model->code_melli
+	])
+
+	@include('forms.input' , [
 		'name' => 'email',
 		'class' => 'form-required ltr',
 		 'value' => $model->email ,
@@ -29,18 +36,17 @@
 	@include('forms.input' , [
 		'name' => 'mobile',
 		'class' => 'form-required ltr',
-		 'value' => $model->mobile ,
+		'value' => $model->mobile ,
 	])
 
-	@if(!$model->id)
-		@include('forms.input' , [
-			'name' => '' ,
-			'label' => trans('validation.attributes.password'),
-			'extra' => 'disabled' ,
-			'class' => 'f10' ,
-		 	'value' => trans('forms.feed.password_set_to_mobile'),
-		])
-	@endif
+	@include('forms.input' , [
+		'name' => '' ,
+		'condition' => !$model->exists,
+		'label' => trans('validation.attributes.password'),
+		'extra' => 'disabled' ,
+		'class' => 'f10' ,
+		'value' => trans('forms.feed.password_set_to_mobile'),
+	])
 
 	@include('forms.group-start')
 
