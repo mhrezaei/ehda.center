@@ -178,13 +178,27 @@ Route::group([
 */
 
 Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Setting']], function () {
-	Route::get('/', 'FrontController@index');
-	Route::post('/register/new', 'FrontController@register');
+    Route::get('/', 'FrontController@index');
+    Route::get('/hadi', 'TestController@index');
+    Route::post('/register/new', 'FrontController@register');
 
-	Route::group(['prefix' => '{lang}', 'middleware' => ['UserIpDetect']], function () {
+    // drawing code
+    Route::post('/drawing/check', 'DrawingCodeController@sumbitCode');
 
-		Route::get('/', 'FrontController@index');
+    Route::group(['prefix' => '{lang}', 'middleware' => ['UserIpDetect']], function () {
 
+        Route::get('/', 'FrontController@index');
+        Route::get('/products', 'ProductsController@index');
+        Route::get('/products/categories/{slug}', 'ProductsController@products');
+        Route::get('/page/{slug}', 'PostController@page');
+
+        // user Route
+        Route::group(['prefix' => 'user', 'middleware' => 'is:customer'], function (){
+            Route::get('/dashboard', 'UserController@index');
+            Route::get('/profile', 'UserController@profile');
+            Route::get('/drawing', 'UserController@drawing');
+            Route::get('/events', 'UserController@events');
+        });
 	});
 
 });

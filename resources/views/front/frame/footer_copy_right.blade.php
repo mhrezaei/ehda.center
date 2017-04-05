@@ -1,1 +1,1 @@
-<div class="copyright"> تمام حقوق برای آجیل‌فروشی محفوظ است. ۱۳۹۵ </div>
+<div class="copyright"> تمام حقوق برای {{ setting()->ask('site_title')->gain() }} محفوظ است. </div>

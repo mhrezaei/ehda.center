@@ -59,6 +59,8 @@
                 'name' => 'password2',
                 'type' => 'password',
                 'value' => old('password2'),
+                'class' => 'form-required',
+                
             ])
 
             <div class="tal" style="margin-bottom: 15px;">
