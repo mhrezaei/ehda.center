@@ -12,12 +12,6 @@ use Unisharp\Laravelfilemanager\Events\ImageWasUploaded;
  */
 class UploadController extends LfmController
 {
-    private $default_file_types = ['application/pdf'];
-    private $default_image_types = ['image/jpeg', 'image/png', 'image/gif'];
-    // unit is assumed to be kb
-    private $default_max_file_size = 1000;
-    private $default_max_image_size = 500;
-
     /**
      * Upload an image/file and (for images) create thumbnail
      *
@@ -27,16 +21,22 @@ class UploadController extends LfmController
     public function upload()
     {
         $files = request()->file('upload');
+        $error_bag = [];
+        foreach (is_array($files) ? $files : [$files] as $file) {
+            $validation_message = $this->uploadValidator($file);
+            $new_filename = $this->proceedSingleUpload($file);
 
-        if (is_array($files)) {
-            foreach ($files as $file) {
-                $this->proceedSingleUpload($file);
+            if ($validation_message !== 'pass') {
+                array_push($error_bag, $validation_message);
+            } elseif ($new_filename == 'invalid') {
+                array_push($error_bag, $response);
             }
 
-            $response = $this->success_response;
-        } else { // upload via ckeditor 'Upload' tab
-            $new_filename = $this->proceedSingleUpload($files);
+        }
 
+        if (is_array($files)) {
+            $response = count($error_bag) > 0 ? $error_bag : $this->success_response;
+        } else { // upload via ckeditor 'Upload' tab
             $response = $this->useFile($new_filename);
         }
 
@@ -100,16 +100,19 @@ class UploadController extends LfmController
         $file_size = $file->getSize() / 1000;
         $type_key = $this->currentLfmType();
 
-        $mine_config = 'lfm.valid_' . $type_key . '_mimetypes';
-        $valid_mimetypes = config($mine_config, $this->{"default_{$type_key}_types"});
-        $max_size = config('lfm.max_' . $type_key . '_size', $this->{"default_max_{$type_key}_size"});
-
-        if (false === in_array($mimetype, $valid_mimetypes)) {
-            return $this->error('mime') . $mimetype;
+        if (config('lfm.should_validate_mime')) {
+            $mine_config = 'lfm.valid_' . $type_key . '_mimetypes';
+            $valid_mimetypes = config($mine_config, []);
+            if (false === in_array($mimetype, $valid_mimetypes)) {
+                return $this->error('mime') . $mimetype;
+            }
         }
 
-        if ($file_size > $max_size) {
-            return $this->error('size') . $mimetype;
+        if (config('lfm.should_validate_size')) {
+            $max_size = config('lfm.max_' . $type_key . '_size', 0);
+            if ($file_size > $max_size) {
+                return $this->error('size') . $mimetype;
+            }
         }
 
         return 'pass';
@@ -135,7 +138,7 @@ class UploadController extends LfmController
 
         // create thumb image
         Image::make(parent::getCurrentPath($new_filename))
-            ->fit(200, 200)
+            ->fit(config('lfm.thumb_img_width', 200), config('lfm.thumb_img_height', 200))
             ->save(parent::getThumbPath($new_filename));
     }
 

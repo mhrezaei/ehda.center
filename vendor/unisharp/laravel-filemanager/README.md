@@ -3,14 +3,16 @@
 [![Total Downloads](https://poser.pugx.org/unisharp/laravel-filemanager/downloads)](https://packagist.org/packages/unisharp/laravel-filemanager)
 [![License](https://poser.pugx.org/unisharp/laravel-filemanager/license)](https://packagist.org/packages/unisharp/laravel-filemanager)
 
-To preview all features, clone [Laravel Filemanager container](https://github.com/UniSharp/laravel-filemanager-example-5.3).
+ * Document : [unisharp.github.io/laravel-filemanager](http://unisharp.github.io/laravel-filemanager/)
+ * Demo : [Laravel Filemanager container](https://github.com/UniSharp/laravel-filemanager-example-5.3)
 
-## Documents
-  1. [Installation](https://github.com/UniSharp/laravel-filemanager/blob/master/docs/installation.md)
-  1. [Integration](https://github.com/UniSharp/laravel-filemanager/blob/master/docs/integration.md)
-  1. [Config](https://github.com/UniSharp/laravel-filemanager/blob/master/docs/config.md)
-  1. [Customization](https://github.com/UniSharp/laravel-filemanager/blob/master/docs/customization.md)
-  1. [Events](https://github.com/UniSharp/laravel-filemanager/blob/master/docs/events.md)
+## v1.7 released
+ * Important changes :
+  * All code refactored.
+  * Fix Windows compatibility.
+  * Fix file cannot be uploaded to "File Mode".
+  * Config file is also refactored, see [config document](https://unisharp.github.io/laravel-filemanager/config).
+ * Please follow the intructions in [this document](https://unisharp.github.io/laravel-filemanager/upgrade) to upgrade.
 
 ## Features
  * CKEditor and TinyMCE integration
@@ -20,34 +22,22 @@ To preview all features, clone [Laravel Filemanager container](https://github.co
  * Public and private folders for multi users
  * Customizable routes, middlewares, views, and folder path
  * Supports two types : files and images. Each type works in different directory.
- * Supported locales : ar, bg, en, es, fa, fr, he, hu, nl, pt-BR, pt_PT, ro, ru, tr, zh-CN, zh-TW
+ * Supported locales : ar, bg, de, el, en, es, fa, fr, he, hu, nl, pl, pt-BR, pt_PT, ro, ru, tr, zh-CN, zh-TW
 
 PR is welcome!
-
-## Upgrade guide
- * Please backup your own `config/lfm.php` before upgrading.
- * Run commands:
-
-  ```bash
-  composer update unisharp/laravel-filemanager
-  php artisan vendor:publish --tag=lfm_view --force
-  php artisan vendor:publish --tag=lfm_public --force
-  php artisan vendor:publish --tag=lfm_config --force
-  ```
- * Clear browser cache if page is broken after upgrading.
 
 ## Screenshots
 > Standalone button :
 
-![Standalone button demo](https://raw.githubusercontent.com/UniSharp/laravel-filemanager/gh_pages/images/lfm01.png)
+![Standalone button demo](https://unisharp.github.io/laravel-filemanager/images/lfm01.png)
 
 > Grid view :
 
-![Grid view demo](https://raw.githubusercontent.com/UniSharp/laravel-filemanager/gh_pages/images/lfm02.png)
+![Grid view demo](https://unisharp.github.io/laravel-filemanager/images/lfm02.png)
 
 > List view :
 
-![List view demo](https://raw.githubusercontent.com/UniSharp/laravel-filemanager/gh_pages/images/lfm03.png)
+![List view demo](https://unisharp.github.io/laravel-filemanager/images/lfm03.png)
   
 ## Credits
 Special thanks to
