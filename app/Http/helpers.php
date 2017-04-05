@@ -8,6 +8,7 @@
 */
 
 use Carbon\Carbon;
+use Morilog\Jalali\jDate;
 
 function getLocale()
 {
@@ -155,4 +156,39 @@ function login($id) //@TODO: Remove this function on production
 {
 	\Illuminate\Support\Facades\Auth::loginUsingId($id);
 	return user()->full_name ;
+}
+function echoDate($date , $foramt='default' , $language='auto', $pd = false)
+{
+    if ($foramt == 'default')
+    {
+        $foramt = 'j F Y [H:m]';
+    }
+
+    if ($language == 'auto')
+    {
+        $language = getLocale();
+    }
+
+    switch ($language)
+    {
+        case 'fa':
+            $date = jDate::forge($date)->format($foramt);
+            break;
+
+        case 'en':
+            $date = $date->format($foramt);
+            break;
+
+        default:
+            $date = $date->format($foramt);
+    }
+
+    if ($pd)
+    {
+        return pd($date);
+    }
+    else
+    {
+        return $date;
+    }
 }

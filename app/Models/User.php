@@ -12,7 +12,7 @@ class User extends Authenticatable
 {
 	use Notifiable, TahaModelTrait, PermitsTrait, SoftDeletes;
 
-	public static $meta_fields   = ['preferences'];
+	public static $meta_fields = ['preferences', 'name_father', 'marital'] ;
 	public static $search_fields = ['name_first', 'name_last', 'name_firm', 'code_melli', 'email', 'mobile'];
 	protected     $guarded       = ['id'];
 	protected     $hidden        = ['password', 'remember_token'];
@@ -34,6 +34,10 @@ class User extends Authenticatable
 		return $this->belongsToMany('App\Models\Role')->withPivot('permissions', 'deleted_at')->withTimestamps();;
 	}
 
+	public function receipts()
+	{
+		return Receipt::where('user_id', $this->id)->get();
+	}
 
 	/*
 	|--------------------------------------------------------------------------
@@ -168,6 +172,26 @@ class User extends Authenticatable
 		}
 
 	}
+
+	public function getSumReceiptAmountAttribute()
+	{
+		return Receipt::where('user_id', $this->id)->sum('purchased_amount');
+	}
+
+
+	//public function getAdminPositionAttribute()
+	//{
+	//	if(!$this->hasRole('admin'))
+	//		return '-' ;
+	//
+	//	if($this->isDeveloper())
+	//		return trans('people.admins.developer');
+	//	if($this->as('admin')->can('super'))
+	//		return trans('people.admins.super_admin');
+	//	else
+	//		return trans('people.admins.ordinary_admin');
+	//}
+
 
 	/*
 	|--------------------------------------------------------------------------

@@ -10,4 +10,5 @@
     @else
         {{ Html::style('assets/css/front-style-en.css') }}
     @endif
+    @include('front.frame.scripts')
 </head>

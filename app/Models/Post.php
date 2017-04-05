@@ -35,13 +35,13 @@ class Post extends Model
 	{
 		return $this->belongsToMany('App\Models\Category')->withTimestamps();
 	}
-	public function folders()
-	{
-		return $this->belongsToMany('App\Models\Folder')->withTimestamps();
-	}
+    public function folders()
+    {
+        return $this->belongsToMany('App\Models\Folder')->withTimestamps();
+    }
 	public function roles()
 	{
-		return $this->belongsToMany('App\Models\Rsole')->withTimestamps();; //@TODO: complete with withPivot('permissions' , 'deleted_at') perhaps
+		return $this->belongsToMany('App\Models\Rsole')->withTimestamps(); //@TODO: complete with withPivot('permissions' , 'deleted_at') perhaps
 	}
 
 	public function posttype()

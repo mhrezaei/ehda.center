@@ -60,7 +60,20 @@ $(document).ready(function(){
         prevArrow: '<a href="#" class="arrow icon-angle-left"></a>',
         nextArrow: '<a href="#" class="arrow icon-angle-right"></a>',
     });
-    
+
+    /*-----------------------------------------------------------------
+    - Testimonials
+    -----------------------------------------------------------------*/
+    $('.testimonials-list').slick({
+        autoplay: true,
+        centerMode: true,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        rtl: false,
+        arrows: false,
+    });
+
+
     /*-----------------------------------------------------------------
     - Gift input
     -----------------------------------------------------------------*/
