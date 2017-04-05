@@ -1,10 +1,3 @@
-## Documents
-  1. [Installation](https://github.com/UniSharp/laravel-filemanager/blob/master/docs/installation.md)
-  1. [Integration](https://github.com/UniSharp/laravel-filemanager/blob/master/docs/integration.md)
-  1. [Config](https://github.com/UniSharp/laravel-filemanager/blob/master/docs/config.md)
-  1. [Customization](https://github.com/UniSharp/laravel-filemanager/blob/master/docs/customization.md)
-  1. [Events](https://github.com/UniSharp/laravel-filemanager/blob/master/docs/events.md)
-
 ## Requirements
  * php >= 5.4
  * Laravel 5
@@ -42,4 +35,4 @@
     php artisan vendor:publish --tag=lfm_public
     ```
     
-1. Ensure that the files & images directories (in `config/lfm.php`) are writable by your web server.
+1. Ensure that the files & images directories (in `config/lfm.php`) are writable by your web server(run commands like `chown` or `chmod`).

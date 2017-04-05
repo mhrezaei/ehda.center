@@ -12,6 +12,7 @@
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.4.0",
         "morilog/jalali": "^2.2",
+        "unisharp/laravel-filemanager": "^1.7",
         "vinkla/hashids": "^3.1"
     },
     "require-dev": {

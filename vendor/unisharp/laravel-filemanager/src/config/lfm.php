@@ -25,6 +25,8 @@ return [
 
     // If true, private folders will be created for each signed-in user.
     'allow_multi_user' => true,
+    // If true, share folder will be created when allow_multi_user is true.
+    'allow_share_folder' => true,
 
     // The database column to identify a user. Make sure the value is unique.
     // Ex: When set to 'id', the private folder of user will be named as the user id.
@@ -72,8 +74,14 @@ return [
     // If true, non-alphanumeric folder name will be rejected.
     'alphanumeric_directory' => false,
 
-    'max_image_size' => 500,
-    'max_file_size' => 1000,
+    // If true, the uploading file's size will be verified for over than max_image_size/max_file_size.
+    'should_validate_size' => false,
+
+    'max_image_size' => 50000,
+    'max_file_size' => 50000,
+
+    // If true, the uploading file's mime type will be valid in valid_image_mimetypes/valid_file_mimetypes.
+    'should_validate_mime' => false,
 
     // available since v1.3.0
     'valid_image_mimetypes' => [
@@ -93,6 +101,15 @@ return [
         'application/pdf',
         'text/plain',
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Image / Folder Setting
+    |--------------------------------------------------------------------------
+    */
+
+    'thumb_img_width' => 200,
+    'thumb_img_height' => 200,
 
     /*
     |--------------------------------------------------------------------------
