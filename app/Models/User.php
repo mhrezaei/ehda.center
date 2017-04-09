@@ -12,7 +12,7 @@ class User extends Authenticatable
 {
 	use Notifiable, TahaModelTrait, PermitsTrait, SoftDeletes;
 
-	public static $meta_fields = ['preferences', 'name_father', 'marital'] ;
+	public static $meta_fields = ['preferences', 'name_father', 'marital' , 'total_receipts_count' , 'total_receipts_amount'] ;
 	public static $search_fields = ['name_first', 'name_last', 'name_firm', 'code_melli', 'email', 'mobile'];
 	protected     $guarded       = ['id'];
 	protected     $hidden        = ['password', 'remember_token'];
@@ -319,6 +319,27 @@ class User extends Authenticatable
 		*/
 
 		return user()->is_a('superadmin');
+	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Actions
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public function updatePurchases()
+	{
+		$this->total_receipts_count = $this->receipts()->count() ;
+		$this->total_receipts_amount = $this->receipts()->sum('purchased_amount') ;
+		$this->save() ;
+	}
+
+	public static function updateAllPurchases()
+	{
+		$users = self::all() ;
+		foreach($users as $user) {
+			$user->updatePurchases() ;
+		}
 	}
 
 	/*
