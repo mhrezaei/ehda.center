@@ -126,6 +126,7 @@ class ComposerStaticInitc163ed33e856e3abf8986dc792906912
         ),
         'A' => 
         array (
+            'Asanak\\Sms\\' => 11,
             'App\\' => 4,
             'Anhskohbo\\NoCaptcha\\' => 20,
         ),
@@ -314,6 +315,10 @@ class ComposerStaticInitc163ed33e856e3abf8986dc792906912
         array (
             0 => __DIR__ . '/..' . '/barryvdh/laravel-debugbar/src',
         ),
+        'Asanak\\Sms\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mhrezaei/asanak-sms/src',
+        ),
         'App\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app',
@@ -438,6 +443,9 @@ class ComposerStaticInitc163ed33e856e3abf8986dc792906912
         'App\\Traits\\PermitsTrait' => __DIR__ . '/../..' . '/app/Traits/PermitsTrait.php',
         'App\\Traits\\TahaControllerTrait' => __DIR__ . '/../..' . '/app/Traits/TahaControllerTrait.php',
         'App\\Traits\\TahaModelTrait' => __DIR__ . '/../..' . '/app/Traits/TahaModelTrait.php',
+        'Asanak\\Sms\\AsanakSmsProvider' => __DIR__ . '/..' . '/mhrezaei/asanak-sms/src/AsanakSmsProvider.php',
+        'Asanak\\Sms\\Facade\\AsanakSms' => __DIR__ . '/..' . '/mhrezaei/asanak-sms/src/Facade/AsanakSms.php',
+        'Asanak\\Sms\\Facade\\AsanakSmsFacade' => __DIR__ . '/..' . '/mhrezaei/asanak-sms/src/Facade/AsanakSmsFacade.php',
         'Barryvdh\\Debugbar\\Console\\ClearCommand' => __DIR__ . '/..' . '/barryvdh/laravel-debugbar/src/Console/ClearCommand.php',
         'Barryvdh\\Debugbar\\Console\\PublishCommand' => __DIR__ . '/..' . '/barryvdh/laravel-debugbar/src/Console/PublishCommand.php',
         'Barryvdh\\Debugbar\\Controllers\\AssetController' => __DIR__ . '/..' . '/barryvdh/laravel-debugbar/src/Controllers/AssetController.php',

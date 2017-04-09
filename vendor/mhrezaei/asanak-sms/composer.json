@@ -1,0 +1,17 @@
+{
+    "name": "mhrezaei/asanak-sms",
+    "description": "Asanak Sms Sender Package",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mohammad Hadi Rezaei",
+            "email": "hadi@yasnateam.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Asanak\\Sms\\": "src/"
+        }
+    },
+    "require": {}
+}

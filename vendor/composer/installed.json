@@ -4277,5 +4277,40 @@
         ],
         "description": "Symfony Translation Component",
         "homepage": "https://symfony.com"
+    },
+    {
+        "name": "mhrezaei/asanak-sms",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/mhrezaei/AsanakSms.git",
+            "reference": "b8a80479be56dec9e527755c8af7c4c3776a4cd0"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/mhrezaei/AsanakSms/zipball/b8a80479be56dec9e527755c8af7c4c3776a4cd0",
+            "reference": "b8a80479be56dec9e527755c8af7c4c3776a4cd0",
+            "shasum": ""
+        },
+        "time": "2017-04-05 11:47:54",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Asanak\\Sms\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Mohammad Hadi Rezaei",
+                "email": "hadi@yasnateam.com"
+            }
+        ],
+        "description": "Asanak Sms Sender Package"
     }
 ]

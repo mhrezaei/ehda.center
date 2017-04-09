@@ -170,6 +170,7 @@ return [
          */
         Laravel\Tinker\TinkerServiceProvider::class,
          Vinkla\Hashids\HashidsServiceProvider::class,
+        Asanak\Sms\AsanakSmsProvider::class,
 
         /*
          * Application Service Providers...
@@ -248,6 +249,7 @@ return [
         'Hashids' => Vinkla\Hashids\Facades\Hashids::class,
         'jDate' => Morilog\Jalali\Facades\jDate::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        'AsanakSms' => Asanak\Sms\Facade\AsanakSmsFacade::class,
 
         //          'Setting' => \App\Providers\SettingServiceProvider::class,
     ],

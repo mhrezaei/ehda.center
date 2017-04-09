@@ -9,6 +9,7 @@ use App\Models\Posttype;
 use App\Models\State;
 use App\Models\User;
 use App\Traits\ManageControllerTrait;
+use Asanak\Sms\Facade\AsanakSms;
 use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
