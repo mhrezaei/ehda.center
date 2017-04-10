@@ -36,6 +36,8 @@ class User extends Authenticatable
 
 	public function receipts()
 	{
+		return $this->hasMany('App\Models\Receipt') ;
+
 		return Receipt::where('user_id', $this->id)->get();
 	}
 

@@ -192,3 +192,11 @@ function echoDate($date , $foramt='default' , $language='auto', $pd = false)
         return $date;
     }
 }
+
+function fakeDrawingCode($amount = false , $timestamp = false) //@TODO: Remove this on production
+{
+	if(!$timestamp) $timestamp = time() ;
+	if(!$amount) $amount = rand(5,150) * 10000 ;
+
+	return \App\Providers\DrawingCodeServiceProvider::create_uniq($timestamp , $amount) ;
+}

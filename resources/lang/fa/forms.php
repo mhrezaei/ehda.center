@@ -85,6 +85,7 @@ return [
 		'min_value' => 'حداقل: :value' ,
 		'max_value' => 'حداکثر: :value' ,
 		'numbers' => 'عدد' ,
+	     'submit' => "ثبت",
 	],
 
 

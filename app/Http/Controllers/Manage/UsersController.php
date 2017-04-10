@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers\Manage;
 
+use App\Http\Requests\Manage\ReceiptSaveRequest;
 use App\Http\Requests\Manage\UserPasswordChangeRequest;
 use App\Http\Requests\Manage\UserSaveRequest;
 use App\Models\Posttype;
+use App\Models\Receipt;
 use App\Models\Role;
 use App\Models\User;
+use App\Providers\DrawingCodeServiceProvider;
 use App\Providers\SmsServiceProvider;
 use App\Traits\ManageControllerTrait;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -416,6 +420,39 @@ class UsersController extends Controller
 
 		return $this->jsonAjaxSaveFeedback($user->forceDelete(), [
 			'success_callback' => "rowHide('tblUsers','$request->id')",
+		]);
+
+	}
+
+	public function saveNewReceipt(ReceiptSaveRequest $request)
+	{
+		//@TODO: Check Permission
+
+		//Validation...
+		$drawing_code = DrawingCodeServiceProvider::check_uniq($request->code);
+		if(!$drawing_code) {
+			return $this->jsonFeedback(trans('cart.invalid_purchase_code'));
+		}
+
+		$user = User::find($request->user_id);
+		if(!$user->id) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+
+		//Data Buildup...
+		$data = [
+			'user_id' => $user->id,
+		     'code' => $request->code ,
+			'purchased_at' => Carbon::createFromTimestamp($drawing_code['date'], 'Asia/Tehran')->setTimezone('UTC'),
+			'purchased_amount' => $drawing_code['price'],
+		] ;
+
+		//Save & Feedback...
+		$is_saved = Receipt::store($data) ;
+		$user->updatePurchases() ;
+		return $this->jsonAjaxSaveFeedback( $is_saved , [
+			'success_modalClose' => false,
+			'success_callback' => "divReload( 'divReceiptsTable' )",
 		]);
 
 	}

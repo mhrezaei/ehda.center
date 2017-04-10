@@ -59,17 +59,15 @@
 			'text' => trans('cart.no_receipt'),
 			'condition' => $model->total_receipts_count == 0,
 			'color' => "gray",
-			'link' => "",
+			'link' => "modal:manage/users/act/-id-/receipts",
 		])
 		@include("manage.frame.widgets.grid-text" , [
 			'text' => $model->total_receipts_count . " " . trans('cart.receipt') . " (" . number_format($model->total_receipts_amount/10) . ' ' . setting()->ask('currency')->grab() . ') ' ,
 			'condition' => $model->total_receipts_count  > 0,
-			'link' => "",
+			'link' => "modal:manage/users/act/-id-/receipts",
 		])
 	</td>
 @endif
-
-
 
 {{--
 |--------------------------------------------------------------------------

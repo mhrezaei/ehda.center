@@ -80,6 +80,7 @@ Route::group([
 			Route::post('/delete', 'UsersController@delete');
 			Route::post('/undelete', 'UsersController@undelete');
 			Route::post('/destroy', 'UsersController@destroy');
+			Route::post('/receipt' , 'UsersController@saveNewReceipt');
 		});
 	});
 

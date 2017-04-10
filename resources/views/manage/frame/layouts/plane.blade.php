@@ -22,6 +22,7 @@
 	{{-- JQuery --}}
 	{!! Html::script ('assets/libs/jquery.min.js') !!}
 	{!! Html::script ('assets/libs/jquery.form.min.js') !!}
+	{!! Html::script ('assets/libs/jquery.inputmask.bundle.js') !!}
 
 	{{-- BOOTSTRAP --}}
 	{!! Html::style('assets/libs/bootstrap/css/bootstrap.min.css') !!}

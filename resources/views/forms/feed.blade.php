@@ -1,5 +1,5 @@
 @if(!isset($condition) or $condition)
-    <div class="form-feed alert" style="display:none">
+    <div class="form-feed alert {{ $div_class or '' }}" style="display:none">
         {{ $feed_wait or trans('forms.feed.wait') }}
     </div>
     <div class="d-n hide">
