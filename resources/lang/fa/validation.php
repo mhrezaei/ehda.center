@@ -331,6 +331,7 @@ return [
 				'message' => 'متن پیام',
 				'items'=>'گزیدگان',
 				'keyword' => 'کلیدواژه',
+				'code' => "کد",
 
 				'branch_id' => 'شاخه' ,
 				'value' => 'مقدار' ,
@@ -367,6 +368,7 @@ return [
 				'currency' => 'ارز' ,
 				'package_id' => "واحد اندازه‌گیری",
 				'sale_expires_at' => "انقضای قیمت ویژه",
+				'submitted_at' => "زمان ثبت",
 				'price' => 'قیمت' ,
 				'is_available' => "موجودی کافی",
 				'original_price' => "قیمت اصلی",

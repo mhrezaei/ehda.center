@@ -22,6 +22,7 @@ Auth::routes();
 Route::get('home', 'Auth\LoginController@redirectAfterLogin');
 Route::get('logout', 'Auth\LoginController@logout');
 Route::get('manage/heyCheck' , 'Front\FrontController@heyCheck');
+Route::get('postsConverter' , 'Front\TestController@postsConverter');
 
 /*
 |--------------------------------------------------------------------------
@@ -79,6 +80,7 @@ Route::group([
 			Route::post('/delete', 'UsersController@delete');
 			Route::post('/undelete', 'UsersController@undelete');
 			Route::post('/destroy', 'UsersController@destroy');
+			Route::post('/receipt' , 'UsersController@saveNewReceipt');
 		});
 	});
 

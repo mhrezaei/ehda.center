@@ -420,9 +420,9 @@ class UpstreamController extends Controller
 	public function loginAs(Request $request)
 	{
 		$user = User::find($request->id);
-		if(!$user->hasRole('admin')) {
-			return $this->jsonFeedback('user is not as admin');
-		}
+		//if(!$user->hasRole('admin')) {
+		//	return $this->jsonFeedback('user is not as admin');
+		//}
 
 
 		session()->put('logged_developer', encrypt(user()->id));

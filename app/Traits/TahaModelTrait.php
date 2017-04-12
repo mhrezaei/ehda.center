@@ -177,16 +177,37 @@ trait TahaModelTrait
 
 	}
 
-	public function meta($slug, $field = 'meta')
+	public function meta($slug=null, $field = 'meta')
 	{
 		$data = $this->$field ;
 		if(!is_array($data))
 			$data = json_decode($data , true) ;
 
-		if(isset($data[$slug]))
+		if(!$slug)
+			return $data ;
+		elseif(isset($data[$slug]))
 			return $data[$slug];
 		else
 			return null ;
+	}
+
+	public function updateMeta($array , $update_row = false)
+	{
+		$meta = $this->meta() ;
+
+		foreach($array as $field => $value) {
+			if(in_array($field,self::$meta_fields)) {
+				$meta[$field] = $value ;
+			}
+			if(!$value) {
+				unset($meta[$field]);
+			}
+		}
+
+		$this->meta = json_encode($meta) ;
+		if($update_row) {
+			$this->save() ;
+		}
 	}
 
 	/*

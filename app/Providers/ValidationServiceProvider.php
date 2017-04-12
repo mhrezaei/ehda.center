@@ -92,6 +92,11 @@ class ValidationServiceProvider extends ServiceProvider
 				$data = str_replace("٥", "۵", $data);
 				break;
 
+			case 'stripMask' :
+				$data = str_replace("_" , null , $data) ;
+				$data = str_replace("-" , null , $data) ;
+				break;
+
 			case "pd":
 				$data = str_replace("1", "۱", $data);
 				$data = str_replace("2", "۲", $data);

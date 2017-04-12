@@ -24,12 +24,11 @@
 	@include("manage.frame.widgets.grid" , [
 		'table_id' => "tblUsers",
 		'row_view' => "manage.users.browse-row",
-		'handle' => "counter",
+		'handle' => "selector",
 		'headings' => [
 			trans('validation.attributes.name_first') ,
-//			$request_role=='admin'? trans('validation.attributes.position') : 'NO',
-//			$request_role=='all'? trans('people.user_role') : trans('validation.attributes.status'),
 			trans('people.user_role'),
+			[trans('cart.purchases') , 'NO' , $request_role=='customer'],
 			trans('forms.button.action'),
 		],
 	])

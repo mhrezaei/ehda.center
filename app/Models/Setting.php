@@ -183,6 +183,11 @@ class Setting extends Model
 		return $value;
 	}
 
+	public function grab($slug = null)
+	{
+		return $this->gain($slug);
+	}
+
 	public function gain($slug = null)
 	{
 		if($slug) {

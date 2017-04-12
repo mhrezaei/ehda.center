@@ -115,6 +115,28 @@ function tabReload()
 				$tab_div.removeClass('loading');
 			});
 }
+
+function divReload( div_id )
+{
+	var $div = $("#" + div_id) ;
+	var url = $("#" + div_id + " .refresh").html() ;
+
+	if(!url) {
+		return ;
+	}
+
+	$div.addClass('loading') ;
+	forms_log(url) ;
+	$.ajax({
+		url: url ,
+		cache: false
+	}).done(function(html)
+	{
+		$div.html(html);
+		$div.removeClass('loading');
+	});
+}
+
 function masterModal($url,$size)
 {
 	//Preparetions...

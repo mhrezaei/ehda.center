@@ -7,7 +7,7 @@
                     <div class="functions"> <button class="blue" data-modal="add-code-modal"> {{ trans('front.add_code') }} </button> </div>
                 </header>
                 <article>
-                    @if(sizeof(user()->receipts()))
+                    @if(user()->receipts()->count())
                         <table class="table">
                         <thead>
                         <tr>
@@ -18,7 +18,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach(user()->receipts() as $receipt)
+                        @foreach(user()->receipts as $receipt)
                         <tr>
                             <td class="fw-b color-green">{{ pd($receipt->dashed_code) }}</td>
                             <td> @include('front.user.drawing.date_format', ['date' => $receipt->created_at]) </td>
