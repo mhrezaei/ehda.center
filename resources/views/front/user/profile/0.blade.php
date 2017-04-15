@@ -2,6 +2,7 @@
 
 @section('head')
     <title>{{ setting()->ask('site_title')->gain() }} | {{ trans('front.edit_profile') }}</title>
+    @include('front.frame.datepicker_assets')
 @endsection
 
 @section('navbar')

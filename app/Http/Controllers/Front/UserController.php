@@ -26,8 +26,7 @@ class UserController extends Controller
     public function drawing(Request $request)
     {
         $receipt = $request->session()->get('drawingCode');
-        if ($receipt)
-        {
+        if ($receipt) {
             $receipt = decrypt($receipt);
             $drawing_code = DrawingCodeServiceProvider::check_uniq($receipt);
             if (!$drawing_code)
