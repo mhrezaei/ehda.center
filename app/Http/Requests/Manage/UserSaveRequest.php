@@ -29,7 +29,7 @@ class UserSaveRequest extends FormRequest
              'id' => 'numeric' ,
              'name_first' => 'required' ,
              'name_last' => 'required' ,
-             'email' => 'required|email|unique:users,email,'.$input['id'].',id',
+             'email' => 'email|unique:users,email,'.$input['id'].',id',
              'code_melli' => "required|code_melli|unique:users,code_melli,".$input['id'].",id",
              'mobile' => 'required|phone:mobile' ,
         ];

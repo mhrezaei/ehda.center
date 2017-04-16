@@ -200,3 +200,15 @@ function fakeDrawingCode($amount = false , $timestamp = false) //@TODO: Remove t
 
 	return \App\Providers\DrawingCodeServiceProvider::create_uniq($timestamp , $amount) ;
 }
+
+function obj($class_name , $id)
+{
+	$class = '\App\Models\\'.$class_name ;
+	if( in_array('Illuminate\Database\Eloquent\SoftDeletes' , class_uses($class))) {
+		$object = $class::withTrashed()->find($id);
+	}
+	else {
+		$object = $class::find($id);
+	}
+	return $object ;
+}

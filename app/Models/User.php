@@ -31,7 +31,7 @@ class User extends Authenticatable
 	*/
 	public function roles()
 	{
-		return $this->belongsToMany('App\Models\Role')->withPivot('permissions', 'deleted_at')->withTimestamps();;
+		return $this->belongsToMany('App\Models\Role')->withPivot('permissions', 'deleted_at')->withTimestamps();
 	}
 
 	public function receipts()
@@ -40,6 +40,33 @@ class User extends Authenticatable
 
 		return Receipt::where('user_id', $this->id)->get();
 	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Cache Management
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public function cacheUpdate()
+	{
+		$this->cacheUpdateReceipts() ;
+	}
+
+	public static function cacheRefreshAll()
+	{
+		$users = self::all() ;
+		foreach($users as $user) {
+			$user->cacheUpdate();
+		}
+	}
+
+	public function cacheUpdateReceipts()
+	{
+		$this->total_receipts_count = $this->receipts()->count() ;
+		$this->total_receipts_amount = $this->receipts()->sum('purchased_amount') ;
+		$this->update() ;
+	}
+
 
 	/*
 	|--------------------------------------------------------------------------
@@ -323,26 +350,6 @@ class User extends Authenticatable
 		return user()->is_a('superadmin');
 	}
 
-	/*
-	|--------------------------------------------------------------------------
-	| Actions
-	|--------------------------------------------------------------------------
-	|
-	*/
-	public function updatePurchases()
-	{
-		$this->total_receipts_count = $this->receipts()->count() ;
-		$this->total_receipts_amount = $this->receipts()->sum('purchased_amount') ;
-		$this->save() ;
-	}
-
-	public static function updateAllPurchases()
-	{
-		$users = self::all() ;
-		foreach($users as $user) {
-			$user->updatePurchases() ;
-		}
-	}
 
 	/*
 	|--------------------------------------------------------------------------

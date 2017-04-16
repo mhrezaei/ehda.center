@@ -449,7 +449,7 @@ class UsersController extends Controller
 
 		//Save & Feedback...
 		$is_saved = Receipt::store($data) ;
-		$user->updatePurchases() ;
+		//$user->updatePurchases() ;
 		return $this->jsonAjaxSaveFeedback( $is_saved , [
 			'success_modalClose' => false,
 			'success_callback' => "divReload( 'divReceiptsTable' )",

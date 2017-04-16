@@ -25,7 +25,7 @@ return [
 		'price' => "فیلد قیمت",
 		'basket' => "سبد خرید",
 		'comment' => "پذیرش دیدگاه",
-		'rate' => "پذیرش بازخورد",
+		'rate' => "امتیازدهی",
 		'album' => "ایجاد آلبوم عکس",
 		'category' => "دسته‌بندی",
 		'cat_image' => "عکس دسته‌بندی",
@@ -38,6 +38,7 @@ return [
 		'visibility_choice' => "امکان انتخاب رؤیت‌پذیری",
 		'template_choice' => "امکان انتخاب قالب",
 		'developers_only' => "انحصاری برنامه‌نویسان",
+	     'feedback' => "بازخورد",
 	],
 
 	'templates' => [

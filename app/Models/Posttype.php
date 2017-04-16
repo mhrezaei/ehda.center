@@ -212,15 +212,22 @@ class Posttype extends Model
 
 	public function hasFeature($feature)
 	{
-		if($feature == 'locales') {
-			if(sizeof($this->locales_array) > 1) {
-				return true;
-			}
-			else {
-				return false;
-			}
+		// Dynamic Features...
+		switch($feature) {
+			case 'locales' :
+				if(sizeof($this->locales_array) > 1) {
+					return true;
+				}
+				else {
+					return false;
+				}
+
+			case 'feedback' :
+				return $this->hasAnyOf(['comment' , 'rate' , 'basket' , 'register']);
+
 		}
 
+		// Normal Situations...
 		return str_contains($this->features, $feature);
 	}
 
