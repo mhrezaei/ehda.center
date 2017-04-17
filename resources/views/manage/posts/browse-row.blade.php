@@ -136,15 +136,25 @@
 |--------------------------------------------------------------------------
 |
 --}}
-<td>
-	@include("manage.frame.widgets.grid-text" , [
-		'condition' => $model->has('event') and $model->total_receipts_count,
-		'text' => trans('cart.receipts_count_amount' , [
-			'count' => number_format($model->total_receipts_count),
-			'amount' => number_format($model->total_receipts_amount/10),
+@if($model->has('event'))
+	<td>
+		@include("manage.frame.widgets.grid-text" , [
+			'condition' => $model->has('event') and $model->total_receipts_count,
+			'text' => trans('cart.receipts_count_amount' , [
+				'count' => number_format($model->total_receipts_count),
+				'amount' => number_format($model->total_receipts_amount/10),
+			])
 		])
-	])
-</td>
+
+		@include("manage.frame.widgets.grid-text" , [
+			'condition' => $model->has('event'),
+			'text' => trans('cart.draw'),
+			'icon' => "gift",
+			'link' => "modal:manage/posts/act/-id-/draw",
+			'class' => "btn btn-default btn-lg",
+		])
+	</td>
+@endif
 
 {{--
 |--------------------------------------------------------------------------

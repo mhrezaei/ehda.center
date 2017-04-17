@@ -108,6 +108,7 @@ Route::group([
 			Route::post('/undelete', 'PostsController@undelete');
 			Route::post('/destroy', 'PostsController@destroy');
 			Route::post('/clone', 'PostsController@makeClone');
+			Route::post('/draw_prepare' , 'PostsController@drawPrepare');
 		});
 
 	});

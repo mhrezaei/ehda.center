@@ -675,5 +675,10 @@ class Post extends Model
 
 		return user()->as('admin')->can("posts-$posttype.$permit");
 	}
+
+	public function prepareForDrawing()
+	{
+		Drawing::prepareDatabase($this) ;
+	}
 }
 

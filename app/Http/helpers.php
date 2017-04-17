@@ -212,3 +212,17 @@ function obj($class_name , $id)
 	}
 	return $object ;
 }
+
+
+function fakeData()
+{
+	for($i=1;$i<=1000;$i++) {
+		\App\Models\Drawing::create([
+			'user_id' => 100 + $i,
+		     'post_id' => 65,
+		     'amount' => rand(1000,1000000000),
+		     'lower_line' => rand(1,100),
+		     'upper_line' => rand(1000,5000),
+		]);
+	}
+}

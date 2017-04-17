@@ -383,6 +383,7 @@ class ComposerStaticInitc163ed33e856e3abf8986dc792906912
         'CreateRolesTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_06_090119_create_roles_table.php',
         'CreateSettingTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_06_085508_create_setting_table.php',
         'CreateStatesTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_06_123730_create_states_table.php',
+        'CreateUserDrawingTable' => __DIR__ . '/../..' . '/database/migrations/2017_04_17_192916_create_user_drawing_table.php',
         'CreateUsersLogsTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_06_084109_create_users_logs_table.php',
         'CreateUsersTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_000000_create_users_table.php',
         'DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',

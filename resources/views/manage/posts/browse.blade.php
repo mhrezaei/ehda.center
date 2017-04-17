@@ -30,7 +30,7 @@
 			[trans('validation.attributes.featured_image') , '200' , $posttype->hasFeature('featured_image')],
 			trans('validation.attributes.properties'),
 			[trans('validation.attributes.price'),'', $posttype->has('price') ],
-			[trans('posts.features.feedback') , '' , $posttype->has('feedback') or $posttype->slug=='events'],
+			[trans('posts.features.feedback') , '' , $posttype->has('feedback') ],
 			trans('forms.button.action')
 		],
 	])

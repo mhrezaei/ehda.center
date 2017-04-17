@@ -225,7 +225,7 @@ class Posttype extends Model
 				}
 
 			case 'feedback' :
-				return $this->hasAnyOf(['comment', 'rate', 'basket', 'register']);
+				return $this->hasAnyOf(['comment', 'rate', 'basket', 'register' , 'event']);
 
 		}
 
