@@ -1,19 +1,15 @@
 <div class="field">
     <label> {{ trans('validation.attributes.' . $name) }} </label>
-    {{--<input type="{{ $type or '' }}" name="{{ $name or '' }}" id="{{ $name or '' }}"--}}
-    {{--class="{{ $class or '' }} datepicker-input"--}}
-    {{--placeholder="{{ trans('validation.attributes.' . $name) }}"--}}
-    {{--title="{{ trans('validation.attributes_example.' . $name)}}"--}}
-    {{--minlength="{{ $min or '' }}"--}}
-    {{--maxlength="{{ $max or '' }}"--}}
-    {{--value="{{ $value or '' }}"--}}
-    {{--error-value="{{ trans('validation.javascript_validation.' . $name) }}"--}}
-    {{--{{ $other or '' }}--}}
-    {{--@if(isset($options))--}}
-    {{--@foreach($options as $optionName => $optionValue)--}}
-    {{--data-datepicker-{{ kebab_case($optionName) }}="{{ $optionValue }}"--}}
-    {{--@endforeach--}}
-    {{--@endif--}}
-    {{-->--}}
-    <select></select>
+    <select name="{{ $name or '' }}" id="{{ $name or '' }}"
+            class="{{ $class or '' }}"
+            title="{{ trans('validation.attributes_example.' . $name)}}"
+            error-value="{{ trans('validation.javascript_validation.' . $name) }}"
+            {{ $other or '' }}
+    >
+        @if(isset($options))
+            @foreach($options as $opValue => $opText)
+                <option value="{{ $opValue }}" @if(($value or '') == $opValue) selected @endif>{{ $opText }}</option>
+            @endforeach
+        @endif
+    </select>
 </div>

@@ -9,6 +9,7 @@
     @else
         {{ Html::style('assets/css/front-style-en.css') }}
     @endif
+    {{ Html::style('assets/css/front-additives.min.css') }}
     @include('front.frame.scripts')
     @yield('head')
 </head>

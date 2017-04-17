@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,OAAQ,CACN,OAAO,CAAE,IAAI",
+"sources": ["../../../resources/sass/front-additives.scss"],
+"names": [],
+"file": "front-additives.min.css"
+}
