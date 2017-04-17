@@ -52,14 +52,6 @@ class User extends Authenticatable
 		$this->cacheUpdateReceipts() ;
 	}
 
-	public static function cacheRefreshAll()
-	{
-		$users = self::all() ;
-		foreach($users as $user) {
-			$user->cacheUpdate();
-		}
-	}
-
 	public function cacheUpdateReceipts()
 	{
 		$this->total_receipts_count = $this->receipts()->count() ;

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Crypt;
 
+
 class Posttype extends Model
 {
 	use TahaModelTrait, SoftDeletes;
@@ -22,7 +23,7 @@ class Posttype extends Model
 		'rate'              => ['star-half-o', 'info', []], //@TODO: feature_fields
 		'album'             => ['address-book-o', 'info', ['post_photos:auto']], //@TODO: feature_fields datatype!
 		'category'          => ['folder-o', 'info', []],
-		'cat_image'         => ['file-image-o' , 'info' , []],
+		'cat_image'         => ['file-image-o', 'info', []],
 		'keywords'          => ['tags', 'info', []], //@TODO: feature_fields
 		'searchable'        => ['search', 'info', []],
 		'preview'           => ['eye', 'info', []],
@@ -33,6 +34,7 @@ class Posttype extends Model
 		'full_history'      => ['history', 'success', []],
 		'digest'            => ['fire', 'info', []],
 		'schedule'          => ['clock-o', 'info', ['original_published_at:auto']],
+		'event'             => ['calendar', 'warning', ['start_time:date', 'end_time:date']],
 		'register'          => ['user-plus', 'warning', []],
 		'visibility_choice' => ['shield', 'warning', []],
 		//			'template_choice' => ['th-large' , 'warning' , []],
@@ -213,7 +215,7 @@ class Posttype extends Model
 	public function hasFeature($feature)
 	{
 		// Dynamic Features...
-		switch($feature) {
+		switch ($feature) {
 			case 'locales' :
 				if(sizeof($this->locales_array) > 1) {
 					return true;
@@ -223,7 +225,7 @@ class Posttype extends Model
 				}
 
 			case 'feedback' :
-				return $this->hasAnyOf(['comment' , 'rate' , 'basket' , 'register']);
+				return $this->hasAnyOf(['comment', 'rate', 'basket', 'register']);
 
 		}
 
@@ -247,23 +249,23 @@ class Posttype extends Model
 		return !$this->has($feature);
 	}
 
-	public function can($permit = '*' , $as = 'admin')
+	public function can($permit = '*', $as = 'admin')
 	{
-		return user()->as($as)->can("posts-".$this->slug.'.'.$permit) ;
+		return user()->as($as)->can("posts-" . $this->slug . '.' . $permit);
 	}
 
 	public function cannot($permit, $as = 'admin')
 	{
-		return !$this->can($permit , $as) ;
+		return !$this->can($permit, $as);
 	}
 
 	public function normalizeRequestLocale($request_locale)
 	{
 		if(!$request_locale or !in_array($request_locale, $this->locales_array)) {
-			$locale = $this->locales_array[0] ;
+			$locale = $this->locales_array[0];
 		}
 		else {
-			return $request_locale ;
+			return $request_locale;
 		}
 	}
 
@@ -297,7 +299,7 @@ class Posttype extends Model
 			]);
 		}
 
-		return $array ;
+		return $array;
 	}
 
 }

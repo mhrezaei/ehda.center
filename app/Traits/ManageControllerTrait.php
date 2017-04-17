@@ -56,7 +56,7 @@ trait ManageControllerTrait
 
 		//Model...
 		$Model = $this->Model ;
-		if($Model->hasColumn('deleted_at')) {
+		if($Model::hasColumn('deleted_at')) {
 			$model = $Model::withTrashed()->find($model_id) ;
 		}
 		else {

@@ -100,6 +100,48 @@ class Post extends Model
 		}
 	}
 
+	public function getReceiptsAttribute()
+	{
+		//$this->spreadMeta() ;
+		if($this->hasnot('event')) {
+			return Receipt::where('id' , '0') ;
+		}
+		else {
+			return Receipt::whereBetween('purchased_at' , [$this->starts_at , $this->ends_at]) ;
+		}
+	}
+
+
+	/*
+	|--------------------------------------------------------------------------
+	| Cache Management
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public function cacheUpdate()
+	{
+		$this->cacheUpdateReceipts() ;
+	}
+
+	public function cacheRegenerateOnUpdate()
+	{
+		session()->put('test' , 'triggered1') ;
+		if($this->has('event')) {
+			$this->cacheUpdateReceipts() ;
+			session()->put('test' , 'triggered2') ;
+		}
+	}
+
+	public function cacheUpdateReceipts()
+	{
+		$this->updateMeta( [
+			'total_receipts_count' => $this->receipts->count(),
+		     'total_receipts_amount' => $this->receipts->sum('purchased_amount'),
+		] , true ) ;
+	}
+
+
+
 	/*
 	|--------------------------------------------------------------------------
 	| Accessors & Mutators

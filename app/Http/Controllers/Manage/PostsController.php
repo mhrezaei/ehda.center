@@ -648,7 +648,7 @@ class PostsController extends Controller
 			return $this->jsonFeedback(trans('validation.http.Error403'));
 		}
 
-		return $this->jsonAjaxSaveFeedback($model->restore(), [
+		return $this->jsonAjaxSaveFeedback($model->undelete(), [
 			'success_callback' => "rowHide('tblPosts' , '$request->id')",
 			'success_refresh'  => false,
 		]);

@@ -75,7 +75,8 @@ trait TahaModelTrait
 	public static function hasColumn($field_name)
 	{
 		if($field_name == 'deleted_at') {
-			return method_exists(new self(), 'withTrashed');
+			return in_array('Illuminate\Database\Eloquent\SoftDeletes' , class_uses(self::class));
+			//return method_exists(new self(), 'withTrashed');
 		}
 
 		return Schema::hasColumn(self::tableName(), $field_name);
@@ -119,6 +120,48 @@ trait TahaModelTrait
 	|
 	*/
 
+	private static function hasMeta($fields= null)
+	{
+		/*-----------------------------------------------
+		| General Check ...
+		*/
+		if(!self::hasColumn('meta') or !isset(self::$meta_fields)) {
+			return false;
+		}
+		elseif(!$fields) {
+			return true ;
+		}
+
+		/*-----------------------------------------------
+		| Bypass if Dynamic ...
+		*/
+		if(self::$meta_fields[0] == 'dynamic') {
+			return true ;
+		}
+
+
+		/*-----------------------------------------------
+		| Specific Fields ...
+		*/
+		if(!is_array($fields)) {
+			session()->put('test2' , 'salam');
+			$fields_array[0] = $fields ;
+		}
+		else {
+			$fields_array = $fields ;
+		}
+		session()->put('test' , $fields_array);
+		foreach($fields_array as $field) {
+			if(!in_array($field, self::$meta_fields)) {
+				return false ;
+			}
+		}
+
+		return true ;
+
+	}
+
+
 	/**
 	 * To be used only inside the `store` method.
 	 *
@@ -126,10 +169,12 @@ trait TahaModelTrait
 	 *
 	 * @return array $data
 	 */
+
 	public static function storeMeta($data)
 	{
 		//Bypass...
-		if(!self::hasColumn('meta') or !isset(self::$meta_fields)) {
+		//if(!self::hasColumn('meta') or !isset(self::$meta_fields)) {
+		if(!self::hasMeta()) {
 			return $data;
 		}
 
@@ -152,7 +197,8 @@ trait TahaModelTrait
 
 		//Process...
 		foreach($data as $field => $value) {
-			if(self::hasColumn($field) or (!in_array($field, self::$meta_fields) and self::$meta_fields[0] != 'dynamic')) {
+			//if(self::hasColumn($field) or (!in_array($field, self::$meta_fields) and self::$meta_fields[0] != 'dynamic')) {
+			if(self::hasColumn($field) or !self::hasMeta($field)) {
 				continue;
 			}
 
@@ -162,6 +208,29 @@ trait TahaModelTrait
 		$data['meta'] = json_encode($meta);
 
 		return $data;
+	}
+
+	public function suppressMeta()
+	{
+		/*-----------------------------------------------
+		| Bypass ...
+		*/
+		if(!self::hasMeta()) {
+			return $this ;
+		}
+
+		/*-----------------------------------------------
+		| Browse ...
+		*/
+		$data = $this->toArray() ;
+		foreach($data as $field=>$value) {
+			if(!self::hasColumn($field)) {
+				unset( $this->$field) ;
+			}
+		}
+
+		return $this ;
+
 	}
 
 	/**
@@ -218,9 +287,8 @@ trait TahaModelTrait
 	public function updateMeta($array, $update_row = false)
 	{
 		$meta = $this->meta();
-
 		foreach($array as $field => $value) {
-			if(in_array($field, self::$meta_fields)) {
+			if(self::hasMeta($field)) {
 				$meta[ $field ] = $value;
 			}
 			if(!$value) {
@@ -230,7 +298,7 @@ trait TahaModelTrait
 
 		$this->meta = json_encode($meta);
 		if($update_row) {
-			$this->save();
+			$this->suppressMeta()->save();
 		}
 	}
 
@@ -308,14 +376,18 @@ trait TahaModelTrait
 				}
 			}
 
-			$affected = Self::where('id', $data['id']);
+			$model = Self::where('id', $data['id']);
 
 			if(self::hasColumn('deleted_at')) {
-				$affected = $affected->withTrashed();
+				$model = $model->withTrashed();
 			}
 
-			$affected = $affected->update($data);
+			$affected = $model->update($data);
 			if($affected) {
+				$model = $model->first();
+				if($model) {
+					$model->cacheRegenerateIfApplicable('Update');
+				}
 				$affected = $data['id'];
 			}
 		}
@@ -332,7 +404,7 @@ trait TahaModelTrait
 			$model = self::create($data);
 			if($model) {
 				$affected = $model->id;
-				$model->cacheRegenerateIfApplicable();
+				$model->cacheRegenerateIfApplicable('InsertOrDelete');
 			}
 			else {
 				$affected = 0;
@@ -345,10 +417,25 @@ trait TahaModelTrait
 
 	}
 
-	public function cacheRegenerateIfApplicable()
+	public static function cacheRefreshAll()
 	{
+		$models = self::all() ;
+		foreach($models as $model) {
+			$model->cacheUpdate() ;
+		}
+	}
+
+	public function cacheRegenerateIfApplicable($mood)
+	{
+		//This always runs:
 		if(method_exists($this , 'cacheRegenerate')) {
 			$this->cacheRegenerate() ;
+		}
+
+		//This runs only on specific updates:
+		$method_name = 'cacheRegenerateOn'.$mood ;
+		if(method_exists($this , $method_name)) {
+			$this->$method_name() ;
 		}
 
 	}
@@ -395,7 +482,7 @@ trait TahaModelTrait
 		/*-----------------------------------------------
 		| Cache if applicable ...
 		*/
-		$this->cacheRegenerateIfApplicable() ;
+		$this->cacheRegenerateIfApplicable('InsertOrDelete') ;
 
 		/*-----------------------------------------------
 		| Return ...
@@ -406,7 +493,7 @@ trait TahaModelTrait
 	public function undelete()
 	{
 		$return = $this->restore() ;
-		$this->cacheRegenerateIfApplicable() ;
+		$this->cacheRegenerateIfApplicable('InsertOrDelete') ;
 		return $return ;
 	}
 

@@ -427,6 +427,8 @@ return [
 				'site_credit' => "اعتبار حساب",
 				'checked_by' => "بررسی‌کننده",
 				'color_code' => "رنگ شاخص",
+		          'starts_at' => "زمان آغاز",
+		          'ends_at' => "زمان پایان",
 		],
 
 		"http" => [

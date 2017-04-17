@@ -23,11 +23,18 @@ else {
 	$j_value = '' ;
 	$value = '' ;
 }
+
+if(isset($in_form) and !$in_form) {
+	$view = 'forms.input-self' ;
+}
+else {
+	$view = 'forms.input' ;
+}
 ?>
 
 @if(!isset($condition) or $condition)
 
-	@include('forms.input' , [
+	@include($view , [
 		'name' => $name,
 		'label' => isset($label)? $label : trans("validation.attributes.$name"),
 		'value' => $j_value,

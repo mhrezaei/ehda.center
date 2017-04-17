@@ -28,9 +28,29 @@ class Receipt extends Model
 		return $this->belongsTo('App\Models\User') ;
 	}
 
-	public function cacheRegenerate()
+	public function getPostsAttribute()
+	{
+		//@TODO:
+	}
+
+
+	/*
+	|--------------------------------------------------------------------------
+	| Cache Management
+	|--------------------------------------------------------------------------
+	|
+	*/
+
+	public function cacheRegenerateOnInsertOrDelete()
 	{
 		$this->user->cacheUpdateReceipts() ;
+
+		$posts = Post::selector([
+			'type' => "feature:event",
+		])->get() ;
+		foreach($posts as $post) {
+			$post->cacheUpdateReceipts() ;
+		}
 	}
 
 	/*

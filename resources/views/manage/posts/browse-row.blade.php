@@ -28,6 +28,17 @@
 		'text' => $model->title,
 		'link' => $model->canEdit()? url("manage/posts/$model->type/edit/-id-") : '',
 	])
+	
+	@include("manage.frame.widgets.grid-text" , [
+		'text' => trans('forms.button.duration' , [
+			'date1' => echoDate($model->starts_at , 'j F Y'),
+			'date2' => echoDate($model->ends_at , 'j F Y'),
+		]),
+		'condition' => $model->has('event'),
+		'color' => "info",
+		'size' => "10",
+		'icon' => "clock-o",
+	])
 
 	@include("manage.frame.widgets.grid-badges" , [$badges = [
 		[
@@ -126,7 +137,13 @@
 |
 --}}
 <td>
-
+	@include("manage.frame.widgets.grid-text" , [
+		'condition' => $model->has('event') and $model->total_receipts_count,
+		'text' => trans('cart.receipts_count_amount' , [
+			'count' => number_format($model->total_receipts_count),
+			'amount' => number_format($model->total_receipts_amount/10),
+		])
+	])
 </td>
 
 {{--

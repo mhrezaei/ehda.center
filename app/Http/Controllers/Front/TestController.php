@@ -18,6 +18,8 @@ class TestController extends Controller
 			if($post->meta('text') or $post->meta('abstract')) {
 				$post->text = $post->meta('text');
 				$post->abstract = $post->meta('abstract');
+				$post->starts_at = $post->meta('start_time') ;
+				$post->ends_at = $post->meta('end_time') ;
 				$post->updateMeta([
 					'text' => false,
 					'abstract' => false,

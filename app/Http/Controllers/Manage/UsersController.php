@@ -40,6 +40,11 @@ class UsersController extends Controller
 		$this->view_folder   = 'manage.users';
 	}
 
+	public function _update()
+	{
+		echo 1 ;
+	}
+
 	public function search($request_role, Request $request)
 	{
 		/*-----------------------------------------------
