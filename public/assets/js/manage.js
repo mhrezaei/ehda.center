@@ -334,3 +334,22 @@ function sidebarInitiate()
 		return sidebarToggle(0);
 	}
 }
+
+function drawingProgress(now_processed)
+{
+	//Hide/Show Elements...
+	var $bar = $('#divProgress') ;
+	$('.-progressHide').parent().hide();
+	$bar.parent().show();
+
+	//Progress Effect...
+	var current_value = parseInt($bar.attr('aria-valuenow')) ;
+	var total_numbers = parseInt($bar.attr('aria-valuemax'));
+	var new_value = current_value + now_processed ;
+	var percent = (new_value * 100 / total_numbers) ;
+	if(percent>100) percent = 100 ;
+	$bar.attr('aria-valuenow' , new_value).css('width' , percent.toString() + "%");
+
+	//Next Stage...
+	$("#btnPrepare").click() ;
+}

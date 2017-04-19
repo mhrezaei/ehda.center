@@ -12,6 +12,7 @@ return [
 	'receipts_count_amount' => ":count رسید خرید (در کل :amount تومان)",
 	'draw'                  => "قرعه‌کشی",
 	'draw_prepare'          => "آماده‌سازی برای قرعه‌کشی",
+     'drawing_winners' => "برندگان قرعه‌کشی",
 ];
 
 /*  Drawing Sequence

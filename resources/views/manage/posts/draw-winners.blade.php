@@ -1,5 +1,4 @@
 @include('templates.modal.start' , [
-	'fake' => $model->prepareForDrawing(),
 	'form_url' => url('manage/posts/save/draw_prepare'),
 	'modal_title' => trans('cart.draw'),
 ])
