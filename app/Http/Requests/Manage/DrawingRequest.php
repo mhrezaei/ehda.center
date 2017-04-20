@@ -27,7 +27,7 @@ class DrawingRequest extends Request
 	public function rules()
 	{
 		return [
-			'random_number' => "required|numeric|min:1|max:".session()->get('line_number'),
+			'number' => "required|numeric|min:1|max:".session()->get('line_number'),
 		];
 
 	}
@@ -36,7 +36,7 @@ class DrawingRequest extends Request
 	{
 		$value    = parent::all();
 		$purified = ValidationServiceProvider::purifier($value, [
-			'random_number' => "ed",
+			'number' => "ed",
 		]);
 
 		return $purified;

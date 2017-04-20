@@ -370,7 +370,7 @@ function drawingRandom(max)
 
 }
 
-function drawingDelete(key_number)
+function drawingDelete(key_number , post_id)
 {
 	$.ajax({
 		url: url("manage/club/save/draw_delete/"+key_number),
@@ -378,5 +378,6 @@ function drawingDelete(key_number)
 	})
 		.done(function (html) {
 			divReload( 'divWinnersTable' ) ;
+			rowUpdate('tblPosts',post_id)
 		});
 }

@@ -69,7 +69,7 @@ class ClubController extends Controller
 			'success_modalClose' => "0",
 
 			'danger_message'  => trans('forms.feed.wait'),
-			'danger_callback' => "drawingProgress($limit)",
+			'danger_callback' => "drawingProgress($limit);rowUpdate('tblPosts','$request->post_id')",
 		]);
 
 
@@ -90,7 +90,7 @@ class ClubController extends Controller
 		/*-----------------------------------------------
 		| User Selection ...
 		*/
-		$drawing_row = Drawing::pull($request->random_number);
+		$drawing_row = Drawing::pull($request->number);
 		if(!$drawing_row or $drawing_row->post_id != $post->id) {
 			return $this->jsonFeedback([
 				'message'  => trans('forms.feed.error'),
@@ -118,7 +118,7 @@ class ClubController extends Controller
 		return $this->jsonAjaxSaveFeedback($ok, [
 				'success_message'    => $user->full_name,
 				'success_modalClose' => false,
-				'success_callback'   => "divReload( 'divWinnersTable' )",
+				'success_callback'   => "divReload( 'divWinnersTable' );rowUpdate('tblPosts','$request->post_id')",
 			]
 		);
 

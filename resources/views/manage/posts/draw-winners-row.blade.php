@@ -12,7 +12,7 @@
 
 	<td>
 		@if($model->isDrawingReady())
-			<a class="text-danger f10" href="#" onclick="drawingDelete('{{$key}}')">x</a>
+			<a class="text-danger f10" href="#" onclick="drawingDelete('{{$key}}' , '{{$model->id}}')">x</a>
 		@endif
 	</td>
 </tr>

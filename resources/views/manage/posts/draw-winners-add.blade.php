@@ -7,7 +7,7 @@
 		])
 		@include("forms.input-self" , [
 			'id' => "txtDrawingGuess",
-			'name' => "random_number",
+			'name' => "number",
 			'placeholder' => trans('cart.take_number_between' , ['number' => pd($max_possible_number = session()->get('line_number')),]),
 			'class' => "text-center ltr",
 		])

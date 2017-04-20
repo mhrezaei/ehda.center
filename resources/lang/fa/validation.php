@@ -420,6 +420,7 @@ return [
 		'order_id'            => "سفارش",
 		'order_no'            => "شماره سفارش",
 		'cheque_no'           => "شماره چک",
+		'number'              => "عدد",
 		'random_number'       => "عدد تصادفی",
 		'cheque_date'         => "تاریخ چک",
 		'own_account_id'      => 'حساب صرافی',
