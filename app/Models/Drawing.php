@@ -24,12 +24,19 @@ class Drawing extends Model
 		$post->receipts->groupBy('user_id')->update([
 			'operation_integer' => 1,
 		]) ;
+
 		session()->put('line_number','0');
+		session()->put('drawing_post' , $post->id) ;
 
 	}
 
 	public static function pull($number)
 	{
 		return self::where('lower_line', '<=', $number)->where('upper_line', '>=', $number)->first();
+	}
+
+	public static function isReady($post_id)
+	{
+		return boolval(session()->get('drawing_post') == $post_id and session()->get('line_number') > 0) ;
 	}
 }

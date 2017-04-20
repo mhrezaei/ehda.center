@@ -363,4 +363,9 @@ class User extends Authenticatable
 		];
 
 	}
+
+	public function totalReceiptsAmountInEvent($post)
+	{
+		return $post->receipts->where('user_id', $this->id)->sum('purchased_amount') ;
+	}
 }

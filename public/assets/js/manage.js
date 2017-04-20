@@ -364,5 +364,19 @@ function drawingRandom(max)
 			$input.val(forms_pd(random_number.toString()));
 		},10*$i) ;
 	}
+	setTimeout( function() {
+		$("#btnSubmit").click() ;
+	} ,11*$i);
 
+}
+
+function drawingDelete(key_number)
+{
+	$.ajax({
+		url: url("manage/club/save/draw_delete/"+key_number),
+		cache: false
+	})
+		.done(function (html) {
+			divReload( 'divWinnersTable' ) ;
+		});
 }

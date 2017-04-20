@@ -4,14 +4,20 @@
 ])
 <div class='modal-body'>
 
-	@include("forms.feed" , [
-		'div_class' => "m10",
-	])
-
-
 	<div id="divWinnersTable" class="panel panel-default m10">
 		@include("manage.posts.draw-winners-table")
 	</div>
 
 </div>
+
+@if(!$model->isDrawingReady())
+	<div class="modal-footer">
+		@include("forms.button" , [
+			'label' => trans('cart.redraw_prepare'),
+			'shape' => "primary",
+			'link' => "masterModal(url('manage/posts/act/$model->id/draw'))",
+		])
+	</div>
+@endif
+
 @include('templates.modal.end')

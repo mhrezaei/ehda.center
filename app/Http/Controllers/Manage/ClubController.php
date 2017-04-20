@@ -42,14 +42,16 @@ class ClubController extends Controller
 
 		foreach($receipt_holders->get() as $receipt_holder) {
 			$amount       = $post->receipts->where('user_id', $receipt_holder->user_id)->sum('purchased_amount');
-			$total_points = intval($amount / $post->meta('rate_point'));
-			Drawing::create([
-				'user_id'    => $receipt_holder->user_id,
-				'post_id'    => $post->id,
-				'amount'     => $amount,
-				'lower_line' => $line_number + 1,
-				'upper_line' => $line_number += $total_points,
-			]);
+			$total_points = intval(floor($amount / $post->meta('rate_point')));
+			if($total_points) {
+				Drawing::create([
+					'user_id'    => $receipt_holder->user_id,
+					'post_id'    => $post->id,
+					'amount'     => $amount,
+					'lower_line' => $line_number + 1,
+					'upper_line' => $line_number += $total_points,
+				]);
+			}
 		}
 
 		$finished = boolval($line_number == session()->get('line_number'));
@@ -114,12 +116,23 @@ class ClubController extends Controller
 		| Feedback ...
 		*/
 		return $this->jsonAjaxSaveFeedback($ok, [
-				'success_message' => $user->full_name,
+				'success_message'    => $user->full_name,
 				'success_modalClose' => false,
 				'success_callback'   => "divReload( 'divWinnersTable' )",
 			]
 		);
 
+	}
+
+	public function drawDelete($key)
+	{
+		$post_id = session()->get('drawing_post');
+		$post = Post::find($post_id);
+		if($post) {
+			$winners = $post->winners_array;
+			unset($winners[$key]);
+			$post->updateMeta(['winners' => array_values($winners)], true);
+		}
 	}
 
 }

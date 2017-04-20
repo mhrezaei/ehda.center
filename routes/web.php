@@ -119,6 +119,7 @@ Route::group([
 		Route::group(['prefix' => 'save'], function () {
 			Route::post('/draw_prepare' , 'ClubController@drawPrepare');
 			Route::post('/draw_select' , 'ClubController@drawSelect');
+			Route::get('/draw_delete/{key}' , 'ClubController@drawDelete');
 		});
 	});
 

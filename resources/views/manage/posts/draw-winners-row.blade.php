@@ -1,14 +1,18 @@
 {{ '' , $user = \App\Models\User::find($winner) }}
-@if($user and $user->id)
-	<tr>
-		<td>{{ pd($key + 1) }}</td>
+<tr>
+	<td>{{ pd($key + 1) }}</td>
+
+	@if($user and $user->id)
 		<td>{{ $user->full_name }}</td>
 		<td>{{ pd($user->mobile) }}</td>
-		<td>&nbsp;</td>
-	</tr>
-@else
-	<tr>
-		<td>{{ pd($key + 1) }}</td>
+		<td>{{ pd(number_format($user->totalReceiptsAmountInEvent($model)/10)) . ' ' . getSetting('currency') }}</td>
+	@else
 		<td colspan="3"><span class="noContent"> {{ trans('people.form.user_deleted') }}</span></td>
-	</tr>
-@endif
+	@endif
+
+	<td>
+		@if($model->isDrawingReady())
+			<a class="text-danger f10" href="#" onclick="drawingDelete('{{$key}}')">x</a>
+		@endif
+	</td>
+</tr>

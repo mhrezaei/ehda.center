@@ -147,20 +147,20 @@
 		])
 
 		@include("manage.frame.widgets.grid-text" , [
-			'condition' => $model->has('event'),
+			'condition' => $model->has('event') and \Carbon\Carbon::now() > $model->ends_at and !count($model->winners_array),
 			'text' => trans('cart.draw'),
 			'icon' => "gift",
 			'link' => "modal:manage/posts/act/-id-/draw",
 			'class' => "btn btn-default btn-lg",
 		])
 
-		{{--@include("manage.frame.widgets.grid-tiny" , [--}}
-			{{--'condition' => session()->get('line_number') > 0,--}}
-			{{--'text' => trans('cart.drawing_winners'),--}}
-			{{--'icon' => "gift",--}}
-			{{--'color' => "danger",--}}
-			{{--'link' => "modal:manage/posts/act/-id-/draw-winners" ,--}}
-		{{--])--}}
+		@include("manage.frame.widgets.grid-tiny" , [
+			'condition' => $total_winners = count($model->winners_array),
+			'text' => pd($total_winners).' '.trans('cart.drawing_winner'),
+			'icon' => "smile-o",
+			'color' => "primary",
+			'link' => "modal:manage/posts/act/-id-/draw-winners" ,
+		])
 	</td>
 @endif
 

@@ -1,6 +1,6 @@
 <tr>
 	<td style="vertical-align: middle"><span class="fa fa-plus"></span></td>
-	<td colspan="2">
+	<td colspan="1">
 		@include("forms.hidden" , [
 			'name' => "post_id",
 			'value' => $model->id,
@@ -12,8 +12,9 @@
 			'class' => "text-center ltr",
 		])
 	</td>
-	<td>
+	<td colspan="3">
 		@include("forms.button" , [
+			'id' => "btnSubmit",
 			'label' => trans('forms.general.submit'),
 			'type' => "submit",
 		])

@@ -692,7 +692,12 @@ class Post extends Model
 
 	public function prepareForDrawing()
 	{
-		Drawing::prepareDatabase($this) ;
+		return Drawing::prepareDatabase($this) ;
+	}
+
+	public function isDrawingReady()
+	{
+		return Drawing::isReady($this->id);
 	}
 }
 
