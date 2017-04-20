@@ -12,7 +12,11 @@ return [
 	'receipts_count_amount' => ":count رسید خرید (در کل :amount تومان)",
 	'draw'                  => "قرعه‌کشی",
 	'draw_prepare'          => "آماده‌سازی برای قرعه‌کشی",
-     'drawing_winners' => "برندگان قرعه‌کشی",
+	'drawing_winners'       => "برندگان قرعه‌کشی",
+	'take_number_between'   => "عددی را بین ۱ تا :number انتخاب کنید",
+	'random_number'         => "عدد شانسی",
+	'user_already_won'      => "این کاربر یک بار در همین رویداد برنده شده است!",
+     'no_winner_so_far' => "فعلاً هیچ کس به عنوان برنده انتخاب نشده است.",
 ];
 
 /*  Drawing Sequence

@@ -298,7 +298,10 @@ trait TahaModelTrait
 
 		$this->meta = json_encode($meta);
 		if($update_row) {
-			$this->suppressMeta()->save();
+			return $this->suppressMeta()->save();
+		}
+		else {
+			return true ;
 		}
 	}
 

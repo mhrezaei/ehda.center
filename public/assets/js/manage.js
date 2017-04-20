@@ -353,3 +353,16 @@ function drawingProgress(now_processed)
 	//Next Stage...
 	$("#btnPrepare").click() ;
 }
+
+function drawingRandom(max)
+{
+	var $input = $("#txtDrawingGuess");
+
+	for($i=1 ; $i<100 ; $i++) {
+		setTimeout( function() {
+			var random_number = Math.floor(Math.random() * (max)) + 1 ;
+			$input.val(forms_pd(random_number.toString()));
+		},10*$i) ;
+	}
+
+}

@@ -28,5 +28,8 @@ class Drawing extends Model
 
 	}
 
-
+	public static function pull($number)
+	{
+		return self::where('lower_line', '<=', $number)->where('upper_line', '>=', $number)->first();
+	}
 }

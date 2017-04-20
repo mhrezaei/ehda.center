@@ -149,6 +149,20 @@ class Post extends Model
 	|
 	*/
 
+	/**
+	 * @return array ;
+	 * used only on the posts with drawing capabilities
+	 */
+	public function getWinnersArrayAttribute()
+	{
+		$winners = $this->meta('winners') ;
+		if(!is_array($winners)) {
+			$winners = [] ;
+		}
+		return $winners ;
+	}
+
+
 	public function getImageAttribute()
 	{
 		$image_url = $this->spreadMeta()->featured_image ;

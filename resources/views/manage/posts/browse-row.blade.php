@@ -153,6 +153,14 @@
 			'link' => "modal:manage/posts/act/-id-/draw",
 			'class' => "btn btn-default btn-lg",
 		])
+
+		{{--@include("manage.frame.widgets.grid-tiny" , [--}}
+			{{--'condition' => session()->get('line_number') > 0,--}}
+			{{--'text' => trans('cart.drawing_winners'),--}}
+			{{--'icon' => "gift",--}}
+			{{--'color' => "danger",--}}
+			{{--'link' => "modal:manage/posts/act/-id-/draw-winners" ,--}}
+		{{--])--}}
 	</td>
 @endif
 
