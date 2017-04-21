@@ -136,7 +136,7 @@
 |--------------------------------------------------------------------------
 |
 --}}
-@if($model->has('event'))
+@if($model->has('feedback'))
 	<td>
 		@include("manage.frame.widgets.grid-text" , [
 			'condition' => $model->has('event') and $model->total_receipts_count,
