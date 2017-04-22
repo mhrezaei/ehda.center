@@ -21,7 +21,7 @@ class FrontController extends Controller
 	public function index()
 	{
 		$slideshow  = Post::selector(['type' => 'slideshow'])->orderBy('id', 'desc')->get();
-		$categories = Folder::where('posttype_id', 2)
+		$categories = Folder::where('posttype_id', 2)->where('slug' , '!=' , 'no')
 			->where('locale', getLocale())->orderBy('title', 'asc')->get()
 		;
 		$about      = Post::selector([
