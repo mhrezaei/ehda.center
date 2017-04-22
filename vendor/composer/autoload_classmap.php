@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AddEventColumnsToPostsTable' => $baseDir . '/database/migrations/2017_04_17_161728_add_event_columns_to_posts_table.php',
     'AddPurchaseFieldsToUsers' => $baseDir . '/database/migrations/2017_04_09_183444_add_purchase_fields_to_users.php',
     'AddTextFieldsToPosts' => $baseDir . '/database/migrations/2017_04_09_184614_add_text_fields_to_posts.php',
     'CreateBranchesTable' => $baseDir . '/database/migrations/2017_02_06_091918_create_branches_table.php',
@@ -19,6 +20,7 @@ return array(
     'CreateRolesTable' => $baseDir . '/database/migrations/2017_02_06_090119_create_roles_table.php',
     'CreateSettingTable' => $baseDir . '/database/migrations/2017_02_06_085508_create_setting_table.php',
     'CreateStatesTable' => $baseDir . '/database/migrations/2017_02_06_123730_create_states_table.php',
+    'CreateUserDrawingTable' => $baseDir . '/database/migrations/2017_04_17_192916_create_user_drawing_table.php',
     'CreateUsersLogsTable' => $baseDir . '/database/migrations/2017_02_06_084109_create_users_logs_table.php',
     'CreateUsersTable' => $baseDir . '/database/migrations/2014_10_12_000000_create_users_table.php',
     'DatabaseSeeder' => $baseDir . '/database/seeds/DatabaseSeeder.php',

@@ -56,7 +56,7 @@ trait ManageControllerTrait
 
 		//Model...
 		$Model = $this->Model ;
-		if($Model->hasColumn('deleted_at')) {
+		if($Model::hasColumn('deleted_at')) {
 			$model = $Model::withTrashed()->find($model_id) ;
 		}
 		else {
@@ -194,7 +194,7 @@ trait ManageControllerTrait
 				'refresh' => $setting['success_refresh'],
 				'modalClose' => $setting['success_modalClose'],
 				'updater' => $setting['success_updater'],
-				'redirectTime' => 1000,
+				'redirectTime' => $setting['redirectTime'],
 			]);
 		else {
 			return $this->jsonFeedback([
@@ -205,7 +205,7 @@ trait ManageControllerTrait
 				'refresh' => $setting['danger_refresh'],
 				'modalClose' => $setting['danger_modalClose'],
 				'updater' => $setting['danger_updater'],
-				'redirectTime' => 1000,
+				'redirectTime' => $setting['redirectTime'],
 			]);
 		}
 

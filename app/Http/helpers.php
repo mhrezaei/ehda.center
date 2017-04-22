@@ -200,3 +200,29 @@ function fakeDrawingCode($amount = false , $timestamp = false) //@TODO: Remove t
 
 	return \App\Providers\DrawingCodeServiceProvider::create_uniq($timestamp , $amount) ;
 }
+
+function obj($class_name , $id)
+{
+	$class = '\App\Models\\'.$class_name ;
+	if( in_array('Illuminate\Database\Eloquent\SoftDeletes' , class_uses($class))) {
+		$object = $class::withTrashed()->find($id);
+	}
+	else {
+		$object = $class::find($id);
+	}
+	return $object ;
+}
+
+
+function fakeData()
+{
+	for($i=1;$i<=1000;$i++) {
+		\App\Models\Drawing::create([
+			'user_id' => 100 + $i,
+		     'post_id' => 65,
+		     'amount' => rand(1000,1000000000),
+		     'lower_line' => rand(1,100),
+		     'upper_line' => rand(1000,5000),
+		]);
+	}
+}

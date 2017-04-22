@@ -40,6 +40,11 @@ class UsersController extends Controller
 		$this->view_folder   = 'manage.users';
 	}
 
+	public function _update()
+	{
+		echo 1 ;
+	}
+
 	public function search($request_role, Request $request)
 	{
 		/*-----------------------------------------------
@@ -74,10 +79,9 @@ class UsersController extends Controller
 		/*-----------------------------------------------
 		| Only Panel ...
 		*/
-		if(strlen($request->keyword) < 3) {
+		if(!isset($request->id) and strlen($request->keyword) < 3) {
 			$db         = $this->Model;
 			$page[1][1] = trans('forms.button.search');
-
 			return view($this->view_folder . ".search", compact('page', 'models', 'db', 'request_role', 'role'));
 		}
 
@@ -88,8 +92,16 @@ class UsersController extends Controller
 		$selector_switches = [
 			'role'     => $request_role,
 			'criteria' => 'all',
-			'search'   => $keyword = $request->keyword,
 		];
+
+		if(isset($request->search)) {
+			$selector_switches['search'] = $keyword = $request->keyword;
+		}
+		if(isset($request->id)) {
+			$selector_switches['id'] = $request->id ;
+			$page[1] = ['search', trans('forms.button.search_for') . " " . trans('people.particular_user'), "users/search/$request_role"] ;
+
+		}
 
 		$models = User::selector($selector_switches)->orderBy('created_at', 'desc')->paginate(user()->preference('max_rows_per_page'));
 		$db     = $this->Model;
@@ -449,7 +461,7 @@ class UsersController extends Controller
 
 		//Save & Feedback...
 		$is_saved = Receipt::store($data) ;
-		$user->updatePurchases() ;
+		//$user->updatePurchases() ;
 		return $this->jsonAjaxSaveFeedback( $is_saved , [
 			'success_modalClose' => false,
 			'success_callback' => "divReload( 'divReceiptsTable' )",

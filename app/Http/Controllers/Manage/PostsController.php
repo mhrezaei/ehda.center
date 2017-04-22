@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Manage;
 
 use App\Http\Requests\Manage\PostSaveRequest;
+use App\Models\Drawing;
 use App\Models\Post;
 use App\Models\Posttype;
+use App\Models\Receipt;
+use App\Models\User;
 use App\Traits\ManageControllerTrait;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
@@ -648,7 +651,7 @@ class PostsController extends Controller
 			return $this->jsonFeedback(trans('validation.http.Error403'));
 		}
 
-		return $this->jsonAjaxSaveFeedback($model->restore(), [
+		return $this->jsonAjaxSaveFeedback($model->undelete(), [
 			'success_callback' => "rowHide('tblPosts' , '$request->id')",
 			'success_refresh'  => false,
 		]);
@@ -738,11 +741,12 @@ class PostsController extends Controller
 		| Feedback ...
 		*/
 		return $this->jsonAjaxSaveFeedback( $new_model->id>0 , [
-				'success_callback' => "rowUpdate('tblAdmins','$request->id')",
+				'success_callback' => "rowUpdate('tblPosts','$request->id')",
 				'success_redirect' => $data['_submit'] == 'redirect_after_save'? $new_model->edit_link : '',
 		]);
 
 
 	}
+
 
 }
