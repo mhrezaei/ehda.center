@@ -77,6 +77,7 @@ class ClubController extends Controller
 
 	public function drawSelect(DrawingRequest $request)
 	{
+		$user_accepted = false;
 		/*-----------------------------------------------
 		| Post Selection ...
 		*/
@@ -90,21 +91,33 @@ class ClubController extends Controller
 		/*-----------------------------------------------
 		| User Selection ...
 		*/
-		$drawing_row = Drawing::pull($request->number);
-		if(!$drawing_row or $drawing_row->post_id != $post->id) {
-			return $this->jsonFeedback([
-				'message'  => trans('forms.feed.error'),
-				'callback' => "masterModal(url('manage/posts/act/$post->id/draw' ))",
-			]);
+		$number = $request->number;
+		while ($user_accepted == false) {
+			$drawing_row = Drawing::pull($number);
+			if(!$drawing_row or $drawing_row->post_id != $post->id) {
+				return $this->jsonFeedback([
+					'message'  => trans('forms.feed.error'),
+					'callback' => "masterModal(url('manage/posts/act/$post->id/draw' ))",
+				]);
 
+			}
+			$user = $drawing_row->user;
+			//if(!$user) {
+			//	return $this->jsonFeedback(trans('people.form.user_deleted'));
+			//}
+
+
+			if($user and $user->exists and !in_array($user->id, $winners)) {
+				$user_accepted = true ;
+			}
+			else {
+				$number = rand(1 , session()->get('line_number')) ;
+			}
 		}
-		$user = $drawing_row->user;
-		if(!$user) {
-			return $this->jsonFeedback(trans('people.form.user_deleted'));
-		}
-		if(in_array($user->id, $winners)) {
-			return $this->jsonFeedback(trans('cart.user_already_won'));
-		}
+
+		//if(in_array($user->id, $winners)) {
+		//	return $this->jsonFeedback(trans('cart.user_already_won'));
+		//}
 
 		/*-----------------------------------------------
 		| Save ...
@@ -115,8 +128,9 @@ class ClubController extends Controller
 		/*-----------------------------------------------
 		| Feedback ...
 		*/
+
 		return $this->jsonAjaxSaveFeedback($ok, [
-				'success_message'    => trans('validation.attributes.number') . " " . pd($request->number) . ": " .$user->full_name,
+				'success_message'    => trans('validation.attributes.number') . " " . pd($request->number) . ": " . $user->full_name,
 				'success_modalClose' => false,
 				'success_callback'   => "divReload( 'divWinnersTable' );rowUpdate('tblPosts','$request->post_id')",
 			]
@@ -127,10 +141,10 @@ class ClubController extends Controller
 	public function drawDelete($key)
 	{
 		$post_id = session()->get('drawing_post');
-		$post = Post::find($post_id);
+		$post    = Post::find($post_id);
 		if($post) {
 			$winners = $post->winners_array;
-			unset($winners[$key]);
+			unset($winners[ $key ]);
 			$post->updateMeta(['winners' => array_values($winners)], true);
 		}
 	}

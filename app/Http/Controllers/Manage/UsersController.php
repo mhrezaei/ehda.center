@@ -94,7 +94,7 @@ class UsersController extends Controller
 			'criteria' => 'all',
 		];
 
-		if(isset($request->search)) {
+		if(isset($request->keyword)) {
 			$selector_switches['search'] = $keyword = $request->keyword;
 		}
 		if(isset($request->id)) {
