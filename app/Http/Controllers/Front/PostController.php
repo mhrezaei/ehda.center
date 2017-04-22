@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Requests\Front\CommentRequest;
 use App\Models\Comment;
+use App\Models\Folder;
 use App\Models\Post;
 use App\Traits\ManageControllerTrait;
 use Illuminate\Http\Request;
@@ -53,5 +54,12 @@ class PostController extends Controller
         return $this->jsonAjaxSaveFeedback(Comment::store($request), [
             'success_callback' => "$('#commentForm').trigger(\"reset\")",
         ]);
+    }
+
+    public function newsArchive()
+    {
+        $news = Post::selector(['type' => 'news'])->orderBy('id', 'desc')->get();
+
+        return view('front.news.archive.0', compact('news'));
     }
 }

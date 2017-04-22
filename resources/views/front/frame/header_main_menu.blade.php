@@ -2,6 +2,7 @@
     <li><a href="{{ url_locale('') }}"> {{ trans('front.home') }} </a></li>
     <li><a href="{{ url_locale('page/about') }}"> {{ trans('front.about') }} </a></li>
     <li> <a href="{{ url_locale('products') }}"> {{ trans('front.products') }} </a>
+    <li> <a href="{{ url_locale('news') }}"> {{ trans('front.news') }} </a>
     {{--<li class="has-child"> <a href="{{ url_locale('products') }}"> {{ trans('front.products') }} </a>--}}
         {{--<ul class="sub-menu">--}}
             {{--<li><a href="#">پسته</a></li>--}}

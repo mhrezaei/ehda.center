@@ -211,6 +211,9 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
 
     Route::group(['prefix' => '{lang}', 'middleware' => ['UserIpDetect']], function () {
 
+        // news
+        Route::get('/news', 'PostController@newsArchive');
+
         // saving comments for all posts
         Route::post('/comment', 'PostController@submit_comment');
 
