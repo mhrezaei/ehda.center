@@ -30,7 +30,16 @@
     </div>
 </div>
 </div>
-@include('front.frame.scripts')
+
+<!-- Load Scripts -->
+{!! Html::script ('assets/js/jquery.js') !!}
+{!! Html::script ('assets/js/slick.js') !!}
+{!! Html::script ('assets/js/persian.js') !!}
+{!! Html::script ('assets/js/app.js') !!}
+{!! Html::script ('assets/js/jquery.form.min.js') !!}
+{!! Html::script ('assets/js/forms.js') !!}
+{!! Html::script ('assets/js/front.js') !!}
+
 </body>
 
 </html>

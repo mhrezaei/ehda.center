@@ -431,6 +431,7 @@ return [
 		'color_code'          => "رنگ شاخص",
 		'starts_at'           => "زمان آغاز",
 		'ends_at'             => "زمان پایان",
+	     'rate_point' => "نسبت امتیاز" ,
 	],
 
 	"http" => [
