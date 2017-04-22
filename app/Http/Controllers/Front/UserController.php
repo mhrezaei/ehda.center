@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Http\Requests\Front\ProfileSaveRequest;
 use App\Models\Post;
 use App\Models\Receipt;
 use App\Providers\DrawingCodeServiceProvider;
@@ -26,8 +27,7 @@ class UserController extends Controller
     public function drawing(Request $request)
     {
         $receipt = $request->session()->get('drawingCode');
-        if ($receipt)
-        {
+        if ($receipt) {
             $receipt = decrypt($receipt);
             $drawing_code = DrawingCodeServiceProvider::check_uniq($receipt);
             if (!$drawing_code)
@@ -54,5 +54,12 @@ class UserController extends Controller
     {
         $events = Post::selector(['type' => 'events'])->get();
         return view('front.user.events.0', compact('events'));
+    }
+
+    public function update(ProfileSaveRequest $request)
+    {
+        die(\GuzzleHttp\json_encode($request->all()));
+        var_dump($request);
+        die();
     }
 }

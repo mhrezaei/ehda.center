@@ -3,10 +3,10 @@
         <div class="col-sm-8 col-center">
             <section class="panel">
                 <header>
-                    <div class="title"> <span class="icon-pencil"></span> {{ trans('front.edit_profile') }} </div>
+                    <div class="title"><span class="icon-pencil"></span> {{ trans('front.edit_profile') }} </div>
                 </header>
                 {!! Form::open([
-                    'url'	=> '/user/profile/update' ,
+                    'url'	=> \App\Providers\SettingServiceProvider::getLocale() . '/user/profile/update' ,
                     'method'=> 'post',
                     'class' => 'js',
                     'name' => 'editForm',
@@ -50,8 +50,30 @@
                                 'name' => 'name_father',
                                 'type' => 'text',
                                 'value' => user()->name_father,
-                                'class' => 'form-required form-persian',
+                                'class' => 'form-persian',
                                 'min' => 2,
+                            ])
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            @include('front.frame.widgets.datepicker', [
+                                'name' => 'birth_date',
+                                'type' => 'text',
+                                'value' => user()->birth_date,
+                                'class' => 'form-required',
+                                'options' => [
+                                    'maxDate' => 0,
+                                    'changeYear' => true,
+                                    'yearRange' => '-100,+0',
+                                ]
+                            ])
+                        </div>
+                        <div class="col-sm-6">
+                            @include('front.frame.widgets.select', [
+                                'name' => 'education',
+                                'value' => user()->educatoin,
+                                'options' => \Illuminate\Support\Facades\Lang::get('people.edu_level_full'),
                             ])
                         </div>
                     </div>
@@ -80,31 +102,82 @@
                                 'name' => 'email',
                                 'type' => 'text',
                                 'value' => user()->email,
+                                'class' => 'form-email',
+                            ])
+                        </div>
+                        <div class="col-sm-6">
+                            @include('front.user.profile.field', [
+                                'name' => 'postal_code',
+                                'type' => 'text',
+                                'value' => user()->postal_code,
+                                'class' => 'form-email',
+                            ])
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            @include('front.user.profile.field', [
+                                'name' => 'address',
+                                'type' => 'text',
+                                'value' => user()->address,
+                                'class' => 'form-email',
+                            ])
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            @include('front.frame.widgets.radio', [
+                                'name' => 'gender',
+                                'value' => user()->gender,
+                                'options' => \Illuminate\Support\Facades\Lang::get('forms.gender'),
+                            ])
+                        </div>
+                        <div class="col-sm-6">
+                            @include('front.frame.widgets.radio', [
+                                'name' => 'marital',
+                                'value' => user()->marital,
+                                'options' => [
+                                    1 => trans('forms.general.single'),
+                                    2 => trans('forms.general.married'),
+                                ],
+                            ])
+                            @include('front.frame.widgets.datepicker', [
+                                'name' => 'marriage_date',
+                                'type' => 'text',
+                                'value' => user()->marriage_date,
+                                'hidden' => true,
+                                'options' => [
+                                    'maxDate' => 0,
+                                    'changeYear' => true,
+                                    'yearRange' => '-80,+0',
+                                ]
+                            ])
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            @include('front.user.profile.field', [
+                                'name' => 'password',
+                                'type' => 'password',
+                                'class' => 'form-mobile form-password',
+                            ])
+                        </div>
+                        <div class="col-sm-6">
+                            @include('front.user.profile.field', [
+                                'name' => 'password2',
+                                'type' => 'password',
                                 'class' => 'form-mobile',
                             ])
                         </div>
-                        <div class="col-sm-6"></div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            @include('front.user.profile.sex')
-                        </div>
-                        <div class="col-sm-6">
-                            @include('front.user.profile.marital')
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="field"> <label> رمز عبور جدید </label> <input type="text"> </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="field"> <label> تکرار رمز عبور </label> <input type="text"> </div>
-                        </div>
                     </div>
                 </article>
-                <footer class="tal"> <a href="#" class="button green"> ذخیره </a> </footer>
+                @include('forms.feed')
+                <footer class="tal">
+                    {{--<a href="#" class="button green"> ذخیره </a>--}}
+                    <button type="submit" class="button green">{{ trans('forms.button.save') }}</button>
+                </footer>
                 {!! Form::close() !!}
             </section>
         </div>

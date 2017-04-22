@@ -2,16 +2,16 @@
 
 return [
 
-	/*
-	|--------------------------------------------------------------------------
-	| Validation Language Lines
-	|--------------------------------------------------------------------------
-	|
-	| The following language lines contain the default error messages used by
-	| the validator class. Some of these rules have multiple versions such
-	| as the size rules. Feel free to tweak each of these messages here.
-	|
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Validation Language Lines
+    |--------------------------------------------------------------------------
+    |
+    | The following language lines contain the default error messages used by
+    | the validator class. Some of these rules have multiple versions such
+    | as the size rules. Feel free to tweak each of these messages here.
+    |
+    */
 
 	'captcha'         => 'کد امنیتی اشتباه است.',
 	'invalid'         => 'درخواست معتبر نیست',
@@ -33,6 +33,7 @@ return [
 	"alpha_num"            => ":attribute باید شامل حروف الفبا و عدد باشد.",
 	"array"                => ":attribute باید شامل آرایه باشد.",
 	"before"               => ":attribute باید تاریخی قبل از :date باشد.",
+    "before_or_equal" => ":attribute باید تاریخی قبل از یا برابر با :date باشد.",
 	"between"              => [
 		"numeric" => ":attribute باید بین :min و :max باشد.",
 		"file"    => ":attribute باید بین :min و :max کیلوبایت باشد.",
@@ -98,6 +99,8 @@ return [
 		"security"        => "کد امنیتی را با اعداد تکمیل نمایید.",
 		"password"        => "گذرواژه را حداقل هشت کاراکتر وارد نمایید.",
 		"password2"       => "تکرار رمز را به درستی وارد نمایید.",
+		"new_password" => "گذرواژه‌ی جدید را حداقل هشت کاراکتر وارد نمایید.",
+		"new_password2" => "تکرار گذرواژه‌ی جدید را به درستی وارد نمایید.",
 		"birthday"        => "تاریخ تولد را به صورت صحیح وارد نمایید.",
 		"name_first"      => "نام را با حروف فارسی وارد نمایید.",
 		"name_last"       => "نام خانوادگی را با حروف فارسی وارد نمایید.",
@@ -106,6 +109,7 @@ return [
 		"code_id"         => "شماره شناسنامه را وارد نمایید.",
 		"gender"          => "جنسیت را انتخاب نمایید.",
 		"birth_date"      => "تاریخ تولد را به درستی وارد نمایید.",
+		"marriage_date" => "تاریخ ازدواج را به درستی وارد نمایید.",
 		"birth_city"      => "محل تولد را با حروف فارسی وارد نمایید.",
 		"marital_status"  => "وضعیت تأهل را انتخاب نمایید.",
 		"occupation"      => "شغل و تحصیلات را انتخاب نمایید.",
@@ -180,6 +184,7 @@ return [
 		"code_id"          => "(فقط عدد)",
 		"gender"           => "",
 		"birth_date"       => "(ترجیحاْ از جدول درج خودکار یا ۱۳۶۱/۰۱/۰۵)",
+		"marriage_date" => "(ترجیحاْ از جدول درج خودکار یا روز/ماه/سال)",
 		"birth_city"       => "(حروف فارسی)",
 		"marital_status"   => "",
 		"edu_level"        => "",
@@ -189,6 +194,7 @@ return [
 		"tel_emergency"    => '(۱۱ رقم بدون خط تیره)',
 		"home_city"        => "(حروف فارسی)",
 		"home_address"     => "(حروف فارسی)",
+		"address" => "(حروف فارسی)",
 		"home_tel"         => "(۱۱ رقم بدون خط تیره)",
 		"work_city"        => "(حروف فارسی)",
 		"work_address"     => "(حروف فارسی)",
@@ -197,22 +203,22 @@ return [
 		"familization"     => "",
 		"motivation"       => "(حروف فارسی)",
 		"alloc_time"       => "(تعداد روز، فقط عدد)",
+		"postal_code" => "(۱۰ رقم بدون خط تیره)",
 		"home_postal_code" => "(۱۰ رقم بدون خط تیره)",
 		"work_postal_code" => "(۱۰ رقم بدون خط تیره)",
 		"time"             => 'ساعت و دقیقه، در قالب مرسوم دقیقه:ساعت. مثل ۲۰:۴۲',
 	],
 
-
-	/*
-	|--------------------------------------------------------------------------
-	| Custom Validation Language Lines
-	|--------------------------------------------------------------------------
-	|
-	| Here you may specify custom validation messages for attributes using the
-	| convention "attribute.rule" to name the lines. This makes it quick to
-	| specify a specific custom language line for a given attribute rule.
-	|
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Custom Validation Language Lines
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify custom validation messages for attributes using the
+    | convention "attribute.rule" to name the lines. This makes it quick to
+    | specify a specific custom language line for a given attribute rule.
+    |
+    */
 
 	'custom' => [
 		'attribute-name' => [
@@ -220,16 +226,16 @@ return [
 		],
 	],
 
-	/*
-	|--------------------------------------------------------------------------
-	| Custom Validation Attributes
-	|--------------------------------------------------------------------------
-	|
-	| The following language lines are used to swap attribute place-holders
-	| with something more reader friendly such as E-Mail Address instead
-	| of "email". This simply helps us make messages a little cleaner.
-	|
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Custom Validation Attributes
+    |--------------------------------------------------------------------------
+    |
+    | The following language lines are used to swap attribute place-holders
+    | with something more reader friendly such as E-Mail Address instead
+    | of "email". This simply helps us make messages a little cleaner.
+    |
+    */
 
 	'attributes' => [
 		'optional_meta' => "متای اختیاری",
@@ -244,9 +250,10 @@ return [
 		"username"         => "شناسه‌ی کاربری",
 		"security"         => "کد امنیتی",
 		"current_password" => "گذرواژه فعلی",
-		"new_password"     => "گذرواژه تازه",
 		"password"         => "گذرواژه",
 		"password2"        => "تکرار رمز",
+		"new_password" => "گذرواژه‌ی جدید",
+		"new_password2" => "تکرار گذرواژه‌ی جدید",
 		"birthday"         => "تاریخ تولد",
 		"name_first"       => "نام",
 		"name_last"        => "نام خانوادگی",
@@ -256,6 +263,7 @@ return [
 		"gender"           => "جنسیت",
 		"birth_date"       => "تاریخ تولد",
 		"birth_city"       => "محل تولد",
+		"marriage_date" => "تاریخ ازدواج",
 		"marital"          => "وضعیت تأهل",
 		"occupation"       => "شغل و تحصیلات",
 		"education"        => "تحصیلات",
