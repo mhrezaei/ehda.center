@@ -8,11 +8,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+
 class User extends Authenticatable
 {
 	use Notifiable, TahaModelTrait, PermitsTrait, SoftDeletes;
 
-	public static $meta_fields = ['preferences', 'name_father', 'marital' , 'total_receipts_count' , 'total_receipts_amount'] ;
+	public static $meta_fields   = ['preferences', 'name_father', 'marital', 'total_receipts_count', 'total_receipts_amount'];
 	public static $search_fields = ['name_first', 'name_last', 'name_firm', 'code_melli', 'email', 'mobile'];
 	protected     $guarded       = ['id'];
 	protected     $hidden        = ['password', 'remember_token'];
@@ -36,7 +37,7 @@ class User extends Authenticatable
 
 	public function receipts()
 	{
-		return $this->hasMany('App\Models\Receipt') ;
+		return $this->hasMany('App\Models\Receipt');
 
 		return Receipt::where('user_id', $this->id)->get();
 	}
@@ -49,14 +50,14 @@ class User extends Authenticatable
 	*/
 	public function cacheUpdate()
 	{
-		$this->cacheUpdateReceipts() ;
+		$this->cacheUpdateReceipts();
 	}
 
 	public function cacheUpdateReceipts()
 	{
-		$this->total_receipts_count = $this->receipts()->count() ;
-		$this->total_receipts_amount = $this->receipts()->sum('purchased_amount') ;
-		$this->update() ;
+		$this->total_receipts_count  = $this->receipts()->count();
+		$this->total_receipts_amount = $this->receipts()->sum('purchased_amount');
+		$this->update();
 	}
 
 
@@ -69,6 +70,7 @@ class User extends Authenticatable
 	public static function selector($parameters = [])
 	{
 		extract(array_normalize($parameters, [
+			'id'       => "0",
 			'role'     => "customer",
 			'criteria' => "actives",
 			'search'   => "",
@@ -92,6 +94,16 @@ class User extends Authenticatable
 		if(!user()->isDeveloper()) {
 			$table = $table->whereNotIn('email', ['chieftaha@gmail.com', 'mr.mhrezaei@gmail.com']);
 		}
+
+		/*-----------------------------------------------
+		| Process id ...
+		*/
+		if($id>0) {
+			$table = $table->where('users.id' , $id);
+		}
+
+
+
 
 		/*-----------------------------------------------
 		| Process Criteria ...
@@ -158,6 +170,27 @@ class User extends Authenticatable
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+	public function getMobileMaskedAttribute()
+	{
+		$string = $this->mobile;
+		if(strlen($string) == 11) {
+			return substr($string, 7) . ' ••• ' . substr($string, 0, 4);
+		}
+
+		return $string;
+	}
+
+	public function getMobileFormattedAttribute()
+	{
+		$string = $this->mobile;
+		if(strlen($string) == 11) {
+			return substr($string, 7) . ' - ' . substr($string, 4, 3) . ' - ' . substr($string, 0, 4);
+		}
+
+		return $string;
+	}
+
 
 	public function getFullNameAttribute()
 	{
@@ -366,6 +399,6 @@ class User extends Authenticatable
 
 	public function totalReceiptsAmountInEvent($post)
 	{
-		return $post->receipts->where('user_id', $this->id)->sum('purchased_amount') ;
+		return $post->receipts->where('user_id', $this->id)->sum('purchased_amount');
 	}
 }

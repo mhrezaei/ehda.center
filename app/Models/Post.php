@@ -252,7 +252,7 @@ class Post extends Model
 
 	public function getSiteLinkAttribute()
 	{
-		//@TODO: Site Link
+		return $this->locale.'/page/'.$this->id;
 	}
 
 	public function getPreviewLinkAttribute()

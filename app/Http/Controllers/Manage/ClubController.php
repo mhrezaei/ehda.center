@@ -116,7 +116,7 @@ class ClubController extends Controller
 		| Feedback ...
 		*/
 		return $this->jsonAjaxSaveFeedback($ok, [
-				'success_message'    => $user->full_name,
+				'success_message'    => trans('validation.attributes.number') . " " . pd($request->number) . ": " .$user->full_name,
 				'success_modalClose' => false,
 				'success_callback'   => "divReload( 'divWinnersTable' );rowUpdate('tblPosts','$request->post_id')",
 			]

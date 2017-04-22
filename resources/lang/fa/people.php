@@ -4,6 +4,7 @@ return [
 	'people' => "اشخاص",
 	'modules' => "ماژول‌ها",
 	'deleted_user' => "یک کاربر سابق",
+	'particular_user' => "یک کاربر خاص" ,
 	'user' => "کاربر",
 	'users' => "کاربران",
 	'site_users' => "کاربران مجموعه",

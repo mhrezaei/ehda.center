@@ -27,6 +27,7 @@
 	@include("manage.frame.widgets.grid-text" , [
 		'text' => $model->title,
 		'link' => $model->canEdit()? url("manage/posts/$model->type/edit/-id-") : '',
+//		'link' => $model->canEdit()? "modal:manage/posts/act/-id-/quick_edit" : '',
 	])
 	
 	@include("manage.frame.widgets.grid-text" , [
@@ -176,7 +177,7 @@
 	['-' , $model->has('preview')],
 
 	['pencil' , trans('forms.button.edit') , "url:manage/posts/$model->type/edit/-id-" , $model->canEdit()],
-	['pencil-square-o' , trans('posts.form.quick_edit'), "modal:manage/posts/act/-id-/quick_edit" , $model->canEdit()],
+//	['pencil-square-o' , trans('posts.form.quick_edit'), "modal:manage/posts/act/-id-/quick_edit" , $model->canEdit()],
 	['clone' , trans('posts.form.clone') , "modal:manage/posts/act/-id-/clone" , $model->can('create')],
 	['globe' , trans('posts.features.locales') , "modal:manage/posts/act/-id-/locales/" , $model->can('create') and $model->has('locales')],
 	['-' , $model->can('create') or $model->canEdit()],
