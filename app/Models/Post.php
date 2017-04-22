@@ -11,30 +11,31 @@ use Vinkla\Hashids\Facades\Hashids;
 
 class Post extends Model
 {
-	use TahaModelTrait , SoftDeletes ;
+    use TahaModelTrait, SoftDeletes;
 
-	protected $guarded= ['id'];
-	protected static $search_fields = ['title' , 'slug'] ;
-	public static $reserved_slugs = "none,without"; //to be used in Requests
+    protected $guarded = ['id'];
+    protected static $search_fields = ['title', 'slug'];
+    public static $reserved_slugs = "none,without"; //to be used in Requests
 
-	protected $casts = [
-		'is_draft' => "boolean",
-		'is_limited' => "boolean",
-		'published_at' => 'datetime' ,
-	];
+    protected $casts = [
+        'is_draft' => "boolean",
+        'is_limited' => "boolean",
+        'published_at' => 'datetime',
+    ];
 
-	public static $meta_fields = ['dynamic'] ;
+    public static $meta_fields = ['dynamic'];
 
-	/*
-	|--------------------------------------------------------------------------
-	| Relations
-	|--------------------------------------------------------------------------
-	| 
-	*/
-	public function categories()
-	{
-		return $this->belongsToMany('App\Models\Category')->withTimestamps();
-	}
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    |
+    */
+    public function categories()
+    {
+        return $this->belongsToMany('App\Models\Category')->withTimestamps();
+    }
+
     public function folders()
     {
         return $this->belongsToMany('App\Models\Folder')->withTimestamps();
@@ -699,5 +700,6 @@ class Post extends Model
 	{
 		return Drawing::isReady($this->id);
 	}
+
 }
 

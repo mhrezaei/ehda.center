@@ -37,11 +37,11 @@ class ProfileSaveRequest extends FormRequest
             'email' => 'email',
             'postal_code' => 'postal_code',
             'address' => 'persian:60',
-            'gender' => 'numeric|in:' . implode(',', array_keys(\Illuminate\Support\Facades\Lang::get('forms.gender'))),
-            'marital' => 'numeric|in:1,2',
+            'gender' => 'required|numeric|in:' . implode(',', array_keys(\Illuminate\Support\Facades\Lang::get('forms.gender'))),
+            'marital' => 'required|numeric|in:1,2',
             'marriage_date' => 'required_if:marital,2',
-            'password' => 'same:password2|min:8|max:50|',
-//            'password2' => 'required_with:password|same:password|min:8|max:50|',
+            'new_password' => 'same:new_password2|min:8|max:50|',
+//            'new_password2' => 'required_with:password|same:password|min:8|max:50|',
         ];
     }
 

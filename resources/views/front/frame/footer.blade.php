@@ -6,4 +6,3 @@
     </div>
 </footer>
 @include('front.frame.jui_scripts')
-{{--@include('front.frame.scripts')--}}

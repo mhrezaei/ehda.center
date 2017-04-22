@@ -22,6 +22,7 @@ $(document).ready(function () {
 //    10) datepicker : .form-datepicker => get timestamp with your input id + 'Extra'
 //    11) select     : .form-select
 //	  12) checkbox   : .form-checkbox
+//	  12) checkbox   : .form-buttonset => will be converted to jquery-ui buttonset
 //
 // Option => add this attr to form element
 //    1) no-validation="1"    :     submit form without javascript validation
@@ -94,19 +95,24 @@ function forms_listener() {
 
     var juiDataPrefix = {
         datapicker: 'datepicker',
+        buttonset: 'buttonset',
     };
 
     $(".form-datepicker").each(function () {
-            var options = $(this).dataStartsWith(juiDataPrefix.datapicker);
-            $(this).datepicker(options);
-        }
-    );
+        var options = $(this).dataStartsWith(juiDataPrefix.datapicker);
+        $(this).datepicker(options);
+    });
 
     $(".datepicker").each(function () {
         $(this).removeClass('datepicker');
         var folan = new MHR.persianCalendar($(this).attr('id'),
             {extraInputID: $(this).attr('id') + "_extra", extraInputFormat: "YYYY/MM/DD"}
         );
+    });
+
+    $(".form-buttonset").each(function () {
+        // var options = $(this).dataStartsWith(juiDataPrefix.buttonset);
+        $(this).buttonset();
     });
 
     $("input.js").each(function () {
@@ -400,7 +406,7 @@ function forms_error(jqXhr, textStatus, errorThrown, $form) {
         errorsHtml = $($feedSelector + '-error').html();
     }
 
-    $($feedSelector).addClass("alert-danger").html(enDigitsToFa(errorsHtml));
+    $($feedSelector).addClass("alert-danger").html(forms_digit_fa(errorsHtml));
 
 }
 

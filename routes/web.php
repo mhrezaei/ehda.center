@@ -189,6 +189,17 @@ Route::group([
 |--------------------------------------------------------------------------
 |
 */
+Route::group(['namespace' => 'Auth', 'prefix' => '{lang}', 'middleware' => ['DetectLanguage', 'Setting']], function () {
+    // reset password
+    Route::get('/password/reset', 'ForgotPasswordController@showLinkRequestForm');
+    Route::post('/password/reset', 'ForgotPasswordController@sendResetLinkEmail');
+    Route::get('/password/token', 'ForgotPasswordController@getToken');
+    Route::post('/password/token', 'ForgotPasswordController@checkToken');
+    Route::get('/password/new', 'ForgotPasswordController@newPassword');
+    Route::post('/password/new', 'ForgotPasswordController@changePassword');
+
+});
+
 
 Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Setting']], function () {
     Route::get('/', 'FrontController@index');
@@ -199,6 +210,9 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
     Route::post('/drawing/check', 'DrawingCodeController@sumbitCode');
 
     Route::group(['prefix' => '{lang}', 'middleware' => ['UserIpDetect']], function () {
+
+        // saving comments for all posts
+        Route::post('/comment', 'PostController@submit_comment');
 
         Route::get('/', 'FrontController@index');
         Route::get('/products', 'ProductsController@index');

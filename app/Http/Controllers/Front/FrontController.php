@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Requests\Front\RegisterSaveRequest;
+use App\Models\Comment;
 use App\Models\Folder;
 use App\Models\Post;
 use App\Models\User;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Hash;
 class FrontController extends Controller
 {
     use TahaControllerTrait;
+
     public function index()
     {
         $slideshow = Post::selector(['type' => 'slideshow'])->orderBy('id', 'desc')->get();
@@ -30,7 +32,13 @@ class FrontController extends Controller
             ->orderBy('id', 'desc')
             ->first();
 
-        return view('front.home.0', compact('slideshow', 'categories', 'about', 'event'));
+        $comments = Post::findBySlug('customers-comments')
+            ->comments()
+            ->orderBy('created_at', 'DESC')
+            ->take(10)
+            ->get();
+
+        return view('front.home.0', compact('slideshow', 'categories', 'about', 'event', 'comments'));
     }
 
     public function register(RegisterSaveRequest $request)
@@ -39,17 +47,13 @@ class FrontController extends Controller
 
         // check user exists
         $user = User::where('code_melli', $input['code_melli'])->first();
-        if ($user)
-        {
-            if ($user->is_a('customer'))
-            {
+        if ($user) {
+            if ($user->is_a('customer')) {
                 return $this->jsonFeedback(null, [
                     'ok' => 1,
                     'message' => trans('front.relogin'),
                 ]);
-            }
-            else
-            {
+            } else {
                 return $this->jsonFeedback(null, [
                     'ok' => 1,
                     'message' => trans('front.code_melli_already_exists'),
@@ -68,8 +72,7 @@ class FrontController extends Controller
         ];
         $store = User::store($user);
 
-        if ($store)
-        {
+        if ($store) {
             // login user
             Auth::loginUsingId($store);
 
@@ -81,9 +84,7 @@ class FrontController extends Controller
                 'message' => trans('front.register_success'),
                 'redirect' => url_locale('user/dashboard'),
             ]);
-        }
-        else
-        {
+        } else {
             return $this->jsonFeedback(null, [
                 'ok' => 0,
                 'message' => trans('front.register_failed'),
@@ -93,13 +94,13 @@ class FrontController extends Controller
 
     }
 
-	public function heyCheck()
-	{
-		return $this->jsonFeedback([
-			'ok' => user()->exists,
-		]);
-		//return 12 ;
+    public function heyCheck()
+    {
+        return $this->jsonFeedback([
+            'ok' => user()->exists,
+        ]);
+        //return 12 ;
 
-	}
+    }
 
 }

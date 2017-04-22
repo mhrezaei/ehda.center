@@ -8,7 +8,7 @@
     >
         @if(isset($options))
             @foreach($options as $opValue => $opText)
-                <option value="{{ $opValue }}" @if(($value or '') == $opValue) selected @endif>{{ $opText }}</option>
+                <option value="{{ $opValue }}" @if($value == $opValue) selected @endif>{{ $opText }}</option>
             @endforeach
         @endif
     </select>

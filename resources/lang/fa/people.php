@@ -48,6 +48,9 @@ return [
 	          'now_blocked' => "اکنون این نقش را دارد، ولی مسدود است.",
 	          'detach_this_role' => "حذف این نقش",
 	          'attach_this_role' => "افزودن این نقش",
+			'recover_password' => "بازیابی گذرواژه",
+			'send_password_reset_link' => "ارسال لینک بازیابی گذرواژه",
+			'check_password_token' => "بررسی کد",
 	],
 
 	'criteria' => [
