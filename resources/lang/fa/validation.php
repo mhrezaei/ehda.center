@@ -330,6 +330,9 @@ return [
 		"token"           => "توکن",
 		'link'            => 'لینک',
 
+		'password_reset_token' => 'کد بازیابی گذرواژه',
+
+
 		'content'        => 'محتوا',
 		'capital_id'     => 'مرکز استان',
 		'province_id'    => 'استان',
