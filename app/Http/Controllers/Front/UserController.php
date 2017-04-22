@@ -2,32 +2,49 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Http\Requests\Front\ProfileSaveRequest;
 use App\Models\Post;
 use App\Models\Receipt;
+use App\Models\User;
 use App\Providers\DrawingCodeServiceProvider;
+use App\Traits\ManageControllerTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Hash;
+use Morilog\Jalali\Facades\jDateTime;
 
 class UserController extends Controller
 {
+    use ManageControllerTrait;
+
     public function index(Request $request)
     {
         if ($request->session()->get('drawingCode'))
             return redirect(url_locale('user/drawing'));
-        return view('front.user.dashboard.0');
+
+        $post = Post::findBySlug('customers-comments');
+
+        return view('front.user.dashboard.0', compact('post'));
     }
 
     public function profile()
     {
+        user()->spreadMeta();
+        if (user()->birth_date) {
+            user()->birth_date = jDateTime::strftime('Y/m/d', strtotime(user()->birth_date));;
+        }
+        if (user()->marriage_date) {
+            user()->marriage_date = jDateTime::strftime('Y/m/d', strtotime(user()->marriage_date));;
+        }
         return view('front.user.profile.0');
     }
 
     public function drawing(Request $request)
     {
         $receipt = $request->session()->get('drawingCode');
-        if ($receipt)
-        {
+        if ($receipt) {
             $receipt = decrypt($receipt);
             $drawing_code = DrawingCodeServiceProvider::check_uniq($receipt);
             if (!$drawing_code)
@@ -54,5 +71,17 @@ class UserController extends Controller
     {
         $events = Post::selector(['type' => 'events'])->get();
         return view('front.user.events.0', compact('events'));
+    }
+
+    public function update(ProfileSaveRequest $request)
+    {
+        $request = $request->all();
+        if ($request['new_password']) {
+            $request['password'] = Hash::make($request['new_password']);
+        }
+        $request['id'] = user()->id;
+        return $this->jsonAjaxSaveFeedback(User::store($request, ['new_password', 'new_password2']), [
+            'success_refresh' => 1,
+        ]);
     }
 }

@@ -10,4 +10,5 @@
     @include('front.home.about')
     @include('front.home.categories')
     @include('front.home.drawing')
+    @include('front.home.comments')
 @endsection

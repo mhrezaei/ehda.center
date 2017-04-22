@@ -78,6 +78,7 @@
 		'class' =>	'ltr form-autoSize',
 		'rows' => "3",
 		'value' =>	$model->optional_meta ,
+		'placeholder' => "" ,
 		'hint' =>	trans('posts.types.meta_hint').' '.implode(' , ',$model::$available_meta_types),
 	])
 

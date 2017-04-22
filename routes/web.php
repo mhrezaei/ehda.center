@@ -11,7 +11,7 @@
 |
 */
 
-/*
+/* 
 |--------------------------------------------------------------------------
 | Authentication Routes
 |--------------------------------------------------------------------------
@@ -21,8 +21,8 @@
 Auth::routes();
 Route::get('home', 'Auth\LoginController@redirectAfterLogin');
 Route::get('logout', 'Auth\LoginController@logout');
-Route::get('manage/heyCheck' , 'Front\FrontController@heyCheck');
-Route::get('postsConverter' , 'Front\TestController@postsConverter');
+Route::get('manage/heyCheck', 'Front\FrontController@heyCheck');
+Route::get('postsConverter', 'Front\TestController@postsConverter');
 
 /*
 |--------------------------------------------------------------------------
@@ -31,9 +31,9 @@ Route::get('postsConverter' , 'Front\TestController@postsConverter');
 |
 */
 Route::group([
-	'prefix'     => "manage",
-	'middleware' => ['auth', 'is:admin'],
-	'namespace'  => "Manage",
+    'prefix' => "manage",
+    'middleware' => ['auth', 'is:admin'],
+    'namespace' => "Manage",
 ], function () {
 	Route::get('/', 'HomeController@index');
 	Route::get('/index', 'HomeController@index');
@@ -43,24 +43,24 @@ Route::group([
 	/*-----------------------------------------------
 	| Admins ...
 	*/
-	Route::group(['prefix' => 'admins', 'middleware' => 'is:super'], function () {
-		Route::get('/update/{item_id}/{adding?}', 'AdminsController@update');
-		Route::get('/', 'AdminsController@browse');
-		Route::get('/browse/{request_tab?}', 'AdminsController@browse');
-		Route::get('/create/', 'AdminsController@create');
-		Route::get('/search', 'AdminsController@search');
-		Route::get('/{user_id}/{modal_action}', 'AdminsController@singleAction');
-
-		Route::group(['prefix' => 'save'], function () {
-			Route::post('/', 'AdminsController@save');
-
-			Route::post('/password', 'AdminsController@password');
-			Route::post('/delete', 'AdminsController@delete');
-			Route::post('/undelete', 'AdminsController@undelete');
-			Route::post('/destroy', 'AdminsController@destroy');
-			Route::post('/permits', 'AdminsController@permits');
-		});
-	});
+	//Route::group(['prefix' => 'admins', 'middleware' => 'is:super'], function () {
+	//	Route::get('/update/{item_id}/{adding?}', 'AdminsController@update');
+	//	Route::get('/', 'AdminsController@browse');
+	//	Route::get('/browse/{request_tab?}', 'AdminsController@browse');
+	//	Route::get('/create/', 'AdminsController@create');
+	//	Route::get('/search', 'AdminsController@search');
+	//	Route::get('/{user_id}/{modal_action}', 'AdminsController@singleAction');
+	//
+	//	Route::group(['prefix' => 'save'], function () {
+	//		Route::post('/', 'AdminsController@save');
+	//
+	//		Route::post('/password', 'AdminsController@password');
+	//		Route::post('/delete', 'AdminsController@delete');
+	//		Route::post('/undelete', 'AdminsController@undelete');
+	//		Route::post('/destroy', 'AdminsController@destroy');
+	//		Route::post('/permits', 'AdminsController@permits');
+	//	});
+	//});
 
 	/*-----------------------------------------------
 	| Users ...
@@ -180,8 +180,6 @@ Route::group([
 			Route::post('login_as', 'UpstreamController@loginAs');
 		});
 	});
-
-
 });
 
 
@@ -191,6 +189,17 @@ Route::group([
 |--------------------------------------------------------------------------
 |
 */
+Route::group(['namespace' => 'Auth', 'prefix' => '{lang}', 'middleware' => ['DetectLanguage', 'Setting']], function () {
+    // reset password
+    Route::get('/password/reset', 'ForgotPasswordController@showLinkRequestForm');
+    Route::post('/password/reset', 'ForgotPasswordController@sendResetLinkEmail');
+    Route::get('/password/token', 'ForgotPasswordController@getToken');
+    Route::post('/password/token', 'ForgotPasswordController@checkToken');
+    Route::get('/password/new', 'ForgotPasswordController@newPassword');
+    Route::post('/password/new', 'ForgotPasswordController@changePassword');
+
+});
+
 
 Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Setting']], function () {
     Route::get('/', 'FrontController@index');
@@ -202,18 +211,22 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
 
     Route::group(['prefix' => '{lang}', 'middleware' => ['UserIpDetect']], function () {
 
+        // saving comments for all posts
+        Route::post('/comment', 'PostController@submit_comment');
+
         Route::get('/', 'FrontController@index');
         Route::get('/products', 'ProductsController@index');
         Route::get('/products/categories/{slug}', 'ProductsController@products');
         Route::get('/page/{slug}', 'PostController@page');
 
         // user Route
-        Route::group(['prefix' => 'user', 'middleware' => 'is:customer'], function (){
+        Route::group(['prefix' => 'user', 'middleware' => ['auth', 'is:customer']], function () {
             Route::get('/dashboard', 'UserController@index');
             Route::get('/profile', 'UserController@profile');
             Route::get('/drawing', 'UserController@drawing');
             Route::get('/events', 'UserController@events');
+            Route::post('/profile/update', 'UserController@update');
         });
-	});
+    });
 
 });

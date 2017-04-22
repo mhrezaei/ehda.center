@@ -370,8 +370,10 @@ class ComposerStaticInitc163ed33e856e3abf8986dc792906912
 
     public static $classMap = array (
         'AddEventColumnsToPostsTable' => __DIR__ . '/../..' . '/database/migrations/2017_04_17_161728_add_event_columns_to_posts_table.php',
+        'AddIpToComments' => __DIR__ . '/../..' . '/database/migrations/2017_04_18_164139_add_ip_to_comments.php',
         'AddPurchaseFieldsToUsers' => __DIR__ . '/../..' . '/database/migrations/2017_04_09_183444_add_purchase_fields_to_users.php',
         'AddTextFieldsToPosts' => __DIR__ . '/../..' . '/database/migrations/2017_04_09_184614_add_text_fields_to_posts.php',
+        'AddUserIdAndIpToComments' => __DIR__ . '/../..' . '/database/migrations/2017_04_18_132634_add_user_id_and_ip_to_comments.php',
         'CreateBranchesTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_06_091918_create_branches_table.php',
         'CreateCategoriesTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_06_092808_create_categories_table.php',
         'CreateCategoryPostTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_06_120626_create_category_post_table.php',

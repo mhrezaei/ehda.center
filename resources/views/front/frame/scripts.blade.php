@@ -1,5 +1,6 @@
 <!-- Load Scripts -->
 {!! Html::script ('assets/js/jquery.js') !!}
+{!! Html::script ('assets/libs/jquery-ui/jquery-ui.min.js') !!}
 {!! Html::script ('assets/js/responsiveslides.js') !!}
 {!! Html::script ('assets/js/lightbox.js') !!}
 {!! Html::script ('assets/js/slick.js') !!}

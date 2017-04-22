@@ -241,4 +241,26 @@ trait ManageControllerTrait
 
 	}
 
+    /**
+     * responses to the update-row request from the grid views and depends on the environment variables set in the main controller constructor
+     * @param $model_id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+
+
+    /**
+     * @param $error_code
+     * @param bool $minimal : if true minimal view will be loading
+     * @return \Illuminate\Http\Response|void
+     */
+
+    public function abort($error_code, $minimal = false)
+    {
+        if ($minimal) {
+            return response()->view('errors.m' . $error_code, [], $error_code);
+        } else {
+            return abort($error_code);
+        }
+    }
+
 }

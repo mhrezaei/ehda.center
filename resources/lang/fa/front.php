@@ -52,8 +52,8 @@ return [
     'search' => 'جستجو',
     'toman' => 'تومان',
     'to' => 'تا',
-
-
-
+    'profile_messages' => [
+        'not_enough_information' => 'اطلاعات پروفایل شما کافی نیست.'
+    ]
 
 ];

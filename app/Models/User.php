@@ -7,14 +7,29 @@ use App\Traits\TahaModelTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Contracts\Auth\CanResetPassword;
 
 
 class User extends Authenticatable
 {
 	use Notifiable, TahaModelTrait, PermitsTrait, SoftDeletes;
 
-	public static $meta_fields   = ['preferences', 'name_father', 'marital', 'total_receipts_count', 'total_receipts_amount'];
+	public static $meta_fields = [
+		'preferences',
+		'name_father',
+		'marital',
+		'total_receipts_count',
+		'total_receipts_amount',
+		'birth_date',
+		'education',
+		'home_tel',
+		'postal_code',
+		'address',
+		'marriage_date',
+		'reset_token',
+	];
 	public static $search_fields = ['name_first', 'name_last', 'name_firm', 'code_melli', 'email', 'mobile'];
+	public static $required_fields = ['name_first', 'name_last', 'code_melli', 'mobile', 'home_tel', 'birth_date', 'gender', 'marital'];
 	protected     $guarded       = ['id'];
 	protected     $hidden        = ['password', 'remember_token'];
 	protected     $casts         = [
@@ -23,6 +38,7 @@ class User extends Authenticatable
 		'password_force_change' => 'boolean',
 		'published_at'          => 'datetime',
 	];
+
 
 	/*
 	|--------------------------------------------------------------------------
@@ -39,7 +55,7 @@ class User extends Authenticatable
 	{
 		return $this->hasMany('App\Models\Receipt');
 
-		return Receipt::where('user_id', $this->id)->get();
+		//return Receipt::where('user_id', $this->id)->get(); //wrong
 	}
 
 	/*
@@ -401,4 +417,5 @@ class User extends Authenticatable
 	{
 		return $post->receipts->where('user_id', $this->id)->sum('purchased_amount');
 	}
+
 }

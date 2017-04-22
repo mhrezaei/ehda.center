@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Requests\Front\RegisterSaveRequest;
+use App\Models\Comment;
 use App\Models\Folder;
 use App\Models\Post;
 use App\Models\User;
@@ -12,86 +13,94 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+
 class FrontController extends Controller
 {
-    use TahaControllerTrait;
-    public function index()
-    {
-        $slideshow = Post::selector(['type' => 'slideshow'])->orderBy('id', 'desc')->get();
-        $categories = Folder::where('posttype_id', 2)
-            ->where('locale', getLocale())->orderBy('title', 'asc')->get();
-        $about = Post::selector([
-            'type' => 'pages',
-            'locale' => getLocale(),
-            'slug' => 'about',
-        ])->first();
+	use TahaControllerTrait;
 
-        $event = Post::selector(['type' => 'events'])
-            ->orderBy('id', 'desc')
-            ->first();
+	public function index()
+	{
+		$slideshow  = Post::selector(['type' => 'slideshow'])->orderBy('id', 'desc')->get();
+		$categories = Folder::where('posttype_id', 2)
+			->where('locale', getLocale())->orderBy('title', 'asc')->get()
+		;
+		$about      = Post::selector([
+			'type'   => 'pages',
+			'locale' => getLocale(),
+			'slug'   => 'about',
+		])->first()
+		;
 
-        return view('front.home.0', compact('slideshow', 'categories', 'about', 'event'));
-    }
+		$event = Post::selector(['type' => 'events'])
+			->orderBy('id', 'desc')
+			->first()
+		;
 
-    public function register(RegisterSaveRequest $request)
-    {
-        $input = $request->toArray();
+		$comments = Post::findBySlug('customers-comments')
+			->comments()
+			->whereNotNull('published_at')
+			->orderBy('created_at', 'DESC')
+			->take(10)
+			->get()
+		;
 
-        // check user exists
-        $user = User::where('code_melli', $input['code_melli'])->first();
-        if ($user)
-        {
-            if ($user->is_a('customer'))
-            {
-                return $this->jsonFeedback(null, [
-                    'ok' => 1,
-                    'message' => trans('front.relogin'),
-                ]);
-            }
-            else
-            {
-                return $this->jsonFeedback(null, [
-                    'ok' => 1,
-                    'message' => trans('front.code_melli_already_exists'),
-                ]);
-            }
-        }
+		return view('front.home.0', compact('slideshow', 'categories', 'about', 'event', 'comments'));
+	}
 
-        // store user to database
-        $user = [
-            'code_melli' => $input['code_melli'],
-            'mobile' => $input['mobile'],
-            'name_first' => $input['name_first'],
-            'name_last' => $input['name_last'],
-            'password' => Hash::make($input['password']),
+	public function register(RegisterSaveRequest $request)
+	{
+		$input = $request->toArray();
 
-        ];
-        $store = User::store($user);
+		// check user exists
+		$user = User::where('code_melli', $input['code_melli'])->first();
+		if($user) {
+			if($user->is_a('customer')) {
+				return $this->jsonFeedback(null, [
+					'ok'      => 1,
+					'message' => trans('front.relogin'),
+				]);
+			}
+			else {
+				return $this->jsonFeedback(null, [
+					'ok'      => 1,
+					'message' => trans('front.code_melli_already_exists'),
+				]);
+			}
+		}
 
-        if ($store)
-        {
-            // login user
-            Auth::loginUsingId($store);
+		// store user to database
+		$user  = [
+			'code_melli' => $input['code_melli'],
+			'mobile'     => $input['mobile'],
+			'name_first' => $input['name_first'],
+			'name_last'  => $input['name_last'],
+			'password'   => Hash::make($input['password']),
 
-            // add customer role
-            user()->attachRole('customer');
+		];
+		$store = User::store($user);
 
-            return $this->jsonFeedback(null, [
-                'ok' => 1,
-                'message' => trans('front.register_success'),
-                'redirect' => url_locale('user/dashboard'),
-            ]);
-        }
-        else
-        {
-            return $this->jsonFeedback(null, [
-                'ok' => 0,
-                'message' => trans('front.register_failed'),
-            ]);
-        }
+		if($store) {
+			// login user
+			Auth::loginUsingId($store);
+
+			// add customer role
+			user()->attachRole('customer');
+
+			return $this->jsonFeedback(null, [
+				'ok'       => 1,
+				'message'  => trans('front.register_success'),
+				'redirect' => url_locale('user/dashboard'),
+			]);
+		}
+		else {
+			return $this->jsonFeedback(null, [
+				'ok'      => 0,
+				'message' => trans('front.register_failed'),
+			]);
+		}
 
 
-    }
+	}
 
 	public function heyCheck()
 	{

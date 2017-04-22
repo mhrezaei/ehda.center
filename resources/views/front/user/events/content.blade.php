@@ -21,3 +21,4 @@
     </div>
 </div>
 @endif
+{{-- @TODO: rate_point should be set dynamically. Currently, was hardcode! --}}

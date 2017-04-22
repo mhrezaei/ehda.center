@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,OAAQ,CACN,OAAO,CAAE,eAAe,CAG1B,WAAY,CACV,SAAS,CAAE,KAAK,CAChB,OAAO,CAAE,KAAK,CACd,KAAK,CAAE,IAAI,CAGb,iCAAkC,CAChC,KAAK,CAAE,OAAO,CAGhB,sCAAuC,CACrC,OAAO,CAAE,IAAI,CAGf,2BAA4B,CAC1B,OAAO,CAAE,YAAY,CACrB,OAAO,CAAE,YAAY,CACrB,SAAS,CAAE,gBAAgB",
+"sources": ["../../../resources/sass/front-additives.scss"],
+"names": [],
+"file": "front-additives.min.css"
+}
