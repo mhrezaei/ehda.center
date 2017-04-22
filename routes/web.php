@@ -220,7 +220,7 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
         Route::get('/page/{slug}', 'PostController@page');
 
         // user Route
-        Route::group(['prefix' => 'user', 'middleware' => 'is:customer'], function () {
+        Route::group(['prefix' => 'user', 'middleware' => ['auth', 'is:customer']], function () {
             Route::get('/dashboard', 'UserController@index');
             Route::get('/profile', 'UserController@profile');
             Route::get('/drawing', 'UserController@drawing');

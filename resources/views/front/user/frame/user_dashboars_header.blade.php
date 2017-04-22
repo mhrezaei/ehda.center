@@ -5,7 +5,7 @@
                 <div class="avatar tac"><img src="{{ url('/assets/images/user.svg') }}" width="64"></div>
                 <h2 class="name"> {{ user()->full_name }} </h2>
                 <span class="label alt green md"> {{ trans('front.all_user_score') }}
-                    <strong>{{ pd(floor(user()->sum_receipt_amount / 500000)) }}</strong>
+                    <strong>{{ pd(floor(user()->sum_receipt_amount / 500000)) }}</strong> {{-- @TODO: rate_point should be set dynamically. Currently, was hardcode! --}}
                 </span>
             </div>
             @if(!arrayHasRequired(\App\Models\User::$required_fields, user()->toArray()))

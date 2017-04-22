@@ -1,3 +1,4 @@
+@if($comments->count())
 <section id="testimonials">
     <div class="simple-title"> مشتریان در موردمان چه می‌گویند؟</div>
     <div class="testimonials-list">
@@ -16,3 +17,4 @@
         @endforeach
     </div>
 </section>
+@endif
