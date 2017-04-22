@@ -1,4 +1,5 @@
-<div class="field @if(isset($hidden) and $hidden) hidden @endif">
+<div class="field @if(isset($hidden) and $hidden) hidden @endif"
+     @if(isset($container['style'])) style="{{ $container['style'] }}" @endif>
     <label> {{ trans('validation.attributes.' . $name) }} </label>
     <input type="{{ $type or '' }}" name="{{ $name or '' }}" id="{{ $name or '' }}"
            class="{{ $class or '' }} form-datepicker"

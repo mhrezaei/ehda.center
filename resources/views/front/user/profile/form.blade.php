@@ -63,6 +63,7 @@
                                 'class' => 'form-required',
                                 'options' => [
                                     'maxDate' => 0,
+                                    'changeMonth' => true,
                                     'changeYear' => true,
                                     'yearRange' => '-100,+0',
                                 ]
@@ -135,23 +136,26 @@
                         </div>
                         <div class="col-sm-6">
                             @include('front.frame.widgets.radio', [
-                            'name' => 'marital',
-                            'value' => user()->marital,
-                            'options' => [
-                            1 => trans('forms.general.single'),
-                            2 => trans('forms.general.married'),
-                            ],
+                                'name' => 'marital',
+                                'value' => user()->marital,
+                                'options' => [
+                                    1 => trans('forms.general.single'),
+                                    2 => trans('forms.general.married'),
+                                ],
                             ])
                             @include('front.frame.widgets.datepicker', [
-                            'name' => 'marriage_date',
-                            'type' => 'text',
-                            'value' => user()->marriage_date,
-                            'hidden' => true,
-                            'options' => [
-                            'maxDate' => 0,
-                            'changeYear' => true,
-                            'yearRange' => '-80,+0',
-                            ]
+                                'name' => 'marriage_date',
+                                'type' => 'text',
+                                'value' => user()->marriage_date,
+                                'options' => [
+                                    'maxDate' => 0,
+                                    'changeMonth' => true,
+                                    'changeYear' => true,
+                                    'yearRange' => '-80,+0',
+                                ],
+                                'container' => [
+                                    'style' =>  'display: none;'
+                                ]
                             ])
                         </div>
                     </div>
