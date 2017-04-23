@@ -49,7 +49,7 @@ class PosttypeSaveRequest extends Request
 			'features' => 'lower' ,
 			'meta_fields' => 'lower' ,
 			'icon' => 'lower' ,
-			'order' => "en",
+			'order' => "ed",
 		]);
 		return $purified;
 

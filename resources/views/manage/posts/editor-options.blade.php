@@ -53,6 +53,14 @@
 			<div class="m10"></div>
 			@include("manage.posts.editor-visibility")
 
+			{{--
+			|--------------------------------------------------------------------------
+			| Comments
+			|--------------------------------------------------------------------------
+			|
+			--}}
+			<div class="m10"></div>
+			@include("manage.posts.editor-comments")
 
 		</div>
 

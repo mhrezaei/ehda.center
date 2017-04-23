@@ -254,7 +254,7 @@ function posttypeFeatures($feature)
 
 	if($input.val().indexOf($feature)>=0){
 		$input.val($input.val().replaceAll($feature , ''));
-		$button.css('opacity','0.3');
+		$button.css('opacity','0.5');
 		$meta.val( $meta.val().replaceAll($fields , '') ) ;
 	}
 	else {

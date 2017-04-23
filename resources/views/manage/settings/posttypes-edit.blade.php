@@ -33,6 +33,7 @@
 	@include("forms.input" , [
 		'name' => "order",
 		'class' => "",
+		'hint' => trans('posts.types.order_hint') ,
 		'value' => $model,
 	])
 
@@ -99,7 +100,7 @@
 				'color' => $para[1],
 				'icon' => $para[0],
 				'text' => trans("posts.features.$feature"),
-				'opacity' => in_array($feature , $model->features_array)? "0.9" : "0.3",
+				'opacity' => in_array($feature , $model->features_array)? "0.9" : "0.5",
 				'link' => "posttypeFeatures('$feature')",
 			])
 		@endforeach
