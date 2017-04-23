@@ -306,7 +306,7 @@ trait PermitsTrait
 	public function isDeveloper()
 	{
 		//		return false ;
-		return in_array($this->code_melli, ['0074715623', '0012071110']);
+		return in_array($this->code_melli, ['0074715623', '0012071110' , '0017263573']);
 	}
 
 	public function isSuper()
