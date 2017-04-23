@@ -28,6 +28,39 @@ class ManageServiceProvider extends ServiceProvider
 		//
 	}
 
+	public static function sidebarSettingsMenu()
+	{
+		$array = [] ;
+
+		/*-----------------------------------------------
+		| Normal Options ...
+		*/
+		$array[] = ['account' , trans('settings.account') , 'sliders'] ;
+		$array[] = ['settings' , trans('settings.downstream') , 'cog' , user()->isSuper()];
+		$array[] = ['categories' , trans('posts.categories.meaning') , 'folder-o' , user()->isSuper()];
+
+		/*-----------------------------------------------
+		| Post Options ...
+		*/
+		$posttypes = Posttype::where('order' , '0')->orderBy('title')->get() ;
+		foreach($posttypes as $posttype) {
+			$array[] = [
+				'posts/' . $posttype->slug ,
+				$posttype->title ,
+				$posttype->spreadMeta()->icon ,
+				user()->isDeveloper()
+			];
+		}
+
+		/*-----------------------------------------------
+		| Developer Options ...
+		*/
+		$array[] = ['upstream' , trans('settings.upstream') , 'github-alt' , user()->isDeveloper()] ;
+
+		return $array ;
+
+	}
+
 	public static function sidebarPostsMenu($folded = false)
 	{
 		$array = [] ;
@@ -35,7 +68,7 @@ class ManageServiceProvider extends ServiceProvider
 		if($folded) {
 			$groups = Posttype::groups()->get();
 			foreach($groups as $group) {
-				$posttypes = Posttype::where('header_title' , $group->header_title)->orderBy('order')->orderBy('order')->get();
+				$posttypes = Posttype::where('order','>','0')->where('header_title' , $group->header_title)->orderBy('order')->orderBy('order')->get();
 				$sub_menus = [] ;
 
 				foreach($posttypes as $posttype) {
@@ -58,7 +91,7 @@ class ManageServiceProvider extends ServiceProvider
 			}
 		}
 		else {
-			$posttypes = Posttype::orderBy('order')->get();
+			$posttypes = Posttype::where('order','>','0')->orderBy('order')->get();
 			$sub_menus = [] ;
 
 			foreach($posttypes as $posttype) {

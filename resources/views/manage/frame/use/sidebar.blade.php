@@ -35,12 +35,7 @@
 
 @include("manage.frame.widgets.sidebar-link" , [
 	'icon' => "cogs",
-	'link' => "asd",
-	'sub_menus' => [
-		['account' , trans('settings.account') , 'sliders'],
-		['settings' , trans('settings.downstream') , 'cog' , user()->isSuper()],
-		['categories' , trans('posts.categories.meaning') , 'folder-o' , user()->isSuper()],
-		['upstream' , trans('settings.upstream') , 'github-alt' , user()->isDeveloper()],
-	],
+	'link' => "jafarz",
+	'sub_menus' => Manage::sidebarSettingsMenu() ,
 	'caption' => trans('settings.site_settings'),
 ])

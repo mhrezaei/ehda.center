@@ -449,8 +449,12 @@ return [
 		'starts_at'               => "زمان آغاز",
 		'ends_at'                 => "زمان پایان",
 		'rate_point'              => "نسبت امتیاز",
-		'allow_anonymous_comment' => 'نظر دادن بدون نیاز به ورود',
-		'your_comment'            => 'متن نظر',
+		'allow_anonymous_comment' => "اجازه ثبت دیدگاه به کاربر ناشناس" ,
+		'your_comment'            => 'دیدگاه شما',
+	     'disable_receiving_comments' => "ثبت دیدگاه غیرفعال باشد" ,
+	     'disable_showing_comments' => "نمایش دیدگاه‌ها غیرفعال باشد" ,
+		'title_shown_on_sending_comments' => "عنوان جعبه‌ی دریافت دیدگاه" ,
+	     'title_shown_on_showing_comments' => "عنوان فهرست نمایشگاه دیدگاه‌ها" ,
 	],
 
 	"http" => [
