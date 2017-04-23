@@ -18,4 +18,9 @@ class Comment extends Model
         'published_at' => 'datetime',
     ];
 
+    public function post()
+    {
+        return $this->belongsTo('App\Models\Post');
+    }
+
 }

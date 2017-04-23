@@ -16,99 +16,93 @@ use Illuminate\Support\Facades\Hash;
 
 class FrontController extends Controller
 {
-	use TahaControllerTrait;
+    use TahaControllerTrait;
 
-	public function index()
-	{
-		$slideshow  = Post::selector(['type' => 'slideshow'])->orderBy('id', 'desc')->get();
-		$categories = Folder::where('posttype_id', 2)->where('slug' , '!=' , 'no')
-			->where('locale', getLocale())->orderBy('title', 'asc')->get()
-		;
-		$about      = Post::selector([
-			'type'   => 'pages',
-			'locale' => getLocale(),
-			'slug'   => 'about',
-		])->first()
-		;
+    public function index()
+    {
+        $slideshow = Post::selector(['type' => 'slideshow'])->orderBy('id', 'desc')->get();
+        $categories = Folder::where('posttype_id', 2)->where('slug', '!=', 'no')
+            ->where('locale', getLocale())->orderBy('title', 'asc')->get();
+        $about = Post::selector([
+            'type' => 'pages',
+            'locale' => getLocale(),
+            'slug' => 'about',
+        ])->first();
 
-		$event = Post::selector(['type' => 'events'])
-			->orderBy('id', 'desc')
-			->first()
-		;
+        $event = Post::selector(['type' => 'events'])
+            ->orderBy('id', 'desc')
+            ->first();
 
-		$comments = Post::findBySlug('customers-comments')
-			->comments()
-			->whereNotNull('published_at')
-			->orderBy('created_at', 'DESC')
-			->take(10)
-			->get()
-		;
+        $commentingPost = Post::findBySlug('customers-comments');
+        $comments = $commentingPost->comments()
+            ->whereNotNull('published_at')
+            ->orderBy('created_at', 'DESC')
+            ->take(10)
+            ->get();
 
-		return view('front.home.0', compact('slideshow', 'categories', 'about', 'event', 'comments'));
-	}
+        return view('front.home.0', compact('slideshow', 'categories', 'about', 'event', 'commentingPost', 'comments'));
+    }
 
-	public function register(RegisterSaveRequest $request)
-	{
-		$input = $request->toArray();
+    public function register(RegisterSaveRequest $request)
+    {
+        $input = $request->toArray();
 
-		// check user exists
-		$user = User::where('code_melli', $input['code_melli'])->first();
-		if($user) {
-			if($user->is_a('customer')) {
-				return $this->jsonFeedback(null, [
-					'ok'      => 1,
-					'message' => trans('front.relogin'),
-				]);
-			}
-			else {
-				return $this->jsonFeedback(null, [
-					'ok'      => 1,
-					'message' => trans('front.code_melli_already_exists'),
-				]);
-			}
-		}
+        // check user exists
+        $user = User::where('code_melli', $input['code_melli'])->first();
+        if ($user) {
+            if ($user->is_a('customer')) {
+                return $this->jsonFeedback(null, [
+                    'ok' => 1,
+                    'message' => trans('front.relogin'),
+                ]);
+            } else {
+                return $this->jsonFeedback(null, [
+                    'ok' => 1,
+                    'message' => trans('front.code_melli_already_exists'),
+                ]);
+            }
+        }
 
-		// store user to database
-		$user  = [
-			'code_melli' => $input['code_melli'],
-			'mobile'     => $input['mobile'],
-			'name_first' => $input['name_first'],
-			'name_last'  => $input['name_last'],
-			'password'   => Hash::make($input['password']),
+        // store user to database
+        $user = [
+            'code_melli' => $input['code_melli'],
+            'mobile' => $input['mobile'],
+            'name_first' => $input['name_first'],
+            'name_last' => $input['name_last'],
+            'password' => Hash::make($input['password']),
 
-		];
-		$store = User::store($user);
+        ];
+        $store = User::store($user);
 
-		if($store) {
-			// login user
-			Auth::loginUsingId($store);
+        if ($store) {
+            // login user
+            Auth::loginUsingId($store);
 
-			// add customer role
-			user()->attachRole('customer');
+            // add customer role
+            user()->attachRole('customer');
 
-			return $this->jsonFeedback(null, [
-				'ok'       => 1,
-				'message'  => trans('front.register_success'),
-				'redirect' => url_locale('user/dashboard'),
-			]);
-		}
-		else {
-			return $this->jsonFeedback(null, [
-				'ok'      => 0,
-				'message' => trans('front.register_failed'),
-			]);
-		}
+            return $this->jsonFeedback(null, [
+                'ok' => 1,
+                'message' => trans('front.register_success'),
+                'redirect' => url_locale('user/dashboard'),
+            ]);
+        } else {
+            return $this->jsonFeedback(null, [
+                'ok' => 0,
+                'message' => trans('front.register_failed'),
+            ]);
+        }
 
 
-	}
+    }
 
-	public function heyCheck()
-	{
-		return $this->jsonFeedback([
-			'ok' => user()->exists,
-		]);
-		//return 12 ;
+    public function heyCheck()
+    {
+        return $this->jsonFeedback([
+            'ok' => user()->exists,
+        ]);
+        //return 12 ;
 
-	}
+    }
 
 }
