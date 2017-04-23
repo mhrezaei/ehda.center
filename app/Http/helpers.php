@@ -181,6 +181,16 @@ function login($id) //@TODO: Remove this function on production
 
 function echoDate($date, $foramt = 'default', $language = 'auto', $pd = false)
 {
+	/*-----------------------------------------------
+	| Safety Bypass ...
+	*/
+	if(in_array($date , [null , '0000-00-00 00:00:00'])) {
+		return '-' ;
+	}
+
+	/*-----------------------------------------------
+	| Process ...
+	*/
 	if($foramt == 'default') {
 		$foramt = 'j F Y [H:m]';
 	}
