@@ -89,6 +89,12 @@
             <button class="green block"> {{ trans('people.form.send_password_reset_link') }} </button>
         </div>
 
+        <div class="tal pb15">
+            <a href="{{ url(\App\Providers\SettingServiceProvider::getLocale() . '/password/token/code') }}">
+                <button type="button" class="green block"> {{ trans('people.form.have_a_code') }} </button>
+            </a>
+        </div>
+
         @include('forms.feed')
         {!! Form::close() !!}
     </div>
