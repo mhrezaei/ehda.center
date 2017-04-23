@@ -87,6 +87,26 @@ trait TahaModelTrait
 		return self::whereNull('id');
 	}
 
+	public function getCreatorAttribute()
+	{
+		$user = User::find($this->created_by);
+		if ($user) {
+			return $user;
+		} else {
+			return new User();
+		}
+	}
+
+	public function getPublisherAttribute()
+	{
+		$user = User::find($this->published_by);
+		if ($user) {
+			return $user;
+		} else {
+			return new User();
+		}
+	}
+
 	public function settingCombo($slug)
 	{
 		$options = Setting::get($slug);
