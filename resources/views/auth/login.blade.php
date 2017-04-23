@@ -20,7 +20,13 @@
             <div class="tal">
                 <button class="green block"> {{ trans('front.login') }} </button>
             </div>
-            <a href="{{ url(\App\Providers\SettingServiceProvider::getLocale() . '/password/reset') }}">{{ trans('people.form.recover_password') }}</a>
+            <div class="row">
+                <div class="col-xs-12 pt15">
+                    <a href="{{ url(\App\Providers\SettingServiceProvider::getLocale() . '/password/reset') }}">
+                        {{ trans('people.form.recover_password') }}
+                    </a>
+                </div>
+            </div>
             <hr class="or">
             <div class="tal">
                 <button onclick="window.location = '{{ url('/register') }}';"

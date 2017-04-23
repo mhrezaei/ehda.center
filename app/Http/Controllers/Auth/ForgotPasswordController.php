@@ -4,16 +4,19 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Front\NewPasswordRequest;
+use App\Http\Requests\Front\PasswordTokenRequest;
 use App\Http\Requests\Front\ResetPasswordRequest;
 use App\Models\User;
 use App\Providers\EmailServiceProvider;
 use App\Providers\SettingServiceProvider;
 use App\Traits\ManageControllerTrait;
 use Asanak\Sms\Facade\AsanakSms;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Mockery\Generator\StringManipulation\Pass\Pass;
 
 class ForgotPasswordController extends Controller
 {
@@ -74,9 +77,11 @@ class ForgotPasswordController extends Controller
         User::store([
             'id' => $user->id,
             'reset_token' => Hash::make($resetToken),
+            'reset_token_expire' => Carbon::now()->addMinute(setting()->ask('password_token_expire_time')->gain())->toDateTimeString(),
         ]);
 
-        $request->session()->flash('resetingPasswordNationalId', $user->code_melli);
+        session()->flash('resetingPasswordNationalId', $user->code_melli);
+//        session(['resetingPasswordNationalId' => $user->code_melli]);
 
         $sendingSuccess = false;
         switch ($request['type']) {
@@ -96,7 +101,7 @@ class ForgotPasswordController extends Controller
                     . "\n\r"
                     . setting()->ask('site_url')->gain();
 
-                $sendingResult = EmailServiceProvider::send($emailText, $user->email, trans('front.site_title'), trans('people.form.recover_password'));
+                $sendingResult = EmailServiceProvider::send($emailText, $user->email, trans('front.site_title'), trans('people.form.recover_password'), 'default_email');
 
                 break;
 
@@ -105,7 +110,9 @@ class ForgotPasswordController extends Controller
                     . "\n\r"
                     . setting()->ask('site_url')->gain();
 
-                $sendingResult = AsanakSms::send($user->mobile, $smsText);
+//                $sendingResult = AsanakSms::send($user->mobile, $smsText);
+                file_put_contents('passwordToken.txt', $smsText);
+                $sendingResult = '["111"]';
 
                 $sendingResult = json_decode($sendingResult);
                 if ($sendingResult and is_array($sendingResult) and is_numeric($sendingResult[0])) {
@@ -127,27 +134,30 @@ class ForgotPasswordController extends Controller
         }
     }
 
-    public function getToken()
+    public function getToken($lang, $haveCode = null)
     {
-        if (session()->get('resetingPasswordNationalId')) {
-            session()->keep('resetingPasswordNationalId');
+        if (session()->get('resetingPasswordNationalId') or ($haveCode == 'code')) {
+            session()->keep(['resetingPasswordNationalId']);
             return view('auth.passwords.token');
         } else {
             return redirect(SettingServiceProvider::getLocale() . '/password/reset');
         }
     }
 
-    public function checkToken(Request $request)
+    public function checkToken(PasswordTokenRequest $request)
     {
-        if (session()->get('resetingPasswordNationalId')) {
+        if ($request->has('code_melli')) {
             $user = User::where([
-                'code_melli' => session()->get('resetingPasswordNationalId'),
+                'code_melli' => $request->code_melli,
             ])->first();
 
-            if ($user) {
-                $user->spreadMeta();
-                if (Hash::check($request->password_reset_token, $user->reset_token)) {
+            $user->spreadMeta();
 
+            $now = Carbon::now();
+            $exp = Carbon::parse($user->reset_token_expire);
+
+            if (Hash::check($request->password_reset_token, $user->reset_token)) {
+                if ($now->lte($exp)) {
                     session(['resetPasswordVerifiedUser' => $user->code_melli]);
 
                     return $this->jsonAjaxSaveFeedback(true, [
@@ -155,11 +165,16 @@ class ForgotPasswordController extends Controller
                         'success_redirect' => url(SettingServiceProvider::getLocale() . '/password/new'),
                         'redirectTime' => 3000,
                     ]);
+
                 } else {
                     return $this->jsonAjaxSaveFeedback(false, [
-                        'danger_message' => trans('passwords.token')
+                        'danger_message' => trans('passwords.token_expired') . ' <br /><a href="' . url(SettingServiceProvider::getLocale() . '/password/reset') . '">' . trans('passwords.get_new_token') . '</a>'
                     ]);
                 }
+            } else {
+                return $this->jsonAjaxSaveFeedback(false, [
+                    'danger_message' => trans('passwords.token')
+                ]);
             }
         }
 

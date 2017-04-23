@@ -18,14 +18,28 @@
             'style' => 'padding: 15px;',
         ]) !!}
 
+        @if(!session()->get('resetingPasswordNationalId'))
+            <div class="row">
+                @include('forms.input',[
+                    'name' => 'code_melli',
+                    'label' => false,
+                    'placeholder' => trans('validation.attributes.code_melli'),
+                    'class' => 'form-required form-national',
+                    'containerClass' => 'field',
+                    'error_value' => trans('validation.javascript_validation.code_melli'),
+                ])
+            </div>
+        @endif
+
         <div class="row">
             @include('forms.input',[
                 'name' => 'password_reset_token',
                 'label' => false,
                 'placeholder' => trans('validation.attributes.password_reset_token'),
+                'class' => 'form-required',
                 'containerClass' => 'field',
+                'error_value' => trans('validation.javascript_validation.password_reset_token'),
             ])
-
         </div>
 
         <div class="tal pb15">
