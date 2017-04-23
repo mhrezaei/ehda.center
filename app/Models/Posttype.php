@@ -19,7 +19,7 @@ class Posttype extends Model
 		'featured_image'    => ['file-image-o', 'info', ['featured_image:photo']],
 		'download'          => ['download', 'info', ['download_file:file']],
 		'rss'               => ['rss', 'info', []],
-		'comment'           => ['comments-o', 'info', ['allow_anonymous_comment:boolean']],
+		'comment'           => ['comments-o', 'info', ['allow_anonymous_comment:boolean' , 'disable_receiving_comments:boolean' , 'disable_showing_comments:boolean' , 'comment_receive_day_limits:date']],
 		'rate'              => ['star-half-o', 'info', []], //@TODO: feature_fields
 		'album'             => ['address-book-o', 'info', ['post_photos:auto']], //@TODO: feature_fields datatype!
 		'category'          => ['folder-o', 'info', []],
