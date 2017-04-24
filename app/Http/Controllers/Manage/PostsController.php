@@ -127,7 +127,7 @@ class PostsController extends Controller
 		| Reveal Posttype ...
 		*/
 		$posttype = Posttype::findBySlug($type);
-		if(!$posttype) {
+		if(!$posttype->exists) {
 			return view('errors.404');
 		}
 

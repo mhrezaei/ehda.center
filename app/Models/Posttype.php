@@ -56,6 +56,32 @@ class Posttype extends Model
 	|
 	*/
 
+	public static function withPermit($switches)
+	{
+		$switches = array_normalize($switches , [
+			'role' => "admin" ,
+		     'prefix' => "posts" ,
+		     'permit' => '*' ,
+		     'feature' => "" ,
+		]);
+
+		if($switches['feature']) {
+			$feature = $switches['feature'] ;
+			$types = self::whereRaw("LOCATE('$feature' , `features`)")->get();
+		}
+		else {
+			$types = self::all() ;
+		}
+		$result = [] ;
+		foreach($types as $type) {
+			if(user()->as($switches['role'])->can($switches['prefix'] . "-" . $type->slug . '.' . $switches['permit'])) {
+				$result[] = $type->slug ;
+			}
+		}
+
+		return $result ;
+	}
+
 	public static function withFeature($feature)
 	{
 		$models = self::whereRaw("LOCATE('$feature' , `features`)")->get();

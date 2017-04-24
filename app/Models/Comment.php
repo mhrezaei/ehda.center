@@ -23,7 +23,7 @@ class Comment extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
-	public function posts()
+	public function post()
 	{
 		return $this->belongsTo('App\Models\Post');
 	}
@@ -96,9 +96,9 @@ class Comment extends Model
 		return url(); //@TODO: Complete This!
 	}
 
-	public function getPresentableAttribute()
+	public function getIsPublicAttribute()
 	{
-		return boolval($this->published_at) and !$this->is_private ;
+		return boolval($this->published_at) and !$this->is_private;
 	}
 
 	/*
@@ -109,12 +109,12 @@ class Comment extends Model
 	*/
 	public function can($permit = '*')
 	{
-		return user()->as('admin')->can('comment-' , $this->type . '.' . $permit) ;
+		return user()->as('admin')->can('comments-', $this->type . '.' . $permit);
 	}
 
 	public function canPublish()
 	{
-		return $this->can('publish') ;
+		return $this->can('publish');
 	}
 
 	/*
@@ -125,94 +125,98 @@ class Comment extends Model
 	*/
 	public static function selector($parameters = [])
 	{
-		extract(array_normalize($parameters , [
-		     'type' => "all" ,
-		     'post_id' => "0" ,
-		     'replied_on' => "0" ,
-		     'email' => "" ,
-		     'ip' => "" ,
-		     'created_by' => "" ,
-		     'published_by' => "" ,
-		     'criteria' => "published" ,
-		     'search' => "" ,
+		extract(array_normalize($parameters, [
+			'type'         => "all",
+			'post_id'      => "0",
+			'replied_on'   => "0",
+			'email'        => "",
+			'ip'           => "",
+			'created_by'   => "",
+			'published_by' => "",
+			'criteria'     => "published",
+			'search'       => "",
 		]));
 
-		$table = self::where('id' , '>' , '0') ;
+		$table = self::where('id', '>', '0');
 
 		/*-----------------------------------------------
 		| Process Type ...
 		*/
-		if(str_contains($type , 'feature:')) {
-			$feature = str_replace('feature:' , null , $type) ;
-			$type = Posttype::withFeature($feature); //returns an array of posttypes
+		if(is_string($type) and str_contains($type, 'feature:')) {
+			$feature = str_replace('feature:', null, $type);
+			$type    = Posttype::withFeature($feature); //returns an array of posttypes
 		}
 
 		//when an array of selected posttypes are requested
 		if(is_array($type)) {
-			$table = $table->whereIn('type' , $type) ;
+			$table = $table->whereIn('type', $type);
 		}
 
 		//when 'all' posttypes are requested
-		elseif($type=='all') {
+		elseif($type == 'all') {
 			// nothing required here :)
 		}
 
 		//when an specific type is requested
 		else {
-			$table = $table->where('type' , $type);
+			$table = $table->where('type', $type);
 		}
 
 		/*-----------------------------------------------
 		| Easy Switches ...
 		*/
 		if($post_id) {
-			$table = $table->where('post_id' , $post_id) ;
+			$table = $table->where('post_id', $post_id);
 		}
 		if($replied_on) {
-			$table = $table->where('replied_on' , $replied_on) ;
+			$table = $table->where('replied_on', $replied_on);
 		}
 		if($email) {
-			$table = $table->where('email' , $email) ;
+			$table = $table->where('email', $email);
 		}
 		if($ip) {
-			$table = $table->where('ip' , $ip) ;
+			$table = $table->where('ip', $ip);
 		}
 		if($created_by) {
-			$table = $table->where('created_by' , $created_by) ;
+			$table = $table->where('created_by', $created_by);
 		}
 		if($published_by) {
-			$table = $table->where('published_by' , $published_by) ;
+			$table = $table->where('published_by', $published_by);
 		}
 
 		/*-----------------------------------------------
 		| Process Criteria ...
 		*/
-		switch($criteria) {
+		switch ($criteria) {
 			case 'all' :
 				break;
 
 			case 'all_with_trashed' :
-				$table = $table->withTrashed() ;
+				$table = $table->withTrashed();
 				break;
 
-			case 'published' :
-				$table = $table->whereNotNull('published_at') ;
-				break ;
+			case 'approved' :
+				$table = $table->whereNotNull('published_at');
+				break;
 
-			case 'presentable' :
-				$table = $table->whereNotNull('published_at')->where('is_private' , 0) ;
-				break ;
+			case 'public' :
+				$table = $table->whereNotNull('published_at')->where('is_private', 0);
+				break;
+
+			case 'private' :
+				$table = $table->where('is_private', '1');
+				break;
 
 			case 'pending':
-				$table = $table->whereNull('published_at') ;
-				break ;
+				$table = $table->whereNull('published_at');
+				break;
 
 			case 'bin' :
 				$table = $table->onlyTrashed();
 				break;
 
 			default:
-				$table = $table->where('id' , '0') ;
+				$table = $table->where('id', '0');
 				break;
 
 		}
@@ -220,13 +224,55 @@ class Comment extends Model
 		/*-----------------------------------------------
 		| Process Search ...
 		*/
-		$table = $table->whereRaw(self::searchRawQuery($search));
+		if($search) {
+			$table = $table->whereRaw(self::searchRawQuery($search));
+		}
 
 
 		//Return...
-		return $table ;
+		return $table;
+	}
 
+	/*
+	|--------------------------------------------------------------------------
+	| Helpers
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public static function tab2permit($request_tab)
+	{
+		switch ($request_tab) {
+			case 'search' :
+				$permit = '*';
+				break;
 
+			case 'pending':
+				$permit = '*';
+				break;
+
+			case 'published' :
+			case 'privates' :
+				$permit = '*';
+				break;
+
+			default :
+				$permit = $request_tab;
+		}
+
+		return $permit ;
 
 	}
+
+	public static function checkManagePermission($posttype , $criteria)
+	{
+		$permit = self::tab2permit($criteria);
+
+		if($posttype) {
+			return user()->as('admin')->can("comments-$posttype.$permit");
+		}
+		else {
+			return user()->as('admin')->can("comments");
+		}
+	}
+
 }
