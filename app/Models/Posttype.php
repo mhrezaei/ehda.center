@@ -51,7 +51,7 @@ class Posttype extends Model
 
 	/*
 	|--------------------------------------------------------------------------
-	| Relations
+	| Selectors
 	|--------------------------------------------------------------------------
 	|
 	*/
@@ -88,14 +88,14 @@ class Posttype extends Model
 
 	/*
 	|--------------------------------------------------------------------------
-	| Selectors
+	| Relations
 	|--------------------------------------------------------------------------
 	|
 	*/
 
 	public function posts()
 	{
-		return Post::where('title', $this->slug);
+		return Post::where('type', $this->slug);
 		//		return $this->hasMany('App\Models\Post');
 	}
 
@@ -103,6 +103,11 @@ class Posttype extends Model
 	{
 		return $this->hasMany('App\Models\Folder');
 
+	}
+
+	public function comments()
+	{
+		return Comment::where('type' , $this->slug) ;
 	}
 
 	/*
