@@ -125,4 +125,10 @@ return [
 		'clone_is_a_sister'               => "این رونوشت، ترجمه‌ای از همین مطلب کنونی‌ست.",
 		'translation_already_made'        => "ترجمه با این زبان وجود دارد.",
 	],
+
+     'comments' => [
+     	'singular' => "دیدگاه" ,
+          'plural' => "دیدگاه‌ها" ,
+          'users_comments' => "دیدگاه کاربران" ,
+     ],
 ];

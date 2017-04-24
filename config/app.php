@@ -39,6 +39,9 @@ return [
     */
 
     'debug' => env('APP_DEBUG', false),
+    //'debug' => value(function(){
+	//    Illuminate\Support\Facades\Auth::user()    ;
+    //}) ,
 
     /*
     |--------------------------------------------------------------------------

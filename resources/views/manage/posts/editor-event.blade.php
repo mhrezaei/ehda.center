@@ -4,7 +4,7 @@
 			<i class="fa fa-calendar mh5"></i>
 			{{ trans('posts.features.event') }}
 		</div>
-		
+
 		<div class="panel-body bg-ultralight">
 
 			{{--
