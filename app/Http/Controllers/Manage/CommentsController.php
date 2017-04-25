@@ -29,6 +29,7 @@ class CommentsController extends Controller
 
 	public function browse($request_tab = 'pending', $switches = null)
 	{
+		$_SESSION['debug_mode'] = 0 ;
 		/*-----------------------------------------------
 		| Break Switches ...
 		*/

@@ -25,6 +25,9 @@ $class = " f".$size." text-$color $class" ;
 			</text>
 			{{ $text2 or '' }}
 		</a>
+		@if(isset($by))
+			<span class="{{$class}}">&nbsp;{{ trans('forms.general.by') }}&nbsp;{{ $by }}</span>
+		@endif
 	</span>
 
 	@if(!$inline)

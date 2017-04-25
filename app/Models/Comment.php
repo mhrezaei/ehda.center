@@ -4,11 +4,12 @@ namespace App\Models;
 
 use App\Traits\TahaModelTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class Comment extends Model
 {
-	use TahaModelTrait;
+	use TahaModelTrait , SoftDeletes;
 
 	public static $meta_fields = ['text'];
 	protected     $guarded     = ['id'];
@@ -27,6 +28,12 @@ class Comment extends Model
 	{
 		return $this->belongsTo('App\Models\Post');
 	}
+
+	public function user()
+	{
+		return $this->belongsTo('App\Models\User');
+	}
+
 
 	public function posttype()
 	{

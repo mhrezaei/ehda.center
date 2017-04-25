@@ -58,6 +58,11 @@ class User extends Authenticatable
 		//return Receipt::where('user_id', $this->id)->get(); //wrong
 	}
 
+	public function comments()
+	{
+		return $this->hasMany('App\Models\Comment') ;
+	}
+
 	/*
 	|--------------------------------------------------------------------------
 	| Cache Management

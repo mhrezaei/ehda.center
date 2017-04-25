@@ -27,11 +27,12 @@
 		'handle' => "selector",
 		'headings' => [
 			trans('validation.attributes.properties'),
-			trans('validation.attributes.status'),
+			[trans('validation.attributes.status'),150],
 			trans('forms.button.action')
 		],
 	])
 
 @endsection
+
 
 

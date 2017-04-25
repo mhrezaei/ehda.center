@@ -15,7 +15,8 @@ class AddTypeToComments extends Migration
 	public function up()
 	{
 		Schema::table('comments', function (Blueprint $table) {
-			$table->string('type')->after('id')->index();
+			$table->unsignedInteger('user_id')->after('id')->index();
+			$table->string('type')->after('post_id')->index();
 			$table->string('name')->after('ip') ;
 			$table->string('email')->after('name')->index() ;
 			$table->string('subject')->after('email') ;
@@ -32,7 +33,7 @@ class AddTypeToComments extends Migration
 	public function down()
 	{
 		Schema::table('comments', function (Blueprint $table) {
-			$table->dropColumn(['type','name','email','subject','text','is_private']);
+			$table->dropColumn(['user_id','type','name','email','subject','text','is_private']);
 		});
 	}
 }

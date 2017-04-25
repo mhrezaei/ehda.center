@@ -132,7 +132,7 @@ return [
 		'published'     => "منتشرشده",
 		'scheduled'     => "صف انتشار",
 		'draft'         => "پیش‌نویس",
-		'pending'       => "منتظر تأیید",
+		'pending'       => "منتظر بررسی",
 		'unknown'       => "نامشخص",
 		'so_far_absent' => "فعلاً وجود ندارد",
 	],
@@ -147,7 +147,7 @@ return [
 		'published' => "success",
 		'scheduled' => "info",
 		'draft'     => "info",
-		'pending'   => "warning",
+		'pending'   => "orange",
 		'unknown'   => "danger",
 	],
 	'status_icon'  => [

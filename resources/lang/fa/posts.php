@@ -126,11 +126,13 @@ return [
 		'clone_made_feedback'             => "رونوشت را ساختیم و به عنوان پیش‌نویس شما ذخیره کردیم.",
 		'clone_is_a_sister'               => "این رونوشت، ترجمه‌ای از همین مطلب کنونی‌ست.",
 		'translation_already_made'        => "ترجمه با این زبان وجود دارد.",
+	     'approval' => "پذیرش" ,
 	],
 
 	'comments' => [
 		'singular'       => "دیدگاه",
 		'plural'         => "دیدگاه‌ها",
 		'users_comments' => "دیدگاه کاربران",
+	     'reply' => "پاسخ" ,
 	],
 ];
