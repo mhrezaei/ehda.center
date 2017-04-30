@@ -1,6 +1,6 @@
 <?php
 	//class...
-	!isset($size)? $size = 10 : '' ;
+	!isset($size)? $size = 11 : '' ;
 	!isset($color)? $color = 'grey' : '' ;
 	!isset($class)? $class = '' : '' ;
 	$class = " f".$size." text-$color $class" ;

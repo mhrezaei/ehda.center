@@ -455,6 +455,7 @@ return [
 	     'disable_showing_comments' => "نمایش دیدگاه‌ها غیرفعال باشد" ,
 		'title_shown_on_sending_comments' => "عنوان جعبه‌ی دریافت دیدگاه" ,
 	     'title_shown_on_showing_comments' => "عنوان فهرست نمایشگاه دیدگاه‌ها" ,
+	     'reply' => "پاسخ" ,
 	],
 
 	"http" => [

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Manage;
 
+use App\Http\Requests\Manage\CommentProcessRequest;
 use App\Models\Comment;
 use App\Models\Posttype;
 use App\Traits\ManageControllerTrait;
@@ -35,7 +36,7 @@ class CommentsController extends Controller
 		$switches = array_normalize(array_maker($switches), [
 			'post_id'      => "0",
 			'type'         => "all",
-			'replied_on'   => "0",
+			'replied_on'   => null,
 			'email'        => "",
 			'ip'           => "",
 			'created_by'   => "",
@@ -82,6 +83,60 @@ class CommentsController extends Controller
 		*/
 
 		return view($this->view_folder . ".browse", compact('page', 'models', 'db', 'posttype'));
+
+
+	}
+
+	public function process(CommentProcessRequest $request)
+	{
+		/*-----------------------------------------------
+		| Model Selection ...
+		*/
+		$model = Comment::find($request->id) ;
+		if(!$model) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+
+		/*-----------------------------------------------
+		| Permission ...
+		*/
+		if(!$model->can('process')) {
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+		}
+
+		/*-----------------------------------------------
+		| Save Status ...
+		*/
+		$ok = $model->saveStatus($request->status) ;
+
+		/*-----------------------------------------------
+		| Save Reply ...
+		*/
+		if($request->reply) {
+			$ok = Comment::store([
+				'user_id' => user()->id , 
+			     'post_id' => $model->post_id , 
+			     'type' => $model->type , 
+			     'replied_on' => $model->id , 
+			     'ip' => request()->ip() ,
+			     'text' => $request->reply ,
+			]);
+		}
+
+		/*-----------------------------------------------
+		| Send Email if Requested ...
+		*/
+		if($request->reply and $request->send_email) {
+			//@TODO: Send Email!
+		}
+
+		/*-----------------------------------------------
+		| Feedback ...
+		*/
+		return $this->jsonAjaxSaveFeedback($ok , [
+			'success_callback' => "rowUpdate('tblComments','$request->id')",
+		]);
+
 
 
 	}

@@ -134,5 +134,8 @@ return [
 		'plural'         => "دیدگاه‌ها",
 		'users_comments' => "دیدگاه کاربران",
 	     'reply' => "پاسخ" ,
+	     'process' => "اقدام روی دیدگاه" ,
+	     'reply_via_email_too' => "پاسخ، از طریق ایمیل نیز ارسال شود" ,
+	     'reply_or_change_status' => "درج پاسخ جدید یا تغییر وضعیت" ,
 	],
 ];

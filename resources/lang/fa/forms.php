@@ -133,6 +133,7 @@ return [
 		'scheduled'     => "صف انتشار",
 		'draft'         => "پیش‌نویس",
 		'pending'       => "منتظر بررسی",
+		'private'       => "خصوصی",
 		'unknown'       => "نامشخص",
 		'so_far_absent' => "فعلاً وجود ندارد",
 	],
@@ -148,6 +149,7 @@ return [
 		'scheduled' => "info",
 		'draft'     => "info",
 		'pending'   => "orange",
+		'private'   => "green",
 		'unknown'   => "danger",
 	],
 	'status_icon'  => [
@@ -161,6 +163,7 @@ return [
 		'scheduled' => "hourglass-half",
 		'draft'     => "map-o",
 		'pending'   => "legal",
+		'private' => "eye-slash" ,
 		'unknown'   => "exclamation-triangle",
 	],
 

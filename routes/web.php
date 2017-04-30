@@ -92,7 +92,7 @@ Route::group([
 		//Route::get('/tab_update/{posttype}/{request_tab?}/{switches?}', 'CommentsController@tabUpdate');
 		//
 		//Route::get('/check_slug/{id}/{type}/{locale}/{slug?}/p', 'CommentsController@checkSlug');
-		//Route::get('/act/{model_id}/{action}', 'CommentsController@singleAction');
+		Route::get('/act/{model_id}/{action}', 'CommentsController@singleAction');
 		//
 		Route::get('{request_tab?}/{switches?}' , 'CommentsController@browse');
 		//
@@ -102,14 +102,15 @@ Route::group([
 		//Route::get('{posttype}/{locale}/search', 'CommentsController@search');
 		//Route::get('/{posttype}/{request_tab?}/{switches?}', 'CommentsController@browse');
 		//
-		//Route::group(['prefix' => 'save'], function () {
+		Route::group(['prefix' => 'save'], function () {
+			Route::post('/process' , 'CommentsController@process');
 		//	Route::post('/', 'CommentsController@save');
 		//	Route::post('/delete', 'CommentsController@delete');
 		//	Route::post('/undelete', 'CommentsController@undelete');
 		//	Route::post('/destroy', 'CommentsController@destroy');
 		//	Route::post('/clone', 'CommentsController@makeClone');
-		//});
-		//
+		});
+
 	});
 
 

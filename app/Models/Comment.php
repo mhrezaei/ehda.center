@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\TahaModelTrait;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -60,7 +61,13 @@ class Comment extends Model
 	public function parent()
 	{
 		if($this->replied_on) {
-			return self::find($this->replied_on);
+			$parent = self::withTrashed()->find($this->replied_on);
+			if(!$parent) {
+				$parent = new Comment() ;
+				$parent->post_id = $this->post_id ;
+				$parent->id = $this->replied_on ;
+			}
+			return $parent ;
 		}
 		else {
 			return $this;
@@ -89,7 +96,10 @@ class Comment extends Model
 		if($this->trashed()) {
 			return 'deleted';
 		}
-		if($this->published_at) {
+		if($this->published_at and $this->is_private) {
+			return 'private';
+		}
+		elseif($this->published_at) {
 			return 'published';
 		}
 		else {
@@ -142,6 +152,7 @@ class Comment extends Model
 			'published_by' => "",
 			'criteria'     => "published",
 			'search'       => "",
+		     'is_by_admin' => null ,
 		]));
 
 		$table = self::where('id', '>', '0');
@@ -175,7 +186,7 @@ class Comment extends Model
 		if($post_id) {
 			$table = $table->where('post_id', $post_id);
 		}
-		if($replied_on) {
+		if($replied_on!==null) {
 			$table = $table->where('replied_on', $replied_on);
 		}
 		if($email) {
@@ -189,6 +200,9 @@ class Comment extends Model
 		}
 		if($published_by) {
 			$table = $table->where('published_by', $published_by);
+		}
+		if($is_by_admin!==null) {
+			$table = $table->where('is_by_admin', $is_by_admin);
 		}
 
 		/*-----------------------------------------------
@@ -246,6 +260,15 @@ class Comment extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
+	public function statusCombo()
+	{
+		return [
+			['pending', trans('forms.status_text.pending')],
+			['published', trans('forms.status_text.published')],
+			['private', trans('forms.status_text.private')],
+			//['deleted', trans('forms.status_text.deleted')],
+		];
+	}
 	public static function tab2permit($request_tab)
 	{
 		switch ($request_tab) {
@@ -280,6 +303,44 @@ class Comment extends Model
 		else {
 			return user()->as('admin')->can("comments");
 		}
+	}
+
+	public function saveStatus($new_status)
+	{
+		if($this->status == $new_status) {
+			return true ;
+		}
+
+		switch($new_status) {
+			case 'pending' :
+				$this->published_at = null ;
+				$this->published_by = 0 ;
+				break;
+
+			case 'published' :
+				$this->published_at = Carbon::now()->toDateTimeString() ;
+				$this->publised_by = user()->id ;
+				$this->is_private = false ;
+				break ;
+
+			case 'private' :
+				$this->published_at = Carbon::now()->toDateTimeString() ;
+				$this->publised_by = user()->id ;
+				$this->is_private = true ;
+				break ;
+
+			case 'approve' :
+				$this->published_at = Carbon::now()->toDateTimeString() ;
+				$this->publised_by = user()->id ;
+				break ;
+
+			default :
+				return false ;
+
+		}
+
+		return $this->suppressMeta()->save() ;
+
 	}
 
 }

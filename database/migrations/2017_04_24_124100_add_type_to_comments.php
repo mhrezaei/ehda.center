@@ -22,6 +22,7 @@ class AddTypeToComments extends Migration
 			$table->string('subject')->after('email') ;
 			$table->longText('text')->after('subject');
 			$table->boolean('is_private')->after('meta');
+			$table->boolean('is_by_admin')->after('is_private');
 		});
 	}
 
@@ -33,7 +34,7 @@ class AddTypeToComments extends Migration
 	public function down()
 	{
 		Schema::table('comments', function (Blueprint $table) {
-			$table->dropColumn(['user_id','type','name','email','subject','text','is_private']);
+			$table->dropColumn(['user_id','type','name','email','subject','text','is_private','is_by_admin']);
 		});
 	}
 }
