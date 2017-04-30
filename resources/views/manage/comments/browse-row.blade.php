@@ -19,11 +19,21 @@
 		'condition' => !$model->user_id,
 		'text' => "$model->name ($model->email): " ,
 	])
-	@include("manage.frame.widgets.grid-text" , [
-		'text' => str_limit($model->text,400),
-		'size' => "11" ,
-		'class' => "text-align" ,
-	])
+	{{--<div id="divTextShort-{{$model->id}}" ondblclick="$('#divTextFull-{{$model->id}},#divTextShort-{{$model->id}}').toggle()">--}}
+		@include("manage.frame.widgets.grid-text" , [
+			'text' => str_limit($model->text,400),
+			'text2' => $model->text ,
+			'size' => "11" ,
+			'class' => "text-align" ,
+		])
+	{{--</div>--}}
+	{{--<div id="divTextFull-{{$model->id}}" class="noDisplay" ondblclick="$('#divTextFull-{{$model->id}},#divTextShort-{{$model->id}}').toggle()">--}}
+{{--		@include("manage.frame.widgets.grid-text" , [--}}
+			{{--'text' => $model->text,--}}
+			{{--'size' => "11" ,--}}
+			{{--'class' => "text-align" ,--}}
+		{{--])--}}
+	{{--</div>--}}
 	@include("manage.frame.widgets.grid-date" , [
 		'date' => $model->created_at,
 	])

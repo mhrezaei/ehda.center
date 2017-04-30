@@ -88,7 +88,7 @@ Route::group([
 	| Comments ...P
 	*/
 	Route::group(['prefix' => 'comments' , 'middleware' => 'can:comments'] , function() {
-		//Route::get('/update/{item_id}', 'CommentsController@update');
+		Route::get('/update/{item_id}', 'CommentsController@update');
 		//Route::get('/tab_update/{posttype}/{request_tab?}/{switches?}', 'CommentsController@tabUpdate');
 		//
 		//Route::get('/check_slug/{id}/{type}/{locale}/{slug?}/p', 'CommentsController@checkSlug');

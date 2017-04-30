@@ -15,15 +15,14 @@ class CommentsController extends Controller
 
 	protected $page;
 	protected $Model;
-	protected $browse_counter;
-	protected $browse_selector;
+	protected $browse_handle;
 	protected $view_folder;
 
 	public function __construct()
 	{
 		$this->Model = new Comment();
 
-		$this->browse_hanle = 'selector';
+		$this->browse_handle = 'selector';
 		$this->view_folder  = "manage.comments";
 	}
 

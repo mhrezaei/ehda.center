@@ -39,7 +39,7 @@
 
 ?>
 @if(!isset($condition) or $condition)
-	<div class="" style="margin-bottom: 5px">
+	<div id="{{$id or ''}}" class="" style="margin-bottom: 5px">
 		@if(isset($link) and $link)
 			<a href="{{$target}}" onclick="{{$js_command}}" class="{{$class}}" {{$extra}}>
 				@if(isset($icon))
@@ -52,7 +52,20 @@
 				@if(isset($icon))
 					<i class="fa fa-{{$icon}} mhl5"></i>
 				@endif
-				@pd($text)
+				<div class="text1">
+					@pd($text)
+					@if(isset($text2) and $text != $text2)
+						<span class="fa fa-chevron-circle-down clickable text-green" onclick="$(this).parent().parent().children(' .text2 , .text1').toggle()"></span>
+					@endif
+				</div>
+				@if(isset($text2))
+					<div class="text2 noDisplay" >
+						@pd($text2)
+						@if(isset($text2) and $text != $text2)
+							<span class="fa fa-chevron-circle-up clickable text-green" onclick="$(this).parent().parent().children(' .text2 , .text1').toggle()"></span>
+						@endif
+				</div>
+				@endif
 			</span>
 		@endif
 	</div>
