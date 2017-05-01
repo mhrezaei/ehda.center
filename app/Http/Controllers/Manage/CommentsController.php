@@ -6,6 +6,7 @@ use App\Http\Requests\Manage\CommentProcessRequest;
 use App\Models\Comment;
 use App\Models\Posttype;
 use App\Traits\ManageControllerTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -24,12 +25,12 @@ class CommentsController extends Controller
 		$this->Model = new Comment();
 
 		$this->browse_handle = 'selector';
-		$this->view_folder  = "manage.comments";
+		$this->view_folder   = "manage.comments";
 	}
 
 	public function browse($request_tab = 'pending', $switches = null)
 	{
-		$_SESSION['debug_mode'] = 0 ;
+		$_SESSION['debug_mode'] = 0;
 		/*-----------------------------------------------
 		| Break Switches ...
 		*/
@@ -45,6 +46,7 @@ class CommentsController extends Controller
 			'order_by'     => "created_at",
 			'order_type'   => "desc",
 			'criteria'     => $request_tab,
+			'is_by_admin'  => "0",
 		]);
 
 		/*-----------------------------------------------
@@ -92,7 +94,7 @@ class CommentsController extends Controller
 		/*-----------------------------------------------
 		| Model Selection ...
 		*/
-		$model = Comment::find($request->id) ;
+		$model = Comment::find($request->id);
 		if(!$model) {
 			return $this->jsonFeedback(trans('validation.http.Error410'));
 		}
@@ -107,19 +109,22 @@ class CommentsController extends Controller
 		/*-----------------------------------------------
 		| Save Status ...
 		*/
-		$ok = $model->saveStatus($request->status) ;
+		$ok = $model->saveStatus($request->status);
 
 		/*-----------------------------------------------
 		| Save Reply ...
 		*/
 		if($request->reply) {
 			$ok = Comment::store([
-				'user_id' => user()->id , 
-			     'post_id' => $model->post_id , 
-			     'type' => $model->type , 
-			     'replied_on' => $model->id , 
-			     'ip' => request()->ip() ,
-			     'text' => $request->reply ,
+				'user_id'      => user()->id,
+				'post_id'      => $model->post_id,
+				'type'         => $model->type,
+				'replied_on'   => $model->id,
+				'ip'           => request()->ip(),
+				'text'         => $request->reply,
+				'is_by_admin'  => "1",
+				'published_at' => Carbon::now()->toDateTimeString(),
+				'published_by' => user()->id,
 			]);
 		}
 
@@ -133,10 +138,10 @@ class CommentsController extends Controller
 		/*-----------------------------------------------
 		| Feedback ...
 		*/
-		return $this->jsonAjaxSaveFeedback($ok , [
+
+		return $this->jsonAjaxSaveFeedback($ok, [
 			'success_callback' => "rowUpdate('tblComments','$request->id')",
 		]);
-
 
 
 	}

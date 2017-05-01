@@ -23,6 +23,13 @@
 			@include("manage.frame.widgets.grid-date" , [
 				'date' => $comment->created_at,
 			])
+
+			<div style="text-align: left">
+				@if($comment->can('edit'))
+					<a href="#" class="f10" onclick="masterModal(url('manage/comments/act/{{$comment->id}}/edit'))">{{ trans('forms.button.edit') }}</a>
+				@endif
+			</div>
+
 		</div>
 	@endif
 </div>

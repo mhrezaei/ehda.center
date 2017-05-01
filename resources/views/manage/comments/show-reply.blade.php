@@ -1,25 +1,27 @@
+
 @include("forms.hiddens" , [ "fields" => [
-	['id' , $model->id],
+	['id' , $parent->id],
 ]])
 
 @include("forms.textarea" , [
 	'name' => "reply",
 	'class' => "form-autoSize form-default" ,
 	'id' => "txtReply" ,
-//	'value' => $reply = $model->children()->first() ? $reply->text : '' ,
+	'rows' => "3" ,
 ]     )
 @include("forms.select" , [
 	'name' => "status",
-	'value' => $model->status ,
-	'options' => $model->statusCombo() ,
+	'value' => $parent->status ,
+	'options' => $parent->statusCombo() ,
 	'value_field' => "0" ,
 	'caption_field' => "1" ,
+	'condition' => $parent->children()->count()==0,
 ]     )
 
 @include("forms.check-form" , [
 	'name' => "send_email",
 	'value' => 1 ,
-	'condition' => $model->email or $model->user_id ,
+	'condition' => $parent->email or $parent->user_id ,
 	'self_label' => trans('posts.comments.reply_via_email_too') ,
 ]     )
 

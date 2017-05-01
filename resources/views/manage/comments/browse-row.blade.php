@@ -59,10 +59,10 @@
 	])
 
 	@include("manage.frame.widgets.grid-tiny" , [
-		'icon' => "comment-o",
-		'text' => pd($model->children()->count()) . ' ' . trans('posts.comments.reply')  ,
-		'link' => '' ,
-		'condition' => $model->published_at != null ,
+		'icon' => $model->replied_on? "comments-o" : "comment-o",
+		'text' => pd($model->parent()->children()->count()) . ' ' . trans('posts.comments.reply')  ,
+		'link' => "modal:manage/comments/act/-id-/show",
+//		'condition' => $model->published_at != null ,
 	]   )
 </td>
 
@@ -74,7 +74,7 @@
 --}}
 @include("manage.frame.widgets.grid-actionCol" , [ "actions" => [
 	['pencil' , trans('forms.button.edit') , "modal:manage/comments/act/-id-/edit" , $model->can('edit')],
-	['reply-all' , trans('manage.permissions.process') , 'modal:manage/comments/act/-id-/process' , $model->can('process')],
+	['eye' , trans('forms.button.show_details') , 'modal:manage/comments/act/-id-/show'],
 
 	['trash-o' , trans('forms.button.soft_delete') , "modal:manage/comments/act/-id-/delete" , $model->can('delete') and !$model->trashed()] ,
 	['recycle' , trans('forms.button.undelete') , "modal:manage/comments/act/-id-/undelete" , $model->can('delete') and $model->trashed()],
