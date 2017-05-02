@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Manage;
 
 use App\Http\Requests\Manage\CommentProcessRequest;
+use App\Http\Requests\Manage\CommentSaveRequest;
 use App\Models\Comment;
 use App\Models\Posttype;
 use App\Traits\ManageControllerTrait;
@@ -86,6 +87,41 @@ class CommentsController extends Controller
 
 		return view($this->view_folder . ".browse", compact('page', 'models', 'db', 'posttype'));
 
+
+	}
+
+	public function save(CommentSaveRequest $request)
+	{
+		/*-----------------------------------------------
+		| Model Selection ...
+		*/
+		$model = Comment::find($request->id);
+		if(!$model) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+
+		/*-----------------------------------------------
+		| Permission ...
+		*/
+		if(!$model->can('edit')) {
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+		}
+
+		/*-----------------------------------------------
+		| Save ...
+		*/
+		$ok = $model->saveStatus($request->status);
+		if($ok) {
+			$ok = Comment::store($request , ['status']);
+		}
+
+		/*-----------------------------------------------
+		| Feedback ...
+		*/
+
+		return $this->jsonAjaxSaveFeedback($ok, [
+			'success_callback' => "rowUpdate('tblComments','$request->id')",
+		]);
 
 	}
 

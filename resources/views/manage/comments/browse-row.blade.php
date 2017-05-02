@@ -10,16 +10,9 @@
 --}}
 
 <td>
-	@include("manage.frame.widgets.grid-text" , [
-		'condition' => $model->user_id,
-		'text' => ($model->user? $model->user->full_name : trans('people.deleted_user') ). ': ' ,
-		'link' => $model->user? "urlN:manage/users/browse/all/search?id=".$model->user_id."&searched=1" : null,
-	])
-	@include("manage.frame.widgets.grid-text" , [
-		'condition' => !$model->user_id,
-		'text' => "$model->name ($model->email): " ,
-	])
-	@include("manage.frame.widgets.grid-text" , [
+	@include("manage.comments.show-sender")
+
+ 	@include("manage.frame.widgets.grid-text" , [
 		'text' => str_limit($model->text,400),
 		'text2' => $model->text ,
 		'size' => "11" ,

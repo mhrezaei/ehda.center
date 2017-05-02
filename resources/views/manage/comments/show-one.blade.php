@@ -3,18 +3,7 @@
 		<div class="noContent">{{ trans('forms.status_text.deleted') }}</div>
 	@else
 		<div class="{{ $comment->trashed()? 'noContent' : '' }}">
-			@include("manage.frame.widgets.grid-text" , [
-				'condition' => $comment->user_id,
-				'icon' => $comment->is_by_admin? 'user-circle-o' : 'user' ,
-				'color' => $comment->is_by_admin? 'orange' : '',
-				'text' => ($comment->user? $comment->user->full_name : trans('people.deleted_user') ). ': ' ,
-				'link' => $comment->user? "urlN:manage/users/browse/all/search?id=".$comment->user_id."&searched=1" : null,
-			])
-			@include("manage.frame.widgets.grid-text" , [
-				'icon' => "user-o" ,
-				'condition' => !$comment->user_id,
-				'text' => "$comment->name ($comment->email): " ,
-			])
+			@include("manage.comments.show-sender")
 			@include("manage.frame.widgets.grid-text" , [
 				'text' => $comment->text ,
 				'size' => "12" ,

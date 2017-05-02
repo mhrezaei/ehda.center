@@ -52,19 +52,19 @@
 				@if(isset($icon))
 					<i class="fa fa-{{$icon}} mhl5"></i>
 				@endif
-				<div class="text1 {{$class}}">
+				<span class="text1 {{$class}}">
 					@pd($text)
 					@if(isset($text2) and $text != $text2)
 						<span class="fa fa-angle-double-down clickable text-green" onclick="$(this).parent().parent().children(' .text2 , .text1').toggle()"></span>
 					@endif
-				</div>
+				</span>
 				@if(isset($text2))
-					<div class="text2 {{$class}} noDisplay" >
+					<span class="text2 {{$class}} noDisplay" >
 						@pd($text2)
 						@if(isset($text2) and $text != $text2)
 							<span class="fa fa-angle-double-up clickable text-green" onclick="$(this).parent().parent().children(' .text2 , .text1').toggle()"></span>
 						@endif
-				</div>
+				</span>
 				@endif
 			</span>
 		@endif

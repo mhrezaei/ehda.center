@@ -436,6 +436,7 @@ class Post extends Model
 	public static function selector($parameters = [])
 	{
 		extract(array_normalize($parameters , [
+			'id' => "0" ,
 			'slug' => "",
 			'role' => "user", //@TODO
 			'criteria' => "published",
@@ -450,10 +451,13 @@ class Post extends Model
 		$table = self::where('id' , '>' , '0') ;
 
 		/*-----------------------------------------------
-		| Slug ...
+		| Slug & id...
 		*/
 		if($slug) {
 			$table = $table->where('slug' , $slug) ;
+		}
+		if($id) {
+			$table = $table->where('id' , $id) ;
 		}
 
 		/*-----------------------------------------------

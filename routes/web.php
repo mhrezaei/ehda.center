@@ -103,8 +103,8 @@ Route::group([
 		//Route::get('/{posttype}/{request_tab?}/{switches?}', 'CommentsController@browse');
 		//
 		Route::group(['prefix' => 'save'], function () {
+			Route::post('/', 'CommentsController@save');
 			Route::post('/process' , 'CommentsController@process');
-		//	Route::post('/', 'CommentsController@save');
 		//	Route::post('/delete', 'CommentsController@delete');
 		//	Route::post('/undelete', 'CommentsController@undelete');
 		//	Route::post('/destroy', 'CommentsController@destroy');
