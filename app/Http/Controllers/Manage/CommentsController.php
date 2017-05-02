@@ -29,13 +29,13 @@ class CommentsController extends Controller
 		$this->view_folder   = "manage.comments";
 	}
 
-	public function browse($request_tab = 'pending', $switches = null)
+	public function browse($request_tab = 'pending', $switch = null)
 	{
 		$_SESSION['debug_mode'] = 0;
 		/*-----------------------------------------------
 		| Break Switches ...
 		*/
-		$switches = array_normalize(array_maker($switches), [
+		$switches = array_normalize(array_maker($switch), [
 			'post_id'      => "0",
 			'type'         => "all",
 			'replied_on'   => null,
@@ -85,7 +85,7 @@ class CommentsController extends Controller
 		| View ...
 		*/
 
-		return view($this->view_folder . ".browse", compact('page', 'models', 'db', 'posttype' , 'switches'));
+		return view($this->view_folder . ".browse", compact('page', 'models', 'db', 'posttype' , 'switches' , 'switch'));
 
 
 	}

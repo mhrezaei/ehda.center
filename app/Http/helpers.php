@@ -106,7 +106,7 @@ function array_normalize($array, $reference)
 
 }
 
-function array_maker($string, $first_delimiter = '-', $second_delimiter = ':')
+function array_maker($string, $first_delimiter = '-', $second_delimiter = '=')
 {
 	$array = explode($first_delimiter, str_replace(' ', null, $string));
 	foreach($array as $key => $switch) {

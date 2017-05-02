@@ -142,7 +142,6 @@ class PostsController extends Controller
 			'id'       => "0",
 		]);
 
-
 		$locale = $switches['locale'];
 		if(!in_array($locale, $posttype->locales_array)) {
 			$locale = 'all';

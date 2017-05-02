@@ -167,7 +167,7 @@
 			'condition' => $model->has('comment'),
 			'text' => pd($model->total_comments+0) . ' ' . trans('posts.comments.singular') ,
 			'icon' => "comments-o" ,
-			'link' => "url:manage/comments/all/post_id:96" ,
+			'link' => "url:manage/comments/all/post_id=-id-" ,
 		]     )
 	</td>
 @endif
