@@ -47,14 +47,14 @@
 	@include("manage.frame.widgets.grid-text" , [
 		'text' => trans("forms.status_text.$model->status") ,
 		'color' => trans("forms.status_color.$model->status") ,
-		'link' => "modal:manage/comments/act/-id-/show",
+		'link' => $model->trashed()? '' : "modal:manage/comments/act/-id-/show",
 		'icon' => trans("forms.status_icon.$model->status") ,
 	])
 
 	@include("manage.frame.widgets.grid-tiny" , [
 		'icon' => $model->replied_on? "comments-o" : "comment-o",
 		'text' => pd($model->parent()->children()->count()) . ' ' . trans('posts.comments.reply')  ,
-		'link' => "modal:manage/comments/act/-id-/show",
+		'link' => $model->trashed()? '' : "modal:manage/comments/act/-id-/show",
 //		'condition' => $model->published_at != null ,
 	]   )
 </td>
@@ -66,10 +66,10 @@
 |
 --}}
 @include("manage.frame.widgets.grid-actionCol" , [ "actions" => [
-	['pencil' , trans('forms.button.edit') , "modal:manage/comments/act/-id-/edit" , $model->can('edit')],
-	['eye' , trans('forms.button.show_details') , 'modal:manage/comments/act/-id-/show'],
+	['pencil' , trans('forms.button.edit') , "modal:manage/comments/act/-id-/edit" , !$model->trashed() and $model->can('edit')],
+	['eye' , trans('forms.button.show_details') , 'modal:manage/comments/act/-id-/show' , !$model->trashed()],
 
 	['trash-o' , trans('forms.button.soft_delete') , "modal:manage/comments/act/-id-/delete" , $model->can('delete') and !$model->trashed()] ,
-	['recycle' , trans('forms.button.undelete') , "modal:manage/comments/act/-id-/undelete" , $model->can('delete') and $model->trashed()],
-	['times' , trans('forms.button.hard_delete') , "modal:manage/comments/act/-id-/destroy" , $model->can('delete') and $model->trashed()],
+	['recycle' , trans('forms.button.undelete') , "modal:manage/comments/act/-id-/undelete" , $model->can('bin') and $model->trashed()],
+	['times' , trans('forms.button.hard_delete') , "modal:manage/comments/act/-id-/destroy" , $model->can('bin') and $model->trashed()],
 ]])

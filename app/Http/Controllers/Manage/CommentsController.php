@@ -181,6 +181,57 @@ class CommentsController extends Controller
 
 
 	}
+	public function delete(Request $request)
+	{
+		$model = Comment::find($request->id);
+		if(!$model) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
 
+		if(!$model->can('delete')) {
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+		}
+
+		return $this->jsonAjaxSaveFeedback($model->delete(), [
+			'success_callback' => "rowHide('tblComments' , '$request->id')",
+			'success_refresh'  => false,
+		]);
+
+	}
+	public function undelete(Request $request)
+	{
+		$model = Comment::onlyTrashed()->find($request->id);
+		if(!$model) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+
+		if(!$model->can('bin')) {
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+		}
+
+		return $this->jsonAjaxSaveFeedback($model->undelete(), [
+			'success_callback' => "rowHide('tblComments' , '$request->id')",
+			'success_refresh'  => false,
+		]);
+	}
+
+
+	public function destroy(Request $request)
+	{
+		$model = Comment::onlyTrashed()->find($request->id);
+		if(!$model) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+
+		if(!$model->can('bin')) {
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+		}
+
+		return $this->jsonAjaxSaveFeedback($model->forceDelete(), [
+			'success_callback' => "rowHide('tblComments' , '$request->id')",
+			'success_refresh'  => false,
+		]);
+
+	}
 }
 
