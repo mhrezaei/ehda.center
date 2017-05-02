@@ -162,6 +162,13 @@
 			'color' => "primary",
 			'link' => "modal:manage/posts/act/-id-/draw-winners" ,
 		])
+		
+		@include("manage.frame.widgets.grid-tiny" , [
+			'condition' => $model->has('comment'),
+			'text' => pd($model->total_comments+0) . ' ' . trans('posts.comments.singular') ,
+			'icon' => "comments-o" ,
+			'link' => "url:manage/comments/all/post_id:96" ,
+		]     )
 	</td>
 @endif
 

@@ -126,6 +126,7 @@ class Post extends Model
 	public function cacheUpdate()
 	{
 		$this->cacheUpdateReceipts() ;
+		$this->cacheUpdateComments() ;
 	}
 
 	public function cacheRegenerateOnUpdate()
@@ -147,7 +148,9 @@ class Post extends Model
 
 	public function cacheUpdateComments()
 	{
-		//@TODO
+		$this->updateMeta( [
+			'total_comments' => $this->comments()->count() ,
+		] , true );
 	}
 
 

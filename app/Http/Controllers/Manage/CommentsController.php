@@ -85,7 +85,7 @@ class CommentsController extends Controller
 		| View ...
 		*/
 
-		return view($this->view_folder . ".browse", compact('page', 'models', 'db', 'posttype'));
+		return view($this->view_folder . ".browse", compact('page', 'models', 'db', 'posttype' , 'switches'));
 
 
 	}

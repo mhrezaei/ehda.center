@@ -6,6 +6,7 @@
 	</div>
 
 	@include("manage.frame.widgets.toolbar" , [
+		'subtitle_view' => "manage.comments.browse-subtitle" ,
 		'buttons-' => [
 			[
 				'target' => url("manage/posts/$posttype->slug/create/locale"),
