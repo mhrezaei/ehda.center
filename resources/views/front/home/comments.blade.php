@@ -1,7 +1,7 @@
-@if($comments->count() and setting()->ask('dashboard_comment')->gain())
+@if($comments->count() and setting()->ask('dashboard_comment')->gain() and $commentingPost->canShowComments())
     {{ null, $commentingPost->spreadMeta() }}
     <section id="testimonials">
-        <div class="simple-title">{{ $commentingPost->title2 }}</div>
+        <div class="simple-title">{{ $commentingPost->title_shown_on_showing_comments }}</div>
         <div class="testimonials-list">
             @foreach($comments as $comment)
                 {{ null , $comment->spreadMeta() }}

@@ -7,16 +7,11 @@
 @section('navbar')
     @include('front.frame.navbar',
     [
-        'array' =>
-        [
-            [trans('front.home'), url_locale('')],
-            [trans('front.products'), url_locale('products')],
-            [$folder->title, url_locale('products/categories/' . $folder->slug)],
-        ],
-        'title' => $folder->title
+        'array' => $breadCrumb,
+        'title' => end($breadCrumb)[0],
     ])
 @endsection
 
 @section('content')
-    @include('front.products.products.content')
+    {!! PostsServiceProvider::showList($selectConditions) !!}
 @endsection

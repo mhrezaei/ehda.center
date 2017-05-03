@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Requests\Front\CommentRequest;
+use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Folder;
 use App\Models\Post;
+use App\Models\Posttype;
 use App\Traits\ManageControllerTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -56,10 +59,4 @@ class PostController extends Controller
         ]);
     }
 
-    public function newsArchive()
-    {
-        $news = Post::selector(['type' => 'news'])->orderBy('id', 'desc')->get();
-
-        return view('front.news.archive.0', compact('news'));
-    }
 }

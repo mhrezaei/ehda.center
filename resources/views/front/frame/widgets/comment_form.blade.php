@@ -1,5 +1,4 @@
-{{ null, $post->spreadMeta() }}
-@if($post->allow_anonymous_comment or user())
+@if($post->canRecieveComments())
     {!! Form::open([
         'url' => \App\Providers\SettingServiceProvider::getLocale() . "/comment",
         'method'=> 'post',

@@ -12,8 +12,10 @@ return [
     'home' => 'خانه',
     'about' => 'درباره ما',
     'products' => 'محصولات',
+    'posts' => 'مطالب',
     'contact_us' => 'تماس با ما',
-    'categories' => 'دسته‌های',
+    'categories' => 'دسته‌ها',
+    'categories_of' => 'دسته‌های',
     'show_products' => 'مشاهده محصولات',
     'drawing_code_register' => 'ثبت کد قرعه‌کشی',
     'check_code' => 'بررسی کد',
@@ -26,6 +28,9 @@ return [
     'relogin' => 'اطلاعات شما در سایت موجود است، لطفا وارد شوید.',
     'register_failed' => 'خطایی در ثبت نام رخ داده است، دوباره تلاش کنید.',
     'register_success' => 'ثبت نام با موفقیت انجام شد، منتظر بمانید.',
+    'register_success_sms' => 'ثبت نام شما در «::site» با موفقیت انجام شد.',
+    'register_success_email' => 'ثبت نام شما در «::site» با موفقیت انجام شد.',
+    'register_code_success_sms' => "سلام ::name جان،\n\rکد قرعه‌کشی شما با موفقیت ثبت شد.",
     'all_user_score' => 'امتیاز جمع‌آوری شده:',
     'edit_profile' => 'ویرایش پروفایل',
     'accepted_codes' => 'کدهای ثبت شده',
@@ -53,10 +58,11 @@ return [
     'toman' => 'تومان',
     'to' => 'تا',
     'profile_messages' => [
-        'not_enough_information' => 'اطلاعات پروفایل شما کافی نیست.'
+        'not_enough_information' => 'اطلاعات پروفایل شما کافی نیست.',
+        'complete_to_join_drawing' => 'برای شرکت در قرعه‌کشی باید اطلاعات پروفایل خود را کامل کنید.',
     ],
     'news' => 'اخبار',
+    'faqs' => 'سوالات متداول',
     'more' => 'ادامه مطلب',
-
-
+    'search_for' => 'جست و جو برای «::search»'
 ];

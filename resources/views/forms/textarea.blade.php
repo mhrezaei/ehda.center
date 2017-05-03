@@ -16,6 +16,15 @@ if (isset($disabled) and $disabled) {
     $extra .= ' disabled ';
 }
 
+if(!isset($placeholder)) {
+	if(Lang::has("validation.attributes_placeholder.$name")) {
+		$placeholder = trans("validation.attributes_placeholder.$name") ;
+    }
+    else {
+		$placeholder = '' ;
+    }
+}
+
 ?>
 @if(!isset($condition) or $condition)
 
@@ -47,7 +56,7 @@ if (isset($disabled) and $disabled) {
                                     id="{{$id or ''}}"
                                     name="{{$name}}" value="{{$value or ''}}"
                                     class="form-control {{$class or ''}}"
-                                    placeholder="{{$placeholder or trans('validation.attributes_placeholder.'.$name)}}"
+                                    placeholder="{{$placeholder}}"
                                     rows="{{$rows or 5}}"
                                     {{$extra or ''}}
                             >{{$value or ''}}</textarea>

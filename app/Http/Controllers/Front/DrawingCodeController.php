@@ -24,36 +24,30 @@ class DrawingCodeController extends Controller
         $data = array();
         $continue = true;
         $count = 1;
-        
-        if ($request->session()->get('drawing_try'))
-        {
+
+        if ($request->session()->get('drawing_try')) {
             $try = $request->session()->get('drawing_try');
             $count = $try['count'];
 
-            if ($count > 100)
-            {
+            if ($count > 100) {
                 $continue = false;
             }
 
             $data['status'] = 'fail';
             $data['msg'] = trans('front.drawing_check_code_fail');
             $data['abc'] = 1;
-        }
-        else
-        {
+        } else {
             $request->session()->put(
-                'drawing_try' ,
+                'drawing_try',
                 [
                     'count' => $count,
                     'last' => Carbon::now()->toDateTimeString(),
                 ]);
         }
 
-        if (DrawingCodeServiceProvider::check_uniq($code) && $continue)
-        {
+        if (DrawingCodeServiceProvider::check_uniq($code) && $continue) {
             $check_drawing = Receipt::where('code', $code)->get();
-            if (sizeof($check_drawing))
-            {
+            if (sizeof($check_drawing)) {
                 $data['status'] = 'fail';
                 $data['msg'] = trans('front.drawing_check_code_fail');
                 $data['abc'] = 2;
@@ -61,17 +55,13 @@ class DrawingCodeController extends Controller
                 $try = $request->session()->get('drawing_try');
                 $try['count'] = $try['count'] + 1;
                 $request->session()->put('drawing_try', $try);
-            }
-            else
-            {
+            } else {
                 $request->session()->put('drawingCode', encrypt($code));
                 $data['status'] = 'success';
                 $data['msg'] = trans('front.drawing_code_success_receive_please_wait');
                 $data['login'] = user()->exists;
             }
-        }
-        else
-        {
+        } else {
             $try = $request->session()->get('drawing_try');
             $try['count'] = $try['count'] + 1;
             $request->session()->put('drawing_try', $try);

@@ -4,9 +4,45 @@
             <div class="col-xs-12">
                 <div class="avatar tac"><img src="{{ url('/assets/images/user.svg') }}" width="64"></div>
                 <h2 class="name"> {{ user()->full_name }} </h2>
-                <span class="label alt green md"> {{ trans('front.all_user_score') }}
-                    <strong>{{ pd(floor(user()->sum_receipt_amount / 500000)) }}</strong> {{-- @TODO: rate_point should be set dynamically. Currently, was hardcode! --}}
-                </span>
+                {{ null, $colors = ['blue','red', 'green'] }}
+                {{ null , $events = user()->drawingRecentScores(3, 7) }}
+                <div class="row">
+
+                    @foreach($events as $key => $event)
+                        {{ null, $event->spreadMeta() }}
+                        @if(\Carbon\Carbon::parse($event->ends_at)->lt(\Carbon\Carbon::now()))
+                            {{ null, $class = 'gray' }}
+                            {{ null, $icon = 'calendar-times-o' }}
+                        @else
+                            {{ null, $class = $colors[$key%count($colors)] }}
+                            {{ null, $icon = 'calendar-check-o' }}
+                        @endif
+                        {{--<div style="display: table-cell;">--}}
+                        {{--<span class="label alt {{ $class }} md">--}}
+                        {{--{{ $event->title }} :--}}
+                        {{--{{ trans('front.all_user_score') }}--}}
+                        {{--<strong>--}}
+                        {{--{{ pd(floor($event->sum_amount / $event->rate_point)) }}--}}
+                        {{--امتیاز--}}
+                        {{--</strong>--}}
+                        {{-- @TODO: rate_point should be set dynamically. Currently, was hardcode! --}}
+                        {{--</span>--}}
+                        {{--</div>--}}
+                        <div class="score-box {{ $class }}" style="width: {{ 100 / count($events) }}%">
+                            <div class="score-box-inner">
+                                <div class="score-box-icon">
+                                    <i class="fa fa-{{ $icon }}"></i>
+                                </div>
+                                <div class="score-box-title">
+                                    {{ $event->title }}
+                                </div>
+                                <div class="score-box-score">
+                                    {{ pd(floor($event->sum_amount / $event->rate_point)) }} امتیاز
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
             </div>
             @if(!arrayHasRequired(\App\Models\User::$required_fields, user()->toArray()))
                 <div class="col-xs-12 pt20">
