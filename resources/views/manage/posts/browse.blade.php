@@ -14,6 +14,13 @@
 				'caption' => trans('forms.button.add_to').' '.$posttype->title ,
 				'icon' => "plus-circle",
 			],
+			[
+				'target' => "modal:manage/settings/act/$posttype->id/posttype" ,
+				'type' => "primary" ,
+				'caption' => trans('settings.downstream') ,
+				'icon' => "gear" ,
+				'condition' => user()->as('admin')->can('super') ,
+			]
 		],
 		'search' => [
 			'target' => url("manage/posts/$posttype->slug/$locale/search"),

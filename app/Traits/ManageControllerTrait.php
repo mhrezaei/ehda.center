@@ -61,6 +61,11 @@ trait ManageControllerTrait
 			return $this->massAction($view_file, $option);
 		}
 
+		$special_method = camel_case($view_file . "_root_form");
+		if(method_exists($this, $special_method)) {
+			return $this->$special_method($model_id , $option);
+		}
+
 		//Model...
 		$Model = $this->Model;
 		if($Model::hasColumn('deleted_at')) {

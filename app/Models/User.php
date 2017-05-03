@@ -14,29 +14,25 @@ class User extends Authenticatable
 {
 	use Notifiable, TahaModelTrait, PermitsTrait, SoftDeletes;
 
-	public static $meta_fields = [
+	public static $meta_fields     = [
 		'preferences',
 		'name_father',
-		'marital',
-		'total_receipts_count',
-		'total_receipts_amount',
-		'birth_date',
-		'education',
 		'home_tel',
 		'postal_code',
 		'address',
-		'marriage_date',
 		'reset_token',
 	];
-	public static $search_fields = ['name_first', 'name_last', 'name_firm', 'code_melli', 'email', 'mobile'];
+	public static $search_fields   = ['name_first', 'name_last', 'name_firm', 'code_melli', 'email', 'mobile'];
 	public static $required_fields = ['name_first', 'name_last', 'code_melli', 'mobile', 'home_tel', 'birth_date', 'gender', 'marital'];
-	protected     $guarded       = ['id'];
-	protected     $hidden        = ['password', 'remember_token'];
-	protected     $casts         = [
+	protected     $guarded         = ['id'];
+	protected     $hidden          = ['password', 'remember_token'];
+	protected     $casts           = [
 		'meta'                  => 'array',
 		'newsletter'            => 'boolean',
 		'password_force_change' => 'boolean',
 		'published_at'          => 'datetime',
+		'marriage_date'         => 'datetime',
+		'birth_date'            => 'datetime',
 	];
 
 
@@ -60,7 +56,7 @@ class User extends Authenticatable
 
 	public function comments()
 	{
-		return $this->hasMany('App\Models\Comment') ;
+		return $this->hasMany('App\Models\Comment');
 	}
 
 	/*
@@ -119,11 +115,9 @@ class User extends Authenticatable
 		/*-----------------------------------------------
 		| Process id ...
 		*/
-		if($id>0) {
-			$table = $table->where('users.id' , $id);
+		if($id > 0) {
+			$table = $table->where('users.id', $id);
 		}
-
-
 
 
 		/*-----------------------------------------------

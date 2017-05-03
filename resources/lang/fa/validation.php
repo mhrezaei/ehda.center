@@ -213,6 +213,10 @@ return [
 		"time"             => 'ساعت و دقیقه، در قالب مرسوم دقیقه:ساعت. مثل ۲۰:۴۲',
 
 		'your_comment' => 'نظر شما',
+	     'max_per_page' => "در هر صفحه، چند پست باید جا شود؟ تعداد را اینجا بنویسید. عدد صفر این قابلیت را غیر فعال می‌کند." ,
+	     'fresh_time_duration' => "  هر مطلب تا چه زمانی بعد از انتشار «جدید» تلقی شود؟ بر حسب روز وارد کنید." ,
+	     'featured_image_width' => "طول عکس پیش‌فرض را بر حسب پیکسل وارد کنید." , 
+	     'featured_image_height' => "عرض عکس پیش‌فرض را بر حسب پیکسل وارد کنید." ,
 	],
 
 	/*
@@ -456,6 +460,11 @@ return [
 		'title_shown_on_sending_comments' => "عنوان جعبه‌ی دریافت دیدگاه" ,
 	     'title_shown_on_showing_comments' => "عنوان فهرست نمایشگاه دیدگاه‌ها" ,
 	     'reply' => "پاسخ" ,
+	     'max_per_page' => "ظرفیت صفحه" ,
+	     'default_featured_image' => "عکس پیش‌فرض" ,
+	     'featured_image_width' => "طول عکس" ,
+	     'featured_image_height' => "عرض عکس" ,
+	     'fresh_time_duration' => "زمان تازگی مطلب" ,
 	],
 
 	"http" => [
