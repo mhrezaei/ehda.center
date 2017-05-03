@@ -11,6 +11,8 @@ $(document).ready(function () {
     });
 });
 
+var ajaxDelay = 1; // in seconds
+var ajaxTimer = new Timer();
 var filterableAttributes = [];
 var filterData = {};
 var filterUrl = '';
@@ -96,9 +98,6 @@ function initialFilter(modify) {
                             if (event.originalEvent) {
                                 doFilter();
                             }
-                        },
-                        slide: function () {
-                            alert('test')
                         }
                     });
                     sliderEl.slider('values', values);
@@ -317,6 +316,8 @@ function decryptHash(hash) {
 
 function getFilterResult() {
     var hash = getHashUrl();
+    var targetEl = $('.product-list');
+
     $.ajax({
         type: 'POST',
         url: filterUrl,
@@ -324,26 +325,17 @@ function getFilterResult() {
             hash: hash,
             _token: window.Laravel.csrfToken
         },
+        beforeSend: function () {
+            targetEl.addClass('loading');
+        },
         success: function (result) {
-            $('.product-list').replaceWith($(result))
+            targetEl.replaceWith($(result))
+            targetEl.removeClass('loading');
         }
     });
 }
 
 function doFilter() {
     setHashUrl(encryptHash(filterData));
-    getFilterResult();
-}
-
-function showSeconds() {
-    if (!isDefined(window.ajaxRemainingTime)) {
-        window.ajaxRemainingTime = 15;
-    }
-    setInterval(function () {
-        if (window.ajaxRemainingTime >= 0) {
-            console.log(window.ajaxRemainingTime--)
-        } else {
-            return false;
-        }
-    }, 1000);
+    ajaxTimer.delay(getFilterResult, ajaxDelay);
 }

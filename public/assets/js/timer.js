@@ -30,7 +30,17 @@ function Timer() {
         } else {
             return false;
         }
-    }
+    };
+
+    thisTimer.stop = function () {
+        clearInterval(thisTimer.runningInterval);
+        delete thisTimer.runningInterval;
+    };
+
+    thisTimer.force = function () {
+        thisTimer.setTime(-1);
+        thisTimer.stop();
+    };
 
     thisTimer.delay = function (callback, time) {
         if (isDefined(callback) &&
@@ -42,11 +52,15 @@ function Timer() {
 
             thisTimer.setTime(time);
 
-            var myInterval = setInterval(function () {
-                console.log(thisTimer.getTime() + ' seconds remaining..')
-                if (!thisTimer.decreaseTime()) {
+            // TODO: shoud check if this timer is running or not?
+            thisTimer.stop();
+
+            thisTimer.runningInterval = setInterval(function () {
+                if (thisTimer.decreaseTime()) {
+                    console.warn((thisTimer.getTime() + 1) + ' seconds remaining...');
+                } else {
                     callback();
-                    clearInterval(myInterval);
+                    thisTimer.stop();
                 }
             }, 1000);
 
