@@ -29,8 +29,9 @@ class EmailServiceProvider extends ServiceProvider
 
     public static function send($msgBody, $to, $name, $subject, $template)
     {
-        $user['data'] = $msgBody->toArray();
-        Mail::send('template.email.' . $template, $user, function ($m) use ($to, $name, $subject) {
+//        $user['data'] = $msgBody->toArray();
+        $data['text'] = $msgBody;
+        Mail::send('templates.email.' . $template, $data, function ($m) use ($to, $name, $subject) {
             $m->from(env('MAIL_FROM'), trans('front.site_title'));
 
             $m->to($to, $name)

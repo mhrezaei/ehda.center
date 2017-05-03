@@ -165,14 +165,14 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-         \App\Providers\ManageServiceProvider::class,
-         'App\Providers\ValidationServiceProvider',
+        \App\Providers\ManageServiceProvider::class,
+        'App\Providers\ValidationServiceProvider',
 
         /*
          * Package Service Providers...
          */
         Laravel\Tinker\TinkerServiceProvider::class,
-         Vinkla\Hashids\HashidsServiceProvider::class,
+        Vinkla\Hashids\HashidsServiceProvider::class,
         Asanak\Sms\AsanakSmsProvider::class,
 
         /*
@@ -184,9 +184,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-         Collective\Html\HtmlServiceProvider::class,
-         Barryvdh\Debugbar\ServiceProvider::class,
-         Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
+        Collective\Html\HtmlServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
+        Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
 
 //        'App\Providers\ValidationServiceProvider',
 //        App\Providers\SettingServiceProvider::class,
@@ -247,12 +247,13 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
 
-         'Manage' => \App\Providers\ManageServiceProvider::class ,
-          'NoCaptcha' => 'Anhskohbo\NoCaptcha\Facades\NoCaptcha',
+        'Manage' => \App\Providers\ManageServiceProvider::class,
+        'NoCaptcha' => 'Anhskohbo\NoCaptcha\Facades\NoCaptcha',
         'Hashids' => Vinkla\Hashids\Facades\Hashids::class,
         'jDate' => Morilog\Jalali\Facades\jDate::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'AsanakSms' => Asanak\Sms\Facade\AsanakSmsFacade::class,
+        'PostsServiceProvider' => \App\Providers\PostsServiceProvider::class,
 
         //          'Setting' => \App\Providers\SettingServiceProvider::class,
     ],

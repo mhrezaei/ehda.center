@@ -9,37 +9,38 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Crypt;
 use Vinkla\Hashids\Facades\Hashids;
 
+
 class Post extends Model
 {
-    use TahaModelTrait, SoftDeletes;
+	use TahaModelTrait, SoftDeletes;
 
-    protected $guarded = ['id'];
-    protected static $search_fields = ['title', 'slug'];
-    public static $reserved_slugs = "none,without"; //to be used in Requests
+	public static    $reserved_slugs = "none,without";
+	public static    $meta_fields    = ['dynamic'];
+	protected static $search_fields  = ['title', 'slug']; //to be used in Requests
+	protected        $guarded        = ['id'];
+	protected        $casts          = [
+		'is_draft'     => "boolean",
+		'is_limited'   => "boolean",
+		'published_at' => 'datetime',
+	];
 
-    protected $casts = [
-        'is_draft' => "boolean",
-        'is_limited' => "boolean",
-        'published_at' => 'datetime',
-    ];
+	/*
+	|--------------------------------------------------------------------------
+	| Relations
+	|--------------------------------------------------------------------------
+	|
+	*/
 
-    public static $meta_fields = ['dynamic'];
+	public function categories()
+	{
+		return $this->belongsToMany('App\Models\Category')->withTimestamps();
+	}
 
-    /*
-    |--------------------------------------------------------------------------
-    | Relations
-    |--------------------------------------------------------------------------
-    |
-    */
-    public function categories()
-    {
-        return $this->belongsToMany('App\Models\Category')->withTimestamps();
-    }
+	public function folders()
+	{
+		return $this->belongsToMany('App\Models\Folder')->withTimestamps();
+	}
 
-    public function folders()
-    {
-        return $this->belongsToMany('App\Models\Folder')->withTimestamps();
-    }
 	public function roles()
 	{
 		return $this->belongsToMany('App\Models\Role')->withTimestamps(); //@TODO: complete with withPivot('permissions' , 'deleted_at') perhaps
@@ -49,14 +50,17 @@ class Post extends Model
 	{
 		$posttype = Posttype::findBySlug($this->type);
 
-		if($posttype)
-			return $posttype ;
-		else
-			return new Posttype() ;
+		if($posttype) {
+			return $posttype;
+		}
+		else {
+			return new Posttype();
+		}
 	}
+
 	public function getPosttypeAttribute()
 	{
-		return $this->posttype() ;
+		return $this->posttype();
 	}
 
 	public function comments()
@@ -66,12 +70,12 @@ class Post extends Model
 
 	public function sisters()
 	{
-		return self::where('sisterhood' , $this->sisterhood) ;
+		return self::where('sisterhood', $this->sisterhood);
 	}
 
 	public function copies()
 	{
-		return self::where('copy_of' , $this->id) ;
+		return self::where('copy_of', $this->id);
 	}
 
 	public function original()
@@ -80,28 +84,33 @@ class Post extends Model
 			return new self();
 		}
 		else {
-			$original = self::find($this->copy_of) ;
-			if($original)
-				return $original ;
-			else
+			$original = self::find($this->copy_of);
+			if($original) {
+				return $original;
+			}
+			else {
 				return new self();
+			}
 		}
 	}
 
 	public function in($locale)
 	{
-		if($locale==$this->locale)
-			return $this ;
+		if($locale == $this->locale) {
+			return $this;
+		}
 
-		$model = $this->sisters()->where('locale' , $locale)->first() ;
-		if($model)
-			return $model ;
+		$model = $this->sisters()->where('locale', $locale)->first();
+		if($model) {
+			return $model;
+		}
 		else {
-			$model = new self() ;
-			$model->locale = $locale ;
-			$model->type = $this->type ;
-			$model->sisterhood = $this->sisterhood ;
-			return $model ;
+			$model             = new self();
+			$model->locale     = $locale;
+			$model->type       = $this->type;
+			$model->sisterhood = $this->sisterhood;
+
+			return $model;
 		}
 	}
 
@@ -109,10 +118,10 @@ class Post extends Model
 	{
 		//$this->spreadMeta() ;
 		if($this->hasnot('event')) {
-			return Receipt::where('id' , '0') ;
+			return Receipt::where('id', '0');
 		}
 		else {
-			return Receipt::whereBetween('purchased_at' , [$this->starts_at , $this->ends_at]) ;
+			return Receipt::whereBetween('purchased_at', [$this->starts_at, $this->ends_at]);
 		}
 	}
 
@@ -125,32 +134,32 @@ class Post extends Model
 	*/
 	public function cacheUpdate()
 	{
-		$this->cacheUpdateReceipts() ;
-		$this->cacheUpdateComments() ;
+		$this->cacheUpdateReceipts();
+		$this->cacheUpdateComments();
 	}
 
 	public function cacheRegenerateOnUpdate()
 	{
-		session()->put('test' , 'triggered1') ;
+		session()->put('test', 'triggered1');
 		if($this->has('event')) {
-			$this->cacheUpdateReceipts() ;
-			session()->put('test' , 'triggered2') ;
+			$this->cacheUpdateReceipts();
+			session()->put('test', 'triggered2');
 		}
 	}
 
 	public function cacheUpdateReceipts()
 	{
-		$this->updateMeta( [
-			'total_receipts_count' => $this->receipts->count(),
-		     'total_receipts_amount' => $this->receipts->sum('purchased_amount'),
-		] , true ) ;
+		$this->updateMeta([
+			'total_receipts_count'  => $this->receipts->count(),
+			'total_receipts_amount' => $this->receipts->sum('purchased_amount'),
+		], true);
 	}
 
 	public function cacheUpdateComments()
 	{
-		$this->updateMeta( [
-			'total_comments' => $this->comments()->count() ,
-		] , true );
+		$this->updateMeta([
+			'total_comments' => $this->comments()->count(),
+		], true);
 	}
 
 
@@ -167,19 +176,21 @@ class Post extends Model
 	 */
 	public function getWinnersArrayAttribute()
 	{
-		$winners = $this->meta('winners') ;
+		$winners = $this->meta('winners');
 		if(!is_array($winners)) {
-			$winners = [] ;
+			$winners = [];
 		}
-		return $winners ;
+
+		return $winners;
 	}
 
 
 	public function getImageAttribute()
 	{
-		$image_url = $this->spreadMeta()->featured_image ;
-		if(!$image_url)
+		$image_url = $this->spreadMeta()->featured_image;
+		if(!$image_url) {
 			$image_url = 'assets/images/close.png';
+		}
 
 		return asset($image_url);
 	}
@@ -187,12 +198,12 @@ class Post extends Model
 
 	public function getDiscountPercentAttribute()
 	{
-		if(!$this->price or $this->price == $this->sale_price)
-			return null ;
+		if(!$this->price or $this->price == $this->sale_price) {
+			return null;
+		}
 
-		return round((($this->price - $this->sale_price) * 100) / $this->price) ;
+		return round((($this->price - $this->sale_price) * 100) / $this->price);
 	}
-
 
 
 	public function getIddAttribute()
@@ -202,37 +213,43 @@ class Post extends Model
 
 	public function getEncryptedTypeAttribute()
 	{
-		return $this->posttype->encrypted_slug ;
+		return $this->posttype->encrypted_slug;
 	}
 
 
 	public function getStatusAttribute()
 	{
-		if(!$this->exists)
-			return 'unsaved' ;
+		if(!$this->exists) {
+			return 'unsaved';
+		}
 
-		if($this->trashed())
-			return 'deleted' ;
+		if($this->trashed()) {
+			return 'deleted';
+		}
 
-		if($this->isPublished())
-			return 'published' ;
+		if($this->isPublished()) {
+			return 'published';
+		}
 
-		if($this->isScheduled())
-			return 'scheduled' ;
+		if($this->isScheduled()) {
+			return 'scheduled';
+		}
 
-		if($this->isDraft())
+		if($this->isDraft()) {
 			return 'draft';
+		}
 
-		if($this->isPending())
-			return 'pending' ;
+		if($this->isPending()) {
+			return 'pending';
+		}
 
-		return 'unknown' ;
+		return 'unknown';
 
 	}
 
 	public function getSiteLinkAttribute()
 	{
-		return $this->locale.'/page/'.$this->id;
+		return $this->locale . '/page/' . $this->id;
 	}
 
 	public function getPreviewLinkAttribute()
@@ -243,56 +260,55 @@ class Post extends Model
 
 	public function getOtherLocalesAttribute()
 	{
-		$array = $this->posttype->locales_array ;
-		$key = array_search($this->locale , $array) ;
-		array_forget($array , $key);
+		$array = $this->posttype->locales_array;
+		$key   = array_search($this->locale, $array);
+		array_forget($array, $key);
 
-		return $array ;
+		return $array;
 	}
 
 	public function getCreateLinkAttribute()
 	{
-		return url("manage/posts/".$this->type."/create/".$this->locale."/".$this->sisterhood) ;
+		return url("manage/posts/" . $this->type . "/create/" . $this->locale . "/" . $this->sisterhood);
 	}
 
 	public function getEditLinkAttribute()
 	{
-		return url("manage/posts/".$this->type."/edit/".$this->id) ;
+		return url("manage/posts/" . $this->type . "/edit/" . $this->id);
 	}
 
 
 	public function getEditorMoodAttribute()
 	{
 		if(!$this->exists) {
-			$mood = 'new' ;
+			$mood = 'new';
 		}
 		elseif($this->copy_of) {
-			$mood = 'copy' ;
+			$mood = 'copy';
 		}
-		else{
+		else {
 			$mood = 'original';
 		}
 
-		return $mood ;
+		return $mood;
 
 	}
 
 	public function getNormalizedSlugAttribute()
 	{
-		return self::normalizeSlug($this->id , $this->type , $this->locale , $this->slug);
+		return self::normalizeSlug($this->id, $this->type, $this->locale, $this->slug);
 	}
 
 	public function getCategoryIdsAttribute()
 	{
-		$categories = $this->categories ;
-		$list = [] ;
+		$categories = $this->categories;
+		$list       = [];
 		foreach($categories as $category) {
-			array_push($list , $category->id);
+			array_push($list, $category->id);
 		}
 
-		return $list ;
+		return $list;
 	}
-
 
 
 	/*
@@ -304,7 +320,7 @@ class Post extends Model
 
 	public function isUnder($category)
 	{
-		return (in_array($category->id , $this->category_ids)) ;
+		return (in_array($category->id, $this->category_ids));
 	}
 
 	public function has($feature)
@@ -329,7 +345,7 @@ class Post extends Model
 
 	public function can($permit)
 	{
-		return user()->as('admin')->can('post-' . $this->type . '.' . $permit) ;
+		return user()->as('admin')->can('post-' . $this->type . '.' . $permit);
 	}
 
 	public function canPublish()
@@ -339,36 +355,43 @@ class Post extends Model
 
 	public function canEdit()
 	{
-		if(!$this->exists or $this->trashed())
-			return false ;
+		if(!$this->exists or $this->trashed()) {
+			return false;
+		}
 
-		if($this->isOwner() and !$this->isApproved() and $this->can('create'))
-			return true ;
+		if($this->isOwner() and !$this->isApproved() and $this->can('create')) {
+			return true;
+		}
 
-		if(!$this->isApproved() and $this->can('publish') and $this->can('edit'))
-			return true ;
+		if(!$this->isApproved() and $this->can('publish') and $this->can('edit')) {
+			return true;
+		}
 
 		return $this->can('edit');
 	}
 
 	public function canDelete()
 	{
-		if(!$this->exists)
-			return true ;
+		if(!$this->exists) {
+			return true;
+		}
 
-		if($this->isOwner() and !$this->isApproved() and $this->can('create'))
-			return true ;
+		if($this->isOwner() and !$this->isApproved() and $this->can('create')) {
+			return true;
+		}
 
 		return $this->can('delete');
 	}
 
 	public function canBin()
 	{
-		if(!$this->exists)
-			return false ;
+		if(!$this->exists) {
+			return false;
+		}
 
-		if($this->isOwner() and !$this->isApproved() and $this->can('create'))
-			return true ;
+		if($this->isOwner() and !$this->isApproved() and $this->can('create')) {
+			return true;
+		}
 
 		return $this->can('bin');
 	}
@@ -376,18 +399,18 @@ class Post extends Model
 	public function isPublished()
 	{
 
-		return (!$this->trashed() and $this->published_by and $this->published_at and $this->published_at <= Carbon::now()) ;
+		return (!$this->trashed() and $this->published_by and $this->published_at and $this->published_at <= Carbon::now());
 
 	}
 
 	public function isScheduled()
 	{
-		return ($this->published_by and $this->published_at and $this->published_at > Carbon::now()) ;
+		return ($this->published_by and $this->published_at and $this->published_at > Carbon::now());
 	}
 
 	public function isApproved()
 	{
-		return boolval($this->published_by) ;
+		return boolval($this->published_by);
 	}
 
 	public function isRejected()
@@ -398,12 +421,12 @@ class Post extends Model
 
 	public function isDraft()
 	{
-		return $this->is_draft ;
+		return $this->is_draft;
 	}
 
 	public function isPending()
 	{
-		return (!$this->isDraft() and !$this->published_by) ;
+		return (!$this->isDraft() and !$this->published_by);
 	}
 
 	public function isCopy()
@@ -413,10 +436,11 @@ class Post extends Model
 
 	public function isOwner()
 	{
-		if(!$this->exists)
-			return true ;
+		if(!$this->exists) {
+			return true;
+		}
 
-		return user()->id == $this->owned_by ;
+		return user()->id == $this->owned_by;
 	}
 
 
@@ -428,119 +452,119 @@ class Post extends Model
 	*/
 	public static function wherePublished()
 	{
-		return self::where('published_by' , '>' , '0');
+		return self::where('published_by', '>', '0');
 	}
 
 	public static function ownedBy($user_id)
 	{
-		return self::where('owned_by' , $user_id);
+		return self::where('owned_by', $user_id);
 	}
 
 	public static function selector($parameters = [])
 	{
-		extract(array_normalize($parameters , [
-			'id' => "0" ,
-			'slug' => "",
-			'role' => "user", //@TODO
+		extract(array_normalize($parameters, [
+			'id'       => "0",
+			'slug'     => "",
+			'role'     => "user", //@TODO
 			'criteria' => "published",
-			'locale' => getLocale(),
-			'owner' => 0,
-			'type' => "feature:searchable",
+			'locale'   => getLocale(),
+			'owner'    => 0,
+			'type'     => "feature:searchable",
 			'category' => "", //@TODO
-			'keyword' => "", //[@TODO
-		     'search' => "",
+			'keyword'  => "", //[@TODO
+			'search'   => "",
 		]));
 
-		$table = self::where('id' , '>' , '0') ;
+		$table = self::where('id', '>', '0');
 
 		/*-----------------------------------------------
 		| Slug & id...
 		*/
 		if($slug) {
-			$table = $table->where('slug' , $slug) ;
+			$table = $table->where('slug', $slug);
 		}
 		if($id) {
-			$table = $table->where('id' , $id) ;
+			$table = $table->where('id', $id);
 		}
 
 		/*-----------------------------------------------
 		| Process Type ...
 		*/
-		if(str_contains($type , 'feature:')) {
-			$feature = str_replace('feature:' , null , $type) ;
-			$type = Posttype::withFeature($feature); //returns an array of posttypes
+		if(str_contains($type, 'feature:')) {
+			$feature = str_replace('feature:', null, $type);
+			$type    = Posttype::withFeature($feature); //returns an array of posttypes
 		}
 
 		//when an array of selected posttypes are requested
 		if(is_array($type)) {
-			$table = $table->whereIn('type' , $type) ;
+			$table = $table->whereIn('type', $type);
 		}
 
 		//when 'all' posttypes are requested
-		elseif($type=='all') {
+		elseif($type == 'all') {
 			// nothing required here :)
 		}
 
 		//when an specific type is requested
 		else {
-			$table = $table->where('type' , $type);
+			$table = $table->where('type', $type);
 		}
 
 		/*-----------------------------------------------
 		| Process Locale ...
 		*/
-		if(in_array($locale , ['all' , null])) {
+		if(in_array($locale, ['all', null])) {
 			//nothing to do :)
 		}
 		else {
-			$table = $table->where('locale' , $locale);
+			$table = $table->where('locale', $locale);
 		}
 
 		/*-----------------------------------------------
 		| Process Owner ...
 		*/
-		if($owner>0) {
-			$table = $table->where('owned_by',$owner);
+		if($owner > 0) {
+			$table = $table->where('owned_by', $owner);
 		}
 
 		/*-----------------------------------------------
 		| Process Criteria ...
 		*/
 		$now = Carbon::now()->toDateTimeString();
-		switch($criteria) {
+		switch ($criteria) {
 			case 'all' :
 				break;
 
 			case 'all_with_trashed' :
-				$table = $table->withTrashed() ;
+				$table = $table->withTrashed();
 				break;
 
 			case 'published':
-				$table = $table->whereDate('published_at','<=',$now)->where('published_by' , '>' , '0') ;
+				$table = $table->whereDate('published_at', '<=', $now)->where('published_by', '>', '0');
 				break;
 
 			case 'scheduled' :
-				$table = $table->whereDate('published_at','>',$now)->where('published_by' , '>' , '0') ;
+				$table = $table->whereDate('published_at', '>', $now)->where('published_by', '>', '0');
 				break;
 
 			case 'pending':
-				$table = $table->where('published_by', '0')->where('is_draft',0) ;
+				$table = $table->where('published_by', '0')->where('is_draft', 0);
 				break;
 
 			case 'drafts' :
-				$table = $table->where('is_draft',1)->where('published_by' , '0');
+				$table = $table->where('is_draft', 1)->where('published_by', '0');
 				break;
 
 			case 'rejected' :
-				$table = $table->where('moderated_by' , '>', '0')->where('published_by', '0') ;
+				$table = $table->where('moderated_by', '>', '0')->where('published_by', '0');
 				break;
 
 			case 'my_posts' :
-				$table = $table->where('owned_by',user()->id);
-				break ;
+				$table = $table->where('owned_by', user()->id);
+				break;
 
 			case 'my_drafts' :
-				$table = $table->where('owned_by',user()->id)->where('is_draft',true)->where('published_by' , '0');
+				$table = $table->where('owned_by', user()->id)->where('is_draft', true)->where('published_by', '0');
 				break;
 
 			case 'bin' :
@@ -548,7 +572,7 @@ class Post extends Model
 				break;
 
 			default:
-				$table = $table->where('id' , '0') ;
+				$table = $table->where('id', '0');
 				break;
 
 		}
@@ -561,7 +585,7 @@ class Post extends Model
 
 
 		//Return...
-		return $table ;
+		return $table;
 
 	}
 
@@ -573,63 +597,65 @@ class Post extends Model
 	*/
 	public function saveCategories($data)
 	{
-		$selected_categories = [] ;
-		$selected_folders = [] ;
+		$selected_categories = [];
+		$selected_folders    = [];
 		foreach($data as $key => $value) {
-			if(str_contains($key,'category') and $value) {
-				$category_id = Category::realId(str_replace('category-' , null , $key));
-				$category = Category::find($category_id) ;
+			if(str_contains($key, 'category') and $value) {
+				$category_id = Category::realId(str_replace('category-', null, $key));
+				$category    = Category::find($category_id);
 				if($category) {
-					array_push($selected_categories , $category->id);
-					array_push($selected_folders , $category->folder_id);
+					array_push($selected_categories, $category->id);
+					array_push($selected_folders, $category->folder_id);
 				}
 			}
 		}
 
-		$this->categories()->sync(  $selected_categories );
-		$this->folders()->sync( $selected_folders );
+		$this->categories()->sync($selected_categories);
+		$this->folders()->sync($selected_folders);
 
 
 	}
+
 	public static function normalizeSlug($post_id, $post_type, $post_locale, $slug)
 	{
 		//preparations...
-		$found_a_unique_slug = false ;
-		$tries = 1 ;
+		$found_a_unique_slug = false;
+		$tries               = 1;
 
 		//Invalid Patterns...
-		if(!$slug)
-			return '' ;
+		if(!$slug) {
+			return '';
+		}
 
-		$slug = str_slug(str_limit($slug , 30));
+		$slug = str_slug(str_limit($slug, 30));
 
 		//General Corrections...
 		$slug = strtolower($slug);
-		if(str_contains("01234567890-_",$slug[0])) {
-			$slug = "p" . $slug ;
+		if(str_contains("01234567890-_", $slug[0])) {
+			$slug = "p" . $slug;
 		}
 
-		$purified_original_slug = $slug ;
-		if(in_array($slug , explode(',',self::$reserved_slugs))) {
-			$tries++ ;
-			$slug .= "-".strval($tries) ;
+		$purified_original_slug = $slug;
+		if(in_array($slug, explode(',', self::$reserved_slugs))) {
+			$tries++;
+			$slug .= "-" . strval($tries);
 		}
 
 
 		//loop...
-		while(!$found_a_unique_slug) {
-			$used = self::where('id','!=',$post_id)->where('type' , $post_type)->where('locale' , $post_locale)->where('slug' , $slug)->where('copy_of',0)->withTrashed()->count();
+		while (!$found_a_unique_slug) {
+			$used = self::where('id', '!=', $post_id)->where('type', $post_type)->where('locale', $post_locale)->where('slug', $slug)->where('copy_of', 0)->withTrashed()->count();
 			if($used) {
-				$tries++ ;
-				$slug = $purified_original_slug ."-".strval($tries) ;
+				$tries++;
+				$slug = $purified_original_slug . "-" . strval($tries);
 			}
 			else {
-				$found_a_unique_slug = true ;
+				$found_a_unique_slug = true;
 			}
 		}
 
 		//return...
-		return $slug ;
+		return $slug;
 
 	}
 
@@ -641,34 +667,34 @@ class Post extends Model
 	public function visibilityCombo()
 	{
 		return [
-			['public' , trans('posts.visibility.public')],
-			['limited' , trans('posts.visibility.limited')],
+			['public', trans('posts.visibility.public')],
+			['limited', trans('posts.visibility.limited')],
 		];
 	}
 
 	public static function checkManagePermission($posttype, $criteria)
 	{
-		switch($criteria) {
+		switch ($criteria) {
 			case 'search' :
-				$permit = '*' ;
+				$permit = '*';
 				break;
 
 			case 'pending':
 			case 'drafts' :
-				$permit = '*' ;
+				$permit = '*';
 				break;
 
 			case 'my_posts' :
 			case 'my_drafts' :
-				$permit = 'create' ;
+				$permit = 'create';
 				break;
 
 			case 'bin' :
-				$permit = '*' ;
+				$permit = '*';
 				break;
 
 			default :
-				$permit = '*' ;
+				$permit = '*';
 		}
 
 		return user()->as('admin')->can("posts-$posttype.$permit");
@@ -676,12 +702,195 @@ class Post extends Model
 
 	public function prepareForDrawing()
 	{
-		return Drawing::prepareDatabase($this) ;
+		return Drawing::prepareDatabase($this);
 	}
 
 	public function isDrawingReady()
 	{
 		return Drawing::isReady($this->id);
+	}
+
+	public function getCreatorAttribute()
+	{
+		$user = User::find($this->created_by);
+		if(!$user) {
+			$user = new User();
+		}
+
+		return $user;
+	}
+
+	public function getPublisherAttribute()
+	{
+		$user = User::find($this->published_by);
+		if(!$user) {
+			$user = new User();
+		}
+
+		return $user;
+	}
+
+	public function getDeleterAttribute()
+	{
+		$user = User::find($this->deleted_by);
+		if(!$user) {
+			$user = new User();
+		}
+
+		return $user;
+	}
+
+	public function getViewableFeaturedImageAttribute()
+	{
+		$this->spreadMeta();
+		if($this->featured_image and url_exists(url($this->featured_image))) {
+			return url($this->featured_image);
+		}
+		else {
+			if($typeImage = $this->posttype->spreadMeta()->default_featured_image) {
+				return url($typeImage);
+			}
+		}
+	}
+
+	public function getViewableFeaturedImageThumbnailAttribute()
+	{
+		$image = $this->viewable_featured_image;
+
+		return str_replace_last('/', '/thumbs/', $image);
+	}
+
+	public function getViewableAlbumAttribute()
+	{
+		$this->spreadMeta();
+		$album = $this->album;
+		if($album and is_array($album and count($album))) {
+			foreach($album as &$image) {
+				$image = url($image);
+			}
+
+			return $album;
+		}
+
+		return [];
+	}
+
+	public function getViewableAlbumThumbnailsAttribute()
+	{
+		$album = $this->viewable_album;
+		if($album and is_array($album) and $album) {
+			foreach($album as &$image) {
+				$image = str_replace_last('/', '/thumbs/', $image);
+			}
+
+			return $album;
+		}
+
+		return [];
+	}
+
+	public function getDirectUrlAttribute()
+	{
+		switch ($this->type) {
+			case 'products':
+				return url_locale('products/pd-' . ($this->id));
+				break;
+			case 'news':
+				return url_locale('news/nw-' . ($this->id));
+				break;
+			case 'faqs':
+				return url_locale('faqs/faq-' . ($this->id));
+				break;
+		}
+	}
+
+	public function similars($number = null)
+	{
+		$posts = Post::where([
+			['id', '<>', $this->id],        // not self post
+			'type' => $this->type,          // similar post type
+		]);
+
+		// similar categories
+		$categories = $this->categories;
+		if($categories->count()) {
+			$posts->whereHas('categories', function ($query) use ($categories) {
+				$query->whereIn('categories.id', $categories->pluck('id')->toArray());
+			});
+		}
+
+		// check availability for "products"
+		if($this->has('price')) {
+			$posts->where(['is_available' => true]);
+		}
+
+		if($number and is_int($number)) {
+			// sort
+			$posts->orderBy('published_at', 'DESC');
+
+			return $posts->limit($number)->get();
+		}
+
+		return $posts;
+	}
+
+	public function getCurrentPriceAttribute()
+	{
+		if($this->isIt('IN_SALE')) {
+			return $this->sale_price;
+		}
+		else {
+			return $this->price;
+		}
+	}
+
+
+	public function canRecieveComments()
+	{
+		$this->spreadMeta();
+		if((user()->exists or $this->allow_anonymous_comment) and
+			(!$this->disable_receiving_comments)
+		) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	public function canShowComments()
+	{
+		$this->spreadMeta();
+		if(!$this->disable_showing_comments) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	public function isIt($switch)
+	{
+		$switch = strtoupper($switch);
+		switch ($switch) {
+			case 'NEW':
+				$freshTime   = 100 * 24 * 60; // 100 days (in minutes) @TODO: should be saved in settings
+				$publishTime = new Carbon($this->published_at);
+				$now         = Carbon::now();
+				if($now->gt($publishTime) and ($now->diffInMinutes($publishTime) <= $freshTime)) {
+					return true;
+				}
+				break;
+
+			case 'IN_SALE':
+				$this->spreadMeta();
+				if($this->sale_price and ($this->sale_price != $this->price)) {
+					return true;
+				}
+				break;
+		}
+
+		return false;
 	}
 
 }

@@ -14,7 +14,6 @@
         ]
     ])
 @endsection
-
 @section('content')
     @include('front.products.folders.content')
 @endsection

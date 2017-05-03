@@ -110,9 +110,9 @@ class ForgotPasswordController extends Controller
                     . "\n\r"
                     . setting()->ask('site_url')->gain();
 
-//                $sendingResult = AsanakSms::send($user->mobile, $smsText);
-                file_put_contents('passwordToken.txt', $smsText);
-                $sendingResult = '["111"]';
+                $sendingResult = AsanakSms::send($user->mobile, $smsText);
+//                file_put_contents('passwordToken.txt', $smsText);
+//                $sendingResult = '["111"]';
 
                 $sendingResult = json_decode($sendingResult);
                 if ($sendingResult and is_array($sendingResult) and is_numeric($sendingResult[0])) {

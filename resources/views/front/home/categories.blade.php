@@ -2,7 +2,7 @@
     <div id="categories">
         <div class="container">
             <div class="part-title">
-                <h3><span>{{ trans('front.categories') }}</span> {{ trans('front.products') }} </h3></div>
+                <h3><span>{{ trans('front.categories_of') }}</span> {{ trans('front.products') }} </h3></div>
             <div class="cats">
                 <div class="row">
                     @foreach($categories as $cat)

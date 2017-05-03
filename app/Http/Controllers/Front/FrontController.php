@@ -7,7 +7,9 @@ use App\Models\Comment;
 use App\Models\Folder;
 use App\Models\Post;
 use App\Models\User;
+use App\Providers\EmailServiceProvider;
 use App\Traits\TahaControllerTrait;
+use Asanak\Sms\Facade\AsanakSms;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -72,6 +74,11 @@ class FrontController extends Controller
             'password' => Hash::make($input['password']),
 
         ];
+
+        if ($input['email']) {
+            $user['email'] = $input['email'];
+        }
+
         $store = User::store($user);
 
         if ($store) {
@@ -80,6 +87,25 @@ class FrontController extends Controller
 
             // add customer role
             user()->attachRole('customer');
+
+            // send sms
+            if (setting()->ask('send_sms_on_register_user')->gain()) {
+                $smsText = str_replace('::site', setting()->ask('site_title')->gain(), trans('front.register_success_sms'))
+                    . "\n\r"
+                    . setting()->ask('site_url')->gain();
+
+                $sendingResult = AsanakSms::send($user['mobile'], $smsText);
+                $sendingResult = json_decode($sendingResult);
+            }
+
+            if (isset($user['email']) and setting()->ask('send_email_on_register_user')->gain()) {
+                $emailText = str_replace('::site', setting()->ask('site_title')->gain(), trans('passwords.register_success_email'))
+                    . "\n\r"
+                    . setting()->ask('site_url')->gain();
+
+                $sendingResult = EmailServiceProvider::send($emailText, $user['email'], trans('front.site_title'), trans('people.form.recover_password'), 'default_email');
+            }
+
 
             return $this->jsonFeedback(null, [
                 'ok' => 1,

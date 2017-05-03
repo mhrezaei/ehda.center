@@ -4,7 +4,17 @@
             @if(sizeof($array))
 
                 @foreach($array as $arr)
-                    <li><a href="{{ $arr[1] }}"> {{ $arr[0] }} </a></li>
+                    <li>
+                        @if(isset($arr[1]) and strlen(trim($arr[1])))
+                            <a href="{{ $arr[1] }}">
+                                {{ $arr[0] }}
+                            </a>
+                        @else
+                            <span>
+                                {{ $arr[0] }}
+                            </span>
+                        @endif
+                    </li>
                 @endforeach
             @endif
         </ul>

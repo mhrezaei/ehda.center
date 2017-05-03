@@ -9,6 +9,7 @@
     @if(getLocale() != 'en')
         {{ Html::style('assets/css/front-style.css') }}
         {{ Html::style('assets/css/front-additives-fa.min.css') }}
+        {{ Html::style('assets/libs/font-awesome/css/font-awesome.min.css') }}
     @else
         {{ Html::style('assets/css/front-style-en.css') }}
     @endif

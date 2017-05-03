@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Providers\DummyServiceProvider;
 use App\Traits\PermitsTrait;
 use App\Traits\TahaModelTrait;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Support\Facades\DB;
 
 
 class User extends Authenticatable
@@ -417,4 +420,41 @@ class User extends Authenticatable
 		return $post->receipts->where('user_id', $this->id)->sum('purchased_amount');
 	}
 
+    public function drawingRecentScores($eventsNumber, $historyLimit = 0)
+    {
+//        $locales = ['en', 'fa', 'ar'];
+//        $prices = [50000, 100000, 20000, 15000, 73000];
+//        for ($i = 1; $i < 200; $i++) {
+//            $data = [
+//                'type' => 'events',
+//                'locale' => $locales[$i % (count($locales))],
+//                'title' => DummyServiceProvider::persianTitle(),
+//                'starts_at' => Carbon::parse('2017-04-10')->addDays($i % 5)->toDateTimeString(),
+//                'ends_at' => Carbon::parse('2017-04-23')->addDays($i % 5)->toDateTimeString(),
+//                'moderate_note' => null,
+//                'title2' => '',
+//                'rate_point' => $prices[$i % (count($prices))],
+//            ];
+//
+//            Post::store($data);
+//        }
+//        die();
+
+        return Post::where([
+            'type' => 'events',
+            'locale' => getLocale(),
+        ])->whereDate('starts_at', '<=', Carbon::now())
+            ->whereDate('ends_at', '>=', Carbon::now()->subDay($historyLimit))
+            ->leftJoin('receipts', [
+                ['starts_at', '<=', 'purchased_at'],
+                ['ends_at', '>=', 'purchased_at'],
+                ['user_id', '=', DB::raw(user()->id)]
+            ])
+            ->select(DB::raw('posts.*, sum(receipts.purchased_amount) as sum_amount'))
+            ->groupBy(DB::raw('posts.id'))
+            ->limit($eventsNumber)
+            ->orderBy('sum_amount', 'DESC')
+            ->get();
+
+    }
 }

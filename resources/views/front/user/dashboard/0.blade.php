@@ -18,8 +18,6 @@
 @section('content')
     <div class="page-content profile">
         @include('front.user.frame.user_dashboars_header', ['dashboard' => 'active'])
-        @if(setting()->ask('dashboard_comment')->gain())
             @include('front.user.dashboard.add_comment')
-        @endif
     </div>
 @endsection

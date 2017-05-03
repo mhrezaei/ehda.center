@@ -26,22 +26,23 @@ class RegisterSaveRequest extends FormRequest
     {
         $input = $this->all();
         return [
-            'name_first' => 'required|persian:60' ,
-            'name_last' => 'required|persian:60' ,
+            'name_first' => 'required|persian:60',
+            'name_last' => 'required|persian:60',
             'code_melli' => 'required|code_melli',
-            'mobile' => 'required|phone:mobile' ,
+            'mobile' => 'required|phone:mobile',
+            'email' => 'email',
             'password' => 'required|same:password2|min:8|max:50|',
         ];
     }
 
     public function all()
     {
-        $value	= parent::all();
-        $purified = ValidationServiceProvider::purifier($value,[
-            'name_first'  =>  'pd',
-            'name_last'  =>  'pd',
-            'code_melli' => 'ed' ,
-            'mobile' => 'ed' ,
+        $value = parent::all();
+        $purified = ValidationServiceProvider::purifier($value, [
+            'name_first' => 'pd',
+            'name_last' => 'pd',
+            'code_melli' => 'ed',
+            'mobile' => 'ed',
             'password' => 'ed',
             'password2' => 'ed',
         ]);

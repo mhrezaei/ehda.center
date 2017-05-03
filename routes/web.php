@@ -225,34 +225,55 @@ Route::group(['namespace' => 'Auth', 'prefix' => '{lang}', 'middleware' => ['Det
 
 
 Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Setting']], function () {
-	Route::get('/', 'FrontController@index');
-	Route::get('/hadi', 'TestController@index');
-	Route::post('/register/new', 'FrontController@register');
+    Route::get('/', 'FrontController@index');
+    Route::get('/hadi', 'TestController@index');
+    Route::post('/register/new', 'FrontController@register');
 
-	// drawing code
-	Route::post('/drawing/check', 'DrawingCodeController@sumbitCode');
+    // drawing code
+    Route::post('/drawing/check', 'DrawingCodeController@sumbitCode');
 
-	Route::group(['prefix' => '{lang}', 'middleware' => ['UserIpDetect']], function () {
+    Route::group(['prefix' => '{lang}', 'middleware' => ['UserIpDetect']], function () {
 
-		// news
-		Route::get('/news', 'PostController@newsArchive');
+        // saving comments for all posts
+        Route::post('/comment', 'PostController@submit_comment');
 
-		// saving comments for all posts
-		Route::post('/comment', 'PostController@submit_comment');
+        Route::get('/', 'FrontController@index');
 
-		Route::get('/', 'FrontController@index');
-		Route::get('/products', 'ProductsController@index');
-		Route::get('/products/categories/{slug}', 'ProductsController@products');
-		Route::get('/page/{slug}', 'PostController@page');
+        // products
+        Route::group(['prefix' => 'products'], function () {
+            Route::get('/', 'ProductsController@index');
+            Route::post('filter', 'ProductsController@ajaxFilter');
+            Route::get('{identifier}', 'ProductsController@showProduct')
+                ->where('identifier', '^pd-(\w|-)+$'); // if identifier starts with "pd-"
+            Route::get('{folder}/{category?}', 'ProductsController@products');
+//            Route::get('categories/{slug}', 'ProductsController@products');
+        });
 
-		// user Route
-		Route::group(['prefix' => 'user', 'middleware' => ['auth', 'is:customer']], function () {
-			Route::get('/dashboard', 'UserController@index');
-			Route::get('/profile', 'UserController@profile');
-			Route::get('/drawing', 'UserController@drawing');
-			Route::get('/events', 'UserController@events');
-			Route::post('/profile/update', 'UserController@update');
-		});
-	});
+        // news
+        Route::group(['prefix' => 'news'], function () {
+            Route::get('/', 'NewsController@archive');
+            Route::get('{identifier}', 'NewsController@single')
+                ->where('identifier', '^nw-(\w|-)+$'); // if identifier starts with "nw-"
+        });
+
+        // faqs
+        Route::group(['prefix' => 'faqs'], function () {
+            Route::get('/', 'FaqsController@archive');
+            Route::get('{identifier}', 'FaqsController@single')
+                ->where('identifier', '^faq-(\w|-)+$'); // if identifier starts with "faq-"
+        });
+
+
+        Route::get('/page/{slug}', 'PostController@page');
+
+        // user Route
+        Route::group(['prefix' => 'user', 'middleware' => ['auth', 'is:customer']], function () {
+            Route::get('/dashboard', 'UserController@index');
+            Route::get('/profile', 'UserController@profile');
+            Route::get('/drawing', 'UserController@drawing');
+            Route::get('/events', 'UserController@events');
+            Route::post('/profile/update', 'UserController@update');
+        });
+    });
 
 });

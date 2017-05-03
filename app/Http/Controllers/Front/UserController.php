@@ -8,6 +8,7 @@ use App\Models\Receipt;
 use App\Models\User;
 use App\Providers\DrawingCodeServiceProvider;
 use App\Traits\ManageControllerTrait;
+use Asanak\Sms\Facade\AsanakSms;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -61,6 +62,16 @@ class UserController extends Controller
                 'purchased_amount' => $drawing_code['price'],
             ];
             Receipt::store($new_receipt);
+
+            if (setting()->ask('send_sms_on_register_code')->gain()) {
+                $smsText = str_replace('::name', user()->name_first, trans('front.register_code_success_sms'))
+                    . "\n\r"
+                    . setting()->ask('site_url')->gain();
+
+                $sendingResult = AsanakSms::send(user()->mobile, $smsText);
+                $sendingResult = json_decode($sendingResult);
+            }
+
             $request->session()->forget('drawingCode');
             $request->session()->forget('drawing_try');
         }

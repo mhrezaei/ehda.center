@@ -1,16 +1,16 @@
-$(document).ready(function(){
+$(document).ready(function () {
 
     var body_rtl = false;
-    if($('body').css('direction') == 'rtl'){
+    if ($('body').css('direction') == 'rtl') {
         body_rtl = true;
     }
 
     /*-----------------------------------------------------------------
      - Dropdown
      -----------------------------------------------------------------*/
-    $('.dropdown-toggle').on('click', function(e) {
+    $('.dropdown-toggle').on('click', function (e) {
         e.preventDefault();
-        if($(this).next('.menu').hasClass('open')){
+        if ($(this).next('.menu').hasClass('open')) {
             $('.dropdown-toggle').removeClass('active').next('.menu').removeClass('open');
         } else {
             $('.dropdown-toggle').removeClass('active').next('.menu').removeClass('open');
@@ -18,7 +18,7 @@ $(document).ready(function(){
         }
 
     });
-    $(document).on('click', function(e) {
+    $(document).on('click', function (e) {
         var target = e.target;
         if (!$(target).is('.dropdown-toggle, .dropdown-toggle *') && !$(target).parents().is('.dropdown-toggle + .menu')) {
             $('.dropdown-toggle').removeClass('active');
@@ -27,27 +27,30 @@ $(document).ready(function(){
     });
 
     /*-----------------------------------------------------------------
-    - FAQ
-    -----------------------------------------------------------------*/
+     - FAQ
+     -----------------------------------------------------------------*/
+    $('.faq-item.no-collapse').addClass('open');
     $('.faq-item:first-child').addClass('open');
     $('.faq-item a.q').on('click', function (e) {
         e.preventDefault();
-        $(this).next('.answer').slideToggle('fast', function () {
-            $(this).parent('.faq-item').toggleClass('open');
-        });
+        if (!$(this).closest('.faq-item').hasClass('no-collapse')) {
+            $(this).next('.answer').slideToggle('fast', function () {
+                $(this).parent('.faq-item').toggleClass('open');
+            });
+        }
     });
 
     /*-----------------------------------------------------------------
-    - Home Slider
-    -----------------------------------------------------------------*/
+     - Home Slider
+     -----------------------------------------------------------------*/
     $('#home-slides ul.home-slides').responsiveSlides({
         auto: true,
         pager: true,
     });
 
     /*-----------------------------------------------------------------
-    - Product Gallery
-    -----------------------------------------------------------------*/
+     - Product Gallery
+     -----------------------------------------------------------------*/
     $('ul.slides').responsiveSlides({
         auto: false,
         manualControls: "#product-gallery-thumbnails",
@@ -62,8 +65,8 @@ $(document).ready(function(){
     });
 
     /*-----------------------------------------------------------------
-    - Testimonials
-    -----------------------------------------------------------------*/
+     - Testimonials
+     -----------------------------------------------------------------*/
     $('.testimonials-list').slick({
         autoplay: true,
         centerMode: true,
@@ -75,8 +78,8 @@ $(document).ready(function(){
 
 
     /*-----------------------------------------------------------------
-    - Gift input
-    -----------------------------------------------------------------*/
+     - Gift input
+     -----------------------------------------------------------------*/
     $("input.gift-input").keydown(function (e) {
         if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
             (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
@@ -90,7 +93,7 @@ $(document).ready(function(){
         }
         $(this).val(persianJs($(this).val()).englishNumber().toString());
     });
-    $("input.gift-input").keyup(function(){
+    $("input.gift-input").keyup(function () {
         $(this).val(persianJs($(this).val()).englishNumber().toString());
         if (this.value.length >= this.attributes["maxlength"].value) {
             $(this).next('.gift-input').focus();
@@ -101,7 +104,7 @@ $(document).ready(function(){
     /*-----------------------------------------------------------------
      - Modal
      -----------------------------------------------------------------*/
-    $('[data-modal]').on('click', function(e) {
+    $('[data-modal]').on('click', function (e) {
         e.preventDefault();
         var target = $(this).attr('data-modal');
         var file_elm = $(this).attr('data-index');
@@ -112,15 +115,15 @@ $(document).ready(function(){
         $('.modal-wrapper').addClass('open');
         $(target).addClass('open').attr('data-file', file_elm);
 
-        $( 'body' ).append( '<div class="overlay"></div>' );
-        setTimeout(function(){
+        $('body').append('<div class="overlay"></div>');
+        setTimeout(function () {
             $('.overlay').addClass('open');
             $('.blurable').addClass('open');
         }, 10);
     });
-    $(document).on('click', '.modal-wrapper, .close-modal', function(e) {
+    $(document).on('click', '.modal-wrapper, .close-modal', function (e) {
 
-        if($(e.target).is('.modal *')){
+        if ($(e.target).is('.modal *')) {
             return;
         }
 
@@ -132,7 +135,7 @@ $(document).ready(function(){
 
         $('.overlay').removeClass('open');
         $('.blurable').removeClass('open');
-        setTimeout(function(){
+        setTimeout(function () {
             $('.overlay').remove();
         }, 300);
     });
