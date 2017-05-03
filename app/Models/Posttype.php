@@ -34,7 +34,7 @@ class Posttype extends Model
 		'full_history'      => ['history', 'success', []],
 		'digest'            => ['fire', 'info', []],
 		'schedule'          => ['clock-o', 'info', ['original_published_at:auto']],
-		'event'             => ['calendar', 'warning', ['start_time:date', 'end_time:date']],
+		'event'             => ['calendar', 'warning', []],
 		'register'          => ['user-plus', 'warning', []],
 		'visibility_choice' => ['shield', 'warning', []],
 		//			'template_choice' => ['th-large' , 'warning' , []],
