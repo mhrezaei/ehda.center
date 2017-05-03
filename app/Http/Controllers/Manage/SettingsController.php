@@ -2,56 +2,61 @@
 
 namespace App\Http\Controllers\Manage;
 
+use App\Http\Requests\Manage\PosttypeDownstreamSaveRequest;
+use App\Models\Posttype;
 use App\Models\Setting;
 use App\Traits\ManageControllerTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+
 class SettingsController extends Controller
 {
-	use ManageControllerTrait ;
+	use ManageControllerTrait;
 
 
 	public function __construct()
 	{
-		$this->Model = new Setting();
+		$this->Model         = new Setting();
 		$this->browse_handle = 'counter';
 		$this->view_folder   = "manage.settings";
 	}
 
 	public function search(Request $request)
 	{
-		return $this->index('search' , $request->keyword);
+		return $this->index('search', $request->keyword);
 	}
-	public function index($request_tab = 'template' , $keyword=null)
+
+	public function index($request_tab = 'template', $keyword = null)
 	{
 		/*-----------------------------------------------
 		| Page ...
 		*/
 		$page = [
-			'0' => ['settings' , trans('settings.downstream')],
-		     '1' => ["tab/$request_tab" , trans("settings.categories.$request_tab")],
+			'0' => ['settings', trans('settings.downstream')],
+			'1' => ["tab/$request_tab", trans("settings.categories.$request_tab")],
 		];
 
 		/*-----------------------------------------------
 		| Common Model ...
 		*/
-		$db = new Setting() ;
+		$db = new Setting();
 
 		/*-----------------------------------------------
 		| Individual Pages ...
 		*/
-		switch($request_tab) {
+		switch ($request_tab) {
 			case 'search' :
-				$page[1] = ['tab/search',trans('forms.button.search_for')." $keyword "];
-				$models = Setting::whereRaw( Setting::searchRawQuery($keyword) )->where('developers_only' , '0')->orderBy('title')->paginate(100) ;
-				return view("manage.settings.site", compact('page', 'models' , 'request_tab' , 'db' , 'keyword'));
+				$page[1] = ['tab/search', trans('forms.button.search_for') . " $keyword "];
+				$models  = Setting::whereRaw(Setting::searchRawQuery($keyword))->where('developers_only', '0')->orderBy('title')->paginate(100);
+
+				return view("manage.settings.site", compact('page', 'models', 'request_tab', 'db', 'keyword'));
 
 			default:
-				$models = Setting::where('category' , $request_tab)->where('developers_only' , '0')->orderBy('title')->paginate(100) ;
-				return view("manage.settings.site", compact('page', 'models' , 'request_tab' , 'db'));
-		}
+				$models = Setting::where('category', $request_tab)->where('developers_only', '0')->orderBy('title')->paginate(100);
 
+				return view("manage.settings.site", compact('page', 'models', 'request_tab', 'db'));
+		}
 
 
 	}
@@ -69,6 +74,42 @@ class SettingsController extends Controller
 			'success_callback' => "rowUpdate('tblSettings','$request->id')",
 		]);
 
+	}
+
+	public function posttypeRootForm($type_id)
+	{
+		/*-----------------------------------------------
+		| Model Receive ...
+		*/
+		$model = Posttype::find($type_id);
+		if(!$model) {
+			return view('errors.410');
+		}
+		else {
+			$model->spreadMeta();
+			$model->fresh_time_duration = $model->fresh_time_duration / (24 * 60) ;
+		}
+		// Security (can:super) is checked in the route.
+
+		/*-----------------------------------------------
+		| View ...
+		*/
+
+		return view("manage.settings.posttypes-downstream", compact('model'));
+
+
+	}
+
+	public function savePosttypeDownstream(PosttypeDownstreamSaveRequest $request)
+	{
+		$data = $request->toArray();
+
+		if($data['fresh_time_duration']) {
+			$data['fresh_time_duration'] = $data['fresh_time_duration'] * 24 * 60;
+		}
+
+		$ok = Posttype::store($data) ;
+		return $this->jsonAjaxSaveFeedback($ok);
 	}
 
 }

@@ -19,7 +19,7 @@ class Posttype extends Model
 		'featured_image'    => ['file-image-o', 'info', ['featured_image:photo']],
 		'download'          => ['download', 'info', ['download_file:file']],
 		'rss'               => ['rss', 'info', []],
-		'comment'           => ['comments-o', 'info', ['allow_anonymous_comment:boolean' , 'disable_receiving_comments:boolean' , 'disable_showing_comments:boolean' , 'comment_receive_day_limits:date']],
+		'comment'           => ['comments-o', 'info', ['allow_anonymous_comment:boolean', 'disable_receiving_comments:boolean', 'disable_showing_comments:boolean', 'comment_receive_day_limits:date']],
 		'rate'              => ['star-half-o', 'info', []], //@TODO: feature_fields
 		'album'             => ['address-book-o', 'info', ['post_photos:auto']], //@TODO: feature_fields datatype!
 		'category'          => ['folder-o', 'info', []],
@@ -34,7 +34,7 @@ class Posttype extends Model
 		'full_history'      => ['history', 'success', []],
 		'digest'            => ['fire', 'info', []],
 		'schedule'          => ['clock-o', 'info', ['original_published_at:auto']],
-		'event'             => ['calendar', 'warning', ['start_time:date', 'end_time:date']],
+		'event'             => ['calendar', 'warning', []],
 		'register'          => ['user-plus', 'warning', []],
 		'visibility_choice' => ['shield', 'warning', []],
 		//			'template_choice' => ['th-large' , 'warning' , []],
@@ -45,16 +45,76 @@ class Posttype extends Model
 	public static $available_templates  = ['album', 'post', 'product', 'slideshow', 'dialogue', 'faq'];
 	public static $available_meta_types = ['text', 'textarea', 'date', 'boolean', 'photo', 'file'];
 	public static $reserved_slugs       = 'root,admin';
-	public static $meta_fields          = ['features', 'template', 'feature_meta', 'optional_meta', 'visibility', 'singular_title', 'icon', 'locales'];
+	public static $meta_fields          = ['features', 'template', 'feature_meta', 'optional_meta', 'visibility', 'singular_title', 'icon', 'locales', 'max_per_page', 'default_featured_image', 'featured_image_width', 'featured_image_height', 'fresh_time_duration'];
 	public static $basement_meta        = "moderate_note:text ";
+	public static $downstream           = [
+		[
+			'name'     => "max_per_page",
+			'type'     => "text",
+			'rules'    => "required|numeric|min:20|max:100",
+			'purifier' => "ed",
+		],
+		[
+			'name'        => "default_featured_image",
+			'type'        => "photo",
+			'rules'       => "sometimes|required",
+			'in_features' => ['featured_image'],
+		],
+		[
+			'name'        => "featured_image_width",
+			'type'        => "text",
+			'rules'       => "sometimes|required|numeric|min:20|max:500",
+			'in_features' => ['featured_image'],
+			'purifier'    => "ed",
+		],
+		[
+			'name'        => "featured_image_height",
+			'type'        => "text",
+			'rules'       => "sometimes|required|numeric|min:20|max:500",
+			'in_features' => ['featured_image'],
+			'purifier'    => "ed",
+		],
+		[
+			'name'     => "fresh_time_duration",
+			'type'     => "text",
+			'rules'    => "numeric|min:0|max:10",
+			'purifier' => "ed",
+		],
+	];
 	protected     $guarded              = ['id'];
 
 	/*
 	|--------------------------------------------------------------------------
-	| Relations
+	| Selectors
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+	public static function withPermit($switches)
+	{
+		$switches = array_normalize($switches, [
+			'role'    => "admin",
+			'prefix'  => "posts",
+			'permit'  => '*',
+			'feature' => "",
+		]);
+
+		if($switches['feature']) {
+			$feature = $switches['feature'];
+			$types   = self::whereRaw("LOCATE('$feature' , `features`)")->get();
+		}
+		else {
+			$types = self::all();
+		}
+		$result = [];
+		foreach($types as $type) {
+			if(user()->as($switches['role'])->can($switches['prefix'] . "-" . $type->slug . '.' . $switches['permit'])) {
+				$result[] = $type->slug;
+			}
+		}
+
+		return $result;
+	}
 
 	public static function withFeature($feature)
 	{
@@ -88,14 +148,14 @@ class Posttype extends Model
 
 	/*
 	|--------------------------------------------------------------------------
-	| Selectors
+	| Relations
 	|--------------------------------------------------------------------------
 	|
 	*/
 
 	public function posts()
 	{
-		return Post::where('title', $this->slug);
+		return Post::where('type', $this->slug);
 		//		return $this->hasMany('App\Models\Post');
 	}
 
@@ -103,6 +163,11 @@ class Posttype extends Model
 	{
 		return $this->hasMany('App\Models\Folder');
 
+	}
+
+	public function comments()
+	{
+		return Comment::where('type', $this->slug);
 	}
 
 	/*
@@ -225,7 +290,7 @@ class Posttype extends Model
 				}
 
 			case 'feedback' :
-				return $this->hasAnyOf(['comment', 'rate', 'basket', 'register' , 'event']);
+				return $this->hasAnyOf(['comment', 'rate', 'basket', 'register', 'event']);
 
 		}
 
@@ -300,6 +365,19 @@ class Posttype extends Model
 		}
 
 		return $array;
+	}
+
+	public function downstream()
+	{
+		$defined_settings   = self::$downstream;
+		$available_settings = [];
+		foreach($defined_settings as $setting) {
+			if(!isset($setting['in_features']) or $this->hasAnyOf($setting['in_features'])) {
+				$available_settings[] = collect($setting);
+			}
+		}
+
+		return $available_settings;
 	}
 
 }

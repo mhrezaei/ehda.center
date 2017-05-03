@@ -7,6 +7,7 @@ return [
 		'error'                  => 'بروز خطا',
 		'saved'                  => 'ذخیره‌سازی انجام شد',
 		'done'                   => 'انجام شد',
+		'mass_done'              => ":count مورد انجام شد.",
 		'found'                  => ':count نتیجه یافت شد.',
 		'nothing'                => 'چیزی برای نمایش وجود ندارد.',
 		'not_allowed'            => 'این درخواست برای شما معتبر نیست.',
@@ -56,6 +57,7 @@ return [
 		'deactivate_only'   => "به جای ذخیره‌سازی، غیرفعال شود",
 		'activate_only'     => "به جای ذخیره‌سازی، فعال‌سازی شود",
 		'duration'          => "از :date1 تا :date2",
+	     'change_status' => "تغییر وضعیت" ,
 	],
 
 	"general" => [
@@ -132,7 +134,8 @@ return [
 		'published'     => "منتشرشده",
 		'scheduled'     => "صف انتشار",
 		'draft'         => "پیش‌نویس",
-		'pending'       => "منتظر تأیید",
+		'pending'       => "منتظر بررسی",
+		'private'       => "خصوصی",
 		'unknown'       => "نامشخص",
 		'so_far_absent' => "فعلاً وجود ندارد",
 	],
@@ -147,7 +150,8 @@ return [
 		'published' => "success",
 		'scheduled' => "info",
 		'draft'     => "info",
-		'pending'   => "warning",
+		'pending'   => "orange",
+		'private'   => "green",
 		'unknown'   => "danger",
 	],
 	'status_icon'  => [
@@ -161,6 +165,7 @@ return [
 		'scheduled' => "hourglass-half",
 		'draft'     => "map-o",
 		'pending'   => "legal",
+		'private'   => "eye-slash",
 		'unknown'   => "exclamation-triangle",
 	],
 
