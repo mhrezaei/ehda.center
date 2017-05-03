@@ -8,7 +8,7 @@ use App\Providers\ValidationServiceProvider;
 use Illuminate\Support\Facades\Auth;
 
 
-class CommentSaveRequest extends Request
+class CommentMassStatusRequest extends Request
 {
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -30,8 +30,7 @@ class CommentSaveRequest extends Request
 	{
 		$input = $this->all();
 		return [
-			'status' => "in:private,published,pending" ,
-		     'text' => "required" ,
+			'status' => "required|in:private,published,pending" ,
 		];
 
 	}

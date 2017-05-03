@@ -14,6 +14,9 @@
 				@include("manage.frame.widgets.toolbar_button" , $button)
 			@endforeach
 		@endif
+		@if(isset($mass_actions))
+			@include('manage.frame.widgets.toolbar_mass')
+		@endif
 		@if(isset($search))
 				@include('manage.frame.widgets.toolbar_search_inline' , $search)
 		@endif

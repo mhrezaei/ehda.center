@@ -11,6 +11,7 @@
 
 <td>
 	@include("manage.comments.show-sender")
+	@include("manage.comments.show-post")
 
  	@include("manage.frame.widgets.grid-text" , [
 		'text' => str_limit($model->text,400),

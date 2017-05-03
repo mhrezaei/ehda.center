@@ -103,7 +103,7 @@ trait ManageControllerTrait
 		}
 
 		//If normal view...
-		$view = $this->view_folder . "." . $view_file . "_bulk";
+		$view = $this->view_folder . "." . $view_file . "Mass";
 
 		if(!View::exists($view)) {
 			return view('templates.say', ['array' => $view]);

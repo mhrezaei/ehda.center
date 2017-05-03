@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Manage;
 
+use App\Http\Requests\Manage\CommentMassStatusRequest;
 use App\Http\Requests\Manage\CommentProcessRequest;
 use App\Http\Requests\Manage\CommentSaveRequest;
 use App\Models\Comment;
@@ -198,6 +199,27 @@ class CommentsController extends Controller
 		]);
 
 	}
+
+	public function deleteMass(Request $request)
+	{
+		$ids = explode(',',$request->ids);
+		$done = 0 ;
+		foreach($ids as $id) {
+			$model = Comment::find($id) ;
+			if($model and $model->can('delete')) {
+				$done += $model->delete() ;
+			}
+		}
+
+		return $this->jsonAjaxSaveFeedback($done , [
+			'success_refresh' => true ,
+		     'success_message' => trans("forms.feed.mass_done", [
+			     "count" => pd($done),
+		     ]) ,
+		]);
+
+	}
+
 	public function undelete(Request $request)
 	{
 		$model = Comment::onlyTrashed()->find($request->id);
@@ -215,6 +237,25 @@ class CommentsController extends Controller
 		]);
 	}
 
+	public function undeleteMass(Request $request)
+	{
+		$ids = explode(',',$request->ids);
+		$done = 0 ;
+		foreach($ids as $id) {
+			$model = Comment::onlyTrashed()->find($id) ;
+			if($model and $model->can('bin')) {
+				$done += $model->undelete() ;
+			}
+		}
+
+		return $this->jsonAjaxSaveFeedback($done , [
+			'success_refresh' => true ,
+			'success_message' => trans("forms.feed.mass_done", [
+				"count" => pd($done),
+			]) ,
+		]);
+
+	}
 
 	public function destroy(Request $request)
 	{
@@ -230,6 +271,48 @@ class CommentsController extends Controller
 		return $this->jsonAjaxSaveFeedback($model->forceDelete(), [
 			'success_callback' => "rowHide('tblComments' , '$request->id')",
 			'success_refresh'  => false,
+		]);
+
+	}
+
+	public function destroyMass(Request $request)
+	{
+		$ids = explode(',',$request->ids);
+		//$models = Comment::onlyTrashed()->whereIn('id' , $ids)
+		$done = 0 ;
+		foreach($ids as $id) {
+			$model = Comment::onlyTrashed()->find($id) ;
+			if($model and $model->can('bin')) {
+				$done += $model->forceDelete() ;
+			}
+		}
+
+		return $this->jsonAjaxSaveFeedback($done , [
+			'success_refresh' => true ,
+			'success_message' => trans("forms.feed.mass_done", [
+				"count" => pd($done),
+			]) ,
+		]);
+
+	}
+
+	public function statusMass(CommentMassStatusRequest $request)
+	{
+		$ids = explode(',',$request->ids);
+		//$models = Comment::onlyTrashed()->whereIn('id' , $ids)
+		$done = 0 ;
+		foreach($ids as $id) {
+			$model = Comment::find($id) ;
+			if($model and $model->can('process')) {
+				$done += $model->saveStatus($request->status) ;
+			}
+		}
+
+		return $this->jsonAjaxSaveFeedback($done , [
+			'success_refresh' => true ,
+			'success_message' => trans("forms.feed.mass_done", [
+				"count" => pd($done),
+			]) ,
 		]);
 
 	}

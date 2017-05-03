@@ -95,8 +95,12 @@ Route::group([
 			Route::post('/', 'CommentsController@save');
 			Route::post('/process' , 'CommentsController@process');
 			Route::post('/delete', 'CommentsController@delete');
+			Route::post('/deleteMass' , 'CommentsController@deleteMass');
 			Route::post('/undelete', 'CommentsController@undelete');
+			Route::post('/undeleteMass', 'CommentsController@undeleteMass');
 			Route::post('/destroy', 'CommentsController@destroy');
+			Route::post('/destroyMass', 'CommentsController@destroyMass');
+			Route::post('/statusMass', 'CommentsController@statusMass');
 		});
 
 	});
