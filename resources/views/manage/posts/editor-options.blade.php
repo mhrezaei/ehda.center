@@ -38,7 +38,7 @@
 				'name' => "slug",
 				'value' => $model->slug,
 				'class' => "ltr text-center",
-				'placeholder' => "like_this",
+				'placeholder' => "like-this",
 				'on_blur' => "postsAction('check_slug')",
 				'id' => "txtSlug",
 			])

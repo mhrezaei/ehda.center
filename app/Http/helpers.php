@@ -106,7 +106,7 @@ function array_normalize($array, $reference)
 
 }
 
-function array_maker($string, $first_delimiter = '-', $second_delimiter = ':')
+function array_maker($string, $first_delimiter = '-', $second_delimiter = '=')
 {
 	$array = explode($first_delimiter, str_replace(' ', null, $string));
 	foreach($array as $key => $switch) {
@@ -127,6 +127,26 @@ function array_random($array)
 	$key = rand(0, sizeof($array) - 1);
 
 	return $array[ $key ];
+}
+
+function array_has_required($required, $array)
+{
+	return arrayHasRequired($required, $array);
+}
+
+function arrayHasRequired($required, $array)
+{
+	if(!is_array($required)) {
+		$required = [$required];
+	}
+
+	foreach($required as $fieldName) {
+		if(!isset($array[ $fieldName ]) or !$array[ $fieldName ]) {
+			return false;
+		}
+	}
+
+	return true;
 }
 
 function isJson($string)
@@ -184,8 +204,8 @@ function echoDate($date, $foramt = 'default', $language = 'auto', $pd = false)
 	/*-----------------------------------------------
 	| Safety Bypass ...
 	*/
-	if(in_array($date , [null , '0000-00-00 00:00:00'])) {
-		return '-' ;
+	if(in_array($date, [null, '0000-00-00 00:00:00'])) {
+		return '-';
 	}
 
 	/*-----------------------------------------------
@@ -260,17 +280,37 @@ function fakeData()
 	}
 }
 
-function arrayHasRequired($required, $array)
+function tahaConverter()
 {
-	if(!is_array($required)) {
-		$required = [$required];
+	$posts = \App\Models\Post::where('seo_score', -1)->get();
+	foreach($posts as $post) {
+		$post->title2          = $post->meta('title2');
+		$post->sale_price      = $post->meta('sale_price');
+		$post->sale_expires_at = $post->meta('sale_expires_at');
+		$post->seo_score       = 0;
+		$post->updateMeta([
+			'title2'          => false,
+			'sale_price'      => false,
+			'sale_expires_at' => false,
+		]);
+		$post->save();
 	}
 
-	foreach($required as $fieldName) {
-		if(!isset($array[ $fieldName ]) or !$array[ $fieldName ]) {
-			return false;
-		}
+	$users = \App\Models\User::where('operation_integer', 0)->get();
+	foreach($users as $user) {
+		$user->operation_integer = 1;
+		$user->marital           = $user->meta('marital');
+		$user->education         = $user->meta('education');
+		$user->birth_date        = $user->meta('birth_date');
+		$user->marriage_date     = $user->meta('marriage_date');
+		$user->updateMeta([
+			'marital'       => false,
+			'education'     => false,
+			'birth_date'    => false,
+			'marriage_date' => false,
+		]);
+		$user->save();
 	}
+	return "DONE :D";
 
-	return true;
 }

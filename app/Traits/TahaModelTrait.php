@@ -108,6 +108,16 @@ trait TahaModelTrait
 		}
 	}
 
+	public function getDeleterAttribute()
+	{
+		$user = User::find($this->deleted_by) ;
+		if(!$user) {
+			$user = new User();
+		}
+		return $user ;
+	}
+
+
 	public function settingCombo($slug)
 	{
 		$options = Setting::get($slug);

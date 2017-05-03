@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
 
+
 class PostsController extends Controller
 {
 	use ManageControllerTrait;
@@ -45,7 +46,7 @@ class PostsController extends Controller
 
 	}
 
-	public function search($type, $locale , Request $request)
+	public function search($type, $locale, Request $request)
 	{
 		/*-----------------------------------------------
 		| Check Permission ...
@@ -94,7 +95,7 @@ class PostsController extends Controller
 			'type'     => $type,
 			'locale'   => $locale,
 			'criteria' => 'all',
-		     'search' => $keyword = $request->keyword,
+			'search'   => $keyword = $request->keyword,
 		];
 
 		//if(in_array($request_tab, ['pending', 'bin']) and user()->as('admin')->cant("post-$type.publish")) {
@@ -102,19 +103,18 @@ class PostsController extends Controller
 		//}
 
 		$models = Post::selector($selector_switches)->orderBy('created_at', 'desc')->paginate(user()->preference('max_rows_per_page'));
-		$db = $this->Model;
+		$db     = $this->Model;
 
 		/*-----------------------------------------------
 		| View ...
 		*/
 
-		return view($this->view_folder . ".browse", compact('page', 'models', 'db', 'locale', 'posttype' , 'keyword'));
-
+		return view($this->view_folder . ".browse", compact('page', 'models', 'db', 'locale', 'posttype', 'keyword'));
 
 
 	}
 
-		public function browse($type, $request_tab = 'published', $switches = null)
+	public function browse($type, $request_tab = 'published', $switches = null)
 	{
 		/*-----------------------------------------------
 		| Check Permission ...
@@ -127,7 +127,7 @@ class PostsController extends Controller
 		| Reveal Posttype ...
 		*/
 		$posttype = Posttype::findBySlug($type);
-		if(!$posttype) {
+		if(!$posttype->exists) {
 			return view('errors.404');
 		}
 
@@ -139,8 +139,8 @@ class PostsController extends Controller
 			'locale'   => "all",
 			'keyword'  => null,
 			'category' => null,
+			'id'       => "0",
 		]);
-
 
 		$locale = $switches['locale'];
 		if(!in_array($locale, $posttype->locales_array)) {
@@ -164,6 +164,7 @@ class PostsController extends Controller
 			'type'     => $type,
 			'locale'   => $locale,
 			'criteria' => $request_tab,
+			'id'       => $switches['id'],
 		];
 
 		if(in_array($request_tab, ['pending', 'bin']) and user()->as('admin')->cant("post-$type.publish")) {
@@ -734,15 +735,16 @@ class PostsController extends Controller
 		$new_model->owned_by     = user()->id;
 		$new_model->created_by   = user()->id;
 
-		$new_model->save() ;
+		$new_model->save();
 
 
 		/*-----------------------------------------------
 		| Feedback ...
 		*/
-		return $this->jsonAjaxSaveFeedback( $new_model->id>0 , [
-				'success_callback' => "rowUpdate('tblPosts','$request->id')",
-				'success_redirect' => $data['_submit'] == 'redirect_after_save'? $new_model->edit_link : '',
+
+		return $this->jsonAjaxSaveFeedback($new_model->id > 0, [
+			'success_callback' => "rowUpdate('tblPosts','$request->id')",
+			'success_redirect' => $data['_submit'] == 'redirect_after_save' ? $new_model->edit_link : '',
 		]);
 
 

@@ -8,7 +8,7 @@
 			@endif
 		</label>
 
-		<div class="col-sm-10">
+		<div class="col-sm-10 {{$div_class or ''}}">
 
 			@if(0)
 		</div>

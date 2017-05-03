@@ -42,7 +42,7 @@ class Post extends Model
     }
 	public function roles()
 	{
-		return $this->belongsToMany('App\Models\Rsole')->withTimestamps(); //@TODO: complete with withPivot('permissions' , 'deleted_at') perhaps
+		return $this->belongsToMany('App\Models\Role')->withTimestamps(); //@TODO: complete with withPivot('permissions' , 'deleted_at') perhaps
 	}
 
 	public function posttype()
@@ -53,6 +53,10 @@ class Post extends Model
 			return $posttype ;
 		else
 			return new Posttype() ;
+	}
+	public function getPosttypeAttribute()
+	{
+		return $this->posttype() ;
 	}
 
 	public function comments()
@@ -122,6 +126,7 @@ class Post extends Model
 	public function cacheUpdate()
 	{
 		$this->cacheUpdateReceipts() ;
+		$this->cacheUpdateComments() ;
 	}
 
 	public function cacheRegenerateOnUpdate()
@@ -141,6 +146,12 @@ class Post extends Model
 		] , true ) ;
 	}
 
+	public function cacheUpdateComments()
+	{
+		$this->updateMeta( [
+			'total_comments' => $this->comments()->count() ,
+		] , true );
+	}
 
 
 	/*
@@ -183,10 +194,6 @@ class Post extends Model
 	}
 
 
-	public function getPosttypeAttribute()
-	{
-		return $this->posttype() ;
-	}
 
 	public function getIddAttribute()
 	{
@@ -222,34 +229,6 @@ class Post extends Model
 		return 'unknown' ;
 
 	}
-
-	public function getCreatorAttribute()
-	{
-		$user = User::find($this->created_by) ;
-		if(!$user) {
-			$user = new User();
-		}
-		return $user ;
-	}
-
-	public function getPublisherAttribute()
-	{
-		$user = User::find($this->published_by) ;
-		if(!$user) {
-			$user = new User();
-		}
-		return $user ;
-	}
-
-	public function getDeleterAttribute()
-	{
-		$user = User::find($this->deleted_by) ;
-		if(!$user) {
-			$user = new User();
-		}
-		return $user ;
-	}
-
 
 	public function getSiteLinkAttribute()
 	{
@@ -460,6 +439,7 @@ class Post extends Model
 	public static function selector($parameters = [])
 	{
 		extract(array_normalize($parameters , [
+			'id' => "0" ,
 			'slug' => "",
 			'role' => "user", //@TODO
 			'criteria' => "published",
@@ -474,10 +454,13 @@ class Post extends Model
 		$table = self::where('id' , '>' , '0') ;
 
 		/*-----------------------------------------------
-		| Slug ...
+		| Slug & id...
 		*/
 		if($slug) {
 			$table = $table->where('slug' , $slug) ;
+		}
+		if($id) {
+			$table = $table->where('id' , $id) ;
 		}
 
 		/*-----------------------------------------------
