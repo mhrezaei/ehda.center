@@ -145,4 +145,12 @@ return [
 		'reply_via_email_too'    => "پاسخ، از طریق ایمیل نیز ارسال شود",
 		'reply_or_change_status' => "درج پاسخ جدید یا تغییر وضعیت",
 	],
+
+	'filters' => [
+		'filters' => 'فیلتر‌ها',
+		'no_category' => 'بدون دسته‌بندی',
+		'available' => 'موجود',
+		'special_sale' => 'فروش ویژه',
+	]
+
 ];
