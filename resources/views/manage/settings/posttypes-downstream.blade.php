@@ -27,7 +27,7 @@
 		@include("manage.frame.widgets.input-".$item['type'] , [
 			'name' => $item['name'],
 			'class' => str_contains($item['rules'],'required')? 'form-required' : '' ,
-			'value' => $model->toArray()[$item['name']] ,
+			'value' => isset($model->toArray()[$item['name']]) ? $model->toArray()[$item['name']] : '' ,
 			'hint' => Lang::has("validation.attributes_placeholder.".$item['name']) ? trans("validation.attributes_placeholder.".$item['name']) : '' ,
 		]     )
 	@endforeach
