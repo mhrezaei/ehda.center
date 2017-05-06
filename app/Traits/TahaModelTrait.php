@@ -79,6 +79,9 @@ trait TahaModelTrait
 			return in_array('Illuminate\Database\Eloquent\SoftDeletes' , class_uses(self::class));
 			//return method_exists(new self(), 'withTrashed');
 		}
+		if($field_name == 'meta') {
+			return property_exists(self::class , 'meta_fields');
+		}
 
 		return Schema::hasColumn(self::tableName(), $field_name);
 	}

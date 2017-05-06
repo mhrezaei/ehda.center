@@ -251,20 +251,6 @@ class User extends Authenticatable
 	}
 
 
-	//public function getAdminPositionAttribute()
-	//{
-	//	if(!$this->hasRole('admin'))
-	//		return '-' ;
-	//
-	//	if($this->isDeveloper())
-	//		return trans('people.admins.developer');
-	//	if($this->as('admin')->can('super'))
-	//		return trans('people.admins.super_admin');
-	//	else
-	//		return trans('people.admins.ordinary_admin');
-	//}
-
-
 	/*
 	|--------------------------------------------------------------------------
 	| Stators
@@ -422,24 +408,6 @@ class User extends Authenticatable
 
     public function drawingRecentScores($eventsNumber, $historyLimit = 0)
     {
-//        $locales = ['en', 'fa', 'ar'];
-//        $prices = [50000, 100000, 20000, 15000, 73000];
-//        for ($i = 1; $i < 200; $i++) {
-//            $data = [
-//                'type' => 'events',
-//                'locale' => $locales[$i % (count($locales))],
-//                'title' => DummyServiceProvider::persianTitle(),
-//                'starts_at' => Carbon::parse('2017-04-10')->addDays($i % 5)->toDateTimeString(),
-//                'ends_at' => Carbon::parse('2017-04-23')->addDays($i % 5)->toDateTimeString(),
-//                'moderate_note' => null,
-//                'title2' => '',
-//                'rate_point' => $prices[$i % (count($prices))],
-//            ];
-//
-//            Post::store($data);
-//        }
-//        die();
-
         return Post::where([
             'type' => 'events',
             'locale' => getLocale(),

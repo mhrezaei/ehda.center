@@ -462,7 +462,7 @@ class Post extends Model
 
 	public static function selector($parameters = [])
 	{
-		extract(array_normalize($parameters, [
+		$switch = array_normalize($parameters, [
 			'id'       => "0",
 			'slug'     => "",
 			'role'     => "user", //@TODO
@@ -473,65 +473,92 @@ class Post extends Model
 			'category' => "", //@TODO
 			'keyword'  => "", //[@TODO
 			'search'   => "",
-		]));
+			'from'     => null,
+			'to'       => null,
+		]);
 
 		$table = self::where('id', '>', '0');
 
 		/*-----------------------------------------------
-		| Slug & id...
+		| Simple Things...
 		*/
-		if($slug) {
-			$table = $table->where('slug', $slug);
+		if($switch['slug']) {
+			$table = $table->where('slug', $switch['slug']);
 		}
-		if($id) {
-			$table = $table->where('id', $id);
+		if($switch['id']) {
+			$table = $table->where('id', $switch['id']);
+		}
+		if($switch['from']) {
+			$table = $table->whereDate('starts_at', '<=', $switch['from']);
+		}
+		if($switch['to']) {
+			$table = $table->whereDate('ends_at', '>=', $switch['to']);
+		}
+
+		/*-----------------------------------------------
+		| Category ...
+		*/
+		if(is_numeric($switch['category'])) {
+			$switch['category'] = [$switch['category']];
+		}
+		//elseif($switch['category'] == 'no') { @TODO: select posts without category!
+		//
+		//}
+		else {
+			$switch['category'] = [];
+		}
+
+		if(is_array($switch['category']) and count($switch['category'])) {
+			$table = $table->whereHas('categories', function ($query) use ($switch) {
+				$query->whereIn('categories.id', $switch['category']);
+			});
 		}
 
 		/*-----------------------------------------------
 		| Process Type ...
 		*/
-		if(str_contains($type, 'feature:')) {
-			$feature = str_replace('feature:', null, $type);
-			$type    = Posttype::withFeature($feature); //returns an array of posttypes
+		if(str_contains($switch['type'], 'feature:')) {
+			$feature        = str_replace('feature:', null, $switch['type']);
+			$switch['type'] = Posttype::withFeature($feature); //returns an array of posttypes
 		}
 
 		//when an array of selected posttypes are requested
-		if(is_array($type)) {
-			$table = $table->whereIn('type', $type);
+		if(is_array($switch['type'])) {
+			$table = $table->whereIn('type', $switch['type']);
 		}
 
 		//when 'all' posttypes are requested
-		elseif($type == 'all') {
+		elseif($switch['type'] == 'all') {
 			// nothing required here :)
 		}
 
 		//when an specific type is requested
 		else {
-			$table = $table->where('type', $type);
+			$table = $table->where('type', $switch['type']);
 		}
 
 		/*-----------------------------------------------
 		| Process Locale ...
 		*/
-		if(in_array($locale, ['all', null])) {
+		if(in_array($switch['locale'], ['all', null])) {
 			//nothing to do :)
 		}
 		else {
-			$table = $table->where('locale', $locale);
+			$table = $table->where('locale', $switch['locale']);
 		}
 
 		/*-----------------------------------------------
 		| Process Owner ...
 		*/
-		if($owner > 0) {
-			$table = $table->where('owned_by', $owner);
+		if($switch['owner'] > 0) {
+			$table = $table->where('owned_by', $switch['owner']);
 		}
 
 		/*-----------------------------------------------
 		| Process Criteria ...
 		*/
 		$now = Carbon::now()->toDateTimeString();
-		switch ($criteria) {
+		switch ($switch['criteria']) {
 			case 'all' :
 				break;
 
@@ -581,7 +608,9 @@ class Post extends Model
 		/*-----------------------------------------------
 		| Process Search ...
 		*/
-		$table = $table->whereRaw(self::searchRawQuery($search));
+		if($switch['search']) {
+			$table = $table->whereRaw(self::searchRawQuery($switch['search']));
+		}
 
 
 		//Return...
