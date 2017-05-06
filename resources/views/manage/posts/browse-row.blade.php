@@ -2,6 +2,10 @@
 	'refresh_url' => "manage/posts/update/$model->id"
 ])
 
+@if(isset($posttype) and $posttype->slug == $model->type)
+	{{ '' , $model->setPosttype($posttype) }}
+@endif
+
 {{--
 |--------------------------------------------------------------------------
 | Featured_image
@@ -74,20 +78,20 @@
 
 	@include("manage.frame.widgets.grid-date" , [
 		'text' => trans('forms.general.created_at').': ',
-		'text2' => trans('forms.general.by').' '.$model->creator->full_name,
+//		'text2' => trans('forms.general.by').' '.$model->creator->full_name,
 		'date' => $model->created_at,
 	])
 
 	@include("manage.frame.widgets.grid-date" , [
 		'text' => trans('forms.general.published_at').': ',
-		'text2' => trans('forms.general.by').' '.$model->publisher->full_name,
+//		'text2' => trans('forms.general.by').' '.$model->publisher->full_name,
 		'date' => $model->published_at,
 		'condition' => $model->isPublished(),
 	])
 
 	@include("manage.frame.widgets.grid-date" , [
 		'text' => trans('forms.general.deleted_at').': ',
-		'text2' => trans('forms.general.by').' '.$model->deleter->full_name,
+//		'text2' => trans('forms.general.by').' '.$model->deleter->full_name,
 		'date' => $model->deleted_at,
 		'condition' => $model->trashed(),
 		'color' => "danger",

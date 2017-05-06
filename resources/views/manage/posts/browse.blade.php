@@ -7,6 +7,12 @@
 
 	@include("manage.frame.widgets.toolbar" , [
 //		'title' => $page[0][1].' / '.$page[1][1].' / '.$page[2][1],
+		'mass_actions' => [
+			['trash-o' , trans('forms.button.soft_delete') , "modal:manage/posts/act/-id-/delete", $page[1][0]!='bin'],
+			['recycle' , trans('forms.button.undelete') , "modal:manage/posts/act/-id-/undelete" , $page[1][0]=='bin'],
+			['times' , trans('forms.button.hard_delete') , "modal:manage/posts/act/-id-/destroy" , $page[1][0]=='bin'],
+		] ,
+
 		'buttons' => [
 			[
 				'target' => url("manage/posts/$posttype->slug/create/$locale"),

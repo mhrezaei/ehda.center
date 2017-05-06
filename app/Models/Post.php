@@ -14,15 +14,16 @@ class Post extends Model
 {
 	use TahaModelTrait, SoftDeletes;
 
-	public static    $reserved_slugs = "none,without";
-	public static    $meta_fields    = ['dynamic'];
-	protected static $search_fields  = ['title', 'slug']; //to be used in Requests
-	protected        $guarded        = ['id'];
-	protected        $casts          = [
+	public static    $reserved_slugs  = "none,without";
+	public static    $meta_fields     = ['dynamic'];
+	protected static $search_fields   = ['title', 'slug']; //to be used in Requests
+	protected        $guarded         = ['id'];
+	protected        $casts           = [
 		'is_draft'     => "boolean",
 		'is_limited'   => "boolean",
 		'published_at' => 'datetime',
 	];
+	private          $cached_posttype = false;
 
 	/*
 	|--------------------------------------------------------------------------
@@ -60,7 +61,16 @@ class Post extends Model
 
 	public function getPosttypeAttribute()
 	{
-		return $this->posttype();
+		if(!$this->cached_posttype) {
+			$this->cached_posttype = $this->posttype();
+		}
+
+		return $this->cached_posttype;
+	}
+
+	public function setPosttype($model)
+	{
+		$this->cached_posttype = $model;
 	}
 
 	public function comments()
@@ -161,7 +171,6 @@ class Post extends Model
 			'total_comments' => $this->comments()->count(),
 		], true);
 	}
-
 
 	/*
 	|--------------------------------------------------------------------------
@@ -308,6 +317,17 @@ class Post extends Model
 		}
 
 		return $list;
+	}
+
+	public function getPhotosAttribute()
+	{
+		$array = $this->meta('post_photos');
+		if(!$array) {
+			return [];
+		}
+		else {
+			return $array;
+		}
 	}
 
 
@@ -470,7 +490,7 @@ class Post extends Model
 			'locale'   => getLocale(),
 			'owner'    => 0,
 			'type'     => "feature:searchable",
-			'category' => "", //@TODO
+			'category' => "",
 			'keyword'  => "", //[@TODO
 			'search'   => "",
 			'from'     => null,
@@ -501,9 +521,9 @@ class Post extends Model
 		if(is_numeric($switch['category'])) {
 			$switch['category'] = [$switch['category']];
 		}
-		//elseif($switch['category'] == 'no') { @TODO: select posts without category!
-		//
-		//}
+		elseif($switch['category'] == 'no') {
+			$table = $table->has('categories', '=', 0);
+		}
 		else {
 			$switch['category'] = [];
 		}
@@ -624,6 +644,27 @@ class Post extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+	public static function savePhotos($data)
+	{
+		$resultant_array = [];
+		unset($data['_photo_src_NEW']);
+
+		foreach($data as $field => $value) {
+			if(str_contains($field, '_photo_src_')) {
+				$label_field = str_replace('src', 'label', $field);
+				$link_field  = str_replace('src', 'link', $field);
+				array_push($resultant_array, [
+					'src'   => str_replace(url('').'/', null, $value),
+					'label' => $data[ $label_field ],
+					'link'  => $data[ $link_field ],
+				]);
+			}
+		}
+
+		return $resultant_array;
+	}
+
 	public function saveCategories($data)
 	{
 		$selected_categories = [];
@@ -737,36 +778,6 @@ class Post extends Model
 	public function isDrawingReady()
 	{
 		return Drawing::isReady($this->id);
-	}
-
-	public function getCreatorAttribute()
-	{
-		$user = User::find($this->created_by);
-		if(!$user) {
-			$user = new User();
-		}
-
-		return $user;
-	}
-
-	public function getPublisherAttribute()
-	{
-		$user = User::find($this->published_by);
-		if(!$user) {
-			$user = new User();
-		}
-
-		return $user;
-	}
-
-	public function getDeleterAttribute()
-	{
-		$user = User::find($this->deleted_by);
-		if(!$user) {
-			$user = new User();
-		}
-
-		return $user;
 	}
 
 	public function getViewableFeaturedImageAttribute()

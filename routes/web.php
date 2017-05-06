@@ -130,6 +130,9 @@ Route::group([
 			Route::post('/undelete', 'PostsController@undelete');
 			Route::post('/destroy', 'PostsController@destroy');
 			Route::post('/clone', 'PostsController@makeClone');
+			Route::post('/deleteMass' , 'PostsController@deleteMass');
+			Route::post('/undeleteMass', 'PostsController@undeleteMass');
+			Route::post('/destroyMass', 'PostsController@destroyMass');
 		});
 
 	});

@@ -179,3 +179,40 @@ function featuredImage(event)
 
 	}
 }
+
+function postPhotoAdded()
+{
+	var $src = url($('#txtAddPhoto').val()) ;
+	var $new_div = $('#divNewPhoto').html();
+	var $counter_label = $('#spnPhotoCount') ;
+	var $counter_input = $('#txtLastKey') ;
+	var $new_key =   parseInt($counter_input.val()) + 1;
+	var $new_selector = '#divPhoto-'+$new_key.toString() ;
+	var $new_counter = parseInt(forms_digit_en($counter_label.html())) + 1;
+
+	$counter_input.val($new_key);
+	$counter_label.html(forms_digit_fa($new_counter.toString()));
+
+	$new_div = $new_div.replace('NEW' , $new_key) ;
+	$new_div = $new_div.replace('NEW' , $new_key) ;
+	$new_div = $new_div.replace('NEW' , $new_key) ;
+	$new_div = $new_div.replace('NEW' , $new_key) ;
+
+	$('#divPhotos').append($new_div);
+	$($new_selector + ' input.-src').val($src) ;
+	$($new_selector + ' input.-label').focus() ;
+	$($new_selector + ' img').attr('src', $src) ;
+	$($new_selector).slideDown() ;
+
+}
+
+function postPhotoRemoved($selector)
+{
+
+	$selector.parent().parent().slideUp().html('') ;
+
+	var $counter_label = $('#spnPhotoCount') ;
+	var $new_counter = parseInt(forms_digit_en($counter_label.html())) -1;
+	$counter_label.html(forms_digit_fa($new_counter.toString()));
+
+}
