@@ -309,7 +309,7 @@ class PostsController extends Controller
 
 		$command = $data['_submit'];
 		$allowed = true;
-		if(in_array($command, ['delete', 'delete_origina'])) {
+		if(in_array($command, ['delete', 'delete_original'])) {
 			return $this->saveDelete($request);
 			// this (^) is to completely bypass delete commands. Security will be checked over there.
 		}
@@ -628,7 +628,8 @@ class PostsController extends Controller
 
 	public function saveDelete($request)
 	{
-
+		return $this->jsonFeedback($request->toArray()['_submit']);
+		//@TODO: Complete This!
 	}
 
 	public function delete(Request $request)

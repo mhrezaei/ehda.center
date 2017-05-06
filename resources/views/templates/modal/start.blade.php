@@ -16,13 +16,15 @@
 				</div>
 			@endif
 
-			@include('forms.opener',[
-				'id' => $modal_id.'-form' ,
-				'url' => isset($form_url)? url($form_url) : '#' ,
-				'method' => isset($form_method)? $form_method : 'post' ,
-				'files' => isset($form_files)? $form_files : 'false' ,
-				'class' => isset($form_class)? "js $form_class" : 'js ' ,
-			])
+			@if(isset($form_url))
+				@include('forms.opener',[
+					'id' => $modal_id.'-form' ,
+					'url' => isset($form_url)? url($form_url) : '#' ,
+					'method' => isset($form_method)? $form_method : 'post' ,
+					'files' => isset($form_files)? $form_files : 'false' ,
+					'class' => isset($form_class)? "js $form_class" : 'js ' ,
+				])
+			@endif
 
 			@include('forms.hidden' , [
 				'name' => '_modal_id' ,

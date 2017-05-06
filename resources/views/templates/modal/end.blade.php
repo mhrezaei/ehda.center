@@ -4,7 +4,9 @@
 			<div>
 				@endif
 
-				@include('forms.closer')
+				@if(!isset($no_form) or !$no_form)
+					@include('forms.closer')
+				@endif
 			</div>
 		</div>
 	</div>

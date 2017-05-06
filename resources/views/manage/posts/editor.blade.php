@@ -28,9 +28,9 @@
 		</div>
 
 
+	@include("manage.posts.editor-modals")
 	@include("forms.closer")
 
-	@include("manage.posts.editor-modals")
 
 
 	<script>postsInit()</script>
