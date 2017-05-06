@@ -24,16 +24,18 @@
                                 @endif
                                 @endif
                                 <div class="product-list">
-                                    <div class="row">
-                                        @if($posts)
-                                            @foreach($posts as $post)
-                                                @include($viewFolder . '.item')
-                                            @endforeach
-                                        @endif
-                                    </div>
-                                    <div class="pagination-wrapper mt20">
-                                        {!! $posts->render() !!}
-                                    </div>
+                                    @if(!$isBasePage)
+                                        <div class="row">
+                                            @if($posts)
+                                                @foreach($posts as $post)
+                                                    @include($viewFolder . '.item')
+                                                @endforeach
+                                            @endif
+                                        </div>
+                                        <div class="pagination-wrapper mt20">
+                                            {!! $posts->render() !!}
+                                        </div>
+                                    @endif
                                 </div>
                                 @if(!$ajaxRequest)
                             </div>

@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\Posttype;
 use Carbon\Carbon;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Morilog\Jalali\Facades\jDateTime;
@@ -41,31 +42,49 @@ class PostsServiceProvider extends ServiceProvider
         $data = array_normalize($data, [
             'slug' => "",
             'role' => "",
-            'locale' => "",
+            'locale' => getLocale(),
             'owner' => 0,
             'type' => "",
             'category' => "",
             'keyword' => "",
             'search' => "",
-            'date_begin' => "",
-            'date_end' => "",
+            'from' => "",
+            'to' => "",
             'max_per_page' => 12,
             'sort' => 'DESC',
             'sort_by' => 'published_at',
             'show_filter' => true,
             'ajax_request' => false,
             'conditions' => [], // additional conditions to be used in "where" clause
+            'paginate_hash' => '', // the fragment that should be added to links in pagination
+            'paginate_url' => '',
+            'paginate_current' => '',
+            'is_base_page' => false,
         ]);
 
-        // select posts
-        $firstLevel = Post::selector($data)
-            ->where($data['conditions']);
+        if (!$data['is_base_page']) {
+            if ($data['paginate_current']) {
+                Paginator::currentPageResolver(function () use ($data) {
+                    return $data['paginate_current'];
+                });
+            }
 
-        $posts = $firstLevel->orderBy($data['sort_by'], $data['sort'])
-            ->paginate($data['max_per_page']);
+            // select posts
+            $posts = Post::selector($data)
+                ->where($data['conditions'])
+                ->orderBy($data['sort_by'], $data['sort'])
+                ->paginate($data['max_per_page']);
 
-        $minPrice = $firstLevel->select(DB::raw('min(price) min'))->first()->toArray()['min'];
-        $maxPrice = $firstLevel->select(DB::raw('max(price) max'))->first()->toArray()['max'];
+            if ($data['paginate_hash']) {
+                $posts->fragment($data['paginate_hash'])->links();
+            }
+
+            if ($data['paginate_url']) {
+                $posts->withPath($data['paginate_url']);
+            }
+        }
+
+        $allPosts = self::allPostsOfType($data['type'], $data['locale']);
 
 
         // set an array for sending data to view
@@ -86,14 +105,15 @@ class PostsServiceProvider extends ServiceProvider
         $viewFolder = "front.posts.list.$template";
         $showFilter = $data['show_filter'];
         $ajaxRequest = $data['ajax_request'];
+        $isBasePage = $data['is_base_page'];
 
         return view($viewFolder . '.main', compact(
             'posts',
             'viewFolder',
             'showFilter',
             'ajaxRequest',
-            'minPrice',
-            'maxPrice'
+            'isBasePage',
+            'allPosts'
         ));
     }
 
@@ -128,20 +148,15 @@ class PostsServiceProvider extends ServiceProvider
 
     public static function postsCategories($posts, $slug = 'id')
     {
-        $result = [];
-        foreach ($posts->items() as $key => $item) {
-            if ($item instanceof Post) {
-                $categories = $item->categories;
-                if ($categories->count()) {
-                    $result += $categories->pluck('title', $slug)->toArray();
-                } else {
-                    $result += ['' => trans('posts.filters.no_category')];
-                }
-            }
-        }
+        $cats = Category::whereHas('posts', function ($query) use ($posts) {
+            $query->whereIn('posts.id', $posts->pluck('id')->toArray());
+        })->get()
+            ->pluck('title', $slug)
+            ->toArray();
 
-        ksort($result);
-        return $result;
+        ksort($cats);
+
+        return $cats;
     }
 
     public static function productsMinPrice($posts)
@@ -152,5 +167,15 @@ class PostsServiceProvider extends ServiceProvider
     public static function productsMaxPrice($posts)
     {
         return $posts->pluck('current_price')->max();
+    }
+
+    public static function allPostsOfType($type, $locale = null)
+    {
+        $data = [
+            'locale' => ($locale) ? $locale : getLocale(),
+            'type' => $type,
+        ];
+
+        return Post::selector($data)->get();
     }
 }

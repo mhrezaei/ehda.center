@@ -10,6 +10,7 @@ use App\Providers\PostsServiceProvider;
 use App\Traits\ManageControllerTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\URL;
 
 class ProductsController extends Controller
 {
@@ -37,7 +38,10 @@ class ProductsController extends Controller
             $this->abort(410);
         }
 
-        $selectConditions = ['type' => 'products'];
+        $selectorData = [
+            'type' => 'products',
+            'is_base_page' => true,
+        ];
 
         $breadCrumb = [
             [trans('front.home'), url_locale('')],
@@ -54,12 +58,12 @@ class ProductsController extends Controller
                 $this->abort(404);
             }
             $breadCrumb[] = [$category->title, url_locale('products/' . $folder->slug . '/' . $category->slug)];
-            $selectConditions['category'] = $category->slug;
+            $selectorData['category'] = $category->slug;
         } else {
-            $selectConditions['category'] = $folder->slug;
+            $selectorData['category'] = $folder->slug;
         }
 
-        return view('front.products.products.0', compact('selectConditions', 'breadCrumb'));
+        return view('front.products.products.0', compact('selectorData', 'breadCrumb'));
 
     }
 
@@ -93,12 +97,15 @@ class ProductsController extends Controller
 
     public function ajaxFilter(Request $request)
     {
+
         $hash = $request->hash;
         $hashArray = [];
         $selectorData = [
             'type' => 'products',
             'show_filter' => false,
             'ajax_request' => true,
+            'paginate_hash' => $hash,
+            'paginate_url' => URL::previous(),
         ];
         $conditions = [];
 
@@ -167,10 +174,20 @@ class ProductsController extends Controller
                 }
             }
         }
-//        dd($selectorData);
+
+        if (isset($hashArray['pagination'])) {
+            foreach ($hashArray['pagination'] as $field => $value) {
+                if ($value) {
+                    switch ($field) {
+                        case 'page':
+                            $selectorData['paginate_current'] = $value;
+                            break;
+                    }
+                }
+            }
+        }
 
         return PostsServiceProvider::showList($selectorData);
-//        dd($selectorData);
     }
 
 }

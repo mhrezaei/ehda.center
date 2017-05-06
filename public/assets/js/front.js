@@ -176,6 +176,82 @@ function isDefined(input) {
     return !(typeof input == typeof undefined);
 }
 
+function getHashUrl(url) {
+    if(url) {
+        var hashIndex = url.indexOf('#');
+        var hashString = "";
+        if (hashIndex != -1) {
+            hashString = url.substring(hashIndex + 1);
+        }
+        return hashString;
+    }
+
+    return decodeURIComponent(window.location.hash.substr(1));
+}
+
+function setHashUrl(hashString, url) {
+    if(url) {
+        var hashIndex = url.indexOf('#');
+        if (hashIndex != -1) {
+            url = url.substring(0, hashIndex + 1) + hashString;
+        }
+        return url;
+    }
+
+    window.location.hash = hashString;
+}
+
+function getPageUrl() {
+    return window.location.href.replace(getHashUrl(), '').replace('#', '');
+}
+
+function getUrlParameterByName(name, url) {
+    if (!url) url = window.location.href;
+
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+function removeUrlParameterByName(key, url) {
+    if (!url) url = window.location.href;
+
+    var hashIndex = url.indexOf('#');
+    var hashString = '';
+    if (hashIndex != -1) {
+        hashString = url.substring(hashIndex + 1);
+        url = url.substring(0, (hashIndex != -1 ? hashIndex : url.length));
+    }
+
+    var rtn = url.split("?")[0],
+        param,
+        params_arr = [],
+        queryString = (url.indexOf("?") !== -1) ? url.split("?")[1] : "";
+
+    if (queryString !== "") {
+        params_arr = queryString.split("&");
+        for (var i = params_arr.length - 1; i >= 0; i -= 1) {
+            param = params_arr[i].split("=")[0];
+            if (param === key) {
+                params_arr.splice(i, 1);
+            }
+        }
+
+        if (params_arr.length) {
+            rtn = rtn + "?" + params_arr.join("&");
+        }
+    }
+
+    if (hashString) {
+        rtn = rtn + '#' + hashString;
+    }
+
+    return rtn;
+}
+
 $(document).ready(function () {
 
     /**
