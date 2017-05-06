@@ -470,7 +470,7 @@ class Post extends Model
 			'locale'   => getLocale(),
 			'owner'    => 0,
 			'type'     => "feature:searchable",
-			'category' => "", //@TODO
+			'category' => "",  
 			'keyword'  => "", //[@TODO
 			'search'   => "",
 			'from'     => null,
@@ -501,9 +501,9 @@ class Post extends Model
 		if(is_numeric($switch['category'])) {
 			$switch['category'] = [$switch['category']];
 		}
-		//elseif($switch['category'] == 'no') { @TODO: select posts without category!
-		//
-		//}
+		elseif($switch['category'] == 'no') {
+			$table = $table->has('categories', '=', 0);
+		}
 		else {
 			$switch['category'] = [];
 		}
