@@ -26,6 +26,11 @@ class Category extends Model
 		return $this->belongsTo('App\Models\Folder');
 	}
 
+	public function posts()
+	{
+		return $this->belongsToMany('App\Models\Post')->withTimestamps();
+	}
+
 	/*
 	|--------------------------------------------------------------------------
 	| Accessors & Mutators
