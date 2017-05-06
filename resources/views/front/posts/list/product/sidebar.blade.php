@@ -17,8 +17,8 @@
             <div class="field filter-slider" data-identifier="price">
                 <label> {{ trans('validation.attributes.price') }} </label>
                 <div class="slider-container"
-                     data-min="{{ $minPrice }}"
-                     data-max="{{ $maxPrice }}">
+                     data-min="{{ PostsServiceProvider::productsMinPrice($allPosts) }}"
+                     data-max="{{ PostsServiceProvider::productsMaxPrice($allPosts) }}">
                     <div class="slider-self"></div>
                     <div class="pt10">
                         <span class="min-label pull-left"></span>
@@ -27,7 +27,7 @@
                 </div>
             </div>
             <hr class="small">
-            {{ null , $allCategories = PostsServiceProvider::postsCategories($posts, 'slug') }}
+            {{ null , $allCategories = PostsServiceProvider::postsCategories($allPosts, 'slug') }}
             @if(count($allCategories))
                 <div class="field mb0 filter-checkbox" data-identifier="category">
                     <label class="label-big"> {{ trans('front.categories') }} </label>

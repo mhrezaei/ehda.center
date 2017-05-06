@@ -13,5 +13,5 @@
 @endsection
 
 @section('content')
-    {!! PostsServiceProvider::showList($selectConditions) !!}
+    {!! PostsServiceProvider::showList($selectorData) !!}
 @endsection

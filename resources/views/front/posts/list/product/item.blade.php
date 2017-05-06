@@ -13,13 +13,19 @@
         <div class="content">
             <h6> {{ $post->title }} </h6>
             <div class="price">
-                @if($post->isIt('IN_SALE'))
-                    <del>{{ pd(number_format($post->price)) }}</del>
-                    <ins>{{ pd(number_format($post->sale_price)) }} {{ trans('front.toman') }}</ins>
-                @else
-                    @if($post->price > 0)
-                        <ins>{{ pd(number_format($post->price)) }} {{ trans('front.toman') }}</ins>
+                @if($post->isIt('AVAILABLE'))
+                    @if($post->isIt('IN_SALE'))
+                        <del>{{ pd(number_format($post->price)) }}</del>
+                        <ins>{{ pd(number_format($post->sale_price)) }} {{ trans('front.toman') }}</ins>
+                    @else
+                        @if($post->price > 0)
+                            <ins>{{ pd(number_format($post->price)) }} {{ trans('front.toman') }}</ins>
+                        @endif
                     @endif
+                @else
+                    <div class="status">
+                        <div class="label red"> {{ trans('posts.form.is_not_available') }}</div>
+                    </div>
                 @endif
             </div>
         </div>
