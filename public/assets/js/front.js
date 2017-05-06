@@ -177,7 +177,7 @@ function isDefined(input) {
 }
 
 function getHashUrl(url) {
-    if(url) {
+    if (url) {
         var hashIndex = url.indexOf('#');
         var hashString = "";
         if (hashIndex != -1) {
@@ -190,9 +190,11 @@ function getHashUrl(url) {
 }
 
 function setHashUrl(hashString, url) {
-    if(url) {
+    if (url) {
         var hashIndex = url.indexOf('#');
-        if (hashIndex != -1) {
+        if (hashIndex == -1) {
+            url = url + '#' + hashString;
+        } else {
             url = url.substring(0, hashIndex + 1) + hashString;
         }
         return url;

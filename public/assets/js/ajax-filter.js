@@ -20,6 +20,7 @@ var filterUrl = '';
 
 function initialFilter(modify) {
     var filterPanel = $('.filters-panel');
+    filterData = {};
     if (!isDefined(modify) || !modify) {
         modify = false;
     }
@@ -98,12 +99,10 @@ function initialFilter(modify) {
                         max: max,
                         values: [min, max],
                         change: function (event, ui) {
-                            console.log('price changed');
                             minLabel.html(forms_pd(nummber_format(ui.values[0])));
                             maxLabel.html(forms_pd(nummber_format(ui.values[1])));
                             filterWithRange(ui.values[0], ui.values[1], identifier);
                             if (event.originalEvent) {
-                                console.log('price changed by human');
                                 modifyUrl();
                             }
                         }
@@ -188,6 +187,7 @@ function initialFilter(modify) {
                 }
             });
 
+            console.log('here');
             modifyUrl();
             doFilter();
 
@@ -214,6 +214,7 @@ function filterWithRange(min, max, identifier) {
         min: min,
         max: max
     };
+    console.log(filterData);
 }
 
 function filterWithCheckBox(identifier, arrayValue) {
@@ -233,7 +234,7 @@ function filterWithCheckBox(identifier, arrayValue) {
         filterData.checkbox = {};
     }
 
-    if (checked.length) {
+    if (checked.length < sisters.length) {
         filterData.checkbox[identifier] = checked;
     } else {
         delete filterData.checkbox[identifier]; // make it undefined
