@@ -70,7 +70,7 @@ class Post extends Model
 
 	public function setPosttype($model)
 	{
-		$this->cached_posttype = $model ;
+		$this->cached_posttype = $model;
 	}
 
 	public function comments()
@@ -317,6 +317,17 @@ class Post extends Model
 		}
 
 		return $list;
+	}
+
+	public function getPhotosAttribute()
+	{
+		$array = $this->meta('post_photos');
+		if(!$array) {
+			return [];
+		}
+		else {
+			return $array;
+		}
 	}
 
 
@@ -633,6 +644,27 @@ class Post extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+	public static function savePhotos($data)
+	{
+		$resultant_array = [];
+		unset($data['_photo_src_NEW']);
+
+		foreach($data as $field => $value) {
+			if(str_contains($field, '_photo_src_')) {
+				$label_field = str_replace('src', 'label', $field);
+				$link_field  = str_replace('src', 'link', $field);
+				array_push($resultant_array, [
+					'src'   => str_replace(url('').'/', null, $value),
+					'label' => $data[ $label_field ],
+					'link'  => $data[ $link_field ],
+				]);
+			}
+		}
+
+		return $resultant_array;
+	}
+
 	public function saveCategories($data)
 	{
 		$selected_categories = [];

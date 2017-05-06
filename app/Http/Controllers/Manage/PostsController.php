@@ -397,6 +397,14 @@ class PostsController extends Controller
 
 		}
 
+		/*-----------------------------------------------
+		| Album ...
+		*/
+		if($model->has('album')) {
+			$data['post_photos'] = Post::savePhotos($data) ;
+		}
+
+
 		/*
 		|--------------------------------------------------------------------------
 		| Save

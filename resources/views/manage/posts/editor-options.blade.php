@@ -62,6 +62,20 @@
 			<div class="m10"></div>
 			@include("manage.posts.editor-comments")
 
+			{{--
+			|--------------------------------------------------------------------------
+			| Persian Digits
+			|--------------------------------------------------------------------------
+			|@TODO: find a way to replace the strings, without touching the inline attributes.
+			--}}
+			{{--@include("forms.check" , [--}}
+				{{--'condition' => in_array($model->locale , ['fa' , 'ar']) ,--}}
+				{{--'name' => "disable_receiving_comments",--}}
+				{{--'label' => trans('posts.form.automatically_change_english_digits') ,--}}
+				{{--'value' => $model->automatically_change_english_digits ,--}}
+			{{--])--}}
+
+
 		</div>
 
 
