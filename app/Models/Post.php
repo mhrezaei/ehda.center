@@ -470,7 +470,7 @@ class Post extends Model
 			'locale'   => getLocale(),
 			'owner'    => 0,
 			'type'     => "feature:searchable",
-			'category' => "",  
+			'category' => "",
 			'keyword'  => "", //[@TODO
 			'search'   => "",
 			'from'     => null,

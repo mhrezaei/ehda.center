@@ -641,6 +641,27 @@ class PostsController extends Controller
 
 	}
 
+	public function deleteMass(Request $request)
+	{
+		$ids = explode(',',$request->ids);
+		$done = 0 ;
+		foreach($ids as $id) {
+			$model = Post::find($id) ;
+			if($model and $model->canDelete()) {
+				$done += $model->delete() ;
+			}
+		}
+
+		return $this->jsonAjaxSaveFeedback($done , [
+			'success_refresh' => true ,
+			'success_message' => trans("forms.feed.mass_done", [
+				"count" => pd($done),
+			]) ,
+		]);
+
+	}
+
+
 	public function undelete(Request $request)
 	{
 		$model = Post::onlyTrashed()->find($request->id);
@@ -659,6 +680,26 @@ class PostsController extends Controller
 
 	}
 
+	public function undeleteMass(Request $request)
+	{
+		$ids = explode(',',$request->ids);
+		$done = 0 ;
+		foreach($ids as $id) {
+			$model = Post::onlyTrashed()->find($id) ;
+			if($model and $model->canDelete()) {
+				$done += $model->undelete() ;
+			}
+		}
+
+		return $this->jsonAjaxSaveFeedback($done , [
+			'success_refresh' => true ,
+			'success_message' => trans("forms.feed.mass_done", [
+				"count" => pd($done),
+			]) ,
+		]);
+
+	}
+
 	public function destroy(Request $request)
 	{
 		$model = Post::onlyTrashed()->find($request->id);
@@ -673,6 +714,26 @@ class PostsController extends Controller
 		return $this->jsonAjaxSaveFeedback($model->forceDelete(), [
 			'success_callback' => "rowHide('tblPosts' , '$request->id')",
 			'success_refresh'  => false,
+		]);
+
+	}
+	public function destroyMass(Request $request)
+	{
+		$ids = explode(',',$request->ids);
+		//$models = Comment::onlyTrashed()->whereIn('id' , $ids)
+		$done = 0 ;
+		foreach($ids as $id) {
+			$model = Post::onlyTrashed()->find($id) ;
+			if($model and $model->canDelete()) {
+				$done += $model->forceDelete() ;
+			}
+		}
+
+		return $this->jsonAjaxSaveFeedback($done , [
+			'success_refresh' => true ,
+			'success_message' => trans("forms.feed.mass_done", [
+				"count" => pd($done),
+			]) ,
 		]);
 
 	}
