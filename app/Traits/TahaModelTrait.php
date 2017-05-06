@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Schema;
 trait TahaModelTrait
 {
 	protected $saved_selector_para = [];
+	private   $cached_creator      = false;
+	private   $cached_publisher    = false;
+	private   $cached_deleter      = false;
 
 	/*
 	|--------------------------------------------------------------------------
@@ -76,11 +79,11 @@ trait TahaModelTrait
 	public static function hasColumn($field_name)
 	{
 		if($field_name == 'deleted_at') {
-			return in_array('Illuminate\Database\Eloquent\SoftDeletes' , class_uses(self::class));
+			return in_array('Illuminate\Database\Eloquent\SoftDeletes', class_uses(self::class));
 			//return method_exists(new self(), 'withTrashed');
 		}
 		if($field_name == 'meta') {
-			return property_exists(self::class , 'meta_fields');
+			return property_exists(self::class, 'meta_fields');
 		}
 
 		return Schema::hasColumn(self::tableName(), $field_name);
@@ -93,31 +96,53 @@ trait TahaModelTrait
 
 	public function getCreatorAttribute()
 	{
-		$user = User::find($this->created_by);
-		if ($user) {
-			return $user;
-		} else {
-			return new User();
+		if(!$this->cached_creator) {
+			$user = User::find($this->created_by);
+			if($user) {
+				$this->cached_creator = $user;
+			}
+			else {
+				$this->cached_creator = new User();
+			}
 		}
+
+		return $this->cached_creator;
 	}
 
 	public function getPublisherAttribute()
 	{
-		$user = User::find($this->published_by);
-		if ($user) {
-			return $user;
-		} else {
-			return new User();
+		if(!$this->cached_publisher) {
+			if($this->created_by == $this->published_by and $this->cached_creator) {
+				return $this->cached_creator;
+			}
+			$user = User::find($this->published_by);
+			if($user) {
+				$this->cached_publisher = $user;
+			}
+			else {
+				$this->cached_publisher = new User();
+			}
 		}
+
+		return $this->cached_publisher;
 	}
 
 	public function getDeleterAttribute()
 	{
-		$user = User::find($this->deleted_by) ;
-		if(!$user) {
-			$user = new User();
+		if(!$this->cached_deleter) {
+			if($this->created_by == $this->deleted_by and $this->cached_creator) {
+				return $this->cached_creator;
+			}
+			$user = User::find($this->deleted_by);
+			if($user) {
+				$this->cached_deleter = $user;
+			}
+			else {
+				$this->cached_deleter = new User();
+			}
 		}
-		return $user ;
+
+		return $this->cached_deleter;
 	}
 
 
@@ -154,7 +179,7 @@ trait TahaModelTrait
 	|
 	*/
 
-	private static function hasMeta($fields= null)
+	private static function hasMeta($fields = null)
 	{
 		/*-----------------------------------------------
 		| General Check ...
@@ -163,14 +188,14 @@ trait TahaModelTrait
 			return false;
 		}
 		elseif(!$fields) {
-			return true ;
+			return true;
 		}
 
 		/*-----------------------------------------------
 		| Bypass if Dynamic ...
 		*/
 		if(self::$meta_fields[0] == 'dynamic') {
-			return true ;
+			return true;
 		}
 
 
@@ -178,20 +203,20 @@ trait TahaModelTrait
 		| Specific Fields ...
 		*/
 		if(!is_array($fields)) {
-			session()->put('test2' , 'salam');
-			$fields_array[0] = $fields ;
+			session()->put('test2', 'salam');
+			$fields_array[0] = $fields;
 		}
 		else {
-			$fields_array = $fields ;
+			$fields_array = $fields;
 		}
-		session()->put('test' , $fields_array);
+		session()->put('test', $fields_array);
 		foreach($fields_array as $field) {
 			if(!in_array($field, self::$meta_fields)) {
-				return false ;
+				return false;
 			}
 		}
 
-		return true ;
+		return true;
 
 	}
 
@@ -250,20 +275,20 @@ trait TahaModelTrait
 		| Bypass ...
 		*/
 		if(!self::hasMeta()) {
-			return $this ;
+			return $this;
 		}
 
 		/*-----------------------------------------------
 		| Browse ...
 		*/
-		$data = $this->toArray() ;
-		foreach($data as $field=>$value) {
+		$data = $this->toArray();
+		foreach($data as $field => $value) {
 			if(!self::hasColumn($field)) {
-				unset( $this->$field) ;
+				unset($this->$field);
 			}
 		}
 
-		return $this ;
+		return $this;
 
 	}
 
@@ -335,7 +360,7 @@ trait TahaModelTrait
 			return $this->suppressMeta()->save();
 		}
 		else {
-			return true ;
+			return true;
 		}
 	}
 
@@ -456,23 +481,23 @@ trait TahaModelTrait
 
 	public static function cacheRefreshAll()
 	{
-		$models = self::all() ;
+		$models = self::all();
 		foreach($models as $model) {
-			$model->cacheUpdate() ;
+			$model->cacheUpdate();
 		}
 	}
 
 	public function cacheRegenerateIfApplicable($mood)
 	{
 		//This always runs:
-		if(method_exists($this , 'cacheRegenerate')) {
-			$this->cacheRegenerate() ;
+		if(method_exists($this, 'cacheRegenerate')) {
+			$this->cacheRegenerate();
 		}
 
 		//This runs only on specific updates:
-		$method_name = 'cacheRegenerateOn'.$mood ;
-		if(method_exists($this , $method_name)) {
-			$this->$method_name() ;
+		$method_name = 'cacheRegenerateOn' . $mood;
+		if(method_exists($this, $method_name)) {
+			$this->$method_name();
 		}
 
 	}
@@ -510,7 +535,7 @@ trait TahaModelTrait
 			if(self::hasColumn('deleted_by')) {
 				$this->deleted_by = Auth::user()->id;
 			}
-			$return = $this->save() ;
+			$return = $this->save();
 		}
 		else {
 			$return = parent::delete();
@@ -519,19 +544,21 @@ trait TahaModelTrait
 		/*-----------------------------------------------
 		| Cache if applicable ...
 		*/
-		$this->cacheRegenerateIfApplicable('InsertOrDelete') ;
+		$this->cacheRegenerateIfApplicable('InsertOrDelete');
 
 		/*-----------------------------------------------
 		| Return ...
 		*/
-		return $return ;
+
+		return $return;
 	}
 
 	public function undelete()
 	{
-		$return = $this->restore() ;
-		$this->cacheRegenerateIfApplicable('InsertOrDelete') ;
-		return $return ;
+		$return = $this->restore();
+		$this->cacheRegenerateIfApplicable('InsertOrDelete');
+
+		return $return;
 	}
 
 	public static function bulkDelete($ids, $exception)

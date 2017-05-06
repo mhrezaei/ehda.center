@@ -14,15 +14,16 @@ class Post extends Model
 {
 	use TahaModelTrait, SoftDeletes;
 
-	public static    $reserved_slugs = "none,without";
-	public static    $meta_fields    = ['dynamic'];
-	protected static $search_fields  = ['title', 'slug']; //to be used in Requests
-	protected        $guarded        = ['id'];
-	protected        $casts          = [
+	public static    $reserved_slugs  = "none,without";
+	public static    $meta_fields     = ['dynamic'];
+	protected static $search_fields   = ['title', 'slug']; //to be used in Requests
+	protected        $guarded         = ['id'];
+	protected        $casts           = [
 		'is_draft'     => "boolean",
 		'is_limited'   => "boolean",
 		'published_at' => 'datetime',
 	];
+	private          $cached_posttype = false;
 
 	/*
 	|--------------------------------------------------------------------------
@@ -60,7 +61,16 @@ class Post extends Model
 
 	public function getPosttypeAttribute()
 	{
-		return $this->posttype();
+		if(!$this->cached_posttype) {
+			$this->cached_posttype = $this->posttype();
+		}
+
+		return $this->cached_posttype;
+	}
+
+	public function setPosttype($model)
+	{
+		$this->cached_posttype = $model ;
 	}
 
 	public function comments()
@@ -161,7 +171,6 @@ class Post extends Model
 			'total_comments' => $this->comments()->count(),
 		], true);
 	}
-
 
 	/*
 	|--------------------------------------------------------------------------
@@ -737,36 +746,6 @@ class Post extends Model
 	public function isDrawingReady()
 	{
 		return Drawing::isReady($this->id);
-	}
-
-	public function getCreatorAttribute()
-	{
-		$user = User::find($this->created_by);
-		if(!$user) {
-			$user = new User();
-		}
-
-		return $user;
-	}
-
-	public function getPublisherAttribute()
-	{
-		$user = User::find($this->published_by);
-		if(!$user) {
-			$user = new User();
-		}
-
-		return $user;
-	}
-
-	public function getDeleterAttribute()
-	{
-		$user = User::find($this->deleted_by);
-		if(!$user) {
-			$user = new User();
-		}
-
-		return $user;
 	}
 
 	public function getViewableFeaturedImageAttribute()
