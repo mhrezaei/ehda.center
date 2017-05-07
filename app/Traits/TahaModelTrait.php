@@ -107,7 +107,7 @@ trait TahaModelTrait
 		return $this->getPerson('deleted_by') ;
 	}
 
-	private function getPerson($field)
+	public function getPerson($field)
 	{
 		$user_id = $this->$field ;
 		if($user_id) {

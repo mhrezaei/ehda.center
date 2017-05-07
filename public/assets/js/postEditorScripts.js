@@ -220,3 +220,8 @@ function postPhotoRemoved($selector)
 	$counter_label.html(forms_digit_fa($new_counter.toString()));
 
 }
+
+function postRefreshPublishPanel()
+{
+
+}

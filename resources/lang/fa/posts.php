@@ -96,6 +96,7 @@ return [
 		'rejected'                            => "مردود",
 		'view_in_site'                        => "نمایش در سایت",
 		'publish'                             => "انتشار",
+		'update_button'                       => "به روز رسانی",
 		'send_for_approval'                   => "ارسال به سردبیر",
 		'adjust_publish_time'                 => "تنظیم زمان انتشار",
 		'refer_back'                          => "بازگشت به نویسنده (رد)",

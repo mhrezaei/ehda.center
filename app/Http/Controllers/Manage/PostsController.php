@@ -630,6 +630,7 @@ class PostsController extends Controller
 		return $this->jsonAjaxSaveFeedback($saved, [
 			'success_redirect' => $redirect_url,
 			'success_refresh'  => $refresh_page,
+		     'success_callback' => "divReload('divPublishPanel')" ,
 		]);
 
 	}
@@ -637,7 +638,7 @@ class PostsController extends Controller
 	public function saveUnpublish($model)
 	{
 		return $this->jsonAjaxSaveFeedback($model->unpublish(), [
-			'success_refresh' => true,
+			'success_callback' => "divReload('divPublishPanel')" ,
 		]);
 	}
 

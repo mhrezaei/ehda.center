@@ -1,5 +1,6 @@
+<div class="refresh">{{ url("manage/posts/act/$model->id/editor-publish") }}</div>
 <div class="panel panel-default text-center">
-	<div class="panel-heading text-right">{{ trans('posts.form.publish') }}</div>
+	<div class="panel-heading text-right" ondblclick="divReload('divPublishPanel')">{{ trans('posts.form.publish') }}</div>
 	<div class="panel-body bg-ultralight w100">
 
 		{{--
@@ -8,8 +9,9 @@
 		|--------------------------------------------------------------------------
 		|
 		--}}
+		{{ '' , $status_color = trans("forms.status_color.$model->status") }}
 
-		<div class="text-center alert alert-{{ trans("forms.status_color.$model->status") }}">
+		<div class="text-center alert panel-{{ $status_color }} bg-{{$status_color}}">
 			{{ trans("forms.status_text.$model->status") }}
 			@if($model->isCopy())
 				<span class="badge badge-inverse f8 mh5" title="{{ trans('posts.form.copy_status_hint') }}">{{ trans('posts.form.copy') }}</span>
@@ -26,7 +28,9 @@
 
 
 			{{-- Main Button --}}
-			@if($model->canPublish())
+			@if($model->canPublish() and $model->isApproved())
+				<button type="submit" name="_submit" value="publish" class="btn btn-primary">{{ trans('posts.form.update_button') }}</button>
+			@elseif($model->canPublish() and !$model->isApproved())
 				<button type="submit" name="_submit" value="publish" class="btn btn-primary">{{ trans('posts.form.publish') }}</button>
 			@else
 				<button type="submit" name="_submit" value="approval" class="btn btn-primary">{{ trans('posts.form.send_for_moderation') }}</button>
@@ -60,11 +64,11 @@
 					],
 					[
 						'command' => "refer_back",
-						'condition' => $model->canPublish() and !$model->isOwner(),
+						'condition' => $model->canPublish() and !$model->isOwner() and !$model->isApproved(),
 					],
 					[
 						'command' => "refer_to",
-						'condition' => $model->canPublish(),
+						'condition' => $model->canPublish() and !$model->isApproved(),
 					],
 					[
 						'command' => "unpublish",
