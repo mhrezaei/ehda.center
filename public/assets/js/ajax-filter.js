@@ -13,13 +13,14 @@ $(document).ready(function () {
 
 var ajaxDelay = 1; // in seconds
 var ajaxTimer = new Timer();
+var runningXhr = null;
 var filterableAttributes = [];
 var filterData = {};
 var filterUrl = '';
 
 function initialFilter(modify) {
     var filterPanel = $('.filters-panel');
-
+    filterData = {};
     if (!isDefined(modify) || !modify) {
         modify = false;
     }
@@ -30,7 +31,13 @@ function initialFilter(modify) {
         if (typeof urlAttr !== typeof undefined) {
             var currentFilterData = decryptHash(getHashUrl());
 
+            if (isDefined(currentFilterData['pagination']) && isDefined(currentFilterData['pagination']['page'])) {
+                filterData.pagination = {};
+                filterData.pagination.page = currentFilterData['pagination']['page'];
+            }
+
             filterUrl = urlAttr;
+
 
             /**
              * generate text filters
@@ -43,10 +50,10 @@ function initialFilter(modify) {
 
                 if (!modify) {
                     box.on({
-                        change: function (event) {
+                        keyup: function (event) {
                             filterWithText($(this).val(), identifier);
                             if (event.originalEvent) {
-                                doFilter();
+                                modifyUrl();
                             }
                         }
                     }, 'input[type=text]');
@@ -96,7 +103,7 @@ function initialFilter(modify) {
                             maxLabel.html(forms_pd(nummber_format(ui.values[1])));
                             filterWithRange(ui.values[0], ui.values[1], identifier);
                             if (event.originalEvent) {
-                                doFilter();
+                                modifyUrl();
                             }
                         }
                     });
@@ -121,27 +128,32 @@ function initialFilter(modify) {
                         change: function (event) {
                             filterWithCheckBox(identifier);
                             if (event.originalEvent) {
-                                doFilter();
+                                modifyUrl();
                             }
                         }
                     }, 'input[type=checkbox]');
                 }
 
 
+                var items = box.find('input[type=checkbox]');
+
                 if (isDefined(currentFilterData['checkbox']) &&
-                    isDefined(currentFilterData['checkbox'][identifier]) &&
-                    $.isArray(currentFilterData['checkbox'][identifier])
+                    isDefined(currentFilterData['checkbox'][identifier])
                 ) {
-                    box.find('input[type=checkbox]').each(function () {
+                    items.each(function () {
                         var cat = $(this).val();
                         if ($.inArray(cat, currentFilterData['checkbox'][identifier]) > -1) {
                             $(this).prop('checked', true);
                         } else {
                             $(this).prop('checked', false);
                         }
-                    }).change();
+                    });
                 } else {
-                    box.find('input[type=checkbox]').prop('checked', true).change();
+                    items.prop('checked', true);
+                }
+
+                if (!modify) {
+                    items.last().change();
                 }
             });
 
@@ -159,7 +171,7 @@ function initialFilter(modify) {
                         change: function (event) {
                             filterWithSwitchCheckBox($(this).is(':checked'), identifier);
                             if (event.originalEvent) {
-                                doFilter();
+                                modifyUrl();
                             }
                         }
                     }, 'input[type=checkbox]');
@@ -175,9 +187,9 @@ function initialFilter(modify) {
                 }
             });
 
-            if (Object.keys(currentFilterData).length) {
-                doFilter();
-            }
+            console.log('here');
+            modifyUrl();
+            doFilter();
 
         } else {
             console.warn('Filter URL is not defined!');
@@ -202,6 +214,7 @@ function filterWithRange(min, max, identifier) {
         min: min,
         max: max
     };
+    console.log(filterData);
 }
 
 function filterWithCheckBox(identifier, arrayValue) {
@@ -209,6 +222,7 @@ function filterWithCheckBox(identifier, arrayValue) {
         arrayValue = false;
     }
     var sisters = $('input[type=checkbox][id^=' + identifier + ']');
+
     var checked = [];
     sisters.each(function () {
         if ($(this).is(':checked')) {
@@ -220,7 +234,7 @@ function filterWithCheckBox(identifier, arrayValue) {
         filterData.checkbox = {};
     }
 
-    if (checked.length) {
+    if (checked.length < sisters.length) {
         filterData.checkbox[identifier] = checked;
     } else {
         delete filterData.checkbox[identifier]; // make it undefined
@@ -238,14 +252,6 @@ function filterWithSwitchCheckBox(checked, identifier) {
     } else {
         delete filterData.switchKey[identifier];
     }
-}
-
-function getHashUrl() {
-    return decodeURIComponent(window.location.hash.substr(1));
-}
-
-function setHashUrl(hashString) {
-    window.location.hash = hashString;
 }
 
 function encryptHash(input) {
@@ -303,39 +309,75 @@ function decryptHash(hash) {
 
     hash = hash.splitNotEmpty('!');
 
-    $.each(hash, function (i, field) {
-        field = field.splitNotEmpty('?');
-        if (field.length == 2) {
-            hashArray[field[1]] = field[0].splitNotEmpty('/');
-            hashArray[field[1]] = prefixToIndex('_', hashArray[field[1]]);
-        }
-    });
+    if (hash) {
+        $.each(hash, function (i, field) {
+            field = field.splitNotEmpty('?');
+            if (field.length == 2) {
+                hashArray[field[1]] = field[0].splitNotEmpty('/');
+                hashArray[field[1]] = prefixToIndex('_', hashArray[field[1]]);
+            }
+        });
+    }
 
     return hashArray;
 }
 
-function getFilterResult() {
-    var hash = getHashUrl();
-    var targetEl = $('.product-list');
+function doFilter() {
+    ajaxTimer.delay(function () {
+        var hash = getHashUrl();
+        var targetEl = $('.product-list');
 
-    $.ajax({
-        type: 'POST',
-        url: filterUrl,
-        data: {
-            hash: hash,
-            _token: window.Laravel.csrfToken
-        },
-        beforeSend: function () {
-            targetEl.addClass('loading');
-        },
-        success: function (result) {
-            targetEl.replaceWith($(result))
-            targetEl.removeClass('loading');
+        runningXhr = $.ajax({
+            type: 'POST',
+            url: filterUrl,
+            data: {
+                hash: hash,
+                _token: window.Laravel.csrfToken
+            },
+            beforeSend: function () {
+                targetEl.addClass('loading');
+
+                if (runningXhr) {
+                    runningXhr.abort();
+                    console.warn('Filter request canceled!');
+                }
+            },
+            success: function (result) {
+                targetEl.replaceWith($(result))
+                targetEl.removeClass('loading');
+                modifyPaginationLinks();
+            },
+            complete: function () {
+                runningXhr = null;
+            }
+        });
+
+    }, ajaxDelay);
+}
+
+function modifyUrl(getData) {
+    setHashUrl(encryptHash(filterData));
+}
+
+function modifyPaginationLinks() {
+    $('.pagination li:not(.active):not(.disabled) a').each(function () {
+        var item = $(this),
+            link = item.attr('href');
+
+        var pageN = getUrlParameterByName('page', link);
+        if (pageN != null) {
+            link = removeUrlParameterByName('page', link);
+
+            filterData.pagination = {};
+            filterData.pagination.page = pageN;
+
+            var newHashString = encryptHash(filterData);
+            item.attr('href', setHashUrl(newHashString, link));
         }
     });
 }
 
-function doFilter() {
-    setHashUrl(encryptHash(filterData));
-    ajaxTimer.delay(getFilterResult, ajaxDelay);
+function resetFilters() {
+    filterData = {};
+    modifyUrl();
 }
