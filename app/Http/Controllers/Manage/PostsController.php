@@ -313,8 +313,17 @@ class PostsController extends Controller
 			return $this->saveDelete($model, $request);
 			// this (^) is to completely bypass delete commands. Security will be checked over there.
 		}
-		if(in_array($command, ['publish', 'unpublish'])) {
+		if(in_array($command, ['publish'])) {
 			$allowed = ($allowed and $model->canPublish());
+		}
+		if(in_array($command, ['unpublish'])) {
+			if($model->canPublish()) {
+				return $this->saveUnpublish($model);
+			}
+			else {
+				return $this->jsonFeedback(trans('validation.http.Error503'));
+			}
+
 		}
 		if($request->id) {
 			$allowed = ($allowed and $model->canEdit());
@@ -623,6 +632,13 @@ class PostsController extends Controller
 			'success_refresh'  => $refresh_page,
 		]);
 
+	}
+
+	public function saveUnpublish($model)
+	{
+		return $this->jsonAjaxSaveFeedback($model->unpublish(), [
+			'success_refresh' => true,
+		]);
 	}
 
 

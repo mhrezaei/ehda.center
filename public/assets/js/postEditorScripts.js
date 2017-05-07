@@ -139,6 +139,10 @@ function postsAction($command)
 			modalForm("modalPostDeleteWarning" , '1') ;
 			break;
 
+		case 'unpublish':
+			modalForm("modalPostUnpublishWarning" , '1') ;
+			break;
+
 		case 'send_for_approval' :
 			$("#btnApproval").click();
 			break;

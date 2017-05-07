@@ -42,7 +42,7 @@ class Posttype extends Model
 		'slug'              => ['hashtag', 'danger', []],
 		'developers_only'   => ['github-alt', 'danger', []],
 	];
-	public static $available_templates  = ['album', 'post', 'product', 'slideshow', 'dialogue', 'faq'];
+	public static $available_templates  = ['album', 'post', 'product', 'slideshow', 'dialogue', 'faq' , 'special'];
 	public static $available_meta_types = ['text', 'textarea', 'date', 'boolean', 'photo', 'file'];
 	public static $reserved_slugs       = 'root,admin';
 	public static $meta_fields          = ['features', 'template', 'feature_meta', 'optional_meta', 'visibility', 'singular_title', 'icon', 'locales', 'max_per_page', 'default_featured_image', 'featured_image_width', 'featured_image_height', 'fresh_time_duration'];

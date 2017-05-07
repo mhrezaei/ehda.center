@@ -484,7 +484,7 @@ trait TahaModelTrait
 
 	public function unpublish()
 	{
-		//		$this->published_at = null ;
+		$this->published_at = null ;
 		if(self::hasColumn('published_by')) {
 			$this->published_by = null;
 		}
