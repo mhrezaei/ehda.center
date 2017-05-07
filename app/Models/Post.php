@@ -490,12 +490,12 @@ class Post extends Model
 			'locale'   => getLocale(),
 			'owner'    => 0,
 			'type'     => "feature:searchable",
-			'category' => "",
+			'category' => '', //supports single or an array of id,slug, or both
 			'keyword'  => "", //[@TODO
 			'search'   => "",
 			'from'     => null,
 			'to'       => null,
-			'folder'   => "", //@TODO
+			'folder'   => "",   //supports single or an array of id,slug, or both
 		]);
 
 		$table = self::where('id', '>', '0');
@@ -517,22 +517,39 @@ class Post extends Model
 		}
 
 		/*-----------------------------------------------
-		| Category ... @TODO: By Slugs
+		| Category ...
 		*/
-		if(is_numeric($switch['category'])) {
-			$switch['category'] = [$switch['category']];
-		}
-		elseif($switch['category'] == 'no') {
-			$table = $table->has('categories', '=', 0);
-		}
-		else {
-			$switch['category'] = [];
+		if($switch['category']) {
+			if($switch['category'] == 'no') {
+				$table = $table->has('categories', '=', 0);
+			}
+			elseif(!is_array($switch['category'])) {
+				$switch['category'] = [$switch['category']];
+			}
+
+			if(is_array($switch['category']) and count($switch['category'])) {
+				$table = $table->whereHas('categories', function ($query) use ($switch) {
+					$query->whereIn('categories.id', $switch['category'])->orWhereIn('categories.slug', $switch['category']);
+				});
+			}
 		}
 
-		if(is_array($switch['category']) and count($switch['category'])) {
-			$table = $table->whereHas('categories', function ($query) use ($switch) {
-				$query->whereIn('categories.id', $switch['category']);
-			});
+		/*-----------------------------------------------
+		| Folder ...
+		*/
+		if($switch['folder']) {
+			if($switch['folder'] == 'no') {
+				$table = $table->has('folders', '=', 0);
+			}
+			elseif(!is_array($switch['folder'])) {
+				$switch['folder'] = [$switch['folder']];
+			}
+
+			if(is_array($switch['folder']) and count($switch['folder'])) {
+				$table = $table->whereHas('folders', function ($query) use ($switch) {
+					$query->whereIn('folders.id', $switch['folder'])->orWhereIn('folders.slug', $switch['folder']);
+				});
+			}
 		}
 
 		/*-----------------------------------------------
