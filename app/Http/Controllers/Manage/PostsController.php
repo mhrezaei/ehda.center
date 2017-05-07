@@ -799,6 +799,52 @@ class PostsController extends Controller
 
 	}
 
+	public function changeOwner(Request $request)
+	{
+		/*-----------------------------------------------
+		| Post Selection ...
+		*/
+		$post = Post::find($request->id) ;
+		if(!$post or !$post->exists) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+		if(!$post->canPublish()) {
+			return $this->jsonFeedback(trans('validation.http.Error503'));
+		}
+
+		/*-----------------------------------------------
+		| User Selection ...
+		*/
+		$user = User::find($request->owner_id) ;
+		if(!$user or !$user->exists or $user->is_not_an('admin')) {
+			return $this->jsonFeedback(trans('people.form.user_deleted'));
+		}
+
+		/*-----------------------------------------------
+		| Save...
+		*/
+		if($post->owned_by == $user->id) {
+			$ok = 1 ;
+		}
+		else {
+			$ok = Post::store([
+				'id' => $post->id ,
+			     'owned_by' => $user->id ,
+			]);
+		}
+
+		/*-----------------------------------------------
+		| Feedback ...
+		*/
+		return $this->jsonAjaxSaveFeedback( $ok , [
+				'success_callback' => "rowUpdate('tblPosts' , '$request->id')",
+		]);
+
+
+
+
+	}
+
 	public function makeClone(Request $request)
 	{
 		$data = $request->toArray();

@@ -474,7 +474,7 @@ trait TahaModelTrait
 			$this->cacheRegenerate();
 		}
 
-		//This runs only on specific updates:
+		//This runs only on specific queries ($mood can be 'Update' or 'InsertOrDelete' :
 		$method_name = 'cacheRegenerateOn' . $mood;
 		if(method_exists($this, $method_name)) {
 			$this->$method_name();

@@ -96,6 +96,7 @@ return [
 		'rejected'                            => "مردود",
 		'view_in_site'                        => "نمایش در سایت",
 		'publish'                             => "انتشار",
+		'save_and_publish'                    => "ذخیره‌سازی و انتشار",
 		'update_button'                       => "به روز رسانی",
 		'send_for_approval'                   => "ارسال به سردبیر",
 		'adjust_publish_time'                 => "تنظیم زمان انتشار",
@@ -136,6 +137,10 @@ return [
 		'approval'                            => "پذیرش",
 		'deleted_post'                        => "مطلب پاک‌شده",
 		'automatically_change_english_digits' => "ارقام متن، به فارسی تبدیل شوند",
+		'post_creator'                        => "سازنده مطلب",
+		'post_owner'                          => "مالک مطلب",
+		'new_post_owner'                      => "مالک جدید",
+		'change_post_owner'                   => "تغییر مالک مطلب",
 	],
 
 	'comments' => [

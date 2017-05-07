@@ -117,7 +117,7 @@ function postToggleSchedule( $mood )
 
 }
 
-function postsAction($command)
+function postsAction($command , $model_id)
 {
 	forms_log('action: '+$command);
 	switch($command) {
@@ -161,6 +161,10 @@ function postsAction($command)
 				$($divFeedback).removeClass('loading') ;
 			});
 
+			break;
+
+		case 'refer_to' :
+			masterModal(url('manage/posts/act/'+$model_id+'/owner/1'));
 			break;
 
 	}

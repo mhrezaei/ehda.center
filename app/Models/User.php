@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 
@@ -80,6 +81,10 @@ class User extends Authenticatable
 		$this->update();
 	}
 
+	public function cacheRegenerateOnUpdate()
+	{
+		Cache::forget("user-$this->id");
+	}
 
 	/*
 	|--------------------------------------------------------------------------
@@ -188,6 +193,12 @@ class User extends Authenticatable
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+	public function getProfileLinkAttribute()
+	{
+		return  "manage/users/browse/all/search?id=$this->id&searched=1" ;
+	}
+
 
 	public function getMobileMaskedAttribute()
 	{

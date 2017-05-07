@@ -1,6 +1,6 @@
 <div class="refresh">{{ url("manage/posts/act/$model->id/editor-publish") }}</div>
 <div class="panel panel-default text-center">
-	<div class="panel-heading text-right" ondblclick="divReload('divPublishPanel')">{{ trans('posts.form.publish') }}</div>
+	<div class="panel-heading text-right" ondblclick="divReload('divPublishPanel')">{{ trans('posts.form.save_and_publish') }}</div>
 	<div class="panel-body bg-ultralight w100">
 
 		{{--

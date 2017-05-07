@@ -114,8 +114,8 @@ Route::group([
 		Route::get('/update/{item_id}', 'PostsController@update');
 		Route::get('/tab_update/{posttype}/{request_tab?}/{switches?}', 'PostsController@tabUpdate');
 
+		Route::get('/act/{model_id}/{action}/{option?}', 'PostsController@singleAction');
 		Route::get('/check_slug/{id}/{type}/{locale}/{slug?}/p', 'PostsController@checkSlug');
-		Route::get('/act/{model_id}/{action}', 'PostsController@singleAction');
 
 		Route::get('/{posttype}', 'PostsController@browse');
 		Route::get('/{posttype}/create/{locale?}/{sisterhood?}', 'PostsController@create');
@@ -133,6 +133,7 @@ Route::group([
 			Route::post('/deleteMass' , 'PostsController@deleteMass');
 			Route::post('/undeleteMass', 'PostsController@undeleteMass');
 			Route::post('/destroyMass', 'PostsController@destroyMass');
+			Route::post('/owner', 'PostsController@changeOwner');
 		});
 
 	});
