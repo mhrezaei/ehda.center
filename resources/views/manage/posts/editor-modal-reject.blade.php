@@ -16,6 +16,7 @@
 			'name' => "",
 			'label' => trans('validation.attributes.moderate_note'),
 			'id' => "txtModerateNote2",
+			'value' => $model->moderate_note ,
 			'class' => "form_required",
 		])
 

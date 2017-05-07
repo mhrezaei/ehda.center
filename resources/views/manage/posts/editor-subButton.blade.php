@@ -6,20 +6,17 @@
 	@endforeach
 @else
 
-
-
 	@if(!isset($condition) or $condition)
 		@if($command=='-')
 			<li role="separator" class="divider"></li>
 		@else
 			<li id="{{$id or ''}}">
-				<a href="{{v0()}}" onclick="postsAction('{{ $command }}')" class="{{$class or ''}}">
+				<a href="{{v0()}}" onclick="postsAction('{{ $command }}' , '{{$model->id}}')" class="{{$class or ''}}">
 					{{ trans("posts.form.$command") }}
 				</a>
 			</li>
 		@endif
 	@endif
-
 
 
 @endif

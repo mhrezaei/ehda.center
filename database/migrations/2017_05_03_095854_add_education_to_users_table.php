@@ -15,8 +15,8 @@ class AddEducationToUsersTable extends Migration
 	public function up()
 	{
 		Schema::table('users', function (Blueprint $table) {
-			$table->date('marriage_date')->after('gender')->index() ;
-			$table->date('birth_date')->after('gender')->index() ;
+			$table->date('marriage_date')->after('gender')->nullable()->index() ;
+			$table->date('birth_date')->after('gender')->nullable()->index() ;
 			$table->tinyInteger('education')->after('gender')->index();
 			$table->tinyInteger('marital')->after('gender')->index();
 		});

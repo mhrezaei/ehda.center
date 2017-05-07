@@ -370,7 +370,7 @@ class Post extends Model
 
 	public function canPublish()
 	{
-		return $this->can('publish');
+		return !$this->trashed() and $this->can('publish');
 	}
 
 	public function canEdit()
@@ -490,11 +490,12 @@ class Post extends Model
 			'locale'   => getLocale(),
 			'owner'    => 0,
 			'type'     => "feature:searchable",
-			'category' => "",
+			'category' => '', //supports single or an array of id,slug, or both
 			'keyword'  => "", //[@TODO
 			'search'   => "",
 			'from'     => null,
 			'to'       => null,
+			'folder'   => "",   //supports single or an array of id,slug, or both
 		]);
 
 		$table = self::where('id', '>', '0');
@@ -518,20 +519,37 @@ class Post extends Model
 		/*-----------------------------------------------
 		| Category ...
 		*/
-		if(is_numeric($switch['category'])) {
-			$switch['category'] = [$switch['category']];
-		}
-		elseif($switch['category'] == 'no') {
-			$table = $table->has('categories', '=', 0);
-		}
-		else {
-			$switch['category'] = [];
+		if($switch['category']) {
+			if($switch['category'] == 'no') {
+				$table = $table->has('categories', '=', 0);
+			}
+			elseif(!is_array($switch['category'])) {
+				$switch['category'] = [$switch['category']];
+			}
+
+			if(is_array($switch['category']) and count($switch['category'])) {
+				$table = $table->whereHas('categories', function ($query) use ($switch) {
+					$query->whereIn('categories.id', $switch['category'])->orWhereIn('categories.slug', $switch['category']);
+				});
+			}
 		}
 
-		if(is_array($switch['category']) and count($switch['category'])) {
-			$table = $table->whereHas('categories', function ($query) use ($switch) {
-				$query->whereIn('categories.id', $switch['category']);
-			});
+		/*-----------------------------------------------
+		| Folder ...
+		*/
+		if($switch['folder']) {
+			if($switch['folder'] == 'no') {
+				$table = $table->has('folders', '=', 0);
+			}
+			elseif(!is_array($switch['folder'])) {
+				$switch['folder'] = [$switch['folder']];
+			}
+
+			if(is_array($switch['folder']) and count($switch['folder'])) {
+				$table = $table->whereHas('folders', function ($query) use ($switch) {
+					$query->whereIn('folders.id', $switch['folder'])->orWhereIn('folders.slug', $switch['folder']);
+				});
+			}
 		}
 
 		/*-----------------------------------------------
@@ -655,7 +673,7 @@ class Post extends Model
 				$label_field = str_replace('src', 'label', $field);
 				$link_field  = str_replace('src', 'link', $field);
 				array_push($resultant_array, [
-					'src'   => str_replace(url('').'/', null, $value),
+					'src'   => str_replace(url('') . '/', null, $value),
 					'label' => $data[ $label_field ],
 					'link'  => $data[ $link_field ],
 				]);
@@ -909,43 +927,44 @@ class Post extends Model
 		}
 	}
 
-    public function isIt($switch)
-    {
-        $switch = strtoupper($switch);
-        switch ($switch) {
-            case 'NEW':
-                if (!$this->isIt('AVAILABLE')) {
-                    break;
-                }
-                $freshTime = 100 * 24 * 60; // 100 days (in minutes) @TODO: should be saved in settings
-                $publishTime = new Carbon($this->published_at);
-                $now = Carbon::now();
-                if ($now->gt($publishTime) and ($now->diffInMinutes($publishTime) <= $freshTime)) {
-                    return true;
-                }
-                break;
+	public function isIt($switch)
+	{
+		$switch = strtoupper($switch);
+		switch ($switch) {
+			case 'NEW':
+				if(!$this->isIt('AVAILABLE')) {
+					break;
+				}
+				$freshTime   = 100 * 24 * 60; // 100 days (in minutes) @TODO: should be saved in settings
+				$publishTime = new Carbon($this->published_at);
+				$now         = Carbon::now();
+				if($now->gt($publishTime) and ($now->diffInMinutes($publishTime) <= $freshTime)) {
+					return true;
+				}
+				break;
 
-            case 'IN_SALE':
-                if (!$this->isIt('AVAILABLE')) {
-                    break;
-                }
-                $this->spreadMeta();
-                if ($this->sale_price and ($this->sale_price != $this->price)) {
-                    return true;
-                }
-                break;
+			case 'IN_SALE':
+				if(!$this->isIt('AVAILABLE')) {
+					break;
+				}
+				$this->spreadMeta();
+				if($this->sale_price and ($this->sale_price != $this->price)) {
+					return true;
+				}
+				break;
 
-            case 'AVAILABLE':
-                if ($this->is_available) {
-                    return true;
-                } else {
-                    return false;
-                }
-                break;
-        }
+			case 'AVAILABLE':
+				if($this->is_available) {
+					return true;
+				}
+				else {
+					return false;
+				}
+				break;
+		}
 
-        return false;
-    }
+		return false;
+	}
 
 }
 

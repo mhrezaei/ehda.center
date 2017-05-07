@@ -1,5 +1,5 @@
 <div class="panel panel-toolbar row w100">
-	<div class="col-md-6">
+	<div class="col-md-5">
 		<p class="title">{{ $title or $page[0][1].' / '.$page[1][1]}}</p>
 		@if(isset($subtitle_view))
 			<div class="mh30">
@@ -7,7 +7,7 @@
 			</div>
 		@endif
 	</div>
-	<div class="col-md-6 tools">
+	<div class="col-md-7 tools">
 
 		@if(isset($buttons))
 			@foreach($buttons as $button)

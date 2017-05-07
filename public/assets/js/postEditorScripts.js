@@ -117,7 +117,7 @@ function postToggleSchedule( $mood )
 
 }
 
-function postsAction($command)
+function postsAction($command , $model_id)
 {
 	forms_log('action: '+$command);
 	switch($command) {
@@ -139,6 +139,10 @@ function postsAction($command)
 			modalForm("modalPostDeleteWarning" , '1') ;
 			break;
 
+		case 'unpublish':
+			modalForm("modalPostUnpublishWarning" , '1') ;
+			break;
+
 		case 'send_for_approval' :
 			$("#btnApproval").click();
 			break;
@@ -157,6 +161,10 @@ function postsAction($command)
 				$($divFeedback).removeClass('loading') ;
 			});
 
+			break;
+
+		case 'refer_to' :
+			masterModal(url('manage/posts/act/'+$model_id+'/owner/1'));
 			break;
 
 	}
@@ -214,5 +222,10 @@ function postPhotoRemoved($selector)
 	var $counter_label = $('#spnPhotoCount') ;
 	var $new_counter = parseInt(forms_digit_en($counter_label.html())) -1;
 	$counter_label.html(forms_digit_fa($new_counter.toString()));
+
+}
+
+function postRefreshPublishPanel()
+{
 
 }

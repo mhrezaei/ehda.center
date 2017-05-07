@@ -310,11 +310,20 @@ class PostsController extends Controller
 		$command = $data['_submit'];
 		$allowed = true;
 		if(in_array($command, ['delete', 'delete_original'])) {
-			return $this->saveDelete($request);
+			return $this->saveDelete($model, $request);
 			// this (^) is to completely bypass delete commands. Security will be checked over there.
 		}
-		if(in_array($command, ['publish', 'unpublish'])) {
+		if(in_array($command, ['publish'])) {
 			$allowed = ($allowed and $model->canPublish());
+		}
+		if(in_array($command, ['unpublish'])) {
+			if($model->canPublish()) {
+				return $this->saveUnpublish($model);
+			}
+			else {
+				return $this->jsonFeedback(trans('validation.http.Error503'));
+			}
+
 		}
 		if($request->id) {
 			$allowed = ($allowed and $model->canEdit());
@@ -401,7 +410,7 @@ class PostsController extends Controller
 		| Album ...
 		*/
 		if($model->has('album')) {
-			$data['post_photos'] = Post::savePhotos($data) ;
+			$data['post_photos'] = Post::savePhotos($data);
 		}
 
 
@@ -621,15 +630,57 @@ class PostsController extends Controller
 		return $this->jsonAjaxSaveFeedback($saved, [
 			'success_redirect' => $redirect_url,
 			'success_refresh'  => $refresh_page,
+		     'success_callback' => "divReload('divPublishPanel')" ,
 		]);
 
 	}
 
-
-	public function saveDelete($request)
+	public function saveUnpublish($model)
 	{
-		return $this->jsonFeedback($request->toArray()['_submit']);
-		//@TODO: Complete This!
+		return $this->jsonAjaxSaveFeedback($model->unpublish(), [
+			'success_callback' => "divReload('divPublishPanel')" ,
+		]);
+	}
+
+
+	public function saveDelete($model, $request)
+	{
+		$command = $request->toArray()['_submit'];
+		$done    = false;
+
+		/*-----------------------------------------------
+		| Action ...
+		*/
+		if($command == 'delete') {
+			if($model->canDelete()) {
+				$done = $model->delete();
+			}
+			else {
+				return $this->jsonFeedback(trans('validation.http.Error503'));
+			}
+		}
+		elseif($command == 'delete_original') {
+			$original_model = $model->original();
+			if(!$original_model or !$original_model->exists) {
+				return $this->jsonFeedback(trans('validation.http.Error410'));
+			}
+			elseif(!$original_model->canDelete()) {
+				return $this->jsonFeedback(trans('validation.http.Error503'));
+			}
+			else {
+				$done = $original_model->delete();
+				$done = $original_model->copies()->delete();
+			}
+		}
+
+		/*-----------------------------------------------
+		| Feedback ...
+		*/
+
+		return $this->jsonAjaxSaveFeedback($done, [
+			'success_redirect' => url("manage/posts/$model->type"),
+		]);
+
 	}
 
 	public function delete(Request $request)
@@ -652,20 +703,20 @@ class PostsController extends Controller
 
 	public function deleteMass(Request $request)
 	{
-		$ids = explode(',',$request->ids);
-		$done = 0 ;
+		$ids  = explode(',', $request->ids);
+		$done = 0;
 		foreach($ids as $id) {
-			$model = Post::find($id) ;
+			$model = Post::find($id);
 			if($model and $model->canDelete()) {
-				$done += $model->delete() ;
+				$done += $model->delete();
 			}
 		}
 
-		return $this->jsonAjaxSaveFeedback($done , [
-			'success_refresh' => true ,
+		return $this->jsonAjaxSaveFeedback($done, [
+			'success_refresh' => true,
 			'success_message' => trans("forms.feed.mass_done", [
 				"count" => pd($done),
-			]) ,
+			]),
 		]);
 
 	}
@@ -691,20 +742,20 @@ class PostsController extends Controller
 
 	public function undeleteMass(Request $request)
 	{
-		$ids = explode(',',$request->ids);
-		$done = 0 ;
+		$ids  = explode(',', $request->ids);
+		$done = 0;
 		foreach($ids as $id) {
-			$model = Post::onlyTrashed()->find($id) ;
+			$model = Post::onlyTrashed()->find($id);
 			if($model and $model->canDelete()) {
-				$done += $model->undelete() ;
+				$done += $model->undelete();
 			}
 		}
 
-		return $this->jsonAjaxSaveFeedback($done , [
-			'success_refresh' => true ,
+		return $this->jsonAjaxSaveFeedback($done, [
+			'success_refresh' => true,
 			'success_message' => trans("forms.feed.mass_done", [
 				"count" => pd($done),
-			]) ,
+			]),
 		]);
 
 	}
@@ -726,24 +777,71 @@ class PostsController extends Controller
 		]);
 
 	}
+
 	public function destroyMass(Request $request)
 	{
-		$ids = explode(',',$request->ids);
+		$ids = explode(',', $request->ids);
 		//$models = Comment::onlyTrashed()->whereIn('id' , $ids)
-		$done = 0 ;
+		$done = 0;
 		foreach($ids as $id) {
-			$model = Post::onlyTrashed()->find($id) ;
+			$model = Post::onlyTrashed()->find($id);
 			if($model and $model->canDelete()) {
-				$done += $model->forceDelete() ;
+				$done += $model->forceDelete();
 			}
 		}
 
-		return $this->jsonAjaxSaveFeedback($done , [
-			'success_refresh' => true ,
+		return $this->jsonAjaxSaveFeedback($done, [
+			'success_refresh' => true,
 			'success_message' => trans("forms.feed.mass_done", [
 				"count" => pd($done),
-			]) ,
+			]),
 		]);
+
+	}
+
+	public function changeOwner(Request $request)
+	{
+		/*-----------------------------------------------
+		| Post Selection ...
+		*/
+		$post = Post::find($request->id) ;
+		if(!$post or !$post->exists) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+		if(!$post->canPublish()) {
+			return $this->jsonFeedback(trans('validation.http.Error503'));
+		}
+
+		/*-----------------------------------------------
+		| User Selection ...
+		*/
+		$user = User::find($request->owner_id) ;
+		if(!$user or !$user->exists or $user->is_not_an('admin')) {
+			return $this->jsonFeedback(trans('people.form.user_deleted'));
+		}
+
+		/*-----------------------------------------------
+		| Save...
+		*/
+		if($post->owned_by == $user->id) {
+			$ok = 1 ;
+		}
+		else {
+			$ok = Post::store([
+				'id' => $post->id ,
+			     'owned_by' => $user->id ,
+			]);
+		}
+
+		/*-----------------------------------------------
+		| Feedback ...
+		*/
+		return $this->jsonAjaxSaveFeedback( $ok , [
+				'success_callback' => "rowUpdate('tblPosts' , '$request->id')",
+		]);
+
+
+
 
 	}
 

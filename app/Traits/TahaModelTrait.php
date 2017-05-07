@@ -6,15 +6,13 @@ use App\Models\Setting;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 
 
 trait TahaModelTrait
 {
 	protected $saved_selector_para = [];
-	private   $cached_creator      = false;
-	private   $cached_publisher    = false;
-	private   $cached_deleter      = false;
 
 	/*
 	|--------------------------------------------------------------------------
@@ -96,53 +94,35 @@ trait TahaModelTrait
 
 	public function getCreatorAttribute()
 	{
-		if(!$this->cached_creator) {
-			$user = User::find($this->created_by);
-			if($user) {
-				$this->cached_creator = $user;
-			}
-			else {
-				$this->cached_creator = new User();
-			}
-		}
-
-		return $this->cached_creator;
+		return $this->getPerson('created_by') ;
 	}
 
 	public function getPublisherAttribute()
 	{
-		if(!$this->cached_publisher) {
-			if($this->created_by == $this->published_by and $this->cached_creator) {
-				return $this->cached_creator;
-			}
-			$user = User::find($this->published_by);
-			if($user) {
-				$this->cached_publisher = $user;
-			}
-			else {
-				$this->cached_publisher = new User();
-			}
-		}
-
-		return $this->cached_publisher;
+		return $this->getPerson('published_by') ;
 	}
 
 	public function getDeleterAttribute()
 	{
-		if(!$this->cached_deleter) {
-			if($this->created_by == $this->deleted_by and $this->cached_creator) {
-				return $this->cached_creator;
-			}
-			$user = User::find($this->deleted_by);
-			if($user) {
-				$this->cached_deleter = $user;
-			}
-			else {
-				$this->cached_deleter = new User();
-			}
+		return $this->getPerson('deleted_by') ;
+	}
+
+	public function getPerson($field)
+	{
+		$user_id = $this->$field ;
+		if($user_id) {
+			$user = Cache::remember("user-$user_id" , 10 , function() use($user_id) {
+				return User::find($user_id);
+			});
+		}
+		else {
+			$user = false ;
 		}
 
-		return $this->cached_deleter;
+		if(!$user)
+			$user = new User() ;
+
+		return $user ;
 	}
 
 
@@ -494,7 +474,7 @@ trait TahaModelTrait
 			$this->cacheRegenerate();
 		}
 
-		//This runs only on specific updates:
+		//This runs only on specific queries ($mood can be 'Update' or 'InsertOrDelete' :
 		$method_name = 'cacheRegenerateOn' . $mood;
 		if(method_exists($this, $method_name)) {
 			$this->$method_name();
@@ -504,7 +484,7 @@ trait TahaModelTrait
 
 	public function unpublish()
 	{
-		//		$this->published_at = null ;
+		$this->published_at = null ;
 		if(self::hasColumn('published_by')) {
 			$this->published_by = null;
 		}

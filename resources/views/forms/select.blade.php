@@ -18,7 +18,7 @@ if(isset($disabled) and $disabled) {
 ?>
 @if(!isset($condition) or $condition)
 
-	<div class="form-group">
+	<div class="form-group {{$div_class or ''}}">
 		<label
 				for="{{$name}}"
 				class="col-sm-2 control-label {{$label_class or ''}}"

@@ -23,7 +23,7 @@
 				<a href="{{ url("manage/posts/$model->type") }}" class="btn btn-lg btn-danger w50">{{ trans('forms.button.sure_delete') }}</a>
 			</div>
 			<div class="text-center m20">
-				<button class="btn btn-link" onclick='$(".modal").modal("hide")'>{{ trans("forms.button.cancel") }}</button>
+				<button type="button" class="btn btn-link" onclick='$(".modal").modal("hide")'>{{ trans("forms.button.cancel") }}</button>
 			</div>
 		@endif
 
@@ -47,28 +47,28 @@
 				<button type="submit" name="_submit" onclick='$(".modal").modal("hide")' value="delete_original" class="btn btn-lg btn-danger w50">{{ trans('posts.form.delete_original_post') }}</button>
 			</div>
 			<div class="text-center m20">
-				<button class="btn btn-link" onclick='$(".modal").modal("hide")'>{{ trans("forms.button.cancel") }}</button>
+				<button class="btn btn-link" type="button"  onclick='$(".modal").modal("hide")'>{{ trans("forms.button.cancel") }}</button>
 			</div>
 		@endif
 
 
 		{{--
 		|--------------------------------------------------------------------------
-		| If model is not published, but
+		| Other Situations
 		|--------------------------------------------------------------------------
-		|
+		| Different notes when the post is already published and when not
 		--}}
 
-		@if(!$model->exists and !$model->isCopy())
-{{--			@include("forms.note" , [--}}
-				{{--'text' => trans('delete'),--}}
-				{{--'shape' => "warning",--}}
-			{{--])--}}
+		@if($model->exists and !$model->isCopy())
+			@include("forms.note" , [
+				'text' => $model->isPublished()? trans('posts.form.delete_alert_for_published_post') : '',
+				'shape' => "warning",
+			])
 			<div class="text-center m20">
 				<button type="submit" name="_submit" value="delete" onclick='$(".modal").modal("hide")' class="btn btn-lg btn-danger w50">{{ trans('forms.button.sure_delete') }}</button>
 			</div>
 			<div class="text-center m20">
-				<button class="btn btn-link" onclick='$(".modal").modal("hide")'>{{ trans("forms.button.cancel") }}</button>
+				<button class="btn btn-link" type="button"  onclick='$(".modal").modal("hide")'>{{ trans("forms.button.cancel") }}</button>
 			</div>
 		@endif
 	</div>
