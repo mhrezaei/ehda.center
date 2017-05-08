@@ -16,6 +16,7 @@ return [
     'reverse_results' => "معکوس‌سازی نتایج قرعه‌کشی",
     'drawing_winner' => "برنده قرعه‌کشی",
     'drawing_winners' => "برندگان قرعه‌کشی",
+    'drawing_video' => "ویدئو قرعه‌کشی",
     'take_number_between' => "عددی را بین ۱ تا :number انتخاب کنید",
     'random_number' => "عدد شانسی",
     'user_already_won' => "این کاربر یک بار در همین رویداد برنده شده است!",

@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\Receipt;
 use App\Models\User;
 use App\Providers\DrawingCodeServiceProvider;
+use App\Providers\PostsServiceProvider;
 use App\Traits\ManageControllerTrait;
 use Asanak\Sms\Facade\AsanakSms;
 use Carbon\Carbon;
@@ -25,7 +26,7 @@ class UserController extends Controller
         if ($request->session()->get('drawingCode'))
             return redirect(url_locale('user/drawing'));
 
-        $post = Post::findBySlug('customers-comments');
+//        $post = Post::findBySlug('customers-comments');
 
         return view('front.user.dashboard.0', compact('post'));
     }
@@ -33,12 +34,13 @@ class UserController extends Controller
     public function profile()
     {
         user()->spreadMeta();
-        if (user()->birth_date) {
-            user()->birth_date = jDateTime::strftime('Y/m/d', strtotime(user()->birth_date));;
-        }
-        if (user()->marriage_date) {
-            user()->marriage_date = jDateTime::strftime('Y/m/d', strtotime(user()->marriage_date));;
-        }
+//        if (user()->birth_date) {
+//            user()->birth_date = jDateTime::strftime('Y/m/d', strtotime(user()->birth_date));;
+//        }
+
+//        if (user()->marriage_date) {
+//            user()->marriage_date = jDateTime::strftime('Y/m/d', strtotime(user()->marriage_date));;
+//        }
         return view('front.user.profile.0');
     }
 
@@ -80,8 +82,37 @@ class UserController extends Controller
 
     public function events()
     {
-        $events = Post::selector(['type' => 'events'])->get();
-        return view('front.user.events.0', compact('events'));
+        $runningEvents = Post::selector(['type' => 'events'])
+            ->whereDate('starts_at', '<=', Carbon::now())
+            ->whereDate('ends_at', '>=', Carbon::now())
+            ->get();
+
+        return view('front.user.events.0', compact('runningEvents'));
+
+    }
+
+    public function waitingEvents()
+    {
+        if (request()->ajax()) {
+            $events = Post::selector(['type' => 'events'])
+                ->whereDate('starts_at', '>=', Carbon::now())
+                ->whereDate('ends_at', '>=', Carbon::now())
+                ->get();
+
+            return view('front.user.events.events-block', compact('events'));
+        }
+    }
+
+    public function expiredEvents()
+    {
+        if (request()->ajax()) {
+            $events = Post::selector(['type' => 'events'])
+                ->whereDate('starts_at', '<=', Carbon::now())
+                ->whereDate('ends_at', '<=', Carbon::now())
+                ->paginate(5);
+
+            return view('front.user.events.events-block', compact('events'));
+        }
     }
 
     public function update(ProfileSaveRequest $request)
@@ -91,6 +122,9 @@ class UserController extends Controller
             $request['password'] = Hash::make($request['new_password']);
         }
         $request['id'] = user()->id;
+        if ($request['marital'] != 2) {
+            unset($request['marriage_date']);
+        }
         return $this->jsonAjaxSaveFeedback(User::store($request, ['new_password', 'new_password2']), [
             'success_refresh' => 1,
         ]);

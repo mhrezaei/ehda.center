@@ -1,24 +1,38 @@
-@if(sizeof($events))
 <div class="container">
     <div class="row">
-        <div class="col-sm-8 col-center">
-            @foreach($events as $event)
-                {{ '', $event->spreadMeta() }}
-            <section class="panel event-item">
-                <header>
-                    <div class="title"> {{ $event->title }} </div>
-                    <div class="functions">
-                        <div class="label red alt"> {{ trans('front.to') }} {{ echoDate($event->end_time, 'j F Y', 'auto', true) }} </div>
-                        <div class="label green alt"> {{ trans('front.all_user_score') }} {{ pd(floor(user()->sum_receipt_amount / 500000)) }} </div>
-                    </div>
-                </header>
-                <article>
-                    {!! $event->text !!}
-                </article>
-            </section>
-            @endforeach
+        <div class="col-sm-8 col-center pt15">
+            <article class="yt-accordion">
+                <h4 class="yt-accordion-header first default-active">
+                    <i class="shop-icon shop-icon-accordion"></i>
+                    <span class="text-violet">{{ trans('front.running_events') }}</span>
+                </h4>
+                <div class="yt-accordion-panel auto-height">
+                    @include('front.user.events.events-block' , [
+                        'events' => $runningEvents
+                    ])
+                </div>
+                <h4 class="yt-accordion-header default-active">
+                    <i class="shop-icon shop-icon-accordion"></i>
+                    <span class="text-violet">{{ trans('front.soon') }}</span>
+                </h4>
+                <div class="yt-accordion-panel yt-lazy-load auto-height" data-url="{{ url(getLocale() . '/user/events/waiting') }}">
+                </div>
+                <h4 class="yt-accordion-header last">
+                    <i class="shop-icon shop-icon-accordion"></i>
+                    <span class="text-violet">{{ trans('front.expired_events') }}</span>
+                </h4>
+                <div class="yt-accordion-panel yt-lazy-load auto-height" data-url="{{ url(getLocale() . '/user/events/expired') }}">
+                </div>
+            </article>
         </div>
     </div>
 </div>
-@endif
+
+<script>
+    var acoordionIcons = {
+        header: "ui-icon-plusthick",
+        activeHeader: "ui-icon-minusthick"
+    };
+
+</script>
 {{-- @TODO: rate_point should be set dynamically. Currently, was hardcode! --}}

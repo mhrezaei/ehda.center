@@ -15,10 +15,18 @@
             </div>
             <hr class="small">
             <div class="field filter-slider" data-identifier="price">
-                <label> {{ trans('validation.attributes.price') }} </label>
+                <label>
+                    {{ trans('validation.attributes.price') }}
+                    (
+                    {{ trans('posts.filters.range_from') }}
+                    @pd(number_format($minPrice = PostsServiceProvider::productsMinPrice($allPosts)))
+                    {{ trans('posts.filters.range_to') }}
+                    @pd(number_format($maxPrice = PostsServiceProvider::productsMaxPrice($allPosts)))
+                    )
+                </label>
                 <div class="slider-container"
-                     data-min="{{ PostsServiceProvider::productsMinPrice($allPosts) }}"
-                     data-max="{{ PostsServiceProvider::productsMaxPrice($allPosts) }}">
+                     data-min="{{ $minPrice }}"
+                     data-max="{{ $maxPrice }}">
                     <div class="slider-self"></div>
                     <div class="pt10">
                         <span class="min-label pull-left"></span>
@@ -54,6 +62,13 @@
                     <input id="special_sale" type="checkbox">
                     <label for="special_sale"></label>
                 </div>
+            </div>
+            <hr class="small">
+            <div class="text-center">
+                <a class="green button-link" href="#">
+                    <i class="fa fa-refresh"></i>
+                    {{ trans('posts.filters.reset_filters') }}
+                </a>
             </div>
         </article>
     </div>

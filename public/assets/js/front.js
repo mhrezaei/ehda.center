@@ -3,6 +3,12 @@
  * @param prefix
  * @returns {{}}
  */
+
+var acoordionIcons = {
+    header: "ui-icon-plusthick",
+    activeHeader: "ui-icon-minusthick"
+};
+
 $.fn.dataStartsWith = function (prefix) {
     var result = {};
     var data = $(this).data();
@@ -254,6 +260,27 @@ function removeUrlParameterByName(key, url) {
     return rtn;
 }
 
+function ksort(obj) {
+    if (obj) {
+        var sorted = {};
+        var keys = [];
+
+        for (key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                keys.push(key);
+            }
+        }
+    }
+
+    keys.sort();
+
+    for (i = 0; i < keys.length; i++) {
+        sorted[keys[i]] = obj[keys[i]];
+    }
+
+    return sorted;
+}
+
 $(document).ready(function () {
 
     /**
@@ -271,5 +298,99 @@ $(document).ready(function () {
             }
         }
     }).change();
-})
+
+    $('.yt-accordion').accordion({
+        collapsible: true,
+        autoHeight: true,
+        icons: acoordionIcons,
+
+        beforeActivate: function (event, ui) {
+            // The accordion believes a panel is being opened
+            if (ui.newHeader[0]) {
+                var currHeader = ui.newHeader;
+                var currContent = currHeader.next('.ui-accordion-content');
+                // The accordion believes a panel is being closed
+            } else {
+                var currHeader = ui.oldHeader;
+                var currContent = currHeader.next('.ui-accordion-content');
+            }
+            // Since we've changed the default behavior, this detects the actual status
+            var isPanelSelected = currHeader.attr('aria-selected') == 'true';
+
+            // Toggle the panel's header
+            currHeader.toggleClass('ui-corner-all', isPanelSelected)
+                .toggleClass('ui-accordion-header-active', !isPanelSelected)
+                .attr('aria-selected', ((!isPanelSelected).toString()));
+
+            // Toggle the panel's icon
+            currHeader.find('.ui-icon')
+                .toggleClass(acoordionIcons.header, isPanelSelected)
+                .toggleClass(acoordionIcons.activeHeader, !isPanelSelected);
+
+            // Toggle the panel's content
+            currContent.toggleClass('accordion-content-active', !isPanelSelected);
+            if (isPanelSelected) {
+                currContent.slideUp();
+            } else {
+                currContent.slideDown();
+            }
+
+            return false; // Cancel the default action
+        }
+    });
+
+    $('.yt-lazy-load').each(function () {
+        var container = $(this);
+        var url = container.attr('data-url');
+
+        if (url) {
+            if (container.hasClass('auto-height')) {
+                container.css('height', 'auto');
+            }
+
+            $.ajax({
+                url: url,
+                type: container.attr('data-method') ? container.attr('data-method') : 'GET',
+                success: function (result) {
+                    container.html(result);
+                }
+            });
+
+
+            container.on({
+                click: function (e) {
+                    e.preventDefault();
+
+                    url = $(this).attr('href');
+                    if (url) {
+                        $.ajax({
+                            url: url,
+                            success: function (result) {
+                                container.html(result);
+                                container.removeClass('loading');
+                            },
+                            beforeSend: function () {
+                                container.addClass('loading');
+                            }
+                        });
+                    }
+                }
+            }, '.pagination li a');
+        }
+    })
+
+    $(".yt-accordion").find('.yt-accordion-header.default-active').each(function () {
+        var item = $(this);
+        var accordion = item.closest('.yt-accordion');
+
+        if (!item.hasClass('ui-accordion-header-active')) {
+            var index = item.index('.default-active') ? item.index('.default-active') : false;
+            var panel = accordion.find('.yt-accordion-panel').eq(index);
+            accordion.accordion( "option", "active", index );
+            if(panel.hasClass('auto-height')){
+                panel.css('height','auto');
+            }
+        }
+    });
+});
 

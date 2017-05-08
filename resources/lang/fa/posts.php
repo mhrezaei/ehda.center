@@ -146,7 +146,7 @@ return [
 		'change_post_owner'                   => "تغییر مالک مطلب",
 		'copy_suggestion_when_cannot_publish' => "این مطلب مورد پذیرش سردبیر قرار گرفته و ویرایش امکان‌پذیر نیست، مگر آن که رونوشتی از آن تهیه کنید.",
 		'copy_suggestion_when_can_publish'    => "این مطلب نهایی شده است. برای تغییرات گسترده، بهتر است رونوشتی از آن تهیه کنید.",
-	     'copy_suggestion_deny' => "همیشه می‌توانید با دکمه‌ی «ذخیره پیش‌نویس» همین کار را بکنید." ,
+		'copy_suggestion_deny'                => "همیشه می‌توانید با دکمه‌ی «ذخیره پیش‌نویس» همین کار را بکنید.",
 	],
 
 	'comments' => [
@@ -171,10 +171,13 @@ return [
 	],
 
 	'filters' => [
-		'filters'      => 'فیلتر‌ها',
-		'no_category'  => 'بدون دسته‌بندی',
-		'available'    => 'موجود',
-		'special_sale' => 'فروش ویژه',
+		'filters'       => 'فیلتر‌ها',
+		'no_category'   => 'بدون دسته‌بندی',
+		'available'     => 'موجود',
+		'special_sale'  => 'فروش ویژه',
+		'reset_filters' => 'تخلیه فیلترها',
+		'range_from'    => 'از',
+		'range_to'      => 'تا',
 	],
 
 ];

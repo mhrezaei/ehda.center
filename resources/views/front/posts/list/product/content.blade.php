@@ -6,11 +6,11 @@
                             class="icon-search"></span></div>
                 <div class="field sort"><label> {{ trans('front.sort') }} </label>
                     <div class="select rounded">
-                        <select>
-                            <option> {{ trans('front.price_max_to_min') }} </option>
-                            <option> {{ trans('front.price_min_to_max') }} </option>
-                            <option> {{ trans('front.best_seller') }} </option>
-                            <option> {{ trans('front.favorites') }} </option>
+                        <select class="ajax-sort">
+                            <option data-identifier="price" value="desc"> {{ trans('front.price_max_to_min') }} </option>
+                            <option data-identifier="price" value="asc"> {{ trans('front.price_min_to_max') }} </option>
+                            {{--<option> {{ trans('front.best_seller') }} </option>--}}
+                            {{--<option> {{ trans('front.favorites') }} </option>--}}
                         </select>
                     </div>
                 </div>
@@ -27,8 +27,16 @@
                                     @if(!$isBasePage)
                                         <div class="row">
                                             @if($posts)
-                                                @foreach($posts as $post)
-                                                    @include($viewFolder . '.item')
+                                                @foreach($posts as $index => $post)
+                                                    @if(($index % 3) == 0)
+                                                        <div class="row">
+                                                            <div class="col-xs-12">
+                                                                @endif
+                                                                @include($viewFolder . '.item')
+                                                                @if(($index % 3) == 2)
+                                                            </div>
+                                                        </div>
+                                                    @endif
                                                 @endforeach
                                             @endif
                                         </div>

@@ -829,7 +829,7 @@ class Post extends Model
 	public function getViewableFeaturedImageAttribute()
 	{
 		$this->spreadMeta();
-		if($this->featured_image and url_exists(url($this->featured_image))) {
+		if($this->featured_image) {
 			return url($this->featured_image);
 		}
 		else {

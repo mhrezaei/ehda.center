@@ -34,7 +34,7 @@
                                     <i class="fa fa-{{ $icon }}"></i>
                                 </div>
                                 <div class="score-box-title">
-                                    {{ $event->title }}
+                                    {{ str_limit($event->title) }}
                                 </div>
                                 <div class="score-box-score">
                                     {{ pd(floor($event->sum_amount / $event->rate_point)) }} امتیاز
@@ -44,6 +44,8 @@
                     @endforeach
                 </div>
             </div>
+            {{-- TODO: remove spreadMeta  HADI :D --}}
+            {{ null, user()->spreadMeta() }}
             @if(!arrayHasRequired(\App\Models\User::$required_fields, user()->toArray()))
                 <div class="col-xs-12 pt20">
                     <div class="row">
