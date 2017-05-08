@@ -168,7 +168,8 @@ class ProductsController extends Controller
                             break;
                         case 'special-sale':
                             // @TODO: next line will work when "sale_price" is defined as a column in "posts" table
-//                            $selectorData['conditions'][] = ['price', '<>', 'sale_price'];
+                            $selectorData['conditions'][] = ['sale_price', '!=', '0'];
+                            $selectorData['conditions'][] = ['price', '!=', 'sale_price'];
                             break;
                     }
                 }
@@ -181,6 +182,19 @@ class ProductsController extends Controller
                     switch ($field) {
                         case 'page':
                             $selectorData['paginate_current'] = $value;
+                            break;
+                    }
+                }
+            }
+        }
+
+        if (isset($hashArray['sort'])) {
+            foreach ($hashArray['sort'] as $field => $value) {
+                if ($value) {
+                    switch ($field) {
+                        case 'price': // accepted sort fields
+                            $selectorData['sort'] = $value;
+                            $selectorData['sort_by'] = $field;
                             break;
                     }
                 }

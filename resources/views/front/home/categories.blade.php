@@ -8,7 +8,7 @@
                     @foreach($categories as $cat)
                         {{ '', $cat->spreadMeta() }}
                         <div class="col-sm-4">
-                            <a href="{{ url_locale('products/categories/' . $cat->slug) }}" class="category-item">
+                            <a href="{{ url_locale('products/' . $cat->slug) }}" class="category-item">
                                 <img src="{{ ($cat->image ? url($cat->image) : '#' ) }}">
                                 <div class="more">
                                     <svg width="100%" height="100%" viewBox="0 0 220 42" version="1.1"

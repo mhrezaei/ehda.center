@@ -2,21 +2,30 @@
  * Created by EmiTis Yousefi on 30/04/2017.
  */
 
-
-$(document).ready(function () {
-    initialFilter();
-
-    $(window).on('hashchange', function (e) {
-        initialFilter(true)
-    });
-});
-
 var ajaxDelay = 1; // in seconds
 var ajaxTimer = new Timer();
 var runningXhr = null;
 var filterableAttributes = [];
 var filterData = {};
 var filterUrl = '';
+
+$(document).ready(function () {
+    initialFilter();
+
+    $(window).on('hashchange', function (e) {
+        e.preventDefault();
+        initialFilter(true)
+    });
+
+    $('.ajax-sort').change(function () {
+        var selected = $(this).find('option:selected');
+        if (typeof filterData.sort == 'undefined') {
+            filterData.sort = {};
+        }
+        filterData.sort[selected.attr('data-identifier')] = selected.val();
+        modifyUrl();
+    });
+});
 
 function initialFilter(modify) {
     var filterPanel = $('.filters-panel');
@@ -29,11 +38,15 @@ function initialFilter(modify) {
         var urlAttr = filterPanel.attr('data-filter-url');
 
         if (typeof urlAttr !== typeof undefined) {
+
             var currentFilterData = decryptHash(getHashUrl());
 
-            if (isDefined(currentFilterData['pagination']) && isDefined(currentFilterData['pagination']['page'])) {
-                filterData.pagination = {};
-                filterData.pagination.page = currentFilterData['pagination']['page'];
+            if (isDefined(currentFilterData.pagination)) {
+                filterData.pagination = currentFilterData.pagination;
+            }
+
+            if (isDefined(currentFilterData.sort)) {
+                filterData.sort = currentFilterData.sort;
             }
 
             filterUrl = urlAttr;
@@ -51,6 +64,7 @@ function initialFilter(modify) {
                 if (!modify) {
                     box.on({
                         keyup: function (event) {
+                            // TODO: minimum characters
                             filterWithText($(this).val(), identifier);
                             if (event.originalEvent) {
                                 modifyUrl();
@@ -59,8 +73,13 @@ function initialFilter(modify) {
                     }, 'input[type=text]');
                 }
 
-                if (isDefined(currentFilterData['text']) && isDefined(currentFilterData['text'][identifier])) {
-                    box.find('input[type=text]').val(currentFilterData['text'][identifier]).change();
+                if (isDefined(currentFilterData['text']) &&
+                    isDefined(currentFilterData['text'][identifier]) &&
+                    currentFilterData['text'][identifier]
+                ) {
+                    box.find('input[type=text]').val(currentFilterData['text'][identifier]).keyup();
+                } else {
+                    box.find('input[type=text]').val('').keyup();
                 }
 
             });
@@ -101,7 +120,7 @@ function initialFilter(modify) {
                         change: function (event, ui) {
                             minLabel.html(forms_pd(nummber_format(ui.values[0])));
                             maxLabel.html(forms_pd(nummber_format(ui.values[1])));
-                            filterWithRange(ui.values[0], ui.values[1], identifier);
+                            filterWithRange(ui.values[0], ui.values[1], identifier, [sliderEl.slider("option", "min"), sliderEl.slider("option", "max")]);
                             if (event.originalEvent) {
                                 modifyUrl();
                             }
@@ -142,6 +161,10 @@ function initialFilter(modify) {
                 ) {
                     items.each(function () {
                         var cat = $(this).val();
+                        if (!$.isArray(currentFilterData['checkbox'][identifier])) {
+                            currentFilterData['checkbox'][identifier] = [currentFilterData['checkbox'][identifier]];
+                        }
+
                         if ($.inArray(cat, currentFilterData['checkbox'][identifier]) > -1) {
                             $(this).prop('checked', true);
                         } else {
@@ -152,9 +175,7 @@ function initialFilter(modify) {
                     items.prop('checked', true);
                 }
 
-                if (!modify) {
-                    items.last().change();
-                }
+                items.last().change();
             });
 
             /**
@@ -181,13 +202,12 @@ function initialFilter(modify) {
                 if (isDefined(currentFilterData['switchKey']) &&
                     isDefined(currentFilterData['switchKey'][identifier]) &&
                     currentFilterData['switchKey'][identifier]) {
-                    box.find('input[type=checkbox]').prop('checked', true);
+                    box.find('input[type=checkbox]').prop('checked', true).change();
                 } else {
                     box.find('input[type=checkbox]').prop('checked', false).change();
                 }
             });
 
-            console.log('here');
             modifyUrl();
             doFilter();
 
@@ -202,25 +222,33 @@ function filterWithText(needle, identifier) {
         filterData.text = {};
     }
 
-    filterData.text[identifier] = needle;
+    if (needle) {
+        filterData.text[identifier] = needle;
+    } else {
+        delete filterData.text[identifier];
+    }
 }
 
-function filterWithRange(min, max, identifier) {
+function filterWithRange(min, max, identifier, range) {
     if (typeof filterData.range == 'undefined') {
         filterData.range = {};
     }
 
-    filterData.range[identifier] = {
-        min: min,
-        max: max
-    };
-    console.log(filterData);
+    if (!range || !$.isArray(range) || min > range[0] || max < range[1]) {
+        filterData.range[identifier] = {
+            min: min,
+            max: max
+        };
+    } else {
+        delete filterData.range[identifier]; // make it undefined
+    }
 }
 
 function filterWithCheckBox(identifier, arrayValue) {
     if (typeof arrayValue == 'undefined') {
         arrayValue = false;
     }
+
     var sisters = $('input[type=checkbox][id^=' + identifier + ']');
 
     var checked = [];
@@ -242,10 +270,10 @@ function filterWithCheckBox(identifier, arrayValue) {
 }
 
 function filterWithSwitchCheckBox(checked, identifier) {
-
     if (typeof filterData.switchKey == 'undefined') {
         filterData.switchKey = {};
     }
+
 
     if (checked) {
         filterData.switchKey[identifier] = checked;
@@ -356,7 +384,7 @@ function doFilter() {
 }
 
 function modifyUrl(getData) {
-    setHashUrl(encryptHash(filterData));
+    setHashUrl(encryptHash(ksort(filterData)));
 }
 
 function modifyPaginationLinks() {
@@ -368,10 +396,12 @@ function modifyPaginationLinks() {
         if (pageN != null) {
             link = removeUrlParameterByName('page', link);
 
-            filterData.pagination = {};
-            filterData.pagination.page = pageN;
+            var hashString = getHashUrl(link);
+            var hashArray = decryptHash(hashString);
+            hashArray.pagination = {};
+            hashArray.pagination.page = pageN;
 
-            var newHashString = encryptHash(filterData);
+            var newHashString = encryptHash(hashArray);
             item.attr('href', setHashUrl(newHashString, link));
         }
     });

@@ -53,6 +53,7 @@ class PostController extends Controller
 
         $request = $request->all();
         $request['ip'] = request()->ip();
+        $request['user_id'] = user()->id;
 
         return $this->jsonAjaxSaveFeedback(Comment::store($request), [
             'success_callback' => "$('#commentForm').trigger(\"reset\")",

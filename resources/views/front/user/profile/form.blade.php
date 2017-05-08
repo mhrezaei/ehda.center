@@ -59,7 +59,7 @@
                             @include('front.frame.widgets.datepicker', [
                                 'name' => 'birth_date',
                                 'type' => 'text',
-                                'value' => user()->birth_date,
+                                'value' => (echoDate(user()->birth_date, 'Y/m/d') == '-') ? '' : echoDate(user()->birth_date, 'Y/m/d'),
                                 'class' => 'form-required',
                                 'options' => [
                                     'maxDate' => 0,
@@ -146,7 +146,7 @@
                             @include('front.frame.widgets.datepicker', [
                                 'name' => 'marriage_date',
                                 'type' => 'text',
-                                'value' => user()->marriage_date,
+                                'value' => (echoDate(user()->marriage_date, 'Y/m/d') == '-') ? '' : echoDate(user()->marriage_date, 'Y/m/d'),
                                 'options' => [
                                     'maxDate' => 0,
                                     'changeMonth' => true,

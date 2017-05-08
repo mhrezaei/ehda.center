@@ -174,11 +174,13 @@ class ValidationServiceProvider extends ServiceProvider
                 break;
 
             case 'gDate' :
-                if ($data) {
+                if ($data and strlen($data) >= 6) {
                     $jDate = explode('/', $data);
                     $gDate = jDateTime::toGregorian($jDate[0], $jDate[1], $jDate[2]);
                     $carbon = new Carbon(implode('/', $gDate));
                     $data = $carbon->toDateTimeString();
+                } else {
+                    $data = null;
                 }
                 break;
 

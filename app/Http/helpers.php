@@ -131,22 +131,22 @@ function array_random($array)
 
 function array_has_required($required, $array)
 {
-	return arrayHasRequired($required, $array);
+    return arrayHasRequired($required, $array);
 }
 
 function arrayHasRequired($required, $array)
 {
-	if(!is_array($required)) {
-		$required = [$required];
-	}
+    if (!is_array($required)) {
+        $required = [$required];
+    }
 
-	foreach($required as $fieldName) {
-		if(!isset($array[ $fieldName ]) or !$array[ $fieldName ]) {
-			return false;
-		}
-	}
+    foreach ($required as $fieldName) {
+        if (!isset($array[$fieldName]) or !$array[$fieldName]) {
+            return false;
+        }
+    }
 
-	return true;
+    return true;
 }
 
 function isJson($string)
@@ -201,43 +201,42 @@ function login($id) //@TODO: Remove this function on production
 
 function echoDate($date, $foramt = 'default', $language = 'auto', $pd = false)
 {
-	/*-----------------------------------------------
-	| Safety Bypass ...
-	*/
-	if(in_array($date, [null, '0000-00-00 00:00:00'])) {
-		return '-';
-	}
+    /*-----------------------------------------------
+    | Safety Bypass ...
+    */
+    if (in_array($date, [null, '0000-00-00 00:00:00', '0000-00-00'])) {
+        return '-';
+    }
 
-	/*-----------------------------------------------
-	| Process ...
-	*/
-	if($foramt == 'default') {
-		$foramt = 'j F Y [H:m]';
-	}
+    /*-----------------------------------------------
+    | Process ...
+    */
+    if ($foramt == 'default') {
+        $foramt = 'j F Y [H:m]';
+    }
 
-	if($language == 'auto') {
-		$language = getLocale();
-	}
+    if ($language == 'auto') {
+        $language = getLocale();
+    }
 
-	switch ($language) {
-		case 'fa':
-			$date = jDate::forge($date)->format($foramt);
-			break;
+    switch ($language) {
+        case 'fa':
+            $date = jDate::forge($date)->format($foramt);
+            break;
 
-		case 'en':
-			$date = $date->format($foramt);
-			break;
+        case 'en':
+            $date = $date->format($foramt);
+            break;
 
-		default:
-			$date = $date->format($foramt);
-	}
+        default:
+            $date = $date->format($foramt);
+    }
 
-	if($pd) {
-		return pd($date);
-	}
-	else {
-		return $date;
-	}
+    if ($pd) {
+        return pd($date);
+    } else {
+        return $date;
+    }
 }
 
 function fakeDrawingCode($amount = false, $timestamp = false) //@TODO: Remove this on production
@@ -285,6 +284,13 @@ function fakeData()
 	}
 }
 
+function tahaConverter2()
+{
+	model("User")::where('birth_date' , '0000-00-00')->update(['birth_date' => null]) ;
+	model("User")::where('marriage_date' , '0000-00-00')->update(['marriage_date' => null]) ;
+}
+
+
 function tahaConverter()
 {
 	$posts = \App\Models\Post::where('seo_score', -1)->get();
@@ -318,7 +324,6 @@ function tahaConverter()
 	}
 
 	return "DONE :D";
-
 }
 
 function url_exists($url)
@@ -337,6 +342,7 @@ function url_exists($url)
 	curl_close($ch);
 
 	return $status;
+
 }
 
 /**
@@ -345,55 +351,54 @@ function url_exists($url)
  */
 function explodeNotEmpty($delimiter, $string)
 {
-	return array_filter(explode($delimiter, $string));
+    return array_filter(explode($delimiter, $string));
 }
 
 function arrayPrefixToIndex($delimiter, $haystack)
 {
-	if(is_array($haystack)) {
-		foreach($haystack as $index => $field) {
-			$parts = explode($delimiter, $field, 2);
-			if(count($parts) == 2) {
-				$key   = $parts[0];
-				$value = $parts[1];
-				$value = arrayPrefixToIndex($delimiter, $value);
+    if (is_array($haystack)) {
+        foreach ($haystack as $index => $field) {
+            $parts = explode($delimiter, $field, 2);
+            if (count($parts) == 2) {
+                $key = $parts[0];
+                $value = $parts[1];
+                $value = arrayPrefixToIndex($delimiter, $value);
 
-				$target = &$haystack[ $key ];
-				if(isset($target)) {
-					if(!is_array($target)) {
-						$target = [$target];
-					}
+                $target = &$haystack[$key];
+                if (isset($target)) {
+                    if (!is_array($target)) {
+                        $target = [$target];
+                    }
 
-					if(!is_array($value)) {
-						$value = [$value];
-					}
+                    if (!is_array($value)) {
+                        $value = [$value];
+                    }
 
-					$target = array_merge($target, $value);
-				}
-				else {
-					$target = $value;
-				}
-			}
-			unset($haystack[ $index ]);
-		}
+                    $target = array_merge($target, $value);
+                } else {
+                    $target = $value;
+                }
+            }
+            unset($haystack[$index]);
+        }
 
-		return $haystack;
-	}
+        return $haystack;
+    }
 
-	if(is_string($haystack)) {
-		$parts = explode($delimiter, $haystack, 2);
-		if(count($parts) == 2) {
-			$key   = $parts[0];
-			$value = $parts[1];
-			$value = arrayPrefixToIndex($delimiter, $value);
+    if (is_string($haystack)) {
+        $parts = explode($delimiter, $haystack, 2);
+        if (count($parts) == 2) {
+            $key = $parts[0];
+            $value = $parts[1];
+            $value = arrayPrefixToIndex($delimiter, $value);
 
-			$haystack = [
-				$key => $value,
-			];
+            $haystack = [
+                $key => $value,
+            ];
 
-			return $haystack;
-		}
-	}
+            return $haystack;
+        }
+    }
 
-	return $haystack;
+    return $haystack;
 }

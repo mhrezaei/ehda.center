@@ -1,3 +1,8 @@
+@import "basement";
+
+$assetsDir: "../";
+$juiDir: "#{$assetsDir}libs/jquery-ui/";
+
 .hidden {
   display: none !important;
 }
@@ -36,7 +41,7 @@
   background-color: #ffffff;
   float: right;
   width: 100%;
-  min-height: 110px;
+  height: 130px;
   border-width: 1px;
   border-style: solid;
   font-size: 12px;
@@ -89,4 +94,160 @@
 .loading {
   opacity: 0.2;
   cursor: wait;
+}
+
+
+.button-link {
+  font-size: 12px;
+}
+
+.fa {
+  font-family: FontAwesome !important;
+}
+
+.shop-icon {
+  background: url("#{$assetsDir}/images/shop-icons.png") no-repeat;
+  background-color: rgba(0, 0, 0, 0);
+  background-image: url("#{$assetsDir}/images/shop-icons.png");
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-clip: border-box;
+  background-origin: padding-box;
+  background-position-x: 0%;
+  background-position-y: 0%;
+  background-size: auto auto;
+  background-position-x: 0%;
+  background-position-y: 0%;
+  display: inline-block;
+  position: relative;
+}
+
+@for $i from 5 to 29 {
+  .f#{$i} {
+    font-size: 1px * $i;
+    @if($i<10) {
+      font-weight: 100;
+    }
+  }
+}
+
+
+/********************* accordion *********************/
+
+.yt-accordion {
+  border-right: 3.5px solid #f0f1f2;
+  margin: 0 24px 45px 0;
+}
+
+.yt-accordion .yt-accordion-header {
+  border-color: transparent !important;
+  border-width: 0 !important;
+  background: none !important;
+  color: #000 !important;
+}
+
+.yt-accordion h4.yt-accordion-header {
+  color: #4d4d4d;
+  cursor: pointer;
+  font: 14px/47px yekan;
+  line-height: 47px;
+  height: 53px;
+  outline: 0 none;
+  position: relative;
+  padding: 0;
+}
+
+.yt-accordion h4.yt-accordion-header::after {
+  background: #e5e5e5;
+  content: "";
+  height: 1px;
+  position: absolute;
+  right: -12px;
+  top: 26px;
+  width: 100%;
+}
+
+.yt-accordion h4.yt-accordion-header > span:last-child {
+  background: #fff;
+  z-index: 1;
+  position: relative;
+  padding-left: 11px;
+  font-size: 15px;
+  right: 11px;
+  padding-right: 24px;
+  line-height: 27px;
+}
+
+.yt-accordion h4.yt-accordion-header .ui-accordion-header-icon {
+  display: none !important;
+}
+
+.yt-accordion h4.yt-accordion-header i {
+  background-position: -262px -611px;
+  height: 50px;
+  position: absolute;
+  right: -14px;
+  top: 0;
+  width: 25px;
+  z-index: 1;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+
+.yt-accordion h4.yt-accordion-header.ui-accordion-header-active i {
+  background-position: -210px -612px;
+}
+
+
+.yt-accordion h4.yt-accordion-header.first {
+  line-height: 21px
+}
+
+.yt-accordion h4.yt-accordion-header.first:after {
+  top: 12px
+}
+
+.yt-accordion h4.yt-accordion-header.first i {
+  background-position: -157px -618px;
+}
+
+.yt-accordion h4.yt-accordion-header.first i {
+  background-position: -157px -618px
+}
+
+.yt-accordion h4.yt-accordion-header.ui-accordion-header-active.first i {
+  background-position: -102px -618px
+}
+
+.yt-accordion h4.yt-accordion-header.last {
+  height: 43px;
+  line-height: 57px
+}
+
+.yt-accordion h4.yt-accordion-header.last:after {
+  top: 32px
+}
+
+.yt-accordion h4.yt-accordion-header.last i {
+  background-position: -316px -611px
+}
+
+.yt-accordion h4.yt-accordion-header.last.ui-accordion-header-active i {
+  background-position: -210px -610px
+}
+
+.yt-accordion h4.yt-accordion-header.last i {
+  background-position: -316px -611px;
+}
+
+.yt-accordion h4.yt-accordion-header.last.ui-accordion-header-active i {
+  background-position: -210px -605px;
+}
+
+.yt-accordion .yt-accordion-panel {
+  border: none !important;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
 }

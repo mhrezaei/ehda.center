@@ -39,7 +39,7 @@ class ProfileSaveRequest extends FormRequest
             'address' => 'persian:60',
             'gender' => 'required|numeric|in:' . implode(',', array_keys(\Illuminate\Support\Facades\Lang::get('forms.gender'))),
             'marital' => 'required|numeric|in:1,2',
-            'marriage_date' => 'required_if:marital,2',
+            'marriage_date' => 'date|required_if:marital,2',
             'new_password' => 'same:new_password2|min:8|max:50|',
 //            'new_password2' => 'required_with:password|same:password|min:8|max:50|',
         ];

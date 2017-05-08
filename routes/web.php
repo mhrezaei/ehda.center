@@ -267,16 +267,17 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
                 ->where('identifier', '^faq-(\w|-)+$'); // if identifier starts with "faq-"
         });
 
-
         Route::get('/page/{slug}', 'PostController@page');
 
         // user Route
         Route::group(['prefix' => 'user', 'middleware' => ['auth', 'is:customer']], function () {
             Route::get('/dashboard', 'UserController@index');
             Route::get('/profile', 'UserController@profile');
-            Route::get('/drawing', 'UserController@drawing');
-            Route::get('/events', 'UserController@events');
             Route::post('/profile/update', 'UserController@update');
+            Route::get('/drawing',  'UserController@drawing');
+            Route::get('/events', 'UserController@events');
+            Route::get('/events/waiting', 'UserController@waitingEvents');
+            Route::get('/events/expired', 'UserController@expiredEvents');
         });
     });
 

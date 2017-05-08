@@ -5,6 +5,8 @@ namespace App\Providers;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Posttype;
+use App\Models\Receipt;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
@@ -84,7 +86,8 @@ class PostsServiceProvider extends ServiceProvider
             }
         }
 
-        $allPosts = self::allPostsOfType($data['type'], $data['locale']);
+//        $allPosts = self::allPostsOfType($data['type'], $data['locale']);
+        $allPosts = Post::selector($data)->get();
 
 
         // set an array for sending data to view
@@ -134,14 +137,25 @@ class PostsServiceProvider extends ServiceProvider
             $post = Post::findBySlug($identifier);
         }
 
-        if (!$post->exists and $data['showError']) {
-            return view('errors.m410');
+
+        if (!$post->exists) {
+            if ($data['showError']) {
+                return view('errors.m410');
+            } else {
+                return false;
+            }
         }
 
-        $template = $post->posttype()->spreadMeta()->template;
+        $postType = $post->posttype()->spreadMeta();
+        $template = $postType->template;
+
+        if ($template == 'special') {
+            $viewFolder = "front.posts.single.$template.$postType->slug";
+        } else {
+            $viewFolder = "front.posts.single.$template";
+        }
 
         // render view
-        $viewFolder = "front.posts.single.$template";
 
         return view($viewFolder . '.main', compact('post', 'viewFolder'));
     }
@@ -177,5 +191,38 @@ class PostsServiceProvider extends ServiceProvider
         ];
 
         return Post::selector($data)->get();
+    }
+
+    public static function getUserPointOfEvent($event, $user = 'current')
+    {
+        if (!($event instanceof Post)) {
+            if (is_numeric($event)) {
+                $event = Post::find($event);
+            } else {
+                $event = Post::findBySlug($event);
+            }
+        }
+
+        if (!$event->exists or $event->type != 'events') {
+            return false;
+        }
+
+        if ($user == 'current') {
+            $user = user();
+        }
+
+
+        if (!($user instanceof User) or !$user->exists) {
+            return false;
+        }
+
+        $event->spreadMeta();
+
+        return floor(Receipt::where(['user_id' => $user->id])
+            ->whereDate('purchased_at', '>=', $event->starts_at)
+            ->whereDate('purchased_at', '<=', $event->ends_at)
+            ->select(DB::raw("SUM(purchased_amount)/'$event->rate_point' points"))
+            ->pluck('points')
+            ->first());
     }
 }

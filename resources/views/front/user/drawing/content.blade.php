@@ -10,14 +10,10 @@
                 </header>
                 <article>
                     @if(!arrayHasRequired(\App\Models\User::$required_fields, user()->toArray()))
-                        <div class="col-xs-12 pt20">
-                            <div class="row">
-                                <div class="alert alert-danger text-right">
-                                    {{ trans('front.profile_messages.complete_to_join_drawing') }}
-                                    &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <a href="{{ url(\App\Providers\SettingServiceProvider::getLocale() .'/user/profile') }}">{{ trans('front.edit_profile') }}</a>
-                                </div>
-                            </div>
+                        <div class="alert alert-danger text-right">
+                            {{ trans('front.profile_messages.complete_to_join_drawing') }}
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="{{ url(\App\Providers\SettingServiceProvider::getLocale() .'/user/profile') }}">{{ trans('front.edit_profile') }}</a>
                         </div>
                     @endif
                     @if(user()->receipts()->count())
