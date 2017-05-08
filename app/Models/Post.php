@@ -22,8 +22,10 @@ class Post extends Model
 		'is_draft'     => "boolean",
 		'is_limited'   => "boolean",
 		'published_at' => 'datetime',
+	     'meta' => "array" ,
 	];
 	private          $cached_posttype = false;
+	private          $cached_parent   = false;
 
 	/*
 	|--------------------------------------------------------------------------
@@ -266,6 +268,12 @@ class Post extends Model
 		//@TODO: Preview Link
 	}
 
+	public function getBrowseLinkAttribute()
+	{
+		return "manage/posts/$this->type/all/id=$this->id" ;
+	}
+
+
 
 	public function getOtherLocalesAttribute()
 	{
@@ -321,13 +329,33 @@ class Post extends Model
 
 	public function getPhotosAttribute()
 	{
-		$array = $this->meta('post_photos');
+		$array = $this->spreadMeta()->post_photos;
 		if(!$array) {
 			return [];
 		}
 		else {
 			return $array;
 		}
+	}
+
+	public function getParentAttribute()
+	{
+		if($this->cached_parent) {
+			$parent = $this->cached_parent ;
+		}
+		else {
+			if($this->isCopy()) {
+				$parent = Self::find($this->copy_of);
+				if(!$parent) {
+					$parent = new Post();
+				}
+			}
+			else {
+				$parent = $this;
+			}
+		}
+
+		return $parent;
 	}
 
 

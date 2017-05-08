@@ -87,6 +87,9 @@ return [
 
 	'form' => [
 		'copy'                                => "رونوشت",
+		'copy_of'                             => "رونوشت از",
+		'published_post'                      => "مطلب منتشر شده",
+		'approved_post'                       => "مطلب پذیرفته‌شده",
 		'copy_status_hint'                    => "در حال دستکاری یک رونوشت هستید.",
 		'title_placeholder'                   => "عنوان را اینجا وارد کنید",
 		'title2_placeholder'                  => "عنوان دوم را در صورت نیاز اینجا وارد کنید",
@@ -127,12 +130,12 @@ return [
 		'no_slug'                             => "نوشته بدون نامک، هیچ اشکالی ندارد.",
 		'discount_percent_in_parentheses'     => "(:percent٪ تخفیف)",
 		'quick_edit'                          => "ویرایش مختصر",
-		'clone'                               => "رونوشت‌برداری",
-		'make_a_clone'                        => "رونوشت را بساز",
-		'make_a_clone_and_save_to_drafts'     => "فقط رونوشت را بساز",
-		'make_a_clone_and_get_me_there'       => "رونوشت را بساز و صفحه‌اش را باز کن",
-		'clone_made_feedback'                 => "رونوشت را ساختیم و به عنوان پیش‌نویس شما ذخیره کردیم.",
-		'clone_is_a_sister'                   => "این رونوشت، ترجمه‌ای از همین مطلب کنونی‌ست.",
+		'clone'                               => "کپی‌برداری",
+		'make_a_clone'                        => "کپی را بساز",
+		'make_a_clone_and_save_to_drafts'     => "فقط کپی را بساز",
+		'make_a_clone_and_get_me_there'       => "کپی را بساز و صفحه‌اش را باز کن",
+		'clone_made_feedback'                 => "کپی را ساختیم و به عنوان پیش‌نویس شما ذخیره کردیم.",
+		'clone_is_a_sister'                   => "این کپی، ترجمه‌ای از همین مطلب کنونی‌ست.",
 		'translation_already_made'            => "ترجمه با این زبان وجود دارد.",
 		'approval'                            => "پذیرش",
 		'deleted_post'                        => "مطلب پاک‌شده",
@@ -141,6 +144,9 @@ return [
 		'post_owner'                          => "مالک مطلب",
 		'new_post_owner'                      => "مالک جدید",
 		'change_post_owner'                   => "تغییر مالک مطلب",
+		'copy_suggestion_when_cannot_publish' => "این مطلب مورد پذیرش سردبیر قرار گرفته و ویرایش امکان‌پذیر نیست، مگر آن که رونوشتی از آن تهیه کنید.",
+		'copy_suggestion_when_can_publish'    => "این مطلب نهایی شده است. برای تغییرات گسترده، بهتر است رونوشتی از آن تهیه کنید.",
+	     'copy_suggestion_deny' => "همیشه می‌توانید با دکمه‌ی «ذخیره پیش‌نویس» همین کار را بکنید." ,
 	],
 
 	'comments' => [

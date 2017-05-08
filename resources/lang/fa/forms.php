@@ -15,6 +15,8 @@ return [
 		'thing_not_found'        => ':thing مورد نظر را نیافتیم.',
 		'password_set_to_mobile' => "شماره تلفن همراه به عنوان گذرواژه در نظر گرفته می‌شود.",
 		'wrong_current_password' => "گذرواژه‌ی فعلی اشتباه است.",
+	     'I_know' => "خودم می‌دانم" ,
+	     'not_now' => "فعلاً نه" ,
 	],
 
 	"button" => [

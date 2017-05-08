@@ -12,7 +12,7 @@
 			{{ trans('posts.album.singular') }}
 			&nbsp;(<span id="spnPhotoCount">{{ pd(count($model->photos)) }}</span>)
 		</div>
-		
+
 		<div class="panel-body">
 
 			{{--

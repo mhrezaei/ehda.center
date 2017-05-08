@@ -10,6 +10,7 @@
 		'url' => 'manage/posts/save',
 		'files' =>false,
 		'class' => 'js',
+		'onchange' => "postFormChange()" ,
 		'no_validation' => "1" ,
 	])
 

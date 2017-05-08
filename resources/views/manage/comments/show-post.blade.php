@@ -10,7 +10,7 @@
 @if($post)
 	@include("manage.frame.widgets.grid-text" , [
 		'text' => str_limit($post->posttype->title . ' / ' . $post->title , 100),
-		'link' => "urlN:manage/posts/$post->type/all/id=$post->id" ,
+		'link' => "urlN:$post->browse_link" ,
 		'icon' => $post->posttype->spreadMeta()->icon ,
 	]     )
 @else

@@ -7,6 +7,7 @@
         'files' => isset($files)? $files : 'false' ,
         'class' => isset($class)? "form-horizontal $class" : 'form-horizontal ' ,
         'no-validation' => isset($no_validation)? $no_validation : '0' ,
+        'onchange' => isset($onchange)? $onchange : '' ,
         'no-ajax' => isset($no_ajax)? $no_ajax : '0' ,
     ]) !!}
 

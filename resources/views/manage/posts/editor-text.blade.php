@@ -7,11 +7,13 @@
 @if($model->has('text'))
 	<div class="mv20">
 		@include("forms.textarea" , [
+			'id' => "txtText" ,
 			'name' => "text",
 			'value' => $model->text,
 			'class' => "tinyEditor",
 			'rows' => "15",
 			'in_form' => false,
+			'extra' => "onchange=postFormChange" ,
 		])
 	</div>
 @endif

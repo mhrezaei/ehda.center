@@ -22,6 +22,13 @@ var editor_config = {
 
 	theme_advanced_buttons1 : "link,unlink" ,
 
+	setup : function(e) {
+		e.on('change', function () {
+			var function_name = $("#"+this.id).attr('onchange') ;
+			window[function_name]();
+		});
+	},
+
 	file_browser_callback : function(field_name, url, type, win) {
 		var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
 		var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;

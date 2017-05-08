@@ -225,7 +225,12 @@ function postPhotoRemoved($selector)
 
 }
 
-function postRefreshPublishPanel()
+function postFormChange()
 {
-
+	var $flag = $('#txtChangeWarning') ;
+	if($flag.val() == '1') {
+		modalForm('modalSuggestCopy',1);
+		$flag.val('0');
+	}
+	$('#txtChangeDetected').val('1');
 }

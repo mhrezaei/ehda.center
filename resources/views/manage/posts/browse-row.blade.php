@@ -6,6 +6,7 @@
 	{{ '' , $model->setPosttype($posttype) }}
 @endif
 
+
 {{--
 |--------------------------------------------------------------------------
 | Featured_image
@@ -26,6 +27,9 @@
 |--------------------------------------------------------------------------
 | Title, Status, Locale, Important Dates
 --}}
+@if($model->isCopy())
+	{{ '' , $model->title = '['.trans('posts.form.copy').'] '.$model->title }}
+@endif
 
 <td>
 	@include("manage.frame.widgets.grid-text" , [
@@ -50,6 +54,7 @@
 			'text' => trans('posts.form.copy'),
 			'color' => "orange",
 			'icon' => "pencil",
+			'link' => "urlN:".$model->parent->browse_link ,
 			'condition' => $model->isCopy(),
 		],
 		[
@@ -72,6 +77,7 @@
 		[
 			'text' => trans("forms.lang.$model->locale"),
 			'condition' => $model->has('locales'),
+			'link' => "modal:manage/posts/act/-id-/locales/" ,
 			'icon' => "globe",
 		]
 	]])

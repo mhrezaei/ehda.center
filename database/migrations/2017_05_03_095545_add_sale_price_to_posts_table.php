@@ -20,6 +20,7 @@ class AddSalePriceToPostsTable extends Migration
 			$table->timestamp('sale_starts_at')->nullable()->after('price') ;
 			$table->float('sale_price' , 15 , 2)->default(0)->after('price') ;
 			$table->integer('seo_score')->default(-1);
+			$table->tinyInteger('pinned')->default(0) ;
 		});
 	}
 
@@ -31,7 +32,7 @@ class AddSalePriceToPostsTable extends Migration
 	public function down()
 	{
 		Schema::table('posts', function (Blueprint $table) {
-			$table->dropColumn(['title2','sale_price','seo_score','sale_starts_at' , 'sale_expires_at']);
+			$table->dropColumn(['title2','sale_price','seo_score','sale_starts_at' , 'sale_expires_at' , 'pinned']);
 		});
 	}
 }
