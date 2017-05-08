@@ -68,7 +68,7 @@ trait PermitsTrait
 		if(user()->id == $this->id) {
 			$revealed_at = session()->get('revealed_at', false);
 			$roles       = session()->get('roles', false);
-			if(1 or !$roles or !$revealed_at or $revealed_at < $this->updated_at) { //@TODO: Remove "1 or"
+			if(!$roles or !$revealed_at or $revealed_at < $this->updated_at) {
 				$roles = collect($this->roles()->get());
 				session()->put('roles', $roles);
 				session()->put('revealed_at', Carbon::now()->toDateTimeString());
@@ -389,6 +389,10 @@ trait PermitsTrait
 //			return true;
 //		}
 
+		//Post- to posts- conversion...
+		$requested_permission = str_replace('post-' , 'posts-' , $requested_permission) ;
+
+		//return...
 		return str_contains($permissions, $requested_permission);
 
 

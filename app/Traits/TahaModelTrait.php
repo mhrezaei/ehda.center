@@ -94,35 +94,36 @@ trait TahaModelTrait
 
 	public function getCreatorAttribute()
 	{
-		return $this->getPerson('created_by') ;
+		return $this->getPerson('created_by');
 	}
 
 	public function getPublisherAttribute()
 	{
-		return $this->getPerson('published_by') ;
+		return $this->getPerson('published_by');
 	}
 
 	public function getDeleterAttribute()
 	{
-		return $this->getPerson('deleted_by') ;
+		return $this->getPerson('deleted_by');
 	}
 
 	public function getPerson($field)
 	{
-		$user_id = $this->$field ;
+		$user_id = $this->$field;
 		if($user_id) {
-			$user = Cache::remember("user-$user_id" , 10 , function() use($user_id) {
+			$user = Cache::remember("user-$user_id", 10, function () use ($user_id) {
 				return User::find($user_id);
 			});
 		}
 		else {
-			$user = false ;
+			$user = false;
 		}
 
-		if(!$user)
-			$user = new User() ;
+		if(!$user) {
+			$user = new User();
+		}
 
-		return $user ;
+		return $user;
 	}
 
 
@@ -307,7 +308,13 @@ trait TahaModelTrait
 
 	public function meta($slug = null, $field = 'meta')
 	{
-		$data = $this->$field;
+		//if(isset($this->$field)) {
+			$data = $this->$field;
+		//}
+		//else {
+		//	$data = [];
+		//}
+
 		if(!is_array($data)) {
 			$data = json_decode($data, true);
 		}
@@ -484,7 +491,7 @@ trait TahaModelTrait
 
 	public function unpublish()
 	{
-		$this->published_at = null ;
+		$this->published_at = null;
 		if(self::hasColumn('published_by')) {
 			$this->published_by = null;
 		}

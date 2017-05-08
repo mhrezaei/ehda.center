@@ -14,7 +14,7 @@
 			@elseif($sister->exists)
 				@include("manage.frame.widgets.grid-text" , [
 					'text' => trans("forms.status_text.$sister->status"),
-					'link' => $sister->canEdit()? $sister->edit_link : '',
+					'link' => "urlN:".$sister->browse_link , // $sister->canEdit()? $sister->edit_link : '',
 					'color' => trans("forms.status_color.".$sister->status),
 				])
 			@else
