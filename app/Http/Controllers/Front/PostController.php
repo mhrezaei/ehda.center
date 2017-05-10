@@ -40,7 +40,13 @@ class PostController extends Controller
         if (!$page)
             return view('errors.404');
 
-        return view('front.pages.0', compact('page'));
+        $page->spreadMeta();
+        $ogData['description'] = $page->title;
+        if($page->featured_image) {
+            $ogData['image'] = url($page->featured_image);
+        }
+
+        return view('front.pages.0', compact('page', 'ogData'));
     }
 
     public function submit_comment(CommentRequest $request)

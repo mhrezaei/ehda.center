@@ -358,6 +358,83 @@ class Post extends Model
 		return $parent;
 	}
 
+    public function getDirectUrlAttribute()
+    {
+        switch ($this->type) {
+            case 'products':
+                return url_locale('products/pd-' . ($this->id));
+                break;
+            case 'news':
+                return url_locale('news/nw-' . ($this->id));
+                break;
+            case 'faqs':
+                return url_locale('faqs/faq-' . ($this->id));
+                break;
+            case 'teammates':
+                return url_locale('teammates/tm-' . ($this->id));
+                break;
+        }
+    }
+
+    public function getViewableFeaturedImageAttribute()
+    {
+        $this->spreadMeta();
+        if($this->featured_image) {
+            return url($this->featured_image);
+        }
+        else {
+            if($typeImage = $this->posttype->spreadMeta()->default_featured_image) {
+                return url($typeImage);
+            }
+        }
+    }
+
+    public function getViewableFeaturedImageThumbnailAttribute()
+    {
+        $image = $this->viewable_featured_image;
+
+        return str_replace_last('/', '/thumbs/', $image);
+    }
+
+    public function getViewableAlbumAttribute()
+    {
+        $this->spreadMeta();
+        $album = $this->album;
+        if($album and is_array($album and count($album))) {
+            foreach($album as &$image) {
+                $image = url($image);
+            }
+
+            return $album;
+        }
+
+        return [];
+    }
+
+    public function getViewableAlbumThumbnailsAttribute()
+    {
+        $album = $this->viewable_album;
+        if($album and is_array($album) and $album) {
+            foreach($album as &$image) {
+                $image = str_replace_last('/', '/thumbs/', $image);
+            }
+
+            return $album;
+        }
+
+        return [];
+    }
+
+    public function getCurrentPriceAttribute()
+    {
+        if($this->isIt('IN_SALE')) {
+            return $this->sale_price;
+        }
+        else {
+            return $this->price;
+        }
+    }
+
 
 	/*
 	|--------------------------------------------------------------------------
@@ -826,73 +903,6 @@ class Post extends Model
 		return Drawing::isReady($this->id);
 	}
 
-	public function getViewableFeaturedImageAttribute()
-	{
-		$this->spreadMeta();
-		if($this->featured_image) {
-			return url($this->featured_image);
-		}
-		else {
-			if($typeImage = $this->posttype->spreadMeta()->default_featured_image) {
-				return url($typeImage);
-			}
-		}
-	}
-
-	public function getViewableFeaturedImageThumbnailAttribute()
-	{
-		$image = $this->viewable_featured_image;
-
-		return str_replace_last('/', '/thumbs/', $image);
-	}
-
-	public function getViewableAlbumAttribute()
-	{
-		$this->spreadMeta();
-		$album = $this->album;
-		if($album and is_array($album and count($album))) {
-			foreach($album as &$image) {
-				$image = url($image);
-			}
-
-			return $album;
-		}
-
-		return [];
-	}
-
-	public function getViewableAlbumThumbnailsAttribute()
-	{
-		$album = $this->viewable_album;
-		if($album and is_array($album) and $album) {
-			foreach($album as &$image) {
-				$image = str_replace_last('/', '/thumbs/', $image);
-			}
-
-			return $album;
-		}
-
-		return [];
-	}
-
-	public function getDirectUrlAttribute()
-	{
-		switch ($this->type) {
-			case 'products':
-				return url_locale('products/pd-' . ($this->id));
-				break;
-			case 'news':
-				return url_locale('news/nw-' . ($this->id));
-				break;
-			case 'faqs':
-				return url_locale('faqs/faq-' . ($this->id));
-				break;
-			case 'teammates':
-				return url_locale('teammates/tm-' . ($this->id));
-				break;
-		}
-	}
-
 	public function similars($number = null)
 	{
 		$posts = Post::where([
@@ -922,17 +932,6 @@ class Post extends Model
 
 		return $posts;
 	}
-
-	public function getCurrentPriceAttribute()
-	{
-		if($this->isIt('IN_SALE')) {
-			return $this->sale_price;
-		}
-		else {
-			return $this->price;
-		}
-	}
-
 
 	public function canRecieveComments()
 	{
@@ -995,6 +994,16 @@ class Post extends Model
 		}
 
 		return false;
+	}
+
+    public function getAbstract()
+    {
+        $this->spreadMeta();
+        if($this->abstract) {
+            return $this->abstract;
+        }
+
+        return str_limit($this->text, 200);
 	}
 
 }

@@ -16,8 +16,7 @@ class TeammatesController extends Controller
 
     public function archive()
     {
-        $postType = Posttype::findBySlug('teammates');
-
+        $postType = Posttype::findBySlug('teammates')->spreadMeta();
         $breadCrumb = [
             [trans('front.home'), url_locale('')],
             [$postType->title, url_locale('teammates')],
@@ -29,7 +28,9 @@ class TeammatesController extends Controller
             'max_per_page' => -1,
         ];
 
-        return view('front.teammates.archive.0', compact('selectConditions', 'breadCrumb'));
+        $ogData['description'] = $postType->title;
+
+        return view('front.teammates.archive.0', compact('selectConditions', 'breadCrumb', 'ogData'));
     }
 
     public function single($lang, $identifier)
@@ -49,6 +50,7 @@ class TeammatesController extends Controller
         if (!$person) {
             $this->abort(410);
         }
+        $person->spreadMeta();
 
         $breadCrumb = [
             [trans('front.home'), url_locale('')],
@@ -56,6 +58,13 @@ class TeammatesController extends Controller
             [$person->title, url_locale('teammates/' . $this->faqPrefix . $person->id)],
         ];
 
-        return view('front.teammates.single.0', compact('person', 'breadCrumb'));
+        $ogData = [
+            'description' => $person->title . ' - ' . $person->seat . '<br />' . $person->getAbstract(),
+        ];
+        if ($person->featured_image) {
+            $ogData['image'] = $person->featured_image;
+        }
+
+        return view('front.teammates.single.0', compact('person', 'breadCrumb', 'ogData'));
     }
 }

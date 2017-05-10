@@ -37,12 +37,21 @@ class ProductsController extends Controller
         if (!$folder) {
             $this->abort(410);
         }
+        $folder->spreadMeta();
 
         $selectorData = [
             'type' => 'products',
             'is_base_page' => true,
             'folder' => $folder->slug,
         ];
+
+        $ogData = [
+            'description' => $folder->title,
+        ];
+
+        if($folder->image) {
+            $ogData['image'] = url($folder->image);
+        }
 
         $breadCrumb = [
             [trans('front.home'), url_locale('')],
@@ -60,9 +69,10 @@ class ProductsController extends Controller
             }
             $breadCrumb[] = [$category->title, url_locale('products/' . $folder->slug . '/' . $category->slug)];
             $selectorData['category'] = $category->slug;
+            $ogData['description'] .= ' - ' . $category->title;
         }
 
-        return view('front.products.products.0', compact('selectorData', 'breadCrumb'));
+        return view('front.products.products.0', compact('selectorData', 'breadCrumb', 'ogData'));
 
     }
 
@@ -83,6 +93,7 @@ class ProductsController extends Controller
         if (!$product) {
             $this->abort(410);
         }
+        $product->spreadMeta();
 
         $breadCrumb = [
             [trans('front.home'), url_locale('')],
@@ -90,9 +101,19 @@ class ProductsController extends Controller
             [$product->title, url_locale('products/' . $this->productPrefix . ($product->slug ? $product->slug : $product->id))],
         ];
 
-        return view('front.products.single.0', compact('product', 'breadCrumb'));
-    }
+        $ogData = [
+            'title' => $product->title,
+        ];
 
+        if($product->viewable_featured_image) {
+            $ogData['image'] = url($product->viewable_featured_image);
+        }
+        if($product->abstract) {
+            $ogData['description'] = $product->abstract;
+        }
+
+        return view('front.products.single.0', compact('product', 'breadCrumb', 'ogData'));
+    }
 
     public function ajaxFilter(Request $request)
     {
