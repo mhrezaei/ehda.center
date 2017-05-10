@@ -33,6 +33,7 @@
             </div>
         </div>
         <div class="pagination-wrapper mt20">
+            {{--{!! $posts->render() !!}--}}
         </div>
     </div>
 </div>
