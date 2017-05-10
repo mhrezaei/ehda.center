@@ -195,6 +195,7 @@ return [
         \App\Providers\AppServiceProvider::class,
         Unisharp\Laravelfilemanager\LaravelFilemanagerServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
+        App\Providers\PostsServiceProvider::class,
     ],
 
     /*
