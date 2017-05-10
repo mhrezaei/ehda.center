@@ -351,7 +351,7 @@ function url_exists($url)
  */
 function explodeNotEmpty($delimiter, $string)
 {
-    return array_filter(explode($delimiter, $string));
+    return array_values(array_filter(explode($delimiter, $string)));
 }
 
 function arrayPrefixToIndex($delimiter, $haystack)

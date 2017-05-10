@@ -37,11 +37,21 @@ class ProductsController extends Controller
         if (!$folder) {
             $this->abort(410);
         }
+        $folder->spreadMeta();
 
         $selectorData = [
             'type' => 'products',
             'is_base_page' => true,
+            'folder' => $folder->slug,
         ];
+
+        $ogData = [
+            'description' => $folder->title,
+        ];
+
+        if($folder->image) {
+            $ogData['image'] = url($folder->image);
+        }
 
         $breadCrumb = [
             [trans('front.home'), url_locale('')],
@@ -59,11 +69,10 @@ class ProductsController extends Controller
             }
             $breadCrumb[] = [$category->title, url_locale('products/' . $folder->slug . '/' . $category->slug)];
             $selectorData['category'] = $category->slug;
-        } else {
-            $selectorData['category'] = $folder->slug;
+            $ogData['description'] .= ' - ' . $category->title;
         }
 
-        return view('front.products.products.0', compact('selectorData', 'breadCrumb'));
+        return view('front.products.products.0', compact('selectorData', 'breadCrumb', 'ogData'));
 
     }
 
@@ -84,6 +93,7 @@ class ProductsController extends Controller
         if (!$product) {
             $this->abort(410);
         }
+        $product->spreadMeta();
 
         $breadCrumb = [
             [trans('front.home'), url_locale('')],
@@ -91,13 +101,22 @@ class ProductsController extends Controller
             [$product->title, url_locale('products/' . $this->productPrefix . ($product->slug ? $product->slug : $product->id))],
         ];
 
-        return view('front.products.single.0', compact('product', 'breadCrumb'));
-    }
+        $ogData = [
+            'title' => $product->title,
+        ];
 
+        if($product->viewable_featured_image) {
+            $ogData['image'] = url($product->viewable_featured_image);
+        }
+        if($product->abstract) {
+            $ogData['description'] = $product->abstract;
+        }
+
+        return view('front.products.single.0', compact('product', 'breadCrumb', 'ogData'));
+    }
 
     public function ajaxFilter(Request $request)
     {
-
         $hash = $request->hash;
         $hashArray = [];
         $selectorData = [
@@ -107,101 +126,126 @@ class ProductsController extends Controller
             'paginate_hash' => $hash,
             'paginate_url' => URL::previous(),
         ];
-        $conditions = [];
 
-        $hash = explodeNotEmpty('!', $hash);
-        foreach ($hash as $field) {
-            $field = explodeNotEmpty('?', $field);
-            if (count($field) == 2) {
-                $hashArray[$field[1]] = explodeNotEmpty('/', $field[0]);
-                $currentGroup = &$hashArray[$field[1]];
-                $currentGroup = arrayPrefixToIndex('_', $currentGroup);
+        $referrer = URL::previous();
+        $prefix = url_locale('products');
+        $prefixLength = strlen($prefix);
+        if ((substr($referrer, 0, $prefixLength) == $prefix)) {
+            $importantUrl = substr($referrer, $prefixLength);
+            $parametersParts = explodeNotEmpty('/', $importantUrl);
+            $folderSlug = $parametersParts[0];
+            $categorySlug = array_key_exists(1, $parametersParts) ? $parametersParts[1] : null;
+
+            $folder = Folder::where(['slug' => $folderSlug, 'locale' => getLocale()])->first();
+            if (!$folder) {
+                return redirect($referrer);
             }
-        }
+            $selectorData['folder'] = $folder->slug;
 
+            if ($categorySlug) {
+                $category = Category::findBySlug($categorySlug);
+                if (!$category->exists or !$folder->is($category->folder)) {
+                    return redirect($referrer);
+                }
+                $selectorData['category'] = $category->slug;
+            } else {
+                $selectorData['category'] = $folder->slug;
+            }
 
-        if (isset($hashArray['text'])) {
-            foreach ($hashArray['text'] as $field => $value) {
-                switch ($field) {
-                    case 'title':
-                        $selectorData['search'] = $value;
-                        break;
+            $hash = explodeNotEmpty('!', $hash);
+            foreach ($hash as $field) {
+                $field = explodeNotEmpty('?', $field);
+                if (count($field) == 2) {
+                    $hashArray[$field[1]] = explodeNotEmpty('/', $field[0]);
+                    $currentGroup = &$hashArray[$field[1]];
+                    $currentGroup = arrayPrefixToIndex('_', $currentGroup);
                 }
             }
-        }
 
-        if (isset($hashArray['range'])) {
-            foreach ($hashArray['range'] as $field => $value) {
-                switch ($field) {
-                    case 'price':
-                        if (isset($value['min']) and isset($value['max']) and $value['min'] and $value['max']) {
-                            $selectorData['conditions'][] = ['price', '>=', $value['min']];
-                            $selectorData['conditions'][] = ['price', '<=', $value['max']];
-                        }
-                        break;
+
+            if (isset($hashArray['text'])) {
+                foreach ($hashArray['text'] as $field => $value) {
+                    switch ($field) {
+                        case 'title':
+                            $selectorData['search'] = $value;
+                            break;
+                    }
                 }
             }
-        }
 
-        if (isset($hashArray['checkbox'])) {
-            foreach ($hashArray['checkbox'] as $field => $value) {
-                switch ($field) {
-                    case 'category':
-                        if (is_array($value)) {
-                            $noCatIndex = array_search('', $value);
-                            if ($noCatIndex !== false) {
-                                $value[$noCatIndex] = 'no';
+            if (isset($hashArray['range'])) {
+                foreach ($hashArray['range'] as $field => $value) {
+                    switch ($field) {
+                        case 'price':
+                            if (isset($value['min']) and isset($value['max']) and $value['min'] and $value['max']) {
+                                $selectorData['conditions'][] = ['price', '>=', $value['min']];
+                                $selectorData['conditions'][] = ['price', '<=', $value['max']];
                             }
-                            $selectorData['category'] = $value;
+                            break;
+                    }
+                }
+            }
+
+            if (isset($hashArray['checkbox'])) {
+                foreach ($hashArray['checkbox'] as $field => $value) {
+                    switch ($field) {
+                        case 'category':
+                            if (is_array($value)) {
+                                $noCatIndex = array_search('', $value);
+                                if ($noCatIndex !== false) {
+                                    $value[$noCatIndex] = 'no';
+                                }
+                                $selectorData['category'] = $value;
+                            }
+                            break;
+                    }
+                }
+            }
+
+            if (isset($hashArray['switchKey'])) {
+                foreach ($hashArray['switchKey'] as $field => $value) {
+                    if ($value) {
+                        switch ($field) {
+                            case 'available':
+                                $selectorData['conditions'][] = ['is_available', true];
+                                break;
+                            case 'special-sale':
+                                // @TODO: next line will work when "sale_price" is defined as a column in "posts" table
+                                $selectorData['conditions'][] = ['sale_price', '!=', '0'];
+                                $selectorData['conditions'][] = ['price', '!=', 'sale_price'];
+                                break;
                         }
-                        break;
-                }
-            }
-        }
-
-        if (isset($hashArray['switchKey'])) {
-            foreach ($hashArray['switchKey'] as $field => $value) {
-                if ($value) {
-                    switch ($field) {
-                        case 'available':
-                            $selectorData['conditions'][] = ['is_available', true];
-                            break;
-                        case 'special-sale':
-                            // @TODO: next line will work when "sale_price" is defined as a column in "posts" table
-                            $selectorData['conditions'][] = ['sale_price', '!=', '0'];
-                            $selectorData['conditions'][] = ['price', '!=', 'sale_price'];
-                            break;
                     }
                 }
             }
-        }
 
-        if (isset($hashArray['pagination'])) {
-            foreach ($hashArray['pagination'] as $field => $value) {
-                if ($value) {
-                    switch ($field) {
-                        case 'page':
-                            $selectorData['paginate_current'] = $value;
-                            break;
+            if (isset($hashArray['pagination'])) {
+                foreach ($hashArray['pagination'] as $field => $value) {
+                    if ($value) {
+                        switch ($field) {
+                            case 'page':
+                                $selectorData['paginate_current'] = $value;
+                                break;
+                        }
                     }
                 }
             }
-        }
 
-        if (isset($hashArray['sort'])) {
-            foreach ($hashArray['sort'] as $field => $value) {
-                if ($value) {
-                    switch ($field) {
-                        case 'price': // accepted sort fields
-                            $selectorData['sort'] = $value;
-                            $selectorData['sort_by'] = $field;
-                            break;
+            if (isset($hashArray['sort'])) {
+                foreach ($hashArray['sort'] as $field => $value) {
+                    if ($value) {
+                        switch ($field) {
+                            case 'price': // accepted sort fields
+                                $selectorData['sort'] = $value;
+                                $selectorData['sort_by'] = $field;
+                                break;
+                        }
                     }
                 }
             }
-        }
 
-        return PostsServiceProvider::showList($selectorData);
+            return PostsServiceProvider::showList($selectorData);
+        }
     }
 
 }

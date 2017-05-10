@@ -68,5 +68,7 @@ return [
     'news' => 'اخبار',
     'faqs' => 'سوالات متداول',
     'more' => 'ادامه مطلب',
-    'search_for' => 'جست و جو برای «::search»'
+    'teammates' => 'کارمندان مجموعه',
+    'search_for' => 'جست و جو برای «::search»',
+    'no_result_found' => 'نتیجه‌ای یافت نشد.',
 ];

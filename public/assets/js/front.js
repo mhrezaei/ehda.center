@@ -281,6 +281,24 @@ function ksort(obj) {
     return sorted;
 }
 
+function loadingDialog(parameter, dialog) {
+    if (isDefined(dialog)) {
+        if (!(dialog instanceof HtmlElement) && (typeof dialog == 'string')) {
+            dialog = $(dialog);
+        }
+    } else {
+        dialog = $('#loading-dialog');
+    }
+
+    if (dialog.length) {
+        if ($.inArray(parameter, ['hide', false, 0]) > -1) {
+            dialog.hide();
+        } else {
+            dialog.show();
+        }
+    }
+}
+
 $(document).ready(function () {
 
     /**
@@ -386,10 +404,21 @@ $(document).ready(function () {
         if (!item.hasClass('ui-accordion-header-active')) {
             var index = item.index('.default-active') ? item.index('.default-active') : false;
             var panel = accordion.find('.yt-accordion-panel').eq(index);
-            accordion.accordion( "option", "active", index );
-            if(panel.hasClass('auto-height')){
-                panel.css('height','auto');
+            accordion.accordion("option", "active", index);
+            if (panel.hasClass('auto-height')) {
+                panel.css('height', 'auto');
             }
+        }
+    });
+
+    $('.like-submit-button').click(function () {
+        var form = $(this).closest('form');
+        if (form.length) {
+            if (!form.find(':input[type=submit]').length) {
+                form.append($('<input type="submit"/>').css('display', 'none'));
+            }
+
+            form.find(':input[type=submit]').click();
         }
     });
 });

@@ -40,7 +40,13 @@ class PostController extends Controller
         if (!$page)
             return view('errors.404');
 
-        return view('front.pages.0', compact('page'));
+        $page->spreadMeta();
+        $ogData['description'] = $page->title;
+        if($page->featured_image) {
+            $ogData['image'] = url($page->featured_image);
+        }
+
+        return view('front.pages.0', compact('page', 'ogData'));
     }
 
     public function submit_comment(CommentRequest $request)
@@ -58,6 +64,24 @@ class PostController extends Controller
         return $this->jsonAjaxSaveFeedback(Comment::store($request), [
             'success_callback' => "$('#commentForm').trigger(\"reset\")",
         ]);
+    }
+
+    public function search(Request $request)
+    {
+        if (trim($request->s)) {
+            $selectData = [
+                'search' => $request->s,
+            ];
+
+            $pageTitle = str_replace('::something', $selectData['search'], trans('forms.button.search_for_something'));
+
+            $breadCrumb = [
+                [trans('front.home'), url_locale('')],
+                [$pageTitle],
+            ];
+
+            return view('front.posts.general.search-result.main', compact('selectData', 'breadCrumb', 'pageTitle'));
+        }
     }
 
 }

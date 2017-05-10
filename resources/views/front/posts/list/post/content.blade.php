@@ -6,9 +6,15 @@
                     @foreach($posts as $post)
                         {{ '', $post->spreadMeta() }}
                         <div class="blog-item style-1">
-                            <div class="thumbnail"><img src="{{ url($post->featured_image) }}"></div>
-                            <div class="content"><a href="{{ $post->direct_url }}"><h3
-                                            class="title"> {{ $post->title }} </h3></a>
+                            <div class="thumbnail">
+                                <a href="{{ $post->direct_url }}">
+                                    <img src="{{ url($post->featured_image) }}" alt="{{ $post->title }}">
+                                </a>
+                            </div>
+                            <div class="content">
+                                <a href="{{ $post->direct_url }}">
+                                    <h3 class="title"> {{ $post->title }} </h3>
+                                </a>
                                 <div class="excerpt">
                                     <p>
                                         {{ $post->abstract }}
@@ -24,18 +30,6 @@
                         </div>
                     @endforeach
                 @endif
-
-                {{--<div class="pagination-wrapper mt20">--}}
-                {{--<ul class="pagination">--}}
-                {{--<li><a href="#">«</a></li>--}}
-                {{--<li class="active"><span>۱</span></li>--}}
-                {{--<li><a href="#">۲</a></li>--}}
-                {{--<li><a href="#">۳</a></li>--}}
-                {{--<li><a href="#">۴</a></li>--}}
-                {{--<li><a href="#">۵</a></li>--}}
-                {{--<li><a href="#">»</a></li>--}}
-                {{--</ul>--}}
-                {{--</div>--}}
             </div>
         </div>
         <div class="pagination-wrapper mt20">
