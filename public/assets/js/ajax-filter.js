@@ -353,7 +353,7 @@ function decryptHash(hash) {
 function doFilter() {
     ajaxTimer.delay(function () {
         var hash = getHashUrl();
-        var targetEl = $('.product-list');
+        var targetEl = $('.result-container');
 
         runningXhr = $.ajax({
             type: 'POST',
@@ -364,11 +364,11 @@ function doFilter() {
             },
             beforeSend: function () {
                 targetEl.addClass('loading');
-
                 if (runningXhr) {
                     runningXhr.abort();
                     console.warn('Filter request canceled!');
                 }
+                loadingDialog();
             },
             success: function (result) {
                 targetEl.replaceWith($(result))
@@ -377,6 +377,7 @@ function doFilter() {
             },
             complete: function () {
                 runningXhr = null;
+                loadingDialog('hide');
             }
         });
 
@@ -384,7 +385,10 @@ function doFilter() {
 }
 
 function modifyUrl(getData) {
-    setHashUrl(encryptHash(ksort(filterData)));
+    var newHash = encryptHash(ksort(filterData));
+    if (newHash != getHashUrl()) {
+        setHashUrl(newHash);
+    }
 }
 
 function modifyPaginationLinks() {

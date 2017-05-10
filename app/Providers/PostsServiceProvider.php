@@ -16,6 +16,34 @@ use Morilog\Jalali\Facades\jDateTime;
 class PostsServiceProvider extends ServiceProvider
 {
     private static $searchTemplate = 'post';
+    private static $defaultData = [
+        'showList' => [
+            'slug' => "",
+            'role' => "",
+            'criteria' => "published",
+            'locale' => "",
+            'owner' => 0,
+            'type' => "feature:searchable",
+            'category' => "",
+            'folder' => "",
+            'keyword' => "",
+            'search' => "",
+            'from' => "",
+            'to' => "",
+            'max_per_page' => 12,
+            'sort' => 'DESC',
+            'sort_by' => 'published_at',
+            'show_filter' => true,
+            'ajax_request' => false,
+            'conditions' => [], // additional conditions to be used in "where" clause
+            'paginate_hash' => '', // the fragment that should be added to links in pagination
+            'paginate_url' => '',
+            'paginate_current' => '',
+            'is_base_page' => false,
+        ]
+    ];
+
+    private $runningMethod;
 
     /**
      * Bootstrap the application services.
@@ -40,31 +68,16 @@ class PostsServiceProvider extends ServiceProvider
 
     public static function showList($data = [])
     {
+        $methodName = 'showList';
         // normalize data
-        $data = array_normalize($data, [
-            'slug' => "",
-            'role' => "",
-            'locale' => getLocale(),
-            'owner' => 0,
-            'type' => "",
-            'category' => "",
-            'keyword' => "",
-            'search' => "",
-            'from' => "",
-            'to' => "",
-            'max_per_page' => 12,
-            'sort' => 'DESC',
-            'sort_by' => 'published_at',
-            'show_filter' => true,
-            'ajax_request' => false,
-            'conditions' => [], // additional conditions to be used in "where" clause
-            'paginate_hash' => '', // the fragment that should be added to links in pagination
-            'paginate_url' => '',
-            'paginate_current' => '',
-            'is_base_page' => false,
-        ]);
+        $data = array_normalize($data, self::$defaultData[$methodName]);
+
+        $showFilter = $data['show_filter'];
+        $ajaxRequest = $data['ajax_request'];
+        $isBasePage = $data['is_base_page'];
 
         if (!$data['is_base_page']) {
+
             if ($data['paginate_current']) {
                 Paginator::currentPageResolver(function () use ($data) {
                     return $data['paginate_current'];
@@ -74,8 +87,18 @@ class PostsServiceProvider extends ServiceProvider
             // select posts
             $posts = Post::selector($data)
                 ->where($data['conditions'])
-                ->orderBy($data['sort_by'], $data['sort'])
-                ->paginate($data['max_per_page']);
+                ->orderBy($data['sort_by'], $data['sort']);
+
+            if($data['max_per_page'] == -1) {
+                $posts = $posts->get();
+            } else {
+                $posts = $posts->paginate($data['max_per_page']);
+            }
+
+
+            if (!$posts->count()) {
+                return self::showError(trans('front.no_result_found'), $ajaxRequest);
+            }
 
             if ($data['paginate_hash']) {
                 $posts->fragment($data['paginate_hash'])->links();
@@ -89,13 +112,16 @@ class PostsServiceProvider extends ServiceProvider
 //        $allPosts = self::allPostsOfType($data['type'], $data['locale']);
         $allPosts = Post::selector($data)->get();
 
+        if (!$allPosts->count()) {
+            return self::showError(trans('front.no_result_found'), $ajaxRequest);
+        }
 
         // set an array for sending data to view
         $viewData = [];
 
         // specify template
-        if ($data['type']) {
-            $postType = Posttype::findBySlug($data['type']);
+        $postType = Posttype::findBySlug($data['type']);
+        if (self::$defaultData[$methodName]['type'] != $data['type']) {
             $viewData['postType'] = $postType;
             $template = $postType
                 ->spreadMeta()
@@ -105,10 +131,11 @@ class PostsServiceProvider extends ServiceProvider
         }
 
         // render view
-        $viewFolder = "front.posts.list.$template";
-        $showFilter = $data['show_filter'];
-        $ajaxRequest = $data['ajax_request'];
-        $isBasePage = $data['is_base_page'];
+        if ($template == 'special') {
+            $viewFolder = "front.posts.list.special.$postType->slug";
+        } else {
+            $viewFolder = "front.posts.list.$template";
+        }
 
         return view($viewFolder . '.main', compact(
             'posts',
@@ -225,4 +252,13 @@ class PostsServiceProvider extends ServiceProvider
             ->pluck('points')
             ->first());
     }
+
+    public static function showError($errorMessage, $ajaxRequest = false)
+    {
+        return view('front.posts.error', [
+            'errorMessage' => $errorMessage,
+            'ajaxRequest' => $ajaxRequest,
+        ]);
+    }
 }
+

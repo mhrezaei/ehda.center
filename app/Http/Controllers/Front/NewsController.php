@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Front;
 
 use App\Models\Post;
+use App\Traits\ManageControllerTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class NewsController extends Controller
 {
+    use ManageControllerTrait;
+
 
     private $newsPrefix = 'nw-';
 

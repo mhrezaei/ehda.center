@@ -40,6 +40,7 @@ return [
 		'add_to'            => "افزودن به",
 		'search'            => 'جست‌وجو',
 		'search_for'        => 'جست‌وجو به دنبال',
+		'search_for_something'        => 'جست‌وجو به دنبال «::something»',
 		'flush_search'      => "تخلیه جست‌وجو",
 		'action'            => 'عملیات',
 		'bulk_action'       => 'کارهای دسته‌جمعی',

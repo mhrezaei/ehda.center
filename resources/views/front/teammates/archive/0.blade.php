@@ -11,6 +11,13 @@
 @endsection
 
 @section('content')
-    {!! \App\Providers\PostsServiceProvider::showList($selectConditions) !!}
-    {{--@include('front.news.archive.content')--}}
+    <div class="page-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 col-center">
+                    {!! PostsServiceProvider::showList($selectConditions) !!}
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

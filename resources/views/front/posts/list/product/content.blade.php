@@ -2,8 +2,7 @@
     <div class="page-content category">
         <div class="container">
             <header id="category-header">
-                <div class="field search"><input type="text" placeholder="{{ trans('front.search') }}"> <span
-                            class="icon-search"></span></div>
+                @include('front.posts.general.search-form')
                 <div class="field sort"><label> {{ trans('front.sort') }} </label>
                     <div class="select rounded">
                         <select class="ajax-sort">
@@ -18,12 +17,12 @@
             <div class="row">
                 @if($showFilter)
                     @include($viewFolder . '.sidebar')
-                    <div class="col-sm-9">
+                    <div class="col-sm-9 has-dialog">
                         @else
-                            <div class="col-sm-12">
+                            <div class="col-sm-12 has-dialog">
                                 @endif
                                 @endif
-                                <div class="product-list">
+                                <div class="product-list result-container">
                                     @if(!$isBasePage)
                                         <div class="row">
                                             @if($posts)
@@ -46,6 +45,9 @@
                                     @endif
                                 </div>
                                 @if(!$ajaxRequest)
+                                @include('front.dialog.loading', [
+                                    'id' => 'loading-dialog'
+                                ])
                             </div>
                     </div>
             </div>

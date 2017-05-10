@@ -3,29 +3,33 @@
 namespace App\Http\Controllers\Front;
 
 use App\Models\Post;
+use App\Models\Posttype;
 use App\Traits\ManageControllerTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class FaqsController extends Controller
+class TeammatesController extends Controller
 {
     use ManageControllerTrait;
 
-    private $faqPrefix = 'faq-';
+    private $faqPrefix = 'tm-';
 
     public function archive()
     {
+        $postType = Posttype::findBySlug('teammates');
+
         $breadCrumb = [
             [trans('front.home'), url_locale('')],
-            [trans('front.faqs'), url_locale('faqs')],
+            [$postType->title, url_locale('teammates')],
         ];
 
         $selectConditions = [
-            'type' => 'faqs',
+            'type' => 'teammates',
             'sort' => 'asc',
+            'max_per_page' => -1,
         ];
 
-        return view('front.faqs.archive.0', compact('selectConditions', 'breadCrumb'));
+        return view('front.teammates.archive.0', compact('selectConditions', 'breadCrumb'));
     }
 
     public function single($lang, $identifier)
@@ -37,21 +41,21 @@ class FaqsController extends Controller
         } else {
             $field = 'slug';
         }
-        $faq = Post::where([
+        $person = Post::where([
             $field => $identifier,
-            'type' => 'faqs'
+            'type' => 'teammates'
         ])->first();
 
-        if (!$faq) {
+        if (!$person) {
             $this->abort(410);
         }
 
         $breadCrumb = [
             [trans('front.home'), url_locale('')],
-            [trans('front.faqs'), url_locale('faqs')],
-            [$faq->title, url_locale('faqs/' . $this->faqPrefix . $faq->id)],
+            [trans('front.teammates'), url_locale('teammates')],
+            [$person->title, url_locale('teammates/' . $this->faqPrefix . $person->id)],
         ];
 
-        return view('front.faqs.single.0', compact('faq', 'breadCrumb'));
+        return view('front.teammates.single.0', compact('person', 'breadCrumb'));
     }
 }

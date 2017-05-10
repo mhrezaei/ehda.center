@@ -238,10 +238,13 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
 
     Route::group(['prefix' => '{lang}', 'middleware' => ['UserIpDetect']], function () {
 
+        Route::get('/', 'FrontController@index');
+
         // saving comments for all posts
         Route::post('/comment', 'PostController@submit_comment');
 
-        Route::get('/', 'FrontController@index');
+        // search in all posts
+        Route::get('/posts/search', 'PostController@search');
 
         // products
         Route::group(['prefix' => 'products'], function () {
@@ -265,6 +268,13 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
             Route::get('/', 'FaqsController@archive');
             Route::get('{identifier}', 'FaqsController@single')
                 ->where('identifier', '^faq-(\w|-)+$'); // if identifier starts with "faq-"
+        });
+
+        // faqs
+        Route::group(['prefix' => 'teammates'], function () {
+            Route::get('/', 'TeammatesController@archive');
+            Route::get('{identifier}', 'TeammatesController@single')
+                ->where('identifier', '^tm-(\w|-)+$'); // if identifier starts with "tm-"
         });
 
         Route::get('/page/{slug}', 'PostController@page');

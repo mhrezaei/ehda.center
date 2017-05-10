@@ -887,6 +887,9 @@ class Post extends Model
 			case 'faqs':
 				return url_locale('faqs/faq-' . ($this->id));
 				break;
+			case 'teammates':
+				return url_locale('teammates/tm-' . ($this->id));
+				break;
 		}
 	}
 

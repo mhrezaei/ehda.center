@@ -60,4 +60,22 @@ class PostController extends Controller
         ]);
     }
 
+    public function search(Request $request)
+    {
+        if (trim($request->s)) {
+            $selectData = [
+                'search' => $request->s,
+            ];
+
+            $pageTitle = str_replace('::something', $selectData['search'], trans('forms.button.search_for_something'));
+
+            $breadCrumb = [
+                [trans('front.home'), url_locale('')],
+                [$pageTitle],
+            ];
+
+            return view('front.posts.general.search-result.main', compact('selectData', 'breadCrumb', 'pageTitle'));
+        }
+    }
+
 }

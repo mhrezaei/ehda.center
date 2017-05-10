@@ -216,7 +216,7 @@ return [
 		'your_comment' => 'نظر شما',
 	     'max_per_page' => "در هر صفحه، چند پست باید جا شود؟ تعداد را اینجا بنویسید. عدد صفر این قابلیت را غیر فعال می‌کند." ,
 	     'fresh_time_duration' => "  هر مطلب تا چه زمانی بعد از انتشار «جدید» تلقی شود؟ بر حسب روز وارد کنید." ,
-	     'featured_image_width' => "طول عکس پیش‌فرض را بر حسب پیکسل وارد کنید." , 
+	     'featured_image_width' => "طول عکس پیش‌فرض را بر حسب پیکسل وارد کنید." ,
 	     'featured_image_height' => "عرض عکس پیش‌فرض را بر حسب پیکسل وارد کنید." ,
 	],
 
@@ -465,7 +465,10 @@ return [
 	     'default_featured_image' => "عکس پیش‌فرض" ,
 	     'featured_image_width' => "طول عکس" ,
 	     'featured_image_height' => "عرض عکس" ,
-	     'fresh_time_duration' => "زمان تازگی مطلب" ,
+	     'fresh_time_duration' => "زمان تازگی مطلب",
+
+        'seat' => 'سمت',
+        'short_view' => 'نمایش مختصر',
 	],
 
     "http" => [
