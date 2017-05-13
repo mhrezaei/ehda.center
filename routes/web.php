@@ -270,11 +270,18 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
                 ->where('identifier', '^faq-(\w|-)+$'); // if identifier starts with "faq-"
         });
 
-        // faqs
+        // teammates
         Route::group(['prefix' => 'teammates'], function () {
             Route::get('/', 'TeammatesController@archive');
             Route::get('{identifier}', 'TeammatesController@single')
                 ->where('identifier', '^tm-(\w|-)+$'); // if identifier starts with "tm-"
+        });
+
+        // teammates
+        Route::group(['prefix' => 'events'], function () {
+            Route::get('/', 'EventsController@archive');
+//            Route::get('{identifier}', 'TeammatesController@single')
+//                ->where('identifier', '^tm-(\w|-)+$'); // if identifier starts with "tm-"
         });
 
         Route::get('/page/{slug}', 'PostController@page');

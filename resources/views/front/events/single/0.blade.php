@@ -17,7 +17,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-8 col-center">
-                    {!! PostsServiceProvider::showPost($person) !!}
+{{--                    {!! PostsServiceProvider::showPost($person) !!}--}}
                 </div>
             </div>
         </div>

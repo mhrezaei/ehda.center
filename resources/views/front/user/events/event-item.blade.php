@@ -22,19 +22,19 @@
         {!! $event->text !!}
         <img src="{{ url($event->featured_image) }}">
         <div class="text-center pt10">
-            {{--            @if($event->winners_list_post)--}}
-            <a href="{{$event->winners_list_post}}" download="">
-                <i class="fa fa-list"></i>
-                {{trans('cart.drawing_winners')}}
-            </a>
-            {{--@endif--}}
+            @if($event->winners_list_post)
+                <a href="{{$event->winners_list_post}}" download="">
+                    <i class="fa fa-list"></i>
+                    {{trans('cart.drawing_winners')}}
+                </a>
+            @endif
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            {{--@if($event->drawing_video)--}}
-            <a href="{{$event->drawing_video}}" download="">
-                <i class="fa fa-video-camera"></i>
-                {{trans('cart.drawing_video')}}
-            </a>
-            {{--@endif--}}
+            @if($event->drawing_video)
+                <a href="{{$event->drawing_video}}" download="">
+                    <i class="fa fa-video-camera"></i>
+                    {{trans('cart.drawing_video')}}
+                </a>
+            @endif
         </div>
     </article>
 </section>
