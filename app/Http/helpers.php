@@ -284,46 +284,22 @@ function fakeData()
 	}
 }
 
-function tahaConverter2()
+function emitisConverter()
 {
-	model("User")::where('birth_date' , '0000-00-00')->update(['birth_date' => null]) ;
-	model("User")::where('marriage_date' , '0000-00-00')->update(['marriage_date' => null]) ;
-}
+    $data = \App\Models\Post::where([
+        'type' =>'products',
+        'sale_price' => '0.00',
+    ])->get();
 
+    if(!$data->count()) {
+        return 'Nothing needed! :)';
+    }
 
-function tahaConverter()
-{
-	$posts = \App\Models\Post::where('seo_score', -1)->get();
-	foreach($posts as $post) {
-		$post->title2          = $post->meta('title2');
-		$post->sale_price      = $post->meta('sale_price');
-		$post->sale_expires_at = $post->meta('sale_expires_at');
-		$post->seo_score       = 0;
-		$post->updateMeta([
-			'title2'          => false,
-			'sale_price'      => false,
-			'sale_expires_at' => false,
-		]);
-		$post->save();
-	}
-
-	$users = \App\Models\User::where('operation_integer', 0)->get();
-	foreach($users as $user) {
-		$user->operation_integer = 1;
-		$user->marital           = $user->meta('marital');
-		$user->education         = $user->meta('education');
-		$user->birth_date        = $user->meta('birth_date');
-		$user->marriage_date     = $user->meta('marriage_date');
-		$user->updateMeta([
-			'marital'       => false,
-			'education'     => false,
-			'birth_date'    => false,
-			'marriage_date' => false,
-		]);
-		$user->save();
-	}
-
-	return "DONE :D";
+    foreach ($data as &$datum) {
+        $datum->sale_price = $datum->price;
+        $datum->save();
+    }
+    return 'All done ^_^';
 }
 
 function url_exists($url)

@@ -28,6 +28,14 @@ $juiDir: "#{$assetsDir}libs/jquery-ui/";
   font-size: 0.8em !important;
 }
 
+.ui-slider .ui-slider-range {
+  background-color: #125dad;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default {
+  border-color: #125dad !important;
+}
+
 .slider-container .min-label,
 .slider-container .max-label {
   font-size: 12px;
@@ -92,11 +100,6 @@ $juiDir: "#{$assetsDir}libs/jquery-ui/";
 .score-box.dark .score-box-inner {
   color: #7089a5;
   border-color: #7089a5;
-}
-
-.loading {
-  opacity: 0.2;
-  cursor: wait;
 }
 
 .button-link {

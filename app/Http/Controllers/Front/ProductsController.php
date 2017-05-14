@@ -178,8 +178,8 @@ class ProductsController extends Controller
                     switch ($field) {
                         case 'price':
                             if (isset($value['min']) and isset($value['max']) and $value['min'] and $value['max']) {
-                                $selectorData['conditions'][] = ['price', '>=', $value['min']];
-                                $selectorData['conditions'][] = ['price', '<=', $value['max']];
+                                $selectorData['conditions'][] = ['sale_price', '>=', $value['min']];
+                                $selectorData['conditions'][] = ['sale_price', '<=', $value['max']];
                             }
                             break;
                     }

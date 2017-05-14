@@ -209,7 +209,11 @@ function initialFilter(modify) {
             });
 
             modifyUrl();
-            doFilter();
+            if (modify) {
+                doFilter();
+            } else {
+                doFilter(true);
+            }
 
         } else {
             console.warn('Filter URL is not defined!');
@@ -350,10 +354,17 @@ function decryptHash(hash) {
     return hashArray;
 }
 
-function doFilter() {
+function doFilter(immediate) {
+    var targetEl = $('.result-container');
+    targetEl.addClass('loading');
+    loadingDialog();
+    if (isDefined(immediate) && immediate) {
+        var timeOut = 0;
+    } else {
+        var timeOut = ajaxDelay;
+    }
     ajaxTimer.delay(function () {
         var hash = getHashUrl();
-        var targetEl = $('.result-container');
 
         runningXhr = $.ajax({
             type: 'POST',
@@ -363,12 +374,10 @@ function doFilter() {
                 _token: window.Laravel.csrfToken
             },
             beforeSend: function () {
-                targetEl.addClass('loading');
                 if (runningXhr) {
                     runningXhr.abort();
                     console.warn('Filter request canceled!');
                 }
-                loadingDialog();
             },
             success: function (result) {
                 targetEl.replaceWith($(result))
@@ -381,7 +390,7 @@ function doFilter() {
             }
         });
 
-    }, ajaxDelay);
+    }, timeOut);
 }
 
 function modifyUrl(getData) {
