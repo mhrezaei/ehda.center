@@ -1,7 +1,7 @@
 $assetsDir: "../";
 $juiDir: "#{$assetsDir}libs/jquery-ui/";
 
-@import "basement";
+@import "front-basement";
 @import "yt-accordion";
 
 .hidden {
@@ -40,12 +40,14 @@ $juiDir: "#{$assetsDir}libs/jquery-ui/";
 
 .score-box-inner {
   background-color: #ffffff;
-  float: right;
+  //float: right;
   width: 100%;
   height: 130px;
   border-width: 1px;
   border-style: solid;
   font-size: 12px;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
 .score-box .score-box-icon {
@@ -131,6 +133,18 @@ $juiDir: "#{$assetsDir}libs/jquery-ui/";
   }
 }
 
+.icon-button,
+.icon-button:hover,
+.icon-button:active {
+  border: none;
+  outline: none;
+  box-shadow: none;
+  padding: 5px;
+  line-height: 1.1;
+  font-size: 14px;
+  background-color: transparent;
+}
+
 /********************* dialog *********************/
 
 .has-dialog {
@@ -171,3 +185,12 @@ $juiDir: "#{$assetsDir}libs/jquery-ui/";
   font-size: 14px;
   padding: 10px 0;
 }
+
+/********************* dialog end *********************/
+
+/********************* bootstrap :) *********************/
+.collapse {
+  display: none;
+}
+
+/********************* bootstrap end :) *********************/

@@ -42,7 +42,7 @@ class PostController extends Controller
 
         $page->spreadMeta();
         $ogData['description'] = $page->title;
-        if($page->featured_image) {
+        if ($page->featured_image) {
             $ogData['image'] = url($page->featured_image);
         }
 
@@ -60,9 +60,21 @@ class PostController extends Controller
         $request = $request->all();
         $request['ip'] = request()->ip();
         $request['user_id'] = user()->id;
+        $request['type'] = $post->type;
+
+        $callbackFn = <<<JS
+        $('.previous-comments').updateContent(function() {
+            $('.previous-comments').find('.collapse').each(function () { 
+                $(this).collapse(); 
+            }); 
+        });
+JS;
+
 
         return $this->jsonAjaxSaveFeedback(Comment::store($request), [
-            'success_callback' => "$('#commentForm').trigger(\"reset\")",
+            'success_callback' => $callbackFn,
+            'success_form_reset' => true,
+            'success_feed_timeout' => 3000,
         ]);
     }
 

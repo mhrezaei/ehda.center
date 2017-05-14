@@ -5,10 +5,10 @@
                 <div class="avatar tac"><img src="{{ url('/assets/images/user.svg') }}" width="64"></div>
                 <h2 class="name"> {{ user()->full_name }} </h2>
                 {{ null, $colors = ['blue','red', 'green'] }}
-                {{ null , $events = user()->drawingRecentScores(3, 7) }}
+                {{ null , $trendingEvents = user()->drawingRecentScores(3, 7) }}
                 <div class="row">
 
-                    @foreach($events as $key => $event)
+                    @foreach($trendingEvents as $key => $event)
                         {{ null, $event->spreadMeta() }}
                         @if(\Carbon\Carbon::parse($event->ends_at)->lt(\Carbon\Carbon::now()))
                             {{ null, $class = 'gray' }}
@@ -28,7 +28,7 @@
                         {{-- @TODO: rate_point should be set dynamically. Currently, was hardcode! --}}
                         {{--</span>--}}
                         {{--</div>--}}
-                        <div class="score-box {{ $class }}" style="width: {{ 100 / count($events) }}%">
+                        <div class="score-box {{ $class }}" style="width: {{ 100 / count($trendingEvents) }}%">
                             <div class="score-box-inner">
                                 <div class="score-box-icon">
                                     <i class="fa fa-{{ $icon }}"></i>

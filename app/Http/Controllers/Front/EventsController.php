@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Models\Post;
 use App\Models\Posttype;
+use App\Providers\PostsServiceProvider;
 use App\Traits\ManageControllerTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -24,21 +25,49 @@ class EventsController extends Controller
             [$postType->title, url_locale('events')],
         ];
 
-        $selectConditions = [
-            'type' => 'events',
-            'conditions' => [
-                ['starts_at', '<=', Carbon::now()],
-                ['ends_at', '>=', Carbon::now()],
-            ]
-        ];
-
         $ogData['description'] = $postType->title;
 
-        return view('front.events.archive.0', compact('selectConditions', 'breadCrumb', 'ogData'));
+        $accordion = PostsServiceProvider::showEventsAccordion();
+
+        return view('front.events.archive.0', compact('accordion', 'breadCrumb', 'ogData'));
     }
 
-    public function ajaxEvents()
+    public function waitingEvents()
     {
+        if (request()->ajax()) {
+            $conditions = [
+                'type' => 'events',
+                'conditions' => [
+                    ['starts_at', '>=', Carbon::now()],
+                    ['ends_at', '>=', Carbon::now()],
+                ],
+                'ajax_request' => true,
+            ];
 
+            return PostsServiceProvider::showList($conditions);
+        }
+    }
+
+    public function expiredEvents()
+    {
+        if (request()->ajax()) {
+            $conditions = [
+                'type' => 'events',
+                'conditions' => [
+                    ['starts_at', '<=', Carbon::now()],
+                    ['ends_at', '<=', Carbon::now()],
+                ],
+                'ajax_request' => true,
+                'max_per_page' => 5,
+            ];
+
+            return PostsServiceProvider::showList($conditions);
+            $events = Post::selector(['type' => 'events'])
+                ->whereDate('starts_at', '<=', Carbon::now())
+                ->whereDate('ends_at', '<=', Carbon::now())
+                ->paginate(5);
+
+            return view('front.user.events.events-block', compact('events'));
+        }
     }
 }

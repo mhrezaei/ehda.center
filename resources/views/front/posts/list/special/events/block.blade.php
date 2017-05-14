@@ -1,11 +1,11 @@
-@if(sizeof($events))
-    @foreach($events as $event)
+@if(sizeof($posts))
+    @foreach($posts as $event)
         @include($viewFolder . '.item')
     @endforeach
 
-    @if($events instanceof \Illuminate\Pagination\LengthAwarePaginator)
+    @if($posts instanceof \Illuminate\Pagination\LengthAwarePaginator)
         <div class="pagination-wrapper">
-            {!! $events->render() !!}
+            {!! $posts->render() !!}
         </div>
     @endif
 @endif
