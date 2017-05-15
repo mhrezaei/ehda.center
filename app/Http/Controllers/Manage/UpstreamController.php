@@ -9,7 +9,7 @@ use App\Http\Requests\Manage\PosttypeSaveRequest;
 use App\Http\Requests\Manage\ProvinceSaveRequest;
 use App\Http\Requests\Manage\RoleSaveRequest;
 use App\Models\Folder;
-use App\Models\Package;
+use App\Models\Unit;
 use App\Models\Posttype;
 use App\Models\Role;
 use App\Models\Setting;
@@ -63,7 +63,7 @@ class UpstreamController extends Controller
 				break;
 
 			case 'packages':
-				$models = Package::withTrashed()->orderBy('deleted_at')->orderBy('created_at', 'desc')->paginate(user()->preference('max_rows_per_page'));
+				$models = Unit::withTrashed()->orderBy('deleted_at')->orderBy('created_at', 'desc')->paginate(user()->preference('max_rows_per_page'));
 				break;
 
 			default :
@@ -161,13 +161,13 @@ class UpstreamController extends Controller
 		switch ($request_tab) {
 			case 'package':
 				if($item_id) {
-					$model = Package::withTrashed()->find($item_id);
+					$model = Unit::withTrashed()->find($item_id);
 					if(!$model) {
 						return view('errors.410');
 					}
 				}
 				else {
-					$model = new Package() ;
+					$model = new Unit() ;
 					$model->is_continuous = 0 ;
 				}
 
@@ -298,7 +298,7 @@ class UpstreamController extends Controller
 			$data['deleted_at'] = Carbon::now()->toDateTimeString();
 		}
 
-		return $this->jsonAjaxSaveFeedback( Package::store($data) , [
+		return $this->jsonAjaxSaveFeedback( Unit::store($data) , [
 				'success_callback' => "",
 				'success_refresh' => "1",
 		]);

@@ -195,6 +195,11 @@ class Post extends Model
 		return $winners;
 	}
 
+	public function getDiscountAmountAttribute()
+	{
+		return max( $this->price - $this->sale_price , 0);
+	}
+
 
 	public function getImageAttribute()
 	{
@@ -853,7 +858,7 @@ class Post extends Model
 
 	public function packageCombo()
 	{
-		return Package::all();
+		return Unit::all();
 	}
 
 	public function visibilityCombo()

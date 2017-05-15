@@ -3,7 +3,7 @@
 namespace App\Http\Requests\Manage;
 
 use App\Http\Requests\Request;
-use App\Models\Package;
+use App\Models\Unit;
 use App\Providers\ValidationServiceProvider;
 
 

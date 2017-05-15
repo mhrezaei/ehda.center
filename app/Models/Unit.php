@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-class Package extends Model
+class Unit extends Model
 {
 	use TahaModelTrait, SoftDeletes;
 	public static $reserved_slugs = 'root,admin';

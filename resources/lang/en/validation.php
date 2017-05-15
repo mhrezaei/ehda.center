@@ -406,6 +406,7 @@ return [
         'is_available'         => "Enough Stock",
         'original_price'       => "Original Price",
         'discount_percent'     => "Discount Percent",
+        'discount_amount'      => "Discount Amount",
         'discount'             => "Discount",
         'sale_price'           => "Sale Price",
         'price_to_sell'        => 'Price to Sell',

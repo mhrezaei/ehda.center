@@ -47,10 +47,11 @@ class PostSaveRequest extends Request
 				if(isset($input['price']) and $input['price']) {
 					$rules = array_merge($rules , [
 						'price' => "numeric",
-						'sale_price' => "numeric|max:".$input['price'],
-						'sale_expires_date' => "date",
-						'sale_expires_hour' => "numeric|min:0|max:23",
-						'sale_expires_minute' => "numeric|min:0|max:59",
+						'discount_amount' => "numeric|between:0,".$input['price'] ,
+						//'sale_price' => "numeric|max:".$input['price'],
+						//'sale_expires_date' => "date",
+						//'sale_expires_hour' => "numeric|min:0|max:23",
+						//'sale_expires_minute' => "numeric|min:0|max:59",
 					]);
 				}
 
@@ -87,9 +88,10 @@ class PostSaveRequest extends Request
 			'publish_minute' => "ed",
 			'publish_hour' => "ed",
 			'price' => "ed|numeric",
-			'sale_price' => "ed|numeric",
-			'sale_expires_minute' => "ed",
-			'sale_expires_hour' => "ed",
+			'discount_amount' => "ed|numeric" ,
+			//'sale_price' => "ed|numeric",
+			//'sale_expires_minute' => "ed",
+			//'sale_expires_hour' => "ed",
 //			'type' => "decrypt",
 			'_meta_required_fields' => "decrypt|array",
 			'slug' => "lower",

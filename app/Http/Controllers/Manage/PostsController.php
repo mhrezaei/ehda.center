@@ -382,21 +382,25 @@ class PostsController extends Controller
 		unset($data['publish_minute']);
 
 		/*-----------------------------------------------
-		| sale_expires_at ...
+		| Price ...
 		*/
 
-		if($model->has('price') and $data['sale_expires_date']) {
-			if(!$data['sale_expires_hour']) {
-				$data['sale_expires_hour'] = '00';
-			}
-			if(!$data['sale_expires_minute']) {
-				$data['sale_expires_minute'] = '00';
-			}
-			$data['sale_expires_at'] = makeDateTimeString($data['sale_expires_date'], $data['sale_expires_hour'], $data['sale_expires_minute']);
+		if($model->has('price')) {
+			$data['sale_price'] = $data['price'] - $data['discount_amount'];
 		}
+		//if($model->has('price') and $data['sale_expires_date']) {
+		//	if(!$data['sale_expires_hour']) {
+		//		$data['sale_expires_hour'] = '00';
+		//	}
+		//	if(!$data['sale_expires_minute']) {
+		//		$data['sale_expires_minute'] = '00';
+		//	}
+		//	$data['sale_expires_at'] = makeDateTimeString($data['sale_expires_date'], $data['sale_expires_hour'], $data['sale_expires_minute']);
+		//}
 		unset($data['sale_expires_date']);
 		unset($data['sale_expires_hour']);
 		unset($data['sale_expires_minute']);
+		unset($data['discount_amount']);
 
 		/*-----------------------------------------------
 		| Language ...
