@@ -1,0 +1,88 @@
+<?php
+return [
+    'person'          => "Person(s)",
+    'people'          => "People",
+    'modules'         => "Modules",
+    'deleted_user'    => "Deleted User",
+    'particular_user' => "Particular User",
+    'user'            => "User",
+    'users'           => "Users",
+    'site_users'      => "Site Users",
+    'user_role'       => "User Role",
+    'without_role'    => "Without Role",
+
+    'commands' => [
+        'permit'          => "Permits",
+        'change_password' => "Change Password",
+        'block'           => "Block",
+        'unblock'         => "Unblock",
+        'login_as'        => "Login as",
+        'create_new_user' => "Add New :role_title",
+        'all_users'       => "All Users",
+
+    ],
+
+    'admins' => [
+        'admin_type'      => "Admin Type",
+        'super_admin'     => "Super Admin",
+        'ordinary_admin'  => "Ordinary Admin",
+        'developer'       => "Developer",
+        'superAdmin_hint' => 'Super admin in addition to allowed accesses, can access to site settings and managers information.',
+    ],
+
+    "form" => [
+        "deleted_person"              => '[؟]',
+        'user_deleted'                => "This account has been deleted.",
+        "notify-with-email"           => 'Notify User via Email',
+        "notify-with-sms"             => 'Notify User via SMS',
+        "notify"                      => 'Notify User via Email and SMS',
+        "will-be-notified"            => 'User will be notified by Email and SMS.',
+        "default_password"            => 'Mobile number will be set as password and user should change it in first login.',
+        "hard_delete_notice"          => 'Deleting is unrecoverable.',
+        'delete_notice_when_has_role' => "All roles of this user will be inaccessible.",
+        "password_hint"               => 'At Least 8 Characters and Case Sensitive',
+        'password_change_sms'         => "Your password in :site_title has been changed: :new_password",
+        'as_a'                        => "As a :role_title",
+        'now_without'                 => "Not Holding This Role Now",
+        'now_active'                  => "Active in This Role Now",
+        'now_blocked'                 => "Holding This Role But Is Blocked",
+        'detach_this_role'            => "Detach This Role",
+        'attach_this_role'            => "Attach This Role",
+        'recover_password'            => "Recover Password",
+        'send_password_reset_link'    => "Send Reset Password Link",
+        'have_a_code'                 => "I have a code.",
+        'check_password_token'        => "Check Password Token",
+    ],
+
+    'criteria' => [
+        'all'     => "All",
+        'actives' => "Active",
+        'pending' => "Pending",
+        'banned'  => "Banned",
+        'bin'     => "Bin",
+    ],
+
+    "edu_level_full"  => [
+        '0' => 'Not Specified',
+        '1' => 'Less than Diploma',
+        '2' => 'Diploma',
+        '3' => 'Associate Degree',
+        '4' => 'Bachelor Degree',
+        '5' => 'Master Degree',
+        '6' => 'Ph.D. or More',
+    ],
+    "edu_level_short" => [ //short form of education
+        '0' => 'Not Specified',
+        '1' => 'Less than Diploma',
+        '2' => 'Diploma',
+        '3' => 'Associate',
+        '4' => 'Bachelor',
+        '5' => 'Master',
+        '6' => 'Ph.D.',
+    ],
+    "gender"          => [
+        '1' => 'Male',
+        '2' => 'Female',
+        '3' => 'Other',
+    ],
+];

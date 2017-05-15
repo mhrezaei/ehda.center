@@ -12,8 +12,10 @@ return [
     'home' => 'Home',
     'about' => 'About',
     'products' => 'Products',
+    'posts' => 'Posts',
     'contact_us' => 'Contact us',
     'categories' => 'Categories',
+    'categories_of' => 'Categories of',
     'show_products' => 'See Products',
     'drawing_code_register' => 'Register Drawing Code',
     'check_code' => 'Check Code',
@@ -26,10 +28,16 @@ return [
     'relogin' => 'Your information is available on the site, please log in.',
     'register_failed' => 'Registration error occurred, please try again.',
     'register_success' => 'Registration was successful, wait.',
+    'register_success_sms' => 'You have successfully registered in ::site',
+    'register_success_email' => 'You have successfully registered in ::site',
+    'register_code_success_sms' => "Hello ::name,\n\rYour drawing code has successfully registered.",
     'all_user_score' => 'Points collected:',
     'edit_profile' => 'Edit profile',
     'accepted_codes' => 'Registered codes',
     'events' => 'Events',
+    'running_events' => 'Running Events',
+    'expired_events' => 'Expired Events',
+    'soon' => 'Soon',
     'add_comment' => 'Add Comment',
     'sex' => 'Gender',
     'marital' => 'Marital status',
@@ -51,9 +59,15 @@ return [
     'favorites' => 'Favorites',
     'search' => 'Search',
     'toman' => 'Toman',
+    'from' => 'from',
     'to' => 'to',
-
-
-
-
+    'profile_messages' => [
+        'not_enough_information' => 'Not Enough Profile Information',
+        'complete_to_join_drawing' => 'Now you can join the drawing by completing your profile.',
+    ],
+    'news' => 'News',
+    'faqs' => 'Faqs',
+    'more' => 'More',
+    'teammates' => 'Teammates',
+    'no_result_found' => 'No Results Found',
 ];

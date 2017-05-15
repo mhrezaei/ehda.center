@@ -18,6 +18,8 @@ $juiDir: "#{$assetsDir}libs/jquery-ui/";
   color: #e70000;
 }
 
+/********************* jquery-ui *********************/
+
 .form-buttonset .ui-checkboxradio-icon {
   display: none;
 }
@@ -35,6 +37,17 @@ $juiDir: "#{$assetsDir}libs/jquery-ui/";
 .ui-state-default, .ui-widget-content .ui-state-default {
   border-color: #125dad !important;
 }
+
+.ui-datepicker select.ui-datepicker-month,
+.ui-datepicker select.ui-datepicker-year {
+  height: 30px !important;
+}
+
+.ui-widget.ui-widget-content {
+  border-color: #034EA2 !important;
+}
+
+/********************* jquery-ui end *********************/
 
 .slider-container .min-label,
 .slider-container .max-label {
@@ -146,6 +159,15 @@ $juiDir: "#{$assetsDir}libs/jquery-ui/";
   line-height: 1.1;
   font-size: 14px;
   background-color: transparent;
+}
+
+.team-item.leader {
+  min-height: 150px;
+}
+
+.radio label {
+  padding-right: 5px !important;
+  margin-left: 20px !important;
 }
 
 /********************* dialog *********************/

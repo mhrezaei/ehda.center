@@ -67,6 +67,7 @@ function initialFilter(modify) {
                             // TODO: minimum characters
                             filterWithText($(this).val(), identifier);
                             if (event.originalEvent) {
+                                resetPageNumber();
                                 modifyUrl();
                             }
                         }
@@ -122,6 +123,7 @@ function initialFilter(modify) {
                             maxLabel.html(forms_pd(nummber_format(ui.values[1])));
                             filterWithRange(ui.values[0], ui.values[1], identifier, [sliderEl.slider("option", "min"), sliderEl.slider("option", "max")]);
                             if (event.originalEvent) {
+                                resetPageNumber();
                                 modifyUrl();
                             }
                         }
@@ -147,6 +149,7 @@ function initialFilter(modify) {
                         change: function (event) {
                             filterWithCheckBox(identifier);
                             if (event.originalEvent) {
+                                resetPageNumber();
                                 modifyUrl();
                             }
                         }
@@ -192,6 +195,7 @@ function initialFilter(modify) {
                         change: function (event) {
                             filterWithSwitchCheckBox($(this).is(':checked'), identifier);
                             if (event.originalEvent) {
+                                resetPageNumber();
                                 modifyUrl();
                             }
                         }
@@ -212,7 +216,7 @@ function initialFilter(modify) {
             if (modify) {
                 doFilter();
             } else {
-                doFilter(true);
+                doFilter(0);
             }
 
         } else {
@@ -354,12 +358,12 @@ function decryptHash(hash) {
     return hashArray;
 }
 
-function doFilter(immediate) {
+function doFilter(delay) {
     var targetEl = $('.result-container');
     targetEl.addClass('loading');
     loadingDialog();
-    if (isDefined(immediate) && immediate) {
-        var timeOut = 0;
+    if (isDefined(delay)) {
+        var timeOut = delay;
     } else {
         var timeOut = ajaxDelay;
     }
@@ -380,8 +384,8 @@ function doFilter(immediate) {
                 }
             },
             success: function (result) {
-                targetEl.replaceWith($(result))
-                targetEl.removeClass('loading');
+                targetEl.replaceWith($(result));
+                $('#category-header').scrollToView(-20);
                 modifyPaginationLinks();
             },
             complete: function () {
@@ -418,6 +422,10 @@ function modifyPaginationLinks() {
             item.attr('href', setHashUrl(newHashString, link));
         }
     });
+}
+
+function resetPageNumber() {
+    delete filterData.pagination;
 }
 
 function resetFilters() {

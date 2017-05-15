@@ -12,10 +12,15 @@ return [
     | has failed, such as for an invalid token or invalid new password.
     |
     */
-
-    'password' => 'Passwords must be at least six characters and match the confirmation.',
-    'reset' => 'Your password has been reset!',
-    'sent' => 'We have e-mailed your password reset link!',
-    'token' => 'This password reset token is invalid.',
-    'user' => "We can't find a user with that e-mail address.",
+    'password'        => 'Password Not Safe',
+    'reset'           => 'Your password has been reset.',
+    'sent'            => 'Token has been sent.',
+    'token'           => 'Invalid Token',
+    'token_expired'   => 'Token has been expired.',
+    'token_verified'  => 'Token has been verified',
+    'get_new_token'   => 'Get New Token',
+    'user'            => "No User Fount",
+    'reset_sms'       => 'Your Reset Token: ::token',
+    'reset_mail'      => "کد بازیابی رمز عبور شما: ::token سلام. \n\r",
+    'reset_mail'      => "Hello,\n\rYour reset token: ::token",
 ];

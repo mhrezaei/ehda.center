@@ -51,6 +51,22 @@ $.fn.updateContent = function (callback) {
     }
 };
 
+$.fn.scrollToView = function (extra, duration) {
+    var item = $(this);
+
+    if(!$.isNumeric(duration)) {
+        duration = 1000;
+    }
+
+    if(!$.isNumeric(extra)) {
+        extra = 0;
+    }
+
+    $('html, body').animate({
+        scrollTop: item.offset().top + extra
+    }, duration);
+};
+
 String.prototype.ucfirst = function () {
     return this.replace(/(?:^|\s)\w/g, function (match) {
         return match.toUpperCase();

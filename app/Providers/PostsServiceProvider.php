@@ -79,7 +79,6 @@ class PostsServiceProvider extends ServiceProvider
         $isBasePage = $data['is_base_page'];
 
         if (!$data['is_base_page']) {
-
             if ($data['paginate_current']) {
                 Paginator::currentPageResolver(function () use ($data) {
                     return $data['paginate_current'];
