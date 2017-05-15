@@ -145,12 +145,13 @@ class Comment extends Model
 		extract(array_normalize($parameters, [
 			'type'         => "all",
 			'post_id'      => "0",
+			'user_id'      => "0",
 			'replied_on'   => "0",
 			'email'        => "",
 			'ip'           => "",
 			'created_by'   => "",
 			'published_by' => "",
-			'criteria'     => "published",
+			'criteria'     => "approved",
 			'search'       => "",
 		     'is_by_admin' => null ,
 		]));
@@ -185,6 +186,9 @@ class Comment extends Model
 		*/
 		if($post_id) {
 			$table = $table->where('post_id', $post_id);
+		}
+		if($user_id) {
+			$table = $table->where('user_id', $user_id);
 		}
 		if($replied_on!==null) {
 			$table = $table->where('replied_on', $replied_on);

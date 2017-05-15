@@ -460,6 +460,7 @@ return [
 	     'disable_showing_comments' => "نمایش دیدگاه‌ها غیرفعال باشد" ,
 		'title_shown_on_sending_comments' => "عنوان جعبه‌ی دریافت دیدگاه" ,
 	     'title_shown_on_showing_comments' => "عنوان فهرست نمایشگاه دیدگاه‌ها" ,
+	     'show_previous_comments' => "نمایش تاریخچه‌ی نظرات" ,
 	     'reply' => "پاسخ" ,
 	     'max_per_page' => "ظرفیت صفحه" ,
 	     'default_featured_image' => "عکس پیش‌فرض" ,

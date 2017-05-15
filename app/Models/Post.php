@@ -381,8 +381,7 @@ class Post extends Model
         $this->spreadMeta();
         if($this->featured_image) {
             return url($this->featured_image);
-        }
-        else {
+        } else {
             if($typeImage = $this->posttype->spreadMeta()->default_featured_image) {
                 return url($typeImage);
             }

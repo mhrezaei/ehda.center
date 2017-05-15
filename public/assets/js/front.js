@@ -22,6 +22,51 @@ $.fn.dataStartsWith = function (prefix) {
     return result;
 };
 
+$.fn.collapse = function () {
+    var target = $(this);
+    var targetId = target.attr('id');
+    if (targetId) {
+        var clickable = $('[data-toggle=collapse][data-target=#' + targetId + '], [data-toggle=collapse][href=#' + targetId + ']');
+        if (clickable.length) {
+            clickable.click(function () {
+                target.slideToggle();
+            })
+        }
+    }
+};
+
+$.fn.updateContent = function (callback) {
+    var container = $(this);
+    var url = container.attr('data-url');
+    if (url) {
+        $.ajax({
+            url: url,
+            success: function (result) {
+                container.html(result);
+                if(typeof callback == 'function') {
+                    callback();
+                }
+            }
+        });
+    }
+};
+
+$.fn.scrollToView = function (extra, duration) {
+    var item = $(this);
+
+    if(!$.isNumeric(duration)) {
+        duration = 1000;
+    }
+
+    if(!$.isNumeric(extra)) {
+        extra = 0;
+    }
+
+    $('html, body').animate({
+        scrollTop: item.offset().top + extra
+    }, duration);
+};
+
 String.prototype.ucfirst = function () {
     return this.replace(/(?:^|\s)\w/g, function (match) {
         return match.toUpperCase();
@@ -420,6 +465,10 @@ $(document).ready(function () {
 
             form.find(':input[type=submit]').click();
         }
+    });
+
+    $('.collapse').each(function () {
+        $(this).collapse();
     });
 });
 

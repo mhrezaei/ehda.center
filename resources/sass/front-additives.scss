@@ -1,7 +1,7 @@
 $assetsDir: "../";
 $juiDir: "#{$assetsDir}libs/jquery-ui/";
 
-@import "basement";
+@import "front-basement";
 @import "yt-accordion";
 
 .hidden {
@@ -18,6 +18,8 @@ $juiDir: "#{$assetsDir}libs/jquery-ui/";
   color: #e70000;
 }
 
+/********************* jquery-ui *********************/
+
 .form-buttonset .ui-checkboxradio-icon {
   display: none;
 }
@@ -27,6 +29,25 @@ $juiDir: "#{$assetsDir}libs/jquery-ui/";
   padding: 0 !important;
   font-size: 0.8em !important;
 }
+
+.ui-slider .ui-slider-range {
+  background-color: #125dad;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default {
+  border-color: #125dad !important;
+}
+
+.ui-datepicker select.ui-datepicker-month,
+.ui-datepicker select.ui-datepicker-year {
+  height: 30px !important;
+}
+
+.ui-widget.ui-widget-content {
+  border-color: #034EA2 !important;
+}
+
+/********************* jquery-ui end *********************/
 
 .slider-container .min-label,
 .slider-container .max-label {
@@ -40,12 +61,14 @@ $juiDir: "#{$assetsDir}libs/jquery-ui/";
 
 .score-box-inner {
   background-color: #ffffff;
-  float: right;
+  //float: right;
   width: 100%;
   height: 130px;
   border-width: 1px;
   border-style: solid;
   font-size: 12px;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
 .score-box .score-box-icon {
@@ -92,11 +115,6 @@ $juiDir: "#{$assetsDir}libs/jquery-ui/";
   border-color: #7089a5;
 }
 
-.loading {
-  opacity: 0.2;
-  cursor: wait;
-}
-
 .button-link {
   font-size: 12px;
 }
@@ -129,6 +147,27 @@ $juiDir: "#{$assetsDir}libs/jquery-ui/";
       font-weight: 100;
     }
   }
+}
+
+.icon-button,
+.icon-button:hover,
+.icon-button:active {
+  border: none;
+  outline: none;
+  box-shadow: none;
+  padding: 5px;
+  line-height: 1.1;
+  font-size: 14px;
+  background-color: transparent;
+}
+
+.team-item.leader {
+  min-height: 150px;
+}
+
+.radio label {
+  padding-right: 5px !important;
+  margin-left: 20px !important;
 }
 
 /********************* dialog *********************/
@@ -171,3 +210,12 @@ $juiDir: "#{$assetsDir}libs/jquery-ui/";
   font-size: 14px;
   padding: 10px 0;
 }
+
+/********************* dialog end *********************/
+
+/********************* bootstrap :) *********************/
+.collapse {
+  display: none;
+}
+
+/********************* bootstrap end :) *********************/

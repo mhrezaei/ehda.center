@@ -26,21 +26,23 @@ class UserController extends Controller
         if ($request->session()->get('drawingCode'))
             return redirect(url_locale('user/drawing'));
 
-//        $post = Post::findBySlug('customers-comments');
+        return view('front.user.dashboard.0');
+    }
 
-        return view('front.user.dashboard.0', compact('post'));
+    public function previousComments($lang, $post_id) {
+        $post = PostsServiceProvider::findPost($post_id);
+
+        if(!$post) {
+            $this->abort('410');
+        }
+
+        return view('front.posts.single.special.commenting.previous-comments', compact('post'));
     }
 
     public function profile()
     {
         user()->spreadMeta();
-//        if (user()->birth_date) {
-//            user()->birth_date = jDateTime::strftime('Y/m/d', strtotime(user()->birth_date));;
-//        }
 
-//        if (user()->marriage_date) {
-//            user()->marriage_date = jDateTime::strftime('Y/m/d', strtotime(user()->marriage_date));;
-//        }
         return view('front.user.profile.0');
     }
 
@@ -82,37 +84,9 @@ class UserController extends Controller
 
     public function events()
     {
-        $runningEvents = Post::selector(['type' => 'events'])
-            ->whereDate('starts_at', '<=', Carbon::now())
-            ->whereDate('ends_at', '>=', Carbon::now())
-            ->get();
+        $accordion = PostsServiceProvider::showEventsAccordion(url_locale('events'));
 
-        return view('front.user.events.0', compact('runningEvents'));
-
-    }
-
-    public function waitingEvents()
-    {
-        if (request()->ajax()) {
-            $events = Post::selector(['type' => 'events'])
-                ->whereDate('starts_at', '>=', Carbon::now())
-                ->whereDate('ends_at', '>=', Carbon::now())
-                ->get();
-
-            return view('front.user.events.events-block', compact('events'));
-        }
-    }
-
-    public function expiredEvents()
-    {
-        if (request()->ajax()) {
-            $events = Post::selector(['type' => 'events'])
-                ->whereDate('starts_at', '<=', Carbon::now())
-                ->whereDate('ends_at', '<=', Carbon::now())
-                ->paginate(5);
-
-            return view('front.user.events.events-block', compact('events'));
-        }
+        return view('front.user.events.0', compact('accordion'));
     }
 
     public function update(ProfileSaveRequest $request)

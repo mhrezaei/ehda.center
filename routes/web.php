@@ -270,11 +270,20 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
                 ->where('identifier', '^faq-(\w|-)+$'); // if identifier starts with "faq-"
         });
 
-        // faqs
+        // teammates
         Route::group(['prefix' => 'teammates'], function () {
             Route::get('/', 'TeammatesController@archive');
             Route::get('{identifier}', 'TeammatesController@single')
                 ->where('identifier', '^tm-(\w|-)+$'); // if identifier starts with "tm-"
+        });
+
+        // teammates
+        Route::group(['prefix' => 'events'], function () {
+            Route::get('/', 'EventsController@archive');
+            Route::get('waiting', 'EventsController@waitingEvents');
+            Route::get('expired', 'EventsController@expiredEvents');
+//            Route::get('{identifier}', 'TeammatesController@single')
+//                ->where('identifier', '^tm-(\w|-)+$'); // if identifier starts with "tm-"
         });
 
         Route::get('/page/{slug}', 'PostController@page');
@@ -282,12 +291,11 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
         // user Route
         Route::group(['prefix' => 'user', 'middleware' => ['auth', 'is:customer']], function () {
             Route::get('/dashboard', 'UserController@index');
+            Route::get('/dashboard/previous_comments/{post_id}', 'UserController@previousComments');
             Route::get('/profile', 'UserController@profile');
             Route::post('/profile/update', 'UserController@update');
             Route::get('/drawing',  'UserController@drawing');
             Route::get('/events', 'UserController@events');
-            Route::get('/events/waiting', 'UserController@waitingEvents');
-            Route::get('/events/expired', 'UserController@expiredEvents');
         });
     });
 

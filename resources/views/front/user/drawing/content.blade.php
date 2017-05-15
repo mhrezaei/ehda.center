@@ -27,7 +27,8 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach(user()->receipts as $receipt)
+                            {{ null, $receipts = user()->receipts()->paginate(20) }}
+                            @foreach($receipts as $receipt)
                                 <tr>
                                     <td class="fw-b color-green">{{ pd($receipt->dashed_code) }}</td>
                                     <td> @include('front.user.drawing.date_format', ['date' => $receipt->created_at]) </td>
@@ -40,6 +41,9 @@
                     @else
                         <div class="alert red">{{ trans('front.drawing_code_not_found') }}</div>
                     @endif
+                    <div class="pagination-wrapper mt20">
+                        {!! $receipts->render() !!}
+                    </div>
                 </article>
             </section>
             @include('front.user.drawing.modal_form')

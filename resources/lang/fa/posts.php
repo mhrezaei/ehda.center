@@ -53,6 +53,7 @@ return [
 		'dialogue'  => "گفت‌وگو",
 		'faq'       => "پرسش و پاسخ",
 		'product'   => "محصول فروشگاهی",
+		'special'   => "ویژه",
 	],
 
 	'categories' => [
@@ -154,6 +155,7 @@ return [
 		'plural'                 => "دیدگاه‌ها",
 		'users_comments'         => "دیدگاه کاربران",
 		'reply'                  => "پاسخ",
+		'replies'                => "پاسخ‌ها",
 		'dialogue'               => "گفت‌وگو",
 		'dialogue_with_number'   => "گفت‌وگو (:number)",
 		'one_of_replies'         => "یکی از :number پاسخ",

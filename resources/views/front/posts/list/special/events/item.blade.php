@@ -10,7 +10,7 @@
                 {{ trans('front.to') }}
                 {{ echoDate($event->end_time, 'j F Y', 'auto', true) }}
             </span>
-            @if(\Carbon\Carbon::parse($event->starts_at)->lte(\Carbon\Carbon::now()))
+            @if(user()->exists and \Carbon\Carbon::parse($event->starts_at)->lte(\Carbon\Carbon::now()))
                 {{ null, $color = \Carbon\Carbon::parse($event->ends_at)->lt(\Carbon\Carbon::now()) ? 'gray' : 'green' }}
                 <div class="label {{ $color }} alt pull-left">
                     {{ trans('front.all_user_score') }} {{ pd(PostsServiceProvider::getUserPointOfEvent($event)) }}

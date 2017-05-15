@@ -1,5 +1,5 @@
 <div class="avatar">
-    <img src="{{ url($person->viewable_featured_image) }}"></div>
+    <img src="{{ $person->viewable_featured_image ? url($person->viewable_featured_image) : null }}"></div>
 <div class="content">
     <h3> {{ $person->title }} </h3>
     <h4> {{ $person->seat }} </h4>

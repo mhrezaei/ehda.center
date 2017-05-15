@@ -49,7 +49,7 @@ class ProductsController extends Controller
             'description' => $folder->title,
         ];
 
-        if($folder->image) {
+        if ($folder->image) {
             $ogData['image'] = url($folder->image);
         }
 
@@ -98,17 +98,23 @@ class ProductsController extends Controller
         $breadCrumb = [
             [trans('front.home'), url_locale('')],
             [trans('front.products'), url_locale('products')],
-            [$product->title, url_locale('products/' . $this->productPrefix . ($product->slug ? $product->slug : $product->id))],
         ];
+
+        $categories = $product->categories;
+        if ($categories->count()) {
+            $firstCat = $categories->first();
+            $breadCrumb[] = [$firstCat->title, url_locale('products/' . $firstCat->folder->slug . '/' . $firstCat->slug)];
+        }
+        $breadCrumb[] = [$product->title, url_locale('products/' . $this->productPrefix . ($product->slug ? $product->slug : $product->id))];
 
         $ogData = [
             'title' => $product->title,
         ];
 
-        if($product->viewable_featured_image) {
+        if ($product->viewable_featured_image) {
             $ogData['image'] = url($product->viewable_featured_image);
         }
-        if($product->abstract) {
+        if ($product->abstract) {
             $ogData['description'] = $product->abstract;
         }
 
@@ -125,6 +131,7 @@ class ProductsController extends Controller
             'ajax_request' => true,
             'paginate_hash' => $hash,
             'paginate_url' => URL::previous(),
+            'max_per_page' => 2,
         ];
 
         $referrer = URL::previous();
@@ -178,8 +185,8 @@ class ProductsController extends Controller
                     switch ($field) {
                         case 'price':
                             if (isset($value['min']) and isset($value['max']) and $value['min'] and $value['max']) {
-                                $selectorData['conditions'][] = ['price', '>=', $value['min']];
-                                $selectorData['conditions'][] = ['price', '<=', $value['max']];
+                                $selectorData['conditions'][] = ['sale_price', '>=', $value['min']];
+                                $selectorData['conditions'][] = ['sale_price', '<=', $value['max']];
                             }
                             break;
                     }

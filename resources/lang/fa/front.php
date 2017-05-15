@@ -63,12 +63,11 @@ return [
     'to' => 'تا',
     'profile_messages' => [
         'not_enough_information' => 'اطلاعات پروفایل شما کافی نیست.',
-        'complete_to_join_drawing' => 'برای شرکت در قرعه‌کشی باید اطلاعات پروفایل خود را کامل کنید.',
+        'complete_to_join_drawing' => 'اکنون کافی‌ست با تکمیل اطلاعات خود وارد فهرست قرعه‌کشی شود.',
     ],
     'news' => 'اخبار',
     'faqs' => 'سوالات متداول',
     'more' => 'ادامه مطلب',
     'teammates' => 'کارمندان مجموعه',
-    'search_for' => 'جست و جو برای «::search»',
     'no_result_found' => 'نتیجه‌ای یافت نشد.',
 ];

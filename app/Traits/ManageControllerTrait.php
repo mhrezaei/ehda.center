@@ -195,13 +195,15 @@ trait ManageControllerTrait
 	{
 		//Preferences...
 		$default = [
-			'success_message'    => trans('forms.feed.done'),
-			'success_redirect'   => '',
-			'success_callback'   => '',
-			'success_refresh'    => '0',
-			'success_modalClose' => '0',
-			'success_updater'    => '',
-			'redirectTime'       => 1000,
+			'success_message'           => trans('forms.feed.done'),
+			'success_redirect'        => '',
+			'success_callback'        => '',
+			'success_refresh'         => '0',
+			'success_modalClose'      => '0',
+			'success_updater'         => '',
+            'success_form_reset'      => '',
+            'success_feed_timeout'    => 0,
+			'redirectTime'            => 1000,
 
 			'danger_message'    => trans('validation.invalid'),
 			'danger_redirect'   => '',
@@ -227,6 +229,8 @@ trait ManageControllerTrait
 				'refresh'      => $setting['success_refresh'],
 				'modalClose'   => $setting['success_modalClose'],
 				'updater'      => $setting['success_updater'],
+				'form_reset'   => $setting['success_form_reset'],
+				'feed_timeout' => $setting['success_feed_timeout'],
 				'redirectTime' => $setting['redirectTime'],
 			]);
 		}
@@ -249,13 +253,15 @@ trait ManageControllerTrait
 	{
 		//Preferences...
 		$default = [
-			'success_message'    => trans('forms.feed.done'),
-			'success_redirect'   => '',
-			'success_callback'   => '',
-			'success_refresh'    => '0',
-			'success_modalClose' => '1',
-			'success_updater'    => '',
-			'redirectTime'       => 1000,
+			'success_message'       => trans('forms.feed.done'),
+			'success_redirect'      => '',
+			'success_callback'      => '',
+			'success_refresh'       => '0',
+			'success_modalClose'    => '1',
+			'success_updater'       => '',
+			'success_form_reset'    => '',
+			'success_feed_timeout'  => 0,
+			'redirectTime'          => 1000,
 
 			'danger_message'    => trans('validation.invalid'),
 			'danger_redirect'   => '',
