@@ -21,7 +21,7 @@ class Posttype extends Model
 		'rss'               => ['rss', 'info', []],
 		'comment'           => ['comments-o', 'info', ['allow_anonymous_comment:boolean', 'disable_receiving_comments:boolean', 'disable_showing_comments:boolean', 'comment_receive_day_limits:date']],
 		'rate'              => ['star-half-o', 'info', []], //@TODO: feature_fields
-		'album'             => ['address-book-o', 'info', ['post_photos:auto']], //@TODO: feature_fields datatype!
+		'album'             => ['address-book-o', 'info', ['post_photos:auto']],
 		'category'          => ['folder-o', 'info', []],
 		'cat_image'         => ['file-image-o', 'info', []],
 		'keywords'          => ['tags', 'info', []], //@TODO: feature_fields
