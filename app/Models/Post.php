@@ -44,6 +44,15 @@ class Post extends Model
 		return $this->belongsToMany('App\Models\Folder')->withTimestamps();
 	}
 
+	public function goods($available_locales_only = true)
+	{
+		$table = Good::where('sisterhood' , $this->sisterhood) ;
+		if($available_locales_only) {
+			//@TODO
+		}
+		return $table ;
+	}
+
 	public function roles()
 	{
 		return $this->belongsToMany('App\Models\Role')->withTimestamps(); //@TODO: complete with withPivot('permissions' , 'deleted_at') perhaps
@@ -221,11 +230,6 @@ class Post extends Model
 		return round((($this->price - $this->sale_price) * 100) / $this->price);
 	}
 
-
-	public function getIddAttribute()
-	{
-		return Crypt::encrypt($this->id);
-	}
 
 	public function getEncryptedTypeAttribute()
 	{

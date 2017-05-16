@@ -13,6 +13,30 @@ class Unit extends Model
 	public static $reserved_slugs = 'root,admin';
 	protected     $guarded        = ['id'];
 
+	/*
+	|--------------------------------------------------------------------------
+	| Relations
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public function goods()
+	{
+		return $this->belongsToMany('App\Models\Good') ;
+	}
+	public function packs()
+	{
+		return $this->belongsToMany('App\Models\Pack') ;
+	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Assessors and Mutators
+	|--------------------------------------------------------------------------
+	|
+	*/
+
+
+
 	public function getStatusAttribute()
 	{
 		if($this->trashed()){

@@ -107,6 +107,12 @@ trait TahaModelTrait
 		return $this->getPerson('deleted_by');
 	}
 
+	public function getIddAttribute()
+	{
+		return Crypt::encrypt($this->id);
+	}
+
+
 	public function getPerson($field)
 	{
 		$user_id = $this->$field;

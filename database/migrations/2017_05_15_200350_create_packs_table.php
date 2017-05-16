@@ -17,10 +17,14 @@ class CreatePacksTable extends Migration
 		Schema::create('packs', function (Blueprint $table) {
 			$table->increments('id');
 			$table->unsignedInteger('unit_id')->index() ;
+			$table->string('type')->index() ;
 
+			$table->string('slug')->unique() ;
 			$table->string('title')->index();
 			$table->text('text')->nullable() ;
 			$table->integer('inventory')->default(0);
+			$table->integer('inventory_alarm')->default(0);
+			$table->integer('inventory_stop')->default(0);
 
 			$table->longText('meta')->nullable() ;
 			$table->timestamps();
@@ -29,6 +33,8 @@ class CreatePacksTable extends Migration
 			$table->unsignedInteger('created_by')->default(0)->index() ;
 			$table->unsignedInteger('updated_by')->default(0) ;
 			$table->unsignedInteger('deleted_by')->default(0) ;
+
+
 		});
 	}
 

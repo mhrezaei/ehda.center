@@ -170,6 +170,18 @@ class Posttype extends Model
 		return Comment::where('type', $this->slug);
 	}
 
+	public function goods()
+	{
+		return Good::where('type', $this->slug);
+	}
+
+	public function packs()
+	{
+		return Pack::where('type', $this->slug);
+	}
+
+
+
 	/*
 	|--------------------------------------------------------------------------
 	| Accessors and Mutators
