@@ -398,12 +398,11 @@ class Post extends Model
     public function getViewableAlbumAttribute()
     {
         $this->spreadMeta();
-        $album = $this->album;
-        if($album and is_array($album and count($album))) {
+        $album = $this->post_photos;
+        if($album and is_array($album) and count($album)) {
             foreach($album as &$image) {
-                $image = url($image);
+                $image['src'] = url($image['src']);
             }
-
             return $album;
         }
 
@@ -415,7 +414,7 @@ class Post extends Model
         $album = $this->viewable_album;
         if($album and is_array($album) and $album) {
             foreach($album as &$image) {
-                $image = str_replace_last('/', '/thumbs/', $image);
+                $image['src'] = str_replace_last('/', '/thumbs/', $image['src']);
             }
 
             return $album;
