@@ -9,6 +9,7 @@
 
 use Carbon\Carbon;
 use Morilog\Jalali\jDate;
+use Vinkla\Hashids\Facades\Hashids;
 
 
 function getLocale()
@@ -377,4 +378,14 @@ function arrayPrefixToIndex($delimiter, $haystack)
     }
 
     return $haystack;
+}
+
+function hashid_encrypt($id, $connection = 'main')
+{
+    return Hashids::connection($connection)->encode($id);
+}
+
+function hashid_decrypt($hash, $connection = 'main')
+{
+    return Hashids::connection($connection)->decode($hash);
 }

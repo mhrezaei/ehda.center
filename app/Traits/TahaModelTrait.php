@@ -107,6 +107,11 @@ trait TahaModelTrait
 		return $this->getPerson('deleted_by');
 	}
 
+    public function getHashIdAttribute()
+    {
+        return hashid_encrypt($this->id, 'ids');
+    }
+
 	public function getPerson($field)
 	{
 		$user_id = $this->$field;
@@ -380,12 +385,29 @@ trait TahaModelTrait
 
 	}
 
-	/*
-	|--------------------------------------------------------------------------
-	| General Save Methods
-	|--------------------------------------------------------------------------
-	|
-	*/
+    public static function findByHashid($hash)
+    {
+        if ($hash) {
+            $ids = hashid_decrypt($hash, 'ids');
+            if (count($ids)) {
+                $id = $ids[0];
+                $model = self::where('id', $id)->first();
+                if ($model) {
+                    return $model;
+                }
+            }
+        }
+
+        return new self();
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | General Save Methods
+    |--------------------------------------------------------------------------
+    |
+    */
 
 
 	public static function store($request, $unset_things = [])

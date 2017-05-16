@@ -1,0 +1,2 @@
+- define new meta as "show_previous_comments:boolean" for "commenting" posts
+- check "show_previous_comments" for "customers-comments" post
