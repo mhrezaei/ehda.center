@@ -6,6 +6,7 @@ return [
         'delete_alert'       => 'It will be deleted softly, but there is no way for to recover it in the program.',
         'locales_hint'       => "Separate languages with comma (,). If you don't specify anything, only persian will be activated.",
         'order_hint'         => 'If you specify "0", it will be displayed in setting menu instead if right side menu.',
+        'locale_titles'      => "Title in Other Languages",
     ],
 
     'features' => [

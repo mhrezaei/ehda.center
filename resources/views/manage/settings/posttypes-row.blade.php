@@ -24,6 +24,11 @@
 	@endforeach
 </td>
 
-<td>
-	.
-</td>
+@include("manage.frame.widgets.grid-actionCol" , [
+	'refresh_action' => false ,
+	"actions" => [
+		['pencil' , trans('forms.button.edit') , "modal:manage/upstream/edit/posttype/-id-" ],
+		['cog' , trans('settings.downstream') , "modal:manage/settings/act/-id-/posttype"],
+		['taxi' , trans('posts.types.locale_titles') , 'modal:manage/upstream/edit/posttype-titles/-id-' ]
+	]
+])

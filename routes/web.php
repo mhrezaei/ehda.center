@@ -178,6 +178,7 @@ Route::group([
 			Route::post('state', 'UpstreamController@saveProvince');
 			Route::post('city', 'UpstreamController@saveCity');
 			Route::post('posttype', 'UpstreamController@savePosttype');
+			Route::post('posttype-titles', 'UpstreamController@savePosttypeTitles');
 			Route::post('department', 'UpstreamController@saveDepartment');
 			Route::post('category', 'UpstreamController@saveCategory');
 			Route::post('downstream', 'UpstreamController@saveDownstream');

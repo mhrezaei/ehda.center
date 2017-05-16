@@ -42,10 +42,10 @@ class Posttype extends Model
 		'slug'              => ['hashtag', 'danger', []],
 		'developers_only'   => ['github-alt', 'danger', []],
 	];
-	public static $available_templates  = ['album', 'post', 'product', 'slideshow', 'dialogue', 'faq' , 'special'];
+	public static $available_templates  = ['album', 'post', 'product', 'slideshow', 'dialogue', 'faq', 'special'];
 	public static $available_meta_types = ['text', 'textarea', 'date', 'boolean', 'photo', 'file'];
 	public static $reserved_slugs       = 'root,admin';
-	public static $meta_fields          = ['features', 'template', 'feature_meta', 'optional_meta', 'visibility', 'singular_title', 'icon', 'locales', 'max_per_page', 'default_featured_image', 'featured_image_width', 'featured_image_height', 'fresh_time_duration'];
+	public static $meta_fields          = ['features', 'template', 'feature_meta', 'optional_meta', 'visibility', 'singular_title', 'icon', 'locales', 'max_per_page', 'default_featured_image', 'featured_image_width', 'featured_image_height', 'fresh_time_duration', 'locale_titles'];
 	public static $basement_meta        = "moderate_note:text ";
 	public static $downstream           = [
 		[
@@ -179,7 +179,6 @@ class Posttype extends Model
 	{
 		return Pack::where('type', $this->slug);
 	}
-
 
 
 	/*
@@ -343,6 +342,26 @@ class Posttype extends Model
 		}
 		else {
 			return $request_locale;
+		}
+	}
+
+	public function titleIn($locale = 'fa')
+	{
+		if($locale == 'fa') {
+			return $this->title;
+		}
+		else {
+			return $this->meta("locale_titles")["title-$locale"] ;
+		}
+	}
+
+	public function singularTitleIn($locale)
+	{
+		if($locale == 'fa') {
+			return $this->singular_title;
+		}
+		else {
+			return $this->meta("locale_titles")["singular_title-$locale"] ;
 		}
 	}
 

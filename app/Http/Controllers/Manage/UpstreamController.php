@@ -6,9 +6,11 @@ use App\Http\Requests\Manage\CitySaveRequest;
 use App\Http\Requests\Manage\DownstreamSaveRequest;
 use App\Http\Requests\Manage\PackageSaveRequest;
 use App\Http\Requests\Manage\PosttypeSaveRequest;
+use App\Http\Requests\Manage\PosttypeTitlesSaveRequest;
 use App\Http\Requests\Manage\ProvinceSaveRequest;
 use App\Http\Requests\Manage\RoleSaveRequest;
 use App\Models\Folder;
+use App\Models\Post;
 use App\Models\Unit;
 use App\Models\Posttype;
 use App\Models\Role;
@@ -267,6 +269,13 @@ class UpstreamController extends Controller
 
 				return view('manage.settings.posttypes-edit', compact('model'));
 
+			case 'posttype-titles' :
+				$model = Posttype::find($item_id) ;
+				if(!$model) {
+					return view('errors.m410');
+				}
+				return view("manage.settings.posttypes-titles",compact('model'));
+
 			case 'categories' :
 				if($item_id) {
 					$model = Category::find($item_id);
@@ -340,6 +349,41 @@ class UpstreamController extends Controller
 				'success_refresh' => 1,
 			]);
 		}
+
+	}
+
+	public function savePosttypeTitles(PosttypeTitlesSaveRequest $request)
+	{
+		/*-----------------------------------------------
+		| Model Reveal ...
+		*/
+		$model = Posttype::find($request->id) ;
+		if(!$model) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+
+		/*-----------------------------------------------
+		| Process ...
+		*/
+		$data = $request->toArray() ;
+		$data['locale_titles'] = [] ;
+
+
+		foreach($model->locales_array as $locale) {
+			if($locale=='fa') {
+				continue ;
+			}
+			$data['locale_titles']["title-$locale"] = $data["_title_in_$locale"] ;
+			$data['locale_titles']["singular_title-$locale"] = $data["_singular_title_in_$locale"] ;
+		}
+
+		/*-----------------------------------------------
+		| Save & Feedback ...
+		*/
+		return $this->jsonAjaxSaveFeedback( Posttype::store($data) , [
+			'success_refresh' => 1,
+		]);
+
 
 	}
 
