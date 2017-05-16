@@ -157,7 +157,7 @@ class PostsServiceProvider extends ServiceProvider
             'showError' => true,
         ]);
 
-        $post = self::findPost($identifier);
+        $post = self::smartFindPost($identifier);
 
         if (!$post->exists) {
             if ($data['showError']) {
@@ -294,7 +294,7 @@ class PostsServiceProvider extends ServiceProvider
 
     public static function getPostComments($post, $parameters = [])
     {
-        $post = self::findPost($post);
+        $post = self::smartFindPost($post);
         if ($post->exists) {
             $parameters = array_normalize($parameters, [
                 'user_id' => '0',
@@ -322,7 +322,7 @@ class PostsServiceProvider extends ServiceProvider
      * @param $identifier
      * @return \App\Models\Post
      */
-    public static function findPost($identifier)
+    public static function smartFindPost($identifier)
     {
         if ($identifier instanceof Post) {
             return $identifier;

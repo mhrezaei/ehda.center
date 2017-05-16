@@ -8,6 +8,7 @@ use App\Models\Comment;
 use App\Models\Folder;
 use App\Models\Post;
 use App\Models\Posttype;
+use App\Providers\PostsServiceProvider;
 use App\Traits\ManageControllerTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -92,7 +93,9 @@ JS;
                 [$pageTitle],
             ];
 
-            return view('front.posts.general.search-result.main', compact('selectData', 'breadCrumb', 'pageTitle'));
+            $searchResultHTML = PostsServiceProvider::showList($selectData);
+
+            return view('front.posts.general.search-result.main', compact('searchResultHTML', 'breadCrumb', 'pageTitle'));
         }
     }
 

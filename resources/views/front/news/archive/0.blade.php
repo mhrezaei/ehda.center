@@ -13,5 +13,13 @@
 @endsection
 
 @section('content')
-    {!! \App\Providers\PostsServiceProvider::showList($selectConditions) !!}
+    <div class="page-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-10 col-center">
+                    {!! $newsListHTML !!}
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

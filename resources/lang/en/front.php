@@ -70,4 +70,10 @@ return [
     'more'                                     => 'More',
     'teammates'                                => 'Teammates',
     'no_result_found'                          => 'No Results Found',
+
+    'footer' => [
+        'copy_right' => 'All rights reserved for ::site.',
+        'created_by' => 'Prepared by: ',
+        'yasna_team' => 'Yasna Team'
+    ]
 ];

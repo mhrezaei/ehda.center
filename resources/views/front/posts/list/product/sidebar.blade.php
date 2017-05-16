@@ -13,30 +13,34 @@
                 <label for="product-name"> {{ trans('validation.attributes.title') }} </label>
                 <input type="text" id="product-name">
             </div>
-            <hr class="small">
-            <div class="field filter-slider" data-identifier="price">
-                <label>
-                    {{ trans('validation.attributes.price') }}
-                    (
-                    {{ trans('posts.filters.range_from') }}
-                    @pd(number_format($minPrice = PostsServiceProvider::productsMinPrice($allPosts)))
-                    {{ trans('posts.filters.range_to') }}
-                    @pd(number_format($maxPrice = PostsServiceProvider::productsMaxPrice($allPosts)))
-                    )
-                </label>
-                <div class="slider-container"
-                     data-min="{{ $minPrice }}"
-                     data-max="{{ $maxPrice }}">
-                    <div class="slider-self"></div>
-                    <div class="pt10">
-                        <span class="min-label pull-left"></span>
-                        <span class="max-label pull-right"></span>
+            {{ null, $minPrice = PostsServiceProvider::productsMinPrice($allPosts) }}
+            {{ null, $maxPrice = PostsServiceProvider::productsMaxPrice($allPosts) }}
+            @if($minPrice != $maxPrice)
+                <hr class="small">
+                <div class="field filter-slider" data-identifier="price">
+                    <label>
+                        {{ trans('validation.attributes.price') }}
+                        (
+                        {{ trans('posts.filters.range_from') }}
+                        @pd(number_format($minPrice))
+                        {{ trans('posts.filters.range_to') }}
+                        @pd(number_format($minPrice))
+                        )
+                    </label>
+                    <div class="slider-container"
+                         data-min="{{ $minPrice }}"
+                         data-max="{{ $maxPrice }}">
+                        <div class="slider-self"></div>
+                        <div class="pt10">
+                            <span class="min-label pull-left"></span>
+                            <span class="max-label pull-right"></span>
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endif
             <hr class="small">
             {{ null , $allCategories = PostsServiceProvider::postsCategories($allPosts, 'slug') }}
-            @if(count($allCategories))
+            @if(count($allCategories) > 1)
                 <div class="field mb0 filter-checkbox" data-identifier="category">
                     <label class="label-big"> {{ trans('front.categories') }} </label>
                     @foreach($allCategories as $categoryId => $categoryTitle)

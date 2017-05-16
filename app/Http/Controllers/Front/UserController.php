@@ -30,7 +30,7 @@ class UserController extends Controller
     }
 
     public function previousComments($lang, $post_id) {
-        $post = PostsServiceProvider::findPost($post_id);
+        $post = PostsServiceProvider::smartFindPost($post_id);
 
         if(!$post) {
             $this->abort('410');

@@ -70,4 +70,10 @@ return [
     'more'                                     => 'ادامه مطلب',
     'teammates'                                => 'کارمندان مجموعه',
     'no_result_found'                          => 'نتیجه‌ای یافت نشد.',
+
+    'footer' => [
+        'copy_right' => 'تمامی حقوق برای ::site محفوظ است.',
+        'created_by' => 'طراحی و اجرا: ',
+        'yasna_team' => 'گروه یسنا'
+    ]
 ];

@@ -482,4 +482,19 @@ return [
         'short_view' => 'Short View',
     ],
 
+    "http" => [
+        'Error404' => "We don't know this page.",
+        'Error403' => "You shouldn't be here!",
+        'Error410' => "Who are you looking for?",
+        'Error503' => "We'll get back. Soon... :)",
+    ],
+
+    "hint" => [
+        'unique'       => 'Unique',
+        'english-only' => 'Only English Characters',
+        'persian-only' => 'Only Persian Characters',
+        'no_underline' => "Without Underlines",
+        'icon_hint'    => 'Write one of "font-awesome" icons without "fa".',
+    ],
+
 ];

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Models\Post;
 use App\Models\Posttype;
+use App\Providers\PostsServiceProvider;
 use App\Traits\ManageControllerTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -33,7 +34,9 @@ class FaqsController extends Controller
             $ogData['image'] = url($postType->defatul_featured_image);
         }
 
-        return view('front.faqs.archive.0', compact('selectConditions', 'breadCrumb', 'ogData'));
+        $faqsListHTML = PostsServiceProvider::showList($selectConditions);
+
+        return view('front.faqs.archive.0', compact('faqsListHTML', 'breadCrumb', 'ogData'));
     }
 
     public function single($lang, $identifier)
@@ -69,6 +72,8 @@ class FaqsController extends Controller
             $ogData['image'] = $faq->viewable_featured_image;
         }
 
-        return view('front.faqs.single.0', compact('faq', 'breadCrumb', 'ogData'));
+        $faqHTML = PostsServiceProvider::showPost($faq);
+
+        return view('front.faqs.single.0', compact('faqHTML', 'breadCrumb', 'ogData'));
     }
 }

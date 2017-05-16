@@ -3788,9 +3788,9 @@ label [class*=" icon-"] {
 	height: 10px;
 
 	content: "";
-	-webkit-transform: rotate(-45deg);
-	    -ms-transform: rotate(-45deg);
-	        transform: rotate(-45deg);
+	-webkit-transform: rotate(45deg);
+	    -ms-transform: rotate(45deg);
+	        transform: rotate(45deg);
 
 	opacity: 0;
 	border: solid #aaaaaa;
@@ -4122,7 +4122,7 @@ select {
 	max-width: 100%;
 	height: 40px;
 	margin: 0;
-	padding: .5rem .75rem;
+	padding: .5rem 25px .5rem .75rem ;
 
 	transition: all .2s ease-in-out; 
 	text-align: left;
