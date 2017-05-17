@@ -22,9 +22,9 @@
                         {{ trans('validation.attributes.price') }}
                         (
                         {{ trans('posts.filters.range_from') }}
-                        @pd(number_format($minPrice))
+                        {{ ad(number_format($minPrice)) }}
                         {{ trans('posts.filters.range_to') }}
-                        @pd(number_format($minPrice))
+                        {{ ad(number_format($minPrice)) }}
                         )
                     </label>
                     <div class="slider-container"
@@ -38,9 +38,9 @@
                     </div>
                 </div>
             @endif
-            <hr class="small">
             {{ null , $allCategories = PostsServiceProvider::postsCategories($allPosts, 'slug') }}
             @if(count($allCategories) > 1)
+            <hr class="small">
                 <div class="field mb0 filter-checkbox" data-identifier="category">
                     <label class="label-big"> {{ trans('front.categories') }} </label>
                     @foreach($allCategories as $categoryId => $categoryTitle)

@@ -25,14 +25,14 @@
             @if($event->winners_list_post)
                 <a href="{{$event->winners_list_post}}" download="">
                     <i class="fa fa-list"></i>
-                    {{trans('cart.drawing_winners')}}
+                    {{trans('validation.attributes.drawing_winners')}}
                 </a>
             @endif
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             @if($event->drawing_video)
                 <a href="{{$event->drawing_video}}" download="">
                     <i class="fa fa-video-camera"></i>
-                    {{trans('cart.drawing_video')}}
+                    {{trans('validation.attributes.drawing_video')}}
                 </a>
             @endif
         </div>

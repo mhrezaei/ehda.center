@@ -16,16 +16,16 @@
                 @if($post->isIt('AVAILABLE'))
                     @if($post->isIt('IN_SALE'))
                         <del>
-                            @pd(number_format($post->price))
+                            {{ pd(number_format($post->price)) }}
                         </del>
                         <ins>
-                            @pd(number_format($post->sale_price))
+                            {{ pd(number_format($post->sale_price)) }}
                             {{ trans('front.toman') }}
                         </ins>
                     @else
                         @if($post->price > 0)
                             <ins>
-                                @pd(number_format($post->price))
+                                {{ pd(number_format($post->price)) }}
                                 {{ trans('front.toman') }}
                             </ins>
                         @endif

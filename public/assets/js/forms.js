@@ -961,14 +961,18 @@ function forms_digit_en(perDigit) {
 }
 
 function pd(enDigit) {
-    if ($.inArray(getLocale(), ['fa', 'ar']) > -1) {
-        return forms_digit_fa(enDigit);
-    }
-    return enDigit;
+    return forms_digit_fa(enDigit);
 }
 
 function ed(faDigit) {
     return forms_digit_en(faDigit);
+}
+
+function ad(string) {
+    if ($.inArray(getLocale(), ['fa', 'ar']) > -1) {
+        return pd(string);
+    }
+    return ed(string);
 }
 
 function forms_digit_fa(enDigit) {

@@ -17,9 +17,9 @@
                     <h5> {{ $item->product->title }} </h5>
                 </a>
             </td>
-            <td class="price"> @pd(number_format($item->product->price)) {{ trans('front.toman') }} </td>
-            <td class="tac"> @pd($item->count) </td>
-            <td class="price"> @pd(number_format($item->product->price * $item->count)) {{ trans('front.toman') }} </td>
+            <td class="price"> {{ ad(number_format($item->product->price)) }} {{ trans('front.toman') }} </td>
+            <td class="tac"> {{ ad($item->count) }} </td>
+            <td class="price"> {{ ad(number_format($item->product->price * $item->count)) }} {{ trans('front.toman') }} </td>
             <td class="remove-row">
                 <a href="#" class="icon-close"></a>
             </td>

@@ -477,6 +477,9 @@ return [
         'featured_image_width'            => "Featured Image Width",
         'featured_image_height'           => "Featured Image Height",
         'fresh_time_duration'             => "Fresh Time Duration",
+        'drawing_winners'                 => "Drawing Winners",
+        'drawing_video'                   => "Drawing Video",
+        'winners_list_post'               => "Winners List Post",
 
         'seat'       => 'Seat',
         'short_view' => 'Short View',
