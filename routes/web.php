@@ -143,6 +143,7 @@ Route::group([
 		Route::group(['prefix' => 'save'], function () {
 			Route::post('/', 'SettingsController@save');
 			Route::post('/posttype', 'SettingsController@savePosttypeDownstream');
+			Route::post('/pack', 'SettingsController@savePack');
 		});
 	});
 

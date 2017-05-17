@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Manage;
 
+use App\Http\Requests\Manage\PackSaveRequest;
 use App\Http\Requests\Manage\PosttypeDownstreamSaveRequest;
 use App\Models\Pack;
 use App\Models\Posttype;
@@ -134,6 +135,112 @@ class SettingsController extends Controller
 		return view("manage.settings.packs-edit",compact('model'));
 
 
+	}
+
+	public function editPackRootForm($pack_id)
+	{
+		$model = Pack::withTrashed()->find($pack_id) ;
+		if(!$model ) {
+			return view('errors.m410');
+		}
+		else {
+			$model->spreadMeta() ;
+		}
+
+		return view("manage.settings.packs-edit",compact('model'));
+
+	}
+
+	public function savePack(PackSaveRequest $request)
+	{
+		$command = $request->_submit ;
+		/*
+		|--------------------------------------------------------------------------
+		| In case of Delete & Undelete Command
+		|--------------------------------------------------------------------------
+		|
+		*/
+		if(in_array($command , ['delete' , 'undelete'])) {
+			return $this->deleteOrUndeletePack($request->id , $command) ;
+		}
+
+		/*
+		|--------------------------------------------------------------------------
+		| In case of Save Command
+		|--------------------------------------------------------------------------
+		|
+		*/
+
+		/*-----------------------------------------------
+		| Validation ...
+		*/
+		if($request->id) {
+			$model = Pack::withTrashed()->find($request->id) ;
+
+			if(!$model) {
+				return $this->jsonFeedback(trans('validation.http.Error410'));
+			}
+			$type  = $model->posttype ;
+		}
+		else {
+			$type = Posttype::findBySlug($request->type);
+			if(!$type or !$type->exists() or $type->hasnot('basket')) {
+				return view('errors.m410');
+			}
+		}
+
+		/*-----------------------------------------------
+		| Unique Title  ...
+		*/
+		$same_title = Pack::where('title' , $request->title)->where('type',$request->type)->where('id' ,  '!=' , $request->id)->first();
+		if($same_title) {
+			return $this->jsonFeedback(trans('validation.unique' , [
+				'attribute' => trans('validation.attributes.title') ,
+			]));
+			
+		}
+
+		/*-----------------------------------------------
+		| Save Process ...
+		*/
+		$data = $request->toArray() ;
+		$data['locale_titles'] = [] ;
+
+		foreach($type->locales_array as $locale) {
+			if($locale=='fa') {
+				continue ;
+			}
+			$data['locale_titles']["title-$locale"] = $data["_title_in_$locale"] ;
+		}
+
+		/*-----------------------------------------------
+		| Save ...
+		*/
+		return $this->jsonAjaxSaveFeedback( Pack::store($data) , [
+				'success_callback' => "",
+				'success_refresh' => "1",
+		]);
+
+	}
+
+	public function deleteOrUndeletePack($id , $command)
+	{
+		$model = Pack::withTrashed()->find($id) ;
+
+		if(!$model) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+
+		if($command == 'delete') {
+			$ok = $model->delete() ;
+		}
+		else {
+			$ok = $model->undelete() ;
+		}
+
+		return $this->jsonAjaxSaveFeedback( $ok , [
+				'success_refresh' => "1",
+		]);
 	}
 
 }

@@ -10,12 +10,15 @@
 		['type' , $model->type],
 	]])
 
-	@include('forms.input' , [
-	    'name' =>	'title',
-	    'value' =>	$model->title,
-	    'class' => 'form-required  form-default' ,
-	    'hint' =>	trans('validation.hint.unique').' | '.trans('validation.hint.persian-only'),
-	])
+	@foreach($model->posttype->locales_array as $locale)
+		@include('forms.input' , [
+			'name' =>	$locale=='fa'? 'title' : "_title_in_$locale",
+			'label' => $locale=='fa'? trans('validation.attributes.title') : trans("forms.lang.$locale"),
+			'value' =>	$model->titleIn($locale),
+			'class' =>  in_array($locale , ['fa' , 'ar']) ? 'form-required' : 'form-required ltr' ,
+			'hint' =>	$locale=='fa'? trans('validation.hint.unique').' | '.trans('validation.hint.persian-only') : '',
+		])
+	@endforeach
 
 	@include("forms.select" , [
 		'name' => "unit_id",
@@ -35,31 +38,30 @@
 		@include('forms.button' , [
 			'id' => 'btnSave' ,
 			'label' => trans('forms.button.save'),
-			'shape' => 'success',
+			'shape' => 'primary',
 			'type' => 'submit' ,
 			'value' => 'save' ,
 			'class' => '-delHandle'
 		])
 
-			@include('forms.button' , [
-				'condition' => $model->id and !$model->trashed() ,
-				'id' => 'btnDeleteWarning' ,
-				'label' => trans('posts.packs.deactivate'),
-				'shape' => 'warning',
-//				'link' => '$(".-delHandle").toggle()' ,
-				'type' => "submit",
-				'name' => "delete" ,
-				'class' => '-delHandle' ,
-			])
-			@include('forms.button' , [
-				'condition' => $model->id and $model->trashed() ,
-				'id' => 'btnDelete' ,
-				'label' => trans('forms.button.forms.button.sure_delete'),
-				'shape' => 'danger',
-				'value' => 'undelete' ,
-				'type' => 'submit' ,
-//				'class' => 'noDisplay -delHandle' ,
-			])
+		@include('forms.button' , [
+			'condition' => $model->id and !$model->trashed() ,
+			'id' => 'btnDeleteWarning' ,
+			'label' => trans('posts.packs.deactivate'),
+			'shape' => 'warning',
+			'type' => "submit",
+			'value' => "delete" ,
+			'name' => "delete" ,
+			'class' => '-delHandle' ,
+		])
+		@include('forms.button' , [
+			'condition' => $model->id and $model->trashed() ,
+			'id' => 'btnDelete' ,
+			'label' => trans('manage.permissions.activate'),
+			'shape' => 'success',
+			'value' => 'undelete' ,
+			'type' => 'submit' ,
+		])
 
 
 

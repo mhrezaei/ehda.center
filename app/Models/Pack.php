@@ -12,7 +12,7 @@ class Pack extends Model
 	use TahaModelTrait , SoftDeletes ;
 
 	public static $reserved_slug = 'root,admin' ;
-	public static $meta_fields = ['image'] ;
+	public static $meta_fields = ['image' , 'locale_titles'] ;
 
 	protected $guarded         = ['id'];
 	private   $cached_posttype = false;
@@ -71,6 +71,23 @@ class Pack extends Model
 	{
 		return $this->posttype->encrypted_slug;
 	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Stators
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public function titleIn($locale = 'fa')
+	{
+		if($locale == 'fa') {
+			return $this->title;
+		}
+		else {
+			return $this->meta("locale_titles")["title-$locale"] ;
+		}
+	}
+
 
 	/*
 	|--------------------------------------------------------------------------

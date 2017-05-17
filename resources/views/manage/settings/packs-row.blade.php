@@ -26,7 +26,7 @@
 	@foreach($model->packs()->get() as $pack)
 		@include("manage.frame.widgets.grid-badge" , [
 			'text' => $pack->title,
-			'link' => "modal:manage/settings/edit/$pack->id" ,
+			'link' => "modal:manage/settings/act/$pack->id/edit-pack" ,
 			'color' => "success" ,
 			'icon' => "check" ,
 		]     )
@@ -51,8 +51,8 @@
 	@foreach($model->packs()->onlyTrashed()->get() as $pack)
 		@include("manage.frame.widgets.grid-badge" , [
 			'text' => $pack->title,
-			'link' => "modal:manage/settings/edit/$pack->id" ,
-			'color' => "gray" ,
+			'link' => "modal:manage/settings/act/$pack->id/edit-pack" ,
+			'color' => "warning" ,
 			'icon' => "times" ,
 		]     )
 	@endforeach
