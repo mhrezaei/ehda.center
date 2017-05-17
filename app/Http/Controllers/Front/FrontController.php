@@ -8,6 +8,7 @@ use App\Models\Folder;
 use App\Models\Post;
 use App\Models\User;
 use App\Providers\EmailServiceProvider;
+use App\Providers\PostsServiceProvider;
 use App\Traits\TahaControllerTrait;
 use Asanak\Sms\Facade\AsanakSms;
 use Illuminate\Http\Request;
@@ -26,9 +27,9 @@ class FrontController extends Controller
         $categories = Folder::where('posttype_id', 2)->where('slug', '!=', 'no')
             ->where('locale', getLocale())->orderBy('title', 'asc')->get();
         $about = Post::selector([
-            'type' => 'pages',
+            'type'   => 'pages',
             'locale' => getLocale(),
-            'slug' => 'about',
+            'slug'   => 'about',
         ])->first();
 
         $event = Post::selector(['type' => 'events'])
