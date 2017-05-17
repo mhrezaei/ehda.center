@@ -477,9 +477,27 @@ return [
         'featured_image_width'            => "Featured Image Width",
         'featured_image_height'           => "Featured Image Height",
         'fresh_time_duration'             => "Fresh Time Duration",
+        'drawing_winners'                 => "Drawing Winners",
+        'drawing_video'                   => "Drawing Video",
+        'winners_list_post'               => "Winners List Post",
 
         'seat'       => 'Seat',
         'short_view' => 'Short View',
+    ],
+
+    "http" => [
+        'Error404' => "We don't know this page.",
+        'Error403' => "You shouldn't be here!",
+        'Error410' => "Who are you looking for?",
+        'Error503' => "We'll get back. Soon... :)",
+    ],
+
+    "hint" => [
+        'unique'       => 'Unique',
+        'english-only' => 'Only English Characters',
+        'persian-only' => 'Only Persian Characters',
+        'no_underline' => "Without Underlines",
+        'icon_hint'    => 'Write one of "font-awesome" icons without "fa".',
     ],
 
 ];

@@ -25,7 +25,7 @@
                 <button class="green block"> {{ trans('front.login') }} </button>
             </div>
             <div class="row">
-                <div class="col-xs-12 pt15">
+                <div class="col-xs-12 pt15 text-center">
                     <a href="{{ url(\App\Providers\SettingServiceProvider::getLocale() . '/password/reset') }}">
                         {{ trans('people.form.recover_password') }}
                     </a>

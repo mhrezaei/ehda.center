@@ -240,6 +240,9 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
 
         Route::get('/', 'FrontController@index');
 
+        // test view TODO: remove this route and related function
+        Route::get('test/cart', 'FrontController@testCart');
+
         // saving comments for all posts
         Route::post('/comment', 'PostController@submit_comment');
 

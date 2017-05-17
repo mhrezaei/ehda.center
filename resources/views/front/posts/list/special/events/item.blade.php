@@ -6,9 +6,9 @@
             <span class="f12">
                 <i class="fa fa-clock-o"></i>
                 {{ trans('front.from') }}
-                {{ echoDate($event->start_time, 'j F Y', 'auto', true) }}
+                {{ echoDate($event->starts_at, 'j F Y', 'auto', true) }}
                 {{ trans('front.to') }}
-                {{ echoDate($event->end_time, 'j F Y', 'auto', true) }}
+                {{ echoDate($event->ends_at, 'j F Y', 'auto', true) }}
             </span>
             @if(user()->exists and \Carbon\Carbon::parse($event->starts_at)->lte(\Carbon\Carbon::now()))
                 {{ null, $color = \Carbon\Carbon::parse($event->ends_at)->lt(\Carbon\Carbon::now()) ? 'gray' : 'green' }}
@@ -25,14 +25,14 @@
             @if($event->winners_list_post)
                 <a href="{{$event->winners_list_post}}" download="">
                     <i class="fa fa-list"></i>
-                    {{trans('cart.drawing_winners')}}
+                    {{trans('validation.attributes.drawing_winners')}}
                 </a>
             @endif
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             @if($event->drawing_video)
                 <a href="{{$event->drawing_video}}" download="">
                     <i class="fa fa-video-camera"></i>
-                    {{trans('cart.drawing_video')}}
+                    {{trans('validation.attributes.drawing_video')}}
                 </a>
             @endif
         </div>

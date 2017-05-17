@@ -811,6 +811,11 @@ function forms_errorIfNotDatePicker(selector) {
 }
 
 //======================================================================================
+
+function getLocale() {
+    return $('html').attr('lang');
+}
+
 function forms_isPersian(string) {
     var p = /[^\u0600-\u06FF]/;
     var count = 0;
@@ -959,9 +964,15 @@ function pd(enDigit) {
     return forms_digit_fa(enDigit);
 }
 
-
 function ed(faDigit) {
     return forms_digit_en(faDigit);
+}
+
+function ad(string) {
+    if ($.inArray(getLocale(), ['fa', 'ar']) > -1) {
+        return pd(string);
+    }
+    return ed(string);
 }
 
 function forms_digit_fa(enDigit) {

@@ -14,5 +14,10 @@
 @endsection
 
 @section('content')
-    {!! PostsServiceProvider::showList($selectorData) !!}
+
+    <div class="page-content category">
+        <div class="container">
+            {!! $productsListHTML !!}
+        </div>
+    </div>
 @endsection

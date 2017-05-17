@@ -2,7 +2,7 @@
     $previousComments = PostsServiceProvider::getPostComments($post, ['user_id' => user()->id])
 }}
 
-{{ null, $updateUrl = url_locale('user/dashboard/previous_comments/' . $post->id) }}
+{{ null, $updateUrl = url_locale('user/dashboard/previous_comments/' . $post->hash_id) }}
 
 <div class="previous-comments" data-url="{{ $updateUrl }}">
     @if($previousComments)

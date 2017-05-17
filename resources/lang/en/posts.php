@@ -44,6 +44,7 @@ return [
         'tags'              => 'Tags',
         'similar_things'    => 'Similar <span>::things</span>',
         'related_things'    => 'Related <span>::things</span>',
+        'maybe_you_like'    => '<span>Maybe</span> You like',
     ],
 
     'templates' => [

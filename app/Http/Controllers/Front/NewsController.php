@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Models\Post;
 use App\Models\Posttype;
+use App\Providers\PostsServiceProvider;
 use App\Traits\ManageControllerTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -32,14 +33,17 @@ class NewsController extends Controller
             $ogData['image'] = url($postType->defatul_featured_image);
         }
 
-        return view('front.news.archive.0', compact('selectConditions', 'breadCrumb', 'ogData'));
+        $newsListHTML = PostsServiceProvider::showList($selectConditions);
+
+        return view('front.news.archive.0', compact('newsListHTML', 'breadCrumb', 'ogData'));
     }
 
     public function single($lang, $identifier)
     {
         $identifier = substr($identifier, strlen($this->newsPrefix));
 
-        if (is_numeric($identifier)) {
+        $dehashed = hashid_decrypt($identifier, 'ids');
+        if (is_array($dehashed) and is_numeric($identifier = $dehashed[0])) {
             $field = 'id';
         } else {
             $field = 'slug';
@@ -67,6 +71,8 @@ class NewsController extends Controller
             $ogData['image'] = $news->viewable_featured_image;
         }
 
-        return view('front.news.single.0', compact('news', 'breadCrumb', 'ogData'));
+        $newsHTML = PostsServiceProvider::showPost($news);
+
+        return view('front.news.single.0', compact('newsHTML', 'breadCrumb', 'ogData'));
     }
 }

@@ -37,7 +37,8 @@ class TeammatesController extends Controller
     {
         $identifier = substr($identifier, strlen($this->faqPrefix));
 
-        if (is_numeric($identifier)) {
+        $dehashed = hashid_decrypt($identifier, 'ids');
+        if (is_array($dehashed) and is_numeric($identifier = $dehashed[0])) {
             $field = 'id';
         } else {
             $field = 'slug';

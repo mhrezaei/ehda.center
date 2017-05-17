@@ -14,5 +14,9 @@
 @endsection
 
 @section('content')
-    {!! PostsServiceProvider::showPost($product) !!}
+    <div class="page-content product-single">
+        <div class="container">
+            {!! $postHTML !!}
+        </div>
+    </div>
 @endsection

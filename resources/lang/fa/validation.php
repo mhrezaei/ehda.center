@@ -468,6 +468,9 @@ return [
         'featured_image_width'            => "طول عکس",
         'featured_image_height'           => "عرض عکس",
         'fresh_time_duration'             => "زمان تازگی مطلب",
+        'drawing_winners'                 => "برندگان قرعه‌کشی",
+        'drawing_video'                   => "ویدئو قرعه‌کشی",
+        'winners_list_post'               => "پست لیست برندگان",
 
         'seat'       => 'سمت',
         'short_view' => 'نمایش مختصر',

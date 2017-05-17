@@ -4,7 +4,8 @@
     <li> <a href="{{ url_locale('products') }}"> {{ trans('front.products') }} </a>
     <li> <a href="{{ url_locale('news') }}"> {{ trans('front.news') }} </a>
     <li> <a href="{{ url_locale('faqs') }}"> {{ trans('front.faqs') }} </a>
-    <li> <a href="{{ url_locale('teammates') }}"> {{ trans('front.teammates') }} </a>
+    <li> <a href="{{ url_locale('event') }}"> {{ trans('front.events') }} </a>
+    {{--<li> <a href="{{ url_locale('teammates') }}"> {{ trans('front.teammates') }} </a>--}}
     {{--<li class="has-child"> <a href="{{ url_locale('products') }}"> {{ trans('front.products') }} </a>--}}
         {{--<ul class="sub-menu">--}}
             {{--<li><a href="#">پسته</a></li>--}}

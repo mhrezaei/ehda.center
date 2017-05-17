@@ -40,9 +40,9 @@ class ProductsController extends Controller
         $folder->spreadMeta();
 
         $selectorData = [
-            'type' => 'products',
+            'type'         => 'products',
             'is_base_page' => true,
-            'folder' => $folder->slug,
+            'folder'       => $folder->slug,
         ];
 
         $ogData = [
@@ -65,14 +65,16 @@ class ProductsController extends Controller
                 $this->abort(410);
             }
             if (!$folder->is($category->folder)) {
-                $this->abort(404);
+                $this->abort(410);
             }
             $breadCrumb[] = [$category->title, url_locale('products/' . $folder->slug . '/' . $category->slug)];
             $selectorData['category'] = $category->slug;
             $ogData['description'] .= ' - ' . $category->title;
         }
 
-        return view('front.products.products.0', compact('selectorData', 'breadCrumb', 'ogData'));
+        $productsListHTML = PostsServiceProvider::showList($selectorData);
+
+        return view('front.products.products.0', compact('productsListHTML', 'breadCrumb', 'ogData'));
 
     }
 
@@ -80,7 +82,8 @@ class ProductsController extends Controller
     {
         $identifier = substr($identifier, strlen($this->productPrefix));
 
-        if (is_numeric($identifier)) {
+        $dehashed = hashid_decrypt($identifier, 'ids');
+        if (is_array($dehashed) and is_numeric($identifier = $dehashed[0])) {
             $field = 'id';
         } else {
             $field = 'slug';
@@ -118,7 +121,9 @@ class ProductsController extends Controller
             $ogData['description'] = $product->abstract;
         }
 
-        return view('front.products.single.0', compact('product', 'breadCrumb', 'ogData'));
+        $postHTML = PostsServiceProvider::showPost($product);
+
+        return view('front.products.single.0', compact('postHTML', 'breadCrumb', 'ogData'));
     }
 
     public function ajaxFilter(Request $request)
@@ -126,12 +131,12 @@ class ProductsController extends Controller
         $hash = $request->hash;
         $hashArray = [];
         $selectorData = [
-            'type' => 'products',
-            'show_filter' => false,
-            'ajax_request' => true,
+            'type'          => 'products',
+            'show_filter'   => false,
+            'ajax_request'  => true,
             'paginate_hash' => $hash,
-            'paginate_url' => URL::previous(),
-            'max_per_page' => 2,
+            'paginate_url'  => URL::previous(),
+            'max_per_page'  => 2,
         ];
 
         $referrer = URL::previous();

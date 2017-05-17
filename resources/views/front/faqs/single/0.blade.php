@@ -13,5 +13,13 @@
 @endsection
 
 @section('content')
-    {!! \App\Providers\PostsServiceProvider::showPost($faq) !!}
+    <div class="page-content category">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 col-center">
+                    {!! $faqHTML !!}
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

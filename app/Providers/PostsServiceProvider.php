@@ -45,28 +45,28 @@ class PostsServiceProvider extends ServiceProvider
     {
         $defaultData = [
             'showList' => [
-                'slug' => "",
-                'role' => "",
-                'criteria' => "published",
-                'locale' => getLocale(),
-                'owner' => 0,
-                'type' => "feature:searchable",
-                'category' => "",
-                'folder' => "",
-                'keyword' => "",
-                'search' => "",
-                'from' => "",
-                'to' => "",
-                'max_per_page' => 12,
-                'sort' => 'DESC',
-                'sort_by' => 'published_at',
-                'show_filter' => true,
-                'ajax_request' => false,
-                'conditions' => [], // additional conditions to be used in "where" clause
-                'paginate_hash' => '', // the fragment that should be added to links in pagination
-                'paginate_url' => '',
+                'slug'             => "",
+                'role'             => "",
+                'criteria'         => "published",
+                'locale'           => getLocale(),
+                'owner'            => 0,
+                'type'             => "feature:searchable",
+                'category'         => "",
+                'folder'           => "",
+                'keyword'          => "",
+                'search'           => "",
+                'from'             => "",
+                'to'               => "",
+                'max_per_page'     => 12,
+                'sort'             => 'DESC',
+                'sort_by'          => 'published_at',
+                'show_filter'      => true,
+                'ajax_request'     => false,
+                'conditions'       => [], // additional conditions to be used in "where" clause
+                'paginate_hash'    => '', // the fragment that should be added to links in pagination
+                'paginate_url'     => '',
                 'paginate_current' => '',
-                'is_base_page' => false,
+                'is_base_page'     => false,
             ]
         ];
 
@@ -152,12 +152,12 @@ class PostsServiceProvider extends ServiceProvider
     {
         // normalize data
         $data = array_normalize($data, [
-            'lang' => getLocale(),
-            'preview' => false,
+            'lang'      => getLocale(),
+            'preview'   => false,
             'showError' => true,
         ]);
 
-        $post = self::findPost($identifier);
+        $post = self::smartFindPost($identifier);
 
         if (!$post->exists) {
             if ($data['showError']) {
@@ -185,7 +185,7 @@ class PostsServiceProvider extends ServiceProvider
     {
         return view('front.posts.error', [
             'errorMessage' => $errorMessage,
-            'ajaxRequest' => $ajaxRequest,
+            'ajaxRequest'  => $ajaxRequest,
         ]);
     }
 
@@ -200,7 +200,7 @@ class PostsServiceProvider extends ServiceProvider
         }
 
         $selectConditions = [
-            'type' => 'events',
+            'type'       => 'events',
             'conditions' => [
                 ['starts_at', '<=', Carbon::now()],
                 ['ends_at', '>=', Carbon::now()],
@@ -253,7 +253,7 @@ class PostsServiceProvider extends ServiceProvider
     {
         $data = [
             'locale' => ($locale) ? $locale : getLocale(),
-            'type' => $type,
+            'type'   => $type,
         ];
 
         return Post::selector($data)->get();
@@ -294,15 +294,15 @@ class PostsServiceProvider extends ServiceProvider
 
     public static function getPostComments($post, $parameters = [])
     {
-        $post = self::findPost($post);
+        $post = self::smartFindPost($post);
         if ($post->exists) {
             $parameters = array_normalize($parameters, [
                 'user_id' => '0',
             ]);
 
             $selectorRules = [
-                'type' => $post->type,
-                'post_id' => $post->id,
+                'type'     => $post->type,
+                'post_id'  => $post->id,
                 'criteria' => 'all',
             ];
 
@@ -322,15 +322,23 @@ class PostsServiceProvider extends ServiceProvider
      * @param $identifier
      * @return \App\Models\Post
      */
-    public static function findPost($identifier)
+    public static function smartFindPost($identifier)
     {
         if ($identifier instanceof Post) {
             return $identifier;
-        } else if (is_numeric($identifier)) {
-            return Post::find($identifier);
-        } else {
-            return Post::findBySlug($identifier);
         }
+
+        if (is_numeric($identifier)) {
+            return Post::find($identifier);
+        }
+
+        $dehashed = hashid_decrypt($identifier, 'ids');
+        if (count($dehashed) and is_numeric($id = $dehashed[0])) {
+            return Post::find($id);
+
+        }
+
+        return Post::findBySlug($identifier);
     }
 }
 
