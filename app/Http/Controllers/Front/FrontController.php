@@ -132,4 +132,33 @@ class FrontController extends Controller
 
     }
 
+    public function testCart()
+    {
+        $products = Post::selector(['type' => 'products'])
+            ->orderBy('published_at', 'DESC')
+            ->limit(5)
+            ->get();
+
+        $cart = new \stdClass();
+        $cart->items = [];
+//        $sum = 0;
+//
+//        foreach ($products as $key => $product) {
+//            $tmp = new \stdClass();
+//            $tmp->product = $product;
+//            $tmp->count = $key + 5;
+//            $cart->items[$key] = $tmp;
+//            $sum += $product->price;
+//            if(!isset($mostExpensive) or $mostExpensive->price < $product->price ) {
+//                $mostExpensive = $product;
+//            }
+//        }
+//
+//        if ($sum) {
+//            $cart->sum = $sum;
+//            $cart->discount = $sum * 0.2;
+//        }
+
+        return view('front.cart.main', compact('cart', 'mostExpensive'));
+    }
 }

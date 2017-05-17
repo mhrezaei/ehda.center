@@ -44,6 +44,7 @@ return [
         'tags'              => 'برچسب‌ها',
         'similar_things'    => '<span>::things</span> مشابه',
         'related_things'    => '<span>::things</span> مرتبط',
+        'maybe_you_like'    => '<span>شاید</span> علاقمند باشید', // TODO: new
     ],
 
     'templates' => [

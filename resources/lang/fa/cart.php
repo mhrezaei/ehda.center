@@ -23,6 +23,17 @@ return [
     'no_winner_so_far'      => "فعلاً هیچ کس به عنوان برنده انتخاب نشده است.",
     'number'                => 'تعداد',
     'add_to_cart'           => 'افزودن به سبد',
+    'unit_price'            => 'قیمت واحد', // TODO: new
+    'total_price'           => 'قیمت کل', // TODO: new
+    'settlement'            => 'تسویه حساب', // TODO: new
+    'empty_cart'            => 'خالی کردن سبد', // TODO: new
+    'you_have_a_coupon?'    => 'بن تخفیف دارید؟', // TODO: new
+    'discount_code'         => 'کد تخفیف', // TODO: new
+    'invalid_discount_code' => 'کد تخفیف شما معتبر نیست', // TODO: new
+    'your_total_payable'    => ' جمع کل خرید شما:', // TODO: new
+    'payable'               => 'قابل پرداخت', // TODO: new
+    'cart_is_empty'         => 'سبد خرید خالی‌ست', // TODO: new
+    'back_to_market'        => 'بازگشت به فروشگاه', // TODO: new
 
     'units' => [
         'kilogram' => 'کیلوگرم',
