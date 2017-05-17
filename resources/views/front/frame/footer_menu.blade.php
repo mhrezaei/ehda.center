@@ -2,6 +2,7 @@
     <li><a href="{{ url_locale('') }}"> {{ trans('front.home') }} </a></li>
     <li><a href="{{ url_locale('page/about') }}"> {{ trans('front.about') }} </a></li>
     <li><a href="{{ url_locale('products') }}"> {{ trans('front.products') }} </a></li>
-    <li><a href="{{ url_locale('teammates') }}"> {{ model('Posttype')::findBySlug('teammates')->title }} </a></li>
+    <li><a href="{{ url_locale('teammates') }}"> {{ trans('front.teammates') }} </a></li>
+    <li><a href="{{ url_locale('events') }}"> {{ trans('front.events') }} </a></li>
     <li><a href="{{ url_locale('page/contact') }}"> {{ trans('front.contact_us') }} </a></li>
 </ul>

@@ -1,7 +1,4 @@
-<div class="page-content category">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-8 col-center">
+
                 @foreach($posts as $post)
                     {{ '', $post->spreadMeta() }}
                     <div class="faq-item">
@@ -11,7 +8,3 @@
                         </div>
                     </div>
                 @endforeach
-            </div>
-        </div>
-    </div>
-</div>

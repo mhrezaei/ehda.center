@@ -362,16 +362,16 @@ class Post extends Model
     {
         switch ($this->type) {
             case 'products':
-                return url_locale('products/pd-' . ($this->id));
+                return url_locale('products/pd-' . ($this->hash_id));
                 break;
             case 'news':
-                return url_locale('news/nw-' . ($this->id));
+                return url_locale('news/nw-' . ($this->hash_id));
                 break;
             case 'faqs':
-                return url_locale('faqs/faq-' . ($this->id));
+                return url_locale('faqs/faq-' . ($this->hash_id));
                 break;
             case 'teammates':
-                return url_locale('teammates/tm-' . ($this->id));
+                return url_locale('teammates/tm-' . ($this->hash_id));
                 break;
         }
     }
@@ -398,12 +398,11 @@ class Post extends Model
     public function getViewableAlbumAttribute()
     {
         $this->spreadMeta();
-        $album = $this->album;
-        if($album and is_array($album and count($album))) {
+        $album = $this->post_photos;
+        if($album and is_array($album) and count($album)) {
             foreach($album as &$image) {
-                $image = url($image);
+                $image['src'] = url($image['src']);
             }
-
             return $album;
         }
 
@@ -415,7 +414,7 @@ class Post extends Model
         $album = $this->viewable_album;
         if($album and is_array($album) and $album) {
             foreach($album as &$image) {
-                $image = str_replace_last('/', '/thumbs/', $image);
+                $image['src'] = str_replace_last('/', '/thumbs/', $image['src']);
             }
 
             return $album;

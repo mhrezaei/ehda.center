@@ -8,6 +8,7 @@ use App\Models\Folder;
 use App\Models\Post;
 use App\Models\User;
 use App\Providers\EmailServiceProvider;
+use App\Providers\PostsServiceProvider;
 use App\Traits\TahaControllerTrait;
 use Asanak\Sms\Facade\AsanakSms;
 use Illuminate\Http\Request;
@@ -26,9 +27,9 @@ class FrontController extends Controller
         $categories = Folder::where('posttype_id', 2)->where('slug', '!=', 'no')
             ->where('locale', getLocale())->orderBy('title', 'asc')->get();
         $about = Post::selector([
-            'type' => 'pages',
+            'type'   => 'pages',
             'locale' => getLocale(),
-            'slug' => 'about',
+            'slug'   => 'about',
         ])->first();
 
         $event = Post::selector(['type' => 'events'])
@@ -131,4 +132,33 @@ class FrontController extends Controller
 
     }
 
+    public function testCart()
+    {
+        $products = Post::selector(['type' => 'products', 'locale' => 'fa'])
+            ->orderBy('published_at', 'DESC')
+            ->limit(5)
+            ->get();
+
+        $cart = new \stdClass();
+        $cart->items = [];
+        $sum = 0;
+
+        foreach ($products as $key => $product) {
+            $tmp = new \stdClass();
+            $tmp->product = $product;
+            $tmp->count = $key + 5;
+            $cart->items[$key] = $tmp;
+            $sum += $product->price;
+            if(!isset($mostExpensive) or $mostExpensive->price < $product->price ) {
+                $mostExpensive = $product;
+            }
+        }
+
+        if ($sum) {
+            $cart->sum = $sum;
+            $cart->discount = $sum * 0.2;
+        }
+
+        return view('front.cart.main', compact('cart', 'mostExpensive'));
+    }
 }

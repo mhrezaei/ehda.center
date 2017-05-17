@@ -11,12 +11,12 @@
                 <img src="{{ url('/assets/images/flags/en.png') }}">
             </span> {{ trans('front.english') }}
         </a>
-    @elseif(getLocale() == 'ar')
-        <a href="{{ url('/ar') }}" class="dropdown-toggle">
-            <span>
-                <img src="{{ url('/assets/images/flags/ar.png') }}">
-            </span> {{ trans('front.arabic') }}
-        </a>
+    {{--@elseif(getLocale() == 'ar')--}}
+        {{--<a href="{{ url('/ar') }}" class="dropdown-toggle">--}}
+            {{--<span>--}}
+                {{--<img src="{{ url('/assets/images/flags/ar.png') }}">--}}
+            {{--</span> {{ trans('front.arabic') }}--}}
+        {{--</a>--}}
     @endif
     <div class="menu">
         <a href="{{ url('/fa') }}">
@@ -27,9 +27,9 @@
             <span>
                 <img src="{{ url('/assets/images/flags/en.png') }}">
             </span> {{ trans('front.english') }} </a>
-        <a href="{{ url('/ar') }}">
-            <span>
-                <img src="{{ url('/assets/images/flags/ar.png') }}">
-            </span> {{ trans('front.arabic') }} </a>
+        {{--<a href="{{ url('/ar') }}">--}}
+            {{--<span>--}}
+                {{--<img src="{{ url('/assets/images/flags/ar.png') }}">--}}
+            {{--</span> {{ trans('front.arabic') }} </a>--}}
     </div>
 </div>

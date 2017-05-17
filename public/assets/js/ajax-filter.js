@@ -119,8 +119,8 @@ function initialFilter(modify) {
                         max: max,
                         values: [min, max],
                         change: function (event, ui) {
-                            minLabel.html(forms_pd(nummber_format(ui.values[0])));
-                            maxLabel.html(forms_pd(nummber_format(ui.values[1])));
+                            minLabel.html(ad(nummber_format(ui.values[0])));
+                            maxLabel.html(ad(nummber_format(ui.values[1])));
                             filterWithRange(ui.values[0], ui.values[1], identifier, [sliderEl.slider("option", "min"), sliderEl.slider("option", "max")]);
                             if (event.originalEvent) {
                                 resetPageNumber();
@@ -131,8 +131,8 @@ function initialFilter(modify) {
                     sliderEl.slider('values', values);
                 }
 
-                minLabel.html(forms_pd(nummber_format(values[0])));
-                maxLabel.html(forms_pd(nummber_format(values[1])));
+                minLabel.html(ad(nummber_format(values[0])));
+                maxLabel.html(ad(nummber_format(values[1])));
             });
 
             /**

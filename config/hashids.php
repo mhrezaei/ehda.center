@@ -44,6 +44,12 @@ return [
               'length' => 5,
          ],
 
+         'ids' => [
+             'salt' => "o,ah-ngd-;i-lnhl-hc-md-kzv-kv,n" ,
+             'length' => "8" ,
+             'alphabet' => "abcdefghijklmnopqrstuvwxyz" ,
+         ],
+
         'alternative' => [
             'salt' => 'your-salt-string',
             'length' => 'your-length-integer',

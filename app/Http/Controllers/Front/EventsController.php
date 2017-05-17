@@ -62,12 +62,6 @@ class EventsController extends Controller
             ];
 
             return PostsServiceProvider::showList($conditions);
-            $events = Post::selector(['type' => 'events'])
-                ->whereDate('starts_at', '<=', Carbon::now())
-                ->whereDate('ends_at', '<=', Carbon::now())
-                ->paginate(5);
-
-            return view('front.user.events.events-block', compact('events'));
         }
     }
 }
