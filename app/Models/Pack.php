@@ -72,5 +72,15 @@ class Pack extends Model
 		return $this->posttype->encrypted_slug;
 	}
 
+	/*
+	|--------------------------------------------------------------------------
+	| Helpers
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public function unitsCombo()
+	{
+		return Unit::all();
+	}
 
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Manage;
 
 use App\Http\Requests\Manage\PosttypeDownstreamSaveRequest;
+use App\Models\Pack;
 use App\Models\Posttype;
 use App\Models\Setting;
 use App\Traits\ManageControllerTrait;
@@ -52,6 +53,12 @@ class SettingsController extends Controller
 
 				return view("manage.settings.site", compact('page', 'models', 'request_tab', 'db', 'keyword'));
 
+			case 'packs':
+				$page[1] = ['tab/packs', trans('posts.packs.plural')];
+				$models  = Posttype::where('features' , 'like' , '%basket%')->orderBy('title')->paginate(100);
+
+				return view("manage.settings.packs", compact('page', 'models', 'request_tab', 'db'));
+
 			default:
 				$models = Setting::where('category', $request_tab)->where('developers_only', '0')->orderBy('title')->paginate(100);
 
@@ -87,7 +94,7 @@ class SettingsController extends Controller
 		}
 		else {
 			$model->spreadMeta();
-			$model->fresh_time_duration = $model->fresh_time_duration / (24 * 60) ;
+			$model->fresh_time_duration = $model->fresh_time_duration / (24 * 60);
 		}
 		// Security (can:super) is checked in the route.
 
@@ -108,8 +115,25 @@ class SettingsController extends Controller
 			$data['fresh_time_duration'] = $data['fresh_time_duration'] * 24 * 60;
 		}
 
-		$ok = Posttype::store($data) ;
+		$ok = Posttype::store($data);
+
 		return $this->jsonAjaxSaveFeedback($ok);
+	}
+
+	public function createPackRootForm($type_id)
+	{
+		$type = Posttype::find($type_id) ;
+		if(!$type or !$type->exists() or $type->hasnot('basket')) {
+			return view('errors.m410');
+		}
+		else {
+			$model = new Pack() ;
+			$model->type = $type->slug ;
+		}
+
+		return view("manage.settings.packs-edit",compact('model'));
+
+
 	}
 
 }

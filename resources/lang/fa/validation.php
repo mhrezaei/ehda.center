@@ -389,7 +389,7 @@ return [
 		'currency_title'       => 'نام ارز',
 		'currency_slug'        => 'نشان اختصاری',
 		'currency'             => 'ارز',
-		'package_id'           => "واحد اندازه‌گیری",
+		'unit_id'              => "واحد اندازه‌گیری",
 		'sale_expires_at'      => "انقضای قیمت ویژه",
 		'submitted_at'         => "زمان ثبت",
 		'price'                => 'قیمت',
