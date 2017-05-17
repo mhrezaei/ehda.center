@@ -19,7 +19,7 @@ class CreatePacksTable extends Migration
 			$table->unsignedInteger('unit_id')->index() ;
 			$table->string('type')->index() ;
 
-			$table->string('slug')->unique() ;
+			$table->string('slug') ;
 			$table->string('title')->index();
 			$table->text('text')->nullable() ;
 			$table->integer('inventory')->default(0);

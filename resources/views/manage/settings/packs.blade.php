@@ -5,7 +5,7 @@
 	@include("manage.frame.widgets.toolbar" )
 
 	@include("manage.frame.widgets.grid" , [
-		'table_id' => "tblSettings",
+		'table_id' => "tblPacks",
 		'row_view' => "manage.settings.packs-row",
 		'handle' => "counter",
 		'headings' => [

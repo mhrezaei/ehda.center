@@ -37,6 +37,7 @@
 
 		@include('forms.button' , [
 			'id' => 'btnSave' ,
+			'condition' => !$model->trashed() ,
 			'label' => trans('forms.button.save'),
 			'shape' => 'primary',
 			'type' => 'submit' ,

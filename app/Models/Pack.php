@@ -84,7 +84,7 @@ class Pack extends Model
 			return $this->title;
 		}
 		else {
-			return $this->meta("locale_titles")["title-$locale"] ;
+			return $this->spreadMeta()->locale_titles["title-$locale"] ;
 		}
 	}
 

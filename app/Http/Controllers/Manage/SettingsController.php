@@ -56,7 +56,7 @@ class SettingsController extends Controller
 
 			case 'packs':
 				$page[1] = ['tab/packs', trans('posts.packs.plural')];
-				$models  = Posttype::where('features' , 'like' , '%basket%')->orderBy('title')->paginate(100);
+				$models  = Posttype::where('features', 'like', '%basket%')->orderBy('title')->paginate(100);
 
 				return view("manage.settings.packs", compact('page', 'models', 'request_tab', 'db'));
 
@@ -121,47 +121,62 @@ class SettingsController extends Controller
 		return $this->jsonAjaxSaveFeedback($ok);
 	}
 
-	public function createPackRootForm($type_id)
+	public function packsRowRootForm($type_id)
 	{
-		$type = Posttype::find($type_id) ;
-		if(!$type or !$type->exists() or $type->hasnot('basket')) {
-			return view('errors.m410');
-		}
-		else {
-			$model = new Pack() ;
-			$model->type = $type->slug ;
-		}
-
-		return view("manage.settings.packs-edit",compact('model'));
-
-
-	}
-
-	public function editPackRootForm($pack_id)
-	{
-		$model = Pack::withTrashed()->find($pack_id) ;
-		if(!$model ) {
+		$model = Posttype::find($type_id);
+		$handle = 'counter' ;
+		if(!$model or !$model->exists() or $model->hasnot('basket')) {
 			return view('errors.m410');
 		}
 		else {
 			$model->spreadMeta() ;
 		}
 
-		return view("manage.settings.packs-edit",compact('model'));
+		return view("manage.settings.packs-row",compact('model' , 'handle'));
+
+	}
+
+	public function createPackRootForm($type_id)
+	{
+		$type = Posttype::find($type_id);
+		if(!$type or !$type->exists() or $type->hasnot('basket')) {
+			return view('errors.m410');
+		}
+		else {
+			$model       = new Pack();
+			$model->type = $type->slug;
+		}
+
+		return view("manage.settings.packs-edit", compact('model'));
+
+
+	}
+
+	public function editPackRootForm($pack_id)
+	{
+		$model = Pack::withTrashed()->find($pack_id);
+		if(!$model) {
+			return view('errors.m410');
+		}
+		else {
+			$model->spreadMeta();
+		}
+
+		return view("manage.settings.packs-edit", compact('model'));
 
 	}
 
 	public function savePack(PackSaveRequest $request)
 	{
-		$command = $request->_submit ;
+		$command = $request->_submit;
 		/*
 		|--------------------------------------------------------------------------
 		| In case of Delete & Undelete Command
 		|--------------------------------------------------------------------------
 		|
 		*/
-		if(in_array($command , ['delete' , 'undelete'])) {
-			return $this->deleteOrUndeletePack($request->id , $command) ;
+		if(in_array($command, ['delete', 'undelete'])) {
+			return $this->deleteOrUndeletePack($request->id, $command);
 		}
 
 		/*
@@ -175,12 +190,12 @@ class SettingsController extends Controller
 		| Validation ...
 		*/
 		if($request->id) {
-			$model = Pack::withTrashed()->find($request->id) ;
+			$model = Pack::withTrashed()->find($request->id);
 
 			if(!$model) {
 				return $this->jsonFeedback(trans('validation.http.Error410'));
 			}
-			$type  = $model->posttype ;
+			$type = $model->posttype;
 		}
 		else {
 			$type = Posttype::findBySlug($request->type);
@@ -192,54 +207,57 @@ class SettingsController extends Controller
 		/*-----------------------------------------------
 		| Unique Title  ...
 		*/
-		$same_title = Pack::where('title' , $request->title)->where('type',$request->type)->where('id' ,  '!=' , $request->id)->first();
+		$same_title = Pack::where('title', $request->title)->where('type', $request->type)->where('id', '!=', $request->id)->first();
 		if($same_title) {
-			return $this->jsonFeedback(trans('validation.unique' , [
-				'attribute' => trans('validation.attributes.title') ,
+			return $this->jsonFeedback(trans('validation.unique', [
+				'attribute' => trans('validation.attributes.title'),
 			]));
-			
+
 		}
 
 		/*-----------------------------------------------
 		| Save Process ...
 		*/
-		$data = $request->toArray() ;
-		$data['locale_titles'] = [] ;
+		$data                  = $request->toArray();
+		$data['locale_titles'] = [];
 
 		foreach($type->locales_array as $locale) {
-			if($locale=='fa') {
-				continue ;
+			if($locale == 'fa') {
+				continue;
 			}
-			$data['locale_titles']["title-$locale"] = $data["_title_in_$locale"] ;
+			$data['locale_titles']["title-$locale"] = $data["_title_in_$locale"];
 		}
 
 		/*-----------------------------------------------
 		| Save ...
 		*/
-		return $this->jsonAjaxSaveFeedback( Pack::store($data) , [
-				'success_callback' => "",
-				'success_refresh' => "1",
+
+		return $this->jsonAjaxSaveFeedback(Pack::store($data), [
+			'success_callback' => "rowUpdate('tblPacks' , '$type->id')",
 		]);
 
 	}
 
-	public function deleteOrUndeletePack($id , $command)
+	public function deleteOrUndeletePack($id, $command)
 	{
-		$model = Pack::withTrashed()->find($id) ;
+		$model = Pack::withTrashed()->find($id);
 
 		if(!$model) {
 			return $this->jsonFeedback(trans('validation.http.Error410'));
 		}
+		else {
+			$type_id = $model->posttype->id ;
+		}
 
 		if($command == 'delete') {
-			$ok = $model->delete() ;
+			$ok = $model->delete();
 		}
 		else {
-			$ok = $model->undelete() ;
+			$ok = $model->undelete();
 		}
 
-		return $this->jsonAjaxSaveFeedback( $ok , [
-				'success_refresh' => "1",
+		return $this->jsonAjaxSaveFeedback($ok, [
+			'success_callback' => "rowUpdate('tblPacks' , '$type_id')",
 		]);
 	}
 
