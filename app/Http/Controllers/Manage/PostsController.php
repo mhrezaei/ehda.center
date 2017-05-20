@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Manage;
 
 use App\Http\Requests\Manage\PostSaveRequest;
 use App\Models\Drawing;
+use App\Models\Good;
+use App\Models\Pack;
 use App\Models\Post;
 use App\Models\Posttype;
 use App\Models\Receipt;
@@ -918,6 +920,44 @@ class PostsController extends Controller
 			'success_callback' => "rowUpdate('tblPosts','$request->id')",
 			'success_redirect' => $data['_submit'] == 'redirect_after_save' ? $new_model->edit_link : '',
 		]);
+
+
+	}
+
+
+	public function editorGoodsRootForm($fake , $switch_string)
+	{
+		$switch = array_normalize( array_maker($switch_string) , [
+			'id' => "0" ,
+		     'type' => null ,
+		     'locale' => "fa" ,
+		     'sisterhood' => null ,
+		]);
+
+		/*-----------------------------------------------
+		| Models ...
+		*/
+		if($switch['id']) {
+			$model = Good::withTrashed()->find($switch['id']);
+			if(!$model) {
+				return view('errors.m410');
+			}
+			$switch['type'] = $model->type ;
+		}
+		else {
+			$model = new Good() ;
+			$model->type = $switch['type'] ;
+			$model->sisterhood = $switch['sisterhood'] ;
+			$model->locale = $switch['locale'] ;
+		}
+
+		$packs = Pack::where('type' , $switch['type'])->get() ;
+
+
+		/*-----------------------------------------------
+		| View ...
+		*/
+		return view("manage.posts.editor-goods-edit",compact('model' , 'packs'));
 
 
 	}

@@ -472,6 +472,7 @@ return [
 
 		'seat'       => 'سمت',
 		'short_view' => 'نمایش مختصر',
+		'pack_id'    => "بسته‌بندی", //@TODO: New
 	],
 
 	"http" => [

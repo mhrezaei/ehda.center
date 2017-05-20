@@ -44,10 +44,10 @@ class Post extends Model
 		return $this->belongsToMany('App\Models\Folder')->withTimestamps();
 	}
 
-	public function goods($available_locales_only = true)
+	public function goods($regardless_of_availability_for_the_current_locale = false)
 	{
 		$table = Good::where('sisterhood' , $this->sisterhood) ;
-		if($available_locales_only) {
+		if(!$regardless_of_availability_for_the_current_locale) {
 			//@TODO
 		}
 		return $table ;

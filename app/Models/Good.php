@@ -92,4 +92,21 @@ class Good extends Model
 		return $this->posttype->encrypted_slug;
 	}
 
+	/*
+	|--------------------------------------------------------------------------
+	| Stators
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public function titleIn($locale = 'fa')
+	{
+		if($locale == 'fa') {
+			return $this->title;
+		}
+		else {
+			return $this->spreadMeta()->locale_titles["title-$locale"] ;
+		}
+	}
+
+
 }

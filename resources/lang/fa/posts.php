@@ -183,7 +183,7 @@ return [
 		'range_to'      => 'تا',
 	],
      
-     'packs' => [
+     'packs' => [  //@TODO: New
      	'plural' => "بسته‌های تحویل کالا" ,
           'single' => "بسته" ,
           'add' => "افزودن بسته جدید" ,
