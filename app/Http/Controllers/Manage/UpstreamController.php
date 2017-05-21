@@ -147,6 +147,7 @@ class UpstreamController extends Controller
 				if(!$model) {
 					return view('errors.m410');
 				}
+				$model->spreadMeta() ;
 
 				return view('manage.settings.downstream-value', compact('model'));
 				break;
@@ -215,6 +216,7 @@ class UpstreamController extends Controller
 					if(!$model) {
 						return trans('validation.invalid');
 					}
+					$model->spreadMeta() ;
 				}
 				else {
 					$model = new Setting();

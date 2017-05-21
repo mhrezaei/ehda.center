@@ -43,6 +43,17 @@
 			'value' => $model->data_type ,
 		])
 
+		@include("forms.textarea" , [
+			'name' => "hint",
+			'value' => $model->hint ,
+		]     )
+
+		@include("forms.input" , [
+			'name' => "css_class",
+			'value' => $model->css_class ,
+			'class' => "ltr" ,
+		]     )
+
 
 		@include('forms.group-start')
 

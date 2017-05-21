@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Lang;
 
 class Setting extends Model
 {
+	public static $meta_fields            = ['hint' , 'css_class'];
 	public static $available_data_types   = ['text', 'textarea', 'boolean', 'date', 'photo', 'array'];
 	public static $available_categories   = ['upstream', 'socials', 'contact', 'template', 'database'];
 	public static $full_categories        = ['upstream', 'socials', 'contact', 'template', 'database'];
@@ -170,7 +171,7 @@ class Setting extends Model
 	{
 		switch ($this->data_type) {
 			case 'boolean':
-				$value = booleanValue($value);
+				$value = boolval($value);
 				break;
 			case 'date':
 				$carbon = new Carbon($value);
@@ -227,7 +228,7 @@ class Setting extends Model
 		}
 		else {
 			$value = $record->custom_value;
-			if(!$value) {
+			if(!$value and $value !== '0') {
 				$value = $record->raw_default;
 			}
 		}

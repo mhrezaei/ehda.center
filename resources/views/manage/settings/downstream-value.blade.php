@@ -9,6 +9,11 @@
 			['id' , $model->id],
 		]])
 
+		@include("forms.note" , [
+			'text' => $model->hint,
+			'condition' => boolval($model->hint),
+		]     )
+
 		@include('forms.input' , [
 			'name' =>	'title',
 			'value' =>	$model->title." ($model->slug) ",
@@ -20,7 +25,7 @@
 			'value' => $model->defaultValue()->nocache()->raw()->gain() ,
 			'name' => 'default_value' ,
 			'label' => trans('validation.attributes.default_value'),
-			'class' => 'form-default'
+			'class' => 'form-default '.$model->css_class ,
 		])
 
 		@if($model->is_localized)
@@ -29,12 +34,14 @@
 					'value' => $model->reset()->nocache()->raw()->in($lang)->gain() ,
 					'name' => $lang,
 					'label' => trans("forms.lang.$lang"),
+					'class' => $model->css_class ,
 				])
 			@endforeach
 		@else
 			@include("manage.frame.widgets.input-$model->data_type" , [
 				'value' => $model->reset()->nocache()->raw()->gain() ,
 				'name' => 'custom_value',
+				'class' => $model->css_class ,
 			])
 		@endif
 
