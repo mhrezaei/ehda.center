@@ -108,5 +108,30 @@ class Good extends Model
 		}
 	}
 
+	public function isAvailableIn($locale)
+	{
+		return boolval(str_contains($this->locales , $locale)) ;
+	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Helpers
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public function colorsCombo()
+	{
+		$colors = getSetting('good_colors') ;
+		$array = [] ;
+		if(!$colors or !is_array($colors)) {
+			return [];
+		}
+
+		foreach($colors as $color) {
+			$array[] = [$color , trans("colors.$color")] ;
+		}
+
+		return $array ;
+	}
 
 }

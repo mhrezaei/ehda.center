@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Manage;
 
+use App\Http\Requests\Manage\GoodSaveRequest;
 use App\Http\Requests\Manage\PostSaveRequest;
 use App\Models\Drawing;
 use App\Models\Good;
@@ -636,7 +637,7 @@ class PostsController extends Controller
 		return $this->jsonAjaxSaveFeedback($saved, [
 			'success_redirect' => $redirect_url,
 			'success_refresh'  => $refresh_page,
-		     'success_callback' => "divReload('divPublishPanel')" ,
+			'success_callback' => "divReload('divPublishPanel')",
 		]);
 
 	}
@@ -644,7 +645,7 @@ class PostsController extends Controller
 	public function saveUnpublish($model)
 	{
 		return $this->jsonAjaxSaveFeedback($model->unpublish(), [
-			'success_callback' => "divReload('divPublishPanel')" ,
+			'success_callback' => "divReload('divPublishPanel')",
 		]);
 	}
 
@@ -810,7 +811,7 @@ class PostsController extends Controller
 		/*-----------------------------------------------
 		| Post Selection ...
 		*/
-		$post = Post::find($request->id) ;
+		$post = Post::find($request->id);
 		if(!$post or !$post->exists) {
 			return $this->jsonFeedback(trans('validation.http.Error410'));
 		}
@@ -821,7 +822,7 @@ class PostsController extends Controller
 		/*-----------------------------------------------
 		| User Selection ...
 		*/
-		$user = User::find($request->owner_id) ;
+		$user = User::find($request->owner_id);
 		if(!$user or !$user->exists or $user->is_not_an('admin')) {
 			return $this->jsonFeedback(trans('people.form.user_deleted'));
 		}
@@ -830,23 +831,22 @@ class PostsController extends Controller
 		| Save...
 		*/
 		if($post->owned_by == $user->id) {
-			$ok = 1 ;
+			$ok = 1;
 		}
 		else {
 			$ok = Post::store([
-				'id' => $post->id ,
-			     'owned_by' => $user->id ,
+				'id'       => $post->id,
+				'owned_by' => $user->id,
 			]);
 		}
 
 		/*-----------------------------------------------
 		| Feedback ...
 		*/
-		return $this->jsonAjaxSaveFeedback( $ok , [
-				'success_callback' => "rowUpdate('tblPosts' , '$request->id')",
+
+		return $this->jsonAjaxSaveFeedback($ok, [
+			'success_callback' => "rowUpdate('tblPosts' , '$request->id')",
 		]);
-
-
 
 
 	}
@@ -925,13 +925,14 @@ class PostsController extends Controller
 	}
 
 
-	public function editorGoodsRootForm($fake , $switch_string)
+	public function editorGoodsRootForm($fake, $switch_string)
 	{
-		$switch = array_normalize( array_maker($switch_string) , [
-			'id' => "0" ,
-		     'type' => null ,
-		     'locale' => "fa" ,
-		     'sisterhood' => null ,
+		$switch = array_normalize(array_maker($switch_string), [
+			'id'         => "0",
+			'type'       => null,
+			'locale'     => "fa",
+			'sisterhood' => null,
+			'post'       => "0",
 		]);
 
 		/*-----------------------------------------------
@@ -942,23 +943,93 @@ class PostsController extends Controller
 			if(!$model) {
 				return view('errors.m410');
 			}
-			$switch['type'] = $model->type ;
+			$switch['type'] = $model->type;
+			$model->post_id = $switch['post'];
 		}
 		else {
-			$model = new Good() ;
-			$model->type = $switch['type'] ;
-			$model->sisterhood = $switch['sisterhood'] ;
-			$model->locale = $switch['locale'] ;
+			$model             = new Good();
+			$model->type       = $switch['type'];
+			$model->sisterhood = $switch['sisterhood'];
+			$model->locales    = $switch['locale'];
 		}
 
-		$packs = Pack::where('type' , $switch['type'])->get() ;
+		if(getSetting('good_packs')) {
+			$packs = Pack::where('type', $switch['type'])->get();
+		}
+		$locale = $switch['locale'];
 
 
 		/*-----------------------------------------------
 		| View ...
 		*/
-		return view("manage.posts.editor-goods-edit",compact('model' , 'packs'));
 
+		return view("manage.posts.editor-goods-edit", compact('model', 'packs', 'locale', 'colors'));
+
+
+	}
+
+	public function saveGood(GoodSaveRequest $request)
+	{
+		$data = $request->toArray();
+
+		/*-----------------------------------------------
+		| Authorization ...
+		*/
+		if($request->post_id) {
+			$post = Post::find($request->post_id);
+			if(!$post) {
+				return $this->jsonFeedback(trans('validation.http.Error410'));
+			}
+			if(!$post->canEdit()) {
+				return $this->jsonFeedback(trans('validation.http.Error503'));
+			}
+		}
+		else {
+			if(user()->as('admin')->cannot("posts-$request->type.create")) {
+				return $this->jsonFeedback(trans('validation.http.Error503'));
+			}
+		}
+
+		/*-----------------------------------------------
+		| Data Verification and Completion ...
+		*/
+		if($request->id) {
+			$good = Good::withTrashed()->find($request->id);
+			if(!$good) {
+				return view('errors.410');
+			}
+			$data['locales'] = str_replace($request->_locale, '_locale', $good->locales);
+		}
+		else {
+			$data['locales'] = null;
+		}
+
+		if($request->pack_id) {
+			$pack = Pack::find($request->pack_id);
+			if(!$pack) {
+				return $this->jsonFeedback();
+			}
+			$data['pack_id'] = $pack->id;
+			$data['unit_id'] = $pack->unit_id;
+		}
+		else {
+			$data['pack_id'] = $data['unit_id'] = 0;
+		}
+
+		if(!$request->_is_disabled and $request->title) {
+			$data['locales'] .= " $request->_locale ";
+		}
+
+		$data['sale_price'] = $request->price - $request->discount_amount;
+
+		/*-----------------------------------------------
+		| Save & Feedback ...
+		*/
+		$ok = Good::store($data, ['discount_amount']);
+
+		return $this->jsonAjaxSaveFeedback( $ok , [
+				'success_callback' => "",
+		]);
 
 	}
 

@@ -16,6 +16,7 @@ class CreateGoodsTable extends Migration
 	{
 		Schema::create('goods', function (Blueprint $table) {
 			$table->increments('id');
+			$table->unsignedInteger('post_id')->index() ;
 			$table->unsignedInteger('unit_id')->index() ;
 			$table->unsignedInteger('pack_id')->index() ;
 			$table->string('type')->index() ;

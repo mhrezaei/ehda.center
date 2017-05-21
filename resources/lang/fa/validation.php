@@ -473,6 +473,9 @@ return [
 		'seat'       => 'سمت',
 		'short_view' => 'نمایش مختصر',
 		'pack_id'    => "بسته‌بندی", //@TODO: New
+		'hint'       => "راهنما", //@TODO: New
+		'css_class'  => "کلاس سی‌اس‌اس", //@TODO: New
+		'color'      => "رنگ", //@TODO: New
 	],
 
 	"http" => [

@@ -46,8 +46,8 @@ class PostSaveRequest extends Request
 				}
 				if(isset($input['price']) and $input['price']) {
 					$rules = array_merge($rules , [
-						'price' => "numeric",
-						'discount_amount' => "numeric|between:0,".$input['price'] ,
+						//'price' => "numeric",
+						//'discount_amount' => "numeric|between:0,".$input['price'] ,
 						//'sale_price' => "numeric|max:".$input['price'],
 						//'sale_expires_date' => "date",
 						//'sale_expires_hour' => "numeric|min:0|max:23",

@@ -112,6 +112,7 @@ Route::group([
 			Route::post('/undeleteMass', 'PostsController@undeleteMass');
 			Route::post('/destroyMass', 'PostsController@destroyMass');
 			Route::post('/owner', 'PostsController@changeOwner');
+			Route::post('/good' , 'PostsController@saveGood');
 		});
 
 	});
