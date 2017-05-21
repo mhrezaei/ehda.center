@@ -924,6 +924,40 @@ class PostsController extends Controller
 
 	}
 
+	public function editorGoodsIndexRootForm($fake, $switch_string)
+	{
+		$switch = array_normalize(array_maker($switch_string), [
+			'type'       => null,
+			'locale'     => "fa",
+			'sisterhood' => null,
+			'post'       => "0",
+		]);
+
+		/*-----------------------------------------------
+		| Model ...
+		*/
+		if($switch['post']) {
+			$model = Post::find($switch['post']);
+			if(!$model) {
+				return view('errors.m410');
+			}
+		}
+		else {
+			$model = new Post() ;
+			$model->type = $switch['type'] ;
+			$model->locale = $switch['locale'] ;
+			$model->sisterhood = $switch['sisterhood'] ;
+			$model->id = 0 ;
+		}
+
+		/*-----------------------------------------------
+		| View ...
+		*/
+		return view("manage.posts.editor-goods-index",compact('model'));
+
+
+	}
+
 
 	public function editorGoodsRootForm($fake, $switch_string)
 	{
@@ -1028,7 +1062,7 @@ class PostsController extends Controller
 		$ok = Good::store($data, ['discount_amount']);
 
 		return $this->jsonAjaxSaveFeedback( $ok , [
-				'success_callback' => "",
+				'success_callback' => "divReload('divEditorGoods')",
 		]);
 
 	}

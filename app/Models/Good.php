@@ -92,6 +92,12 @@ class Good extends Model
 		return $this->posttype->encrypted_slug;
 	}
 
+	public function getHasDiscountAttribute()
+	{
+		return boolval($this->sale_price < $this->price) ;
+	}
+
+
 	/*
 	|--------------------------------------------------------------------------
 	| Stators
@@ -110,8 +116,9 @@ class Good extends Model
 
 	public function isAvailableIn($locale)
 	{
-		return boolval(str_contains($this->locales , $locale)) ;
+		return boolval($this->exists and str_contains($this->locales , $locale)) ;
 	}
+
 
 	/*
 	|--------------------------------------------------------------------------

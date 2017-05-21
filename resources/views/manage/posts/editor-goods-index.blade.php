@@ -1,4 +1,6 @@
 {{ '' , $goods = $model->goods(true)->get() }}
+<div class="refresh">{{ url("manage/posts/act/1/editor-goods-index/post=$model->id-sisterhood=$model->sisterhood-type=$model->type-locale=$model->locale") }}</div>
+
 {{--
 |--------------------------------------------------------------------------
 | Nothing Added Yet
@@ -20,7 +22,7 @@
 |
 --}}
 @foreach($goods as $good)
-	$good->title ;
+	@include("manage.posts.editor-goods-one")
 @endforeach
 
 
