@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 
-class CreatePacksTable extends Migration
+class CreateAddressesTable extends Migration
 {
 	/**
 	 * Run the migrations.
@@ -14,17 +14,21 @@ class CreatePacksTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('packs', function (Blueprint $table) {
+		Schema::create('addresses', function (Blueprint $table) {
 			$table->increments('id');
-			$table->unsignedInteger('unit_id')->index() ;
-			$table->string('type')->index() ;
+			$table->unsignedInteger('user_id')->index();
+			$table->unsignedInteger('province_id') ;
+			$table->unsignedInteger('city_id');
 
-			$table->string('slug') ;
-			$table->string('title')->index();
-			$table->text('text')->nullable() ;
-			$table->integer('inventory')->default(0);
-			$table->integer('inventory_alarm')->default(0);
-			$table->integer('inventory_stop')->default(0);
+			$table->string('title') ;
+			$table->string('postal_code') ;
+			$table->string('mobile');
+			$table->string('phone');
+			$table->string('name');
+			$table->text('text');
+
+			$table->float('latitude' , 15 , 8);
+			$table->float('longitude' , 15 , 8);
 
 			$table->longText('meta')->nullable() ;
 			$table->timestamps();
@@ -32,8 +36,6 @@ class CreatePacksTable extends Migration
 			$table->unsignedInteger('created_by')->default(0)->index() ;
 			$table->unsignedInteger('updated_by')->default(0) ;
 			$table->unsignedInteger('deleted_by')->default(0) ;
-
-
 		});
 	}
 
@@ -44,6 +46,6 @@ class CreatePacksTable extends Migration
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('packs');
+		Schema::dropIfExists('addresses');
 	}
 }

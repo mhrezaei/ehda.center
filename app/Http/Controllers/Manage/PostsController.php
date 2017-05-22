@@ -944,7 +944,7 @@ class PostsController extends Controller
 			}
 		}
 		else {
-			if(user()->as('admin')->cannot("posts-$request->type.create")) {
+			if(user()->as('admin')->cannot("posts-".$switch['type'].".create")) {
 				return $this->jsonFeedback(trans('validation.http.Error403'));}
 		}
 
