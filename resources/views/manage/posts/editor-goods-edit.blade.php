@@ -80,6 +80,13 @@
 	|
 	--}}
 
+	@include('forms.note' , [
+		'shape' => 'danger' ,
+		'text' => $model->posttype->locales_count > 1 ? trans('cart.goods.delete_warn_for_multi_locale') : trans('cart.goods.delete_warn_for_single_locale') ,
+		'class' => '-delHandle noDisplay'
+	])
+
+
 
 	@include('forms.group-start')
 
@@ -93,25 +100,24 @@
 		'class' => '-delHandle'
 	])
 
-	{{--@include('forms.button' , [--}}
-		{{--'condition' => $model->id and !$model->trashed() ,--}}
-		{{--'id' => 'btnDeleteWarning' ,--}}
-		{{--'label' => trans('posts.packs.deactivate'),--}}
-		{{--'shape' => 'warning',--}}
-		{{--'type' => "submit",--}}
-		{{--'value' => "delete" ,--}}
-		{{--'name' => "delete" ,--}}
-		{{--'class' => '-delHandle' ,--}}
-	{{--])--}}
-	{{--@include('forms.button' , [--}}
-		{{--'condition' => $model->id and $model->trashed() ,--}}
-		{{--'id' => 'btnDelete' ,--}}
-		{{--'label' => trans('manage.permissions.activate'),--}}
-		{{--'shape' => 'success',--}}
-		{{--'value' => 'undelete' ,--}}
-		{{--'type' => 'submit' ,--}}
-	{{--])--}}
-
+	@include('forms.button' , [
+		'condition' => $model->id and !$model->trashed() ,
+		'id' => 'btnDeleteWarning' ,
+		'label' => trans('forms.button.delete'),
+		'shape' => 'danger',
+		'type' => "button",
+		'class' => '-delHandle' ,
+		'link' => '$(".-delHandle").toggle()' ,
+	])
+	@include('forms.button' , [
+		'condition' => $model->id and !$model->trashed() ,
+		'id' => 'btnDelete' ,
+		'label' => trans('forms.button.sure_hard_delete'),
+		'shape' => 'danger',
+		'value' => 'delete' ,
+		'type' => 'submit' ,
+		'class' => '-delHandle noDisplay btn-xs' ,
+	])
 
 
 	@include('forms.button' , [

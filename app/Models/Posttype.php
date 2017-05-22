@@ -259,6 +259,12 @@ class Posttype extends Model
 		}
 	}
 
+	public function getLocalesCountAttribute()
+	{
+		return count($this->locales_array);
+	}
+
+
 	public function getDefaultLocaleAttribute()
 	{
 		return $this->locales_array[0];

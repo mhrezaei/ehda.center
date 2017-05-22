@@ -47,11 +47,14 @@
 |--------------------------------------------------------------------------
 | Add New Button
 |--------------------------------------------------------------------------
-|
+| and `instant-change` warning
 --}}
 <div class="text-center mv20">
-	<div class="btn btn-default btn-lg"
-		 onclick='masterModal(url("manage/posts/act/1/editor-goods/post={{ $refresh_switches }}"))'>{{ trans('cart.goods.create') }}</div>
+	<div class="btn btn-default btn-lg" onclick='masterModal(url("manage/posts/act/1/editor-goods/post={{ $refresh_switches }}"))'>{{ trans('cart.goods.create') }}</div>
+</div>
+<div class="f10">
+	<span class="fa fa-exclamation-triangle text-warning"></span>
+	<span class="text-warning">{{ trans("cart.goods.changes_effect_instantly") }}</span>
 </div>
 
 {{--

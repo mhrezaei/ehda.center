@@ -49,7 +49,7 @@ class Post extends Model
 		$table = Good::where('sisterhood' , $this->sisterhood) ;
 
 		if($regardless_of_availability) {
-			$table->withTrashed() ;
+			//$table->withTrashed() ;
 		}
 		else {
 			$table->where('locales' , 'like' , "%$this->locale%") ;
