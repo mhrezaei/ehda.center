@@ -11,7 +11,7 @@ class Good extends Model
 {
 	use TahaModelTrait, SoftDeletes;
 
-	public static $meta_fields    = ['min_purchase', 'max_purchase', 'image'];
+	public static $meta_fields = ['min_purchase', 'max_purchase', 'image', 'locale_titles'];
 
 	protected $guarded         = ['id'];
 	private   $cached_posttype = false;
@@ -24,11 +24,12 @@ class Good extends Model
 	*/
 	public function posts($locale = null)
 	{
-		$table = Post::where('sisterhood' , $this->sisterhood) ;
-		if($locale)
-			$table->where('locale' , $locale) ;
+		$table = Post::where('sisterhood', $this->sisterhood);
+		if($locale) {
+			$table->where('locale', $locale);
+		}
 
-		return $table ;
+		return $table;
 	}
 
 	public function unit()
@@ -75,7 +76,7 @@ class Good extends Model
 	*/
 	public function getDiscountAmountAttribute()
 	{
-		return max( $this->price - $this->sale_price , 0);
+		return max($this->price - $this->sale_price, 0);
 	}
 
 	public function getDiscountPercentAttribute()
@@ -94,7 +95,7 @@ class Good extends Model
 
 	public function getHasDiscountAttribute()
 	{
-		return boolval($this->sale_price < $this->price) ;
+		return boolval($this->sale_price < $this->price);
 	}
 
 
@@ -110,13 +111,36 @@ class Good extends Model
 			return $this->title;
 		}
 		else {
-			return $this->spreadMeta()->locale_titles["title-$locale"] ;
+			$locale_titles = $this->spreadMeta()->locale_titles;
+			if(isset($locale_titles[$locale])) {
+				return $locale_titles[$locale];
+			}
+			else {
+				return null;
+			}
 		}
+	}
+
+	public function anyTitle()
+	{
+		if($this->title) {
+			return $this->title;
+		}
+		elseif(is_array($locale_titles = $this->spreadMeta()->locale_titles)) {
+			foreach($locale_titles as $locale_title) {
+				if($locale_title) {
+					return $locale_title;
+				}
+			}
+		}
+
+		return null;
+
 	}
 
 	public function isAvailableIn($locale)
 	{
-		return boolval($this->exists and str_contains($this->locales , $locale)) ;
+		return boolval(!$this->trashed() and str_contains($this->locales, $locale));
 	}
 
 
@@ -128,17 +152,17 @@ class Good extends Model
 	*/
 	public function colorsCombo()
 	{
-		$colors = getSetting('good_colors') ;
-		$array = [] ;
+		$colors = getSetting('good_colors');
+		$array  = [];
 		if(!$colors or !is_array($colors)) {
 			return [];
 		}
 
 		foreach($colors as $color) {
-			$array[] = [$color , trans("colors.$color")] ;
+			$array[] = [$color, trans("colors.$color")];
 		}
 
-		return $array ;
+		return $array;
 	}
 
 }

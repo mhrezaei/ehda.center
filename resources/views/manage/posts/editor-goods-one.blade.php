@@ -1,4 +1,4 @@
-<div class="row mv10 mh5 bordered p10 bg-white" style="{{ $good->isAvailableIn($model->locale)? '' : 'opacity:0.4' }}">
+<div id="divGood-{{$good->id}}" about="{{$good->id}}" class="row mv10 mh5 bordered p10 bg-white ui-state-default" style="cursor: move; {{ $good->isAvailableIn($model->locale)? '' : 'opacity:0.4' }}">
 	{{ '' , $model->default_good = 1 }}
 
 	{{--
@@ -7,13 +7,11 @@
 	|--------------------------------------------------------------------------
 	|
 	--}}
-	<div class="col-md-1">
-		@if($model->default_good == $good->id)
-			<span class="fa fa-check-circle text-green f25"></span>
-		@else
-			<span class="fa fa-circle-o f25 text-gray clickable"></span>
-		@endif
-	</div>
+	{{--<div class="col-md-1">--}}
+		{{--@if($good->default)--}}
+			{{--<span class="fa fa-check-circle text-green f35"></span>--}}
+		{{--@endif--}}
+	{{--</div>--}}
 
 
 	{{--
@@ -22,10 +20,25 @@
 	|--------------------------------------------------------------------------
 	|
 	--}}
-	<div class="col-md-6 f16 pv5">
-		@if($good->title)
-			{{ $good->title }}
+	<div class="col-md-7 f20 pv5">
+		@if($good->titleIn($model->locale))
+			{{ $good->titleIn($model->locale) }}
+		@elseif($good->anyTitle())
+			{{ $good->anyTitle() }}
 		@else
+			---
+		@endif
+
+		@if(!$good->isAvailableIn($model->locale))
+			<span class="text-danger mh10">
+				[{{ trans('forms.general.disabled') }}]
+			</span>
+		@endif
+
+		@if($good->default)
+			<span class="text-green mh10">
+				[{{ trans('cart.goods.default_price') }}]
+			</span>
 		@endif
 	</div>
 

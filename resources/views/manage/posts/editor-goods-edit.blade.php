@@ -93,24 +93,24 @@
 		'class' => '-delHandle'
 	])
 
-	@include('forms.button' , [
-		'condition' => $model->id and !$model->trashed() ,
-		'id' => 'btnDeleteWarning' ,
-		'label' => trans('posts.packs.deactivate'),
-		'shape' => 'warning',
-		'type' => "submit",
-		'value' => "delete" ,
-		'name' => "delete" ,
-		'class' => '-delHandle' ,
-	])
-	@include('forms.button' , [
-		'condition' => $model->id and $model->trashed() ,
-		'id' => 'btnDelete' ,
-		'label' => trans('manage.permissions.activate'),
-		'shape' => 'success',
-		'value' => 'undelete' ,
-		'type' => 'submit' ,
-	])
+	{{--@include('forms.button' , [--}}
+		{{--'condition' => $model->id and !$model->trashed() ,--}}
+		{{--'id' => 'btnDeleteWarning' ,--}}
+		{{--'label' => trans('posts.packs.deactivate'),--}}
+		{{--'shape' => 'warning',--}}
+		{{--'type' => "submit",--}}
+		{{--'value' => "delete" ,--}}
+		{{--'name' => "delete" ,--}}
+		{{--'class' => '-delHandle' ,--}}
+	{{--])--}}
+	{{--@include('forms.button' , [--}}
+		{{--'condition' => $model->id and $model->trashed() ,--}}
+		{{--'id' => 'btnDelete' ,--}}
+		{{--'label' => trans('manage.permissions.activate'),--}}
+		{{--'shape' => 'success',--}}
+		{{--'value' => 'undelete' ,--}}
+		{{--'type' => 'submit' ,--}}
+	{{--])--}}
 
 
 

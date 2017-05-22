@@ -388,9 +388,9 @@ class PostsController extends Controller
 		| Price ...
 		*/
 
-		if($model->has('price')) {
-			$data['sale_price'] = $data['price'] - $data['discount_amount'];
-		}
+		//if($model->has('price')) {
+			//$data['sale_price'] = $data['price'] - $data['discount_amount'];
+		//}
 		//if($model->has('price') and $data['sale_expires_date']) {
 		//	if(!$data['sale_expires_hour']) {
 		//		$data['sale_expires_hour'] = '00';
@@ -924,14 +924,33 @@ class PostsController extends Controller
 
 	}
 
-	public function editorGoodsIndexRootForm($fake, $switch_string)
+	public function editorGoodsIndexRootForm($fake, $switch_string) // <== (The Panel)
 	{
 		$switch = array_normalize(array_maker($switch_string), [
 			'type'       => null,
 			'locale'     => "fa",
 			'sisterhood' => null,
 			'post'       => "0",
+			'sort'       => null,
 		]);
+
+		/*-----------------------------------------------
+		| Sort ...
+		*/
+		if($switch['sort']) {
+			$string = strval( $switch['sort'] );
+			$string = str_replace( 'divGood[]:' , '' , $string) ;
+			$string = str_replace( 'amp;' , '' , $string) ;
+			$array = explode('&' , $string);
+			$order = 1 ;
+
+			foreach($array as $item) {
+				Good::where('id' , $item)->update([
+					'order' => $order++ ,
+				]);
+			}
+		}
+
 
 		/*-----------------------------------------------
 		| Model ...
@@ -943,17 +962,18 @@ class PostsController extends Controller
 			}
 		}
 		else {
-			$model = new Post() ;
-			$model->type = $switch['type'] ;
-			$model->locale = $switch['locale'] ;
-			$model->sisterhood = $switch['sisterhood'] ;
-			$model->id = 0 ;
+			$model             = new Post();
+			$model->type       = $switch['type'];
+			$model->locale     = $switch['locale'];
+			$model->sisterhood = $switch['sisterhood'];
+			$model->id         = 0;
 		}
 
 		/*-----------------------------------------------
 		| View ...
 		*/
-		return view("manage.posts.editor-goods-index",compact('model'));
+
+		return view("manage.posts.editor-goods-index", compact('model'));
 
 
 	}
@@ -1033,9 +1053,19 @@ class PostsController extends Controller
 				return view('errors.410');
 			}
 			$data['locales'] = str_replace($request->_locale, '_locale', $good->locales);
+			$data['locale_titles'] = $good->spreadMeta()->locale_titles ;
 		}
 		else {
 			$data['locales'] = null;
+			$data['order'] = 99 ;
+		}
+
+		if($request->_locale != 'fa') {
+			$title = $request->toArray()['_title_in_'.$request->_locale] ;
+			$data['locale_titles'][$request->_locale] = $title ;
+		}
+		else {
+			$title = $request->title ;
 		}
 
 		if($request->pack_id) {
@@ -1050,7 +1080,7 @@ class PostsController extends Controller
 			$data['pack_id'] = $data['unit_id'] = 0;
 		}
 
-		if(!$request->_is_disabled and $request->title) {
+		if(!$request->_is_disabled and $title) {
 			$data['locales'] .= " $request->_locale ";
 		}
 
@@ -1061,8 +1091,8 @@ class PostsController extends Controller
 		*/
 		$ok = Good::store($data, ['discount_amount']);
 
-		return $this->jsonAjaxSaveFeedback( $ok , [
-				'success_callback' => "divReload('divEditorGoods')",
+		return $this->jsonAjaxSaveFeedback($ok, [
+			'success_callback' => "divReload('divEditorGoods')",
 		]);
 
 	}
