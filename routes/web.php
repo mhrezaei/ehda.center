@@ -41,28 +41,6 @@ Route::group([
 	Route::post('/password', 'HomeController@changePassword');
 
 	/*-----------------------------------------------
-	| Admins ...
-	*/
-	//Route::group(['prefix' => 'admins', 'middleware' => 'is:super'], function () {
-	//	Route::get('/update/{item_id}/{adding?}', 'AdminsController@update');
-	//	Route::get('/', 'AdminsController@browse');
-	//	Route::get('/browse/{request_tab?}', 'AdminsController@browse');
-	//	Route::get('/create/', 'AdminsController@create');
-	//	Route::get('/search', 'AdminsController@search');
-	//	Route::get('/{user_id}/{modal_action}', 'AdminsController@singleAction');
-	//
-	//	Route::group(['prefix' => 'save'], function () {
-	//		Route::post('/', 'AdminsController@save');
-	//
-	//		Route::post('/password', 'AdminsController@password');
-	//		Route::post('/delete', 'AdminsController@delete');
-	//		Route::post('/undelete', 'AdminsController@undelete');
-	//		Route::post('/destroy', 'AdminsController@destroy');
-	//		Route::post('/permits', 'AdminsController@permits');
-	//	});
-	//});
-
-	/*-----------------------------------------------
 	| Users ...
 	*/
 	Route::group(['prefix' => "users", 'middleware' => "can:users",], function () {
@@ -134,6 +112,7 @@ Route::group([
 			Route::post('/undeleteMass', 'PostsController@undeleteMass');
 			Route::post('/destroyMass', 'PostsController@destroyMass');
 			Route::post('/owner', 'PostsController@changeOwner');
+			Route::post('/good' , 'PostsController@saveGood');
 		});
 
 	});
@@ -165,6 +144,7 @@ Route::group([
 		Route::group(['prefix' => 'save'], function () {
 			Route::post('/', 'SettingsController@save');
 			Route::post('/posttype', 'SettingsController@savePosttypeDownstream');
+			Route::post('/pack', 'SettingsController@savePack');
 		});
 	});
 
@@ -200,6 +180,7 @@ Route::group([
 			Route::post('state', 'UpstreamController@saveProvince');
 			Route::post('city', 'UpstreamController@saveCity');
 			Route::post('posttype', 'UpstreamController@savePosttype');
+			Route::post('posttype-titles', 'UpstreamController@savePosttypeTitles');
 			Route::post('department', 'UpstreamController@saveDepartment');
 			Route::post('category', 'UpstreamController@saveCategory');
 			Route::post('downstream', 'UpstreamController@saveDownstream');

@@ -6,10 +6,12 @@ use App\Http\Requests\Manage\CitySaveRequest;
 use App\Http\Requests\Manage\DownstreamSaveRequest;
 use App\Http\Requests\Manage\PackageSaveRequest;
 use App\Http\Requests\Manage\PosttypeSaveRequest;
+use App\Http\Requests\Manage\PosttypeTitlesSaveRequest;
 use App\Http\Requests\Manage\ProvinceSaveRequest;
 use App\Http\Requests\Manage\RoleSaveRequest;
 use App\Models\Folder;
-use App\Models\Package;
+use App\Models\Post;
+use App\Models\Unit;
 use App\Models\Posttype;
 use App\Models\Role;
 use App\Models\Setting;
@@ -63,7 +65,7 @@ class UpstreamController extends Controller
 				break;
 
 			case 'packages':
-				$models = Package::withTrashed()->orderBy('deleted_at')->orderBy('created_at', 'desc')->paginate(user()->preference('max_rows_per_page'));
+				$models = Unit::withTrashed()->orderBy('deleted_at')->orderBy('created_at', 'desc')->paginate(user()->preference('max_rows_per_page'));
 				break;
 
 			default :
@@ -145,6 +147,7 @@ class UpstreamController extends Controller
 				if(!$model) {
 					return view('errors.m410');
 				}
+				$model->spreadMeta() ;
 
 				return view('manage.settings.downstream-value', compact('model'));
 				break;
@@ -161,13 +164,13 @@ class UpstreamController extends Controller
 		switch ($request_tab) {
 			case 'package':
 				if($item_id) {
-					$model = Package::withTrashed()->find($item_id);
+					$model = Unit::withTrashed()->find($item_id);
 					if(!$model) {
 						return view('errors.410');
 					}
 				}
 				else {
-					$model = new Package() ;
+					$model = new Unit() ;
 					$model->is_continuous = 0 ;
 				}
 
@@ -213,6 +216,7 @@ class UpstreamController extends Controller
 					if(!$model) {
 						return trans('validation.invalid');
 					}
+					$model->spreadMeta() ;
 				}
 				else {
 					$model = new Setting();
@@ -267,6 +271,13 @@ class UpstreamController extends Controller
 
 				return view('manage.settings.posttypes-edit', compact('model'));
 
+			case 'posttype-titles' :
+				$model = Posttype::find($item_id) ;
+				if(!$model) {
+					return view('errors.m410');
+				}
+				return view("manage.settings.posttypes-titles",compact('model'));
+
 			case 'categories' :
 				if($item_id) {
 					$model = Category::find($item_id);
@@ -298,7 +309,7 @@ class UpstreamController extends Controller
 			$data['deleted_at'] = Carbon::now()->toDateTimeString();
 		}
 
-		return $this->jsonAjaxSaveFeedback( Package::store($data) , [
+		return $this->jsonAjaxSaveFeedback( Unit::store($data) , [
 				'success_callback' => "",
 				'success_refresh' => "1",
 		]);
@@ -340,6 +351,41 @@ class UpstreamController extends Controller
 				'success_refresh' => 1,
 			]);
 		}
+
+	}
+
+	public function savePosttypeTitles(PosttypeTitlesSaveRequest $request)
+	{
+		/*-----------------------------------------------
+		| Model Reveal ...
+		*/
+		$model = Posttype::find($request->id) ;
+		if(!$model) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+
+		/*-----------------------------------------------
+		| Process ...
+		*/
+		$data = $request->toArray() ;
+		$data['locale_titles'] = [] ;
+
+
+		foreach($model->locales_array as $locale) {
+			if($locale=='fa') {
+				continue ;
+			}
+			$data['locale_titles']["title-$locale"] = $data["_title_in_$locale"] ;
+			$data['locale_titles']["singular_title-$locale"] = $data["_singular_title_in_$locale"] ;
+		}
+
+		/*-----------------------------------------------
+		| Save & Feedback ...
+		*/
+		return $this->jsonAjaxSaveFeedback( Posttype::store($data) , [
+			'success_refresh' => 1,
+		]);
+
 
 	}
 

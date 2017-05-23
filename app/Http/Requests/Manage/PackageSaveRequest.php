@@ -3,7 +3,7 @@
 namespace App\Http\Requests\Manage;
 
 use App\Http\Requests\Request;
-use App\Models\Package;
+use App\Models\Unit;
 use App\Providers\ValidationServiceProvider;
 
 
@@ -30,7 +30,7 @@ class PackageSaveRequest extends Request
 		if($input['_submit'] == 'save') {
 			return [
 				'title' => 'required|unique:packages,title,' . $input['id'],
-				'slug'  => 'required|alpha_dash|not_in:' . Package::$reserved_slugs . '|unique:packages,slug,' . $input['id'],
+				'slug'  => 'required|alpha_dash|not_in:' . Unit::$reserved_slugs . '|unique:packages,slug,' . $input['id'],
 			];
 		}
 		else {

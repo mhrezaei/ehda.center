@@ -6,14 +6,14 @@ var editor_config = {
 	content_css: assets()+'/css/tinyMCE.min.css',
 	directionality : 'rtl',
 	language: 'fa',
-	plugins: "link,table,textcolor,image,directionality,fullscreen,",
+	plugins: "link,table,textcolor,image,directionality,fullscreen,codesample",
 //	plugins: [
 //		"advlist autolink lists link image charmap print preview hr anchor pagebreak",
 //		"searchreplace wordcount visualblocks visualchars code fullscreen",
 //		"insertdatetime media nonbreaking save table contextmenu directionality",
 //		"emoticons template paste textcolor colorpicker textpattern"
 //	],
-	toolbar: ['insertfile undo redo | bold italic underline strikethrough | copy cut paste removeformat | link unlink inserttable | image fullscreen | ',
+	toolbar: ['insertfile undo redo | bold italic underline strikethrough | copy cut paste removeformat | link unlink inserttable | codesample image fullscreen | ',
 		    'alignleft aligncenter alignright alignjustify | bullist numlist | ltr rtl  | forecolor backcolor forecolorpicker backcolorpicker fontsizeselect'
 //		    , 'outdent indent'
 	],

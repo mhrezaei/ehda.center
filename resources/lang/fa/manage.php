@@ -9,6 +9,7 @@ return [
 
     'tabs' => [
         'actives'  => "فعال‌ها",
+        'inactives' => "غیرفعال‌ها" , //@TODO: New Entry
         'blockeds' => "مسدودشده‌ها",
         'deleteds' => "حذف‌شده‌ها",
         'bin'      => "زباله‌دان",

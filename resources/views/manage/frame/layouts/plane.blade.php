@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
-<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
 <!--[if !IE]><!-->
 <html lang="fa" class="no-js">
 <!--<![endif]-->
@@ -9,20 +11,21 @@
 	<title>@yield('page_title')</title>
 
 	<script language="javascript">
-		function assets($additive) {
-			if(!$additive) $additive = '' ;
-			return url('assets/'+$additive); 
-		}
-		function url($additive) {
-			if(!$additive) $additive = '' ;
-			return '{{ url('-additive-') }}'.replace('-additive-',$additive) ;
-		}
+	    function assets($additive) {
+		    if (!$additive) $additive = '';
+		    return url('assets/' + $additive);
+	    }
+	    function url($additive) {
+		    if (!$additive) $additive = '';
+		    return '{{ url('-additive-') }}'.replace('-additive-', $additive);
+	    }
 	</script>
 
 	{{-- JQuery --}}
 	{!! Html::script ('assets/libs/jquery.min.js') !!}
 	{!! Html::script ('assets/libs/jquery.form.min.js') !!}
 	{!! Html::script ('assets/libs/jquery.inputmask.bundle.js') !!}
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 	{{-- BOOTSTRAP --}}
 	{!! Html::style('assets/libs/bootstrap/css/bootstrap.min.css') !!}
@@ -55,10 +58,10 @@
 	{!! HTML::script ('assets/libs/datepicker/js-persian-cal.js') !!}
 
 	{{-- Jquery Sortable --}}
-{{--	{!! HTML::script ('assets/libs/jquery-sortable/jquery-sortable.js') !!}--}}
+	{{--	{!! HTML::script ('assets/libs/jquery-sortable/jquery-sortable.js') !!}--}}
 
 
-	 {{--Laravel File-Manage--}}
+	{{--Laravel File-Manage--}}
 	{!! HTML::script ('/vendor/laravel-filemanager/js/lfm.js') !!}
 
 	{{-- Custom --}}
@@ -76,6 +79,15 @@
 
 </head>
 <body>
-	@yield('body')
+{{--<ul id="sortable">--}}
+{{--<li class="ui-state-default">Item 1</li>--}}
+{{--<li class="ui-state-default">Item 2</li>--}}
+{{--<li class="ui-state-default">Item 3</li>--}}
+{{--<li class="ui-state-default">Item 4</li>--}}
+{{--<li class="ui-state-default">Item 5</li>--}}
+{{--<li class="ui-state-default">Item 6</li>--}}
+{{--<li class="ui-state-default">Item 7</li>--}}
+{{--</ul>--}}
+@yield('body')
 </body>
 </html>
