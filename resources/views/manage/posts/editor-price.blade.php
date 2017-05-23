@@ -4,7 +4,7 @@
 			<i class="fa fa-money mh5"></i>
 			{{ trans('validation.attributes.price') }}
 		</div>
-		
+
 		<div class="panel-body bg-ultralight">
 
 			{{--
@@ -63,26 +63,26 @@
 
 					@include("forms.input-self" , [
 						'name' => "price",
-						'id' => "txtPrice",
+//						'id' => "txtPrice",
 						'top_label' => trans('validation.attributes.original_price'),
 						'class' => "form-numberFormat ltr text-center",
 						'addon' => setting('currency')->in($model->locale)->gain(),
 						'group_class' => "form-group-sm",
 						'value' => $model->price,
-						'on_change' => "postCalcSale('price')",
+						//'on_change' => "postCalcSale('price')",
 					])
 
 				</div>
-				<div class="col-md-6 text-center">
+				<div class="col-md-6">
 
-					{{--<br />--}}
-					{{--@include("forms.button" , [--}}
-						{{--'label' => trans('posts.form.sale_settings'),--}}
-						{{--'shape' => "default btn-sm",--}}
-						{{--'id' => "btnSale",--}}
-						{{--'link' => "postTogglePrice()",--}}
-						{{--'class' => !$model->sale_price? '' : 'noDisplay',--}}
-					{{--])--}}
+					@include("forms.input-self" , [
+						'name' => "discount_amount",
+						'top_label' => trans('validation.attributes.discount_amount') ,
+						'class' => "form-numberFormat ltr text-center" ,
+						'addon' => setting('currency')->in($model->locale)->gain(),
+						'group_class' => "form-group-sm",
+						'value' => $model->discount_amount,
+					]     )
 
 				</div>
 			</div>
@@ -95,39 +95,39 @@
 			--}}
 
 
-			<div class="row">
-				<div class="col-md-6">
+			{{--<div class="row">--}}
+			{{--<div class="col-md-6">--}}
 
-					@include("forms.input-self" , [
-						'id' => "txtSalePrice",
-						'name' => "sale_price",
-						'top_label' => trans('validation.attributes.sale_price'),
-						'class' => "form-numberFormat ltr text-center salePrice",
-						'addon' => setting('currency')->in($model->locale)->gain(),
-						'group_class' => "form-group-sm",
-						'value' => $model->sale_price,
-						'on_change' => "postCalcSale('sale')",
-					])
-
-
-				</div>
-				<div class="col-md-6" style="opacity: 0.5">
+			{{--@include("forms.input-self" , [--}}
+			{{--'id' => "txtSalePrice",--}}
+			{{--'name' => "sale_price",--}}
+			{{--'top_label' => trans('validation.attributes.sale_price'),--}}
+			{{--'class' => "form-numberFormat ltr text-center salePrice",--}}
+			{{--'addon' => setting('currency')->in($model->locale)->gain(),--}}
+			{{--'group_class' => "form-group-sm",--}}
+			{{--'value' => $model->sale_price,--}}
+			{{--'on_change' => "postCalcSale('sale')",--}}
+			{{--])--}}
 
 
-					@include("forms.input-self" , [
-						'id' => "txtSalePercent",
-						'name' => "_sale_discount",
-						'top_label' => trans('validation.attributes.discount_percent'),
-						'class' => "form-number ltr text-center salePrice",
-						'addon' => "%",
-						'group_class' => "form-group-sm",
-						'value' => $model->discount_percent,
-						'on_change' => "postCalcSale('percent')",
-					])
+			{{--</div>--}}
+			{{--<div class="col-md-6" style="opacity: 0.5">--}}
 
 
-				</div>
-			</div>
+			{{--@include("forms.input-self" , [--}}
+			{{--'id' => "txtSalePercent",--}}
+			{{--'name' => "_sale_discount",--}}
+			{{--'top_label' => trans('validation.attributes.discount_percent'),--}}
+			{{--'class' => "form-number ltr text-center salePrice",--}}
+			{{--'addon' => "%",--}}
+			{{--'group_class' => "form-group-sm",--}}
+			{{--'value' => $model->discount_percent,--}}
+			{{--'on_change' => "postCalcSale('percent')",--}}
+			{{--])--}}
+
+
+			{{--</div>--}}
+			{{--</div>--}}
 
 			{{--
 			|--------------------------------------------------------------------------
@@ -136,29 +136,29 @@
 			|
 			--}}
 
-			<div class="row">
-				<div class="col-md-6">
+			{{--<div class="row">--}}
+			{{--<div class="col-md-6">--}}
 
-					@include('forms.datepicker' , [
-						'name' => 'sale_expires_date' ,
-						'top_label' => trans('validation.attributes.sale_expires_at'),
-						'value' => $model->sale_expires_at ,
-						'in_form' => 0 ,
-						'class' => "text-center",
-					])
+			{{--@include('forms.datepicker' , [--}}
+			{{--'name' => 'sale_expires_date' ,--}}
+			{{--'top_label' => trans('validation.attributes.sale_expires_at'),--}}
+			{{--'value' => $model->sale_expires_at ,--}}
+			{{--'in_form' => 0 ,--}}
+			{{--'class' => "text-center",--}}
+			{{--])--}}
 
-				</div>
-				<div class="col-md-6">
+			{{--</div>--}}
+			{{--<div class="col-md-6">--}}
 
-					<label for="sale_expires_hour" class="control-label text-gray " style="margin-top:10px" >&nbsp;</label>
-					<div class="input-group input-group-sm">
-						<input id="txtExpireM" name="sale_expires_minute" value="{{ $model->sale_expires_at? jdate($model->sale_expires_at)->format('i') : ''}}" type="text" class="form-control ltr text-center" onblur=""  placeholder="50" min="0" max="59">
-						<span class="input-group-addon">:</span>
-						<input id="txtExpireH" name="sale_expires_hour" value="{{ $model->sale_expires_at? jdate($model->sale_expires_at)->format('H') : ''}}" type="text" class="form-control ltr text-center" onblur="$('#txtExpireM').focus()" placeholder="13" min="0" max="23" >
-					</div>
+			{{--<label for="sale_expires_hour" class="control-label text-gray " style="margin-top:10px" >&nbsp;</label>--}}
+			{{--<div class="input-group input-group-sm">--}}
+			{{--<input id="txtExpireM" name="sale_expires_minute" value="{{ $model->sale_expires_at? jdate($model->sale_expires_at)->format('i') : ''}}" type="text" class="form-control ltr text-center" onblur=""  placeholder="50" min="0" max="59">--}}
+			{{--<span class="input-group-addon">:</span>--}}
+			{{--<input id="txtExpireH" name="sale_expires_hour" value="{{ $model->sale_expires_at? jdate($model->sale_expires_at)->format('H') : ''}}" type="text" class="form-control ltr text-center" onblur="$('#txtExpireM').focus()" placeholder="13" min="0" max="23" >--}}
+			{{--</div>--}}
 
-				</div>
-			</div>
+			{{--</div>--}}
+			{{--</div>--}}
 
 
 		</div>

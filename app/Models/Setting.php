@@ -9,15 +9,17 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Lang;
 
+
 class Setting extends Model
 {
+	public static $meta_fields            = ['hint' , 'css_class'];
 	public static $available_data_types   = ['text', 'textarea', 'boolean', 'date', 'photo', 'array'];
 	public static $available_categories   = ['upstream', 'socials', 'contact', 'template', 'database'];
 	public static $full_categories        = ['upstream', 'socials', 'contact', 'template', 'database'];
 	public static $default_when_not_found = '-';
 	public static $unset_signals          = ['unset', 'default', '=', ''];
 	public static $reserved_slugs         = 'none,setting';
-	public static $search_fields          = ['title' , 'slug'];
+	public static $search_fields          = ['title', 'slug'];
 	public        $request_locale         = null;
 	protected     $guarded                = ['id', 'default_value'];
 	protected     $casts                  = [
@@ -169,7 +171,7 @@ class Setting extends Model
 	{
 		switch ($this->data_type) {
 			case 'boolean':
-				$value = booleanValue($value);
+				$value = boolval($value);
 				break;
 			case 'date':
 				$carbon = new Carbon($value);
@@ -226,7 +228,7 @@ class Setting extends Model
 		}
 		else {
 			$value = $record->custom_value;
-			if(!$value) {
+			if(!$value and $value !== '0') {
 				$value = $record->raw_default;
 			}
 		}
@@ -343,7 +345,9 @@ class Setting extends Model
 	{
 		$return = [];
 
-		// Settings Categories...
+		/*-----------------------------------------------
+		| Tabs based on settings categories ...
+		*/
 		foreach(self::$full_categories as $category) {
 			if($category == 'upstream') {
 				continue;
@@ -358,20 +362,15 @@ class Setting extends Model
 			array_push($return, ['tab/' . $category, $caption]);
 		}
 
-		// Entry Categories...
-		//array_push($return, [
-		//	'handles',
-		//	trans('calendar.handles'),
-		//]);
+		/*-----------------------------------------------
+		| Custom Tabs ...
+		*/
+		array_push($return, ['tab/packs', trans('posts.packs.plural')]);
 
-		// Branch Categories...
-		//		$branches = Branch::selector('category')->get();
-		//		foreach($branches as $branch) {
-		//			array_push($return , [
-		//					'categories/'.$branch->slug ,
-		//					trans('posts.categories.categories_of').' '.$branch->plural_title
-		//			]);
-		//		}
+
+		/*-----------------------------------------------
+		| Return ...
+		*/
 
 		return $return;
 	}

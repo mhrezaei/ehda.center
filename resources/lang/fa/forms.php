@@ -180,7 +180,7 @@ return [
         'fr'  => "فرانسوی",
     ],
 
-    'data_type' => [
+    'data_type' => [ //@TODO: New Entries
         'text'       => 'عبارت کوتاه',
         'textarea'   => 'پاراگراف',
         'boolean'    => 'بله / خیر',

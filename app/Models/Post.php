@@ -44,6 +44,19 @@ class Post extends Model
 		return $this->belongsToMany('App\Models\Folder')->withTimestamps();
 	}
 
+	public function goods($regardless_of_availability = false)
+	{
+		$table = Good::where('sisterhood' , $this->sisterhood) ;
+
+		if($regardless_of_availability) {
+			//$table->withTrashed() ;
+		}
+		else {
+			$table->where('locales' , 'like' , "%$this->locale%") ;
+		}
+		return $table ;
+	}
+
 	public function roles()
 	{
 		return $this->belongsToMany('App\Models\Role')->withTimestamps(); //@TODO: complete with withPivot('permissions' , 'deleted_at') perhaps
@@ -195,6 +208,11 @@ class Post extends Model
 		return $winners;
 	}
 
+	public function getDiscountAmountAttribute()
+	{
+		return max( $this->price - $this->sale_price , 0);
+	}
+
 
 	public function getImageAttribute()
 	{
@@ -216,11 +234,6 @@ class Post extends Model
 		return round((($this->price - $this->sale_price) * 100) / $this->price);
 	}
 
-
-	public function getIddAttribute()
-	{
-		return Crypt::encrypt($this->id);
-	}
 
 	public function getEncryptedTypeAttribute()
 	{
@@ -852,7 +865,7 @@ class Post extends Model
 
 	public function packageCombo()
 	{
-		return Package::all();
+		return Unit::all();
 	}
 
 	public function visibilityCombo()

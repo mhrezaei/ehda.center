@@ -26,7 +26,7 @@
 		'headings' => [
 			[trans('validation.attributes.title'),150],
 			trans('posts.features.meaning'),
-			trans('posts.categories.meaning')
+			trans('forms.button.action')
 		],
 	])
 

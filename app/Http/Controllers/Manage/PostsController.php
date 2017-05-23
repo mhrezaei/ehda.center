@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Manage;
 
+use App\Http\Requests\Manage\GoodSaveRequest;
 use App\Http\Requests\Manage\PostSaveRequest;
 use App\Models\Drawing;
+use App\Models\Good;
+use App\Models\Pack;
 use App\Models\Post;
 use App\Models\Posttype;
 use App\Models\Receipt;
@@ -321,8 +324,7 @@ class PostsController extends Controller
 				return $this->saveUnpublish($model);
 			}
 			else {
-				return $this->jsonFeedback(trans('validation.http.Error503'));
-			}
+				return $this->jsonFeedback(trans('validation.http.Error403'));}
 
 		}
 		if($request->id) {
@@ -382,21 +384,25 @@ class PostsController extends Controller
 		unset($data['publish_minute']);
 
 		/*-----------------------------------------------
-		| sale_expires_at ...
+		| Price ...
 		*/
 
-		if($model->has('price') and $data['sale_expires_date']) {
-			if(!$data['sale_expires_hour']) {
-				$data['sale_expires_hour'] = '00';
-			}
-			if(!$data['sale_expires_minute']) {
-				$data['sale_expires_minute'] = '00';
-			}
-			$data['sale_expires_at'] = makeDateTimeString($data['sale_expires_date'], $data['sale_expires_hour'], $data['sale_expires_minute']);
-		}
+		//if($model->has('price')) {
+			//$data['sale_price'] = $data['price'] - $data['discount_amount'];
+		//}
+		//if($model->has('price') and $data['sale_expires_date']) {
+		//	if(!$data['sale_expires_hour']) {
+		//		$data['sale_expires_hour'] = '00';
+		//	}
+		//	if(!$data['sale_expires_minute']) {
+		//		$data['sale_expires_minute'] = '00';
+		//	}
+		//	$data['sale_expires_at'] = makeDateTimeString($data['sale_expires_date'], $data['sale_expires_hour'], $data['sale_expires_minute']);
+		//}
 		unset($data['sale_expires_date']);
 		unset($data['sale_expires_hour']);
 		unset($data['sale_expires_minute']);
+		unset($data['discount_amount']);
 
 		/*-----------------------------------------------
 		| Language ...
@@ -630,7 +636,7 @@ class PostsController extends Controller
 		return $this->jsonAjaxSaveFeedback($saved, [
 			'success_redirect' => $redirect_url,
 			'success_refresh'  => $refresh_page,
-		     'success_callback' => "divReload('divPublishPanel')" ,
+			'success_callback' => "divReload('divPublishPanel')",
 		]);
 
 	}
@@ -638,7 +644,7 @@ class PostsController extends Controller
 	public function saveUnpublish($model)
 	{
 		return $this->jsonAjaxSaveFeedback($model->unpublish(), [
-			'success_callback' => "divReload('divPublishPanel')" ,
+			'success_callback' => "divReload('divPublishPanel')",
 		]);
 	}
 
@@ -656,8 +662,7 @@ class PostsController extends Controller
 				$done = $model->delete();
 			}
 			else {
-				return $this->jsonFeedback(trans('validation.http.Error503'));
-			}
+				return $this->jsonFeedback(trans('validation.http.Error403'));}
 		}
 		elseif($command == 'delete_original') {
 			$original_model = $model->original();
@@ -665,8 +670,7 @@ class PostsController extends Controller
 				return $this->jsonFeedback(trans('validation.http.Error410'));
 			}
 			elseif(!$original_model->canDelete()) {
-				return $this->jsonFeedback(trans('validation.http.Error503'));
-			}
+				return $this->jsonFeedback(trans('validation.http.Error403'));}
 			else {
 				$done = $original_model->delete();
 				$done = $original_model->copies()->delete();
@@ -804,18 +808,17 @@ class PostsController extends Controller
 		/*-----------------------------------------------
 		| Post Selection ...
 		*/
-		$post = Post::find($request->id) ;
+		$post = Post::find($request->id);
 		if(!$post or !$post->exists) {
 			return $this->jsonFeedback(trans('validation.http.Error410'));
 		}
 		if(!$post->canPublish()) {
-			return $this->jsonFeedback(trans('validation.http.Error503'));
-		}
+			return $this->jsonFeedback(trans('validation.http.Error403'));}
 
 		/*-----------------------------------------------
 		| User Selection ...
 		*/
-		$user = User::find($request->owner_id) ;
+		$user = User::find($request->owner_id);
 		if(!$user or !$user->exists or $user->is_not_an('admin')) {
 			return $this->jsonFeedback(trans('people.form.user_deleted'));
 		}
@@ -824,23 +827,22 @@ class PostsController extends Controller
 		| Save...
 		*/
 		if($post->owned_by == $user->id) {
-			$ok = 1 ;
+			$ok = 1;
 		}
 		else {
 			$ok = Post::store([
-				'id' => $post->id ,
-			     'owned_by' => $user->id ,
+				'id'       => $post->id,
+				'owned_by' => $user->id,
 			]);
 		}
 
 		/*-----------------------------------------------
 		| Feedback ...
 		*/
-		return $this->jsonAjaxSaveFeedback( $ok , [
-				'success_callback' => "rowUpdate('tblPosts' , '$request->id')",
+
+		return $this->jsonAjaxSaveFeedback($ok, [
+			'success_callback' => "rowUpdate('tblPosts' , '$request->id')",
 		]);
-
-
 
 
 	}
@@ -916,6 +918,229 @@ class PostsController extends Controller
 		]);
 
 
+	}
+
+	public function editorGoodsIndexRootForm($fake, $switch_string) // <== (The Panel)
+	{
+		$switch = array_normalize(array_maker($switch_string), [
+			'type'       => null,
+			'locale'     => "fa",
+			'sisterhood' => null,
+			'post'       => "0",
+			'sort'       => null,
+		]);
+
+		/*-----------------------------------------------
+		| Authorization ...
+		*/
+
+		if($switch['post']) {
+			$post = Post::find($switch['post']);
+			if(!$post) {
+				return view('errors.m410');
+			}
+			if(!$post->canEdit()) {
+				return view('errors.m403');
+			}
+		}
+		else {
+			if(user()->as('admin')->cannot("posts-".$switch['type'].".create")) {
+				return $this->jsonFeedback(trans('validation.http.Error403'));}
+		}
+
+
+
+		/*-----------------------------------------------
+		| Sort ...
+		*/
+		if($switch['sort']) {
+			$string = strval( $switch['sort'] );
+			$string = str_replace( 'divGood[]:' , '' , $string) ;
+			$string = str_replace( 'amp;' , '' , $string) ;
+			$array = explode('&' , $string);
+			$order = 1 ;
+			$default_found = false ;
+			$default_price = 0;
+			$default_sale_price = 0;
+
+			foreach($array as $item) {
+				$good = Good::find($item);
+				if(!$default_found and $good->isAvailableIn($switch['locale'])) {
+					$default_found = true ;
+					$default_price = $good->price ;
+					$default_sale_price = $good->sale_price ;
+				}
+				$good->order = $order++ ;
+				$good->save() ;
+				//Good::where('id' , $item)->update([
+				//	'order' => $order++ ,
+				//]);
+			}
+		}
+
+		/*-----------------------------------------------
+		| Save Default Price to the Post Table ...
+		*/
+		if(isset($post) and $post) {
+			$post->sale_price = $default_sale_price ;
+			$post->price = $default_price ;
+			$post->save();
+		}
+
+
+
+		/*-----------------------------------------------
+		| Model ...
+		*/
+		if($switch['post']) {
+			$model = Post::find($switch['post']);
+			if(!$model) {
+				return view('errors.m410');
+			}
+		}
+		else {
+			$model             = new Post();
+			$model->type       = $switch['type'];
+			$model->locale     = $switch['locale'];
+			$model->sisterhood = $switch['sisterhood'];
+			$model->id         = 0;
+		}
+
+
+		/*-----------------------------------------------
+		| View ...
+		*/
+
+		return view("manage.posts.editor-goods-index", compact('model'));
+
+
+	}
+
+
+	public function editorGoodsRootForm($fake, $switch_string)
+	{
+		$switch = array_normalize(array_maker($switch_string), [
+			'id'         => "0",
+			'type'       => null,
+			'locale'     => "fa",
+			'sisterhood' => null,
+			'post'       => "0",
+		]);
+
+		/*-----------------------------------------------
+		| Models ...
+		*/
+		if($switch['id']) {
+			$model = Good::withTrashed()->find($switch['id']);
+			if(!$model) {
+				return view('errors.m410');
+			}
+			$switch['type'] = $model->type;
+			$model->post_id = $switch['post'];
+		}
+		else {
+			$model             = new Good();
+			$model->type       = $switch['type'];
+			$model->sisterhood = $switch['sisterhood'];
+			$model->locales    = $switch['locale'];
+		}
+
+		if(getSetting('good_packs')) {
+			$packs = Pack::where('type', $switch['type'])->get();
+		}
+		$locale = $switch['locale'];
+
+
+		/*-----------------------------------------------
+		| View ...
+		*/
+
+		return view("manage.posts.editor-goods-edit", compact('model', 'packs', 'locale', 'colors'));
+
+
+	}
+
+	public function saveGood(GoodSaveRequest $request)
+	{
+		$data = $request->toArray();
+
+
+		/*-----------------------------------------------
+		| Authorization ...
+		*/
+		if($request->post_id) {
+			$post = Post::find($request->post_id);
+			if(!$post) {
+				return $this->jsonFeedback(trans('validation.http.Error410'));
+			}
+			if(!$post->canEdit()) {
+				return $this->jsonFeedback(trans('validation.http.Error403'));}
+		}
+		else {
+			if(user()->as('admin')->cannot("posts-$request->type.create")) {
+				return $this->jsonFeedback(trans('validation.http.Error403'));}
+		}
+
+		/*-----------------------------------------------
+		| If Delete ...
+		*/
+		if($request->_submit == 'delete') {
+			return $this->deleteGood($request->id);
+		}
+
+		/*-----------------------------------------------
+		| Data Verification and Completion ...
+		*/
+		if($request->_locale != 'fa') {
+			$title = $request->toArray()['_title_in_'.$request->_locale] ;
+			$data['locale_titles'][$request->_locale] = $title ;
+		}
+		else {
+			$title = $request->title ;
+		}
+
+		if($request->pack_id) {
+			$pack = Pack::find($request->pack_id);
+			if(!$pack) {
+				return $this->jsonFeedback();
+			}
+			$data['pack_id'] = $pack->id;
+			$data['unit_id'] = $pack->unit_id;
+		}
+		else {
+			$data['pack_id'] = $data['unit_id'] = 0;
+		}
+
+		if(!$request->_is_disabled and $title) {
+			$data['locales'] .= " $request->_locale ";
+		}
+
+		$data['sale_price'] = $request->price - $request->discount_amount;
+
+		/*-----------------------------------------------
+		| Save & Feedback ...
+		*/
+		$ok = Good::store($data, ['discount_amount']);
+
+		return $this->jsonAjaxSaveFeedback($ok, [
+			'success_callback' => "divReload('divEditorGoods')",
+		]);
+
+	}
+
+	public function deleteGood($id)
+	{
+		$model = Good::find($id) ;
+		if($model) {
+			$ok = $model->delete() ;
+		}
+		else {
+			$ok = false ;
+		}
+
+		return $this->jsonAjaxSaveFeedback( $ok , [
+			'success_callback' => "divReload('divEditorGoods')",
+		]);
 	}
 
 
