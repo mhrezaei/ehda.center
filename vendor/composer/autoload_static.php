@@ -375,6 +375,7 @@ class ComposerStaticInitc163ed33e856e3abf8986dc792906912
         'AddMetaToSettings' => __DIR__ . '/../..' . '/database/migrations/2017_05_21_134404_add_meta_to_settings.php',
         'AddPurchaseFieldsToUsers' => __DIR__ . '/../..' . '/database/migrations/2017_04_09_183444_add_purchase_fields_to_users.php',
         'AddSalePriceToPostsTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_03_095545_add_sale_price_to_posts_table.php',
+        'AddStatusToRoleUsers' => __DIR__ . '/../..' . '/database/migrations/2017_05_23_173941_add_status_to_role_users.php',
         'AddTextFieldsToPosts' => __DIR__ . '/../..' . '/database/migrations/2017_04_09_184614_add_text_fields_to_posts.php',
         'AddTypeToComments' => __DIR__ . '/../..' . '/database/migrations/2017_04_24_124100_add_type_to_comments.php',
         'ChangePackagesToUnitsTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_15_165342_change_packages_to_units_table.php',

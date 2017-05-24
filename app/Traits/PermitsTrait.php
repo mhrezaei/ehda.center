@@ -43,6 +43,12 @@ trait PermitsTrait
 	|
 	*/
 
+	public function roles()
+	{
+		return $this->belongsToMany('App\Models\Role')->withPivot('permissions', 'deleted_at')->withTimestamps();
+	}
+
+
 	public function enableRole($role)
 	{
 		$role_id = $this->as($role)->role()->id;

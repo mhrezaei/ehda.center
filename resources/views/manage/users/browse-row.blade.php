@@ -14,8 +14,10 @@
 		'text' => $model->full_name,
 //		'link' => $model->canEdit()? "modal:manage/users/act/-id-/edit" : '',
 	])
+	@if(user()->isDeveloper())
+		{{ $model->id }}
+	@endif
 </td>
-
 
 {{--
 |--------------------------------------------------------------------------
@@ -26,7 +28,7 @@
 <td>
 	{{ '' , $roles = $model->roles() }}
 
-	@if($roles->count() > 0) {{-- <~~ when at least one role is defined. --}}
+	@if($roles->count() > 0)  {{-- <~~ when at least one role is defined.--}}
 		@foreach($roles->get() as $role)
 			@include("manage.frame.widgets.grid-text" , [
 				'fake' => $status = $model->as($role->slug)->status ,
@@ -37,7 +39,7 @@
 				'link' => ($model->is_not_a('dev') and $model->as($role->slug)->canPermit()) ? "modal:manage/users/act/-id-/permits/".$role->id : '',
 			])
 		@endforeach
-	@else  {{-- <~~ when no role is defined. --}}
+	@else  {{-- <~~ when no role is defined.--}}
 		@include("manage.frame.widgets.grid-text" , [
 			'text' => trans('people.without_role'),
 			'color' => "gray",

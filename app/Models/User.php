@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Providers\DummyServiceProvider;
 use App\Traits\PermitsTrait;
+use App\Traits\PermitsTrait2;
 use App\Traits\TahaModelTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -16,7 +17,9 @@ use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
-	use Notifiable, TahaModelTrait, PermitsTrait, SoftDeletes;
+	use Notifiable, TahaModelTrait, SoftDeletes;
+	//use PermitsTrait ;
+	use PermitsTrait2;
 
 	public static $meta_fields     = [
 		'preferences',
@@ -46,10 +49,6 @@ class User extends Authenticatable
 	|--------------------------------------------------------------------------
 	|
 	*/
-	public function roles()
-	{
-		return $this->belongsToMany('App\Models\Role')->withPivot('permissions', 'deleted_at')->withTimestamps();
-	}
 
 	public function receipts()
 	{
@@ -196,7 +195,7 @@ class User extends Authenticatable
 
 	public function getProfileLinkAttribute()
 	{
-		return  "manage/users/browse/all/search?id=$this->id&searched=1" ;
+		return "manage/users/browse/all/search?id=$this->id&searched=1";
 	}
 
 
@@ -233,12 +232,12 @@ class User extends Authenticatable
 
 	public function getStatusAttribute()
 	{
-		$request_role = $this->getAndResetAsRole();
+		$request_role = $this->getChain('as');
 		if($request_role) {
 			if(!$this->as($request_role)->includeDisabled()->hasRole()) {
 				return 'without';
 			}
-			elseif($this->enabled()) {
+			elseif($this->as($request_role)->enabled()) {
 				return 'active';
 			}
 			else {
@@ -281,7 +280,7 @@ class User extends Authenticatable
 
 	public function canEdit()
 	{
-		$request_role = $this->getAndResetAsRole();
+		$request_role = $this->getChain('as');
 
 		/*-----------------------------------------------
 		| Power users ...
@@ -306,7 +305,7 @@ class User extends Authenticatable
 
 	public function canDelete()
 	{
-		$request_role = $this->getAndResetAsRole();
+		$request_role = $this->getChain('as');
 
 		/*-----------------------------------------------
 		| Power users ...
@@ -328,7 +327,7 @@ class User extends Authenticatable
 
 	public function canBin()
 	{
-		$request_role = $this->getAndResetAsRole();
+		$request_role = $this->getChain('as');
 
 		/*-----------------------------------------------
 		| Power users ...
@@ -351,7 +350,7 @@ class User extends Authenticatable
 
 	public function canPermit()
 	{
-		$request_role = $this->getAndResetAsRole();
+		$request_role = $this->getChain('as');
 
 		/*-----------------------------------------------
 		| Simple Decisions ...
@@ -364,7 +363,7 @@ class User extends Authenticatable
 		}
 
 		if($request_role) {
-			if($this->as($request_role)->disabled()) {
+			if($this->trashed()) {
 				return false;
 			}
 			$role = Role::findBySlug($request_role);
@@ -417,23 +416,24 @@ class User extends Authenticatable
 		return $post->receipts->where('user_id', $this->id)->sum('purchased_amount');
 	}
 
-    public function drawingRecentScores($eventsNumber, $historyLimit = 0)
-    {
-        return Post::where([
-            'type' => 'events',
-            'locale' => getLocale(),
-        ])->whereDate('starts_at', '<=', Carbon::now())
-            ->whereDate('ends_at', '>=', Carbon::now()->subDay($historyLimit))
-            ->leftJoin('receipts', [
-                ['starts_at', '<=', 'purchased_at'],
-                ['ends_at', '>=', 'purchased_at'],
-                ['user_id', '=', DB::raw(user()->id)]
-            ])
-            ->select(DB::raw('posts.*, sum(receipts.purchased_amount) as sum_amount'))
-            ->groupBy(DB::raw('posts.id'))
-            ->limit($eventsNumber)
-            ->orderBy('sum_amount', 'DESC')
-            ->get();
+	public function drawingRecentScores($eventsNumber, $historyLimit = 0)
+	{
+		return Post::where([
+			'type'   => 'events',
+			'locale' => getLocale(),
+		])->whereDate('starts_at', '<=', Carbon::now())
+			->whereDate('ends_at', '>=', Carbon::now()->subDay($historyLimit))
+			->leftJoin('receipts', [
+				['starts_at', '<=', 'purchased_at'],
+				['ends_at', '>=', 'purchased_at'],
+				['user_id', '=', DB::raw(user()->id)],
+			])
+			->select(DB::raw('posts.*, sum(receipts.purchased_amount) as sum_amount'))
+			->groupBy(DB::raw('posts.id'))
+			->limit($eventsNumber)
+			->orderBy('sum_amount', 'DESC')
+			->get()
+			;
 
-    }
+	}
 }

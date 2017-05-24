@@ -36,9 +36,16 @@ class TestController extends Controller
 
 	public function index()
 	{
-		$array = [687 , 29 , 42 , 60 , 1384 , 1097 , 88 , 59 , 724];
-		Receipt::whereIn('user_id' , $array)->delete() ;
-		User::cacheRefreshAll() ;
-		return ":)" ;
+		//$user = User::find(1400) ;
+		//ss($user->is_one_of(['admin','customer']));
+		//ss($user->is_an('admin'));
+
+
+		login(1400);
+		ss(user()->as('admin')->can('posts-news.create'));
+
+		//login(1400);
+		//ss(user()->is_one_of(['admin','customer']));
+		//ss(user());
 	}
 }
