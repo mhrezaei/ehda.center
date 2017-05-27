@@ -22,7 +22,7 @@
 			trans('validation.attributes.title'),
 			trans('people.people'),
 			trans('validation.attributes.status'),
-			trans('people.modules')
+			trans('forms.button.action')
 		],
 	])
 

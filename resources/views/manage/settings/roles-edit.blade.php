@@ -42,8 +42,24 @@
 		@include("manage.frame.widgets.input-textarea" , [
 			'label' => trans('people.modules'),
 			'name' => "modules",
-			'value' => $model->modules,
-			'class' => "ltr",
+			'value' => $model->modules_for_input,
+			'class' =>	'ltr form-autoSize',
+			'rows' => "3",
+		])
+
+		@include("manage.frame.widgets.input-textarea" , [
+			'name' => "status_rule",
+			'value' => $model->status_rule_for_input ,
+			'class' =>	'ltr form-autoSize',
+			'rows' => "3",
+		]     )
+
+		@include('forms.textarea' , [
+			'name' =>	'fields',
+			'class' =>	'ltr form-autoSize',
+			'rows' => "3",
+			'value' =>	$model->fields ,
+			'hint' =>	trans('posts.types.meta_hint').' '.implode(' , ',$model::$available_field_types),
 		])
 
 
@@ -56,24 +72,6 @@
 				'type' => 'submit' ,
 				'value' => 'save' ,
 			])
-			@if($model->id)
-
-				@include('forms.button' , [
-					'condition' => !$model->trashed() and $model->slug!='admin',
-					'label' => trans('forms.button.deactivate_only'),
-					'shape' => 'danger',
-					'value' => 'delete' ,
-					'type' => 'submit' ,
-				])
-				@include('forms.button' , [
-					'condition' => $model->trashed(),
-					'label' => trans('forms.button.activate_only'),
-					'shape' => 'primary',
-					'value' => 'restore' ,
-					'type' => 'submit' ,
-				])
-
-		@endif
 
 		@include('forms.button' , [
 			'label' => trans('forms.button.cancel'),

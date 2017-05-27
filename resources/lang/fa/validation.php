@@ -480,6 +480,8 @@ return [
 		'hint'       => "راهنما", //@TODO: New
 		'css_class'  => "کلاس سی‌اس‌اس", //@TODO: New
 		'color'      => "رنگ", //@TODO: New
+	     'status_rule' => "قاعده‌ی وضعیت" , //@TODO: New
+	     'fields' => "ورودی‌ها" , //@TODO: New
 	],
 
 	"http" => [

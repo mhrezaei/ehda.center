@@ -42,7 +42,7 @@ class TestController extends Controller
 
 
 		login(1400);
-		ss(user()->as('admin')->can('posts-news.create'));
+		ss(user()->as('admin')->can('posts-news'));
 
 		//login(1400);
 		//ss(user()->is_one_of(['admin','customer']));

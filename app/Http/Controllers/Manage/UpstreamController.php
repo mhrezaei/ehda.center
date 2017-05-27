@@ -9,6 +9,7 @@ use App\Http\Requests\Manage\PosttypeSaveRequest;
 use App\Http\Requests\Manage\PosttypeTitlesSaveRequest;
 use App\Http\Requests\Manage\ProvinceSaveRequest;
 use App\Http\Requests\Manage\RoleSaveRequest;
+use App\Http\Requests\Manage\RoleTitlesSaveRequest;
 use App\Models\Folder;
 use App\Models\Post;
 use App\Models\Unit;
@@ -147,7 +148,7 @@ class UpstreamController extends Controller
 				if(!$model) {
 					return view('errors.m410');
 				}
-				$model->spreadMeta() ;
+				$model->spreadMeta();
 
 				return view('manage.settings.downstream-value', compact('model'));
 				break;
@@ -170,8 +171,8 @@ class UpstreamController extends Controller
 					}
 				}
 				else {
-					$model = new Unit() ;
-					$model->is_continuous = 0 ;
+					$model                = new Unit();
+					$model->is_continuous = 0;
 				}
 
 				return view("manage.settings.packages-edit", compact('model'));
@@ -216,7 +217,7 @@ class UpstreamController extends Controller
 					if(!$model) {
 						return trans('validation.invalid');
 					}
-					$model->spreadMeta() ;
+					$model->spreadMeta();
 				}
 				else {
 					$model = new Setting();
@@ -240,6 +241,21 @@ class UpstreamController extends Controller
 
 				return view("manage.settings.roles-edit", compact('model'));
 
+			case 'role-titles' :
+				$model = Role::withTrashed()->find($item_id);
+				if(!$model) {
+					return view('errors.m410');
+				}
+
+				return view("manage.settings.roles-titles", compact('model'));
+
+			case 'role-activeness' :
+				$model = Role::withTrashed()->find($item_id);
+				if(!$model) {
+					return view('errors.m410');
+				}
+
+				return view("manage.settings.roles-activeness", compact('model'));
 
 			case 'department' :
 				if($item_id) {
@@ -272,11 +288,12 @@ class UpstreamController extends Controller
 				return view('manage.settings.posttypes-edit', compact('model'));
 
 			case 'posttype-titles' :
-				$model = Posttype::find($item_id) ;
+				$model = Posttype::find($item_id);
 				if(!$model) {
 					return view('errors.m410');
 				}
-				return view("manage.settings.posttypes-titles",compact('model'));
+
+				return view("manage.settings.posttypes-titles", compact('model'));
 
 			case 'categories' :
 				if($item_id) {
@@ -309,9 +326,9 @@ class UpstreamController extends Controller
 			$data['deleted_at'] = Carbon::now()->toDateTimeString();
 		}
 
-		return $this->jsonAjaxSaveFeedback( Unit::store($data) , [
-				'success_callback' => "",
-				'success_refresh' => "1",
+		return $this->jsonAjaxSaveFeedback(Unit::store($data), [
+			'success_callback' => "",
+			'success_refresh'  => "1",
 		]);
 	}
 
@@ -335,7 +352,7 @@ class UpstreamController extends Controller
 		//If Save...
 		if($request->_submit == 'save') {
 			return $this->jsonAjaxSaveFeedback(Posttype::store($request), [
-				'fake' => $request->id? '' : Folder::updateDefaultFolders(),
+				'fake'            => $request->id ? '' : Folder::updateDefaultFolders(),
 				'success_refresh' => 1,
 			]);
 		}
@@ -359,7 +376,7 @@ class UpstreamController extends Controller
 		/*-----------------------------------------------
 		| Model Reveal ...
 		*/
-		$model = Posttype::find($request->id) ;
+		$model = Posttype::find($request->id);
 		if(!$model) {
 			return $this->jsonFeedback(trans('validation.http.Error410'));
 		}
@@ -367,22 +384,23 @@ class UpstreamController extends Controller
 		/*-----------------------------------------------
 		| Process ...
 		*/
-		$data = $request->toArray() ;
-		$data['locale_titles'] = [] ;
+		$data                  = $request->toArray();
+		$data['locale_titles'] = [];
 
 
 		foreach($model->locales_array as $locale) {
-			if($locale=='fa') {
-				continue ;
+			if($locale == 'fa') {
+				continue;
 			}
-			$data['locale_titles']["title-$locale"] = $data["_title_in_$locale"] ;
-			$data['locale_titles']["singular_title-$locale"] = $data["_singular_title_in_$locale"] ;
+			$data['locale_titles']["title-$locale"]          = $data["_title_in_$locale"];
+			$data['locale_titles']["singular_title-$locale"] = $data["_singular_title_in_$locale"];
 		}
 
 		/*-----------------------------------------------
 		| Save & Feedback ...
 		*/
-		return $this->jsonAjaxSaveFeedback( Posttype::store($data) , [
+
+		return $this->jsonAjaxSaveFeedback(Posttype::store($data), [
 			'success_refresh' => 1,
 		]);
 
@@ -437,14 +455,9 @@ class UpstreamController extends Controller
 
 	}
 
-
-	public function saveRole(RoleSaveRequest $request)
+	public function saveRoleActiveness(Request $request)
 	{
 		switch ($request->toArray()['_submit']) {
-			case 'save' :
-				$ok = Role::store($request);
-				break;
-
 			case 'delete' :
 				$ok = Role::where('id', $request->id)->delete();
 				break;
@@ -457,9 +470,74 @@ class UpstreamController extends Controller
 				$ok = false;
 		}
 
+
 		return $this->jsonAjaxSaveFeedback($ok, [
 			'success_refresh' => 1,
 		]);
+
+
+	}
+
+
+	public function saveRole(RoleSaveRequest $request)
+	{
+
+		/*-----------------------------------------------
+		| Normalization ...
+		*/
+		$data                = $request->toArray();
+		$data['modules']     = Role::getModulesJson($request->modules);
+		$data['status_rule'] = Role::getStatusRuleArray($request->status_rule);
+
+		/*-----------------------------------------------
+		| Save ...
+		*/
+		$ok = Role::store($data);
+
+
+		/*-----------------------------------------------
+		| Return ...
+		*/
+
+		return $this->jsonAjaxSaveFeedback($ok, [
+			'success_refresh' => 1,
+		]);
+	}
+
+	public function saveRoleTitles(RoleTitlesSaveRequest $request)
+	{
+		/*-----------------------------------------------
+		| Model Reveal ...
+		*/
+		$model = Posttype::find($request->id);
+		if(!$model) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+
+		/*-----------------------------------------------
+		| Process ...
+		*/
+		$data                  = $request->toArray();
+		$data['locale_titles'] = [];
+
+
+		foreach($model->locales_array as $locale) {
+			if($locale == 'fa') {
+				continue;
+			}
+			$data['locale_titles']["title-$locale"]          = $data["_title_in_$locale"];
+			$data['locale_titles']["plural_title-$locale"] = $data["_plural_title_in_$locale"];
+		}
+
+		/*-----------------------------------------------
+		| Save & Feedback ...
+		*/
+
+		return $this->jsonAjaxSaveFeedback(Role::store($data), [
+			'success_refresh' => 1,
+		]);
+
+
 	}
 
 

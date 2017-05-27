@@ -61,6 +61,7 @@ return [
         'activate_only'        => "Activate Only",
         'duration'             => "From :date1 to :date2",
         'change_status'        => "Change Status",
+        'nobody' => "Nobody" ,
     ],
 
     "general" => [
