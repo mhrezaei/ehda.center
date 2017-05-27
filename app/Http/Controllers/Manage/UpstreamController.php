@@ -257,6 +257,14 @@ class UpstreamController extends Controller
 
 				return view("manage.settings.roles-activeness", compact('model'));
 
+			case 'role-default' :
+				$model = Role::find($item_id);
+				if(!$model) {
+					return view('errors.m410');
+				}
+
+				return view("manage.settings.roles-default", compact('model'));
+
 			case 'department' :
 				if($item_id) {
 					$model = Department::find($item_id);
@@ -459,6 +467,10 @@ class UpstreamController extends Controller
 	{
 		switch ($request->toArray()['_submit']) {
 			case 'delete' :
+				$model = Role::find($request->id) ;
+				if(!$model or $model->slug == 'admin' or $model->isDefault()) {
+					return $this->jsonFeedback(trans('forms.general.sorry'));
+				}
 				$ok = Role::where('id', $request->id)->delete();
 				break;
 
@@ -475,6 +487,20 @@ class UpstreamController extends Controller
 			'success_refresh' => 1,
 		]);
 
+
+	}
+
+	public function saveRoleDefault(Request $request)
+	{
+		$model = Role::find($request->id) ;
+		if(!$model or $model->slug == 'admin' or $model->isDefault()) {
+			return $this->jsonFeedback(trans('forms.general.sorry'));
+		}
+
+		$ok = Setting::set('default_role' , $model->slug) ;
+		return $this->jsonAjaxSaveFeedback($ok, [
+			'success_refresh' => 1,
+		]);
 
 	}
 

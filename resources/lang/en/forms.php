@@ -61,7 +61,6 @@ return [
         'activate_only'        => "Activate Only",
         'duration'             => "From :date1 to :date2",
         'change_status'        => "Change Status",
-        'nobody' => "Nobody" ,
     ],
 
     "general" => [
@@ -93,6 +92,8 @@ return [
         'max_value'      => 'Maximum: :value',
         'numbers'        => 'Numbers',
         'submit'         => "Submit",
+        'nobody' => "Nobody" ,
+        'sorry' => "Sorry" ,
     ],
 
 

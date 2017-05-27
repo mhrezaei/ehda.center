@@ -93,6 +93,7 @@ return [
 		'numbers'        => 'عدد',
 		'submit'         => "ثبت",
 		'nobody'         => "هیچ‌کس",
+	     'sorry' => "شرمنده" ,
 	],
 
 

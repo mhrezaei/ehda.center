@@ -164,7 +164,11 @@ class Role extends Model
 		}
 	}
 
-
+	public function isDefault()
+	{
+		$default_role = setting('default_role')->noCache()->gain() ;
+		return boolval($default_role == $this->slug) ;
+	}
 
 	/*
 	|--------------------------------------------------------------------------

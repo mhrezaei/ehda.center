@@ -23,12 +23,21 @@
 </td>
 
 <td>
-	@include("manage.frame.widgets.grid-badge" , [
-		'icon' => trans("forms.status_icon.$model->status"),
-		'text' => trans("forms.status_text.$model->status"),
-		'link' => 'modal:manage/upstream/edit/role-activeness/-id-' ,
-		'color' => trans("forms.status_color.$model->status"),
-	])
+	@if($model->isDefault())
+		@include("manage.frame.widgets.grid-badge" , [
+			'icon' => "check-square-o",
+			'text' => trans('people.default_role') ,
+			'color' => "primary" ,
+			'class' => "text-white" ,
+		]     )
+	@else
+		@include("manage.frame.widgets.grid-badge" , [
+			'icon' => trans("forms.status_icon.$model->status"),
+			'text' => trans("forms.status_text.$model->status"),
+			'link' => 'modal:manage/upstream/edit/role-activeness/-id-' ,
+			'color' => trans("forms.status_color.$model->status"),
+		])
+	@endif
 </td>
 
 @include("manage.frame.widgets.grid-actionCol" , [
@@ -36,7 +45,8 @@
 	"actions" => [
 		['pencil' , trans('forms.button.edit') , "modal:manage/upstream/edit/role/-id-" ],
 		['taxi' , trans('posts.types.locale_titles') , 'modal:manage/upstream/edit/role-titles/-id-' ],
-		['trash-o' , trans('forms.button.soft_delete') , 'modal:manage/upstream/edit/role-activeness/-id-' , !$model->trashed()],
+		['check-square-o' , trans('people.choose_as_default_role') , 'modal:manage/upstream/edit/role-default/-id-/' , !$model->isDefault()  and $model->slug!='admin'],
+		['trash-o' , trans('forms.button.soft_delete') , 'modal:manage/upstream/edit/role-activeness/-id-' , !$model->trashed() and !$model->isDefault() and $model->slug!='admin'] ,
 		['recycle' , trans('forms.button.undelete') , 'modal:manage/upstream/edit/role-activeness/-id-' , $model->trashed()],
 	]
 ])
