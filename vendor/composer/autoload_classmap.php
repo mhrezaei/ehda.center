@@ -13,6 +13,7 @@ return array(
     'AddPurchaseFieldsToUsers' => $baseDir . '/database/migrations/2017_04_09_183444_add_purchase_fields_to_users.php',
     'AddSalePriceToPostsTable' => $baseDir . '/database/migrations/2017_05_03_095545_add_sale_price_to_posts_table.php',
     'AddStatusToRoleUsers' => $baseDir . '/database/migrations/2017_05_23_173941_add_status_to_role_users.php',
+    'AddStatusToUsers' => $baseDir . '/database/migrations/2017_05_28_131337_add_status_to_users.php',
     'AddTextFieldsToPosts' => $baseDir . '/database/migrations/2017_04_09_184614_add_text_fields_to_posts.php',
     'AddTypeToComments' => $baseDir . '/database/migrations/2017_04_24_124100_add_type_to_comments.php',
     'ChangePackagesToUnitsTable' => $baseDir . '/database/migrations/2017_05_15_165342_change_packages_to_units_table.php',

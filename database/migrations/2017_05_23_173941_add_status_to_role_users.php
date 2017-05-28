@@ -15,6 +15,7 @@ class AddStatusToRoleUsers extends Migration
 	public function up()
 	{
 		Schema::table('role_user', function (Blueprint $table) {
+			$table->longText('key')->after('permissions')->nullable();
 			$table->tinyInteger('status')->after('permissions')->default(1);
 		});
 	}
@@ -27,7 +28,7 @@ class AddStatusToRoleUsers extends Migration
 	public function down()
 	{
 		Schema::table('role_user', function (Blueprint $table) {
-			$table->dropColumn(['status']);
+			$table->dropColumn(['status' , 'key']);
 		});
 	}
 }

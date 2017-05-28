@@ -36,16 +36,10 @@ class TestController extends Controller
 
 	public function index()
 	{
-		//$user = User::find(1400) ;
-		//ss($user->is_one_of(['admin','customer']));
-		//ss($user->is_an('admin'));
-
-
-		login(1400);
-		ss(user()->as('admin')->can('posts-news'));
-
-		//login(1400);
-		//ss(user()->is_one_of(['admin','customer']));
-		//ss(user());
+		ss(User::defaultRole());
+		ss(User::selector([
+			'role' => ["customer"] ,
+		])->count());
+		ss(User::all()->count());
 	}
 }

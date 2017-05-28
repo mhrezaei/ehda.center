@@ -93,6 +93,148 @@ class User extends Authenticatable
 	*/
 	public static function selector($parameters = [])
 	{
+		$switch = array_normalize($parameters, [
+			'id'         => false,
+			'email'      => false,
+			'code_melli' => false,
+			'mobile'     => false,
+			'role'       => 'default', // <~~ Supports Arrays
+			'status'     => false, // <~~ best works where only one role is given.
+			'min_status' => false, // <~~ best works where only one role is given.
+			'max_status' => false, // <~~ best works where only one role is given.
+			'permits'    => false,  // <~~ Supports Arrays
+			'search'     => false,
+		]);
+
+		$table                 = self::where('id', '>', '0');
+		$default_role_included = false;
+
+		/*-----------------------------------------------
+		| Simple Things ...
+		*/
+		if($switch['id']) {
+			$table->where('id', $switch['id']);
+		}
+		if($switch['email']) {
+			$table->where('email', $switch['email']);
+		}
+		if($switch['code_melli']) {
+			$table->where('code_melli', $switch['code_melli']);
+		}
+		if($switch['mobile']) {
+			$table->where('mobile', $switch['mobile']);
+		}
+
+		/*-----------------------------------------------
+		| Role ...
+		*/
+		if($switch['role']) {
+			if($switch['role'] == 'default') {
+				$switch['role'] = self::defaultRole();
+			}
+			if($switch['role'] == 'all' or $switch['role'] == self::defaultRole()) {
+				if(self::defaultRole()) {
+					$default_role_included = true;
+				}
+				//nothing to do :)
+			}
+			elseif($switch['role'] == 'no') {
+				if(self::defaultRole()) {
+					$default_role_included = true;
+					// nothing to do :)
+				}
+				else {
+					$table->has('roles', '=', 0);
+				}
+			}
+			elseif(!is_array($switch['role'])) {
+				$switch['role'] = [$switch['role']];
+			}
+
+			if(is_array($switch['role']) and count($switch['role'])) {
+				if(in_array(self::defaultRole(), $switch['role'])) {
+					$default_role_included = true;
+					//nothing to do :)
+				}
+				else {
+					$table->whereHas('roles', function ($query) use ($switch) {
+						$query->whereIn('roles.slug', $switch['role']);
+					});
+				}
+			}
+		}
+
+		/*-----------------------------------------------
+		| Status ...
+		*/
+		if($switch['status'] !== false) {
+			if($default_role_included) {
+				$table->where('status', $switch['status']);
+			}
+			else {
+				$table->whereHas('roles', function ($query) use ($switch) {
+					$query->where('role_user.status', $switch['status']);
+				});
+			}
+		}
+
+		if($switch['min_status'] !== false) {
+			if($default_role_included) {
+				$table->where('status', '>=', $switch['min_status']);
+			}
+			else {
+				$table->whereHas('roles', function ($query) use ($switch) {
+					$query->where('role_user.status', '>=', $switch['min_status']);
+				});
+			}
+		}
+		if($switch['max_status'] !== false) {
+			if($default_role_included) {
+				$table->where('status', '>=', $switch['max_status']);
+			}
+			else {
+				$table->whereHas('roles', function ($query) use ($switch) {
+					$query->where('role_user.status', '<=', $switch['max_status']);
+				});
+			}
+		}
+
+		/*-----------------------------------------------
+		| Permits ...
+		*/
+		if($switch['permits'] !== false ) {
+			if(!is_array($switch['permits'])) {
+				$switch['permits'] = [$switch['permits']] ;
+			}
+			if(is_array($switch['permits']) and count($switch['permits'])) {
+				foreach($switch['permits'] as $request) {
+					$request = str_replace(self::$wildcards, '', $request);
+					$table->whereHas('roles', function ($query) use ($request) {
+						$query->where('role_user.permissions', 'like', "%$request%");
+					});
+				}
+			}
+		}
+
+
+		/*-----------------------------------------------
+		| Search ...
+		*/
+		if($switch['search']) {
+			$table = $table->whereRaw(self::searchRawQuery($switch['search']));
+		}
+
+		/*-----------------------------------------------
+		| Return ...
+		*/
+
+		return $table;
+
+
+	}
+
+	public static function _selector($parameters = [])
+	{
 		extract(array_normalize($parameters, [
 			'id'       => "0",
 			'role'     => "customer",

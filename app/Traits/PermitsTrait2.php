@@ -58,7 +58,7 @@ trait PermitsTrait2
 		return $return;
 	}
 
-	private function rolesPermits()
+	private function rolesPermits() //@TODO: Should be PRIVATE function
 	{
 		$permits = null;
 		foreach($this->rolesQuery()->pluck('pivot.permissions') as $permit) {
@@ -74,7 +74,7 @@ trait PermitsTrait2
 
 	}
 
-	private function rolesQuery()
+	private function rolesQuery() //@TODO: Should be PRIVATE function
 	{
 		/*-----------------------------------------------
 		| Parameters ...
@@ -231,6 +231,16 @@ trait PermitsTrait2
 		//	return $first->pivot ;
 		//}
 		return $this->includeDisabled()->rolesQuery()->first()->pivot ;
+	}
+
+	public static function defaultRole($use_cache = true)
+	{
+		if($use_cache) {
+			return setting()->ask('default_role')->gain() ;
+		}
+		else {
+			return setting()->ask('default_role')->noCache()->gain() ;
+		}
 	}
 
 
