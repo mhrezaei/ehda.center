@@ -1,5 +1,12 @@
 @include('manage.frame.widgets.grid-rowHeader')
 
+{{--
+|--------------------------------------------------------------------------
+| Title
+|--------------------------------------------------------------------------
+|
+--}}
+
 <td>
 	@include("manage.frame.widgets.grid-text" , [
 		'text' => $model->title,
@@ -8,6 +15,12 @@
 	])
 </td>
 
+{{--
+|--------------------------------------------------------------------------
+| People Count
+|--------------------------------------------------------------------------
+|
+--}}
 
 <td>
 	@include("manage.frame.widgets.grid-text" , [
@@ -21,6 +34,13 @@
 		'link' => $model->trashed() ? '' : "url:$model->users_browse_link" ,
 	]     )
 </td>
+
+{{--
+|--------------------------------------------------------------------------
+| Status
+|--------------------------------------------------------------------------
+|
+--}}
 
 <td>
 	@if($model->isDefault())
@@ -38,7 +58,22 @@
 			'color' => trans("forms.status_color.$model->status"),
 		])
 	@endif
+
+	@if($model->is_manager)
+		@include("manage.frame.widgets.grid-badge" , [
+			'icon' => "user-secret",
+			'text' => trans('people.is_manager') ,
+			'color' => "warning" ,
+		]     )
+	@endif
 </td>
+
+{{--
+|--------------------------------------------------------------------------
+| Actions
+|--------------------------------------------------------------------------
+|
+--}}
 
 @include("manage.frame.widgets.grid-actionCol" , [
 	'refresh_action' => false ,

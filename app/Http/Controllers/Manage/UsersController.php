@@ -114,7 +114,7 @@ class UsersController extends Controller
 
 	}
 
-	public function browse($request_role, $request_tab = 'actives')
+	public function browse($request_role, $request_tab = 'all')
 	{
 		/*-----------------------------------------------
 		| Check Permission ...

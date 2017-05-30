@@ -28,8 +28,8 @@ class User extends Authenticatable
 		'postal_code',
 		'address',
 		'reset_token',
-	     'key',
-	     'default_role_deleted_at'
+		'key',
+		'default_role_deleted_at',
 	];
 	public static $search_fields   = ['name_first', 'name_last', 'name_firm', 'code_melli', 'email', 'mobile'];
 	public static $required_fields = ['name_first', 'name_last', 'code_melli', 'mobile', 'home_tel', 'birth_date', 'gender', 'marital'];
@@ -106,6 +106,10 @@ class User extends Authenticatable
 			'max_status' => false, // <~~ best works where only one role is given.
 			'permits'    => false,  // <~~ Supports Arrays
 			'search'     => false,
+			'criteria'   => null,
+			'banned'     => false,
+			'bin'        => false,
+		     //@TODO: Involve Domains here!
 		]);
 
 		$table                 = self::where('id', '>', '0');
@@ -202,11 +206,33 @@ class User extends Authenticatable
 		}
 
 		/*-----------------------------------------------
+		| Banned ...
+		*/
+		if($switch['banned']) {
+			if($default_role_included) {
+				//@TODO
+			}
+			else {
+				$table->whereHas('roles', function ($query) {
+					$query->whereNotNull('role_user.deleted_at');
+				});
+			}
+		}
+
+		/*-----------------------------------------------
+		| Trashed ...
+		*/
+		if($switch['bin']) {
+			$table->onlyTrashed();
+		}
+
+
+		/*-----------------------------------------------
 		| Permits ...
 		*/
-		if($switch['permits'] !== false ) {
+		if($switch['permits'] !== false) {
 			if(!is_array($switch['permits'])) {
-				$switch['permits'] = [$switch['permits']] ;
+				$switch['permits'] = [$switch['permits']];
 			}
 			if(is_array($switch['permits']) and count($switch['permits'])) {
 				foreach($switch['permits'] as $request) {
@@ -216,6 +242,14 @@ class User extends Authenticatable
 					});
 				}
 			}
+		}
+
+		/*-----------------------------------------------
+		| Criteria ...
+		*/
+		switch ($switch['criteria']) {
+			case 'blocked' :
+
 		}
 
 

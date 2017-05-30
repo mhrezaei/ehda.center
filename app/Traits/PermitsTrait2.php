@@ -5,6 +5,7 @@ use App\Models\Role;
 use Carbon\Carbon;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
 
 
@@ -41,7 +42,7 @@ trait PermitsTrait2
 	 * Gets array of roles from either database or if possible from the session.
 	 * @return \Illuminate\Support\Collection
 	 */
-	public function getRoles() //@TODO: Must be private
+	private function getRoles()
 	{
 		if(user()->id == $this->id) {
 			$revealed_at = session()->get('logged_user_revealed_at', false);
@@ -693,6 +694,7 @@ trait PermitsTrait2
 		}
 	}
 
+
 	/**
 	 * Checks if the user in the given role (through the $this->as() chain method) is enabled.
 	 *
@@ -745,7 +747,9 @@ trait PermitsTrait2
 	/**
 	 * Sets the necessary flag to take one of the roles in $this->roleQuery().
 	 *
-	 * @param $requested_role : 'all' can be passed to set the as_all flag, used in $this->can() to prevent accidental call of all roles.
+	 * @param $requested_role : string|array
+	 *  'all' can be passed to set the as_all flag, used in $this->can() to prevent accidental call of all roles.
+	 *  'manager' can be passed to set an array of roles provided by Role::managingRoles()
 	 *
 	 * @return $this
 	 */
@@ -754,6 +758,9 @@ trait PermitsTrait2
 		if($requested_role == 'all') {
 			$this->as     = false;
 			$this->as_all = true;
+		}
+		elseif($requested_role == 'manager') {
+			$this->as = Role::managingRoles() ;
 		}
 		else {
 			$this->as = $requested_role;
@@ -939,6 +946,16 @@ trait PermitsTrait2
 		return !$this->hasRole($requested_roles, false);
 	}
 
+	/**
+	 * A mirror to check if the user is attached to one of the 'manager' roles, found by Role::managingRoles()
+	 *
+	 * @return bool
+	 */
+	public function is_manager()
+	{
+		return $this->is_any_of( Role::managingRoles()) ;
+	}
+
 
 	/**
 	 * a mirror to call $this->as() chain method, with 'all' parameter automatically set.
@@ -948,6 +965,16 @@ trait PermitsTrait2
 	public function as_all()
 	{
 		return $this->as('all');
+	}
+
+	/**
+	 * a mirror to call $this->as() chain method, with 'manager' parameter automatically set.
+	 *
+	 * @return $this
+	 */
+	public function as_manager()
+	{
+		return $this->as('manager') ;
 	}
 
 	/**

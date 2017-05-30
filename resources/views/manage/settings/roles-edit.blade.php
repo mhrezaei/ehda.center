@@ -62,6 +62,12 @@
 			'hint' =>	trans('posts.types.meta_hint').' '.implode(' , ',$model::$available_field_types),
 		])
 
+		@include("forms.check-form" , [
+			'name' => "is_manager",
+			'self_label' => trans('people.is_manager') ,
+			'value' => $model->is_manager ,
+		]     )
+
 
 		@include('forms.group-start')
 

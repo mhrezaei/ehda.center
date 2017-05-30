@@ -5,17 +5,22 @@ namespace App\Models;
 use App\Traits\TahaModelTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 
 
 class Role extends Model
 {
 	use TahaModelTrait, SoftDeletes;
 
-	public static $reserved_slugs        = 'root,super,user,all,dev,developer';
+	public static $reserved_slugs        = 'root,super,user,all,dev,developer,manager,manage';
 	public static $meta_fields           = ['icon', 'fields', 'status_rule', 'locale_titles'];
 	public static $available_field_types = ['text', 'textarea', 'date', 'boolean', 'photo', 'file'];
 	protected     $guarded               = ['id'];
 
+	protected $casts = [
+		'is_manager' => "boolean",
+		'meta'       => "array",
+	];
 
 	/*
 	|--------------------------------------------------------------------------
@@ -103,6 +108,7 @@ class Role extends Model
 
 		return $string;
 	}
+
 	public function getFieldsArrayAttribute()
 	{
 		$string = str_replace(' ', null, $this->spreadMeta()->fields);
@@ -135,7 +141,7 @@ class Role extends Model
 
 	public function getUsersBrowseLinkAttribute()
 	{
-		return 'manage/users/browse/'.$this->slug;
+		return 'manage/users/browse/' . $this->slug;
 	}
 
 	/*
@@ -150,7 +156,7 @@ class Role extends Model
 			return $this->title;
 		}
 		else {
-			return $this->meta("locale_titles")["title-$locale"] ;
+			return $this->meta("locale_titles")["title-$locale"];
 		}
 	}
 
@@ -160,14 +166,26 @@ class Role extends Model
 			return $this->plural_title;
 		}
 		else {
-			return $this->meta("locale_titles")["plural_title-$locale"] ;
+			return $this->meta("locale_titles")["plural_title-$locale"];
 		}
 	}
 
 	public function isDefault()
 	{
-		$default_role = setting('default_role')->noCache()->gain() ;
-		return boolval($default_role == $this->slug) ;
+		$default_role = setting('default_role')->noCache()->gain();
+
+		return boolval($default_role == $this->slug);
+	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Cache Management
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public function cacheRegenerate()
+	{
+		Cache::forget("managing_roles");
 	}
 
 	/*
@@ -222,5 +240,20 @@ class Role extends Model
 		return user()->as('admin')->can("users-$role_slug.$permit");
 
 	}
+
+	public static function managingRoles()
+	{
+		$managing_roles = Cache::remember("managing_roles" , 100 , function() {
+			$roles = self::where('is_manager' , true)->get() ;
+			$array = [] ;
+			foreach($roles as $role) {
+				$array[] = $role->slug ;
+			}
+			return $array ;
+		});
+
+		return $managing_roles ;
+	}
+
 
 }
