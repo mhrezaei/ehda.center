@@ -28,6 +28,8 @@ class User extends Authenticatable
 		'postal_code',
 		'address',
 		'reset_token',
+	     'key',
+	     'default_role_deleted_at'
 	];
 	public static $search_fields   = ['name_first', 'name_last', 'name_firm', 'code_melli', 'email', 'mobile'];
 	public static $required_fields = ['name_first', 'name_last', 'code_melli', 'mobile', 'home_tel', 'birth_date', 'gender', 'marital'];
@@ -372,7 +374,7 @@ class User extends Authenticatable
 		}
 	}
 
-	public function getStatusAttribute()
+	public function _getStatusAttribute()
 	{
 		$request_role = $this->getChain('as');
 		if($request_role) {

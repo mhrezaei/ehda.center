@@ -15,7 +15,7 @@ class AddStatusToUsers extends Migration
 	public function up()
 	{
 		Schema::table('users', function (Blueprint $table) {
-			$table->tinyInteger('status')->after('meta')->default(1);
+			$table->tinyInteger('status')->after('meta')->default(0);
 		});
 	}
 

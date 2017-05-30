@@ -347,7 +347,7 @@ trait TahaModelTrait
 			if(self::hasMeta($field)) {
 				$meta[ $field ] = $value;
 			}
-			if(!$value) {
+			if($value===false) {
 				unset($meta[ $field ]);
 			}
 		}

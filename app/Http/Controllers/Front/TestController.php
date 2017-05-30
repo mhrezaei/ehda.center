@@ -6,7 +6,9 @@ use App\Models\Category;
 use App\Models\Folder;
 use App\Models\Post;
 use App\Models\Receipt;
+use App\Models\Role;
 use App\Models\User;
+use App\Providers\DummyServiceProvider;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -36,10 +38,7 @@ class TestController extends Controller
 
 	public function index()
 	{
-		ss(User::defaultRole());
-		ss(User::selector([
-			'role' => ["customer"] ,
-		])->count());
-		ss(User::all()->count());
+		$user = User::find(1401) ;
+		echo "=>".$user->is_a('member') ;
 	}
 }
