@@ -12,7 +12,7 @@ return [
 	'without_role'           => "بدون نقش",
 	'default_role'           => "نقش کاربری پیش‌فرض", //@TODO: New
 	'choose_as_default_role' => "انتخاب به عنوان نقش پیش‌فرض", //@TODO: New
-	'is_manager' => "به عنوان مدیر" , //@TODO: New
+	'is_admin'               => "به عنوان مدیر", //@TODO: New
 
 	'commands' => [
 		'permit'          => "سطح دسترسی",

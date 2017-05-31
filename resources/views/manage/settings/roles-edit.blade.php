@@ -63,9 +63,9 @@
 		])
 
 		@include("forms.check-form" , [
-			'name' => "is_manager",
-			'self_label' => trans('people.is_manager') ,
-			'value' => $model->is_manager ,
+			'name' => "is_admin",
+			'self_label' => trans('people.is_admin') ,
+			'value' => $model->is_admin ,
 		]     )
 
 

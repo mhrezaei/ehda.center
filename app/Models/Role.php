@@ -12,7 +12,7 @@ class Role extends Model
 {
 	use TahaModelTrait, SoftDeletes;
 
-	public static $reserved_slugs        = 'root,super,user,all,dev,developer,manager,manage';
+	public static $reserved_slugs        = 'root,super,user,all,dev,developer,';
 	public static $meta_fields           = ['icon', 'fields', 'status_rule', 'locale_titles'];
 	public static $available_field_types = ['text', 'textarea', 'date', 'boolean', 'photo', 'file'];
 	protected     $guarded               = ['id'];
@@ -185,7 +185,7 @@ class Role extends Model
 	*/
 	public function cacheRegenerate()
 	{
-		Cache::forget("managing_roles");
+		Cache::forget("admin_roles");
 	}
 
 	/*
@@ -241,10 +241,10 @@ class Role extends Model
 
 	}
 
-	public static function managingRoles()
+	public static function adminRoles()
 	{
-		$managing_roles = Cache::remember("managing_roles" , 100 , function() {
-			$roles = self::where('is_manager' , true)->get() ;
+		$admin_roles = Cache::remember("admin_roles" , 100 , function() {
+			$roles = self::where('is_admin' , true)->get() ;
 			$array = [] ;
 			foreach($roles as $role) {
 				$array[] = $role->slug ;
@@ -252,7 +252,7 @@ class Role extends Model
 			return $array ;
 		});
 
-		return $managing_roles ;
+		return $admin_roles ;
 	}
 
 

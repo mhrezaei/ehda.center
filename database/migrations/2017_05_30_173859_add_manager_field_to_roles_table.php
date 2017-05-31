@@ -15,7 +15,7 @@ class AddManagerFieldToRolesTable extends Migration
 	public function up()
 	{
 		Schema::table('roles', function (Blueprint $table) {
-			$table->tinyInteger('is_manager')->after('modules')->index() ;
+			$table->tinyInteger('is_admin')->after('modules')->index() ;
 		});
 	}
 
@@ -28,7 +28,7 @@ class AddManagerFieldToRolesTable extends Migration
 	{
 		Schema::table('roles', function (Blueprint $table) {
 			$table->dropColumn([
-				'is_manager',
+				'is_admin',
 			]);
 		});
 	}

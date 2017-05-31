@@ -553,6 +553,11 @@ trait PermitsTrait2
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+	public function rolesArray()
+	{
+		return $this->rolesQuery()->pluck('slug')->toArray() ;
+	}
 	/**
 	 * Checks if the current user as the requested role(s)
 	 *
@@ -749,7 +754,7 @@ trait PermitsTrait2
 	 *
 	 * @param $requested_role : string|array
 	 *  'all' can be passed to set the as_all flag, used in $this->can() to prevent accidental call of all roles.
-	 *  'manager' can be passed to set an array of roles provided by Role::managingRoles()
+	 *  'manager' can be passed to set an array of roles provided by Role::adminRoles()
 	 *
 	 * @return $this
 	 */
@@ -759,8 +764,8 @@ trait PermitsTrait2
 			$this->as     = false;
 			$this->as_all = true;
 		}
-		elseif($requested_role == 'manager') {
-			$this->as = Role::managingRoles() ;
+		elseif($requested_role == 'admin') {
+			$this->as = Role::adminRoles() ;
 		}
 		else {
 			$this->as = $requested_role;
@@ -947,13 +952,13 @@ trait PermitsTrait2
 	}
 
 	/**
-	 * A mirror to check if the user is attached to one of the 'manager' roles, found by Role::managingRoles()
+	 * A mirror to check if the user is attached to one of the 'admin' roles, found by Role::adminRoles()
 	 *
 	 * @return bool
 	 */
-	public function is_manager()
+	public function is_admin()
 	{
-		return $this->is_any_of( Role::managingRoles()) ;
+		return $this->is_any_of( Role::adminRoles()) ;
 	}
 
 

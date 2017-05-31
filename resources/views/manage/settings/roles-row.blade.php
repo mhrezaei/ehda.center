@@ -59,10 +59,10 @@
 		])
 	@endif
 
-	@if($model->is_manager)
+	@if($model->is_admin)
 		@include("manage.frame.widgets.grid-badge" , [
 			'icon' => "user-secret",
-			'text' => trans('people.is_manager') ,
+			'text' => trans('people.is_admin') ,
 			'color' => "warning" ,
 		]     )
 	@endif

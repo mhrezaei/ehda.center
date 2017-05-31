@@ -515,6 +515,10 @@ class UpstreamController extends Controller
 		$data['modules']     = Role::getModulesJson($request->modules);
 		$data['status_rule'] = Role::getStatusRuleArray($request->status_rule);
 
+		if($data['slug'] == 'admin') {
+			$data['is_admin'] = true ;
+		}
+
 		/*-----------------------------------------------
 		| Save ...
 		*/

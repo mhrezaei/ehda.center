@@ -854,6 +854,7 @@ class ComposerStaticInitc163ed33e856e3abf8986dc792906912
         'PHP_Token_YIELD' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'PHP_Token_YIELD_FROM' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'ProjectSeeder' => __DIR__ . '/../..' . '/database/seeds/ProjectSeeder.php',
+        'PullThingsOutOfUsersMeta' => __DIR__ . '/../..' . '/database/migrations/2017_05_31_104525_pull_things_out_of_users_meta.php',
         'SebastianBergmann\\CodeCoverage\\CodeCoverage' => __DIR__ . '/..' . '/phpunit/php-code-coverage/src/CodeCoverage.php',
         'SebastianBergmann\\CodeCoverage\\CoveredCodeNotExecutedException' => __DIR__ . '/..' . '/phpunit/php-code-coverage/src/Exception/CoveredCodeNotExecutedException.php',
         'SebastianBergmann\\CodeCoverage\\Driver\\Driver' => __DIR__ . '/..' . '/phpunit/php-code-coverage/src/Driver/Driver.php',
