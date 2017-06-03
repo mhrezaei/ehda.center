@@ -3,10 +3,7 @@ namespace App\Traits;
 
 use App\Models\Role;
 use Carbon\Carbon;
-use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Crypt;
 
 
 trait PermitsTrait2
@@ -14,8 +11,9 @@ trait PermitsTrait2
 	protected static $wildcards         = ['', 'any', '*'];
 	protected static $default_role      = 'admin';
 	protected static $available_permits = ['browse', 'process', 'view', 'send', 'search', 'create', 'edit', 'publish', 'activate', 'report', 'delete', 'bin'];
-	protected static $coder             = '9|tgvRw*n3&ck@0mUyfSDT-EQP[W!)?1e,]NzO~BhC;s7x^2oJHFGjaZr}pIYAl_%d<KqV4uL{6.:(>iMX8+b5#';
+	protected static $coder             = '~jFCQ?U0y&rvYp8<b9{Ew[V#N;7tx,M51]L(Bq@!^fa|2Z}XgD+lT4Ie>sJmP.huod:*Kkz3nHR-G_f)6iW%cAOS';
 	protected static $alpha             = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMfNOPQRSTUVWXYZ1234567890-!@#%^&*()_+~[]|;,.{}:<>?';
+	protected        $stored_roles      = false;
 	protected        $as                = null;
 	protected        $as_all            = false;
 	protected        $include_disabled  = false;
@@ -52,10 +50,15 @@ trait PermitsTrait2
 				session()->put('logged_user_roles', $roles);
 				session()->put('logged_user_revealed_at', Carbon::now()->toDateTimeString());
 			}
+			$this->stored_roles = $roles;
+		}
+		elseif($this->stored_roles) {
+			$roles = $this->stored_roles;
 		}
 		else {
-			$roles = $this->fetchRoles();
+			$this->stored_roles = $roles = $this->fetchRoles();
 		}
+
 
 		return $roles;
 	}
@@ -125,7 +128,7 @@ trait PermitsTrait2
 	 * Runs a query through the available collection, considering all the Chain property limitations.
 	 * @return \Illuminate\Support\Collection|static
 	 */
-	private function rolesQuery()
+	public function rolesQuery()
 	{
 		/*-----------------------------------------------
 		| Parameters ...
@@ -283,6 +286,7 @@ trait PermitsTrait2
 		$this->updated_at = Carbon::now()->toDateTimeString();
 		$this->update();
 
+		$this->stored_roles = false ;
 		return $this;
 	}
 
@@ -307,7 +311,7 @@ trait PermitsTrait2
 			return false;
 		}
 
-		$current_row = $this->as($as)->getRoles()->first();
+		$current_row = $this->as($as)->withDisabled()->rolesQuery()->first();
 		$this->roles()->updateExistingPivot($current_row['id'], [
 			'permissions' => self::deface($permissions),
 			'key'         => $this->makeKey($current_row['id'], $permissions, $current_row['pivot']['status'], $current_row['pivot']['deleted_at']),
@@ -328,7 +332,7 @@ trait PermitsTrait2
 	public function setStatus($status)
 	{
 		$as          = $this->getChain('as');
-		$current_row = $this->as($as)->getRoles()->first();
+		$current_row = $this->as($as)->withDisabled()->rolesQuery()->first();
 
 		if(!$as) {
 			return false;
@@ -361,7 +365,7 @@ trait PermitsTrait2
 	public function disableRole()
 	{
 		$as          = $this->getChain('as');
-		$current_row = $this->as($as)->rolesQuery()->first();
+		$current_row = $this->as($as)->withDisabled()->rolesQuery()->first();
 		$now         = Carbon::now()->toDateTimeString();
 
 
@@ -554,10 +558,16 @@ trait PermitsTrait2
 	|
 	*/
 
+	/**
+	 * @return array: of all the available roles.
+	 * Utilizing the chain methods before calling this method are supported.
+	 */
 	public function rolesArray()
 	{
-		return $this->rolesQuery()->pluck('slug')->toArray() ;
+		return $this->rolesQuery()->pluck('slug')->toArray();
 	}
+
+
 	/**
 	 * Checks if the current user as the requested role(s)
 	 *
@@ -621,10 +631,12 @@ trait PermitsTrait2
 	}
 
 	/**
+	 * @deprecated
 	 * @return bool
 	 */
 	public function isSuper()
 	{
+
 		$role = $this->getChain('as');
 		if($role) {
 			return $this->as($role)->can('super');
@@ -687,7 +699,7 @@ trait PermitsTrait2
 	 *
 	 * @param bool $use_cache
 	 *
-	 * @return array|bool|mixed
+	 * @return string
 	 */
 	public static function defaultRole($use_cache = true)
 	{
@@ -708,7 +720,7 @@ trait PermitsTrait2
 	public function enabled()
 	{
 		$as          = $this->getChain('as');
-		$current_row = $this->as($as)->getRoles()->first();
+		$current_row = $this->as($as)->withDisabled()->rolesQuery()->first();
 
 		if(!$as) {
 			return false;
@@ -716,6 +728,24 @@ trait PermitsTrait2
 		else {
 			return !boolval($current_row['pivot']['deleted_at']);
 		}
+	}
+
+	/**
+	 * Uses the role passed from chain method $this->as() to return the status of a given role.
+	 * @return integer
+	 */
+	public function getStatus()
+	{
+		return $this->withDisabled()->rolesQuery()->first()['pivot']['status'];
+	}
+
+	/**
+	 * Uses the role passed from chain method $this->as() to return the title of a given role.
+	 * @return string
+	 */
+	public function getTitle()
+	{
+		return $this->withDisabled()->rolesQuery()->first()['title'];
 	}
 
 	/*
@@ -765,7 +795,7 @@ trait PermitsTrait2
 			$this->as_all = true;
 		}
 		elseif($requested_role == 'admin') {
-			$this->as = Role::adminRoles() ;
+			$this->as = Role::adminRoles();
 		}
 		else {
 			$this->as = $requested_role;
@@ -958,9 +988,16 @@ trait PermitsTrait2
 	 */
 	public function is_admin()
 	{
-		return $this->is_any_of( Role::adminRoles()) ;
+		return $this->is_any_of(Role::adminRoles());
 	}
 
+	/**
+	 * @return bool
+	 */
+	public function is_superadmin()
+	{
+		return $this->as('admin')->can('super'); //@TODO: Find a better sollution
+	}
 
 	/**
 	 * a mirror to call $this->as() chain method, with 'all' parameter automatically set.
@@ -979,7 +1016,7 @@ trait PermitsTrait2
 	 */
 	public function as_manager()
 	{
-		return $this->as('manager') ;
+		return $this->as('manager');
 	}
 
 	/**
@@ -1081,6 +1118,24 @@ trait PermitsTrait2
 		$this->enableRole();
 	}
 
+	/**
+	 * A mirror to call $this->getStatus()
+	 *
+	 * @return int
+	 */
+	public function status()
+	{
+		return $this->getStatus();
+	}
+
+	/**
+	 * A mirror to call $this->getTitle()
+	 * @return string
+	 */
+	public function title()
+	{
+		return $this->getTitle();
+	}
 
 
 }

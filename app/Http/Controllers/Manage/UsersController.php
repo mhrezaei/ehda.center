@@ -40,9 +40,19 @@ class UsersController extends Controller
 		$this->view_folder   = 'manage.users';
 	}
 
-	public function _update()
+	public function update($model_id , $request_role)
 	{
-		echo 1 ;
+		$model = User::withTrashed()->find($model_id) ;
+		$handle = 'selector' ;
+
+		//Run...
+		if(!$model) {
+			return view('errors.m410');
+		}
+		else {
+			$model->spreadMeta() ;
+			return view($this->view_folder . '.browse-row', compact('model', 'handle' , 'request_role'));
+		}
 	}
 
 	public function search($request_role, Request $request)
@@ -82,6 +92,7 @@ class UsersController extends Controller
 		if(!isset($request->id) and strlen($request->keyword) < 3) {
 			$db         = $this->Model;
 			$page[1][1] = trans('forms.button.search');
+
 			return view($this->view_folder . ".search", compact('page', 'models', 'db', 'request_role', 'role'));
 		}
 
@@ -98,8 +109,8 @@ class UsersController extends Controller
 			$selector_switches['search'] = $keyword = $request->keyword;
 		}
 		if(isset($request->id)) {
-			$selector_switches['id'] = $request->id ;
-			$page[1] = ['search', trans('forms.button.search_for') . " " . trans('people.particular_user'), "users/search/$request_role"] ;
+			$selector_switches['id'] = $request->id;
+			$page[1]                 = ['search', trans('forms.button.search_for') . " " . trans('people.particular_user'), "users/search/$request_role"];
 
 		}
 
@@ -134,6 +145,7 @@ class UsersController extends Controller
 		}
 		else {
 			$role               = new Role();
+			$role->slug         = 'all';
 			$role->plural_title = trans('people.commands.all_users');
 		}
 
@@ -142,15 +154,15 @@ class UsersController extends Controller
 		*/
 		$page = [
 			'0' => ["users/browse/$request_role", $role->plural_title, "users/browse/$request_role"],
-			'1' => [$request_tab, trans("people.criteria.$request_tab"), "users/browse/$request_role/$request_tab"],
+			'1' => [$request_tab, trans("people.criteria.".$role->statusRule($request_tab)), "users/browse/$request_role/$request_tab"],
 		];
 
 		/*-----------------------------------------------
 		| Model ...
 		*/
 		$selector_switches = [
-			'role'     => $request_role,
-			'criteria' => $request_tab,
+			'role'   => $request_role,
+			'status' => $request_tab,
 		];
 
 		$models = User::selector($selector_switches)->orderBy('created_at', 'desc')->paginate(user()->preference('max_rows_per_page'));
@@ -453,18 +465,19 @@ class UsersController extends Controller
 
 		//Data Buildup...
 		$data = [
-			'user_id' => $user->id,
-		     'code' => $request->code ,
-			'purchased_at' => Carbon::createFromTimestamp($drawing_code['date'], 'Asia/Tehran')->setTimezone('UTC'),
+			'user_id'          => $user->id,
+			'code'             => $request->code,
+			'purchased_at'     => Carbon::createFromTimestamp($drawing_code['date'], 'Asia/Tehran')->setTimezone('UTC'),
 			'purchased_amount' => $drawing_code['price'],
-		] ;
+		];
 
 		//Save & Feedback...
-		$is_saved = Receipt::store($data) ;
+		$is_saved = Receipt::store($data);
+
 		//$user->updatePurchases() ;
-		return $this->jsonAjaxSaveFeedback( $is_saved , [
+		return $this->jsonAjaxSaveFeedback($is_saved, [
 			'success_modalClose' => false,
-			'success_callback' => "divReload( 'divReceiptsTable' )",
+			'success_callback'   => "divReload( 'divReceiptsTable' )",
 		]);
 
 	}

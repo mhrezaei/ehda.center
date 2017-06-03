@@ -6,7 +6,7 @@
 	</div>
 
 	@include("manage.frame.widgets.toolbar" , [
-		'buttons' => [
+		'buttons_' => [
 			[
 				'target' => "modal:manage/users/create/$request_role",
 				'type' => $request_role=='all' ? 'primary' : 'success' ,
@@ -27,7 +27,7 @@
 		'handle' => "selector",
 		'headings' => [
 			trans('validation.attributes.name_first') ,
-			trans('people.user_role'),
+			[trans('people.user_role'), 'NO' , $request_role=='all'],
 			[trans('cart.purchases') , 'NO' , $request_role=='customer'],
 			trans('forms.button.action'),
 		],

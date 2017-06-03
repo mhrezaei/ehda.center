@@ -109,7 +109,7 @@ class User extends Authenticatable
 			'criteria'   => null,
 			'banned'     => false,
 			'bin'        => false,
-		     //@TODO: Involve Domains here!
+			'domain'     => 'all',
 		]);
 
 		$table                 = self::where('id', '>', '0');
@@ -174,7 +174,19 @@ class User extends Authenticatable
 		| Status ...
 		*/
 		if($switch['status'] !== false) {
-			if($default_role_included) {
+
+			if($switch['status']=='all'){
+				//nothing to do.
+			}
+			elseif($switch['status'] == 'bin') {
+				if($switch['role']=='all') {
+					$switch['bin'] = true ;
+				}
+				else {
+					$switch['banned'] = true ;
+				}
+			}
+			elseif($default_role_included) {
 				$table->where('status', $switch['status']);
 			}
 			else {
@@ -204,6 +216,19 @@ class User extends Authenticatable
 				});
 			}
 		}
+
+		/*-----------------------------------------------
+		| Domain ...
+		*/
+		if($switch['domain']) {
+			if($switch['domain']=='all') {
+				//nothing to do :)
+			}
+			else{
+				//@TODO
+			}
+		}
+
 
 		/*-----------------------------------------------
 		| Banned ...

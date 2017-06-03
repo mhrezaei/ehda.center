@@ -1,5 +1,5 @@
 @include('manage.frame.widgets.grid-rowHeader' , [
-	'refresh_url' => "manage/users/update/$model->id"
+	'refresh_url' => "manage/users/update/$model->id/$request_role"
 ])
 
 {{--
@@ -14,9 +14,11 @@
 		'text' => $model->full_name,
 //		'link' => $model->canEdit()? "modal:manage/users/act/-id-/edit" : '',
 	])
-	@if(user()->isDeveloper())
-		{{ $model->id }}
-	@endif
+	@include("manage.frame.widgets.grid-text" , [
+		'text' => "($model->id)",
+		'color' => "gray" ,
+		'condition' => user()->isDeveloper() ,
+	]     )
 </td>
 
 {{--
@@ -25,29 +27,54 @@
 |--------------------------------------------------------------------------
 |
 --}}
-<td>
-	{{ '' , $roles = $model->roles() }}
+@if($request_role=='all')
+	<td>
+		{{ '' , $roles = $model->withDisabled()->rolesArray() }}
 
-	@if($roles->count() > 0)  {{-- <~~ when at least one role is defined.--}}
-		@foreach($roles->get() as $role)
+		@if(count($roles))
+			@foreach($roles as $role)
+				@include("manage.frame.widgets.grid-text" , [
+					'text' => $model->as($role)->title(),
+					'color' => $model->as($role)->enabled()? 'success' : 'danger' ,
+					'icon' => $model->as($role)->enabled()? 'check' : 'times' ,
+					'link' => $model->canPermit()? "modal:manage/users/act/-id-/roles/" : '',
+				]     )
+			@endforeach
+		@else
 			@include("manage.frame.widgets.grid-text" , [
-				'fake' => $status = $model->as($role->slug)->status ,
-				'text' => $role->title . ': ' . trans("forms.status_text.$status"),
-				'color' => trans("forms.status_color.$status"),
-				'icon' => trans("forms.status_icon.$status"),
-				'class' => $model->trashed()? "deleted-content" : '',
-				'link' => ($model->is_not_a('dev') and $model->as($role->slug)->canPermit()) ? "modal:manage/users/act/-id-/permits/".$role->id : '',
+				'text' => trans('people.without_role'),
+				'color' => "gray",
+				'size' => "10",
+				'link' => $model->canPermit()? "modal:manage/users/act/-id-/roles/" : '',
 			])
-		@endforeach
-	@else  {{-- <~~ when no role is defined.--}}
-		@include("manage.frame.widgets.grid-text" , [
-			'text' => trans('people.without_role'),
-			'color' => "gray",
-			'size' => "10",
-			'link' => $model->is_not_a('dev')? "modal:manage/users/act/-id-/roles/" : '',
-		])
-	@endif
-</td>
+		@endif
+
+	</td>
+
+	{{--<td style="display: none">--}}
+		{{--{{ '' , $roles = $model->roles() }}--}}
+
+		{{--@if($roles->count() > 0)  --}}{{-- <~~ when at least one role is defined.--}}
+			{{--@foreach($roles->get() as $role)--}}
+				{{--@include("manage.frame.widgets.grid-text" , [--}}
+					{{--'fake' => $status = $model->as($role->slug)->status ,--}}
+					{{--'text' => $role->title . ': ' . trans("forms.status_text.$status"),--}}
+					{{--'color' => trans("forms.status_color.$status"),--}}
+					{{--'icon' => trans("forms.status_icon.$status"),--}}
+					{{--'class' => $model->trashed()? "deleted-content" : '',--}}
+					{{--'link' => ($model->is_not_a('dev') and $model->as($role->slug)->canPermit()) ? "modal:manage/users/act/-id-/permits/".$role->id : '',--}}
+				{{--])--}}
+			{{--@endforeach--}}
+		{{--@else  --}}{{-- <~~ when no role is defined.--}}
+			{{--@include("manage.frame.widgets.grid-text" , [--}}
+				{{--'text' => trans('people.without_role'),--}}
+				{{--'color' => "gray",--}}
+				{{--'size' => "10",--}}
+				{{--'link' => $model->is_not_a('dev')? "modal:manage/users/act/-id-/roles/" : '',--}}
+			{{--])--}}
+		{{--@endif--}}
+	{{--</td>--}}
+@endif
 
 {{--
 |--------------------------------------------------------------------------

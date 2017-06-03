@@ -177,6 +177,16 @@ class Role extends Model
 		return boolval($default_role == $this->slug);
 	}
 
+	public function statusRule($key)
+	{
+		if(is_numeric($key)) {
+			return $this->spreadMeta()->status_rule[ $key] ;
+		}
+		else {
+			return $key ;
+		}
+	}
+
 	/*
 	|--------------------------------------------------------------------------
 	| Cache Management
@@ -224,9 +234,15 @@ class Role extends Model
 
 	public static function checkManagePermission($role_slug, $criteria)
 	{
-		if(in_array($role_slug, ['admin', 'all'])) {
-			return user()->isSuper();
+		if($role_slug == 'all') {
+			$role_slug = 'all' ; //@TODO: Check in operation
 		}
+		elseif($role_slug == 'admin') {
+			//return user()->is_superadmin() ; //@TODO: Check in operation
+		}
+		//if(in_array($role_slug, ['admin', 'all'])) {
+		//	return user()->isSuper();
+		//}
 		switch ($criteria) {
 			case 'bin' :
 			case 'banned' :
@@ -253,6 +269,31 @@ class Role extends Model
 		});
 
 		return $admin_roles ;
+	}
+
+	public function browseTabs()
+	{
+		/*-----------------------------------------------
+		| When all roles are being browsed ...
+		*/
+		if($this->slug == 'all') {
+			return [
+				["all" , trans('people.criteria.actives')],
+				['bin' , trans('manage.tabs.bin') , '0'  ],
+				['search' , trans('forms.button.search')],
+			];
+		}
+
+		/*-----------------------------------------------
+		| When a particular valid role is being browsed ...
+		*/
+		$array[] = ['all' , trans('people.criteria.all')] ;
+		foreach($this->spreadMeta()->status_rule as $key => $string) {
+			$array[] = [ $key , trans("people.criteria.$string")] ;
+		}
+		$array[] = ['banned' , trans('people.criteria.banned') ];
+		$array[] = ['search' , trans('forms.button.search')] ;
+		return $array ;
 	}
 
 

@@ -493,7 +493,7 @@ class UpstreamController extends Controller
 	public function saveRoleDefault(Request $request)
 	{
 		$model = Role::find($request->id) ;
-		if(!$model or $model->slug == 'admin' or $model->isDefault()) {
+		if(!$model or in_array($model->slug , Role::adminRoles()) or $model->isDefault()) {
 			return $this->jsonFeedback(trans('forms.general.sorry'));
 		}
 
