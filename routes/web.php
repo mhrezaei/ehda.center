@@ -44,7 +44,7 @@ Route::group([
 	| Users ...
 	*/
 	Route::group(['prefix' => "users", 'middleware' => "can:users",], function () {
-		Route::get('/update/{item_id}', 'UsersController@update');
+		Route::get('/update/{item_id}/{request_role}', 'UsersController@update');
 		Route::get('browse/{role}/search/{keyword?}', 'UsersController@search');
 		Route::get('browse/{role}/{request_tab?}', 'UsersController@browse');
 		Route::get('create/{role}', 'UsersController@create');

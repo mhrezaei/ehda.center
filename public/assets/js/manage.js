@@ -3,6 +3,12 @@
  */
 $( document ).ready( function() {
 	sidebarInitiate();
+
+	$("#divSideMother").css('height', $(window).height() - 50);
+	$(window).resize(function () {
+		$("#divSideMother").css('height', $(window).height() - 50);
+	});
+
 // 	heyCheck() ;
 });
 
