@@ -177,10 +177,26 @@ class Role extends Model
 		return boolval($default_role == $this->slug);
 	}
 
-	public function statusRule($key)
+	public function statusRule($key , $in_full=false)
 	{
+		if(!$this->has_modules) {
+			return null ;
+		}
 		if(is_numeric($key)) {
-			return $this->spreadMeta()->status_rule[ $key] ;
+			$this->spreadMeta() ;
+			if(isset($this->status_rule[$key])) {
+				$string = $this->statusRule([$key]) ;
+			}
+			else {
+				$string = "-" ;
+			}
+
+			if($in_full) {
+				return "$key: $string" ;
+			}
+			else {
+				return $string ;
+			}
 		}
 		else {
 			return $key ;
@@ -231,6 +247,18 @@ class Role extends Model
 
 		return $array_final;
 	}
+
+	public function getStatusRuleArrayAttribute()
+	{
+		$array = $this->spreadMeta()->status_rule ;
+		if(is_array($array)) {
+			return $array ;
+		}
+		else {
+			return [] ;
+		}
+	}
+
 
 	public static function checkManagePermission($role_slug, $criteria)
 	{
@@ -288,11 +316,22 @@ class Role extends Model
 		| When a particular valid role is being browsed ...
 		*/
 		$array[] = ['all' , trans('people.criteria.all')] ;
-		foreach($this->spreadMeta()->status_rule as $key => $string) {
+
+		foreach($this->status_rule_array as $key => $string) {
 			$array[] = [ $key , trans("people.criteria.$string")] ;
 		}
 		$array[] = ['banned' , trans('people.criteria.banned') ];
 		$array[] = ['search' , trans('forms.button.search')] ;
+		return $array ;
+	}
+
+	public function statusCombo()
+	{
+		$array = [] ;
+		foreach($this->status_rule_array as $key => $item) {
+			$array[] = [$key , $item] ;
+		}
+
 		return $array ;
 	}
 

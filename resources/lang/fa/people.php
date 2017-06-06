@@ -47,7 +47,7 @@ return [
 		'password_change_sms'         => "رمز عبور شما در سایت :site_title تغییر یافت: :new_password",
 		'as_a'                        => "به عنوان :role_title",
 		'now_without'                 => "اکنون چنین نقشی ندارد.",
-		'now_active'                  => "اکنون در این نقش فعال است.",
+		'now_active'                  => "اکنون این نقش را دارد.",
 		'now_blocked'                 => "اکنون این نقش را دارد، ولی مسدود است.",
 		'detach_this_role'            => "حذف این نقش",
 		'attach_this_role'            => "افزودن این نقش",

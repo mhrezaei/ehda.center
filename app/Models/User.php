@@ -175,15 +175,15 @@ class User extends Authenticatable
 		*/
 		if($switch['status'] !== false) {
 
-			if($switch['status']=='all'){
+			if($switch['status'] == 'all') {
 				//nothing to do.
 			}
 			elseif($switch['status'] == 'bin') {
-				if($switch['role']=='all') {
-					$switch['bin'] = true ;
+				if($switch['role'] == 'all') {
+					$switch['bin'] = true;
 				}
 				else {
-					$switch['banned'] = true ;
+					$switch['banned'] = true;
 				}
 			}
 			elseif($default_role_included) {
@@ -221,10 +221,10 @@ class User extends Authenticatable
 		| Domain ...
 		*/
 		if($switch['domain']) {
-			if($switch['domain']=='all') {
+			if($switch['domain'] == 'all') {
 				//nothing to do :)
 			}
-			else{
+			else {
 				//@TODO
 			}
 		}
@@ -564,34 +564,30 @@ class User extends Authenticatable
 		if($this->id == user()->id) {
 			return false;
 		}
-
-		if($request_role) {
-			if($this->trashed()) {
-				return false;
-			}
-			$role = Role::findBySlug($request_role);
-			if(!$role or !$role->has_modules) {
-				return false;
-			}
-		}
-
-		/*-----------------------------------------------
-		| Power users ...
-		*/
 		if($this->is_a('developer')) {
 			return user()->is_a('developer');
 		}
-		elseif($this->is_an('admin')) {
-			return user()->is_a('superadmin');
+
+		/*-----------------------------------------------
+		| In case of a specified role ...
+		*/
+		if($request_role) {
+			if($this->as($request_role)->disabled()) {
+				return false;
+			}
+			else {
+				return user()->as($request_role)->isSuper();
+			}
 		}
 
 		/*-----------------------------------------------
-		| Other users ... @TODO: complete this part
+		| In case of generally called ...
 		*/
+		if(!$request_role) {
+			return user()->as_any()->can_all(['users-all', 'super']); //TODO: Check for correct response
+		}
 
-		return user()->is_a('superadmin');
 	}
-
 
 	/*
 	|--------------------------------------------------------------------------

@@ -631,7 +631,6 @@ trait PermitsTrait2
 	}
 
 	/**
-	 * @deprecated
 	 * @return bool
 	 */
 	public function isSuper()
@@ -642,7 +641,7 @@ trait PermitsTrait2
 			return $this->as($role)->can('super');
 		}
 		else {
-			return $this->as('admin')->can('super');
+			return $this->as('admin')->can('super'); //@TODO: Suspicous Result!
 		}
 	}
 
