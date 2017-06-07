@@ -353,7 +353,53 @@ class UsersController extends Controller
 
 	}
 
-	public function saveRole(Request $request)
+	public function refreshRoleRowForm($model , $role_id)
+	{
+		$role = Role::find($role_id) ;
+		return view("manage.users.roles-one",compact('model','role'));
+		
+	}
+
+	public function saveRole($user_id, $role_slug, $new_status)
+	{
+		/*-----------------------------------------------
+		| Model and Permission ...
+		*/
+		$user = User::find($user_id) ;
+		if(!$user) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+		if(!$user->canPermit()) {
+			return $this->jsonFeedback(trans('validation.http.Error503'));
+		}
+
+		/*-----------------------------------------------
+		| Save ...
+		*/
+		if($new_status == 'detach') {
+			$user->detachRole($role_slug) ;
+		}
+		if($new_status == 'ban') {
+			$user->as($role_slug)->disable() ;
+		}
+		else {
+			if($user->withDisabled()->as($role_slug)->hasnotRole()) {
+				$user->attachRole($role_slug) ;
+			}
+			elseif($user->as($role_slug)->disabled()) {
+				$user->as($role_slug)->enable() ;
+			}
+			$user->as($role_slug)->setStatus($new_status) ;
+		}
+
+		/*-----------------------------------------------
+		| Feedback...
+		*/
+		return $this->jsonAjaxSaveFeedback( true ); //<~~ Row is automatically refreshed upon receiving of the done feedback!
+
+	}
+
+	public function _saveRole(Request $request)
 	{
 		/*-----------------------------------------------
 		| Command ...

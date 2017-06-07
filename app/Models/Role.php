@@ -6,6 +6,7 @@ use App\Traits\TahaModelTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Lang;
 
 
 class Role extends Model
@@ -177,29 +178,29 @@ class Role extends Model
 		return boolval($default_role == $this->slug);
 	}
 
-	public function statusRule($key , $in_full=false)
+	public function statusRule($key , $in_full = false)
 	{
-		if(!$this->has_modules) {
-			return null ;
+		if(!$this->has_status_rules) {
+			return null;
 		}
 		if(is_numeric($key)) {
-			$this->spreadMeta() ;
-			if(isset($this->status_rule[$key])) {
-				$string = $this->statusRule([$key]) ;
+			$this->spreadMeta();
+			if(isset($this->status_rule[ $key ])) {
+				$string = $this->status_rule[ $key ];
 			}
 			else {
-				$string = "-" ;
+				$string = "!";
 			}
 
 			if($in_full) {
-				return "$key: $string" ;
+				return Lang::has("forms.status_text.$string") ? trans("forms.status_text.$string") : $string ;
 			}
 			else {
-				return $string ;
+				return $string;
 			}
 		}
 		else {
-			return $key ;
+			return $key;
 		}
 	}
 
@@ -250,20 +251,26 @@ class Role extends Model
 
 	public function getStatusRuleArrayAttribute()
 	{
-		$array = $this->spreadMeta()->status_rule ;
+		$array = $this->spreadMeta()->status_rule;
 		if(is_array($array)) {
-			return $array ;
+			return $array;
 		}
 		else {
-			return [] ;
+			return [];
 		}
 	}
+
+	public function getHasStatusRulesAttribute()
+	{
+		return boolval(count($this->status_rule_array)) ;
+	}
+
 
 
 	public static function checkManagePermission($role_slug, $criteria)
 	{
 		if($role_slug == 'all') {
-			$role_slug = 'all' ; //@TODO: Check in operation
+			$role_slug = 'all'; //@TODO: Check in operation
 		}
 		elseif($role_slug == 'admin') {
 			//return user()->is_superadmin() ; //@TODO: Check in operation
@@ -287,16 +294,17 @@ class Role extends Model
 
 	public static function adminRoles()
 	{
-		$admin_roles = Cache::remember("admin_roles" , 100 , function() {
-			$roles = self::where('is_admin' , true)->get() ;
-			$array = [] ;
+		$admin_roles = Cache::remember("admin_roles", 100, function () {
+			$roles = self::where('is_admin', true)->get();
+			$array = [];
 			foreach($roles as $role) {
-				$array[] = $role->slug ;
+				$array[] = $role->slug;
 			}
-			return $array ;
+
+			return $array;
 		});
 
-		return $admin_roles ;
+		return $admin_roles;
 	}
 
 	public function browseTabs()
@@ -306,33 +314,41 @@ class Role extends Model
 		*/
 		if($this->slug == 'all') {
 			return [
-				["all" , trans('people.criteria.actives')],
-				['bin' , trans('manage.tabs.bin') , '0'  ],
-				['search' , trans('forms.button.search')],
+				["all", trans('people.criteria.actives')],
+				['bin', trans('manage.tabs.bin'), '0'],
+				['search', trans('forms.button.search')],
 			];
 		}
 
 		/*-----------------------------------------------
 		| When a particular valid role is being browsed ...
 		*/
-		$array[] = ['all' , trans('people.criteria.all')] ;
+		$array[] = ['all', trans('people.criteria.all')];
 
 		foreach($this->status_rule_array as $key => $string) {
-			$array[] = [ $key , trans("people.criteria.$string")] ;
+			$array[] = [$key, trans("people.criteria.$string")];
 		}
-		$array[] = ['banned' , trans('people.criteria.banned') ];
-		$array[] = ['search' , trans('forms.button.search')] ;
-		return $array ;
+		$array[] = ['banned', trans('people.criteria.banned')];
+		$array[] = ['search', trans('forms.button.search')];
+
+		return $array;
 	}
 
-	public function statusCombo()
+	public function statusCombo($include_delete_options = false)
 	{
-		$array = [] ;
+		$array = [];
 		foreach($this->status_rule_array as $key => $item) {
-			$array[] = [$key , $item] ;
+			$array[] = [$key, Lang::has("forms.status_text.$item") ? trans("forms.status_text.$item") : $item];
+		}
+		if(!count($array)) {
+			$array[] = [1, trans("forms.status_text.active")];
+		}
+		if($include_delete_options) {
+			$array[] = ['ban', trans("forms.status_text.blocked")];
+			$array[] = ['detach', trans("people.form.detach_this_role")];
 		}
 
-		return $array ;
+		return $array;
 	}
 
 

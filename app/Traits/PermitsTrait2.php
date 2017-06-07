@@ -891,6 +891,18 @@ trait PermitsTrait2
 	 *
 	 * @return bool
 	 */
+	public function hasnotRole($requested_role = null)
+	{
+		return !$this->hasRole($requested_role);
+	}
+
+	/**
+	 * A mirror to call the reverse of $this->hasRole()
+	 *
+	 * @param $requested_role
+	 *
+	 * @return bool
+	 */
 	public function is_not_an($requested_role)
 	{
 		return !$this->hasRole($requested_role);

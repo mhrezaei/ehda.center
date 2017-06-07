@@ -33,7 +33,7 @@
 
 	@include("forms.js" , [
 		'commands' => [
-			isset($on_change) ? [$on_change] : [],
+			isset($on_change) and (!isset($initially_run_onchange) or $initially_run_onchange) ? [$on_change] : [],
 		]
 	])
 @endif

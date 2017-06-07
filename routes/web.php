@@ -54,7 +54,7 @@ Route::group([
 			Route::post('/', 'UsersController@save');
 			Route::post('/password', 'UsersController@savePassword');
 			Route::post('/permits', 'UsersController@savePermits');
-			Route::post('/role', 'UsersController@saveRole');
+			Route::get('/role/{user_id}/{role_slug}/{new_status}' , 'UsersController@saveRole');
 			Route::post('/delete', 'UsersController@delete');
 			Route::post('/undelete', 'UsersController@undelete');
 			Route::post('/destroy', 'UsersController@destroy');
