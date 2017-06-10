@@ -39,6 +39,7 @@ class TestController extends Controller
 	public function index()
 	{
 		$user = User::find(1401) ;
-		echo "=>".$user->is_a('member') ;
+		ss($user->as('manager')->rolesQuery()) ;
+		ss($user->as('manager')->can('users-folan.create')) ;
 	}
 }

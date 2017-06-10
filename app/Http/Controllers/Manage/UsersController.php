@@ -184,18 +184,18 @@ class UsersController extends Controller
 		return view("manage.users.edit", compact('model'));
 	}
 
-	public function permitsForm($model, $role_id)
+	public function permitsForm($model, $role_slug)
 	{
-		$request_role = Role::find($role_id);
+		$request_role = Role::findBySlug($role_slug);
 		if(!$request_role) {
 			return view('errors.m410');
 		}
 		$modules = $request_role->modules_array;
 
 		$posttypes = Posttype::all();
-		$roles     = Role::where('slug', '!=', 'admin')->get();
+		$roles     = Role::all();
 
-		return view("manage.users.permits", compact('model', 'request_role', 'roles', 'posttypes', 'modules'));
+		return view("manage.users.permits2", compact('model', 'request_role', 'roles', 'posttypes', 'modules'));
 
 	}
 

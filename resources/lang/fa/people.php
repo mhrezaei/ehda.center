@@ -2,6 +2,7 @@
 return [
 	'person'                 => "نفر",
 	'people'                 => "اشخاص",
+	'people_management' => "مدیریت اشخاص" , //@TODO: New
 	'modules'                => "ماژول‌ها",
 	'deleted_user'           => "یک کاربر سابق",
 	'particular_user'        => "یک کاربر خاص",
@@ -9,6 +10,7 @@ return [
 	'users'                  => "کاربران",
 	'site_users'             => "کاربران مجموعه",
 	'user_role'              => "نقش کاربری",
+	'role_management'        => "مدیریت نقش‌ها", //@TODO: New
 	'without_role'           => "بدون نقش",
 	'default_role'           => "نقش کاربری پیش‌فرض", //@TODO: New
 	'choose_as_default_role' => "انتخاب به عنوان نقش پیش‌فرض", //@TODO: New

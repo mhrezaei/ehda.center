@@ -13,7 +13,7 @@ class Role extends Model
 {
 	use TahaModelTrait, SoftDeletes;
 
-	public static $reserved_slugs        = 'root,super,user,all,dev,developer,';
+	public static $reserved_slugs        = 'root,super,user,all,dev,developer,admin';
 	public static $meta_fields           = ['icon', 'fields', 'status_rule', 'locale_titles'];
 	public static $available_field_types = ['text', 'textarea', 'date', 'boolean', 'photo', 'file'];
 	protected     $guarded               = ['id'];

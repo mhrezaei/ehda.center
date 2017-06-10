@@ -33,13 +33,20 @@
 
 		@if(count($roles))
 			@foreach($roles as $role)
-				@include("manage.frame.widgets.grid-text" , [
+				@include("manage.frame.widgets.grid-badge" , [
 					'text' => $model->as($role)->title(),
 					'color' => $model->as($role)->enabled()? 'success' : 'danger' ,
 					'icon' => $model->as($role)->enabled()? 'check' : 'times' ,
-					'link' => $model->as($role)->canPermit()? "modal:manage/users/act/-id-/roles/" : '',
+					'link' => $model->as($role)->canPermit()? "modal:manage/users/act/-id-/permits/$role" : '',
 				]     )
 			@endforeach
+			@include("manage.frame.widgets.grid-badge" , [
+				'text' => trans("people.role_management"),
+				'color' => "default" ,
+				'icon' => "cog" ,
+				'link' => "modal:manage/users/act/-id-/roles/$role" ,
+				'condition' => $model->canPermit() ,
+			]     )
 		@else
 			@include("manage.frame.widgets.grid-text" , [
 				'text' => trans('people.without_role'),
@@ -84,7 +91,7 @@
 @include("manage.frame.widgets.grid-actionCol" , [ 'actions' => [
 	['pencil' , trans('forms.button.edit') , "modal:manage/users/act/-id-/edit" , $model->canEdit()],
 	['key' , trans('people.commands.change_password') , "modal:manage/users/act/-id-/password" , !$model->trashed() and $model->canEdit() ] ,
-	['shield' , trans('people.user_role') , "modal:manage/users/act/-id-/roles" , $model->is_not_a('dev') and $model->canPermit()],
+	['shield' , trans('people.user_role') , "modal:manage/users/act/-id-/roles" , $model->canPermit()],
 
 	['trash', trans('forms.button.delete') , 'modal:manage/users/act/-id-/delete' , !$model->trashed() and $model->canDelete()],
 	['undo', trans('forms.button.undelete') , 'modal:manage/users/act/-id-/undelete' , $model->trashed() and $model->canBin()],

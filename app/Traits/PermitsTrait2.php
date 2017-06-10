@@ -179,7 +179,7 @@ trait PermitsTrait2
 	 *
 	 * @return string
 	 */
-	private static function deface($text)
+	public static function deface($text)
 	{
 		return strtr($text, self::$alpha, self::$coder);
 	}
@@ -191,7 +191,7 @@ trait PermitsTrait2
 	 *
 	 * @return string
 	 */
-	private static function adorn($text)
+	public static function adorn($text)
 	{
 		return strtr($text, self::$coder, self::$alpha);
 	}
@@ -286,7 +286,8 @@ trait PermitsTrait2
 		$this->updated_at = Carbon::now()->toDateTimeString();
 		$this->update();
 
-		$this->stored_roles = false ;
+		$this->stored_roles = false;
+
 		return $this;
 	}
 
@@ -319,6 +320,58 @@ trait PermitsTrait2
 		;
 
 		return $this->fakeUpdate();
+	}
+
+	/**
+	 * Adds permissions to the current permissions of a user.
+	 * Role must be passed via the chain method as(). multiple choices and default one are not allowed herein.
+	 *
+	 * @param $permissions: string|array
+	 *
+	 * @return $this|bool
+	 */
+	public function addPermission($permissions)
+	{
+		$as                  = $this->getChain('as');
+		$current_permissions = $this->as($as)->getPermissions();
+		$new_permissions     = null;
+
+		if(!is_array($permissions)) {
+			$permissions = array_filter(explode(' ', $permissions));
+		}
+		foreach($permissions as $permission) {
+			if($this->as($as)->cannot($permission)) {
+				$new_permissions .= " $permission ";
+			}
+		}
+
+		return $this->as($as)->setPermission($current_permissions . $new_permissions);
+
+	}
+
+	/**
+	 * removes permissions from the current permissions of a user.
+	 * Role must be passed via the chain method as(). multiple choices and default one are not allowed herein.
+	 *
+	 * @param $permissions: string|array
+	 *
+	 * @return $this|bool
+	 */
+	public function removePermission($permissions)
+	{
+		$as                  = $this->getChain('as');
+		$current_permissions = $this->as($as)->getPermissions();
+		$new_permissions     = $current_permissions;
+
+		if(!is_array($permissions)) {
+			$permissions = array_filter(explode(' ', $permissions));
+		}
+		foreach($permissions as $permission) {
+			$new_permissions = str_replace($permission , null , $new_permissions) ;
+		}
+
+		return $this->as($as)->setPermission($new_permissions);
+
 	}
 
 	/**
@@ -739,6 +792,15 @@ trait PermitsTrait2
 	}
 
 	/**
+	 * Uses the role passed from chain method $this->as() to return the permissions of a given role.
+	 * @return integer
+	 */
+	public function getPermissions()
+	{
+		return $this->withDisabled()->rolesQuery()->first()['pivot']['permissions'];
+	}
+
+	/**
 	 * Uses the role passed from chain method $this->as() to return the title of a given role.
 	 * @return string
 	 */
@@ -789,6 +851,13 @@ trait PermitsTrait2
 	 */
 	public function as ($requested_role)
 	{
+		if(is_object($requested_role)) {
+			$requested_role = $requested_role->slug ;
+		}
+		//if(is_array($requested_role)) {
+		//	$requested_role = $requested_role['slug'] ;
+		//}
+
 		if($requested_role == 'all') {
 			$this->as     = false;
 			$this->as_all = true;

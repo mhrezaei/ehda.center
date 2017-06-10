@@ -377,6 +377,7 @@ trait TahaModelTrait
 	public static function findBySlug($slug, $field = 'slug')
 	{
 		if(!$slug) {
+			return false ;
 			return new self();
 		}
 		$model = self::where($field, $slug)->first();

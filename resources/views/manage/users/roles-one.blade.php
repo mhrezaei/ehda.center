@@ -16,6 +16,7 @@
 				'color' => "gray",
 				'icon' => "times" ,
 				'text' => '' ,
+				'link' => "$('#divRole-$role->id .-summery , #divRole-$role->id .-edit').slideToggle('fast')" ,
 			]     )
 		@elseif($model->as($role->slug)->enabled())
 			@include("manage.frame.widgets.grid-text" , [
@@ -23,27 +24,30 @@
 				'icon' => "check" ,
 				'fake' => $role->has_status_rules? $status = " (".$role->statusRule( $model->as($role->slug)->status()  , true).") " : $status = "" ,
 				'text' => trans('people.form.now_active').$status ,
-			]     )
+				'link' => "$('#divRole-$role->id .-summery , #divRole-$role->id .-edit').slideToggle('fast')" ,
+		]     )
 		@else
 			@include("manage.frame.widgets.grid-text" , [
 				'color' => "danger",
 				'icon' => "ban",
 				'text' => trans('people.form.now_blocked') ,
+				'link' => "$('#divRole-$role->id .-summery , #divRole-$role->id .-edit').slideToggle('fast')" ,
 			]     )
 		@endif
 	</div>
 
 	{{--
 	|--------------------------------------------------------------------------
-	| Change Button
+	| Change Button (Edit)
 	|--------------------------------------------------------------------------
 	| 
 	--}}
 	<div class="col-md-3">
 		@include("manage.frame.widgets.grid-text" , [
+			'id' => "cmdRoleEdit-$role->id" ,
 			'text' => trans('forms.button.edit'),
 			'link' => "$('#divRole-$role->id .-summery , #divRole-$role->id .-edit').slideToggle('fast')" ,
-			'class' => "btn btn-default btn-xs" ,
+			'class' => "btn btn-default btn-xs noDisplay " ,
 			'icon' => "pencil" ,
 		]     )
 
@@ -110,48 +114,8 @@
 	--}}
 	<div class="col-md-3">
 
-		@include("manage.frame.widgets.grid-text" , [
-			'text' => trans('forms.button.cancel'),
-			'link' => "$('#divRole-$role->id .-summery , #divRole-$role->id .-edit').slideToggle('fast')" ,
-			'class' => "btn btn-default btn-xs" ,
-			'icon' => "undo" ,
-		]     )
+		<button type="button" class="btn btn-default" onclick="{{"$('#divRole-$role->id .-summery , #divRole-$role->id .-edit').slideToggle('fast')"}}">
+			{{ trans('forms.button.cancel') }}
+		</button>
 	</div>
 </div>
-
-<script>
-	function roleAttachmentEffect(role_id) {
-		var new_status = $("#cmbStatus-" + role_id).val();
-		var $button = $("#btnRoleSave-" + role_id);
-		$button.removeClass('btn-warning btn-primary btn-danger');
-
-		switch (new_status) {
-			case 'ban' :
-				$button.addClass('btn-warning');
-				break;
-			case 'detach' :
-				$button.addClass('btn-danger');
-				break;
-			default :
-				$button.addClass('btn-primary');
-				break;
-		}
-		$button.fadeIn('fast');
-	}
-
-	function roleAttachmentSave(user_id , role_id , role_slug) {
-	    var new_status = $("#cmbStatus-" + role_id).val();
-	    var $button = $("#btnRoleSave-" + role_id);
-
-	    $.ajax({
-		    url:url('manage/users/save/role/'+user_id+'/'+role_slug+'/'+new_status) ,
-		    dataType: "json",
-		    cache: false
-	    })
-		    .done(function(result) {
-				divReload("divRole-"+role_id);
-				rowUpdate('tblUsers' , user_id);
-		    });
-
-    }
-</script>
