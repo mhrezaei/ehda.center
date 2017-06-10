@@ -1,4 +1,4 @@
-@if($model->hasAnyOf(['template_choice','slug','visibility_choice']))
+@if($model->hasAnyOf(['template_choice','slug','visibility_choice' , 'comment' , 'domains']))
 
 	<div class="panel panel-default">
 		<div class="panel-heading">
@@ -9,11 +9,30 @@
 
 			{{--
 			|--------------------------------------------------------------------------
+			| Domains
+			|--------------------------------------------------------------------------
+			| //@TODO: Check Users's Privilages before showing the menu
+			--}}
+			@include("forms.select_self" , [
+				'condition' => $model->has('domains'),
+				'top_label' => trans('validation.attributes.domain') ,
+				'name' => "domains" ,
+				'id' => "cmbDomain" ,
+				'search' => true ,
+				'blank_value' => "global" ,
+				'blank_label' => trans('posts.form.global'),
+				'on_change' => '' , //@TODO: What on-change should do? Check Ehda
+				'options' => model('Domain')::orderBy('title')->get() ,
+				'value' => str_replace('*' , null , $model->domains) ,
+			]     )
+			<div class="m10"></div>
+
+			{{--
+			|--------------------------------------------------------------------------
 			| Template
 			|--------------------------------------------------------------------------
 			|
 			--}}
-
 
 			@include("forms.select_self" , [
 				'condition' => $model->has('template_choice'),
@@ -62,6 +81,7 @@
 			<div class="m10"></div>
 			@include("manage.posts.editor-comments")
 
+
 			{{--
 			|--------------------------------------------------------------------------
 			| Persian Digits
@@ -74,7 +94,6 @@
 				{{--'label' => trans('posts.form.automatically_change_english_digits') ,--}}
 				{{--'value' => $model->automatically_change_english_digits ,--}}
 			{{--])--}}
-
 
 		</div>
 

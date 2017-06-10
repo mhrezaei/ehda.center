@@ -22,6 +22,7 @@ class Posttype extends Model
 		'comment'           => ['comments-o', 'info', ['allow_anonymous_comment:boolean', 'disable_receiving_comments:boolean', 'disable_showing_comments:boolean', 'comment_receive_day_limits:date']],
 		'rate'              => ['star-half-o', 'info', []], //@TODO: feature_fields
 		'album'             => ['address-book-o', 'info', ['post_photos:auto']],
+		'domains'           => ['code-fork', 'info', []],
 		'category'          => ['folder-o', 'info', []],
 		'cat_image'         => ['file-image-o', 'info', []],
 		'keywords'          => ['tags', 'info', []], //@TODO: feature_fields
@@ -357,7 +358,7 @@ class Posttype extends Model
 			return $this->title;
 		}
 		else {
-			return $this->meta("locale_titles")["title-$locale"] ;
+			return $this->meta("locale_titles")["title-$locale"];
 		}
 	}
 
@@ -367,7 +368,7 @@ class Posttype extends Model
 			return $this->singular_title;
 		}
 		else {
-			return $this->meta("locale_titles")["singular_title-$locale"] ;
+			return $this->meta("locale_titles")["singular_title-$locale"];
 		}
 	}
 

@@ -7,12 +7,22 @@
 	])
 </td>
 
-
 <td>
 	@include("manage.frame.widgets.grid-text" , [
 		'text' => $model->province()->title,
 		'link' => "modal:manage/upstream/edit/state/".$model->province()->id,
 	])
+</td>
+
+<td>
+	@if($model->domain_id)
+		@include("manage.frame.widgets.grid-text" , [
+			'text' => $model->domain->title,
+			'link' => "modal:manage/upstream/edit/domain/".$model->domain_id,
+		])
+	@else
+		-
+	@endif
 </td>
 
 <td>
@@ -24,4 +34,7 @@
 		'opacity' => "0.8",
 	])
 </td>
+
+
+
 

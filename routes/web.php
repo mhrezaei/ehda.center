@@ -181,6 +181,7 @@ Route::group([
 			Route::post('role-activeness', 'UpstreamController@saveRoleActiveness');
 			Route::post('role-default', 'UpstreamController@saveRoleDefault');
 			Route::post('state', 'UpstreamController@saveProvince');
+			Route::post('domain', 'UpstreamController@saveDomain');
 			Route::post('city', 'UpstreamController@saveCity');
 			Route::post('posttype', 'UpstreamController@savePosttype');
 			Route::post('posttype-titles', 'UpstreamController@savePosttypeTitles');

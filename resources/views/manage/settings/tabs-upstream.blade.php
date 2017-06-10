@@ -7,5 +7,6 @@
 		['roles' , trans('settings.roles')],
 		['packages' , trans('settings.packages')],
 		['states' , trans('settings.states')],
+		['domains' , trans('settings.domains')]
 	] ,
 ])

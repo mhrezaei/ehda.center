@@ -369,6 +369,8 @@ class ComposerStaticInitc163ed33e856e3abf8986dc792906912
     );
 
     public static $classMap = array (
+        'AddDomainToStates' => __DIR__ . '/../..' . '/database/migrations/2017_06_10_155035_add_domain_to_states.php',
+        'AddDomainsToPosts' => __DIR__ . '/../..' . '/database/migrations/2017_06_10_122934_add_domains_to_posts.php',
         'AddEducationToUsersTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_03_095854_add_education_to_users_table.php',
         'AddEventColumnsToPostsTable' => __DIR__ . '/../..' . '/database/migrations/2017_04_17_161728_add_event_columns_to_posts_table.php',
         'AddIpToComments' => __DIR__ . '/../..' . '/database/migrations/2017_04_18_132634_add_ip_to_comments.php',
@@ -388,6 +390,7 @@ class ComposerStaticInitc163ed33e856e3abf8986dc792906912
         'CreateCategoryPostTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_06_120626_create_category_post_table.php',
         'CreateCommentsTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_06_121215_create_comments_table.php',
         'CreateCouriersTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_22_182302_create_couriers_table.php',
+        'CreateDomainsTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_10_154645_create_domains_table.php',
         'CreateFolderPostRelationTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_08_125343_create_folder_post_relation_table.php',
         'CreateGoodsTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_15_195009_create_goods_table.php',
         'CreateOrdersTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_22_140505_create_orders_table.php',
@@ -854,7 +857,6 @@ class ComposerStaticInitc163ed33e856e3abf8986dc792906912
         'PHP_Token_YIELD' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'PHP_Token_YIELD_FROM' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'ProjectSeeder' => __DIR__ . '/../..' . '/database/seeds/ProjectSeeder.php',
-        'PullThingsOutOfUsersMeta' => __DIR__ . '/../..' . '/database/migrations/2017_05_31_104525_pull_things_out_of_users_meta.php',
         'SebastianBergmann\\CodeCoverage\\CodeCoverage' => __DIR__ . '/..' . '/phpunit/php-code-coverage/src/CodeCoverage.php',
         'SebastianBergmann\\CodeCoverage\\CoveredCodeNotExecutedException' => __DIR__ . '/..' . '/phpunit/php-code-coverage/src/Exception/CoveredCodeNotExecutedException.php',
         'SebastianBergmann\\CodeCoverage\\Driver\\Driver' => __DIR__ . '/..' . '/phpunit/php-code-coverage/src/Driver/Driver.php',

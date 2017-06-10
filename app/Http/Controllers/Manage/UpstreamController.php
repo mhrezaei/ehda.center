@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Manage;
 
 use App\Http\Requests\Manage\CitySaveRequest;
+use App\Http\Requests\Manage\DomainSaveRequest;
 use App\Http\Requests\Manage\DownstreamSaveRequest;
 use App\Http\Requests\Manage\PackageSaveRequest;
 use App\Http\Requests\Manage\PosttypeSaveRequest;
@@ -10,6 +11,7 @@ use App\Http\Requests\Manage\PosttypeTitlesSaveRequest;
 use App\Http\Requests\Manage\ProvinceSaveRequest;
 use App\Http\Requests\Manage\RoleSaveRequest;
 use App\Http\Requests\Manage\RoleTitlesSaveRequest;
+use App\Models\Domain;
 use App\Models\Folder;
 use App\Models\Post;
 use App\Models\Unit;
@@ -69,6 +71,10 @@ class UpstreamController extends Controller
 				$models = Unit::withTrashed()->orderBy('deleted_at')->orderBy('created_at', 'desc')->paginate(user()->preference('max_rows_per_page'));
 				break;
 
+			case 'domains' :
+				$models = Domain::orderBy('title')->paginate(user()->preference('max_rows_per_page')) ;
+				break ;
+
 			default :
 				return view('errors.404');
 		}
@@ -112,6 +118,9 @@ class UpstreamController extends Controller
 				$page[2] = ['search', trans('forms.button.search_for') . " $key", ''];
 				break;
 
+			case 'domains' :
+				break;
+
 			default:
 				return view('templates.say', ['array' => "What the hell is $request_tab?"]); //@TODO: REMOVE THIS
 				return view('errors.404');
@@ -142,6 +151,18 @@ class UpstreamController extends Controller
 
 				return view('manage.settings.states-cities', compact('page', 'models', 'province'));
 				break;
+
+			case 'domains' :
+				$domain = Domain::find($item_id) ;
+				if(!$domain) {
+					return view('errors.410');
+				}
+				$models = $domain->states()->orderBy('title')->paginate(user()->preference('max_rows_per_page'));
+				$page[2][1] = trans('settings.cities_of', ['province' => $domain->title]);
+
+				return view('manage.settings.states-cities', compact('page', 'models', 'domain'));
+				break ;
+
 
 			case 'downstream' :
 				$model = Setting::find($item_id);
@@ -197,6 +218,19 @@ class UpstreamController extends Controller
 				}
 
 				return view('manage.settings.states-cities-edit', compact('model', 'provinces'));
+
+			case 'domain' :
+				if($item_id) {
+					$model = Domain::find($item_id);
+					if(!$model) {
+						return view('errors.m410');
+					}
+				}
+				else {
+					$model            = new Domain();
+				}
+
+				return view('manage.settings.domains-edit', compact('model'));
 
 			case 'state' :
 				if($item_id) {
@@ -412,6 +446,25 @@ class UpstreamController extends Controller
 			'success_refresh' => 1,
 		]);
 
+
+	}
+
+	public function saveDomain(DomainSaveRequest $request)
+	{
+		//If Save...
+		if($request->_submit == 'save') {
+			return $this->jsonAjaxSaveFeedback(Domain::store($request), [
+				'success_refresh' => 1,
+			]);
+		}
+
+		//If Delete...
+		if($request->_submit == 'delete') {
+			$model = State::find($request->id);
+			return $this->jsonAjaxSaveFeedback(Domain::destroy($request->id), [
+				'success_refresh' => 1,
+			]);
+		}
 
 	}
 
