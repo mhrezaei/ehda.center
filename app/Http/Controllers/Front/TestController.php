@@ -38,8 +38,11 @@ class TestController extends Controller
 
 	public function index()
 	{
-		$user = User::find(1401) ;
-		ss($user->as('manager')->rolesQuery()) ;
-		ss($user->as('manager')->can('users-folan.create')) ;
+		//$user = User::find(1401) ;
+		//ss($user->as('manager')->rolesQuery()) ;
+		//ss($user->as('manager')->can('users-folan.create')) ;
+
+		$table = Post::selector(['domain' => "isfahan" ,])->count();
+		ss($table);
 	}
 }

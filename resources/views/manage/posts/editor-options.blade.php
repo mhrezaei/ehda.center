@@ -19,6 +19,7 @@
 				'name' => "domains" ,
 				'id' => "cmbDomain" ,
 				'search' => true ,
+				'value_field' => "slug" ,
 				'blank_value' => "global" ,
 				'blank_label' => trans('posts.form.global'),
 				'on_change' => '' , //@TODO: What on-change should do? Check Ehda
