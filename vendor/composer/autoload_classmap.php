@@ -6,12 +6,17 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AddDomainToStates' => $baseDir . '/database/migrations/2017_06_10_155035_add_domain_to_states.php',
+    'AddDomainsToPosts' => $baseDir . '/database/migrations/2017_06_10_122934_add_domains_to_posts.php',
     'AddEducationToUsersTable' => $baseDir . '/database/migrations/2017_05_03_095854_add_education_to_users_table.php',
     'AddEventColumnsToPostsTable' => $baseDir . '/database/migrations/2017_04_17_161728_add_event_columns_to_posts_table.php',
     'AddIpToComments' => $baseDir . '/database/migrations/2017_04_18_132634_add_ip_to_comments.php',
+    'AddManagerFieldToRolesTable' => $baseDir . '/database/migrations/2017_05_30_173859_add_manager_field_to_roles_table.php',
     'AddMetaToSettings' => $baseDir . '/database/migrations/2017_05_21_134404_add_meta_to_settings.php',
     'AddPurchaseFieldsToUsers' => $baseDir . '/database/migrations/2017_04_09_183444_add_purchase_fields_to_users.php',
     'AddSalePriceToPostsTable' => $baseDir . '/database/migrations/2017_05_03_095545_add_sale_price_to_posts_table.php',
+    'AddStatusToRoleUsers' => $baseDir . '/database/migrations/2017_05_23_173941_add_status_to_role_users.php',
+    'AddStatusToUsers' => $baseDir . '/database/migrations/2017_05_28_131337_add_status_to_users.php',
     'AddTextFieldsToPosts' => $baseDir . '/database/migrations/2017_04_09_184614_add_text_fields_to_posts.php',
     'AddTypeToComments' => $baseDir . '/database/migrations/2017_04_24_124100_add_type_to_comments.php',
     'ChangePackagesToUnitsTable' => $baseDir . '/database/migrations/2017_05_15_165342_change_packages_to_units_table.php',
@@ -22,6 +27,7 @@ return array(
     'CreateCategoryPostTable' => $baseDir . '/database/migrations/2017_02_06_120626_create_category_post_table.php',
     'CreateCommentsTable' => $baseDir . '/database/migrations/2017_02_06_121215_create_comments_table.php',
     'CreateCouriersTable' => $baseDir . '/database/migrations/2017_05_22_182302_create_couriers_table.php',
+    'CreateDomainsTable' => $baseDir . '/database/migrations/2017_06_10_154645_create_domains_table.php',
     'CreateFolderPostRelationTable' => $baseDir . '/database/migrations/2017_03_08_125343_create_folder_post_relation_table.php',
     'CreateGoodsTable' => $baseDir . '/database/migrations/2017_05_15_195009_create_goods_table.php',
     'CreateOrdersTable' => $baseDir . '/database/migrations/2017_05_22_140505_create_orders_table.php',

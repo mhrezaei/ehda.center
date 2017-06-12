@@ -1,7 +1,7 @@
 @include('templates.modal.start' , [
 	'partial' => true ,
-	'form_url' => url('manage/upstream/save/city'),
-	'modal_title' => $model->id? trans('settings.city_edit') : trans('settings.city_new'),
+	'form_url' => url('manage/upstream/save/domain'),
+	'modal_title' => $model->id? trans('settings.domain_edit') : trans('settings.domain_new'),
 ])
 	<div class='modal-body'>
 
@@ -16,21 +16,16 @@
 			'value' => $model->title ,
 		])
 
-		@include('forms.select' , [
-			'name' =>	'province_id',
-			'class' => 'form-required',
-			'options' => $provinces->toArray(),
-			'value' => $model->parent_id  ,
-			'blank_value' => '0' ,
+		@include('forms.input' , [
+			'name' =>	'slug',
+			'class' => 'form-required ltr' ,
+			'value' => $model->slug ,
 		])
 
-		@include('forms.select' , [
-			'condition' => model('domain')::count() ,
-			'name' =>	'domain_id',
-			'class' => 'form-required',
-			'options' => model('domain')::orderBy('title')->get(),
-			'value' => $model->id? $model->domain_id : $model->guess_domain ,
-			'blank_value' => '0' ,
+		@include('forms.input' , [
+			'name' =>	'alias',
+			'class' => 'form-required ltr' ,
+			'value' => $model->alias ,
 		])
 
 

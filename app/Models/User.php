@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Providers\DummyServiceProvider;
 use App\Traits\PermitsTrait;
+use App\Traits\PermitsTrait2;
 use App\Traits\TahaModelTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -16,7 +17,9 @@ use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
-	use Notifiable, TahaModelTrait, PermitsTrait, SoftDeletes;
+	use Notifiable, TahaModelTrait, SoftDeletes;
+	//use PermitsTrait ;
+	use PermitsTrait2;
 
 	public static $meta_fields     = [
 		'preferences',
@@ -25,6 +28,8 @@ class User extends Authenticatable
 		'postal_code',
 		'address',
 		'reset_token',
+		'key',
+		'default_role_deleted_at',
 	];
 	public static $search_fields   = ['name_first', 'name_last', 'name_firm', 'code_melli', 'email', 'mobile'];
 	public static $required_fields = ['name_first', 'name_last', 'code_melli', 'mobile', 'home_tel', 'birth_date', 'gender', 'marital'];
@@ -46,10 +51,6 @@ class User extends Authenticatable
 	|--------------------------------------------------------------------------
 	|
 	*/
-	public function roles()
-	{
-		return $this->belongsToMany('App\Models\Role')->withPivot('permissions', 'deleted_at')->withTimestamps();
-	}
 
 	public function receipts()
 	{
@@ -93,6 +94,207 @@ class User extends Authenticatable
 	|
 	*/
 	public static function selector($parameters = [])
+	{
+		$switch = array_normalize($parameters, [
+			'id'         => false,
+			'email'      => false,
+			'code_melli' => false,
+			'mobile'     => false,
+			'role'       => 'default', // <~~ Supports Arrays
+			'status'     => false, // <~~ best works where only one role is given.
+			'min_status' => false, // <~~ best works where only one role is given.
+			'max_status' => false, // <~~ best works where only one role is given.
+			'permits'    => false,  // <~~ Supports Arrays
+			'search'     => false,
+			'criteria'   => null,
+			'banned'     => false,
+			'bin'        => false,
+			'domain'     => 'all',
+		]);
+
+		$table                 = self::where('id', '>', '0');
+		$default_role_included = false;
+
+		/*-----------------------------------------------
+		| Simple Things ...
+		*/
+		if($switch['id']) {
+			$table->where('id', $switch['id']);
+		}
+		if($switch['email']) {
+			$table->where('email', $switch['email']);
+		}
+		if($switch['code_melli']) {
+			$table->where('code_melli', $switch['code_melli']);
+		}
+		if($switch['mobile']) {
+			$table->where('mobile', $switch['mobile']);
+		}
+
+		/*-----------------------------------------------
+		| Role ...
+		*/
+		if($switch['role']) {
+			if($switch['role'] == 'default') {
+				$switch['role'] = self::defaultRole();
+			}
+			if($switch['role'] == 'all' or $switch['role'] == self::defaultRole()) {
+				if(self::defaultRole()) {
+					$default_role_included = true;
+				}
+				//nothing to do :)
+			}
+			elseif($switch['role'] == 'no') {
+				if(self::defaultRole()) {
+					$default_role_included = true;
+					// nothing to do :)
+				}
+				else {
+					$table->has('roles', '=', 0);
+				}
+			}
+			elseif(!is_array($switch['role'])) {
+				$switch['role'] = [$switch['role']];
+			}
+
+			if(is_array($switch['role']) and count($switch['role'])) {
+				if(in_array(self::defaultRole(), $switch['role'])) {
+					$default_role_included = true;
+					//nothing to do :)
+				}
+				else {
+					$table->whereHas('roles', function ($query) use ($switch) {
+						$query->whereIn('roles.slug', $switch['role']);
+					});
+				}
+			}
+		}
+
+		/*-----------------------------------------------
+		| Status ...
+		*/
+		if($switch['status'] !== false) {
+
+			if($switch['status'] == 'all') {
+				//nothing to do.
+			}
+			elseif($switch['status'] == 'bin') {
+				if($switch['role'] == 'all') {
+					$switch['bin'] = true;
+				}
+				else {
+					$switch['banned'] = true;
+				}
+			}
+			elseif($default_role_included) {
+				$table->where('status', $switch['status']);
+			}
+			else {
+				$table->whereHas('roles', function ($query) use ($switch) {
+					$query->where('role_user.status', $switch['status']);
+				});
+			}
+		}
+
+		if($switch['min_status'] !== false) {
+			if($default_role_included) {
+				$table->where('status', '>=', $switch['min_status']);
+			}
+			else {
+				$table->whereHas('roles', function ($query) use ($switch) {
+					$query->where('role_user.status', '>=', $switch['min_status']);
+				});
+			}
+		}
+		if($switch['max_status'] !== false) {
+			if($default_role_included) {
+				$table->where('status', '>=', $switch['max_status']);
+			}
+			else {
+				$table->whereHas('roles', function ($query) use ($switch) {
+					$query->where('role_user.status', '<=', $switch['max_status']);
+				});
+			}
+		}
+
+		/*-----------------------------------------------
+		| Domain ...
+		*/
+		if($switch['domain']) {
+			if($switch['domain'] == 'all') {
+				//nothing to do :)
+			}
+			else {
+				//@TODO
+			}
+		}
+
+
+		/*-----------------------------------------------
+		| Banned ...
+		*/
+		if($switch['banned']) {
+			if($default_role_included) {
+				//@TODO
+			}
+			else {
+				$table->whereHas('roles', function ($query) {
+					$query->whereNotNull('role_user.deleted_at');
+				});
+			}
+		}
+
+		/*-----------------------------------------------
+		| Trashed ...
+		*/
+		if($switch['bin']) {
+			$table->onlyTrashed();
+		}
+
+
+		/*-----------------------------------------------
+		| Permits ...
+		*/
+		if($switch['permits'] !== false) {
+			if(!is_array($switch['permits'])) {
+				$switch['permits'] = [$switch['permits']];
+			}
+			if(is_array($switch['permits']) and count($switch['permits'])) {
+				foreach($switch['permits'] as $request) {
+					$request = str_replace(self::$wildcards, '', $request);
+					$table->whereHas('roles', function ($query) use ($request) {
+						$query->where('role_user.permissions', 'like', "%$request%");
+					});
+				}
+			}
+		}
+
+		/*-----------------------------------------------
+		| Criteria ...
+		*/
+		switch ($switch['criteria']) {
+			case 'blocked' :
+
+		}
+
+
+		/*-----------------------------------------------
+		| Search ...
+		*/
+		if($switch['search']) {
+			$table = $table->whereRaw(self::searchRawQuery($switch['search']));
+		}
+
+		/*-----------------------------------------------
+		| Return ...
+		*/
+
+		return $table;
+
+
+	}
+
+	public static function _selector($parameters = [])
 	{
 		extract(array_normalize($parameters, [
 			'id'       => "0",
@@ -196,7 +398,7 @@ class User extends Authenticatable
 
 	public function getProfileLinkAttribute()
 	{
-		return  "manage/users/browse/all/search?id=$this->id&searched=1" ;
+		return "manage/users/browse/all/search?id=$this->id&searched=1";
 	}
 
 
@@ -231,14 +433,14 @@ class User extends Authenticatable
 		}
 	}
 
-	public function getStatusAttribute()
+	public function _getStatusAttribute()
 	{
-		$request_role = $this->getAndResetAsRole();
+		$request_role = $this->getChain('as');
 		if($request_role) {
 			if(!$this->as($request_role)->includeDisabled()->hasRole()) {
 				return 'without';
 			}
-			elseif($this->enabled()) {
+			elseif($this->as($request_role)->enabled()) {
 				return 'active';
 			}
 			else {
@@ -281,7 +483,7 @@ class User extends Authenticatable
 
 	public function canEdit()
 	{
-		$request_role = $this->getAndResetAsRole();
+		$request_role = $this->getChain('as');
 
 		/*-----------------------------------------------
 		| Power users ...
@@ -306,7 +508,7 @@ class User extends Authenticatable
 
 	public function canDelete()
 	{
-		$request_role = $this->getAndResetAsRole();
+		$request_role = $this->getChain('as');
 
 		/*-----------------------------------------------
 		| Power users ...
@@ -328,7 +530,7 @@ class User extends Authenticatable
 
 	public function canBin()
 	{
-		$request_role = $this->getAndResetAsRole();
+		$request_role = $this->getChain('as');
 
 		/*-----------------------------------------------
 		| Power users ...
@@ -351,7 +553,7 @@ class User extends Authenticatable
 
 	public function canPermit()
 	{
-		$request_role = $this->getAndResetAsRole();
+		$request_role = $this->getChain('as');
 
 		/*-----------------------------------------------
 		| Simple Decisions ...
@@ -362,34 +564,30 @@ class User extends Authenticatable
 		if($this->id == user()->id) {
 			return false;
 		}
+		if($this->is_a('developer')) {
+			return user()->is_a('developer');
+		}
 
+		/*-----------------------------------------------
+		| In case of a specified role ...
+		*/
 		if($request_role) {
 			if($this->as($request_role)->disabled()) {
 				return false;
 			}
-			$role = Role::findBySlug($request_role);
-			if(!$role or !$role->has_modules) {
-				return false;
+			else {
+				return user()->as($request_role)->isSuper();
 			}
 		}
 
 		/*-----------------------------------------------
-		| Power users ...
+		| In case of generally called ...
 		*/
-		if($this->is_a('developer')) {
-			return user()->is_a('developer');
-		}
-		elseif($this->is_an('admin')) {
-			return user()->is_a('superadmin');
+		if(!$request_role) {
+			return user()->as_any()->can_all(['users-all', 'super']); //TODO: Check for correct response
 		}
 
-		/*-----------------------------------------------
-		| Other users ... @TODO: complete this part
-		*/
-
-		return user()->is_a('superadmin');
 	}
-
 
 	/*
 	|--------------------------------------------------------------------------
@@ -417,23 +615,24 @@ class User extends Authenticatable
 		return $post->receipts->where('user_id', $this->id)->sum('purchased_amount');
 	}
 
-    public function drawingRecentScores($eventsNumber, $historyLimit = 0)
-    {
-        return Post::where([
-            'type' => 'events',
-            'locale' => getLocale(),
-        ])->whereDate('starts_at', '<=', Carbon::now())
-            ->whereDate('ends_at', '>=', Carbon::now()->subDay($historyLimit))
-            ->leftJoin('receipts', [
-                ['starts_at', '<=', 'purchased_at'],
-                ['ends_at', '>=', 'purchased_at'],
-                ['user_id', '=', DB::raw(user()->id)]
-            ])
-            ->select(DB::raw('posts.*, sum(receipts.purchased_amount) as sum_amount'))
-            ->groupBy(DB::raw('posts.id'))
-            ->limit($eventsNumber)
-            ->orderBy('sum_amount', 'DESC')
-            ->get();
+	public function drawingRecentScores($eventsNumber, $historyLimit = 0)
+	{
+		return Post::where([
+			'type'   => 'events',
+			'locale' => getLocale(),
+		])->whereDate('starts_at', '<=', Carbon::now())
+			->whereDate('ends_at', '>=', Carbon::now()->subDay($historyLimit))
+			->leftJoin('receipts', [
+				['starts_at', '<=', 'purchased_at'],
+				['ends_at', '>=', 'purchased_at'],
+				['user_id', '=', DB::raw(user()->id)],
+			])
+			->select(DB::raw('posts.*, sum(receipts.purchased_amount) as sum_amount'))
+			->groupBy(DB::raw('posts.id'))
+			->limit($eventsNumber)
+			->orderBy('sum_amount', 'DESC')
+			->get()
+			;
 
-    }
+	}
 }

@@ -22,7 +22,7 @@ class Post extends Model
 		'is_draft'     => "boolean",
 		'is_limited'   => "boolean",
 		'published_at' => 'datetime',
-	     'meta' => "array" ,
+		'meta'         => "array",
 	];
 	private          $cached_posttype = false;
 	private          $cached_parent   = false;
@@ -46,15 +46,16 @@ class Post extends Model
 
 	public function goods($regardless_of_availability = false)
 	{
-		$table = Good::where('sisterhood' , $this->sisterhood) ;
+		$table = Good::where('sisterhood', $this->sisterhood);
 
 		if($regardless_of_availability) {
 			//$table->withTrashed() ;
 		}
 		else {
-			$table->where('locales' , 'like' , "%$this->locale%") ;
+			$table->where('locales', 'like', "%$this->locale%");
 		}
-		return $table ;
+
+		return $table;
 	}
 
 	public function roles()
@@ -210,7 +211,7 @@ class Post extends Model
 
 	public function getDiscountAmountAttribute()
 	{
-		return max( $this->price - $this->sale_price , 0);
+		return max($this->price - $this->sale_price, 0);
 	}
 
 
@@ -283,9 +284,8 @@ class Post extends Model
 
 	public function getBrowseLinkAttribute()
 	{
-		return "manage/posts/$this->type/all/id=$this->id" ;
+		return "manage/posts/$this->type/all/id=$this->id";
 	}
-
 
 
 	public function getOtherLocalesAttribute()
@@ -354,7 +354,7 @@ class Post extends Model
 	public function getParentAttribute()
 	{
 		if($this->cached_parent) {
-			$parent = $this->cached_parent ;
+			$parent = $this->cached_parent;
 		}
 		else {
 			if($this->isCopy()) {
@@ -371,80 +371,82 @@ class Post extends Model
 		return $parent;
 	}
 
-    public function getDirectUrlAttribute()
-    {
-        switch ($this->type) {
-            case 'products':
-                return url_locale('products/pd-' . ($this->hash_id));
-                break;
-            case 'news':
-                return url_locale('news/nw-' . ($this->hash_id));
-                break;
-            case 'faqs':
-                return url_locale('faqs/faq-' . ($this->hash_id));
-                break;
-            case 'teammates':
-                return url_locale('teammates/tm-' . ($this->hash_id));
-                break;
-        }
-    }
+	public function getDirectUrlAttribute()
+	{
+		switch ($this->type) {
+			case 'products':
+				return url_locale('products/pd-' . ($this->hash_id));
+				break;
+			case 'news':
+				return url_locale('news/nw-' . ($this->hash_id));
+				break;
+			case 'faqs':
+				return url_locale('faqs/faq-' . ($this->hash_id));
+				break;
+			case 'teammates':
+				return url_locale('teammates/tm-' . ($this->hash_id));
+				break;
+		}
+	}
 
-    public function getViewableFeaturedImageAttribute()
-    {
-        $this->spreadMeta();
-        if($this->featured_image) {
-            return url($this->featured_image);
-        } else {
-            if($typeImage = $this->posttype->spreadMeta()->default_featured_image) {
-                return url($typeImage);
-            }
-        }
-    }
+	public function getViewableFeaturedImageAttribute()
+	{
+		$this->spreadMeta();
+		if($this->featured_image) {
+			return url($this->featured_image);
+		}
+		else {
+			if($typeImage = $this->posttype->spreadMeta()->default_featured_image) {
+				return url($typeImage);
+			}
+		}
+	}
 
-    public function getViewableFeaturedImageThumbnailAttribute()
-    {
-        $image = $this->viewable_featured_image;
+	public function getViewableFeaturedImageThumbnailAttribute()
+	{
+		$image = $this->viewable_featured_image;
 
-        return str_replace_last('/', '/thumbs/', $image);
-    }
+		return str_replace_last('/', '/thumbs/', $image);
+	}
 
-    public function getViewableAlbumAttribute()
-    {
-        $this->spreadMeta();
-        $album = $this->post_photos;
-        if($album and is_array($album) and count($album)) {
-            foreach($album as &$image) {
-                $image['src'] = url($image['src']);
-            }
-            return $album;
-        }
+	public function getViewableAlbumAttribute()
+	{
+		$this->spreadMeta();
+		$album = $this->post_photos;
+		if($album and is_array($album) and count($album)) {
+			foreach($album as &$image) {
+				$image['src'] = url($image['src']);
+			}
 
-        return [];
-    }
+			return $album;
+		}
 
-    public function getViewableAlbumThumbnailsAttribute()
-    {
-        $album = $this->viewable_album;
-        if($album and is_array($album) and $album) {
-            foreach($album as &$image) {
-                $image['src'] = str_replace_last('/', '/thumbs/', $image['src']);
-            }
+		return [];
+	}
 
-            return $album;
-        }
+	public function getViewableAlbumThumbnailsAttribute()
+	{
+		$album = $this->viewable_album;
+		if($album and is_array($album) and $album) {
+			foreach($album as &$image) {
+				$image['src'] = str_replace_last('/', '/thumbs/', $image['src']);
+			}
 
-        return [];
-    }
+			return $album;
+		}
 
-    public function getCurrentPriceAttribute()
-    {
-        if($this->isIt('IN_SALE')) {
-            return $this->sale_price;
-        }
-        else {
-            return $this->price;
-        }
-    }
+		return [];
+	}
+
+	public function getCurrentPriceAttribute()
+	{
+		if($this->isIt('IN_SALE')) {
+			return $this->sale_price;
+		}
+		else {
+			return $this->price;
+		}
+	}
 
 
 	/*
@@ -612,6 +614,7 @@ class Post extends Model
 			'from'     => null,
 			'to'       => null,
 			'folder'   => "",   //supports single or an array of id,slug, or both
+			'domain'   => null,
 		]);
 
 		$table = self::where('id', '>', '0');
@@ -707,6 +710,18 @@ class Post extends Model
 		if($switch['owner'] > 0) {
 			$table = $table->where('owned_by', $switch['owner']);
 		}
+
+		/*-----------------------------------------------
+		| Process Domain ...
+		*/
+		if($switch['domain']) {
+			$switch['domain'] = (array) $switch['domain'];
+
+			foreach($switch['domain'] as $domain) {
+				$table->where('domains', 'like', "%$domain%");
+			}
+		}
+
 
 		/*-----------------------------------------------
 		| Process Criteria ...
@@ -1007,14 +1022,14 @@ class Post extends Model
 		return false;
 	}
 
-    public function getAbstract()
-    {
-        $this->spreadMeta();
-        if($this->abstract) {
-            return $this->abstract;
-        }
+	public function getAbstract()
+	{
+		$this->spreadMeta();
+		if($this->abstract) {
+			return $this->abstract;
+		}
 
-        return str_limit($this->text, 200);
+		return str_limit($this->text, 200);
 	}
 
 }

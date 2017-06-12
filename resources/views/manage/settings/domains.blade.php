@@ -4,32 +4,30 @@
 	@include('manage.settings.tabs-upstream')
 
 	@include("manage.frame.widgets.toolbar" , [
-		'title' => $page[1][1].' / '.$page[2][1],
 		'buttons' => [
 			[
-				'condition' => isset($province),
-				'target' => "modal:manage/upstream/edit/city/0/".(isset($province)?$province->id:''),
+				'target' => "modal:manage/upstream/edit/domain/0",
 				'type' => "success",
 				'caption' => trans('forms.button.add'),
 				'icon' => "plus-circle",
 			],
 		],
 		'search' => [
-			'target' => url('manage/upstream/states/search/') ,
+			'target' => url('manage/upstream/domains/search/') ,
 			'label' => trans('forms.button.search') ,
 			'value' => isset($key)? $key : '' ,
 		],
 	])
 
 	@include("manage.frame.widgets.grid" , [
-		'table_id' => "tblStates",
-		'row_view' => "manage.settings.states-cities-row",
+		'table_id' => "tblDomains",
+		'row_view' => "manage.settings.domains-row",
 		'handle' => "counter",
 		'headings' => [
-			trans('settings.city'),
-			trans('validation.attributes.province_id'),
-			trans('validation.attributes.domain'),
-			'',
+			trans('validation.attributes.title'),
+			trans('validation.attributes.slug'),
+			trans('validation.attributes.alias'),
+			trans('validation.attributes.cities')
 		],
 	])
 

@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Manage;
 
 use App\Http\Requests\Manage\CitySaveRequest;
+use App\Http\Requests\Manage\DomainSaveRequest;
 use App\Http\Requests\Manage\DownstreamSaveRequest;
 use App\Http\Requests\Manage\PackageSaveRequest;
 use App\Http\Requests\Manage\PosttypeSaveRequest;
 use App\Http\Requests\Manage\PosttypeTitlesSaveRequest;
 use App\Http\Requests\Manage\ProvinceSaveRequest;
 use App\Http\Requests\Manage\RoleSaveRequest;
+use App\Http\Requests\Manage\RoleTitlesSaveRequest;
+use App\Models\Domain;
 use App\Models\Folder;
 use App\Models\Post;
 use App\Models\Unit;
@@ -68,6 +71,10 @@ class UpstreamController extends Controller
 				$models = Unit::withTrashed()->orderBy('deleted_at')->orderBy('created_at', 'desc')->paginate(user()->preference('max_rows_per_page'));
 				break;
 
+			case 'domains' :
+				$models = Domain::orderBy('title')->paginate(user()->preference('max_rows_per_page')) ;
+				break ;
+
 			default :
 				return view('errors.404');
 		}
@@ -111,6 +118,9 @@ class UpstreamController extends Controller
 				$page[2] = ['search', trans('forms.button.search_for') . " $key", ''];
 				break;
 
+			case 'domains' :
+				break;
+
 			default:
 				return view('templates.say', ['array' => "What the hell is $request_tab?"]); //@TODO: REMOVE THIS
 				return view('errors.404');
@@ -142,12 +152,24 @@ class UpstreamController extends Controller
 				return view('manage.settings.states-cities', compact('page', 'models', 'province'));
 				break;
 
+			case 'domains' :
+				$domain = Domain::find($item_id) ;
+				if(!$domain) {
+					return view('errors.410');
+				}
+				$models = $domain->states()->orderBy('title')->paginate(user()->preference('max_rows_per_page'));
+				$page[2][1] = trans('settings.cities_of', ['province' => $domain->title]);
+
+				return view('manage.settings.states-cities', compact('page', 'models', 'domain'));
+				break ;
+
+
 			case 'downstream' :
 				$model = Setting::find($item_id);
 				if(!$model) {
 					return view('errors.m410');
 				}
-				$model->spreadMeta() ;
+				$model->spreadMeta();
 
 				return view('manage.settings.downstream-value', compact('model'));
 				break;
@@ -170,8 +192,8 @@ class UpstreamController extends Controller
 					}
 				}
 				else {
-					$model = new Unit() ;
-					$model->is_continuous = 0 ;
+					$model                = new Unit();
+					$model->is_continuous = 0;
 				}
 
 				return view("manage.settings.packages-edit", compact('model'));
@@ -197,6 +219,19 @@ class UpstreamController extends Controller
 
 				return view('manage.settings.states-cities-edit', compact('model', 'provinces'));
 
+			case 'domain' :
+				if($item_id) {
+					$model = Domain::find($item_id);
+					if(!$model) {
+						return view('errors.m410');
+					}
+				}
+				else {
+					$model            = new Domain();
+				}
+
+				return view('manage.settings.domains-edit', compact('model'));
+
 			case 'state' :
 				if($item_id) {
 					$model = State::find($item_id);
@@ -216,7 +251,7 @@ class UpstreamController extends Controller
 					if(!$model) {
 						return trans('validation.invalid');
 					}
-					$model->spreadMeta() ;
+					$model->spreadMeta();
 				}
 				else {
 					$model = new Setting();
@@ -240,6 +275,29 @@ class UpstreamController extends Controller
 
 				return view("manage.settings.roles-edit", compact('model'));
 
+			case 'role-titles' :
+				$model = Role::withTrashed()->find($item_id);
+				if(!$model) {
+					return view('errors.m410');
+				}
+
+				return view("manage.settings.roles-titles", compact('model'));
+
+			case 'role-activeness' :
+				$model = Role::withTrashed()->find($item_id);
+				if(!$model) {
+					return view('errors.m410');
+				}
+
+				return view("manage.settings.roles-activeness", compact('model'));
+
+			case 'role-default' :
+				$model = Role::find($item_id);
+				if(!$model) {
+					return view('errors.m410');
+				}
+
+				return view("manage.settings.roles-default", compact('model'));
 
 			case 'department' :
 				if($item_id) {
@@ -272,11 +330,12 @@ class UpstreamController extends Controller
 				return view('manage.settings.posttypes-edit', compact('model'));
 
 			case 'posttype-titles' :
-				$model = Posttype::find($item_id) ;
+				$model = Posttype::find($item_id);
 				if(!$model) {
 					return view('errors.m410');
 				}
-				return view("manage.settings.posttypes-titles",compact('model'));
+
+				return view("manage.settings.posttypes-titles", compact('model'));
 
 			case 'categories' :
 				if($item_id) {
@@ -309,9 +368,9 @@ class UpstreamController extends Controller
 			$data['deleted_at'] = Carbon::now()->toDateTimeString();
 		}
 
-		return $this->jsonAjaxSaveFeedback( Unit::store($data) , [
-				'success_callback' => "",
-				'success_refresh' => "1",
+		return $this->jsonAjaxSaveFeedback(Unit::store($data), [
+			'success_callback' => "",
+			'success_refresh'  => "1",
 		]);
 	}
 
@@ -335,7 +394,7 @@ class UpstreamController extends Controller
 		//If Save...
 		if($request->_submit == 'save') {
 			return $this->jsonAjaxSaveFeedback(Posttype::store($request), [
-				'fake' => $request->id? '' : Folder::updateDefaultFolders(),
+				'fake'            => $request->id ? '' : Folder::updateDefaultFolders(),
 				'success_refresh' => 1,
 			]);
 		}
@@ -359,7 +418,7 @@ class UpstreamController extends Controller
 		/*-----------------------------------------------
 		| Model Reveal ...
 		*/
-		$model = Posttype::find($request->id) ;
+		$model = Posttype::find($request->id);
 		if(!$model) {
 			return $this->jsonFeedback(trans('validation.http.Error410'));
 		}
@@ -367,25 +426,45 @@ class UpstreamController extends Controller
 		/*-----------------------------------------------
 		| Process ...
 		*/
-		$data = $request->toArray() ;
-		$data['locale_titles'] = [] ;
+		$data                  = $request->toArray();
+		$data['locale_titles'] = [];
 
 
 		foreach($model->locales_array as $locale) {
-			if($locale=='fa') {
-				continue ;
+			if($locale == 'fa') {
+				continue;
 			}
-			$data['locale_titles']["title-$locale"] = $data["_title_in_$locale"] ;
-			$data['locale_titles']["singular_title-$locale"] = $data["_singular_title_in_$locale"] ;
+			$data['locale_titles']["title-$locale"]          = $data["_title_in_$locale"];
+			$data['locale_titles']["singular_title-$locale"] = $data["_singular_title_in_$locale"];
 		}
 
 		/*-----------------------------------------------
 		| Save & Feedback ...
 		*/
-		return $this->jsonAjaxSaveFeedback( Posttype::store($data) , [
+
+		return $this->jsonAjaxSaveFeedback(Posttype::store($data), [
 			'success_refresh' => 1,
 		]);
 
+
+	}
+
+	public function saveDomain(DomainSaveRequest $request)
+	{
+		//If Save...
+		if($request->_submit == 'save') {
+			return $this->jsonAjaxSaveFeedback(Domain::store($request), [
+				'success_refresh' => 1,
+			]);
+		}
+
+		//If Delete...
+		if($request->_submit == 'delete') {
+			$model = State::find($request->id);
+			return $this->jsonAjaxSaveFeedback(Domain::destroy($request->id), [
+				'success_refresh' => 1,
+			]);
+		}
 
 	}
 
@@ -437,15 +516,14 @@ class UpstreamController extends Controller
 
 	}
 
-
-	public function saveRole(RoleSaveRequest $request)
+	public function saveRoleActiveness(Request $request)
 	{
 		switch ($request->toArray()['_submit']) {
-			case 'save' :
-				$ok = Role::store($request);
-				break;
-
 			case 'delete' :
+				$model = Role::find($request->id) ;
+				if(!$model or $model->slug == 'admin' or $model->isDefault()) {
+					return $this->jsonFeedback(trans('forms.general.sorry'));
+				}
 				$ok = Role::where('id', $request->id)->delete();
 				break;
 
@@ -457,9 +535,92 @@ class UpstreamController extends Controller
 				$ok = false;
 		}
 
+
 		return $this->jsonAjaxSaveFeedback($ok, [
 			'success_refresh' => 1,
 		]);
+
+
+	}
+
+	public function saveRoleDefault(Request $request)
+	{
+		$model = Role::find($request->id) ;
+		if(!$model or in_array($model->slug , Role::adminRoles()) or $model->isDefault()) {
+			return $this->jsonFeedback(trans('forms.general.sorry'));
+		}
+
+		$ok = Setting::set('default_role' , $model->slug) ;
+		return $this->jsonAjaxSaveFeedback($ok, [
+			'success_refresh' => 1,
+		]);
+
+	}
+
+
+	public function saveRole(RoleSaveRequest $request)
+	{
+
+		/*-----------------------------------------------
+		| Normalization ...
+		*/
+		$data                = $request->toArray();
+		$data['modules']     = Role::getModulesJson($request->modules);
+		$data['status_rule'] = Role::getStatusRuleArray($request->status_rule);
+
+		if($data['slug'] == 'admin') {
+			$data['is_admin'] = true ;
+		}
+
+		/*-----------------------------------------------
+		| Save ...
+		*/
+		$ok = Role::store($data);
+
+
+		/*-----------------------------------------------
+		| Return ...
+		*/
+
+		return $this->jsonAjaxSaveFeedback($ok, [
+			'success_refresh' => 1,
+		]);
+	}
+
+	public function saveRoleTitles(RoleTitlesSaveRequest $request)
+	{
+		/*-----------------------------------------------
+		| Model Reveal ...
+		*/
+		$model = Posttype::find($request->id);
+		if(!$model) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+
+		/*-----------------------------------------------
+		| Process ...
+		*/
+		$data                  = $request->toArray();
+		$data['locale_titles'] = [];
+
+
+		foreach($model->locales_array as $locale) {
+			if($locale == 'fa') {
+				continue;
+			}
+			$data['locale_titles']["title-$locale"]          = $data["_title_in_$locale"];
+			$data['locale_titles']["plural_title-$locale"] = $data["_plural_title_in_$locale"];
+		}
+
+		/*-----------------------------------------------
+		| Save & Feedback ...
+		*/
+
+		return $this->jsonAjaxSaveFeedback(Role::store($data), [
+			'success_refresh' => 1,
+		]);
+
+
 	}
 
 

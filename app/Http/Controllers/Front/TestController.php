@@ -6,7 +6,9 @@ use App\Models\Category;
 use App\Models\Folder;
 use App\Models\Post;
 use App\Models\Receipt;
+use App\Models\Role;
 use App\Models\User;
+use App\Providers\DummyServiceProvider;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -36,9 +38,11 @@ class TestController extends Controller
 
 	public function index()
 	{
-		$array = [687 , 29 , 42 , 60 , 1384 , 1097 , 88 , 59 , 724];
-		Receipt::whereIn('user_id' , $array)->delete() ;
-		User::cacheRefreshAll() ;
-		return ":)" ;
+		//$user = User::find(1401) ;
+		//ss($user->as('manager')->rolesQuery()) ;
+		//ss($user->as('manager')->can('users-folan.create')) ;
+
+		$table = Post::selector(['domain' => "isfahan" ,])->count();
+		ss($table);
 	}
 }

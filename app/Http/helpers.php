@@ -288,7 +288,7 @@ function fakeDrawingCode($amount = false, $timestamp = false) //@TODO: Remove th
 
 function model($class_name, $id = 0)
 {
-    $class = '\App\Models\\' . $class_name;
+    $class = '\App\Models\\' . camel_case($class_name);
 
     if (!$id) {
         return $class;

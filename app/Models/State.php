@@ -44,6 +44,12 @@ class State extends Model
 		}
 	}
 
+	public function domain()
+	{
+		return $this->belongsTo('App\Models\Domain');
+	}
+
+
 	/*
 	|--------------------------------------------------------------------------
 	| Accessors and Mutators
@@ -58,6 +64,19 @@ class State extends Model
 			return $this->province()->title." / ".$this->title ;
 
 	}
+
+	public function getGuessDomainAttribute()
+	{
+		$guess = self::getCities($this->parent_id)->first() ;
+		if($guess and $guess->domain_id) {
+			return $guess->domain_id ;
+		}
+		else {
+			return 0 ;
+		}
+
+	}
+
 
 
 	/*

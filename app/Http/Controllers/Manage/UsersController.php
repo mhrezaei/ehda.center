@@ -40,9 +40,19 @@ class UsersController extends Controller
 		$this->view_folder   = 'manage.users';
 	}
 
-	public function _update()
+	public function update($model_id , $request_role)
 	{
-		echo 1 ;
+		$model = User::withTrashed()->find($model_id) ;
+		$handle = 'selector' ;
+
+		//Run...
+		if(!$model) {
+			return view('errors.m410');
+		}
+		else {
+			$model->spreadMeta() ;
+			return view($this->view_folder . '.browse-row', compact('model', 'handle' , 'request_role'));
+		}
 	}
 
 	public function search($request_role, Request $request)
@@ -82,6 +92,7 @@ class UsersController extends Controller
 		if(!isset($request->id) and strlen($request->keyword) < 3) {
 			$db         = $this->Model;
 			$page[1][1] = trans('forms.button.search');
+
 			return view($this->view_folder . ".search", compact('page', 'models', 'db', 'request_role', 'role'));
 		}
 
@@ -98,8 +109,8 @@ class UsersController extends Controller
 			$selector_switches['search'] = $keyword = $request->keyword;
 		}
 		if(isset($request->id)) {
-			$selector_switches['id'] = $request->id ;
-			$page[1] = ['search', trans('forms.button.search_for') . " " . trans('people.particular_user'), "users/search/$request_role"] ;
+			$selector_switches['id'] = $request->id;
+			$page[1]                 = ['search', trans('forms.button.search_for') . " " . trans('people.particular_user'), "users/search/$request_role"];
 
 		}
 
@@ -114,7 +125,7 @@ class UsersController extends Controller
 
 	}
 
-	public function browse($request_role, $request_tab = 'actives')
+	public function browse($request_role, $request_tab = 'all')
 	{
 		/*-----------------------------------------------
 		| Check Permission ...
@@ -134,6 +145,7 @@ class UsersController extends Controller
 		}
 		else {
 			$role               = new Role();
+			$role->slug         = 'all';
 			$role->plural_title = trans('people.commands.all_users');
 		}
 
@@ -142,15 +154,15 @@ class UsersController extends Controller
 		*/
 		$page = [
 			'0' => ["users/browse/$request_role", $role->plural_title, "users/browse/$request_role"],
-			'1' => [$request_tab, trans("people.criteria.$request_tab"), "users/browse/$request_role/$request_tab"],
+			'1' => [$request_tab, trans("people.criteria.".$role->statusRule($request_tab)), "users/browse/$request_role/$request_tab"],
 		];
 
 		/*-----------------------------------------------
 		| Model ...
 		*/
 		$selector_switches = [
-			'role'     => $request_role,
-			'criteria' => $request_tab,
+			'role'   => $request_role,
+			'status' => $request_tab,
 		];
 
 		$models = User::selector($selector_switches)->orderBy('created_at', 'desc')->paginate(user()->preference('max_rows_per_page'));
@@ -172,18 +184,18 @@ class UsersController extends Controller
 		return view("manage.users.edit", compact('model'));
 	}
 
-	public function permitsForm($model, $role_id)
+	public function permitsForm($model, $role_slug)
 	{
-		$request_role = Role::find($role_id);
+		$request_role = Role::findBySlug($role_slug);
 		if(!$request_role) {
 			return view('errors.m410');
 		}
 		$modules = $request_role->modules_array;
 
 		$posttypes = Posttype::all();
-		$roles     = Role::where('slug', '!=', 'admin')->get();
+		$roles     = Role::all();
 
-		return view("manage.users.permits", compact('model', 'request_role', 'roles', 'posttypes', 'modules'));
+		return view("manage.users.permits2", compact('model', 'request_role', 'roles', 'posttypes', 'modules'));
 
 	}
 
@@ -341,7 +353,53 @@ class UsersController extends Controller
 
 	}
 
-	public function saveRole(Request $request)
+	public function refreshRoleRowForm($model , $role_id)
+	{
+		$role = Role::find($role_id) ;
+		return view("manage.users.roles-one",compact('model','role'));
+		
+	}
+
+	public function saveRole($user_id, $role_slug, $new_status)
+	{
+		/*-----------------------------------------------
+		| Model and Permission ...
+		*/
+		$user = User::find($user_id) ;
+		if(!$user) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+		if(!$user->canPermit()) {
+			return $this->jsonFeedback(trans('validation.http.Error503'));
+		}
+
+		/*-----------------------------------------------
+		| Save ...
+		*/
+		if($new_status == 'detach') {
+			$user->detachRole($role_slug) ;
+		}
+		if($new_status == 'ban') {
+			$user->as($role_slug)->disable() ;
+		}
+		else {
+			if($user->withDisabled()->as($role_slug)->hasnotRole()) {
+				$user->attachRole($role_slug) ;
+			}
+			elseif($user->as($role_slug)->disabled()) {
+				$user->as($role_slug)->enable() ;
+			}
+			$user->as($role_slug)->setStatus($new_status) ;
+		}
+
+		/*-----------------------------------------------
+		| Feedback...
+		*/
+		return $this->jsonAjaxSaveFeedback( true ); //<~~ Row is automatically refreshed upon receiving of the done feedback!
+
+	}
+
+	public function _saveRole(Request $request)
 	{
 		/*-----------------------------------------------
 		| Command ...
@@ -453,18 +511,19 @@ class UsersController extends Controller
 
 		//Data Buildup...
 		$data = [
-			'user_id' => $user->id,
-		     'code' => $request->code ,
-			'purchased_at' => Carbon::createFromTimestamp($drawing_code['date'], 'Asia/Tehran')->setTimezone('UTC'),
+			'user_id'          => $user->id,
+			'code'             => $request->code,
+			'purchased_at'     => Carbon::createFromTimestamp($drawing_code['date'], 'Asia/Tehran')->setTimezone('UTC'),
 			'purchased_amount' => $drawing_code['price'],
-		] ;
+		];
 
 		//Save & Feedback...
-		$is_saved = Receipt::store($data) ;
+		$is_saved = Receipt::store($data);
+
 		//$user->updatePurchases() ;
-		return $this->jsonAjaxSaveFeedback( $is_saved , [
+		return $this->jsonAjaxSaveFeedback($is_saved, [
 			'success_modalClose' => false,
-			'success_callback' => "divReload( 'divReceiptsTable' )",
+			'success_callback'   => "divReload( 'divReceiptsTable' )",
 		]);
 
 	}

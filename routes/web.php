@@ -44,7 +44,7 @@ Route::group([
 	| Users ...
 	*/
 	Route::group(['prefix' => "users", 'middleware' => "can:users",], function () {
-		Route::get('/update/{item_id}', 'UsersController@update');
+		Route::get('/update/{item_id}/{request_role}', 'UsersController@update');
 		Route::get('browse/{role}/search/{keyword?}', 'UsersController@search');
 		Route::get('browse/{role}/{request_tab?}', 'UsersController@browse');
 		Route::get('create/{role}', 'UsersController@create');
@@ -54,7 +54,7 @@ Route::group([
 			Route::post('/', 'UsersController@save');
 			Route::post('/password', 'UsersController@savePassword');
 			Route::post('/permits', 'UsersController@savePermits');
-			Route::post('/role', 'UsersController@saveRole');
+			Route::get('/role/{user_id}/{role_slug}/{new_status}' , 'UsersController@saveRole');
 			Route::post('/delete', 'UsersController@delete');
 			Route::post('/undelete', 'UsersController@undelete');
 			Route::post('/destroy', 'UsersController@destroy');
@@ -177,7 +177,11 @@ Route::group([
 
 		Route::group(['prefix' => 'save'], function () {
 			Route::post('role', 'UpstreamController@saveRole');
+			Route::post('role-titles', 'UpstreamController@saveRoleTitles');
+			Route::post('role-activeness', 'UpstreamController@saveRoleActiveness');
+			Route::post('role-default', 'UpstreamController@saveRoleDefault');
 			Route::post('state', 'UpstreamController@saveProvince');
+			Route::post('domain', 'UpstreamController@saveDomain');
 			Route::post('city', 'UpstreamController@saveCity');
 			Route::post('posttype', 'UpstreamController@savePosttype');
 			Route::post('posttype-titles', 'UpstreamController@savePosttypeTitles');
