@@ -1,0 +1,82 @@
+.icon {
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-image: url(#{$imagesDir}sprites.png);
+}
+.icon-twitter {
+  width: 27px;
+  height: 32px;
+  background-position: 0 center;
+}
+.icon-aparat {
+  width: 30px;
+  height: 32px;
+  background-position: -45px center;
+}
+.icon-facebook {
+  width: 19px;
+  height: 32px;
+  background-position: -96px center;
+}
+.icon-instagram {
+  width: 27px;
+  height: 32px;
+  background-position: -144px center;
+}
+.icon-telegram {
+  width: 32px;
+  height: 32px;
+  background-position: -192px center;
+}
+.icon-twitter.dark {
+  width: 27px;
+  height: 32px;
+  background-position: -376px center;
+}
+.icon-aparat.dark {
+  width: 30px;
+  height: 32px;
+  background-position: -420px center;
+}
+.icon-facebook.dark {
+  width: 19px;
+  height: 32px;
+  background-position: -472px center;
+}
+.icon-instagram.dark {
+  width: 27px;
+  height: 32px;
+  background-position: -519px center;
+}
+.icon-telegram.dark {
+  width: 32px;
+  height: 32px;
+  background-position: -566px center;
+}
+.icon-heart{
+  width: 28px;
+  height: 32px;
+  background-position: -244px center;
+}
+.icon-down{
+  width:17px;
+  height: 11px;
+  background-position: -294px center;
+}
+.icon-search{
+  width: 32px;
+  height: 32px;
+  background-position: -330px center;
+}
+.person-icon{
+  display: inline-block;
+  width: 20px;
+  height: 58px;
+  background: url(#{$imagesDir}person-icon.png) no-repeat right center;
+  &.dead{
+    background-position: left center;
+  }
+}
+.rotate-180{
+  transform: rotate(180deg);
+}

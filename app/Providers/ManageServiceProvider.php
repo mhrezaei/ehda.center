@@ -61,7 +61,7 @@ class ManageServiceProvider extends ServiceProvider
 
 	}
 
-	public static function sidebarPostsMenu($folded = false)
+	public static function sidebarPostsMenu($folded = true)
 	{
 		$array = [] ;
 

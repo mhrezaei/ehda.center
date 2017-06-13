@@ -1,8 +1,14 @@
-<ul class="menu-footer">
-    <li><a href="{{ url_locale('') }}"> {{ trans('front.home') }} </a></li>
-    <li><a href="{{ url_locale('page/about') }}"> {{ trans('front.about') }} </a></li>
-    <li><a href="{{ url_locale('products') }}"> {{ trans('front.products') }} </a></li>
-    <li><a href="{{ url_locale('teammates') }}"> {{ trans('front.teammates') }} </a></li>
-    <li><a href="{{ url_locale('events') }}"> {{ trans('front.events') }} </a></li>
-    <li><a href="{{ url_locale('page/contact') }}"> {{ trans('front.contact_us') }} </a></li>
-</ul>
+<div class="col-xs-12 col-md-4">
+    <ul class="list-unstyled clearfix">
+        <div class="col-xs-6">
+            <li><a href="/">صفحه نخست</a></li>
+            <li><a href="/">کارت اهدای عضو</a></li>
+            <li><a href="/">درباره ما</a></li>
+        </div>
+        <div class="col-xs-6">
+            <li><a href="/">سفیران</a></li>
+            <li><a href="/">گالری</a></li>
+            <li><a href="/">فرشتگان ماندگار</a></li>
+        </div>
+    </ul>
+</div>

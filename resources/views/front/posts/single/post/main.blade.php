@@ -6,6 +6,5 @@
         @include($viewFolder . '.publish_info')
     </div>
     @include($viewFolder . '.content')
-    @include($viewFolder . '.album')
 </div>
 @include($viewFolder . '.related_posts')

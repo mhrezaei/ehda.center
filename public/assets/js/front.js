@@ -1,14 +1,13 @@
-/**
- * returns all data-attributes starting with "data-prefix" as an object with camelCase names
- * @param prefix
- * @returns {{}}
- */
-
 var acoordionIcons = {
     header: "ui-icon-plusthick",
     activeHeader: "ui-icon-minusthick"
 };
 
+/**
+ * returns all data-attributes starting with "data-prefix" as an object with camelCase names
+ * @param prefix
+ * @returns {{}}
+ */
 $.fn.dataStartsWith = function (prefix) {
     var result = {};
     var data = $(this).data();
@@ -43,7 +42,7 @@ $.fn.updateContent = function (callback) {
             url: url,
             success: function (result) {
                 container.html(result);
-                if(typeof callback == 'function') {
+                if (typeof callback == 'function') {
                     callback();
                 }
             }
@@ -54,17 +53,30 @@ $.fn.updateContent = function (callback) {
 $.fn.scrollToView = function (extra, duration) {
     var item = $(this);
 
-    if(!$.isNumeric(duration)) {
+    if (!$.isNumeric(duration)) {
         duration = 1000;
     }
 
-    if(!$.isNumeric(extra)) {
+    if (!$.isNumeric(extra)) {
         extra = 0;
     }
 
     $('html, body').animate({
         scrollTop: item.offset().top + extra
     }, duration);
+};
+
+/**
+ * Returns all element containing self element if match "selector"
+ * @param {string} selector
+ * @returns jQuery
+ */
+$.fn.findFromThis = function (selector) {
+    var fountElements = $(this).find(selector);
+    if ($(this).is(selector)) {
+        fountElements = $.merge($(this), fountElements);
+    }
+    return fountElements;
 };
 
 String.prototype.ucfirst = function () {
@@ -344,6 +356,18 @@ function loadingDialog(parameter, dialog) {
     }
 }
 
+function openUrl(url, target) {
+    if (!isDefined(target)) {
+        target = '_blank';
+    }
+    var win = window.open(url, target);
+    if (win) {
+        win.focus();
+    } else {
+        alert('Please allow popups for this website');
+    }
+}
+
 $(document).ready(function () {
 
     /**
@@ -362,45 +386,47 @@ $(document).ready(function () {
         }
     }).change();
 
-    $('.yt-accordion').accordion({
-        collapsible: true,
-        autoHeight: true,
-        icons: acoordionIcons,
+    if ($('.yt-accordion').length) {
+        $('.yt-accordion').accordion({
+            collapsible: true,
+            autoHeight: true,
+            icons: acoordionIcons,
 
-        beforeActivate: function (event, ui) {
-            // The accordion believes a panel is being opened
-            if (ui.newHeader[0]) {
-                var currHeader = ui.newHeader;
-                var currContent = currHeader.next('.ui-accordion-content');
-                // The accordion believes a panel is being closed
-            } else {
-                var currHeader = ui.oldHeader;
-                var currContent = currHeader.next('.ui-accordion-content');
+            beforeActivate: function (event, ui) {
+                // The accordion believes a panel is being opened
+                if (ui.newHeader[0]) {
+                    var currHeader = ui.newHeader;
+                    var currContent = currHeader.next('.ui-accordion-content');
+                    // The accordion believes a panel is being closed
+                } else {
+                    var currHeader = ui.oldHeader;
+                    var currContent = currHeader.next('.ui-accordion-content');
+                }
+                // Since we've changed the default behavior, this detects the actual status
+                var isPanelSelected = currHeader.attr('aria-selected') == 'true';
+
+                // Toggle the panel's header
+                currHeader.toggleClass('ui-corner-all', isPanelSelected)
+                    .toggleClass('ui-accordion-header-active', !isPanelSelected)
+                    .attr('aria-selected', ((!isPanelSelected).toString()));
+
+                // Toggle the panel's icon
+                currHeader.find('.ui-icon')
+                    .toggleClass(acoordionIcons.header, isPanelSelected)
+                    .toggleClass(acoordionIcons.activeHeader, !isPanelSelected);
+
+                // Toggle the panel's content
+                currContent.toggleClass('accordion-content-active', !isPanelSelected);
+                if (isPanelSelected) {
+                    currContent.slideUp();
+                } else {
+                    currContent.slideDown();
+                }
+
+                return false; // Cancel the default action
             }
-            // Since we've changed the default behavior, this detects the actual status
-            var isPanelSelected = currHeader.attr('aria-selected') == 'true';
-
-            // Toggle the panel's header
-            currHeader.toggleClass('ui-corner-all', isPanelSelected)
-                .toggleClass('ui-accordion-header-active', !isPanelSelected)
-                .attr('aria-selected', ((!isPanelSelected).toString()));
-
-            // Toggle the panel's icon
-            currHeader.find('.ui-icon')
-                .toggleClass(acoordionIcons.header, isPanelSelected)
-                .toggleClass(acoordionIcons.activeHeader, !isPanelSelected);
-
-            // Toggle the panel's content
-            currContent.toggleClass('accordion-content-active', !isPanelSelected);
-            if (isPanelSelected) {
-                currContent.slideUp();
-            } else {
-                currContent.slideDown();
-            }
-
-            return false; // Cancel the default action
-        }
-    });
+        });
+    }
 
     $('.yt-lazy-load').each(function () {
         var container = $(this);
@@ -442,19 +468,21 @@ $(document).ready(function () {
         }
     })
 
-    $(".yt-accordion").find('.yt-accordion-header.default-active').each(function () {
-        var item = $(this);
-        var accordion = item.closest('.yt-accordion');
+    if ($('.yt-accordion').length) {
+        $(".yt-accordion").find('.yt-accordion-header.default-active').each(function () {
+            var item = $(this);
+            var accordion = item.closest('.yt-accordion');
 
-        if (!item.hasClass('ui-accordion-header-active')) {
-            var index = item.index('.default-active') ? item.index('.default-active') : false;
-            var panel = accordion.find('.yt-accordion-panel').eq(index);
-            accordion.accordion("option", "active", index);
-            if (panel.hasClass('auto-height')) {
-                panel.css('height', 'auto');
+            if (!item.hasClass('ui-accordion-header-active')) {
+                var index = item.index('.default-active') ? item.index('.default-active') : false;
+                var panel = accordion.find('.yt-accordion-panel').eq(index);
+                accordion.accordion("option", "active", index);
+                if (panel.hasClass('auto-height')) {
+                    panel.css('height', 'auto');
+                }
             }
-        }
-    });
+        });
+    }
 
     $('.like-submit-button').click(function () {
         var form = $(this).closest('form');

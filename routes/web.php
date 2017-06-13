@@ -213,78 +213,34 @@ Route::group(['namespace' => 'Auth', 'prefix' => '{lang}', 'middleware' => ['Det
 });
 
 
+// uplaod url to b used in dropzone
+Route::group(['prefix' => 'file'], function () {
+    Route::post('upload', 'DropzoneController@upload_file')->name('dropzone.upload');
+    Route::post('remove', 'DropzoneController@remove_file')->name('dropzone.remove');
+});
+
 Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Setting']], function () {
     Route::get('/', 'FrontController@index');
-    Route::get('/hadi', 'TestController@index');
-    Route::post('/register/new', 'FrontController@register');
 
-    // drawing code
-    Route::post('/drawing/check', 'DrawingCodeController@sumbitCode');
-
-    Route::group(['prefix' => '{lang}', 'middleware' => ['UserIpDetect']], function () {
-
-        Route::get('/', 'FrontController@index');
-
-        // test view TODO: remove this route and related function
-        Route::get('test/cart', 'FrontController@testCart');
-
-        // saving comments for all posts
-        Route::post('/comment', 'PostController@submit_comment');
-
-        // search in all posts
-        Route::get('/posts/search', 'PostController@search');
-
-        // products
-        Route::group(['prefix' => 'products'], function () {
-            Route::get('/', 'ProductsController@index');
-            Route::post('filter', 'ProductsController@ajaxFilter');
-            Route::get('{identifier}', 'ProductsController@showProduct')
-                ->where('identifier', '^pd-(\w|-)+$'); // if identifier starts with "pd-"
-            Route::get('{folder}/{category?}', 'ProductsController@products');
-//            Route::get('categories/{slug}', 'ProductsController@products');
-        });
-
-        // news
-        Route::group(['prefix' => 'news'], function () {
-            Route::get('/', 'NewsController@archive');
-            Route::get('{identifier}', 'NewsController@single')
-                ->where('identifier', '^nw-(\w|-)+$'); // if identifier starts with "nw-"
-        });
-
-        // faqs
-        Route::group(['prefix' => 'faqs'], function () {
-            Route::get('/', 'FaqsController@archive');
-            Route::get('{identifier}', 'FaqsController@single')
-                ->where('identifier', '^faq-(\w|-)+$'); // if identifier starts with "faq-"
-        });
-
-        // teammates
-        Route::group(['prefix' => 'teammates'], function () {
-            Route::get('/', 'TeammatesController@archive');
-            Route::get('{identifier}', 'TeammatesController@single')
-                ->where('identifier', '^tm-(\w|-)+$'); // if identifier starts with "tm-"
-        });
-
-        // teammates
-        Route::group(['prefix' => 'events'], function () {
-            Route::get('/', 'EventsController@archive');
-            Route::get('waiting', 'EventsController@waitingEvents');
-            Route::get('expired', 'EventsController@expiredEvents');
-//            Route::get('{identifier}', 'TeammatesController@single')
-//                ->where('identifier', '^tm-(\w|-)+$'); // if identifier starts with "tm-"
-        });
-
-        Route::get('/page/{slug}', 'PostController@page');
-
-        // user Route
-        Route::group(['prefix' => 'user', 'middleware' => ['auth', 'is:customer']], function () {
-            Route::get('/dashboard', 'UserController@index');
-            Route::get('/dashboard/previous_comments/{post_id}', 'UserController@previousComments');
-            Route::get('/profile', 'UserController@profile');
-            Route::post('/profile/update', 'UserController@update');
-            Route::get('/drawing',  'UserController@drawing');
-            Route::get('/events', 'UserController@events');
-        });
+    // tests
+    Route::group(['prefix' => 'test'], function () {
+        Route::get('/', 'TestController@index');
+        Route::get('states', 'TestController@states');
+        Route::get('gallery/archive', 'TestController@gallery_archive');
+        Route::get('gallery/single', 'TestController@gallery_single');
+        Route::get('post/single', 'TestController@post_single');
+        Route::get('post/archive', 'TestController@post_archive');
+        Route::get('volunteers', 'TestController@volunteers');
+        Route::get('faqs', 'TestController@faqs');
+        Route::get('works/send', 'TestController@works_send');
     });
 
+
+    Route::get('about', 'TestController@about');
+    Route::post('/register/new', 'FrontController@register');
+
+    // saving comments for all posts
+    Route::post('/comment', 'PostController@submit_comment')->name('comment.submit');
+
 });
+
