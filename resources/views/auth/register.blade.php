@@ -1,129 +1,93 @@
-@extends('auth.form_frame', ['showLogo' => true])
-
 @section('head')
-    @parent
-    <title>
-        {{ setting()->ask('site_title')->gain() }} | {{ trans('front.register') }}
-    </title>
     @include('front.frame.open_graph_meta_tags', ['description' => trans('front.register')])
 @endsection
+@include('front.frame.header')
+<title>
+    {{ setting()->ask('site_title')->gain() }} | {{ trans('front.register') }}
+</title>
+<body class="auth">
+<div class="auth-wrapper">
+    <div class="auth-col">
+        <a href="{{ url_locale('') }}" class="logo"> <img src="{{ url('/assets/images/logo.png') }}"> </a>
+    </div>
+    <div class="auth-col">
+        <h1 class="auth-title"> {{ trans('front.register') }} </h1>
+        {!! Form::open([
+            'url'	=> '/register/new' ,
+            'method'=> 'post',
+            'class' => 'form-horizontal js',
+            'name' => 'registerForm',
+            'id' => 'registerForm',
+        ]) !!}
 
-@section('formBox')
-
-    {!! Form::open([
-        'url'	=> '/register/new' ,
-        'method'=> 'post',
-        'class' => 'form-horizontal js',
-        'name' => 'registerForm',
-        'id' => 'registerForm',
-    ]) !!}
-
-    <div class="row">
-        @include('front.forms.input',[
+        @include('auth.field', [
             'name' => 'name_first',
-            'label' => false,
-            'placeholder' => trans('validation.attributes.name_first'),
+            'other' => 'autofocus',
+            'type' => 'text',
             'value' => old('name_first'),
-            'containerClass' => 'field',
-            'class' => 'input-lg form-persian form-required',
-            'icon' => 'user',
-            'extra' => 'autofocus',
+            'class' => 'form-required form-persian',
+            'min' => 2,
         ])
 
-        @include('front.forms.input',[
+        @include('auth.field', [
             'name' => 'name_last',
-            'label' => false,
-            'placeholder' => trans('validation.attributes.name_last'),
+            'type' => 'text',
             'value' => old('name_last'),
-            'containerClass' => 'field',
-            'class' => 'input-lg form-persian form-required',
-            'icon' => 'user',
+            'class' => 'form-required form-persian',
+            'min' => 2,
         ])
 
-        @include('front.forms.input',[
+        @include('auth.field', [
             'name' => 'code_melli',
-            'label' => false,
-            'placeholder' => trans('validation.attributes.code_melli'),
+            'type' => 'text',
             'value' => old('code_melli'),
-            'containerClass' => 'field',
-            'class' => 'input-lg form-national form-required',
-            'icon' => 'id-card',
+            'class' => 'form-required form-national',
         ])
 
-        @include('front.forms.input',[
+        @include('auth.field', [
             'name' => 'mobile',
-            'label' => false,
-            'placeholder' => trans('validation.attributes.mobile'),
+            'type' => 'text',
             'value' => old('mobile'),
-            'containerClass' => 'field',
-            'class' => 'input-lg form-mobile form-required',
-            'icon' => 'phone',
+            'class' => 'form-required form-mobile',
         ])
 
-        @include('front.forms.input',[
+        @include('auth.field', [
             'name' => 'email',
-            'label' => false,
-            'placeholder' => trans('validation.attributes.email'),
+            'type' => 'text',
             'value' => old('email'),
-            'containerClass' => 'field',
-            'class' => 'input-lg form-email',
-            'icon' => 'envelope',
+            'class' => 'form-email',
         ])
 
-        @include('front.forms.input',[
+        @include('auth.field', [
             'name' => 'password',
-            'label' => false,
             'type' => 'password',
-            'placeholder' => trans('validation.attributes.password'),
             'value' => old('password'),
-            'containerClass' => 'field',
-            'class' => 'input-lg form-password form-required',
-            'icon' => 'key',
+            'class' => 'form-required form-password',
         ])
 
-        @include('front.forms.input',[
+        @include('auth.field', [
             'name' => 'password2',
-            'label' => false,
             'type' => 'password',
-            'placeholder' => trans('validation.attributes.password2'),
             'value' => old('password2'),
-            'containerClass' => 'field',
-            'class' => 'input-lg form-required',
-            'icon' => 'key',
+            'class' => 'form-required',
+
         ])
-    </div>
 
-    <div class="row text-center">
-        <div class="col-xs-12 mb10">
-            <div class="row">
-                <button class="btn btn-lg btn-block btn-green"> {{ trans('front.register') }} </button>
-            </div>
+        <div class="tal" style="margin-bottom: 15px;">
+            <button class="green block" type="submit"> {{ trans('front.register') }} </button>
         </div>
-        <div class="col-xs-12">
-            <div class="row">
-                @include('forms.feed')
-            </div>
+        @include('forms.feed')
+        <hr class="or">
+        <div class="tal" style="margin-bottom: 15px;">
+            <button onclick="window.location = '{{ url('/login') }}';"
+                    class="blue block"> {{ trans('front.member_login') }} </button>
         </div>
-        <div class="col-xs-12 mb10">
-            <div class="row">
-                <button type="button" onclick="window.location = '{{ route('login') }}';"
-                        class="btn btn-block btn-blue"> {{ trans('front.member_login') }} </button>
-            </div>
-        </div>
-    </div>
-    <div class="row mt15">
-        @if($errors->all())
-            <div class="alert alert-danger" style="margin-top: 10px;">
-                @foreach ($errors->all() as $error)
-                    {{ $error }}<br>
-                @endforeach
-            </div>
-        @endif
-    </div>
-    {!! Form::close() !!}
-@endsection
 
-@section('endOfBody')
-    {!! Html::script ('assets/libs/jquery.form.js') !!}
-    {!! Html::script ('assets/js/forms.js') !!}
-@endsection
+        {!! Form::close() !!}
+    </div>
+</div>
+</div>
+@include('front.frame.scripts')
+</body>
+
+</html>
