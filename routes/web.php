@@ -230,9 +230,9 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
         Route::get('faqs', 'TestController@faqs');
         Route::get('works/send', 'TestController@works_send');
     });
-
-
     Route::get('about', 'TestController@about');
+
+
     Route::post('/register/new', 'FrontController@register');
 
     // saving comments for all posts
