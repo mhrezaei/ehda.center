@@ -9,6 +9,7 @@ use App\Models\Folder;
 use App\Models\Post;
 use App\Models\Posttype;
 use App\Providers\PostsServiceProvider;
+use App\Providers\UploadServiceProvider;
 use App\Traits\ManageControllerTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -52,11 +53,12 @@ class PostController extends Controller
 
     public function submit_comment(CommentRequest $request)
     {
+        UploadServiceProvider::moveUploadedFiles($request);
+
         $post = Post::find($request->post_id);
         if (!$post) {
             return $this->abort(410, true);
         }
-
 
         $request = $request->all();
         $request['ip'] = request()->ip();
@@ -64,17 +66,14 @@ class PostController extends Controller
         $request['type'] = $post->type;
 
         $callbackFn = <<<JS
-        $('.previous-comments').updateContent(function() {
-            $('.previous-comments').find('.collapse').each(function () { 
-                $(this).collapse(); 
-            }); 
-        });
+        if(isDefined(customResetForm) && $.isFunction(customResetForm)) {
+            customResetForm();
+        }
 JS;
 
 
         return $this->jsonAjaxSaveFeedback(Comment::store($request), [
             'success_callback' => $callbackFn,
-            'success_form_reset' => true,
             'success_feed_timeout' => 3000,
         ]);
     }

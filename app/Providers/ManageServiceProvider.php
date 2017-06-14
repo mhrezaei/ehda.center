@@ -83,7 +83,7 @@ class ManageServiceProvider extends ServiceProvider
 
 				array_push($array , [
 					'icon' => "dot-circle-o",
-					'caption' => $group->header_title? $group->header_title : trans('posts.manage.global'),
+					'caption' => $group->header_title? $group->header_title : trans('manage.global'),
 					'link' => "asd",
 					'sub_menus' => $sub_menus,
 					'permission' => sizeof($sub_menus)? '' : 'dev',

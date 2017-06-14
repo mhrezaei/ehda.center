@@ -196,6 +196,8 @@ return [
         Unisharp\Laravelfilemanager\LaravelFilemanagerServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         App\Providers\PostsServiceProvider::class,
+        App\Providers\UploadServiceProvider::class,
+//        App\Providers\CommentServiceProvider::class,
     ],
 
     /*
@@ -255,6 +257,8 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'AsanakSms' => Asanak\Sms\Facade\AsanakSmsFacade::class,
         'PostsServiceProvider' => \App\Providers\PostsServiceProvider::class,
+        'UploadServiceProvider' => App\Providers\UploadServiceProvider::class,
+        'CommentServiceProvider' => App\Providers\CommentServiceProvider::class,
 
         //          'Setting' => \App\Providers\SettingServiceProvider::class,
     ],
