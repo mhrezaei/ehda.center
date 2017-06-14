@@ -6,12 +6,14 @@ return [
     'manage'                 => 'Manage',
     'session_expired_notice' => "Session has expired. You can relogin in another page and continue here.",
     'login_again'            => "Login anain.",
+    'global'                 => "Global",
 
     'tabs' => [
-        'actives'  => "Actives",
-        'blockeds' => "Blockeds",
-        'deleteds' => "Deleteds",
-        'bin'      => "Bin",
+        'actives'   => "Actives",
+        'inactives' => "Deactives",
+        'blockeds'  => "Blockeds",
+        'deleteds'  => "Deleteds",
+        'bin'       => "Bin",
     ],
 
     'modules' => [

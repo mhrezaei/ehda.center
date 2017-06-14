@@ -92,8 +92,8 @@ return [
         'max_value'      => 'Maximum: :value',
         'numbers'        => 'Numbers',
         'submit'         => "Submit",
-        'nobody' => "Nobody" ,
-        'sorry' => "Sorry" ,
+        'nobody'         => "Nobody",
+        'sorry'          => "Sorry",
     ],
 
 
