@@ -120,3 +120,10 @@
     </div>
     {!! Form::close() !!}
 @endif
+
+
+
+@section('endOfBody')
+    {!! Html::script ('assets/libs/jquery.form.js') !!}
+    {!! Html::script ('assets/js/forms.js') !!}
+@append
