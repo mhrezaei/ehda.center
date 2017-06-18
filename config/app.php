@@ -197,7 +197,9 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         App\Providers\PostsServiceProvider::class,
         App\Providers\UploadServiceProvider::class,
-//        App\Providers\CommentServiceProvider::class,
+        App\Providers\CommentServiceProvider::class,
+        App\Providers\FaGDServiceProvider::class,
+        App\Providers\SecKeyServiceProvider::class,
     ],
 
     /*

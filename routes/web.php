@@ -232,10 +232,15 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
     });
     Route::get('about', 'TestController@about');
 
-
+    // register new user
     Route::post('/register/new', 'FrontController@register');
 
     // saving comments for all posts
     Route::post('/comment', 'PostController@submit_comment')->name('comment.submit');
+
+    // register new card
+    Route::get('/organ_donation_card', 'CardController@index');
+    Route::post('/register/first_step', 'CardController@register_first_step');
+    Route::post('/register/second_step', 'CardController@register_second_step');
 
 });
