@@ -81,13 +81,22 @@ function ed($string)
  */
 function ad($string)
 {
-    $specialLangs = ['fa', 'ar'];
 
-    if (in_array(getLocale(), $specialLangs)) {
+    if (isLangRtl()) {
         return pd($string);
     }
 
     return ed($string);
+}
+
+function isLangRtl()
+{
+    $rtlLangs = ['fa', 'ar'];
+
+    if (in_array(getLocale(), $rtlLangs)) {
+        return true;
+    }
+    return false;
 }
 
 
@@ -138,6 +147,26 @@ function array_normalize($array, $reference)
 
     return $result;
 
+}
+
+/**
+ * Normalizes the given $array with the provided $reference, by filling unset ones.
+ * This functions keeps extra entries.
+ *
+ * @param $array
+ * @param $reference
+ *
+ * @return array
+ */
+function array_normalize_keep_originals($array, $reference)
+{
+    foreach ($reference as $key => $value) {
+        if (!array_has($array, $key)) {
+            $array[$key] = $value;
+        }
+    }
+
+    return $array;
 }
 
 function array_maker($string, $first_delimiter = '-', $second_delimiter = '=')
@@ -419,4 +448,24 @@ function hashid_encrypt($id, $connection = 'main')
 function hashid_decrypt($hash, $connection = 'main')
 {
     return Hashids::connection($connection)->decode($hash);
+}
+
+/**
+ * checks if $code is a valid color code
+ * @param $code
+ * @return bool
+ */
+function validateColorCode($code)
+{
+    if (is_string($code)) {
+        if (!starts_with($code, '#')) {
+            $code = '#' . $code;
+        }
+
+
+        if (preg_match('/^#[a-fA-F0-9]{6}$/i', $code)) {
+            return $code;
+        }
+    }
+    return false;
 }

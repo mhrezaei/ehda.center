@@ -8,9 +8,12 @@ use App\Models\Post;
 use App\Models\Posttype;
 use App\Models\Receipt;
 use App\Models\User;
+use App\Traits\GlobalControllerTrait;
+use App\Traits\TahaControllerTrait;
 use Carbon\Carbon;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Morilog\Jalali\Facades\jDateTime;
 
@@ -138,6 +141,14 @@ class PostsServiceProvider extends ServiceProvider
             $viewFolder = "front.posts.list.$template";
         }
 
+        return self::renderView($viewFolder . '.main', compact(
+            'posts',
+            'viewFolder',
+            'showFilter',
+            'ajaxRequest',
+            'isBasePage',
+            'allPosts'
+        ));
         return view($viewFolder . '.main', compact(
             'posts',
             'viewFolder',
@@ -153,8 +164,10 @@ class PostsServiceProvider extends ServiceProvider
         // normalize data
         $data = array_normalize($data, [
             'lang'      => getLocale(),
+            'externalBlade' => '',
             'preview'   => false,
             'showError' => true,
+            'variables' => [],
         ]);
 
         $post = self::smartFindPost($identifier);
@@ -177,8 +190,8 @@ class PostsServiceProvider extends ServiceProvider
         }
 
         // render view
-
-        return view($viewFolder . '.main', compact('post', 'viewFolder'));
+        $externalBlade = $data['externalBlade'];
+        return view($viewFolder . '.main', compact('post', 'viewFolder', 'externalBlade') + $data['variables']);
     }
 
     public static function showError($errorMessage, $ajaxRequest = false)
@@ -339,6 +352,15 @@ class PostsServiceProvider extends ServiceProvider
         }
 
         return Post::findBySlug($identifier);
+    }
+
+    private static function renderView($view, $data = [])
+    {
+        if (View::exists($view)) {
+            return view($view, $data);
+        }
+
+        return view('errors.m404');
     }
 }
 

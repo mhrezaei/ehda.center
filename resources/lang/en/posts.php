@@ -28,6 +28,7 @@ return [
         'basket'            => "Basket",
         'comment'           => "Comment",
         'rate'              => "Rate",
+        'domains'           => "Domains",
         'album'             => "Album",
         'category'          => "Category",
         'cat_image'         => "Category Image",
@@ -55,6 +56,7 @@ return [
         'dialogue'  => "Dialogue",
         'faq'       => "Faq",
         'product'   => "Product",
+        'event'     => "Event",
         'special'   => "Special",
     ],
 
@@ -89,6 +91,7 @@ return [
     ],
 
     'form' => [
+        'global'                              => 'Global',
         'copy'                                => "Copy",
         'copy_of'                             => "Copy of",
         'published_post'                      => "Published Post",
@@ -182,6 +185,16 @@ return [
         'reset_filters' => 'Reset Filters',
         'range_from'    => 'from',
         'range_to'      => 'to',
+    ],
+
+    'packs' => [
+        'plural'            => "Packages",
+        'single'            => "Package",
+        'add'               => "Add New Package",
+        'edit'              => "Edit Package",
+        'activate'          => "Activate",
+        'deactivate'        => "Deactivate",
+        'deactivate_notice' => "Deactivation will make this package inaccessible.",
     ],
 
 ];

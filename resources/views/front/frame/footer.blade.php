@@ -1,8 +1,9 @@
-<footer id="main-footer">
+<footer class="bg-primary">
     <div class="container">
-        @include('front.frame.footer_logo')
-        @include('front.frame.footer_menu')
-        @include('front.frame.footer_copy_right')
+        <div class="row">
+            @include('front.frame.footer_menu')
+            @include('front.frame.footer_contact')
+        </div>
     </div>
 </footer>
 @include('front.frame.jui_scripts')

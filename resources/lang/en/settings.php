@@ -12,6 +12,10 @@ return [
     'is_resident'     => "Memory Resident",
     'is_localized'    => "Languagable",
 
+    'domains'     => "Domains",
+    'domain_edit' => "Edit Domain",
+    'domain_new'  => "New Domain",
+
     'city'                       => "City",
     'cities_of'                  => "Cities of :province",
     'province_edit'              => "Edit Province",

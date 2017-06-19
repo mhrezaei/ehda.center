@@ -1,0 +1,60 @@
+$firstDarkColor: nth($darkColors, 1);
+$firsLightColor: nth($lightColors, 1);
+
+@each $colorName, $colorCode in $colors {
+  .bg-#{$colorName} {
+    background-color: $colorCode;
+  }
+  .text-#{$colorName} {
+    color: $colorCode;
+  }
+  .border-#{$colorName} {
+    border-color: $colorCode;
+  }
+  .link-#{$colorName},
+  .link-#{$colorName}:link,
+  .link-#{$colorName}:focus,
+  .link-#{$colorName}:visited {
+    color: $colorCode;
+  }
+  .link-#{$colorName}:hover,
+  .link-#{$colorName}:active {
+    color: lighten($colorCode, 5%);
+  }
+
+  @each $directionShort, $directionLong in $directions {
+    .border-#{$directionLong}-#{$colorName} {
+      border-#{$directionLong}-color: $colorCode;
+    }
+  }
+}
+
+@each $colorName, $colorCode in $darkColors {
+  .panel-#{$colorName} {
+    @extend .bg-#{$colorName};
+    @extend .text-#{nth($firsLightColor, 1)};
+  }
+  .btn-#{$colorName},
+  .btn-#{$colorName}:hover {
+    @extend .bg-#{$colorName};
+    @extend .text-#{nth($firsLightColor, 1)};
+  }
+  .btn-#{$colorName}:hover {
+    background-color: darken($colorCode, 5%);
+  }
+}
+
+@each $colorName, $colorCode in $lightColors {
+  .panel-#{$colorName} {
+    @extend .bg-#{$colorName};
+    @extend .text-#{nth($firstDarkColor, 1)};
+  }
+  .btn-#{$colorName},
+  .btn-#{$colorName}:hover {
+    @extend .bg-#{$colorName};
+    @extend .text-#{nth($firstDarkColor, 1)};
+  }
+  .btn-#{$colorName}:hover {
+    background-color: darken($colorCode, 5%);
+  }
+}

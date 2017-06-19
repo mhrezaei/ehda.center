@@ -1,0 +1,732 @@
+$startSide: map_get($localeDirections, 'start');
+$endSide: map_get($localeDirections, 'end');
+
+// ،Top Main Header --start
+
+header {
+  .top-bar {
+    @media(max-width: 500px) {
+      font-size: 12px;
+    }
+    > ul {
+      > li {
+        &:first-child {
+          &:after {
+            content: "";
+            width: 8px;
+            height: 8px;
+            display: inline-block;
+            vertical-align: middle;
+            border-radius: 50%;
+            background-color: #fff;
+          }
+        }
+        li {
+          a {
+            padding: 10px 20px;
+          }
+        }
+      }
+      a {
+        padding: 10px 20px;
+        display: inline-block;
+        @media(max-width: 500px) {
+          padding: 12px 5px;
+          font-size: 0.8em;
+        }
+      }
+    }
+  }
+  #logo {
+    max-width: 100%;
+    height: auto;
+    max-height: 45px;
+  }
+
+  .main-menu {
+    position: relative;
+    min-height: 76px;
+    z-index: 20;
+    @media (max-width: 600px) {
+      margin-left: -15px;
+      margin-right: -15px;
+    }
+    .list-inline {
+      margin-left: 0;
+      margin-right: 0;
+    }
+    > a {
+      position: relative;
+      z-index: 1;
+    }
+    .ehda-card-menu {
+      position: absolute;
+      z-index: 2;
+      background-color: $color-green;
+      color: #fff;
+      border-radius: 5px;
+      padding: 5px 10px;
+      text-align: right;
+      top: -7px;
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+      &, & svg {
+        transition: all 0.2s 0s;
+      }
+      &:hover {
+        background-color: #e6e6e6;
+        color: #23527c;
+        svg {
+          fill: red;
+        }
+      }
+      span {
+        display: block;
+        &:last-child {
+          position: absolute;
+          top: 5px;
+          left: 10px;
+        }
+        svg {
+          width: 20px;
+        }
+      }
+    }
+    li {
+      &:nth-child(2) {
+        > ul.mega-menu:after {
+          background-position-x: -128px;
+        }
+      }
+      &:nth-child(3) {
+        > ul.mega-menu:after {
+          background-position-x: -253px;
+        }
+      }
+    }
+    > ul {
+      text-align: left;
+      @media(max-width: 999px) {
+        display: block;
+        margin-top: 10px;
+        text-align: center;
+        .ehda-card-menu {
+          font-size: 10px;
+          top: 15px;
+          left: 15px;
+          svg {
+            width: 17px;
+          }
+        }
+        > li a {
+          font-size: 1em;
+          width: auto;
+          margin: 0;
+          padding: 8px;
+        }
+      }
+      > li:hover {
+        > a {
+          color: #23527c;
+        }
+      }
+      @media (min-width: 1000px) {
+        position: absolute;
+        left: -15px;
+        right: -15px;
+        padding-left: 258px;
+        bottom: 0;
+        margin: 0;
+      }
+      .mega-menu {
+        height: 330px;
+        &:after {
+          content: "";
+          left: 0;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          background: url(#{$imagesDir}menu-ribbon.png) no-repeat left 122px;
+          background-attachment: fixed;
+          position: absolute;
+          pointer-events: none;
+          z-index: 1;
+          @media(max-width: 1000px) {
+            background-position: left top !important;
+          }
+        }
+      }
+    }
+    > ul > li {
+      display: inline-block;
+      @media(min-width: 1000px) {
+        &:hover > a, > a:hover, &.active > a {
+          &:before {
+            content: "";
+            position: absolute;
+            right: -58px;
+            left: 0px;
+            top: -29px;
+            transform: skew(-45deg);
+            bottom: 0;
+            background: #000;
+            opacity: 0.1;
+          }
+        }
+        //&.active > a {
+        //  &:before {
+        //    background: #e6e6e6;
+        //  }
+        //}
+        &:hover > a, > a:hover {
+          &:before {
+            border-top: 10px solid #e6e6e6;
+          }
+        }
+      }
+      > a {
+        display: block;
+        font-size: 20px;
+        font-weight: 500;
+        padding: 10px 0 10px 20px;
+        position: relative;
+        margin-left: 24px;
+        width: 87px;
+        &:before {
+          content: "";
+        }
+      }
+    }
+  }
+
+  .slogan {
+    position: absolute;
+    overflow: hidden;
+    left: 0;
+    top: 0;
+    span {
+      padding: 10px 15px;
+      display: inline-block;
+      position: relative;
+      z-index: 2;
+      @media(max-width: 500px) {
+        font-size: 0.8em;
+        padding: 12px 8px;
+      }
+    }
+    &:before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: -46%;
+      top: 0px;
+      background-color: $color-green;
+      transform: skew(-30deg);
+      z-index: 1;
+      border-right: 5px solid #fff;
+      @media(max-width: 500px) {
+        border-width: 2px;
+      }
+      box-shadow: 0 1px #fff;
+    }
+  }
+}
+
+@media (min-width: 900px) {
+  .main-logo {
+    min-width: 300px;
+  }
+}
+
+@media (max-width: 650px) {
+  .main-logo {
+    overflow: hidden;
+    width: 90px;
+  }
+  header #logo {
+    max-width: none;
+    width: 300px;
+  }
+  header .main-menu > ul {
+    margin-left: 13%;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 768px) {
+  .main-menu > a {
+    width: 35%;
+  }
+}
+
+@media (max-width: 600px) {
+  .main-menu > a {
+    width: 100%;
+  }
+  header .main-menu > ul {
+    margin-left: 0;
+  }
+  header .main-menu a.ehda-card-menu {
+    left: 15px;
+    top: 15px;
+  }
+}
+
+// ،Top Main Header --end
+
+// Font Size --start
+@for $i from 5 to 101 {
+  .f#{$i} {
+    font-size: 1px * $i;
+    @if ($i<10) {
+      font-weight: 100;
+    }
+  }
+}
+
+// Font Size --end
+
+// Radio and Checkbox --start
+[type="radio"],
+[type="checkbox"] {
+  position: absolute;
+  display: none;
+}
+
+[type="radio"][disabled],
+[type="checkbox"][disabled] {
+  cursor: not-allowed;
+}
+
+[type="radio"] + label,
+[type="checkbox"] + label {
+  position: relative;
+  padding-#{$startSide}: 30px;
+  padding-#{$endSide}: 0;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+[type="radio"] + label:hover:before,
+[type="checkbox"] + label:hover:before {
+  animation-duration: 0.4s;
+  animation-fill-mode: both;
+  animation-name: hover-color;
+}
+
+[type="radio"] + label:before,
+[type="checkbox"] + label:before {
+  position: absolute;
+  top: 0;
+  #{$startSide}: 0;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  content: '';
+  border: 1px solid #c0c0c0;
+}
+
+[type="radio"] + label:after,
+[type="checkbox"] + label:after {
+  position: absolute;
+  display: none;
+  content: '';
+}
+
+[type="radio"][disabled] + label,
+[type="checkbox"][disabled] + label {
+  cursor: not-allowed;
+  color: #e4e4e4;
+}
+
+[type="radio"][disabled] + label:hover, [type="radio"][disabled] + label:before, [type="radio"][disabled] + label:after,
+[type="checkbox"][disabled] + label:hover,
+[type="checkbox"][disabled] + label:before,
+[type="checkbox"][disabled] + label:after {
+  cursor: not-allowed;
+}
+
+[type="radio"][disabled] + label:hover:before,
+[type="checkbox"][disabled] + label:hover:before {
+  border: 1px solid #e4e4e4;
+  animation-name: none;
+}
+
+[type="radio"][disabled] + label:before,
+[type="checkbox"][disabled] + label:before {
+  border-color: #e4e4e4;
+}
+
+[type="radio"]:checked + label:before,
+[type="checkbox"]:checked + label:before {
+  animation-name: none;
+}
+
+[type="radio"]:checked + label:after,
+[type="checkbox"]:checked + label:after {
+  display: block;
+}
+
+[type="radio"] + label:before {
+  border-radius: 50%;
+}
+
+[type="radio"] + label:after {
+  top: 6px;
+  #{$startSide}: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+[type="radio"]:checked + label:before {
+  border: 1px solid;
+}
+
+[type="radio"]:checked[disabled] + label:before {
+  border: 1px solid;
+}
+
+[type="radio"]:checked[disabled] + label:after {
+  background: #c9e2f9;
+}
+
+[type="checkbox"] + label:before {
+  border-radius: 3px;
+}
+
+[type="checkbox"] + label:after {
+  top: 2px;
+  left: 7px;
+  box-sizing: border-box;
+  width: 6px;
+  height: 12px;
+  transform: rotate(45deg);
+  border-width: 2px;
+  border-style: solid;
+  border-color: #fff;
+  border-top: 0;
+  border-left: 0;
+}
+
+.radio {
+  @each $colorName, $colorCode in $darkColors {
+    &.#{$colorName} {
+      $veryLight: lighten($colorCode, 80%);
+      $littleLight: lighten($colorCode, 30%);
+
+      [type="radio"] + label:after {
+        background: #{$colorCode};
+      }
+
+      [type="radio"]:checked + label:before {
+        border-color: #{$colorCode};
+      }
+
+      [type="radio"]:checked[disabled] + label:before {
+        border-color: #{$veryLight};
+      }
+
+      [type="radio"]:checked[disabled] + label:after {
+        background: #{$veryLight};
+      }
+
+      [type="checkbox"]:checked + label:before {
+        border: #{$colorCode};
+        background: #{$colorCode};
+      }
+
+      [type="checkbox"]:checked[disabled] + label:before {
+        border: #{$littleLight};
+        background: #{$littleLight};
+      }
+    }
+  }
+
+  @extend .radio.black;
+  padding-right: 0;
+  padding-left: 0;
+  display: inline-block;
+  margin-right: 15px;
+
+  &:first-child {
+    margin-right: 0;
+  }
+}
+
+// Radio and Checkbox --end
+
+%border-solid {
+  border-style: solid;
+}
+
+@for $size from 1 to 6 {
+  .border-#{$size} {
+    @extend %border-solid;
+    border-width: #{$size}px;
+  }
+}
+
+@each $directionShort, $directionLong in $directions {
+  %border-#{$directionLong}-solid {
+    border-#{$directionLong}-style: solid;
+  }
+  @for $i from 1 to 10 {
+    $value: $i * 5;
+    .m#{$directionShort}#{$value} {
+      margin-#{$directionLong}: #{$value}px;
+    }
+    .p#{$directionShort}#{$value} {
+      padding-#{$directionLong}: #{$value}px;
+    }
+  }
+
+  @for $size from 1 to 6 {
+    .border-#{$directionLong}-#{$size} {
+      @extend %border-#{$directionLong}-solid;
+      border-#{$directionLong}-width: #{$size}px;
+    }
+  }
+}
+
+.media-list {
+  .media-list-item {
+    @extend .media;
+    border-#{$startSide}-width: 2px;
+    border-#{$startSide}-style: solid;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-#{$startSide}: 2px;
+    padding-#{$endSide}: 0;
+
+    .media-list-item-body {
+      @extend .media-body
+    }
+
+    .media-list-item-heading {
+      @extend .media-heading
+    }
+
+    .media-list-item-image {
+      @extend .media-#{$startSide};
+      padding-#{$endSide}: 10px;
+      padding-#{$startSide}: 0px;
+    }
+
+    .media-list-item-image img {
+      height: 72px;
+      width: 72px;
+      object-fit: cover;
+    }
+
+    a {
+      @extend .text-black;
+      float: right;
+    }
+  }
+}
+
+.underlined-heading {
+  $borderSize: 3px;
+  @extend .border-bottom-black;
+  @extend .mb15;
+  border-bottom-width: #{$borderSize};
+  border-bottom-style: solid;
+
+  > span {
+    @extend .pb5;
+    @extend .pl5;
+    display: inline-block;
+    border-bottom-width: #{$borderSize};
+    border-bottom-style: solid;
+    margin-bottom: -#{$borderSize};
+  }
+}
+
+/* floating elements */
+%floating {
+  position: absolute;
+}
+
+@each $dShort, $dLong in $directions {
+  @for $i from 0 to 11 {
+    $value: $i * 5;
+    .floating-#{$dLong}-#{$value} {
+      @extend %floating;
+      #{$dLong}: #{$value}px;
+    }
+  }
+}
+
+@each $side, $direction in $localeDirections {
+  @for $i from 0 to 11 {
+    $value: $i * 5;
+    .floating-#{$side}-#{$value} {
+      @extend %floating;
+      #{$direction}: #{$value}px;
+    }
+  }
+
+  .text-#{$side} {
+    @extend .text-#{$direction};
+  }
+
+  @each $colorName, $colorCode in $colors {
+    .border-#{$side}-#{$colorName} {
+      @extend .border-#{$direction}-#{$colorName};
+    }
+  }
+
+  .media-#{$side} {
+    @extend .media-#{$direction};
+  }
+}
+
+img%img-cover {
+  object-fit: cover;
+}
+
+@for $i from 2 to 15 {
+  $width: 50 * $i;
+  @for $j from 2 to 15 {
+    $height: 50 * $j;
+    img.img-cover-#{$width}-#{$height} {
+      @extend %img-cover;
+      width: #{$width}px;
+      height: #{$height}px;
+    }
+  }
+}
+
+.grayscale {
+  filter: grayscale(100%);
+  -webkit-filter: grayscale(100%);
+}
+
+.yt-gallery {
+  .yt-gallery-item {
+    position: relative;
+    img {
+      $transition: filter 1s, border .2s;
+      -webkit-transition: #{$transition};
+      -moz-transition: #{$transition};
+      -ms-transition: #{$transition};
+      -o-transition: #{$transition};
+      transition: #{$transition};
+    }
+    .yt-gallery-item-text {
+      $transition: opacity .2s;
+      @extend .border-top-1;
+      @extend .border-top-gray;
+      @extend .text-center;
+      -webkit-transform: #{$transition};
+      -moz-transform: #{$transition};
+      -ms-transform: #{$transition};
+      -o-transform: #{$transition};
+      transform: #{$transition};
+      width: 100%;
+      position: absolute;
+      bottom: 0;
+      background-color: rgba(255, 255, 255, .5);
+      padding: 3px 5px;
+      color: #000;
+      opacity: 0;
+    }
+    &.focus {
+      img {
+        @extend .border-5;
+      }
+      .yt-gallery-item-text {
+        opacity: 1;
+      }
+    }
+    &.unfocus {
+      img {
+        @extend .grayscale;
+        border-width: 0;
+      }
+    }
+  }
+
+  ul.waterfall {
+    padding: 0;
+
+    li {
+      left: 0;
+      top: 0;
+      opacity: 0;
+      z-index: 0;
+
+      &.show {
+        opacity: 1;
+        transition: all 0.3s, top 1s;
+      }
+
+      div {
+        transition: all 0.5s;
+        img {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+.form-control.has-icon {
+  padding-right: 30px;
+}
+
+.help-block.error {
+  @extend .text-red;
+  @extend .f12;
+  font-weight: normal;
+}
+
+// DropZone --start
+.dropzone {
+  $baseColor: map_get($colors, 'blue');
+  border: 2px dashed #{$baseColor} !important;
+  background: lighten($baseColor, 50%) !important;
+
+  .dz-preview {
+    @extend .border-2;
+
+    &.dz-success {
+      @extend .border-green;
+    }
+    &.dz-error {
+      @extend .border-red;
+    }
+
+    .dz-details, .dz-image {
+      z-index: 0 !important;
+    }
+
+    .dz-image {
+      border-radius: 0 !important;
+    }
+
+    .dz-remove {
+      $boxSize: 25;
+      $overFlow: 12;
+      $borderColor: map_get($colors, 'gray');
+      @extend .fa, .fa-remove, .text-gray, %floating, .bg-white, .pt5;
+      display: inline-block !important;
+      top: -#{$overFlow}px;
+      #{$endSide}: -#{$overFlow}px;
+      width: #{$boxSize}px;
+      height: #{$boxSize}px;
+      border-radius: 50%;
+      border: 1px solid #{$borderColor} !important;
+      opacity: .8;
+      transition: opacity .7s;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+// DropZone --end

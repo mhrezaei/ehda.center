@@ -61,15 +61,51 @@ return [
     'toman'                                    => 'Toman',
     'from'                                     => 'from',
     'to'                                       => 'to',
+    'states'                                   => 'States',
+    'gallery'                                  => 'Gallery',
     'profile_messages'                         => [
         'not_enough_information'   => 'Not Enough Profile Information',
         'complete_to_join_drawing' => 'Now you can join the drawing by completing your profile.',
     ],
     'news'                                     => 'News',
     'faqs'                                     => 'Faqs',
+    'faq_not_found_ask_yours'                  => 'Didn\'t find your answer? Ask your question.',
     'more'                                     => 'More',
     'teammates'                                => 'Teammates',
     'no_result_found'                          => 'No Results Found',
+    'view_on_map'                              => 'View on Map',
+    'volunteers'                               => 'Volunteers',
+    'special_volunteers'                       => 'Special Volunteers',
+    'send_works'                               => 'Send Works',
+    'send_work'                                => 'Send Work',
+
+    'file_types' => [
+        'image' => [
+            'title'         => 'Image',
+            'dropzone_text' => 'Drop your images here.'
+        ],
+        'text'  => [
+            'title'         => 'Text',
+            'dropzone_text' => 'Drop your text files here.'
+        ],
+        'video' => [
+            'title'         => 'Video',
+            'dropzone_text' => 'Drop your video files here.'
+        ],
+        'audio' => [
+            'title'         => 'Audio',
+            'dropzone_text' => 'Drop your audio files here.'
+        ],
+    ],
+
+    'upload' => [
+        'errors' => [
+            'size'   => 'File is too big ({{filesize}}MiB). Max filesize: {{maxFilesize}}MiB.',
+            'type'   => 'You can\'t upload files of this type.',
+            'server' => 'Server responded with {{statusCode}} code.',
+            'limit'  => 'You can not upload any more files.',
+        ],
+    ],
 
     'footer' => [
         'copy_right' => 'All rights reserved for ::site.',

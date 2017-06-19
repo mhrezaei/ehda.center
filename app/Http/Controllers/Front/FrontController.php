@@ -23,27 +23,13 @@ class FrontController extends Controller
 
     public function index()
     {
-        $slideshow = Post::selector(['type' => 'slideshow'])->orderBy('id', 'desc')->get();
-        $categories = Folder::where('posttype_id', 2)->where('slug', '!=', 'no')
-            ->where('locale', getLocale())->orderBy('title', 'asc')->get();
-        $about = Post::selector([
-            'type'   => 'pages',
-            'locale' => getLocale(),
-            'slug'   => 'about',
-        ])->first();
+        $deadlinesHTML = PostsServiceProvider::showList([
+            'type' => 'deadlines',
+            'max_per_page' => -1,
+            'sort' => 'asc',
+        ]);
 
-        $event = Post::selector(['type' => 'events'])
-            ->orderBy('id', 'desc')
-            ->first();
-
-        $commentingPost = Post::findBySlug('customers-comments');
-        $comments = $commentingPost->comments()
-            ->whereNotNull('published_at')
-            ->orderBy('created_at', 'DESC')
-            ->take(10)
-            ->get();
-
-        return view('front.home.0', compact('slideshow', 'categories', 'about', 'event', 'commentingPost', 'comments'));
+        return view('front.home.main', compact('deadlinesHTML'));
     }
 
     public function register(RegisterSaveRequest $request)
