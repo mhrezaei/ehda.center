@@ -8,17 +8,28 @@
             @endif
             <input
                     type="{{$type or 'text'}}"
-                    id="{{$id or ''}}"
+                    id="{{ isset($id) ? $id : $name  }}"
                     name="{{$name}}" value="{{$value or ''}}"
                     class="form-control @if(isset($icon) and $icon) has-icon @endif {{$class or ''}}"
                     style="{{$style or ''}}"
-                    placeholder="{{$placeholder or ''}}"
+                    placeholder="{{ isset($placeholder) ? $placeholder : trans('validation.attributes_placeholder.' . $name)  }}"
                     onkeyup="{{$on_change or ''}}"
                     onblur="{{$on_blur or ''}}"
                     onfocus="{{$on_focus or ''}}"
                     aria-valuenow="{{$value or ''}}"
-                    error-value="{{$error_value or ''}}"
+                    error-value="{{ isset($error_value) ? $error_value : trans('validation.javascript_validation.' . $name)  }}"
+                    @if(isset($dataAttributes) and is_array($dataAttributes))
+                        @foreach($dataAttributes as $attributeName => $attributeValue)
+                            data-{{ $attributeName }}="{{ $attributeValue }}"
+                        @endforeach
+                    @endif
+                    @if(isset($otherAttributes) and is_array($dataAttributes))
+                        @foreach($otherAttributes as $attributeName => $attributeValue)
+                            {{ $attributeName }}="{{ $attributeValue }}"
+                        @endforeach
+                    @endif
                     {{$extra or ''}}
+{{--                    {{ dd($extra) }}--}}
             >
             @if(isset($icon) and $icon)
                 <i class="fa fa-{{ $icon }}"></i>

@@ -1,1 +1,1 @@
-<span class="fa fa-asterisk required-sign text-red" title="{{trans('forms.logic.required')}}"></span>
+<span class="required-sign text-red" title="{{trans('forms.logic.required')}}">*</span>

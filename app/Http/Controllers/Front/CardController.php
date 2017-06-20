@@ -24,6 +24,7 @@ use Morilog\Jalali\Facades\jDate;
 class CardController extends Controller
 {
     use TahaControllerTrait;
+
     public function index()
     {
         $captcha = SecKeyServiceProvider::getQuestion('fa');
@@ -33,49 +34,80 @@ class CardController extends Controller
 
     public function register()
     {
-        $states = State::get_combo() ;
+        $states = State::get_combo();
         $input = Session::get('register_first_step');
-        if (!$input)
-        {
+        if (!$input) {
             return redirect('/organ_donation_card');
         }
         return view('site.card_register.0', compact('input', 'states'));
     }
 
-    public function register_first_step(Requests\CardRegisterFirstStepRequest $request)
+    private function register_first_step($request)
     {
-        $input = $request->toArray();
-        unset($input['_token']);
-        unset($input['security']);
-        unset($input['key']);
-        $user = User::selectBySlug($input['code_melli'], 'code_melli');
-        dd($user->exists);
-        $can_login = $user and $user->isActive('volunteer') and $user->isActive('card') ;
-        if(!$can_login)
-        {
-            Session::put('register_first_step', $input);
+//        $input = $request->toArray();
+//        unset($input['_token'], $input['security'], $input['key']);
+
+        // @TODO: Should be checked in an specific function
+        $user = User::findBySlug($request->code_melli, 'code_melli');
+
+        if ($user->exists) { // A user with the given "code_melli" exists.
+            $message = '';
+            if ($user->is_admin()) { // This user is a volunteer
+                $message .= trans('front.messages.you_are_volunteer');
+            } else if ($user->withDisabled()->is_admin()) { // This user id a blocked volunteer
+                return $this->jsonFeedback(null, [
+                    'ok'      => false,
+                    'message' => trans('front.messages.unable_to_register_card'),
+                ]);
+            } else if ($user->is_an('card-holder')) { // This user has card
+                $message .= trans('front.messages.you_are_card_holder');
+            }
+            $message .= ' <a href="' . route('login') . '">' . trans('front.messages.login') . '</a>';
+
             return $this->jsonFeedback(null, [
-                'redirect' => url('register'),
-                'ok' => 1,
-                'message' => trans('forms.feed.wait'),
+                'ok'      => true,
+                'message' => $message,
             ]);
         }
-        else
-        {
-            return $this->jsonFeedback(null, [
-                'redirect' => url('relogin'),
-                'ok' => 1,
-                'message' => trans('forms.feed.wait'),
-            ]);
-        }
+        
+        // @TODO: verify "code_melli" with "name_first" and "name_last"
+        $currentSession = session()->get('register_card') ?: [];
+        $currentSession[$request->code_melli] = ['verified' => true];
+        session()->put('register_card', $currentSession);
+
+        return $this->jsonFeedback(null, [
+            'ok'       => 1,
+            'message'  => trans('forms.feed.wait'),
+            'callback' => <<<JS
+                getReadyForStepTwo();
+JS
+        ]);
+
+//
+//        $can_login = $user->exists and $user->isActive('volunteer') and $user->isActive('card');
+//        // @TODO: check if can loogin
+////        if (!$can_login) {
+//        if (true) {
+//            Session::put('register_first_step', $input);
+//            return $this->jsonFeedback(null, [
+////                'redirect' => url('register'),
+//                'ok'      => 1,
+//                'message' => trans('forms.feed.wait'),
+//            ]);
+//        } else {
+//            return $this->jsonFeedback(null, [
+//                'redirect' => url('relogin'),
+//                'ok'       => 1,
+//                'message'  => trans('forms.feed.wait'),
+//            ]);
+//        }
 
     }
 
     public function register_second_step(Requests\CardRegisterSecondStepRequest $request)
     {
         // delete old session
-        if (Session::has('register_second_step'))
-        {
+        if (Session::has('register_second_step')) {
             Session::forget('register_second_step');
         }
 
@@ -87,7 +119,7 @@ class CardController extends Controller
         $input['card_status'] = 8;
         $input['password'] = Hash::make($input['password']);
         $input['home_province'] = State::find($input['home_city']);
-        $input['domain'] = $input['home_province']->domain->slug ;
+        $input['domain'] = $input['home_province']->domain->slug;
         $input['home_province'] = $input['home_province']->province()->id;
         $input['password_force_change'] = 0;
         unset($input['password2']);
@@ -95,15 +127,12 @@ class CardController extends Controller
         // check birth date range
         $minimum = -1539449865;
         $maximum = Carbon::now()->timestamp;
-        if ($input['birth_date'] <= $minimum or $input['birth_date'] > $maximum)
-        {
+        if ($input['birth_date'] <= $minimum or $input['birth_date'] > $maximum) {
             return $this->jsonFeedback(null, [
-                'ok' => 0,
+                'ok'      => 0,
                 'message' => trans('site.global.birth_date_not_true'),
             ]);
-        }
-        else
-        {
+        } else {
             $input['birth_date'] = Carbon::createFromTimestamp($input['birth_date'])->toDateString();
         }
 
@@ -166,28 +195,22 @@ class CardController extends Controller
 
         $user = User::selectBySlug($input['code_melli'], 'code_melli');
 
-        if (! $user)
-        {
-            $return = $this->jsonFeedback(trans('site.global.register_check_data_step_second'),[
-                'ok' => 1,
+        if (!$user) {
+            $return = $this->jsonFeedback(trans('site.global.register_check_data_step_second'), [
+                'ok'       => 1,
                 'callback' => 'register_step_second("' . encrypt($input['code_melli']) . '")'
             ]);
-        }
-        else
-        {
-            if ($user->isActive('volunteer') or $user->isActive('card'))
-            {
+        } else {
+            if ($user->isActive('volunteer') or $user->isActive('card')) {
                 $return = $this->jsonFeedback(null, [
                     'redirect' => url('relogin'),
-                    'ok' => 1,
-                    'message' => trans('forms.feed.wait'),
+                    'ok'       => 1,
+                    'message'  => trans('forms.feed.wait'),
                 ]);
-            }
-            else
-            {
+            } else {
                 $input['id'] = $user->id;
-                $return = $this->jsonFeedback(trans('site.global.register_check_data_step_second'),[
-                    'ok' => 1,
+                $return = $this->jsonFeedback(trans('site.global.register_check_data_step_second'), [
+                    'ok'       => 1,
                     'callback' => 'register_step_second("' . encrypt($input['code_melli']) . '")'
                 ]);
             }
@@ -206,84 +229,68 @@ class CardController extends Controller
         Session::forget('register_first_step');
         $data = Session::pull('register_second_step');
 
-        if ($input['db-check'] != $data['code_melli'])
-        {
+        if ($input['db-check'] != $data['code_melli']) {
             return $this->jsonFeedback(null, [
                 'redirect' => url(''),
             ]);
-        }
-        else
-        {
+        } else {
             $data['card_registered_at'] = Carbon::now()->toDateTimeString();
 //            $data['card_no'] = User::generateCardNo(); when register multi user in one time this line have bug
         }
 
         $user = User::selectBySlug($data['code_melli'], 'code_melli');
-        if ($user)
-        {
+        if ($user) {
             $user_id = $user->id;
-            if ($user->isActive('volunteer') or $user->isActive('card'))
-            {
+            if ($user->isActive('volunteer') or $user->isActive('card')) {
                 $return = $this->jsonFeedback(null, [
                     'redirect' => url('relogin'),
-                    'ok' => 1,
-                    'message' => trans('forms.feed.wait'),
+                    'ok'       => 1,
+                    'message'  => trans('forms.feed.wait'),
                 ]);
-            }
-            else
-            {
+            } else {
                 $data['id'] = $user->id;
                 $user_id = User::store($data);
 
-                if ($user_id)
-                {
-                    Auth::loginUsingId( $user_id );
+                if ($user_id) {
+                    Auth::loginUsingId($user_id);
                     $return = $this->jsonFeedback(null, [
-                        'redirect' => url('members/my_card'),
-                        'ok' => 1,
-                        'message' => trans('site.global.register_success'),
+                        'redirect'     => url('members/my_card'),
+                        'ok'           => 1,
+                        'message'      => trans('site.global.register_success'),
                         'redirectTime' => 2000,
                     ]);
-                }
-                else
-                {
+                } else {
                     $return = $this->jsonFeedback(null, [
-                        'redirect' => url('organ_donation_card'),
-                        'ok' => 0,
-                        'message' => trans('site.global.register_not_complete'),
+                        'redirect'     => url('organ_donation_card'),
+                        'ok'           => 0,
+                        'message'      => trans('site.global.register_not_complete'),
                         'redirectTime' => 2000,
                     ]);
                 }
             }
-        }
-        else
-        {
+        } else {
             $user_id = User::store($data);
 
-            if ($user_id)
-            {
-                Auth::loginUsingId( $user_id );
+            if ($user_id) {
+                Auth::loginUsingId($user_id);
                 $return = $this->jsonFeedback(null, [
-                    'redirect' => url('members/my_card'),
-                    'ok' => 1,
-                    'message' => trans('site.global.register_success'),
+                    'redirect'     => url('members/my_card'),
+                    'ok'           => 1,
+                    'message'      => trans('site.global.register_success'),
                     'redirectTime' => 2000,
                 ]);
-            }
-            else
-            {
+            } else {
                 $return = $this->jsonFeedback(null, [
-                    'redirect' => url('organ_donation_card'),
-                    'ok' => 0,
-                    'message' => trans('site.global.register_not_complete'),
+                    'redirect'     => url('organ_donation_card'),
+                    'ok'           => 0,
+                    'message'      => trans('site.global.register_not_complete'),
                     'redirectTime' => 2000,
                 ]);
             }
         }
 
         // generate card_no
-        if ($user_id and $user_id > 0)
-        {
+        if ($user_id and $user_id > 0) {
             $update['id'] = $user_id;
             $update['card_no'] = $user_id + 5000;
             $user_id = User::store($update);
@@ -294,7 +301,7 @@ class CardController extends Controller
 
     public function card_mini($national_hash)
     {
-        ini_set("error_reporting","E_ALL & ~E_NOTICE & ~E_STRICT");
+        ini_set("error_reporting", "E_ALL & ~E_NOTICE & ~E_STRICT");
         try {
             $national_hash = decrypt($national_hash);
         } catch (DecryptException $e) {
@@ -304,8 +311,7 @@ class CardController extends Controller
         $user = User::selectBySlug($national_hash, 'code_melli');
         $user = $user->toArray();
 
-        if ($user['card_status'] < 8)
-        {
+        if ($user['card_status'] < 8) {
             return view('errors.403');
         }
 
@@ -364,7 +370,7 @@ class CardController extends Controller
 
     public function card_full($national_hash, $mode = 'print')
     {
-        ini_set("error_reporting","E_ALL & ~E_NOTICE & ~E_STRICT");
+        ini_set("error_reporting", "E_ALL & ~E_NOTICE & ~E_STRICT");
         try {
             $national_hash = decrypt($national_hash);
         } catch (DecryptException $e) {
@@ -374,8 +380,7 @@ class CardController extends Controller
         $user = User::selectBySlug($national_hash, 'code_melli');
         $user = $user->toArray();
 
-        if ($user['card_status'] < 8)
-        {
+        if ($user['card_status'] < 8) {
             return view('errors.403');
         }
 
@@ -383,12 +388,9 @@ class CardController extends Controller
         $enFont = public_path('assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'php' . DIRECTORY_SEPARATOR . 'calibri.ttf');
 
         header("Content-type: image/png");
-        if($mode == 'print')
-        {
+        if ($mode == 'print') {
             header('Content-Disposition: filename=' . 'کارت_اهدای_عضو_' . $user['card_no'] . '.png');
-        }
-        elseif($mode == 'download')
-        {
+        } elseif ($mode == 'download') {
             header('Content-Description: File Transfer');
             header('Content-Type: image/png');
             header('Content-Disposition: attachment; filename="' . $user['card_no'] . '.png"');
@@ -396,9 +398,7 @@ class CardController extends Controller
             header('Expires: 0');
             header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
             header('Pragma: public');
-        }
-        else
-        {
+        } else {
             header('Content-Disposition: filename=' . 'کارت_اهدای_عضو_' . $user['card_no'] . '.png');
         }
 
@@ -455,5 +455,16 @@ class CardController extends Controller
         // Using imagepng() results in clearer text compared with imagejpeg()
         imagepng($img);
         imagedestroy($img);
+    }
+
+    public function save_registration(Requests\CardRegisterRequest $request)
+    {
+        switch ($request->step) {
+            case 1:
+                return $this->register_first_step($request);
+                break;
+            case 2:
+                break;
+        }
     }
 }

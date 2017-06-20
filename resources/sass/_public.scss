@@ -287,6 +287,19 @@ header {
 
 // Font Size --end
 
+// Rounded Corner --start
+@for $i from 1 to 21 {
+  $number: $i * 5;
+  $value: $number * 1px;
+  .rounded-corners-#{$number} {
+    -webkit-border-radius: $value;
+    -moz-border-radius: $value;
+    border-radius: $value;
+  }
+}
+
+// Rounded Corner --end
+
 // Radio and Checkbox --start
 [type="radio"],
 [type="checkbox"] {
@@ -730,3 +743,12 @@ img%img-cover {
 }
 
 // DropZone --end
+
+// Shadow --start
+.shadow-m {
+  $value: 0 5px 20px -5px rgba(0, 0, 0, .3);
+  -webkit-box-shadow: #{$value};
+  -moz-box-shadow: #{$value};
+  box-shadow: #{$value};
+}
+// Shadow --end

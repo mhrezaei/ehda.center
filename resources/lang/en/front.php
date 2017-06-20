@@ -63,10 +63,6 @@ return [
     'to'                                       => 'to',
     'states'                                   => 'States',
     'gallery'                                  => 'Gallery',
-    'profile_messages'                         => [
-        'not_enough_information'   => 'Not Enough Profile Information',
-        'complete_to_join_drawing' => 'Now you can join the drawing by completing your profile.',
-    ],
     'news'                                     => 'News',
     'faqs'                                     => 'Faqs',
     'faq_not_found_ask_yours'                  => 'Didn\'t find your answer? Ask your question.',
@@ -78,6 +74,14 @@ return [
     'special_volunteers'                       => 'Special Volunteers',
     'send_works'                               => 'Send Works',
     'send_work'                                => 'Send Work',
+    'personal_information'                     => 'Personal Information',
+    'contact_info'                             => 'اطلاعات تماس', // @TODO: new
+    'login_info'                               => 'اطلاعات ورود به سامانه', // @TODO: new
+
+    'profile_messages' => [
+        'not_enough_information'   => 'Not Enough Profile Information',
+        'complete_to_join_drawing' => 'Now you can join the drawing by completing your profile.',
+    ],
 
     'file_types' => [
         'image' => [

@@ -72,6 +72,7 @@
 
         @include('front.forms.input',[
             'name' => 'password',
+            'id' => 'password',
             'label' => false,
             'type' => 'password',
             'placeholder' => trans('validation.attributes.password'),
@@ -83,6 +84,7 @@
 
         @include('front.forms.input',[
             'name' => 'password2',
+            'id' => 'password2',
             'label' => false,
             'type' => 'password',
             'placeholder' => trans('validation.attributes.password2'),

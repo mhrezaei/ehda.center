@@ -240,6 +240,7 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
 
     // register new card
     Route::get('/organ_donation_card', 'CardController@index');
+    Route::post('/register/card', 'CardController@save_registration');
     Route::post('/register/first_step', 'CardController@register_first_step');
     Route::post('/register/second_step', 'CardController@register_second_step');
 

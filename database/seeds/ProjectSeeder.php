@@ -312,7 +312,7 @@ class ProjectSeeder extends Seeder
 
 		DB::table('roles')->insert([
 			[
-				'slug' => "admin",
+				'slug' => "manager",
 				'title' => "مدیر",
 				'plural_title' => "مدیران",
 				'created_at' => \Carbon\Carbon::now()->toDateTimeString(),

@@ -63,10 +63,6 @@ return [
     'to'                                       => 'تا',
     'states'                                   => 'استان‌ها',
     'gallery'                                  => 'گالری',
-    'profile_messages'                         => [
-        'not_enough_information'   => 'اطلاعات پروفایل شما کافی نیست.',
-        'complete_to_join_drawing' => 'اکنون کافی‌ست با تکمیل اطلاعات خود وارد فهرست قرعه‌کشی شود.',
-    ],
     'news'                                     => 'اخبار',
     'faqs'                                     => 'سوالات متداول',
     'faq_not_found_ask_yours'                  => 'پاسخ سوال خود را پیدا نکرده اید؟ از ما بپرسید',
@@ -78,6 +74,12 @@ return [
     'special_volunteers'                       => 'سفیران ویژه',
     'send_works'                               => 'ارسال آثار',
     'send_work'                                => 'ارسال اثر',
+    'personal_information'                     => 'اطلاعات فردی',
+
+    'profile_messages' => [
+        'not_enough_information'   => 'اطلاعات پروفایل شما کافی نیست.',
+        'complete_to_join_drawing' => 'اکنون کافی‌ست با تکمیل اطلاعات خود وارد فهرست قرعه‌کشی شود.',
+    ],
 
     'file_types' => [
         'image' => [
@@ -96,7 +98,7 @@ return [
             'title'         => 'صوتی',
             'dropzone_text' => 'فایل صوتی خود را اینجا رها کنید'
         ],
-    ], 
+    ],
 
     'upload' => [
         'errors' => [
@@ -111,5 +113,12 @@ return [
         'copy_right' => 'تمامی حقوق برای ::site محفوظ است.',
         'created_by' => 'طراحی و اجرا: ',
         'yasna_team' => 'گروه یسنا'
-    ]
+    ],
+
+    'messages' => [
+        'you_are_volunteer'       => 'شما سفیر هستید.',
+        'you_are_card_holder'     => 'شما کارت اعدای عضو دارید.',
+        'unable_to_register_card' => 'امکان ثبت کارت وجود ندارد.',
+        'login'                   => 'وارد شوید.',
+    ], // @TODO: new
 ];
