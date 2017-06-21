@@ -3,7 +3,7 @@
 <div class="field form-buttonset {{ $container['class'] or '' }}"
      title="{{ trans('validation.attributes_example.' . $name)}}"
      error-value="{{ trans('validation.javascript_validation.' . $name) }}"
-        {{ $container['id'] ? "id=$container[id]" : '' }}>
+        {{ (isset($container['id']) and $container['id']) ? "id=$container[id]" : '' }}>
     @if(!isset($label))
         {{ null , $label = Lang::has("validation.attributes.$name") ? trans("validation.attributes.$name") : $name}}
     @endif
@@ -15,8 +15,8 @@
         <input id="{{ $opId }}" type="radio" name="{{ $name }}" class="{{ $class or '' }}"
                value="{{ $opValue }}"
                {{ $other or '' }}
-               @if($value == $opValue)
-               checked="checked"
+               @if(isset($value) and $value == $opValue)
+                    checked="checked"
                 @endif
         >
         <label for="{{ $opId }}"> {{ $opText }} </label>

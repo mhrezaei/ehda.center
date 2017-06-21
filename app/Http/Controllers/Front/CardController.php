@@ -29,7 +29,8 @@ class CardController extends Controller
     {
         $captcha = SecKeyServiceProvider::getQuestion('fa');
         $post = Post::findBySlug('organ-donation-card');
-        return view('front.card_info.0', compact('captcha', 'post'));
+        $states = State::combo();
+        return view('front.card_info.0', compact('captcha', 'post', 'states'));
     }
 
     public function register()
@@ -51,34 +52,37 @@ class CardController extends Controller
         $user = User::findBySlug($request->code_melli, 'code_melli');
 
         if ($user->exists) { // A user with the given "code_melli" exists.
-            $message = '';
+            $loginLing = '<a href="' . route('login') . '">' . trans('front.messages.login') . '</a>';
             if ($user->is_admin()) { // This user is a volunteer
-                $message .= trans('front.messages.you_are_volunteer');
+                $message = trans('front.messages.you_are_volunteer') . $loginLing;
+                return $this->jsonFeedback(null, [
+                    'ok'      => true,
+                    'message' => $message,
+                ]);
             } else if ($user->withDisabled()->is_admin()) { // This user id a blocked volunteer
                 return $this->jsonFeedback(null, [
                     'ok'      => false,
                     'message' => trans('front.messages.unable_to_register_card'),
                 ]);
             } else if ($user->is_an('card-holder')) { // This user has card
-                $message .= trans('front.messages.you_are_card_holder');
+                $message = trans('front.messages.you_are_card_holder') . $loginLing;
+                return $this->jsonFeedback(null, [
+                    'ok'      => true,
+                    'message' => $message,
+                ]);
             }
-            $message .= ' <a href="' . route('login') . '">' . trans('front.messages.login') . '</a>';
-
-            return $this->jsonFeedback(null, [
-                'ok'      => true,
-                'message' => $message,
-            ]);
         }
-        
+
         // @TODO: verify "code_melli" with "name_first" and "name_last"
         $currentSession = session()->get('register_card') ?: [];
         $currentSession[$request->code_melli] = ['verified' => true];
         session()->put('register_card', $currentSession);
 
         return $this->jsonFeedback(null, [
-            'ok'       => 1,
-            'message'  => trans('forms.feed.wait'),
-            'callback' => <<<JS
+            'ok'           => 1,
+            'message'      => trans('forms.feed.wait'),
+            'feed_timeout' => 1000,
+            'callback'     => <<<JS
                 getReadyForStepTwo();
 JS
         ]);

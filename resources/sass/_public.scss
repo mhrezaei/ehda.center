@@ -752,3 +752,11 @@ img%img-cover {
   box-shadow: #{$value};
 }
 // Shadow --end
+
+// Bootstrap Select Picker --start
+.bootstrap-select {
+  > .btn-default {
+    @extend .form-control;
+  }
+}
+// Bootstrap Select Picker --end

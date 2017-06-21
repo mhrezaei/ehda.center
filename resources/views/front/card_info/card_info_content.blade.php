@@ -1,7 +1,20 @@
+@section('head')
+    {!! Html::style('assets/libs/bootstrap-select/bootstrap-select.min.css') !!}
+@append
+
 @section('endOfBody')
+    <script>
+        var bootstrapTooltip = $.fn.tooltip.noConflict(); // return $.fn.tooltip to previously assigned value
+    </script>
+
+    {!! Html::script ('assets/libs/bootstrap-select/bootstrap-select.min.js') !!}
     {!! Html::script ('assets/libs/jquery.form.min.js') !!}
     {!! Html::script ('assets/js/forms.js') !!}
+    {!! Html::script ('assets/libs/jquery-ui/jquery-ui.min.js') !!}
+    @include('front.frame.datepicker_assets')
+
     <script>
+        $.fn.tooltip = bootstrapTooltip; // give $().bootstrapTooltip the Bootstrap functionality
         function getReadyForStepTwo() {
             // Make the "code_melli" field readonly
             $('#code_melli').attr('readonly', 'readonly');
@@ -40,7 +53,8 @@
                             {{ null, $cardImage = setting()->ask('organ_donation_card_image_front')->gain() }}
                             @if($cardImage)
                                 <div class="col-xs-8 col-xs-offset-2">
-                                    <img src="{{ url($cardImage) }}" class="img-responsive shadow-m rounded-corners-20 mb20"/>
+                                    <img src="{{ url($cardImage) }}"
+                                         class="img-responsive shadow-m rounded-corners-20 mb20"/>
                                 </div>
                             @endif
 
@@ -122,13 +136,16 @@
                         </div>
                         {!! Form::close() !!}
 
-                        <div id="additional-fields" style="display: none">
+                        <div id="additional-fields" style="display: non">
                             <div class="col-xs-12">
-                                {{--@include('front.forms.select_gender', [--}}
-                                {{--'field' => 'gender',--}}
-                                {{--'class' => 'form-select form-required',--}}
-                                {{--'required' => 1,--}}
-                                {{--])--}}
+                                @include('front.frame.widgets.buttonset', [
+                                    'name' => 'gender',
+                                    'class' => 'form-select form-required',
+                                    'required' => 1,
+                                    'options' => [
+                                        'test' => 'jflksjfkljfkl'
+                                    ],
+                                ])
                             </div>
                             <div class="col-xs-12">
                                 @include('front.forms.input', [
@@ -161,7 +178,7 @@
                             </div>
 
                             <div class="col-xs-12">
-                                @include('front.forms.input', [
+                                @include('front.forms.jquery-ui-datepicker', [
                                     'name' => 'birth_date',
                                     'class' => 'form-datepicker form-required',
                                     'dataAttributes' => [
@@ -174,14 +191,14 @@
                                 ])
                             </div>
                             <div class="col-xs-12">
-                                {{--@include('front.forms.select_city' , [--}}
-                                {{--'field' => 'birth_city' ,--}}
-                                {{--'blank_value' => '0' ,--}}
-                                {{--'options' => $states ,--}}
-                                {{--'search' => true ,--}}
-                                {{--'required' => 1,--}}
-                                {{--'class' => 'form-selectpicker form-required',--}}
-                                {{--])--}}
+                                @include('front.forms.select-picker' , [
+                                    'name' => 'birth_city' ,
+                                    'blank_value' => '0' ,
+                                    'options' => $states ,
+                                    'search' => true ,
+                                    'required' => 1,
+                                    'class' => 'form-selectpicker form-required',
+                                ])
                             </div>
 
                             <div class="col-xs-12">
