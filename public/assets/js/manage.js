@@ -417,6 +417,182 @@ function roleAttachmentSave(user_id, role_id, role_slug) {
 			rowUpdate('tblUsers', user_id);
 		});
 
-	return null ;
+	return null;
 
 }
+
+function permitClick($this, new_value) {
+	var clicked_on = $this.attr('for');
+
+	//Find Out new_value ...
+	var current_value = $this.attr('value');
+	switch (new_value) {
+		case '0' :
+			new_value = 0;
+			break;
+		case '1' :
+			new_value = 2;
+			break;
+		case '2' :
+			new_value = 2;
+			break;
+		default :
+			if (current_value == '2') {
+				new_value = 0;
+			}
+			else {
+				new_value = 2;
+			}
+
+	}
+
+	//Action if clicked on a locale...
+	if (clicked_on == 'locale') {
+		permitUpdate($this.attr('checker'), new_value);
+	}
+
+	//Action if clicked on a permit without locale...
+	if (clicked_on == 'permit' && $this.attr('hasLocale') == '0') {
+		permitUpdate($this.attr('checker'), new_value);
+	}
+
+	//Action if clicked on a permit with locales...
+	if (clicked_on == 'permit' && $this.attr('hasLocale') == '1') {
+		$(".-" + $this.attr('module') + "-" + $this.attr('permit') + "-locale").each(function () {
+			permitUpdate($(this).attr('checker'), new_value);
+		});
+	}
+
+	//Action if clicked on a module...
+	if (clicked_on == 'module') {
+		$(".-" + $this.attr('module') + "-permit").each(function () {
+			permitClick($(this), new_value.toString());
+		});
+	}
+
+	//Spread...
+	permitSpread();
+//		forms_log(clicked_on);
+
+}
+
+function permitUpdate(string, new_value) {
+	var $input = $('#txtPermissions');
+
+	//Add...
+	if (new_value > 0) {
+		var permission = $input.val();
+
+		if (permission.search(string) < 0) {
+			permission = permission + " " + string;
+			$input.val(permission);
+		}
+
+	}
+
+	//Remove...
+	else {
+		$input.val($input.val().replaceAll(string, ''));
+
+	}
+}
+
+function permitSpread() {
+	var permission = $('#txtPermissions').val();
+
+	var icon_checked = "fa-check-circle-o";
+	var icon_unchecked = "fa-circle-o";
+	var icon_semichecked = "fa-dot-circle-o";
+
+	var text_checked = "text-success";
+	var text_unchecked = "text-darkgray";
+	var text_semichecked = "text-violet";
+
+	//Reset all links...
+	$('.-permit-link').removeClass(text_checked).removeClass(text_unchecked).removeClass(text_semichecked).children('.fa').removeClass(icon_checked).removeClass(icon_unchecked).removeClass(icon_semichecked);
+
+	//‌‌Spread check marks...
+	$(".-module").each(function () {
+			var module = $(this).attr('module');
+			var counter = 0;
+			var checked = 0;
+
+			$(".-" + module + "-permit").each(function () {
+					var permit = $(this).attr('permit');
+					var counter2 = 0;
+					var checked2 = 0;
+
+					//When Has Locales...
+					if ($(this).attr('hasLocale') == 1) {
+
+						$(".-" + module + "-" + permit + "-locale").each(function () {
+							var locale = $(this).attr('locale');
+							counter++;
+							counter2++;
+
+							if (permission.search(module + "." + permit + "." + locale) >= 0) {
+								$(this).children('.-locale-handle').addClass(icon_checked);
+								$(this).addClass(text_checked).attr('value', '2');
+								checked++;
+								checked2++;
+							}
+							else {
+								$(this).children('.-locale-handle').addClass(icon_unchecked);
+								$(this).addClass(text_unchecked).attr('value', '0');
+							}
+
+						});
+
+						// Permissions:
+						if (checked2 == counter2) {
+							$(this).children('.-permit-handle').addClass(icon_checked);
+							$(this).addClass(text_checked).attr('value', '2');
+						}
+						else if (checked2 == 0) {
+							$(this).children('.-permit-handle').addClass(icon_unchecked);
+							$(this).addClass(text_unchecked).attr('value', '1');
+						}
+						else {
+							$(this).children('.-permit-handle').addClass(icon_semichecked);
+							$(this).addClass(text_semichecked).attr('value', '0');
+						}
+
+					}
+					//When Doesn't have locales...
+					else {
+						counter++;
+						if (permission.search(module + "." + permit) >= 0) {
+							$(this).children('.-permit-handle').addClass(icon_checked);
+							$(this).addClass(text_checked).attr('value', '2');
+							checked++;
+						}
+						else {
+							$(this).children('.-permit-handle').addClass(icon_unchecked);
+							$(this).addClass(text_unchecked).attr('value', '0');
+						}
+					}
+				}
+			);
+
+
+			// Module:
+			if (checked == counter) {
+				$(this).children('.-module-handle').addClass(icon_checked);
+				$(this).addClass(text_checked).attr('value', '2');
+			}
+			else if (checked == 0) {
+				$(this).children('.-module-handle').addClass(icon_unchecked);
+				$(this).addClass(text_unchecked).attr('value', '1');
+			}
+			else {
+				$(this).children('.-module-handle').addClass(icon_semichecked);
+				$(this).addClass(text_semichecked).attr('value', '0');
+			}
+
+		}
+	)
+	;
+
+
+}
+

@@ -201,6 +201,39 @@ class UsersController extends Controller
 
 	public function savePermits(Request $request)
 	{
+		/*-----------------------------------------------
+		| Validation ...
+		*/
+		$model = User::find($request->id) ;
+		if(!$model or $model->is_not_a($request->role_slug)) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+		if(!$model->canPermit()) {
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+
+		}
+
+		/*-----------------------------------------------
+		| Self Privileges ...
+		*/
+		if( in_array( $request->role_slug , Role::adminRoles())) {
+			$permits = array_filter(explode(' ' , $request->permissions)) ;
+			if(!user()->as_any()->can_all($permits)) {
+				return $this->jsonFeedback(trans('validation.http.Error403'));
+			}
+		}
+
+		/*-----------------------------------------------
+		| Save and Return  ...
+		*/
+		$model->as($request->role_slug)->setPermission($request->permissions);
+
+		return $this->jsonAjaxSaveFeedback( true );
+
+	}
+
+	public function _savePermits(Request $request)
+	{
 		$data = $request->toArray();
 
 		/*-----------------------------------------------
