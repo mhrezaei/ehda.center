@@ -22,6 +22,7 @@ if (isset($value) and is_object($value))
 
 if (!isset($in_form))
     $in_form = true;
+
 ?>
 @if(!isset($condition) or $condition)
     @if($in_form)

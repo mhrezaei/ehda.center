@@ -22,6 +22,13 @@ if (isset($value) and is_object($value))
 
 if (!isset($in_form))
     $in_form = true;
+
+if (isset($options)) {
+    foreach ($options as $optionName => $optionValue) {
+        $dataAttributes['datepicker-' . kebab_case($optionName)] = $optionValue;
+    }
+}
+
 ?>
 @if(!isset($condition) or $condition)
     @if($in_form)

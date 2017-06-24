@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 use App\Providers\ValidationServiceProvider;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 
 class CardRegisterRequest extends Request
@@ -44,11 +45,14 @@ class CardRegisterRequest extends Request
                     'gender'      => 'required|numeric|min:1|max:3',
                     'name_father' => 'required|persian:60',
                     'code_id'     => 'required|numeric',
-                    'birth_date'  => 'required|min:6',
+                    'birth_date'  => 'required|date|min:6|before_or_equal:'
+                        . Carbon::now()->toDateString()
+                        . '|after_or_equal:'
+                        . Carbon::now()->subYears(100)->toDateString(),
                     'birth_city'  => 'required|numeric|min:1',
                     'edu_level'   => 'required|numeric|min:1|max:6',
                     'job'         => 'required|persian:60',
-                    'tel_mobile'  => 'required|phone:mobile',
+                    'mobile'      => 'required|phone:mobile',
                     'home_tel'    => 'required|phone:fixed',
                     'home_city'   => 'required|numeric|min:1',
                     'email'       => 'email',
@@ -65,11 +69,11 @@ class CardRegisterRequest extends Request
         $value = parent::all();
         switch ($value['step']) {
             case 1:
-                $purified = ValidationServiceProvider::purifier($value,[
-                    'security'  =>  'ed',
-                    'code_melli'  =>  'ed',
-                    'name_first'  =>  'pd',
-                    'name_last'  =>  'pd',
+                $purified = ValidationServiceProvider::purifier($value, [
+                    'security'   => 'ed',
+                    'code_melli' => 'ed',
+                    'name_first' => 'pd',
+                    'name_last'  => 'pd',
                 ]);
                 break;
             case 2:
@@ -79,7 +83,7 @@ class CardRegisterRequest extends Request
                     'gender'      => 'ed',
                     'name_father' => 'pd',
                     'code_id'     => 'ed',
-                    'birth_date'  => 'ed',
+                    'birth_date'  => 'gDate',
                     'birth_city'  => 'ed',
                     'edu_level'   => 'ed',
                     'job'         => 'pd',

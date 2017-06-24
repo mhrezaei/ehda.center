@@ -10,7 +10,7 @@
                     type="{{$type or 'text'}}"
                     id="{{ isset($id) ? $id : $name  }}"
                     name="{{$name}}" value="{{$value or ''}}"
-                    class="form-control selectpicker @if(isset($icon) and $icon) has-icon @endif {{$class or ''}}"
+                    class="form-control form-selectpicker selectpicker @if(isset($icon) and $icon) has-icon @endif {{$class or ''}}"
                     style="{{$style or ''}}"
                     placeholder="{{ isset($placeholder) ? $placeholder : trans('validation.attributes_placeholder.' . $name)  }}"
                     onkeyup="{{$on_change or ''}}"
@@ -18,8 +18,9 @@
                     onfocus="{{$on_focus or ''}}"
                     aria-valuenow="{{$value or ''}}"
                     data-size= "{{$size or 5}}"
-                    data-live-search = "{{$search or false}}"
+                    data-live-search="{{$search or false}}"
                     data-live-search-placeholder= "{{$search_placeholder or trans('forms.button.search')}}..."
+                    data-none-selected-text = "{{ trans('forms.general.select_default') }}"
                     @if(isset($dataAttributes) and is_array($dataAttributes))
                         @foreach($dataAttributes as $attributeName => $attributeValue)
                         data-{{ $attributeName }}="{{ $attributeValue }}"

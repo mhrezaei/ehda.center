@@ -1,6 +1,13 @@
 $startSide: map_get($localeDirections, 'start');
 $endSide: map_get($localeDirections, 'end');
 
+// Public Silent Classes --start
+%display-none {
+  display: none;
+}
+
+// Public Silent Classes --end
+
 // ،Top Main Header --start
 
 header {
@@ -751,6 +758,7 @@ img%img-cover {
   -moz-box-shadow: #{$value};
   box-shadow: #{$value};
 }
+
 // Shadow --end
 
 // Bootstrap Select Picker --start
@@ -758,5 +766,65 @@ img%img-cover {
   > .btn-default {
     @extend .form-control;
   }
+
+  > .dropdown-toggle {
+    padding-right: 12px !important;
+    padding-left: 30px !important;
+  }
+
+  * {
+    text-align: #{$startSide} !important;
+  }
+
+  &.btn-group .dropdown-toggle .caret {
+    left: 12px !important;
+    right: auto !important;
+    margin: 0 !important;
+  }
 }
+
 // Bootstrap Select Picker --end
+
+// JqueryUi --start
+[type="radio"],
+[type="checkbox"] {
+  &,
+  &:checked {
+    + label.ui-button {
+      & {
+        padding: .4em 1em;
+      }
+
+      &:before,
+      &:after,
+      .ui-checkboxradio-icon {
+        @extend %display-none;
+      }
+    }
+  }
+
+}
+
+// JqueryUi --end
+
+// Form --start
+//form {
+.form-heading {
+  @extend .mt20, .mb10, .text-#{$startSide};
+  width: 100%;
+  overflow: hidden;
+
+  &:after {
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    height: 1px;
+    border-top: 1px dashed #{map_get($colors, 'darkGray')};
+    width: 100%;
+    margin-#{$endSide}: -100%;
+    margin-#{$startSide}: 10px;
+  }
+}
+
+//}
+// Form --end

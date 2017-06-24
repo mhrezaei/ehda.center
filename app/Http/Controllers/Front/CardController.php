@@ -35,7 +35,7 @@ class CardController extends Controller
 
     public function register()
     {
-        $states = State::get_combo();
+        $states = State::combo();
         $input = Session::get('register_first_step');
         if (!$input) {
             return redirect('/organ_donation_card');
@@ -45,8 +45,6 @@ class CardController extends Controller
 
     private function register_first_step($request)
     {
-//        $input = $request->toArray();
-//        unset($input['_token'], $input['security'], $input['key']);
 
         // @TODO: Should be checked in an specific function
         $user = User::findBySlug($request->code_melli, 'code_melli');
@@ -108,48 +106,72 @@ JS
 
     }
 
-    public function register_second_step(Requests\CardRegisterSecondStepRequest $request)
+    private function register_second_step($request)
     {
-        // delete old session
-        if (Session::has('register_second_step')) {
-            Session::forget('register_second_step');
+        $submittedIDs = session()->get('register_card');
+        if(!array_key_exists($request->code_melli, $submittedIDs)) { // This "code_melli" hasn't been submitted
+            // Achieving this condition means that "code_melli" has been manipulated in read only mode by client
+            return $this->jsonFeedback(null, [
+                'ok'           => 0,
+                'refresh'      => 1,
+            ]);
         }
 
-        $input = $request->toArray();
-        unset($input['_token']);
-        $input['code_melli'] = Session::get('register_first_step');
-        $input['code_melli'] = $input['code_melli']['code_melli'];
-        // card extra detail
-        $input['card_status'] = 8;
-        $input['password'] = Hash::make($input['password']);
-        $input['home_province'] = State::find($input['home_city']);
-        $input['domain'] = $input['home_province']->domain->slug;
-        $input['home_province'] = $input['home_province']->province()->id;
-        $input['password_force_change'] = 0;
-        unset($input['password2']);
+
+        // @TODO: Unset "_token", "password2"
+//        unset($input['_token']);
+
+        $request->card_status = 8;
+
+        $state = State::find($request->home_city);
+        $modifyingData = [
+            'card_status' => 8,
+            'password' => Hash::make($request->password),
+            'home_province' => $state->province()->id,
+            'domain' => $state->domain->slug,
+            'password_force_change' => 0,
+            'organs' => 'Heart Lung Liver Kidney Pancreas Tissues',
+        ];
+
+        $request->merge($modifyingData);
+
+        dd($request->all());
+        dd('here');
+
+//        $input = $request->toArray();
+//        $input['code_melli'] = Session::get('register_first_step');
+//        $input['code_melli'] = $input['code_melli']['code_melli'];
+//        // card extra detail
+//        $input['card_status'] = 8;
+//        $input['password'] = Hash::make($input['password']);
+//        $input['home_province'] = State::find($input['home_city']);
+//        $input['domain'] = $input['home_province']->domain->slug;
+//        $input['home_province'] = $input['home_province']->province()->id;
+//        $input['password_force_change'] = 0;
+//        unset($input['password2']);
 
         // check birth date range
-        $minimum = -1539449865;
-        $maximum = Carbon::now()->timestamp;
-        if ($input['birth_date'] <= $minimum or $input['birth_date'] > $maximum) {
-            return $this->jsonFeedback(null, [
-                'ok'      => 0,
-                'message' => trans('site.global.birth_date_not_true'),
-            ]);
-        } else {
-            $input['birth_date'] = Carbon::createFromTimestamp($input['birth_date'])->toDateString();
-        }
+//        $minimum = -1539449865;
+//        $maximum = Carbon::now()->timestamp;
+//        if ($input['birth_date'] <= $minimum or $input['birth_date'] > $maximum) {
+//            return $this->jsonFeedback(null, [
+//                'ok'      => 0,
+//                'message' => trans('site.global.birth_date_not_true'),
+//            ]);
+//        } else {
+//            $input['birth_date'] = Carbon::createFromTimestamp($input['birth_date'])->toDateString();
+//        }
 
 
         // disable organ check
-        $input['organs'] = 'Heart Lung Liver Kidney Pancreas Tissues';
-        unset($input['chRegisterAll']);
-        unset($input['chRegisterHeart']);
-        unset($input['chRegisterLung']);
-        unset($input['chRegisterLiver']);
-        unset($input['chRegisterKidney']);
-        unset($input['chRegisterPancreas']);
-        unset($input['chRegisterTissues']);
+//        $input['organs'] = 'Heart Lung Liver Kidney Pancreas Tissues';
+//        unset($input['chRegisterAll']);
+//        unset($input['chRegisterHeart']);
+//        unset($input['chRegisterLung']);
+//        unset($input['chRegisterLiver']);
+//        unset($input['chRegisterKidney']);
+//        unset($input['chRegisterPancreas']);
+//        unset($input['chRegisterTissues']);
 
 //        if (isset($input['chRegisterAll']))
 //        {
@@ -468,6 +490,7 @@ JS
                 return $this->register_first_step($request);
                 break;
             case 2:
+                return $this->register_second_step($request);
                 break;
         }
     }
