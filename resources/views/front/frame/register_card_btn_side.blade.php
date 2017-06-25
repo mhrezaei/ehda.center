@@ -1,4 +1,4 @@
-<a class="ehda-card" href="/">
+<a class="ehda-card" href="{{ url_locale('organ_donation_card') }}">
       <span>
         <svg xmlns="http://www.w3.org/2000/svg" width="29.218" height="24.25" viewBox="0 0 29.218 24.25" fill="#fff">
           <path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="cls-1"

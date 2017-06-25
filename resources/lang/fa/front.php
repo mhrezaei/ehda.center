@@ -84,9 +84,11 @@ return [
     ], // @TODO: new
 
     'organ_donation_card_section' => [
-        'print'    => 'چاپ کارت اهدای عضو',
-        'download' => 'ذخیره کارت اهدای عضو',
-        'preview'  => 'نمایش کارت اهدای عضو',
+        'print'          => 'چاپ کارت اهدای عضو',
+        'download'       => 'ذخیره کارت اهدای عضو',
+        'preview'        => 'نمایش کارت اهدای عضو',
+        'card'           => 'کارت',
+        'organ_donation' => 'اهدای عضو',
     ], // @TODO: new
 
     'member_section' => [
