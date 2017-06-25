@@ -32,6 +32,10 @@
          * @param {int} stepNumber
          */
         function goToStep(stepNumber) {
+
+            // Hide "feeds"
+            $('#register_form').find('.form-feed').hide()
+
             // Changing the flag for discovering step of registration
             $('#step-number').val(stepNumber);
 
@@ -39,6 +43,10 @@
                 case 1:
                     // Disabling additional input
                     $('#additional-fields').find(':input').attr('disabled', 'disabled');
+                    break;
+                case 2:
+                    // Make the "code_melli" field readonly
+                    $('#code_melli').attr('readonly', 'readonly');
                     break;
                 case 3:
                     // Showing related buttons
@@ -60,9 +68,6 @@
                     break;
 
                 case 2:
-                    // Make the "code_melli" field readonly
-                    $('#code_melli').attr('readonly', 'readonly');
-
                     // Enabling additional input
                     $('#additional-fields').find(':input').removeAttr('disabled');
 
@@ -81,8 +86,8 @@
                     break;
                 case 3:
                     // Making all inputs in form readonly
-                    $('#additional-fields').find(':input').attr('readonly', 'readonly');
-                    $('#additional-fields').find('.form-group').css('pointer-events', 'none');
+                    $('#register_form').find(':input').attr('readonly', 'readonly');
+                    $('#register_form').find('.form-group').css('pointer-events', 'none');
                     break;
             }
         }
@@ -113,8 +118,8 @@
                 case 2:
                     // Making all inputs in form writable
                     console.log('here');
-                    $('#additional-fields').find(':input').removeAttr('readonly');
-                    $('#additional-fields').find('.form-group').css('pointer-events', 'auto');
+                    $('#register_form').find(':input').removeAttr('readonly');
+                    $('#register_form').find('.form-group').css('pointer-events', 'auto');
 
                     // Showing related buttons
                     $('#form-buttons').show();
@@ -155,7 +160,7 @@
                             'value' => 1,
                         ])
 
-                        <div class="row border-2 border-blue pt15 pb15">
+                        <div class="row border-2 border-blue pt15 pb15 rounded-corners-5">
 
                             {{ null, $cardImage = setting()->ask('organ_donation_card_image_front')->gain() }}
                             @if($cardImage)
@@ -453,6 +458,7 @@
                 <div class="col-md-8 col-sm-6 col-xs-12">
                     <div class="row">
                         <div class="col-xs-12 text-justify">
+                            <h2 style="margin-top: 0">{{ $post->title }}</h2>
                             {!! $post->text !!}
                         </div>
                     </div>

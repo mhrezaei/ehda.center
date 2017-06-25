@@ -43,8 +43,6 @@ class TestController extends Controller
 
     public function index()
     {
-        $user = User::findBySlug(11, 'id');
-        dd($user->rolesArray());
         die();
         $file = UploadedFile::findBySlug(6, 'id');
         dd($file->related_files, $file->related_files_pathname);

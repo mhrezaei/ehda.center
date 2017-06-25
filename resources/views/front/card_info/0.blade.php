@@ -4,6 +4,7 @@
 
 @section('head')
     <title>{{ setting()->ask('site_title')->gain() }} | {{ $post->title }}</title>
+{{--    {{ dd($post) }}--}}
     @include('front.frame.open_graph_meta_tags',[
         'title' => $post->title,
         'url' => url('organ_donation_card'),

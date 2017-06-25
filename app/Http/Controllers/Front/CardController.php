@@ -30,7 +30,6 @@ class CardController extends Controller
     {
         $captcha = SecKeyServiceProvider::getQuestion('fa');
         $post = Post::findBySlug('organ-donation-card');
-        $states = State::combo();
         return view('front.card_info.0', compact('captcha', 'post', 'states'));
     }
 
@@ -435,7 +434,7 @@ JS
                 return [
                     'canRegister' => false,
                     'response'    => $this->jsonFeedback(null, [
-                        'ok'      => true,
+                        'ok'      => true, // TODO: better be info
                         'message' => $message,
                     ]),
                 ];
@@ -443,7 +442,7 @@ JS
                 return [
                     'canRegister' => false,
                     'response'    => $this->jsonFeedback(null, [
-                        'ok'      => false,
+                        'ok'      => true,
                         'message' => trans('front.messages.unable_to_register_card'),
                     ]),
                 ];
@@ -452,7 +451,7 @@ JS
                 return [
                     'canRegister' => false,
                     'response'    => $this->jsonFeedback(null, [
-                        'ok'      => true,
+                        'ok'      => true, // TODO: better be info
                         'message' => $message,
                     ]),
                 ];

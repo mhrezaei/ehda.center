@@ -244,6 +244,8 @@ header {
 @media (min-width: 900px) {
   .main-logo {
     min-width: 300px;
+    margin-top: 20px;
+    margin-bottom: 10px;
   }
 }
 
@@ -802,7 +804,44 @@ img%img-cover {
       }
     }
   }
+}
 
+.ui-datepicker {
+  .ui-datepicker-calendar {
+    td {
+      $activeColor: #1ABC9C;
+      $defaultColor: #2c3e50;
+      $highlightColor: #757575;
+      $disabledColor: #9F9F9F;
+
+      > * {
+        @extend .text-center, .border-1;
+        background: map_get($colors, 'white');
+        font-weight: 500;
+      }
+
+      &.ui-state-disabled {
+        > .ui-state-default {
+          color: #{$disabledColor};
+          border-color: #{$disabledColor};
+        }
+      }
+
+      &:not(.ui-state-disabled) {
+        > .ui-state-default {
+          color: #{$defaultColor};
+        }
+        > .ui-state-highlight {
+          color: #{$highlightColor};
+          border-color: #{$highlightColor};
+        }
+        > .ui-state-active {
+          color: #{$activeColor};
+          border-color: #{$activeColor};
+        }
+      }
+    }
+  }
 }
 
 // JqueryUi --end

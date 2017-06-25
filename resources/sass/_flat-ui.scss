@@ -2121,7 +2121,7 @@ textarea.form-group-hg .select2-search input[type="text"], select[multiple].form
 }
 
 .has-success {
-  .help-block, .control-label, .radio, .checkbox, .radio-inline, .checkbox-inline {
+  .help-block, .control-label.changing-color, .radio, .checkbox, .radio-inline, .checkbox-inline {
     color: #2ecc71;
   }
   .form-control, .select2-search input[type="text"] {
@@ -2181,7 +2181,7 @@ textarea.form-group-hg .select2-search input[type="text"], select[multiple].form
 }
 
 .has-error {
-  .help-block, .control-label, .radio, .checkbox, .radio-inline, .checkbox-inline {
+  .help-block, .control-label.changing-color, .radio, .checkbox, .radio-inline, .checkbox-inline {
     color: #e74c3c;
   }
   .form-control, .select2-search input[type="text"] {
