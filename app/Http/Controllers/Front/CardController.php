@@ -45,35 +45,14 @@ class CardController extends Controller
 
     private function register_first_step($request)
     {
-
-        // @TODO: Should be checked in an specific function
-        $user = User::findBySlug($request->code_melli, 'code_melli');
-
-        if ($user->exists) { // A user with the given "code_melli" exists.
-            $loginLing = '<a href="' . route('login') . '">' . trans('front.messages.login') . '</a>';
-            if ($user->is_admin()) { // This user is a volunteer
-                $message = trans('front.messages.you_are_volunteer') . $loginLing;
-                return $this->jsonFeedback(null, [
-                    'ok'      => true,
-                    'message' => $message,
-                ]);
-            } else if ($user->withDisabled()->is_admin()) { // This user id a blocked volunteer
-                return $this->jsonFeedback(null, [
-                    'ok'      => false,
-                    'message' => trans('front.messages.unable_to_register_card'),
-                ]);
-            } else if ($user->is_an('card-holder')) { // This user has card
-                $message = trans('front.messages.you_are_card_holder') . $loginLing;
-                return $this->jsonFeedback(null, [
-                    'ok'      => true,
-                    'message' => $message,
-                ]);
-            }
+        $checkResult = $this->checkCodeMelli($request->code_melli);
+        if (!$checkResult['canRegister']) {
+            return $checkResult['response'];
         }
 
         // @TODO: verify "code_melli" with "name_first" and "name_last"
         $currentSession = session()->get('register_card') ?: [];
-        $currentSession[$request->code_melli] = ['verified' => true];
+        $currentSession[$request->code_melli] = ['verified' => true, 'step' => 1];
         session()->put('register_card', $currentSession);
 
         return $this->jsonFeedback(null, [
@@ -81,7 +60,7 @@ class CardController extends Controller
             'message'      => trans('forms.feed.wait'),
             'feed_timeout' => 1000,
             'callback'     => <<<JS
-                getReadyForStepTwo();
+                upToStep(2);
 JS
         ]);
 
@@ -109,218 +88,161 @@ JS
     private function register_second_step($request)
     {
         $submittedIDs = session()->get('register_card');
-        if(!array_key_exists($request->code_melli, $submittedIDs)) { // This "code_melli" hasn't been submitted
+        if (!array_key_exists($request->code_melli, $submittedIDs)) { // This "code_melli" hasn't been submitted
             // Achieving this condition means that "code_melli" has been manipulated in read only mode by client
             return $this->jsonFeedback(null, [
-                'ok'           => 0,
-                'refresh'      => 1,
+                'ok'      => 0,
+                'refresh' => 1,
             ]);
         }
 
+        $checkResult = $this->checkCodeMelli($request->code_melli);
+        if (!$checkResult['canRegister']) {
+            return $checkResult['response'];
+        }
 
-        // @TODO: Unset "_token", "password2"
-//        unset($input['_token']);
-
-        $request->card_status = 8;
 
         $state = State::find($request->home_city);
         $modifyingData = [
-            'card_status' => 8,
-            'password' => Hash::make($request->password),
-            'home_province' => $state->province()->id,
-            'domain' => $state->domain->slug,
+//            'card_status'           => 8, // @TODO: ask what to do
+            'password'              => Hash::make($request->password),
+            'home_province'         => $state->province()->id,
+            'domain'                => $state->domain->slug,
             'password_force_change' => 0,
-            'organs' => 'Heart Lung Liver Kidney Pancreas Tissues',
+//            'organs'                => 'Heart Lung Liver Kidney Pancreas Tissues', // @TODO: ask what to do
         ];
 
         $request->merge($modifyingData);
 
-        dd($request->all());
-        dd('here');
+        $input = $request->all();
+        unset(
+            $input['_token'],
+            $input['_submit'],
+            $input['password2']
+        );
+        $submittedIDs[$request->code_melli]['step'] = 2;
+        $submittedIDs[$request->code_melli]['data'] = $input;
+        session()->put('register_card', $submittedIDs);
 
-//        $input = $request->toArray();
-//        $input['code_melli'] = Session::get('register_first_step');
-//        $input['code_melli'] = $input['code_melli']['code_melli'];
-//        // card extra detail
-//        $input['card_status'] = 8;
-//        $input['password'] = Hash::make($input['password']);
-//        $input['home_province'] = State::find($input['home_city']);
-//        $input['domain'] = $input['home_province']->domain->slug;
-//        $input['home_province'] = $input['home_province']->province()->id;
-//        $input['password_force_change'] = 0;
-//        unset($input['password2']);
-
-        // check birth date range
-//        $minimum = -1539449865;
-//        $maximum = Carbon::now()->timestamp;
-//        if ($input['birth_date'] <= $minimum or $input['birth_date'] > $maximum) {
-//            return $this->jsonFeedback(null, [
-//                'ok'      => 0,
-//                'message' => trans('site.global.birth_date_not_true'),
-//            ]);
-//        } else {
-//            $input['birth_date'] = Carbon::createFromTimestamp($input['birth_date'])->toDateString();
-//        }
-
-
-        // disable organ check
-//        $input['organs'] = 'Heart Lung Liver Kidney Pancreas Tissues';
-//        unset($input['chRegisterAll']);
-//        unset($input['chRegisterHeart']);
-//        unset($input['chRegisterLung']);
-//        unset($input['chRegisterLiver']);
-//        unset($input['chRegisterKidney']);
-//        unset($input['chRegisterPancreas']);
-//        unset($input['chRegisterTissues']);
-
-//        if (isset($input['chRegisterAll']))
-//        {
-//            $input['organs'] = 'Heart Lung Liver Kidney Pancreas Tissues';
-//            unset($input['chRegisterAll']);
-//            unset($input['chRegisterHeart']);
-//            unset($input['chRegisterLung']);
-//            unset($input['chRegisterLiver']);
-//            unset($input['chRegisterKidney']);
-//            unset($input['chRegisterPancreas']);
-//            unset($input['chRegisterTissues']);
-//        }
-//        else
-//        {
-//            $input['organs'] = '';
-//            if (isset($input['chRegisterHeart']))
-//            {
-//                $input['organs'] .= 'Heart ';
-//                unset($input['chRegisterHeart']);
-//            }
-//            if (isset($input['chRegisterLung']))
-//            {
-//                $input['organs'] .= 'Lung ';
-//                unset($input['chRegisterLung']);
-//            }
-//            if (isset($input['chRegisterLiver']))
-//            {
-//                $input['organs'] .= 'Liver ';
-//                unset($input['chRegisterLiver']);
-//            }
-//            if (isset($input['chRegisterKidney']))
-//            {
-//                $input['organs'] .= 'Kidney ';
-//                unset($input['chRegisterKidney']);
-//            }
-//            if (isset($input['chRegisterPancreas']))
-//            {
-//                $input['organs'] .= 'Pancreas ';
-//                unset($input['chRegisterPancreas']);
-//            }
-//            if (isset($input['chRegisterTissues']))
-//            {
-//                $input['organs'] .= 'Tissues ';
-//                unset($input['chRegisterTissues']);
-//            }
-//        }
-
-        $user = User::selectBySlug($input['code_melli'], 'code_melli');
-
-        if (!$user) {
-            $return = $this->jsonFeedback(trans('site.global.register_check_data_step_second'), [
-                'ok'       => 1,
-                'callback' => 'register_step_second("' . encrypt($input['code_melli']) . '")'
-            ]);
-        } else {
-            if ($user->isActive('volunteer') or $user->isActive('card')) {
-                $return = $this->jsonFeedback(null, [
-                    'redirect' => url('relogin'),
-                    'ok'       => 1,
-                    'message'  => trans('forms.feed.wait'),
-                ]);
-            } else {
-                $input['id'] = $user->id;
-                $return = $this->jsonFeedback(trans('site.global.register_check_data_step_second'), [
-                    'ok'       => 1,
-                    'callback' => 'register_step_second("' . encrypt($input['code_melli']) . '")'
-                ]);
-            }
-        }
-
-        Session::put('register_second_step', $input);
-
-        return $return;
+        return $this->jsonFeedback(trans(''), [
+            'ok'       => 1,
+            'callback' => <<<JS
+                upToStep(3);
+JS
+        ]);
 
     }
 
-    public function register_third_step(Requests\CardRegisterThirdStepRequest $request)
+    public function register_third_step($request)
     {
-        $input = $request->toArray();
-        unset($input['_token']);
-        Session::forget('register_first_step');
-        $data = Session::pull('register_second_step');
-
-        if ($input['db-check'] != $data['code_melli']) {
+        $submittedIDs = session()->get('register_card');
+        if (!array_key_exists($request->code_melli, $submittedIDs)
+            // This "code_melli" hasn't been submitted
+            or
+            !array_key_exists('data', $submittedIDs[$request->code_melli])
+            // This client didn't pass step 2 successfully
+        ) {
+            // Achieving this condition means that "code_melli" has been manipulated in read only mode by client
             return $this->jsonFeedback(null, [
-                'redirect' => url(''),
+                'ok'      => 0,
+                'refresh' => 1,
+            ]);
+        }
+
+        $checkResult = $this->checkCodeMelli($request->code_melli);
+        if (!$checkResult['canRegister']) {
+            return $checkResult['response'];
+        }
+
+        $data = $submittedIDs[$request->code_melli]['data'];
+        $data['card_registered_at'] = Carbon::now()->toDateTimeString();
+
+        $userId = User::store($data);
+
+
+        if ($userId) {
+
+            User::store(['id' => $userId, 'card_id' => $userId + 5000]);
+
+            Auth::loginUsingId($userId);
+            $return = $this->jsonFeedback(null, [
+                'redirect'     => url('members/my_card'),
+                'ok'           => 1,
+                'message'      => trans('site.global.register_success'),
+                'redirectTime' => 2000,
             ]);
         } else {
-            $data['card_registered_at'] = Carbon::now()->toDateTimeString();
-//            $data['card_no'] = User::generateCardNo(); when register multi user in one time this line have bug
+            $return = $this->jsonFeedback(null, [
+                'redirect'     => url('organ_donation_card'),
+                'ok'           => 0,
+                'message'      => trans('site.global.register_not_complete'),
+                'redirectTime' => 2000,
+            ]);
         }
 
-        $user = User::selectBySlug($data['code_melli'], 'code_melli');
-        if ($user) {
-            $user_id = $user->id;
-            if ($user->isActive('volunteer') or $user->isActive('card')) {
-                $return = $this->jsonFeedback(null, [
-                    'redirect' => url('relogin'),
-                    'ok'       => 1,
-                    'message'  => trans('forms.feed.wait'),
-                ]);
-            } else {
-                $data['id'] = $user->id;
-                $user_id = User::store($data);
+//        $input = $request->toArray();
+//        unset($input['_token']);
+//        Session::forget('register_first_step');
+//        $data = Session::pull('register_second_step');
+//
+//        if ($input['db-check'] != $data['code_melli']) {
+//            return $this->jsonFeedback(null, [
+//                'redirect' => url(''),
+//            ]);
+//        } else {
+//            $data['card_registered_at'] = Carbon::now()->toDateTimeString();
+////            $data['card_no'] = User::generateCardNo(); when register multi user in one time this line have bug
+//        }
 
-                if ($user_id) {
-                    Auth::loginUsingId($user_id);
-                    $return = $this->jsonFeedback(null, [
-                        'redirect'     => url('members/my_card'),
-                        'ok'           => 1,
-                        'message'      => trans('site.global.register_success'),
-                        'redirectTime' => 2000,
-                    ]);
-                } else {
-                    $return = $this->jsonFeedback(null, [
-                        'redirect'     => url('organ_donation_card'),
-                        'ok'           => 0,
-                        'message'      => trans('site.global.register_not_complete'),
-                        'redirectTime' => 2000,
-                    ]);
-                }
-            }
-        } else {
-            $user_id = User::store($data);
-
-            if ($user_id) {
-                Auth::loginUsingId($user_id);
-                $return = $this->jsonFeedback(null, [
-                    'redirect'     => url('members/my_card'),
-                    'ok'           => 1,
-                    'message'      => trans('site.global.register_success'),
-                    'redirectTime' => 2000,
-                ]);
-            } else {
-                $return = $this->jsonFeedback(null, [
-                    'redirect'     => url('organ_donation_card'),
-                    'ok'           => 0,
-                    'message'      => trans('site.global.register_not_complete'),
-                    'redirectTime' => 2000,
-                ]);
-            }
-        }
+//        $user = User::selectBySlug($data['code_melli'], 'code_melli');
+//        if ($user) {
+//            $user_id = $user->id;
+//            $data['id'] = $user->id;
+//            $user_id = User::store($data);
+//
+//            if ($user_id) {
+//                Auth::loginUsingId($user_id);
+//                $return = $this->jsonFeedback(null, [
+//                    'redirect'     => url('members/my_card'),
+//                    'ok'           => 1,
+//                    'message'      => trans('site.global.register_success'),
+//                    'redirectTime' => 2000,
+//                ]);
+//            } else {
+//                $return = $this->jsonFeedback(null, [
+//                    'redirect'     => url('organ_donation_card'),
+//                    'ok'           => 0,
+//                    'message'      => trans('site.global.register_not_complete'),
+//                    'redirectTime' => 2000,
+//                ]);
+//            }
+//        } else {
+//            $user_id = User::store($data);
+//
+//            if ($user_id) {
+//                Auth::loginUsingId($user_id);
+//                $return = $this->jsonFeedback(null, [
+//                    'redirect'     => url('members/my_card'),
+//                    'ok'           => 1,
+//                    'message'      => trans('site.global.register_success'),
+//                    'redirectTime' => 2000,
+//                ]);
+//            } else {
+//                $return = $this->jsonFeedback(null, [
+//                    'redirect'     => url('organ_donation_card'),
+//                    'ok'           => 0,
+//                    'message'      => trans('site.global.register_not_complete'),
+//                    'redirectTime' => 2000,
+//                ]);
+//            }
+//        }
 
         // generate card_no
-        if ($user_id and $user_id > 0) {
-            $update['id'] = $user_id;
-            $update['card_no'] = $user_id + 5000;
-            $user_id = User::store($update);
-        }
+//        if ($user_id and $user_id > 0) {
+//            $update['id'] = $user_id;
+//            $update['card_no'] = $user_id + 5000;
+//            $user_id = User::store($update);
+//        }
 
         return $return;
     }
@@ -485,13 +407,54 @@ JS
 
     public function save_registration(Requests\CardRegisterRequest $request)
     {
-        switch ($request->step) {
+        switch ($request->_step) {
             case 1:
                 return $this->register_first_step($request);
                 break;
             case 2:
                 return $this->register_second_step($request);
                 break;
+            case 3:
+                return $this->register_third_step($request);
+                break;
         }
+    }
+
+    private function checkCodeMelli($codeMelli)
+    {
+        $user = User::findBySlug($codeMelli, 'code_melli');
+
+        if ($user->exists) { // A user with the given "code_melli" exists.
+            $loginLing = '<a href="' . route('login') . '">' . trans('front.messages.login') . '</a>';
+            if ($user->is_admin()) { // This user is a volunteer
+                $message = trans('front.messages.you_are_volunteer') . $loginLing;
+                return [
+                    'canRegister' => false,
+                    'response'    => $this->jsonFeedback(null, [
+                        'ok'      => true,
+                        'message' => $message,
+                    ]),
+                ];
+            } else if ($user->withDisabled()->is_admin()) { // This user id a blocked volunteer
+                return [
+                    'canRegister' => false,
+                    'response'    => $this->jsonFeedback(null, [
+                        'ok'      => false,
+                        'message' => trans('front.messages.unable_to_register_card'),
+                    ]),
+                ];
+            } else if ($user->is_an('card-holder')) { // This user has card
+                $message = trans('front.messages.you_are_card_holder') . $loginLing;
+                return [
+                    'canRegister' => false,
+                    'response'    => $this->jsonFeedback(null, [
+                        'ok'      => true,
+                        'message' => $message,
+                    ]),
+                ];
+            }
+        }
+
+        return ['canRegister' => true];
     }
 }

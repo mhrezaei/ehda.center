@@ -6,6 +6,7 @@ use App\Http\Requests\Request;
 use App\Providers\ValidationServiceProvider;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\Rule;
 
 class CardRegisterRequest extends Request
 {
@@ -16,7 +17,7 @@ class CardRegisterRequest extends Request
      */
     public function authorize()
     {
-        if ($this->step and $this->step >= 1 and $this->step <= 2) {
+        if ($this->_step and $this->_step >= 1 and $this->_step <= 3) {
             return true;
         }
         return false;
@@ -29,22 +30,23 @@ class CardRegisterRequest extends Request
      */
     public function rules()
     {
-        switch ($this->step) {
-            case 1;
+        switch ($this->_step) {
+            case 1: // Step 1
                 return [
                     'name_first' => 'required|persian:60',
                     'name_last'  => 'required|persian:60',
-                    'code_melli' => 'required|code_melli',
+                    'code_melli'  => 'required|code_melli',
 //             'security' => 'required|captcha:'.$input['key'], @TODO: new human validation
                 ];
                 break;
-            case 2;
+            case 2: // Step 2
                 return [
+                    'code_melli'  => 'required|code_melli',
                     'name_first'  => 'required|persian:60',
                     'name_last'   => 'required|persian:60',
                     'gender'      => 'required|numeric|min:1|max:3',
                     'name_father' => 'required|persian:60',
-                    'code_id'     => 'required|numeric',
+//                    'code_id'     => 'required|numeric',
                     'birth_date'  => 'required|date|min:6|before_or_equal:'
                         . Carbon::now()->toDateString()
                         . '|after_or_equal:'
@@ -61,13 +63,18 @@ class CardRegisterRequest extends Request
 
                 ];
                 break;
+            case 3:
+                return [
+                    'code_melli'  => 'required|code_melli',
+                ];
+                break;
         }
     }
 
     public function all()
     {
         $value = parent::all();
-        switch ($value['step']) {
+        switch ($value['_step']) {
             case 1:
                 $purified = ValidationServiceProvider::purifier($value, [
                     'security'   => 'ed',
@@ -93,6 +100,11 @@ class CardRegisterRequest extends Request
                     'email'       => 'ed',
                     'password'    => 'ed',
                     'password2'   => 'ed',
+                ]);
+                break;
+            case 3:
+                $purified = ValidationServiceProvider::purifier($value, [
+                    'db-check' => 'decrypt',
                 ]);
                 break;
         }

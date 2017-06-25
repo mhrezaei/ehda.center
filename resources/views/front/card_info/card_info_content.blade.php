@@ -1,10 +1,21 @@
 @section('head')
     {!! Html::style('assets/libs/bootstrap-select/bootstrap-select.min.css') !!}
+    <style>
+        a.ehda-card {
+            display: none;
+        }
+    </style>
 @append
 
 @section('endOfBody')
     <script>
         var bootstrapTooltip = $.fn.tooltip.noConflict(); // return $.fn.tooltip to previously assigned value
+
+        $(document).on({
+            click: function (e) {
+                return false;
+            }
+        }, '.dropdown-toggle');
     </script>
 
     {!! Html::script ('assets/libs/bootstrap-select/bootstrap-select.min.js') !!}
@@ -15,35 +26,101 @@
 
     <script>
         $.fn.tooltip = bootstrapTooltip; // give $().bootstrapTooltip the Bootstrap functionality
-        function getReadyForStepOne() {
-            // Changing the flag for discovering step of registration
-            $('#step-number').val(1);
 
-            // Disabling additional input
-            $('#additional-fields').find(':input').attr('disabled', 'disabled');
+        /**
+         * Thing to do while getting to every steps from every directions
+         * @param {int} stepNumber
+         */
+        function goToStep(stepNumber) {
+            // Changing the flag for discovering step of registration
+            $('#step-number').val(stepNumber);
+
+            switch (stepNumber) {
+                case 1:
+                    // Disabling additional input
+                    $('#additional-fields').find(':input').attr('disabled', 'disabled');
+                    break;
+            }
         }
-        function getReadyForStepTwo() {
-            // Make the "code_melli" field readonly
-            $('#code_melli').attr('readonly', 'readonly');
 
-            // Changing the flag for discovering step of registration
-            $('#step-number').val(2);
+        /**
+         * Thing to do while getting to each step from its previous step
+         * @param {int} stepNumber
+         */
+        function upToStep(stepNumber) {
+            goToStep(stepNumber);
 
-            // Enabling additional input
-            $('#additional-fields').find(':input').removeAttr('disabled');
+            switch (stepNumber) {
+                case 1:
+                    break;
 
-            // Show the additional fields for step 2 to the form
-            $('#additional-fields').slideDown();
+                case 2:
+                    // Make the "code_melli" field readonly
+                    $('#code_melli').attr('readonly', 'readonly');
 
-            // Refreshing view of buttonsets
-            $(".form-buttonset").each(function () {
-                // var options = $(this).dataStartsWith(juiDataPrefix.buttonset);
-                $(this).buttonset().buttonset('refresh');
-            });
+                    // Enabling additional input
+                    $('#additional-fields').find(':input').removeAttr('disabled');
+
+                    // Show the additional fields for step 2 to the form
+                    $('#additional-fields').slideDown();
+
+                    // Refreshing view of buttonsets
+                    $(".form-buttonset").each(function () {
+                        // var options = $(this).dataStartsWith(juiDataPrefix.buttonset);
+                        $(this).buttonset().buttonset('refresh');
+                    });
+
+                    // Showing cancel button to get back to step 1
+                    $('#cancel-button').show();
+                    break;
+                case 3:
+                    // Making all inputs in form readonly
+                    $('#additional-fields').find(':input').attr('readonly', 'readonly');
+                    $('#additional-fields').find('.form-group').css('pointer-events', 'none');
+                    break;
+            }
+        }
+
+        function downToStep(stepNumber) {
+            switch (stepNumber) {
+                case 1:
+                    // Hide additional fields (the fields related to step 2)
+                    $('#additional-fields').slideUp();
+
+                    // Make the "code_melli" field writable
+                    $('#code_melli').removeAttr('readonly');
+
+                    // Reset values of additional inputs in
+                    $('#additional-fields').find(':input').each(function () {
+                        if ($(this).is(':radio')) {
+                            $(this).prop('checked', false);
+                        } else {
+                            $(this).val('');
+                        }
+
+                        $(this).change();
+                    });
+
+                    // Hiding cancel button
+                    $('#cancel-button').hide();
+                    break;
+                case 2:
+                    // Making all inputs in form writable
+                    console.log('here');
+                    $('#additional-fields').find(':input').removeAttr('readonly');
+                    $('#additional-fields').find('.form-group').css('pointer-events', 'auto');
+                    break;
+            }
+
+            goToStep(stepNumber);
+        }
+
+        function downStep() {
+            downToStep(parseInt($('#step-number').val()) - 1);
         }
 
         $(document).ready(function () {
-            getReadyForStepOne();
+            upToStep(1);
         });
     </script>
 @append
@@ -64,7 +141,7 @@
 
                         @include('forms.hidden', [
                             'id' => 'step-number',
-                            'name' => 'step',
+                            'name' => '_step',
                             'value' => 1,
                         ])
 
@@ -149,21 +226,21 @@
                                     ])
                                 </div>
 
-                                <div class="col-xs-12">
-                                    @include('front.forms.input', [
-                                        'name' => 'code_id',
-                                        'class' => 'form-number form-required',
-                                        'dataAttributes' => [
-                                            'toggle' => 'tooltip',
-                                            'placement' => 'top',
-                                        ],
-                                        'otherAttributes' => [
-                                            'title' => trans('validation.attributes_example.code_id'),
-                                            'minlength' => 1,
-                                            'maxlength' => 10,
-                                        ]
-                                    ])
-                                </div>
+                                {{--<div class="col-xs-12">--}}
+                                    {{--@include('front.forms.input', [--}}
+                                        {{--'name' => 'code_id',--}}
+                                        {{--'class' => 'form-number form-required',--}}
+                                        {{--'dataAttributes' => [--}}
+                                            {{--'toggle' => 'tooltip',--}}
+                                            {{--'placement' => 'top',--}}
+                                        {{--],--}}
+                                        {{--'otherAttributes' => [--}}
+                                            {{--'title' => trans('validation.attributes_example.code_id'),--}}
+                                            {{--'minlength' => 1,--}}
+                                            {{--'maxlength' => 10,--}}
+                                        {{--]--}}
+                                    {{--])--}}
+                                {{--</div>--}}
 
                                 <div class="col-xs-12">
                                     @include('forms._birthdate-datepicker', [
@@ -337,6 +414,14 @@
                                     'shape' => 'success',
                                     'label' => trans('forms.button.send'),
                                     'type' => 'submit',
+                                ])
+                                @include('forms.button', [
+                                    'id' => 'cancel-button',
+                                    'shape' => 'warning',
+                                    'label' => trans('forms.button.cancel'),
+                                    'type' => 'button',
+                                    'link' => 'downStep()',
+                                    'style' => 'display:none'
                                 ])
                             </div>
                         </div>
