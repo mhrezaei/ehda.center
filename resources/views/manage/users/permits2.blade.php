@@ -17,20 +17,25 @@
 		|
 		--}}
 		<ul class="nav nav-tabs" role="tablist">
-			@if(isset($modules['users']))
+			@if(isset($modules['users']) )
 				{{ '' , $module_users = $modules['users'] }}
 				{{ '' , array_forget($modules , 'users') }}
-				<li role="presentation" class="active"><a href="#divPeoplePermits" aria-controls="divPeoplePermits"
-														  role="tab"
-														  data-toggle="tab">{{ trans("people.people_management") }}</a>
-				</li>
+				@if( in_array( $request_role->slug , model('role')::adminRoles()) and user()->as_any()->can("users"))
+					<li role="presentation" class="active"><a href="#divPeoplePermits" aria-controls="divPeoplePermits"
+															  role="tab"
+															  data-toggle="tab">{{ trans("people.people_management") }}</a>
+					</li>
+				@endif
 			@endif
 
 			@if(isset($modules['posts']))
 				{{ '' , $module_posts = $modules['posts'] }}
 				{{ '' , array_forget($modules , 'posts') }}
-				<li role="presentation"><a href="#divPostsPermits" aria-controls="divPostsPermits" role="tab"
+				@if( in_array( $request_role->slug , model('role')::adminRoles()) and user()->as_any()->can("posts"))
+
+					<li role="presentation"><a href="#divPostsPermits" aria-controls="divPostsPermits" role="tab"
 										   data-toggle="tab">{{ trans("manage.modules.posts") }}</a></li>
+				@endif
 			@endif
 
 			@if(count($modules))
@@ -92,13 +97,13 @@
 	|--------------------------------------------------------------------------
 	| Name and Status
 	--}}
-	@include("forms.textarea" , [
-		'name' => "permissions",
-		'id' => "txtPermissions" ,
-		'class' => "ltr noDisplay" ,
-		'value' => $model->as($request_role)->getPermissions() ,
-		'in_form' => false ,
-	]     )
+	{{--@include("forms.textarea" , [--}}
+		{{--'name' => "permissions",--}}
+		{{--'id' => "txtPermissions" ,--}}
+		{{--'class' => "ltr noDisplay" ,--}}
+		{{--'value' => $model->as($request_role)->getPermissions() ,--}}
+		{{--'in_form' => false ,--}}
+	{{--]     )--}}
 
 	@include("forms.select" , [
 		'name' => "status" ,

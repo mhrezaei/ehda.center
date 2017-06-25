@@ -208,17 +208,18 @@ class UsersController extends Controller
 		if(!$model or $model->is_not_a($request->role_slug)) {
 			return $this->jsonFeedback(trans('validation.http.Error410'));
 		}
-		if(!$model->canPermit()) {
+		if(!$model->as('admin')->canPermit()) { //@TODO: Check for accurate result!
 			return $this->jsonFeedback(trans('validation.http.Error403'));
-
 		}
 
 		/*-----------------------------------------------
-		| Self Privileges ...
+		| Self Privileges ... (Only for admin roles)
 		*/
 		if( in_array( $request->role_slug , Role::adminRoles())) {
 			$permits = array_filter(explode(' ' , $request->permissions)) ;
 			if(!user()->as_any()->can_all($permits)) {
+				//return $this->jsonFeedback($request->permissions);
+				//
 				return $this->jsonFeedback(trans('validation.http.Error403'));
 			}
 		}
@@ -395,6 +396,7 @@ class UsersController extends Controller
 
 	public function saveRole($user_id, $role_slug, $new_status)
 	{
+
 		/*-----------------------------------------------
 		| Model and Permission ...
 		*/
@@ -412,17 +414,18 @@ class UsersController extends Controller
 		if($new_status == 'detach') {
 			$user->detachRole($role_slug) ;
 		}
-		if($new_status == 'ban') {
+		elseif($new_status == 'ban') {
 			$user->as($role_slug)->disable() ;
 		}
 		else {
 			if($user->withDisabled()->as($role_slug)->hasnotRole()) {
-				$user->attachRole($role_slug) ;
+				$user->attachRole($role_slug , '' , $new_status) ;
 			}
 			elseif($user->as($role_slug)->disabled()) {
 				$user->as($role_slug)->enable() ;
 			}
-			$user->as($role_slug)->setStatus($new_status) ;
+			
+			//$user->as($role_slug)->setStatus($new_status) ;
 		}
 
 		/*-----------------------------------------------

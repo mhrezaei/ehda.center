@@ -576,7 +576,7 @@ class User extends Authenticatable
 				return false;
 			}
 			else {
-				return user()->as($request_role)->isSuper();
+				return user()->as($request_role)->can('permit') ;
 			}
 		}
 
@@ -584,7 +584,7 @@ class User extends Authenticatable
 		| In case of generally called ...
 		*/
 		if(!$request_role) {
-			return user()->as_any()->can_all(['users-all', 'super']); //TODO: Check for correct response
+			return user()->as_any()->can('users-all.permit');
 		}
 
 	}

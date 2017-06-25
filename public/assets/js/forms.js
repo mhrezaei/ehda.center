@@ -120,7 +120,7 @@ function forms_listener() {
         setTimeout($(this).val(), $(this).attr('data-delay'));
     });
 
-    // $('.selectpicker').selectpicker();
+    $('.selectpicker').selectpicker();
     setTimeout("forms_listener()", 5);
 }
 

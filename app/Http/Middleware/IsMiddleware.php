@@ -21,7 +21,6 @@ class IsMiddleware
 	{
 		if($requested_role=='admin') {
 			$condition = user()->is_admin() ;
-			$condition = true ;
 		}
 		elseif($requested_role=='developer') {
 			$condition = user()->isDeveloper() ;
