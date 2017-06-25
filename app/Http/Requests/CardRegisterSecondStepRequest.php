@@ -43,7 +43,7 @@ class CardRegisterSecondStepRequest extends Request
             'birth_city' => 'required|numeric|min:1',
             'edu_level' => 'required|numeric|min:1|max:6',
             'job' => 'required|persian:60',
-            'tel_mobile' => 'required|phone:mobile',
+            'mobile' => 'required|phone:mobile',
             'home_tel' => 'required|phone:fixed',
             'home_city' => 'required|numeric|min:1',
             'email' => 'email',

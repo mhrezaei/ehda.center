@@ -7,7 +7,7 @@
 	<select
 		id="{{$id or ''}}"
 		name="{{$name}}" value="{{$value or ''}}"
-		class="form-control selectpicker {{$class or ''}}"
+		class="form-control {{$class or ''}}"
 		placeholder="{{$placeholder or ''}}"
 		data-size= "{{$size or 5}}"
 		data-live-search = "{{$search or false}}"

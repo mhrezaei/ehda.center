@@ -11,7 +11,7 @@
         'color' => $color
     ])
 @endif
-<a href="#" class="floating-top-20 floating-end-15 {{ $showMoreColorClass }}">بیشتر</a>
+<a href="#" class="floating-top-40 floating-end-15 {{ $showMoreColorClass }}">بیشتر</a>
 <div class="media-list">
     @for($i = 0; $i < 6; $i++)
         <div class="media-list-item {{ $itemsColorClass }}">

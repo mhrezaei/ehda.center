@@ -4,6 +4,10 @@ if (!isset($extra))
 if (!isset($name))
     $name = '';
 
+if (!isset($class)) {
+    $class = '';
+}
+
 if (isset($class) && str_contains($class, 'form-required')) {
     $required = true;
 }

@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row mt15 mb20">
         <div class="col-xs-12 col-md-4">
-            <a href="#" class="floating-top-20 floating-end-15 link-red">بیشتر</a>
+            <a href="#" class="floating-top-40 floating-end-15 link-red">بیشتر</a>
             @include('front.frame.underlined_heading', [
                 'text' => 'اخبار داغ',
                 'color' => 'red',

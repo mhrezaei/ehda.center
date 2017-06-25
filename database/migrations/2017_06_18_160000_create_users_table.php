@@ -27,6 +27,7 @@ class CreateUsersTable extends Migration
             $table->string('name_last')->nullable()->index();
             $table->string('name_father')->nullable();
             $table->string('name_firm')->nullable();
+            $table->string('code_id')->nullable();
             $table->unsignedInteger('card_id');
             $table->tinyInteger('gender')->default(0);
 
@@ -122,9 +123,9 @@ class CreateUsersTable extends Migration
             $table->string('activities')->nullable();
 
             // Domain
-            $table->unsignedInteger('domain')->nullable();
+            $table->string('domain')->nullable();
             $table->foreign('domain')
-                ->references('id')
+                ->references('slug') // @TODO: to be explained
                 ->on('domains')
                 ->onDelete('NO ACTION')
                 ->onUpdate('CASCADE');
