@@ -97,23 +97,23 @@
 	|--------------------------------------------------------------------------
 	| Name and Status
 	--}}
-	{{--@include("forms.textarea" , [--}}
-		{{--'name' => "permissions",--}}
-		{{--'id' => "txtPermissions" ,--}}
-		{{--'class' => "ltr noDisplay" ,--}}
-		{{--'value' => $model->as($request_role)->getPermissions() ,--}}
-		{{--'in_form' => false ,--}}
-	{{--]     )--}}
-
-	@include("forms.select" , [
-		'name' => "status" ,
-		'id' => "cmbStatus-$request_role->id",
-		'options' => $request_role->statusCombo() ,
-		'value_field' => "0" ,
-		'caption_field' => "1" ,
-		'value' => $model->as($request_role->slug)->status() ,
-		'condition' => $request_role->has_status_rules ,
+	@include("forms.textarea" , [
+		'name' => "permissions",
+		'id' => "txtPermissions" ,
+		'class' => "ltr noDisplay" ,
+		'value' => $model->as($request_role)->getPermissions() ,
+		'in_form' => false ,
 	]     )
+
+	{{--@include("forms.select" , [--}}
+		{{--'name' => "status" ,--}}
+		{{--'id' => "cmbStatus-$request_role->id",--}}
+		{{--'options' => $request_role->statusCombo() ,--}}
+		{{--'value_field' => "0" ,--}}
+		{{--'caption_field' => "1" ,--}}
+		{{--'value' => $model->as($request_role->slug)->status() ,--}}
+		{{--'condition' => $request_role->has_status_rules ,--}}
+	{{--]     )--}}
 
 	{{--
 	|--------------------------------------------------------------------------
