@@ -807,24 +807,51 @@ img%img-cover {
 
 // JqueryUi --end
 
-// Form --start
-//form {
-.form-heading {
-  @extend .mt20, .mb10, .text-#{$startSide};
-  width: 100%;
-  overflow: hidden;
-
-  &:after {
-    content: '';
-    display: inline-block;
-    vertical-align: middle;
-    height: 1px;
-    border-top: 1px dashed #{map_get($colors, 'darkGray')};
+// Forms and Inputs --start
+form {
+  .form-heading {
+    @extend .mt20, .mb10, .text-#{$startSide};
     width: 100%;
-    margin-#{$endSide}: -100%;
-    margin-#{$startSide}: 10px;
+    overflow: hidden;
+
+    &:after {
+      content: '';
+      display: inline-block;
+      vertical-align: middle;
+      height: 1px;
+      border-top: 1px dashed #{map_get($colors, 'darkGray')};
+      width: 100%;
+      margin-#{$endSide}: -100%;
+      margin-#{$startSide}: 10px;
+    }
   }
 }
 
-//}
-// Form --end
+.img-btn {
+  $transitionValue: all .3s ease-out;
+  @extend .mt10, .mb10, .mr15, .ml15;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+  -webkit-transition: $transitionValue;
+  -moz-transition: $transitionValue;
+  -ms-transition: $transitionValue; /* IE10 is actually unprefixed */
+  -o-transition: $transitionValue;
+  transition: $transitionValue;
+
+  &:hover {
+    $scaleValue: 'scale(1.1)';
+    -webkit-transform: #{$scaleValue};
+    -moz-transform: #{$scaleValue};
+    -ms-transform: #{$scaleValue};
+    -o-transform: #{$scaleValue};
+    transform: #{$scaleValue};
+  }
+
+  img {
+    max-height: 180px;
+  }
+}
+
+// Forms and Inputs --end

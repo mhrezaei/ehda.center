@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Models\Post;
+use App\Models\Role;
 use App\Models\State;
 use App\Models\User;
 use App\Providers\FaGDServiceProvider;
@@ -124,7 +125,7 @@ JS
         $submittedIDs[$request->code_melli]['data'] = $input;
         session()->put('register_card', $submittedIDs);
 
-        return $this->jsonFeedback(trans(''), [
+        return $this->jsonFeedback(trans('forms.feed.register_check_data_step_second'), [
             'ok'       => 1,
             'callback' => <<<JS
                 upToStep(3);
@@ -161,21 +162,24 @@ JS
 
 
         if ($userId) {
-
             User::store(['id' => $userId, 'card_id' => $userId + 5000]);
+
+            if(Role::findBySlug('card-holder')->exists) {
+                $user = User::findBySlug($userId, 'id')->attachRole('card-holder');
+            }
 
             Auth::loginUsingId($userId);
             $return = $this->jsonFeedback(null, [
                 'redirect'     => url('members/my_card'),
                 'ok'           => 1,
-                'message'      => trans('site.global.register_success'),
+                'message'      => trans('forms.feed.register_success'),
                 'redirectTime' => 2000,
             ]);
         } else {
             $return = $this->jsonFeedback(null, [
                 'redirect'     => url('organ_donation_card'),
                 'ok'           => 0,
-                'message'      => trans('site.global.register_not_complete'),
+                'message'      => trans('forms.feed.register_not_complete'),
                 'redirectTime' => 2000,
             ]);
         }

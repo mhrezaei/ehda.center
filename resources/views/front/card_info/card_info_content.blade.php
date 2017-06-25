@@ -40,6 +40,11 @@
                     // Disabling additional input
                     $('#additional-fields').find(':input').attr('disabled', 'disabled');
                     break;
+                case 3:
+                    // Showing related buttons
+                    $('#form-buttons').hide();
+                    $('#last-step-buttons').show();
+                    break;
             }
         }
 
@@ -72,6 +77,7 @@
 
                     // Showing cancel button to get back to step 1
                     $('#cancel-button').show();
+
                     break;
                 case 3:
                     // Making all inputs in form readonly
@@ -109,6 +115,10 @@
                     console.log('here');
                     $('#additional-fields').find(':input').removeAttr('readonly');
                     $('#additional-fields').find('.form-group').css('pointer-events', 'auto');
+
+                    // Showing related buttons
+                    $('#form-buttons').show();
+                    $('#last-step-buttons').hide();
                     break;
             }
 
@@ -157,7 +167,7 @@
 
                             <div class="col-xs-12">
                                 <div class="form-group">
-                                    <div>{{ trans('front.personal_information') }}</div>
+                                    <h5 class="form-heading">{{ trans('front.personal_information') }}</h5>
                                 </div>
                             </div>
                             <div class="row">
@@ -227,19 +237,19 @@
                                 </div>
 
                                 {{--<div class="col-xs-12">--}}
-                                    {{--@include('front.forms.input', [--}}
-                                        {{--'name' => 'code_id',--}}
-                                        {{--'class' => 'form-number form-required',--}}
-                                        {{--'dataAttributes' => [--}}
-                                            {{--'toggle' => 'tooltip',--}}
-                                            {{--'placement' => 'top',--}}
-                                        {{--],--}}
-                                        {{--'otherAttributes' => [--}}
-                                            {{--'title' => trans('validation.attributes_example.code_id'),--}}
-                                            {{--'minlength' => 1,--}}
-                                            {{--'maxlength' => 10,--}}
-                                        {{--]--}}
-                                    {{--])--}}
+                                {{--@include('front.forms.input', [--}}
+                                {{--'name' => 'code_id',--}}
+                                {{--'class' => 'form-number form-required',--}}
+                                {{--'dataAttributes' => [--}}
+                                {{--'toggle' => 'tooltip',--}}
+                                {{--'placement' => 'top',--}}
+                                {{--],--}}
+                                {{--'otherAttributes' => [--}}
+                                {{--'title' => trans('validation.attributes_example.code_id'),--}}
+                                {{--'minlength' => 1,--}}
+                                {{--'maxlength' => 10,--}}
+                                {{--]--}}
+                                {{--])--}}
                                 {{--</div>--}}
 
                                 <div class="col-xs-12">
@@ -409,7 +419,7 @@
                             <div class="col-xs-12 pt15">
                                 @include('forms.feed')
                             </div>
-                            <div class="col-xs-12 text-center">
+                            <div id="form-buttons" class="col-xs-12 text-center">
                                 @include('forms.button', [
                                     'shape' => 'success',
                                     'label' => trans('forms.button.send'),
@@ -424,9 +434,20 @@
                                     'style' => 'display:none'
                                 ])
                             </div>
+                            <div id="last-step-buttons" class="col-xs-12 text-center" style="display: none">
+                                <button class="img-btn" type="submit">
+                                    <img src="{{ url('assets/images/template/join_ngo.png') }}" />
+                                </button>
+                                <br class="clear-fix"/>
+                                @include('forms.button', [
+                                    'shape' => 'danger',
+                                    'label' => trans('forms.feed.no_im_wrong'),
+                                    'type' => 'button',
+                                    'link' => 'downStep()',
+                                ])
+                            </div>
                         </div>
                         {!! Form::close() !!}
-
                     @endif
                 </div>
                 <div class="col-md-8 col-sm-6 col-xs-12">

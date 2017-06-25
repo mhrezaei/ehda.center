@@ -17,7 +17,10 @@ return [
         'wrong_current_password'          => "گذرواژه‌ی فعلی اشتباه است.",
         'I_know'                          => "خودم می‌دانم",
         'not_now'                         => "فعلاً نه",
-        'register_check_data_step_second' => 'اطلاعات را بررسی کرده، در صورت صحت ثبت نام خود را نهایی کنید.', // @TODO: new
+        'register_check_data_step_second' => 'همه چیز برای ثبت نام نهایی شما آمده است. لطفا اطالعات خود را بازبینی و روی امضا کلیک کنید.', // @TODO: new
+        'no_im_wrong'                     => 'نه! اشتباه شد!', // @TODO: new
+        'register_success'                => 'ثبت نام کامل شد.', // @TODO: new
+        'register_not_complete'           => 'ثبت نام کامل نشد.', // @TODO: new
     ],
 
     "button" => [
