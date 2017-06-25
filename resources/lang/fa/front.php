@@ -75,6 +75,25 @@ return [
     'send_works'                               => 'ارسال آثار',
     'send_work'                                => 'ارسال اثر',
     'personal_information'                     => 'اطلاعات فردی',
+    'welcome_message'                          => 'خوش آمدید', // @TODO: new
+
+    'volunteer_section' => [
+        'singular' => 'سفیر اهدای عضو',
+        'plural'   => 'سفیران اهدای عضو',
+        'section'  => 'بخش سفیران اهدای عضو',
+    ], // @TODO: new
+
+    'organ_donation_card_section' => [
+        'print'    => 'چاپ کارت اهدای عضو',
+        'download' => 'ذخیره کارت اهدای عضو',
+        'preview'  => 'نمایش کارت اهدای عضو',
+    ], // @TODO: new
+
+    'member_section' => [
+        'profile_edit' => 'ویرایش پروفایل',
+        'sign_in'      => 'ورود',
+        'sign_out'     => 'خروج',
+    ], // @TODO: new
 
     'profile_messages' => [
         'not_enough_information'   => 'اطلاعات پروفایل شما کافی نیست.',
