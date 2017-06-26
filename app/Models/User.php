@@ -33,7 +33,7 @@ class User extends Authenticatable
 	];
 	public static $search_fields   = ['name_first', 'name_last', 'name_firm', 'code_melli', 'email', 'mobile'];
 	public static $required_fields = ['name_first', 'name_last', 'code_melli', 'mobile', 'home_tel', 'birth_date', 'gender', 'marital'];
-	protected     $guarded         = ['id'];
+	protected     $guarded         = ['status'];
 	protected     $hidden          = ['password', 'remember_token'];
 	protected     $casts           = [
 		'meta'                  => 'array',
