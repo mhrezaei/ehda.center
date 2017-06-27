@@ -13,6 +13,14 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+// automatic add api prefix
+Route::group(['namespace' => 'Api'], function (){
+    Route::get('/', 'ApiController@index');
+    Route::post('ehda/getToken', 'ApiController@get_token');
+    Route::post('/ehda/card/search', 'ApiController@ehda_card_search');
+    Route::post('/ehda/card/register', 'ApiController@ehda_card_register');
+    Route::post('/ehda/card/get', 'ApiController@get_card');
+    Route::post('/ehda/province/get', 'ApiController@get_province');
+    Route::post('/ehda/cities/get', 'ApiController@get_cities');
+    Route::post('/ehda/education/get', 'ApiController@get_education');
 });

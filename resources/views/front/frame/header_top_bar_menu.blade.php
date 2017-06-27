@@ -8,16 +8,16 @@
                 @endif
                 @if(user()->is_an('card-holder')) {{-- This user has card --}}
                     <li>
-                        <a href="{{ url('/members/my_card') }}">{{ trans('front.organ_donation_card_section.preview') }}
+                        <a href="{{ url_locale('members/my_card') }}">{{ trans('front.organ_donation_card_section.preview') }}
                         </a>
                     </li>
                     <li>
-                        <a href="{{ url('/card/show_card/full/' . encrypt(user()->code_melli) . '/download') }}">
+                        <a href="{{ user()->cards('full', 'download') }}">
                             {{ trans('front.organ_donation_card_section.download') }}
                         </a>
                     </li>
-                    <li><a href="{{ url('/members/my_card/print') }}">{{ trans('front.organ_donation_card_section.print') }}</a></li>
-                    <li><a href="{{ url('/members/my_card/edit') }}">{{ trans('front.member_section.profile_edit') }}</a></li>
+                    <li><a href="{{ user()->cards('full', 'print') }}">{{ trans('front.organ_donation_card_section.print') }}</a></li>
+                    <li><a href="{{ url_locale('members/my_card/edit') }}">{{ trans('front.member_section.profile_edit') }}</a></li>
                 @endif
                 <li><a href="{{ url('/logout') }}">{{ trans('front.member_section.sign_out') }}</a></li>
             </ul>
