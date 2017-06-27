@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\members;
+namespace App\Http\Controllers\Front;
 
 use App\Models\Post;
 use App\Models\State;
