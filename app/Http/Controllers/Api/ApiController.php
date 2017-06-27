@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\Api_token;
 use App\Models\State;
 use App\Models\User;
@@ -12,8 +13,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\Controller;
-
 
 
 class ApiController extends Controller
@@ -136,7 +135,7 @@ class ApiController extends Controller
 
                 if ($user)
                 {
-                    if ($user->isCard())
+                    if ($user->is_an('card-holder'))
                     {
                         // user already exist and active
                         $result['status'] = 2;
@@ -192,7 +191,7 @@ class ApiController extends Controller
 
                 if ($user)
                 {
-                    if ($user->isCard())
+                    if ($user->is_an('card-holder'))
                     {
                         if ($user->tel_mobile == $request->tel_mobile
                             and $user->birth_date == Carbon::createFromTimestamp($request->birth_date)->toDateString()
@@ -274,10 +273,10 @@ class ApiController extends Controller
             // data
             $input = $request->toArray();
             unset($input['token']);
-            $input['card_status'] = 8;
+            //$input['card_status'] = 8;
             $input['password'] = Hash::make($input['tel_mobile']);
             $input['home_province'] = State::find($input['home_city']);
-            $input['domain'] = $input['home_province']->domain->slug ;
+            $input['domain'] = $input['home_province']->domain->slug ; // @TODO: ask from taha
             $input['home_province'] = $input['home_province']->province()->id;
             $input['password_force_change'] = 1;
             $input['card_registered_at'] = Carbon::now()->toDateTimeString();
@@ -307,7 +306,7 @@ class ApiController extends Controller
             }
             else
             {
-                if ($user->isActive('volunteer') or $user->isActive('card'))
+                if ($user->is_admin() or $user->is_an('card-holder'))
                 {
                     // user already exist and active
                     $result['status'] = 2;
@@ -329,6 +328,11 @@ class ApiController extends Controller
             $update['id'] = $user_id;
             $update['card_no'] = $user_id + 5000;
             $user_id = User::store($update);
+
+            // add card-holder role
+            $user = User::find($user_id);
+            if ($user)
+                $user->attachRole('card-holder');
 
             // card register success and ehda card attach
             $result['status'] = 3;
@@ -466,7 +470,7 @@ class ApiController extends Controller
         else
         {
             // wrong token
-           return -6;
+            return -6;
         }
     }
 
@@ -474,12 +478,15 @@ class ApiController extends Controller
     private static function create_ehda_card_link($code_melli)
     {
         $cards = array();
-        $code_melli = encrypt($code_melli);
-        $cards['ehda_card_mini'] = url('card/show_card/mini/' . $code_melli);
-        $cards['ehda_card_single'] = url('card/show_card/single/' . $code_melli);
-        $cards['ehda_card_social'] = url('card/show_card/social/' . $code_melli);
-        $cards['ehda_card_print'] = url('card/show_card/full/' . $code_melli);
-        $cards['ehda_card_download'] = url('card/show_card/full/' . $code_melli . '/download');
+        $user = User::findBySlug($code_melli, 'code_melli');
+        if (!$user)
+            return $cards;
+
+        $cards['ehda_card_mini'] = $user->cards('mini');
+        $cards['ehda_card_single'] = $user->cards('single');
+        $cards['ehda_card_social'] = $user->cards('social');
+        $cards['ehda_card_print'] = $user->cards('full', 'print');
+        $cards['ehda_card_download'] = $user->cards('mini', 'download');
         return $cards;
     }
 }
