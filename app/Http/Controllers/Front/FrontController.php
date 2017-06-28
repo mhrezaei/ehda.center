@@ -29,7 +29,7 @@ class FrontController extends Controller
             'domain'   => getUsableDomains(),
         ])->get();
 
-        $homePageTopParagraph = \App\Models\Post::findBySlug('home-page-top-paragraph');
+        $homePageTopParagraph = Post::findBySlug('home-page-top-paragraph');
 
         $eventsSlideShow = Post::selector([
             'type'     => 'slideshows',
@@ -43,11 +43,14 @@ class FrontController extends Controller
             'sort'         => 'asc',
         ]);
 
+        $equationPost = Post::findBySlug('home-page-fix-background-parag');
+
         return view('front.home.main', compact(
             'deadlinesHTML',
             'mainSlideShow',
             'homePageTopParagraph',
-            'eventsSlideShow'
+            'eventsSlideShow',
+            'equationPost'
         ));
     }
 
