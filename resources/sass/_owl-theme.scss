@@ -35,7 +35,7 @@
   width: 41px;
   height: 85px;
   margin-top: -42px;
-  background: url(images/slider-arrows.png) no-repeat center left;
+  background: url(#{$imagesDir}slider-arrows.png) no-repeat center left;
   float: left;
   &.owl-next {
     background-position: -43px center;
@@ -96,7 +96,7 @@
 /* preloading images */
 .owl-item.loading {
   min-height: 150px;
-  background: url(/images/AjaxLoader.gif) no-repeat center center
+  background: url(#{$imagesDir}AjaxLoader.gif) no-repeat center center
 }
 
 /* modification */

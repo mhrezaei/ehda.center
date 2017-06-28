@@ -53,7 +53,9 @@ function setting($slug = null)
 
 /**
  * convert english digits to persian digits
+ *
  * @param $string
+ *
  * @return mixed
  */
 function pd($string)
@@ -65,7 +67,9 @@ function pd($string)
 
 /**
  * convert persian digits to english digits
+ *
  * @param $string
+ *
  * @return mixed
  */
 function ed($string)
@@ -77,7 +81,9 @@ function ed($string)
 
 /**
  * smart convert digits depending on site locale
+ *
  * @param $string
+ *
  * @return mixed
  */
 function ad($string)
@@ -385,7 +391,7 @@ function url_exists($url)
 
 /**
  * @param delimiter $string
- * @param string $string
+ * @param string    $string
  */
 function explodeNotEmpty($delimiter, $string)
 {
@@ -453,7 +459,9 @@ function hashid_decrypt($hash, $connection = 'main')
 
 /**
  * checks if $code is a valid color code
+ *
  * @param $code
+ *
  * @return bool
  */
 function validateColorCode($code)
@@ -485,20 +493,30 @@ function setDomain($domain = 'global')
  */
 function getDomain()
 {
-    if (session()->has('domain'))
-    {
-        $domain = Session::get('domain');
-        if ($domain == 'global')
-        {
+    if (session()->has('domain')) {
+        $domain = session()->get('domain');
+        if ($domain == 'global') {
             return null;
-        }
-        else
-        {
+        } else {
             return $domain;
         }
-    }
-    else
-    {
+    } else {
         return null;
     }
+}
+
+/**
+ * Returns an array including "global" and current domain (in specified)
+ * @return array
+ */
+function getUsableDomains()
+{
+    $domains = ['global'];
+
+    $currentDomain = getDomain();
+    if($currentDomain) {
+        $domains[] = $currentDomain;
+    }
+
+    return $domains;
 }

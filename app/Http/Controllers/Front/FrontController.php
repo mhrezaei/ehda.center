@@ -23,13 +23,22 @@ class FrontController extends Controller
 
     public function index()
     {
+        $mainSlideShow = Post::selector([
+            'type'     => 'slideshows',
+            'category' => 'main-slideshow',
+            'domain'   => getUsableDomains(),
+        ])->get();
+
         $deadlinesHTML = PostsServiceProvider::showList([
-            'type' => 'deadlines',
+            'type'         => 'deadlines',
             'max_per_page' => -1,
-            'sort' => 'asc',
+            'sort'         => 'asc',
         ]);
 
-        return view('front.home.main', compact('deadlinesHTML'));
+        return view('front.home.main', compact(
+            'deadlinesHTML',
+            'mainSlideShow'
+        ));
     }
 
     public function register(RegisterSaveRequest $request)
@@ -41,12 +50,12 @@ class FrontController extends Controller
         if ($user) {
             if ($user->is_a('customer')) {
                 return $this->jsonFeedback(null, [
-                    'ok' => 1,
+                    'ok'      => 1,
                     'message' => trans('front.relogin'),
                 ]);
             } else {
                 return $this->jsonFeedback(null, [
-                    'ok' => 1,
+                    'ok'      => 1,
                     'message' => trans('front.code_melli_already_exists'),
                 ]);
             }
@@ -55,10 +64,10 @@ class FrontController extends Controller
         // store user to database
         $user = [
             'code_melli' => $input['code_melli'],
-            'mobile' => $input['mobile'],
+            'mobile'     => $input['mobile'],
             'name_first' => $input['name_first'],
-            'name_last' => $input['name_last'],
-            'password' => Hash::make($input['password']),
+            'name_last'  => $input['name_last'],
+            'password'   => Hash::make($input['password']),
 
         ];
 
@@ -95,13 +104,13 @@ class FrontController extends Controller
 
 
             return $this->jsonFeedback(null, [
-                'ok' => 1,
-                'message' => trans('front.register_success'),
+                'ok'       => 1,
+                'message'  => trans('front.register_success'),
                 'redirect' => url_locale('user/dashboard'),
             ]);
         } else {
             return $this->jsonFeedback(null, [
-                'ok' => 0,
+                'ok'      => 0,
                 'message' => trans('front.register_failed'),
             ]);
         }
@@ -135,7 +144,7 @@ class FrontController extends Controller
             $tmp->count = $key + 5;
             $cart->items[$key] = $tmp;
             $sum += $product->price;
-            if(!isset($mostExpensive) or $mostExpensive->price < $product->price ) {
+            if (!isset($mostExpensive) or $mostExpensive->price < $product->price) {
                 $mostExpensive = $product;
             }
         }
