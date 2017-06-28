@@ -5,8 +5,90 @@
 <div class='modal-body'>
 	@include('forms.hiddens' , ['fields' => [
 		['id' , $model->id ],
-		['role_id' , $request_role->id],
+		['role_slug' , $request_role->slug],
 	]])
+
+	<div>
+
+		{{--
+		|--------------------------------------------------------------------------
+		| Tab Bar
+		|--------------------------------------------------------------------------
+		|
+		--}}
+		<ul class="nav nav-tabs" role="tablist">
+			@if(isset($modules['users']) )
+				{{ '' , $module_users = $modules['users'] }}
+				{{ '' , array_forget($modules , 'users') }}
+				@if( in_array( $request_role->slug , model('role')::adminRoles()) and user()->as_any()->can("users"))
+					<li role="presentation" class="active"><a href="#divPeoplePermits" aria-controls="divPeoplePermits"
+															  role="tab"
+															  data-toggle="tab">{{ trans("people.people_management") }}</a>
+					</li>
+				@endif
+			@endif
+
+			@if(isset($modules['posts']))
+				{{ '' , $module_posts = $modules['posts'] }}
+				{{ '' , array_forget($modules , 'posts') }}
+				@if( in_array( $request_role->slug , model('role')::adminRoles()) and user()->as_any()->can("posts"))
+
+					<li role="presentation"><a href="#divPostsPermits" aria-controls="divPostsPermits" role="tab"
+										   data-toggle="tab">{{ trans("manage.modules.posts") }}</a></li>
+				@endif
+			@endif
+
+			@if(count($modules))
+				<li role="presentation"><a href="#divOtherPermits" aria-controls="divOtherPermits" role="tab"
+										   data-toggle="tab">{{ trans('manage.modules.other_modules') }}</a></li>
+			@endif
+		</ul>
+
+		{{--
+		|--------------------------------------------------------------------------
+		| Panels
+		|--------------------------------------------------------------------------
+		|
+		--}}
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="divPeoplePermits">
+				@foreach($roles as $role)
+					@include("manage.users.permits2-module" , [
+						'title' => $role->plural_title,
+						'module' => "users-$role->slug" ,
+						'permits' => $module_users ,
+					]     )
+				@endforeach
+				@include("manage.users.permits2-module" , [
+					'title' => trans("people.commands.all_users"),
+					'module' => "users-all" ,
+					'permits' => $module_users ,
+				]     )
+			</div>
+
+			<div role="tabpanel" class="tab-pane" id="divPostsPermits">
+				@foreach($posttypes as $posttype)
+					@include("manage.users.permits2-module" , [
+						'title' => $posttype->title,
+						'module' => "posts-$posttype->slug" ,
+						'permits' => $module_posts ,
+						'locales' => setting()->ask('site_locales')->gain() ,
+					]     )
+				@endforeach
+			</div>
+
+			<div role="tabpanel" class="tab-pane" id="divOtherPermits">
+				@foreach($modules as $module => $permits)
+					@include("manage.users.permits2-module" , [
+						'title' => trans("manage.modules.$module"),
+						'module' => $module ,
+						'permits' => $permits ,
+					]     )
+				@endforeach
+			</div>
+		</div>
+
+	</div>
 
 
 	{{--
@@ -18,111 +100,43 @@
 	@include("forms.textarea" , [
 		'name' => "permissions",
 		'id' => "txtPermissions" ,
-		'class' => "ltr" ,
+		'class' => "ltr noDisplay" ,
 		'value' => $model->as($request_role)->getPermissions() ,
-	]     )
-	<button type="button" onclick="permitSpread()">UPDATE</button>
-
-	@include("forms.select" , [
-		'name' => "status" ,
-		'id' => "cmbStatus-$request_role->id",
-		'options' => $request_role->statusCombo() ,
-		'value_field' => "0" ,
-		'caption_field' => "1" ,
-		'value' => $model->as($request_role->slug)->status() ,
-		'condition' => $request_role->has_status_rules ,
+		'in_form' => false ,
 	]     )
 
+	{{--@include("forms.select" , [--}}
+		{{--'name' => "status" ,--}}
+		{{--'id' => "cmbStatus-$request_role->id",--}}
+		{{--'options' => $request_role->statusCombo() ,--}}
+		{{--'value_field' => "0" ,--}}
+		{{--'caption_field' => "1" ,--}}
+		{{--'value' => $model->as($request_role->slug)->status() ,--}}
+		{{--'condition' => $request_role->has_status_rules ,--}}
+	{{--]     )--}}
 
 	{{--
 	|--------------------------------------------------------------------------
-	| People Management
+	| Save Button
 	|--------------------------------------------------------------------------
 	|
 	--}}
-	@if(isset($modules['users']))
-		@include("forms.sep" , [
-			'label' => trans("people.people_management").'...',
-			'class' => "f16" ,
-		]     )
-
-		@foreach($roles as $role)
-			@include("manage.users.permits2-module" , [
-				'title' => $role->plural_title,
-				'module' => "users-$role->slug" ,
-				'permits' => $modules['users'] ,
-			]     )
-		@endforeach
-
-		{{ '' , array_forget($modules , 'users') }}
-
-	@endif
-
-	{{--
-	|--------------------------------------------------------------------------
-	| Posts Management
-	|--------------------------------------------------------------------------
-	|
-	--}}
-	@if(isset($modules['posts']))
-		@include("forms.sep" , [
-			'label' => trans("manage.modules.posts"),
-			'class' => "f16" ,
+	@include("forms.sep")
+		@include('forms.button' , [
+			'label' => trans('forms.button.save'),
+			'shape' => 'primary',
+			'type' => 'submit' ,
+		])
+		@include('forms.button' , [
+			'label' => trans('forms.button.cancel'),
+			'shape' => 'link',
+			'link' => '$(".modal").modal("hide")',
 		])
 
-		@foreach($posttypes as $posttype)
-			@include("manage.users.permits2-module" , [
-				'title' => $posttype->title,
-				'module' => "posts-$posttype->slug" ,
-				'permits' => $modules['posts'] ,
-				'locales' => setting()->ask('site_locales')->gain() ,
-			]     )
-		@endforeach
-	@endif
+	<div class="m5"></div>
+	@include('forms.feed')
 
-	{{ '' , array_forget($modules , 'posts') }}
-
-	{{--
-	|--------------------------------------------------------------------------
-	| Other Modules
-	|--------------------------------------------------------------------------
-	|
-	--}}
-	@if(count($modules))
-		@include("forms.sep" , [
-			'label' => trans('manage.modules.other_modules'),
-			'class' => "f16" ,
-		])
-
-		@foreach($modules as $module => $permits)
-			@include("manage.users.permits2-module" , [
-				'title' => trans("manage.modules.$module"),
-				'module' => $module ,
-				'permits' => $permits ,
-			]     )
-		@endforeach
-	@endif
 
 </div>
 @include('templates.modal.end')
-
-
-<script>
-	function permitSpread() {
-		var permission = $('#txtPermissions').val();
-
-		$(".-permit").each(function () {
-			var permit = $(this).attr('permit');
-			if (permission.search(permit) >= 0) {
-				$(this).children('.-permit-handle').addClass('fa-check-square-o').removeClass('fa-square-o');
-				$(this).addClass('text-success').removeClass('text-gray');
-			}
-			else {
-				$(this).children('.-permit-handle').removeClass('fa-check-square-o').addClass('fa-square-o');
-				$(this).removeClass('text-success').addClass('text-gray');
-			}
-		})
-
-
-	}
-</script>
+<script>permitSpread()</script>

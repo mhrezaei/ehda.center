@@ -302,6 +302,17 @@ class ProjectSeeder extends Seeder
 				'is_localized' => "0",
 				'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
 			],
+			[
+				'slug' => "default_role",
+				'title' => "نقش کاربری پیش‌فرض",
+				'category' => "template",
+				'data_type' => "text",
+				'default_value' => 'member',
+				'developers_only' => 1,
+				'is_resident' => "1",
+				'is_localized' => "0",
+				'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+			],
 		]);
 
 		/*-----------------------------------------------
@@ -316,15 +327,17 @@ class ProjectSeeder extends Seeder
 				'title' => "مدیر",
 				'plural_title' => "مدیران",
 				'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+				'is_admin' => "1" ,
 				'modules' => json_encode([
 						'posts' => ['create','edit','publish','report','delete','bin'] ,
 				]),
 			],
 			[
-				'slug' => "user",
+				'slug' => "member ",
 				'title' => "کاربر",
 				'plural_title' => "کاربران",
 				'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+				'is_admin' => "0" ,
 				'modules' => null,
 			],
 		]);
