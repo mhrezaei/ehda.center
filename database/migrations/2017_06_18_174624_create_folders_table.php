@@ -29,6 +29,8 @@ class CreateFoldersTable extends Migration
             $table->unsignedInteger('deleted_by')->default(0) ;
 
             $table->foreign('posttype_id')->references('id')->on('posttypes')->onDelete('cascade');
+
+            $table->boolean('converted')->default(0);
         });
     }
 

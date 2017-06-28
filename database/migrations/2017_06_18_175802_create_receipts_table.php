@@ -41,6 +41,8 @@ class CreateReceiptsTable extends Migration
             $table->unsignedInteger('created_by')->default(0)->index();
             $table->unsignedInteger('updated_by')->default(0);
             $table->unsignedInteger('deleted_by')->default(0);
+
+            $table->boolean('converted')->default(0);
         });
     }
 

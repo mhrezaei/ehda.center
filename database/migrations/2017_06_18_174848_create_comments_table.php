@@ -45,6 +45,7 @@ class CreateCommentsTable extends Migration
             $table->index('published_at');
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');;
 
+            $table->boolean('converted')->default(0);
         });
     }
 

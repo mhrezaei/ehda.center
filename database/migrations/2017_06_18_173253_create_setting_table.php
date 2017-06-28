@@ -28,6 +28,8 @@ class CreateSettingTable extends Migration
             $table->longText('meta')->nullable();
 //            $table->boolean('is_sensitive')->default(0);
             $table->timestamps();
+
+            $table->boolean('converted')->default(0);
         });
     }
 

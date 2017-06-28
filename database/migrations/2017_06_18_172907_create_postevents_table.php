@@ -25,6 +25,8 @@ class CreatePosteventsTable extends Migration
 
             $table->index('created_at');
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
+
+            $table->boolean('converted')->default(0);
         });
     }
 

@@ -151,6 +151,8 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('updated_by')->default(0);
             $table->unsignedInteger('deleted_by')->default(0);
             $table->unsignedInteger('published_by')->default(0);
+
+            $table->boolean('converted')->default(0);
         });
     }
 

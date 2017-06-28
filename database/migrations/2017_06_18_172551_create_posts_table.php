@@ -59,6 +59,8 @@ class CreatePostsTable extends Migration
 			$table->timestamp('moderated_at')->nullable();
 
 			$table->index('created_at');
+
+            $table->boolean('converted')->default(0);
 		});
 	}
 
