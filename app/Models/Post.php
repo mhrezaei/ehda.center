@@ -17,7 +17,7 @@ class Post extends Model
 	public static    $reserved_slugs  = "none,without";
 	public static    $meta_fields     = ['dynamic'];
 	protected static $search_fields   = ['title', 'slug']; //to be used in Requests
-	protected        $guarded         = ['id'];
+	protected        $guarded         = [];
 	protected        $casts           = [
 		'is_draft'     => "boolean",
 		'is_limited'   => "boolean",

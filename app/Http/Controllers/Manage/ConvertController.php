@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Manage;
 
 use App\Models\Domain;
+use App\Models\MetaOld;
+use App\Models\Post;
+use App\Models\PostsOld;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\UsersOld;
@@ -10,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Vinkla\Hashids\Facades\Hashids;
 
 
 class ConvertController extends Controller
@@ -18,28 +22,31 @@ class ConvertController extends Controller
 	{
 		//$this->createTaha() ;
 		//$this->reset() ;
-		return $this->users();
+		//return $this->users();
+		$this->posts() ;
+		//$this->postsMeta();
 		//return $this->createRoles() ;
 	}
 
 	public function createTaha()
 	{
-		DB::table('users')->insert([
-			[
-				'code_melli' => "0074715623",
-				'email' => "chieftaha@gmail.com",
-				'name_first' => "طاها",
-				'name_last' => "کامکار",
-				'password' => bcrypt('11111111'),
-				'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-			]]);
-		return ;
+		User::where('code_melli' , "0074715623")->update(['password' => bcrypt('11111111')]);
+		//DB::table('users')->insert([
+		//	[
+		//		'code_melli' => "0074715623",
+		//		'email' => "chieftaha@gmail.com",
+		//		'name_first' => "طاها",
+		//		'name_last' => "کامکار",
+		//		'password' => bcrypt('11111111'),
+		//		'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+		//	]]);
+		//return ;
 
 	}
 
 	public function reset()
 	{
-		User::where('id','>','0')->forceDelete() ;
+		//User::where('id','>','0')->forceDelete() ;
 	}
 
 	public function createRoles()
@@ -57,9 +64,168 @@ class ConvertController extends Controller
 		}
 	}
 
-	public function users()
+	public function postsMeta($take = 50 , $loop = true)
 	{
-		$olds    = UsersOld::where('convert', '0')->take(50)->get();
+		$metas = MetaOld::where('converted' , '0')->where('model_name' , 'Post')->take($take)->get() ;
+		$last_meta_id = 0 ;
+		$counter = 0 ;
+
+		foreach($metas as $meta) {
+
+			//ss($meta->toArray()) ;
+
+			$post = Post::withTrashed()->find($meta->record_id) ;
+			if(!$post) {
+				ss("Post $meta->record_id Not Found!");
+				$meta->update( [
+					'converted' => "1" ,
+				]) ;
+				continue ;
+			}
+
+			if($meta->key=='title_two') {
+				$post->update([
+					'title2' => $meta->value ,
+				]);
+			}
+			elseif($meta->key == 'post_photos') {
+				$value = json_decode($meta->value , true) ;
+			}
+			else {
+				$value = $meta->value ;
+				$post->updateMeta( [
+					$meta->key => $value ,
+				] , true ) ;
+			}
+
+			$meta->update( [
+				'converted' => "1" ,
+			]) ;
+			$counter++;
+			$last_meta_id = $meta->id ;
+
+		}
+
+		ss("Counter: $counter");
+		ss("Last Post Updated id: " . $last_meta_id);
+
+		//return ;
+		if($counter>0  and $loop) {
+			echo "<script>location.reload();</script>" ;
+		}
+
+	}
+
+	public function posts($take = 100 , $loop = true )
+	{
+		$olds = DB::table('posts_old')->where('converted' , '0')->take($take)->get() ;
+		$last_post_id = 0 ;
+		$counter = 0 ;
+		$category = "NOT DEFINED";
+
+		/*-----------------------------------------------
+		| Normal Data ...
+		*/
+		foreach($olds as $old) {
+			$data = [
+				'id' => $old->id ,
+			     'slug' => $old->slug ,
+			     'type' => $old->branch ,
+			     'title' => $old->title ,
+			     'locale' => "fa" ,
+			     'is_draft' => $old->is_draft ,
+			     'sisterhood' => Hashids::encode($old->id),
+			     'text' => $old->text ,
+			     'abstract' => $old->abstract ,
+			     //'starts_at' => "" ,
+			     //'ends_at' => "" ,
+			     'domains' => $old->domains ,
+			     'created_at' => $old->created_at ,
+			     'updated_at' => $old->updated_at  ,
+			     'deleted_at' => $old->deleted_at  ,
+			     'published_at' => $old->published_at  ,
+			     'created_by' => $old->created_by + 0  ,
+			     'updated_by' => $old->updated_by + 0  ,
+			     'deleted_by' => $old->deleted_by + 0  ,
+			     'published_by' => $old->published_by + 0  ,
+			     'owned_by' => $old->created_by + 0  ,
+			     'moderated_by' => $old->published_by + 0  ,
+			     'moderated_at' => $old->published_at + 0  ,
+			     'meta' => "" ,
+			] ;
+
+			$post = Post::create($data) ;
+
+			if($old->featured_image) {
+				$post->updateMeta([
+					'featured_image' => $old->featured_image ,
+				] , true);
+
+				if($old->category_id) {
+					switch ($old->category_id) {
+						case 1 :
+							$category =  7;
+							break;
+						case 3 :
+							$category =  8;
+							break;
+						case 4 :
+							$category =  9;
+							break;
+						case 5 :
+							$category =  11;
+							break;
+						case 6 :
+							$category =  4;
+							break;
+						case 8 :
+							$category =  5;
+							break;
+						case 9 :
+							$category =  1;
+							break;
+						case 10 :
+							$category =  10;
+							break;
+						case 11 :
+							$category =  2;
+							break;
+						case 12 :
+							$category =  3;
+							break;
+						default :
+							$category = 0 ;
+					}
+					if($category) {
+						$post->saveCategories(["category-".hashid_encrypt($category) => '1']) ;
+					}
+				}
+			}
+
+			//ss($post->toArray());
+			//ss("featured_image: ".$old->featured_image);
+			//ss("category: " . $category);
+
+			$old->update( [
+				'converted' => "1" ,
+			]) ;
+			$counter++;
+			$last_post_id = $post->id ;
+		}
+
+		ss("Counter: $counter");
+		ss("Last Post Created id: " . $last_post_id);
+
+		//return ;
+		if($counter>0 and $loop) {
+			echo "<script>location.reload();</script>" ;
+		}
+
+	}
+
+	public function users($take = 50 , $loop = true)
+	{
+		$olds    = UsersOld::where('converted', '0')->take($take)->get();
 		$last_user_id = 0 ;
 		$counter = 0;
 
@@ -82,7 +248,7 @@ class ConvertController extends Controller
 			unset($data['roles']);
 			unset($data['card_print_status']);
 			unset($data['event_id']);
-			unset($data['convert']) ;
+			unset($data['converted']) ;
 
 
 
@@ -101,6 +267,11 @@ class ConvertController extends Controller
 			$data['marital'] = $old->marital + 0 ;
 			$data['deleted_by'] = $old->deleted_by + 0 ;
 			$data['meta'] = '' ;
+			$data['created_by'] = $old->created_by + 0 ;
+			$data['updated_by'] = $old->updated_by + 0 ;
+			$data['deleted_by'] = $old->deleted_by + 0 ;
+			$data['published_by'] = $old->published_by + 0 ;
+			$data['card_no'] = $old->card_no + 0 ;
 
 			if(!$old->birth_date or $old->birth_date == '0000-00-00' or intval($old->birth_date) > 2017) {
 				$data['birth_date'] = Carbon::createFromDate(1900,1,1)->toDateString()  ;
@@ -108,7 +279,7 @@ class ConvertController extends Controller
 
 			$user = User::create($data);
 			$old->update( [
-				'convert' => "1" ,
+				'converted' => "1" ,
 			]) ;
 			$counter++;
 
@@ -128,13 +299,15 @@ class ConvertController extends Controller
 			}
 
 			$last_user_id = $user->id ;
-			$last_user = $user ;
 		}
 
 		ss("Counter: $counter");
 		ss("last created id: " . $last_user_id);
-		ss($last_user->birth_date);
-		return ;
-		echo "<script>location.reload();</script>" ;
+
+
+		//return ;
+		if($counter>0 and $loop) {
+			echo "<script>location.reload();</script>";
+		}
 	}
 }
