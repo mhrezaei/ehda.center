@@ -71,6 +71,7 @@ class PostsServiceProvider extends ServiceProvider
                 'paginate_current' => '',
                 'is_base_page'     => false,
                 'showError'        => true,
+                'variables'        => [],
             ]
         ];
 
@@ -122,7 +123,11 @@ class PostsServiceProvider extends ServiceProvider
         $allPosts = Post::selector($data)->get();
 
         if (!$allPosts->count()) {
-            return self::showError(trans('front.no_result_found'), $ajaxRequest);
+            if ($data['showError']) {
+                return self::showError(trans('front.no_result_found'), $ajaxRequest);
+            } else {
+                return false;
+            }
         }
 
         // set an array for sending data to view
@@ -147,21 +152,22 @@ class PostsServiceProvider extends ServiceProvider
         }
 
         return self::renderView($viewFolder . '.main', compact(
-            'posts',
-            'viewFolder',
-            'showFilter',
-            'ajaxRequest',
-            'isBasePage',
-            'allPosts'
-        ));
-        return view($viewFolder . '.main', compact(
-            'posts',
-            'viewFolder',
-            'showFilter',
-            'ajaxRequest',
-            'isBasePage',
-            'allPosts'
-        ));
+                'posts',
+                'viewFolder',
+                'showFilter',
+                'ajaxRequest',
+                'isBasePage',
+                'allPosts'
+            ) + $data['variables']);
+
+//        return view($viewFolder . '.main', compact(
+//            'posts',
+//            'viewFolder',
+//            'showFilter',
+//            'ajaxRequest',
+//            'isBasePage',
+//            'allPosts'
+//        ));
     }
 
     public static function showPost($identifier, $data = [])

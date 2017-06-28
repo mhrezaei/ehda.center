@@ -33,9 +33,9 @@ class PostController extends Controller
             $page = Post::find($slug);
         } else {
             $page = Post::selector([
-                'slug' => $slug,
+                'slug'   => $slug,
                 'locale' => getLocale(),
-                'type' => 'pages',
+                'type'   => 'pages',
             ])->first();
         }
 
@@ -73,7 +73,7 @@ JS;
 
 
         return $this->jsonAjaxSaveFeedback(Comment::store($request), [
-            'success_callback' => $callbackFn,
+            'success_callback'     => $callbackFn,
             'success_feed_timeout' => 3000,
         ]);
     }
@@ -96,6 +96,83 @@ JS;
 
             return view('front.posts.general.search-result.main', compact('searchResultHTML', 'breadCrumb', 'pageTitle'));
         }
+    }
+
+    public function archive($lang, $postTypeSlug = null, $categorySlug = null)
+    {
+        /************************* Generate Html for List View ********************** START */
+
+        $filterData = [
+            'variables' => [
+                'twoColumns' => false, // @TODO: to be read from setting
+            ]
+        ];
+
+        if ($postTypeSlug) {
+            // If "postType" is specified, posts in the specified postType will be shown
+            $filterData['type'] = $postTypeSlug;
+
+            $postType = Posttype::findBySlug($postTypeSlug);
+        } else {
+            // If "postType" isn't specified, "listable" posts will be shown
+            $filterData['type'] = 'feature:listable';
+        }
+
+        if ($categorySlug) {
+            // If "category" is specified, posts in specified category will be shown
+            $filterData['category'] = $categorySlug;
+        } // If "category" isn't specified, posts in all categories will be shown
+
+        $listHTML = PostsServiceProvider::showList($filterData);
+
+        /************************* Generate Html for List View ********************** END */
+
+        /************************* Generate Position Info ********************** START */
+
+        $positionInfo = [];
+        if (isset($postType) and // If $postTypeSlug was specified
+            $postType->exists // If $postTypeSlug is an slug of an existed postType
+        ) {
+            $postType->spreadMeta();
+
+            if ($postType->header_title) { // If $postType has an specified "header_title"
+                $positionInfo['group'] = $postType->header_title;
+            }
+
+            $positionInfo['title'] = $postType->title;
+
+            if ($categorySlug) {
+                $unnamedFolder = Folder::where([
+                    'posttype_id' => $postType->id,
+                    'locale'      => getLocale(),
+                ])->first();
+
+                if ($unnamedFolder and $unnamedFolder->exists) {
+                    $category = Category::where([
+                        'slug'      => $categorySlug,
+                        'folder_id' => $unnamedFolder->id,
+                    ])->first();
+
+                    if ($category and $category->exists) {
+                        $positionInfo['description'] = $category->title;
+                    }
+                }
+
+            }
+        } else {
+            $positionInfo['title'] = $postTypeSlug;
+        }
+
+        $positionInfo = array_normalize_keep_originals($positionInfo, [
+            'group' => trans('manage.global'),
+        ]);
+
+        /************************* Generate Position Info ********************** END */
+
+        return view('front.posts.general.list-frame.main', compact(
+            'listHTML',
+            'positionInfo'
+        ));
     }
 
 }

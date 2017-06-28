@@ -1,7 +1,7 @@
 {{ null, $post->spreadMeta() }}
 <div class="item text-start">
     <a href="{{ $post->direct_url }}" target="_blank">
-        <img src="{{ url($post->featured_image) }}">
+        <img src="{{ url($post->viewable_featured_image) }}">
         @if($post->title or $post->abstract)
             <div class="slide-text">
                 @if($post->title)
