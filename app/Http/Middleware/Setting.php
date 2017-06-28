@@ -9,7 +9,7 @@ class Setting
 {
     public function handle($request, Closure $next)
     {
-        $suspend_site = getSetting('overall_activeness');
+        $suspend_site = !getSetting('overall_activeness');
         if ($suspend_site)
         {
             if (!user()->is_admin())
