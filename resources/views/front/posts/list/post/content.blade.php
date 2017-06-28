@@ -18,7 +18,7 @@
                 </div>
                 <div class="action">
                     <a href="{{ $post->direct_url }}"
-                       class="more">{{ trans('front.more') }}
+                       class="more">{{ trans('front.read_more') }}
                         <span class="icon-angle-right"></span>
                     </a>
                 </div>

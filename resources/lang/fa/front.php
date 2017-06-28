@@ -64,10 +64,13 @@ return [
     'states'                                   => 'استان‌ها',
     'gallery'                                  => 'گالری',
     'news'                                     => 'اخبار',
+    'hot_news'                                 => 'اخبار داغ',
+    'ehda_news'                                => 'اخبار اهدا',
     'faqs'                                     => 'سوالات متداول',
     'faq_not_found_ask_yours'                  => 'پاسخ سوال خود را پیدا نکرده اید؟ از ما بپرسید',
-    'more'                                     => 'ادامه مطلب',
+    'read_more'                                => 'ادامه مطلب',
     'continue'                                 => 'ادامه', // @TODO new
+    'more'                                     => 'بیشتر',
     'teammates'                                => 'کارمندان مجموعه',
     'no_result_found'                          => 'نتیجه‌ای یافت نشد.',
     'view_on_map'                              => 'مشاهده بر روی نقشه',
@@ -146,6 +149,6 @@ return [
 
     'notes' => [
         'minutes_are_important_to_save_life' => 'برای نجات <span class="text-success">زندگی</span> لحظه&zwnj;ها مهم است!',
-        'one_brain_dead_can_save_8_lives' => 'هر فرد مرگ مغزی می&zwnj;تواند جان ۸ نفر را نجات دهد.',
+        'one_brain_dead_can_save_8_lives'    => 'هر فرد مرگ مغزی می&zwnj;تواند جان ۸ نفر را نجات دهد.',
     ], // @TODO: new
 ];

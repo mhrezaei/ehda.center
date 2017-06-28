@@ -45,12 +45,38 @@ class FrontController extends Controller
 
         $equationPost = Post::findBySlug('home-page-fix-background-parag');
 
+        $hotNews = Post::selector([
+            'type'     => 'iran-news',
+            'category' => 'hot-news',
+             'domain'   => getUsableDomains(),
+       ])->orderBy('published_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        $events = Post::selector([
+            'type' => 'event',
+            'domain'   => getUsableDomains(),
+        ])->orderBy('published_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        $transplantNews = Post::selector([
+            'type'     => 'iran-news',
+            'category' => 'iran-opu-transplant',
+            'domain'   => getUsableDomains(),
+        ])->orderBy('published_at', 'desc')
+            ->limit(5)
+            ->get();
+
         return view('front.home.main', compact(
             'deadlinesHTML',
             'mainSlideShow',
             'homePageTopParagraph',
             'eventsSlideShow',
-            'equationPost'
+            'equationPost',
+            'hotNews',
+            'events',
+            'transplantNews'
         ));
     }
 

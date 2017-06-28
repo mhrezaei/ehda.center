@@ -14,7 +14,7 @@
                             </p>
                         </div>
                         <div class="action">
-                            <a href="{{ url_locale('page/' . $new->id) }}" class="more">{{ trans('front.more') }}
+                            <a href="{{ url_locale('page/' . $new->id) }}" class="more">{{ trans('front.read_more') }}
                                 <span class="icon-angle-right"></span>
                             </a>
                         </div>
