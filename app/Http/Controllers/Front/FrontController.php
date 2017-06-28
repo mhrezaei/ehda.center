@@ -41,6 +41,7 @@ class FrontController extends Controller
             'type'         => 'deadlines',
             'max_per_page' => -1,
             'sort'         => 'asc',
+            'showError'    => false,
         ]);
 
         $equationPost = Post::findBySlug('home-page-fix-background-parag');
@@ -48,14 +49,14 @@ class FrontController extends Controller
         $hotNews = Post::selector([
             'type'     => 'iran-news',
             'category' => 'hot-news',
-             'domain'   => getUsableDomains(),
-       ])->orderBy('published_at', 'desc')
+            'domain'   => getUsableDomains(),
+        ])->orderBy('published_at', 'desc')
             ->limit(5)
             ->get();
 
         $events = Post::selector([
-            'type' => 'event',
-            'domain'   => getUsableDomains(),
+            'type'   => 'event',
+            'domain' => getUsableDomains(),
         ])->orderBy('published_at', 'desc')
             ->limit(5)
             ->get();

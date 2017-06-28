@@ -70,6 +70,7 @@ class PostsServiceProvider extends ServiceProvider
                 'paginate_url'     => '',
                 'paginate_current' => '',
                 'is_base_page'     => false,
+                'showError'        => true,
             ]
         ];
 
@@ -101,7 +102,11 @@ class PostsServiceProvider extends ServiceProvider
 
 
             if (!$posts->count()) {
-                return self::showError(trans('front.no_result_found'), $ajaxRequest);
+                if ($data['showError']) {
+                    return self::showError(trans('front.no_result_found'), $ajaxRequest);
+                } else {
+                    return false;
+                }
             }
 
             if ($data['paginate_hash']) {
@@ -163,11 +168,11 @@ class PostsServiceProvider extends ServiceProvider
     {
         // normalize data
         $data = array_normalize($data, [
-            'lang'      => getLocale(),
+            'lang'          => getLocale(),
             'externalBlade' => '',
-            'preview'   => false,
-            'showError' => true,
-            'variables' => [],
+            'preview'       => false,
+            'showError'     => true,
+            'variables'     => [],
         ]);
 
         $post = self::smartFindPost($identifier);
@@ -203,7 +208,9 @@ class PostsServiceProvider extends ServiceProvider
     }
 
     /**
-     * @param null $ajaxUrlPrefix : the prefix url for ajax calls that should be called for "waiting" and "expired" events
+     * @param null $ajaxUrlPrefix : the prefix url for ajax calls that should be called for "waiting" and "expired"
+     *                            events
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public static function showEventsAccordion($ajaxUrlPrefix = null)
@@ -332,7 +339,9 @@ class PostsServiceProvider extends ServiceProvider
 
     /**
      * Find post with multiple types of identifiers
+     *
      * @param $identifier
+     *
      * @return \App\Models\Post
      */
     public static function smartFindPost($identifier)
