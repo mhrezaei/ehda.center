@@ -67,6 +67,7 @@ return [
     'faqs'                                     => 'سوالات متداول',
     'faq_not_found_ask_yours'                  => 'پاسخ سوال خود را پیدا نکرده اید؟ از ما بپرسید',
     'more'                                     => 'ادامه مطلب',
+    'continue'                                 => 'ادامه', // @TODO new
     'teammates'                                => 'کارمندان مجموعه',
     'no_result_found'                          => 'نتیجه‌ای یافت نشد.',
     'view_on_map'                              => 'مشاهده بر روی نقشه',

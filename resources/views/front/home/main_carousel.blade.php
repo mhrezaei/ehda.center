@@ -1,4 +1,4 @@
-@if($mainSlideShow->count())
+@if($mainSlideShow and $mainSlideShow->count())
     {!! Html::script ('assets/libs/owl.carousel/js/owl.carousel.min.js') !!}
     <div class="row">
         <div class="owl-carousel home-slider" dir="ltr">
@@ -7,5 +7,4 @@
             @endforeach
         </div>
     </div>
-    @include('front.home.main_carousel_scripts')
 @endif

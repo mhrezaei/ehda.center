@@ -29,6 +29,14 @@ class FrontController extends Controller
             'domain'   => getUsableDomains(),
         ])->get();
 
+        $homePageTopParagraph = \App\Models\Post::findBySlug('home-page-top-paragraph');
+
+        $eventsSlideShow = Post::selector([
+            'type'     => 'slideshows',
+            'category' => 'event-slideshow',
+            'domain'   => getUsableDomains(),
+        ])->get();
+
         $deadlinesHTML = PostsServiceProvider::showList([
             'type'         => 'deadlines',
             'max_per_page' => -1,
@@ -37,7 +45,9 @@ class FrontController extends Controller
 
         return view('front.home.main', compact(
             'deadlinesHTML',
-            'mainSlideShow'
+            'mainSlideShow',
+            'homePageTopParagraph',
+            'eventsSlideShow'
         ));
     }
 
