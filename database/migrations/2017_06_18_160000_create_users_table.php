@@ -34,11 +34,11 @@ class CreateUsersTable extends Migration
             // Birth Info
             $table->date('birth_date')->nullable()->index();
             $table->unsignedInteger('birth_city')->nullable()->index();
-            $table->foreign('birth_city')
-                ->references('id')
-                ->on('states')
-                ->onDelete('NO ACTION')
-                ->onUpdate('CASCADE');
+            //$table->foreign('birth_city')
+            //    ->references('id')
+            //    ->on('states')
+            //    ->onDelete('NO ACTION')
+            //    ->onUpdate('CASCADE');
 
             // Marriage Info
             $table->tinyInteger('marital')->index();
@@ -53,43 +53,43 @@ class CreateUsersTable extends Migration
             $table->string('tel_emergency')->nullable()->index();
             $table->longText('home_address')->nullable();
             $table->unsignedInteger('home_province')->nullable();
-            $table->foreign('home_province')
-                ->references('id')
-                ->on('states')
-                ->onDelete('NO ACTION')
-                ->onUpdate('CASCADE');
+            //$table->foreign('home_province')
+            //    ->references('id')
+            //    ->on('states')
+            //    ->onDelete('NO ACTION')
+            //    ->onUpdate('CASCADE');
             $table->unsignedInteger('home_city')->nullable();
-            $table->foreign('home_city')
-                ->references('id')
-                ->on('states')
-                ->onDelete('NO ACTION')
-                ->onUpdate('CASCADE');
+            //$table->foreign('home_city')
+            //    ->references('id')
+            //    ->on('states')
+            //    ->onDelete('NO ACTION')
+            //    ->onUpdate('CASCADE');
             $table->string('home_tel')->nullable();
             $table->string('home_postal')->nullable();
             $table->longText('work_address')->nullable();
             $table->unsignedInteger('work_province')->nullable();
-            $table->foreign('work_province')
-                ->references('id')
-                ->on('states')
-                ->onDelete('NO ACTION')
-                ->onUpdate('CASCADE');
+            //$table->foreign('work_province')
+            //    ->references('id')
+            //    ->on('states')
+            //    ->onDelete('NO ACTION')
+            //    ->onUpdate('CASCADE');
             $table->unsignedInteger('work_city')->nullable();
-            $table->foreign('work_city')
-                ->references('id')
-                ->on('states')
-                ->onDelete('NO ACTION')
-                ->onUpdate('CASCADE');
+            //$table->foreign('work_city')
+            //    ->references('id')
+            //    ->on('states')
+            //    ->onDelete('NO ACTION')
+            //    ->onUpdate('CASCADE');
             $table->string('work_tel')->nullable();
             $table->string('work_postal')->nullable();
 
             // Education Info
             $table->tinyInteger('edu_level')->nullable();
             $table->unsignedInteger('edu_city')->nullable();
-            $table->foreign('edu_city')
-                ->references('id')
-                ->on('states')
-                ->onDelete('NO ACTION')
-                ->onUpdate('CASCADE');
+            //$table->foreign('edu_city')
+            //    ->references('id')
+            //    ->on('states')
+            //    ->onDelete('NO ACTION')
+            //    ->onUpdate('CASCADE');
             $table->string('edu_field')->nullable();
 
             // Job Info
@@ -124,17 +124,17 @@ class CreateUsersTable extends Migration
 
             // Domain
             $table->string('domain')->nullable();
-            $table->foreign('domain')
-                ->references('slug') // @TODO: to be explained
-                ->on('domains')
-                ->onDelete('NO ACTION')
-                ->onUpdate('CASCADE');
+            //$table->foreign('domain')
+            //    ->references('slug') //
+            //    ->on('domains')
+            //    ->onDelete('NO ACTION')
+            //    ->onUpdate('CASCADE');
             $table->unsignedInteger('from_domain')->nullable();
-            $table->foreign('from_domain')
-                ->references('id')
-                ->on('domains')
-                ->onDelete('NO ACTION')
-                ->onUpdate('CASCADE');
+            //$table->foreign('from_domain')
+            //    ->references('id')
+            //    ->on('domains')
+            //    ->onDelete('NO ACTION')
+            //    ->onUpdate('CASCADE');
 
             // NewsLetter
             $table->boolean('newsletter')->default(0);

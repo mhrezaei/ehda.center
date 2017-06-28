@@ -36,6 +36,11 @@ Route::group([
      'namespace' => "Manage" ,
 ], function() {
 	Route::get('/' , 'ConvertController@index');
+	Route::get('/taha' , 'ConvertController@createTaha');
+	Route::get('/roles' , 'ConvertController@createRoles');
+	Route::get('/meta' , 'ConvertController@postsMeta');
+	Route::get('/posts' , 'ConvertController@posts');
+	Route::get('/users' , 'ConvertController@users');
 });
 
 /*
