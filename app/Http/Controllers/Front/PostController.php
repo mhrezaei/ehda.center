@@ -103,9 +103,9 @@ JS;
         /************************* Generate Html for List View ********************** START */
 
         $filterData = [
-            'variables' => [
+            'variables'    => [
                 'twoColumns' => false, // @TODO: to be read from setting
-            ]
+            ],
         ];
 
         if ($postTypeSlug) {
