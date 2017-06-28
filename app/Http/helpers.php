@@ -8,6 +8,7 @@
 */
 
 use Carbon\Carbon;
+use Illuminate\Contracts\Session\Session;
 use Morilog\Jalali\jDate;
 use Vinkla\Hashids\Facades\Hashids;
 
@@ -468,4 +469,36 @@ function validateColorCode($code)
         }
     }
     return false;
+}
+
+/**
+ * @param string $domain
+ */
+function setDomain($domain = 'global')
+{
+    session()->put('domain', $domain);
+
+}
+
+/**
+ * @return mixed|null
+ */
+function getDomain()
+{
+    if (session()->has('domain'))
+    {
+        $domain = Session::get('domain');
+        if ($domain == 'global')
+        {
+            return null;
+        }
+        else
+        {
+            return $domain;
+        }
+    }
+    else
+    {
+        return null;
+    }
 }
