@@ -633,6 +633,7 @@ class UpstreamController extends Controller
 
 
 		session()->put('logged_developer', encrypt(user()->id));
+		session()->forget('logged_user_revealed_at');
 		$ok = Auth::loginUsingId($user->id);
 
 		return $this->jsonAjaxSaveFeedback($ok, [

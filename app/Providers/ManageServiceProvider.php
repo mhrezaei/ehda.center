@@ -117,7 +117,6 @@ class ManageServiceProvider extends ServiceProvider
 		| Browsing the roles and making array for both folded and unfolded ways of display ...
 		*/
 
-
 		foreach( Role::all() as $role) {
 			if(user()->as('admin')->can('users-'.$role->slug)) {
 				array_push($unfolded_menu , [
@@ -136,7 +135,7 @@ class ManageServiceProvider extends ServiceProvider
 		/*-----------------------------------------------
 		| Adding the "all users" button to both folded and unfolded arrays ...
 		*/
-		if(user()->isSuper()) {
+		if(user()->as('admin')->can('users-all')) {
 			array_push($unfolded_menu, [
 				'icon'    => "address-book",
 				'caption' => trans('people.commands.all_users'),
@@ -148,17 +147,17 @@ class ManageServiceProvider extends ServiceProvider
 				"address-book"
 			]);
 		}
-
 		/*-----------------------------------------------
 		| Conditionally returning the correct array ...
 		*/
+
 		if($folded) {
 			return [[
 				'icon' => "users",
 			     'caption' => trans('people.site_users'),
 			     'link' => "asd",
 			     'sub_menus' => $folded_menu,
-			     'permission' => count($folded_menu)? '' : 'dev',
+			     'permission' => count($folded_menu)? 'any' : 'dev',
 			]];
 		}
 		else {

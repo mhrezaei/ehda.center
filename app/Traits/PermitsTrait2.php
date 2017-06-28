@@ -555,6 +555,7 @@ trait PermitsTrait2
 	public function detachAll()
 	{
 		$this->roles()->detach();
+		$this->detachRole(self::defaultRole()) ;
 	}
 
 	/**
@@ -584,12 +585,12 @@ trait PermitsTrait2
 			if(!$role) {
 				continue;
 			}
-
 			if($role_slug == self::defaultRole()) {
 				$this->updateMeta([
 					'key' => false,
 				]);
 				$this->status = 0;
+				$this->name_first = 'حسن' ;
 				$return       = $this->suppressMeta()->save();
 			}
 			else {
@@ -716,12 +717,15 @@ trait PermitsTrait2
 			$request = null;
 		}
 		foreach(self::$wildcards as $wildcard) {
-			$request = str_replace($wildcard, '', $request);
+			$request = str_replace($wildcard, null , $request);
 		}
 
 		/*-----------------------------------------------
 		| Simple Decisions ...
 		*/
+		if(!$request) {
+			return true ;
+		}
 		if($request == 'developer' or $request == 'dev') {
 			return $this->isDeveloper();
 		}

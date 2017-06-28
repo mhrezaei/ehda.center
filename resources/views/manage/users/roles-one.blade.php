@@ -72,6 +72,7 @@
 		$current_status         = 'ban';
 		$include_delete_options = true;
 	}
+
 	else {
 		$current_status         = $model->as($role->slug)->status();
 		$include_delete_options = true;
