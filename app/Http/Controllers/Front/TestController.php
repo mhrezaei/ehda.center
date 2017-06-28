@@ -7,7 +7,7 @@ use App\Models\Folder;
 use App\Models\Post;
 use App\Models\Receipt;
 use App\Models\Test\Meta;
-use App\Models\UploadedFile;
+use App\Models\File;
 use App\Models\User;
 use App\Providers\PostsServiceProvider;
 use App\Providers\UploadServiceProvider;
@@ -44,7 +44,7 @@ class TestController extends Controller
     public function index()
     {
         die();
-        $file = UploadedFile::findBySlug(6, 'id');
+        $file = File::findBySlug(6, 'id');
         dd($file->related_files, $file->related_files_pathname);
     }
 

@@ -14,7 +14,7 @@ class CreateUploadedFilesTable extends Migration
     public function up()
     {
 
-        Schema::create('uploaded_files', function (Blueprint $table) {
+        Schema::create('files', function (Blueprint $table) {
             $table->increments('id');
 
             // Storage Info
@@ -51,6 +51,8 @@ class CreateUploadedFilesTable extends Migration
             $table->unsignedInteger('published_by')->default(0) ;
             $table->unsignedInteger('owned_by')->default(0)->index();
             $table->unsignedInteger('moderated_by')->default(0)->index();
+
+            $table->boolean('converted')->default(0);
         });
     }
 
@@ -61,6 +63,6 @@ class CreateUploadedFilesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('uploaded_files');
+        Schema::dropIfExists('files');
     }
 }

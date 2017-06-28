@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\UploadedFile as UploadedFileIlluminate;
 
-class UploadedFile extends Model
+class File extends Model
 {
     use TahaModelTrait, SoftDeletes;
 

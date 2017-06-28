@@ -12,7 +12,7 @@ use Intervention\Image\Facades\Image;
 use Symfony\Component\HttpFoundation\File\File;
 use \Illuminate\Support\Facades\File as FilesFacades;
 use Symfony\Component\HttpFoundation\Request;
-use App\Models\UploadedFile as UploadedFileModel;
+use App\Models\File as UploadedFileModel;
 
 class UploadServiceProvider extends ServiceProvider
 {
@@ -266,7 +266,7 @@ class UploadServiceProvider extends ServiceProvider
             $file = UploadedFileModel::findByHashid($file);
         }
 
-        if ($file->exists() and
+        if ($file->exists and
             FilesFacades::exists($file->pathname) and
             $file->hasStatus('temp')
         ) {

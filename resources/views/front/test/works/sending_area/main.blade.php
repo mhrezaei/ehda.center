@@ -177,7 +177,7 @@
 
 
             {!! Form::open([
-                'url' => route('comment.submit'),
+                'url' => route('comment.submit', ['lang' => getLocale()]),
                 'method'=> 'post',
                 'class' => 'js',
                 'name' => 'commentForm',

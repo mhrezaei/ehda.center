@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use App\Models\UploadedFile as UploadedFileModel;
+use App\Models\File as UploadedFileModel;
 
 class DropzoneController extends Controller
 {

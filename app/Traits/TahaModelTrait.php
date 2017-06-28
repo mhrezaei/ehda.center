@@ -548,7 +548,7 @@ trait TahaModelTrait
 		if(self::hasColumn('deleted_at') and !$this->forceDeleting) {
 			$this->deleted_at = Carbon::now()->toDateTimeString();
 			if(self::hasColumn('deleted_by')) {
-				$this->deleted_by = Auth::user()->id;
+				$this->deleted_by = user()->id;
 			}
 			$return = $this->save();
 		}
