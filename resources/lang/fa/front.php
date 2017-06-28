@@ -143,4 +143,9 @@ return [
         'unable_to_register_card' => 'امکان ثبت کارت وجود ندارد.',
         'login'                   => 'وارد شوید.',
     ], // @TODO: new
+
+    'notes' => [
+        'minutes_are_important_to_save_life' => 'برای نجات <span class="text-success">زندگی</span> لحظه&zwnj;ها مهم است!',
+        'one_brain_dead_can_save_8_lives' => 'هر فرد مرگ مغزی می&zwnj;تواند جان ۸ نفر را نجات دهد.',
+    ], // @TODO: new
 ];
