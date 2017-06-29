@@ -1,6 +1,13 @@
 $startSide: map_get($localeDirections, 'start');
 $endSide: map_get($localeDirections, 'end');
 
+// Public Silent Classes --start
+%display-none {
+  display: none;
+}
+
+// Public Silent Classes --end
+
 // ،Top Main Header --start
 
 header {
@@ -36,6 +43,34 @@ header {
         }
       }
     }
+
+    .select-lang-btn {
+      @extend .bg-white, .rounded-corners-5;
+      margin-left: 230px;
+      margin-top: 8px;
+      padding: 2px 5px;
+
+      > a {
+        &,
+        &:active,
+        &:focus,
+        &:link,
+        &:visited {
+          @extend .text-blue, .border-1, .border-blue, .rounded-corners-5, .f12;
+          background-color: lighten(map_get($colors, 'blue'), 50%);
+          border: none;
+          outline: none;
+          padding: 0 5px;
+          line-height: 10px;
+
+          &.selected {
+            @extend .text-green, .border-green;
+            background-color: lighten(map_get($colors, 'green'), 50%);
+          }
+        }
+      }
+    }
+
   }
   #logo {
     max-width: 100%;
@@ -186,6 +221,7 @@ header {
         }
       }
       > a {
+        @extend .text-blue;
         display: block;
         font-size: 20px;
         font-weight: 500;
@@ -237,6 +273,8 @@ header {
 @media (min-width: 900px) {
   .main-logo {
     min-width: 300px;
+    margin-top: 20px;
+    margin-bottom: 10px;
   }
 }
 
@@ -286,6 +324,19 @@ header {
 }
 
 // Font Size --end
+
+// Rounded Corner --start
+@for $i from 1 to 21 {
+  $number: $i * 5;
+  $value: $number * 1px;
+  .rounded-corners-#{$number} {
+    -webkit-border-radius: $value;
+    -moz-border-radius: $value;
+    border-radius: $value;
+  }
+}
+
+// Rounded Corner --end
 
 // Radio and Checkbox --start
 [type="radio"],
@@ -472,7 +523,7 @@ header {
   %border-#{$directionLong}-solid {
     border-#{$directionLong}-style: solid;
   }
-  @for $i from 1 to 10 {
+  @for $i from 1 to 21 {
     $value: $i * 5;
     .m#{$directionShort}#{$value} {
       margin-#{$directionLong}: #{$value}px;
@@ -730,3 +781,145 @@ img%img-cover {
 }
 
 // DropZone --end
+
+// Shadow --start
+.shadow-m {
+  $value: 0 5px 20px -5px rgba(0, 0, 0, .3);
+  -webkit-box-shadow: #{$value};
+  -moz-box-shadow: #{$value};
+  box-shadow: #{$value};
+}
+
+// Shadow --end
+
+// Bootstrap Select Picker --start
+.bootstrap-select {
+  > .btn-default {
+    @extend .form-control;
+  }
+
+  > .dropdown-toggle {
+    padding-right: 12px !important;
+    padding-left: 30px !important;
+  }
+
+  * {
+    text-align: #{$startSide} !important;
+  }
+
+  &.btn-group .dropdown-toggle .caret {
+    left: 12px !important;
+    right: auto !important;
+    margin: 0 !important;
+  }
+}
+
+// Bootstrap Select Picker --end
+
+// JqueryUi --start
+[type="radio"],
+[type="checkbox"] {
+  &,
+  &:checked {
+    + label.ui-button {
+      & {
+        padding: .4em 1em;
+      }
+
+      &:before,
+      &:after,
+      .ui-checkboxradio-icon {
+        @extend %display-none;
+      }
+    }
+  }
+}
+
+.ui-datepicker {
+  .ui-datepicker-calendar {
+    td {
+      $activeColor: #1ABC9C;
+      $defaultColor: #2c3e50;
+      $highlightColor: #757575;
+      $disabledColor: #9F9F9F;
+
+      > * {
+        @extend .text-center, .border-1;
+        background: map_get($colors, 'white');
+        font-weight: 500;
+      }
+
+      &.ui-state-disabled {
+        > .ui-state-default {
+          color: #{$disabledColor};
+          border-color: #{$disabledColor};
+        }
+      }
+
+      &:not(.ui-state-disabled) {
+        > .ui-state-default {
+          color: #{$defaultColor};
+        }
+        > .ui-state-highlight {
+          color: #{$highlightColor};
+          border-color: #{$highlightColor};
+        }
+        > .ui-state-active {
+          color: #{$activeColor};
+          border-color: #{$activeColor};
+        }
+      }
+    }
+  }
+}
+
+// JqueryUi --end
+
+// Forms and Inputs --start
+form {
+  .form-heading {
+    @extend .mt20, .mb10, .text-#{$startSide};
+    width: 100%;
+    overflow: hidden;
+
+    &:after {
+      content: '';
+      display: inline-block;
+      vertical-align: middle;
+      height: 1px;
+      border-top: 1px dashed #{map_get($colors, 'darkGray')};
+      width: 100%;
+      margin-#{$endSide}: -100%;
+      margin-#{$startSide}: 10px;
+    }
+  }
+}
+
+.img-btn {
+  $transitionValue: all .3s ease-out;
+  @extend .mt10, .mb10, .mr15, .ml15;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+  -webkit-transition: $transitionValue;
+  -moz-transition: $transitionValue;
+  -ms-transition: $transitionValue; /* IE10 is actually unprefixed */
+  -o-transition: $transitionValue;
+  transition: $transitionValue;
+
+  &:hover {
+    $scaleValue: 'scale(1.1)';
+    -webkit-transform: #{$scaleValue};
+    -moz-transform: #{$scaleValue};
+    -ms-transform: #{$scaleValue};
+    -o-transform: #{$scaleValue};
+    transform: #{$scaleValue};
+  }
+
+  img {
+    max-height: 180px;
+  }
+}
+
+// Forms and Inputs --end

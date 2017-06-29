@@ -36,6 +36,11 @@ Route::group([
      'namespace' => "Manage" ,
 ], function() {
 	Route::get('/' , 'ConvertController@index');
+	Route::get('/taha' , 'ConvertController@createTaha');
+	Route::get('/roles' , 'ConvertController@createRoles');
+	Route::get('/meta' , 'ConvertController@postsMeta');
+	Route::get('/posts' , 'ConvertController@posts');
+	Route::get('/users' , 'ConvertController@users');
 });
 
 /*
@@ -229,32 +234,88 @@ Route::group(['prefix' => 'file'], function () {
     Route::post('remove', 'DropzoneController@remove_file')->name('dropzone.remove');
 });
 
-Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Setting']], function () {
+Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Setting', 'Subdomain']], function (){
+
+    // if not set lang prefix
     Route::get('/', 'FrontController@index');
 
-    // tests
-    Route::group(['prefix' => 'test'], function () {
-        Route::get('/', 'TestController@index');
-        Route::get('states', 'TestController@states');
-        Route::get('gallery/archive', 'TestController@gallery_archive');
-        Route::get('gallery/single', 'TestController@gallery_single');
-        Route::get('post/single', 'TestController@post_single');
-        Route::get('post/archive', 'TestController@post_archive');
-        Route::get('volunteers', 'TestController@volunteers');
-        Route::get('faqs', 'TestController@faqs');
-        Route::get('works/send', 'TestController@works_send');
+    // organ donation card
+    Route::get('/card/show_card/{type}/{user_hash_id}/{mode?}', 'OrganDonationCardController@index');
+
+    // landing page
+    Route::get('/ramazan', 'LandingPageController@ramazan');
+    Route::post('/ramazan', 'LandingPageController@ramazan_count');
+
+    Route::get('/summer', 'LandingPageController@summer');
+    Route::post('/summer', 'LandingPageController@summer_count');
+
+    Route::group(['prefix' => '{lang}'], function () {
+        Route::get('/', 'FrontController@index');
+
+        // tests
+        Route::group(['prefix' => 'test'], function () {
+            Route::get('/', 'TestController@index');
+            Route::get('states', 'TestController@states');
+            Route::get('gallery/archive', 'TestController@gallery_archive');
+            Route::get('gallery/single', 'TestController@gallery_single');
+            Route::get('post/single', 'TestController@post_single');
+            Route::get('post/archive', 'TestController@post_archive');
+            Route::get('volunteers', 'TestController@volunteers');
+            Route::get('faqs', 'TestController@faqs');
+            Route::get('works/send', 'TestController@works_send');
+        });
+        Route::get('about', 'TestController@about');
+
+        // register new user
+        Route::post('/register/new', 'FrontController@register');
+
+        // saving comments for all posts
+        Route::post('/comment', 'PostController@submit_comment')->name('comment.submit');
+
+        // register new card
+        Route::get('/organ_donation_card', 'CardController@index')->name('register_card');
+        Route::post('/register/card', 'CardController@save_registration');
+        Route::post('/register/first_step', 'CardController@register_first_step');
+        Route::post('/register/second_step', 'CardController@register_second_step');
+
+        /*
+        |--------------------------------------------------------------------------
+        | CARD HOLDER PANEL
+        |--------------------------------------------------------------------------
+        | For the holders of cards, in 'members' folder
+        */
+        // @TODO: view not work check it
+        Route::group(['prefix' => 'members', 'middleware' => 'is:card-holder'], function () {
+            Route::get('/my_card', 'MembersController@index');
+            Route::get('/my_card/edit', 'MembersController@edit_my_card');
+            Route::post('/my_card/edit_process', 'MembersController@edit_card_process');
+        });
+
+        // another route copy from ehda-b1 project
+            Route::get('/{id}', 'PostController@show')->where('id', '[0-9]+');
+            Route::get('/showPost/{id}/{url?}', 'PostController@show');
+            Route::get('/previewPost/{id}/{url?}', 'PostController@show');
+            Route::get('/archive/{branch?}/{category?}', 'PostController@archive');
+            Route::get('/gallery/categories/{branch}', 'GalleryController@show_categories');
+            Route::get('/gallery/posts/{category}', 'GalleryController@show_categories_posts');
+            Route::get('/gallery/show/{id}/{url?}', 'GalleryController@show_gallery');
+
+            Route::get('/convert', 'TestController@convertCardsFromMhr');
+
+            // static pages
+            Route::get('/faq', 'PostController@faq');
+            Route::post('/faq/new', 'PostController@faq_new');
+            Route::get('/angels', 'PostController@angels');
+            Route::post('/angels/find', 'PostController@angels_find');
+
+            // volunteer pages
+            Route::get('/volunteers', 'members\VolunteersController@index');
+            Route::post('/volunteer/first_step', 'members\VolunteersController@register_first_step');
+            Route::post('/volunteer/second_step', 'members\VolunteersController@register_second_step');
+            Route::get('/volunteers/exam', 'members\VolunteersController@exam');
+            Route::get('/volunteers/final_step', 'members\VolunteersController@register_final_step');
+            Route::post('/volunteers/final_step/submit', 'members\VolunteersController@register_final_step_submit');
+
     });
-    Route::get('about', 'TestController@about');
-
-    // register new user
-    Route::post('/register/new', 'FrontController@register');
-
-    // saving comments for all posts
-    Route::post('/comment', 'PostController@submit_comment')->name('comment.submit');
-
-    // register new card
-    Route::get('/organ_donation_card', 'CardController@index');
-    Route::post('/register/first_step', 'CardController@register_first_step');
-    Route::post('/register/second_step', 'CardController@register_second_step');
 
 });

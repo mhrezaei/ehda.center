@@ -3,27 +3,56 @@
 namespace App\Http\Middleware;
 
 use App\Http\Requests\Request;
-use App\Traits\GlobalControllerTrait;
 use Closure;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
 
 class DetectLanguage
 {
-    use GlobalControllerTrait;
     public function handle($request, Closure $next)
     {
-        $lang = $request->segment(1);
+        $current_lang = $request->segment(1);
+        $auto_set_lang = getSetting('site_lang_auto_detect');
+        $allowed_lang = getSetting('site_locales');
+        $user_ip = $request->ip();
 
-        if ($lang == 'fa' or $lang == 'en' or $lang == 'ar')
+        if ($user_ip != '::1' and $auto_set_lang)
         {
-            \App::setLocale($lang);
+            $data = file_get_contents('http://freegeoip.net/json/' . $user_ip);
+            if ($data)
+            {
+                $data = json_decode($data, true);
+                if ($data['country_code'] == 'IR')
+                {
+                    $this->setDetectedLang('fa');
+                }
+                else
+                {
+                    $this->setDetectedLang('en');
+                }
+            }
+            else
+            {
+                $this->setDetectedLang('fa'); // @TODO: set site default lang
+            }
         }
         else
         {
-            \App::setLocale('fa');
+            if (in_array($current_lang, $allowed_lang))
+            {
+                $this->setDetectedLang($current_lang);
+            }
+            else
+            {
+                $this->setDetectedLang('fa'); // @TODO: set site default lang
+            }
         }
 
         return $next($request);
+    }
+
+    public function setDetectedLang($lang)
+    {
+        \App::setLocale($lang);
     }
 }

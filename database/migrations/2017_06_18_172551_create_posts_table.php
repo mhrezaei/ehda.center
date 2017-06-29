@@ -33,11 +33,11 @@ class CreatePostsTable extends Migration
 			$table->unsignedInteger('copy_of')->default(0)->index();
 			$table->string('sisterhood', 30)->default('')->index();
 
-			$table->longText('text');
-			$table->longText('abstract');
+			$table->longText('text')->nullable();
+			$table->longText('abstract')->nullable();
 
-			$table->timestamp('starts_at');
-			$table->timestamp('ends_at');
+			$table->timestamp('starts_at')->nullable();
+			$table->timestamp('ends_at')->nullable();
 
 			$table->longText('meta')->nullable();
 

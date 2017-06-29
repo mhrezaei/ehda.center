@@ -146,41 +146,29 @@ function forms_validate(formData, jqForm, options) {
 
 
     $('#' + $formId + ' :input').each(function () {
-        forms_markError(this, "reset");
-        var $val = $(this).val();
-        var $name = $(this).attr('name');
-        var $err = $(this).attr('error-value');
-        var $err_el = $.inArray($name, $errors_el);
+        if (!$(this).prop('disabled')) { // Doesn't validate and submit value of disabled input
+            forms_markError(this, "reset");
+            var $val = $(this).val();
+            var $name = $(this).attr('name');
+            var $err = $(this).attr('error-value');
+            var $err_el = $.inArray($name, $errors_el);
 
-        var $required = $(this).hasClass('form-required');
-        var $number = $(this).hasClass('form-number');
-        var $persian = $(this).hasClass('form-persian');
-        var $english = $(this).hasClass('form-english');
-        var $email = $(this).hasClass('form-email');
-        var $national = $(this).hasClass('form-national');
-        var $mobile = $(this).hasClass('form-mobile');
-        var $phone = $(this).hasClass('form-phone');
-        var $password = $(this).hasClass('form-password');
-        var $datepicker = $(this).hasClass('form-datepicker');
-        var $select = $(this).hasClass('form-select');
-        var $selectpicker = $(this).hasClass('form-selectpicker');
-        var $checkbox = $(this).hasClass('form-checkbox');
+            var $required = $(this).hasClass('form-required');
+            var $number = $(this).hasClass('form-number');
+            var $persian = $(this).hasClass('form-persian');
+            var $english = $(this).hasClass('form-english');
+            var $email = $(this).hasClass('form-email');
+            var $national = $(this).hasClass('form-national');
+            var $mobile = $(this).hasClass('form-mobile');
+            var $phone = $(this).hasClass('form-phone');
+            var $password = $(this).hasClass('form-password');
+            var $datepicker = $(this).hasClass('form-datepicker');
+            var $select = $(this).hasClass('form-select');
+            var $selectpicker = $(this).hasClass('form-selectpicker');
+            var $checkbox = $(this).hasClass('form-checkbox');
 
-        if ($required && $err_el < 0) {
-            if (forms_errorIfEmpty(this)) {
-                if ($err && $err.length) {
-                    $errors_msg.push($err);
-                }
-                if ($errors < 1) $(this).focus();
-                $errors++;
-                $errors_el.push($name);
-                $err_el = $.inArray($name, $errors_el);
-            }
-        }
-
-        if ($number && $err_el < 0) {
-            if ($(this).val().length > 0) {
-                if (forms_errorIfNotNumber(this)) {
+            if ($required && $err_el < 0) {
+                if (forms_errorIfEmpty(this)) {
                     if ($err && $err.length) {
                         $errors_msg.push($err);
                     }
@@ -190,11 +178,150 @@ function forms_validate(formData, jqForm, options) {
                     $err_el = $.inArray($name, $errors_el);
                 }
             }
-        }
 
-        if ($persian && $err_el < 0) {
-            if ($(this).val().length > 0) {
-                if (forms_errorIfLang(this, 'fa')) {
+            if ($number && $err_el < 0) {
+                if ($(this).val().length > 0) {
+                    if (forms_errorIfNotNumber(this)) {
+                        if ($err && $err.length) {
+                            $errors_msg.push($err);
+                        }
+                        if ($errors < 1) $(this).focus();
+                        $errors++;
+                        $errors_el.push($name);
+                        $err_el = $.inArray($name, $errors_el);
+                    }
+                }
+            }
+
+            if ($persian && $err_el < 0) {
+                if ($(this).val().length > 0) {
+                    if (forms_errorIfLang(this, 'fa')) {
+                        if ($err && $err.length) {
+                            $errors_msg.push($err);
+                        }
+                        if ($errors < 1) $(this).focus();
+                        $errors++;
+                        $errors_el.push($name);
+                        $err_el = $.inArray($name, $errors_el);
+                    }
+                }
+            }
+
+            if ($english && $err_el < 0) {
+                if ($(this).val().length > 0) {
+                    if (forms_errorIfLang(this, 'en')) {
+                        if ($err && $err.length) {
+                            $errors_msg.push($err);
+                        }
+                        if ($errors < 1) $(this).focus();
+                        $errors++;
+                        $errors_el.push($name);
+                        $err_el = $.inArray($name, $errors_el);
+                    }
+                }
+            }
+
+            if ($email && $err_el < 0) {
+                if ($(this).val().length > 0) {
+                    if (forms_errorIfNotEmail(this)) {
+                        if ($err && $err.length) {
+                            $errors_msg.push($err);
+                        }
+                        if ($errors < 1) $(this).focus();
+                        $errors++;
+                        $errors_el.push($name);
+                        $err_el = $.inArray($name, $errors_el);
+                    }
+                }
+            }
+
+            if ($national && $err_el < 0) {
+                if ($(this).val().length > 0) {
+                    if (forms_errorIfNotNationalCode(this)) {
+                        if ($err && $err.length) {
+                            $errors_msg.push($err);
+                        }
+                        if ($errors < 1) $(this).focus();
+                        $errors++;
+                        $errors_el.push($name);
+                        $err_el = $.inArray($name, $errors_el);
+                    }
+                }
+            }
+
+            if ($mobile && $err_el < 0) {
+                if ($(this).val().length > 0) {
+                    if (forms_errorIfNotMobile(this)) {
+                        if ($err && $err.length) {
+                            $errors_msg.push($err);
+                        }
+                        if ($errors < 1) $(this).focus();
+                        $errors++;
+                        $errors_el.push($name);
+                        $err_el = $.inArray($name, $errors_el);
+                    }
+                }
+            }
+
+            if ($phone && $err_el < 0) {
+                if ($(this).val().length > 0) {
+                    if (forms_errorIfNotPhone(this)) {
+                        if ($err && $err.length) {
+                            $errors_msg.push($err);
+                        }
+                        if ($errors < 1) $(this).focus();
+                        $errors++;
+                        $errors_el.push($name);
+                        $err_el = $.inArray($name, $errors_el);
+                    }
+                }
+            }
+
+            if ($password && $err_el < 0) {
+                if ($(this).val().length > 0) {
+                    if (forms_errorIfNotVerifyPassWord(this)) {
+                        if ($err && $err.length) {
+                            $errors_msg.push($err);
+                        }
+                        if ($errors < 1) $(this).focus();
+                        $errors++;
+                        $errors_el.push($name);
+                        $err_el = $.inArray($name, $errors_el);
+                    }
+                }
+            }
+
+            if ($datepicker && $err_el < 0) {
+                if ($(this).val().length > 0) {
+                    if (forms_errorIfNotDatePicker(this)) {
+                        if ($err && $err.length) {
+                            $errors_msg.push($err);
+                        }
+                        if ($errors < 1) $(this).focus();
+                        $errors++;
+                        $errors_el.push($name);
+                        $err_el = $.inArray($name, $errors_el);
+                    }
+                }
+            }
+
+            if ($select && $err_el < 0) {
+                if ($(this).hasClass('form-required')) {
+                    if (forms_errorIfNotSelect(this)) {
+                        if ($err && $err.length) {
+                            $errors_msg.push($err);
+                        }
+                        if ($errors < 1) $(this).focus();
+                        $errors++;
+                        $errors_el.push($name);
+                        $err_el = $.inArray($name, $errors_el);
+                    }
+                }
+            }
+
+            if ($selectpicker && $err_el < 0) {
+                if ($val < 1) {
+                    forms_markError($(this), "error");
                     if ($err && $err.length) {
                         $errors_msg.push($err);
                     }
@@ -203,147 +330,22 @@ function forms_validate(formData, jqForm, options) {
                     $errors_el.push($name);
                     $err_el = $.inArray($name, $errors_el);
                 }
-            }
-        }
-
-        if ($english && $err_el < 0) {
-            if ($(this).val().length > 0) {
-                if (forms_errorIfLang(this, 'en')) {
-                    if ($err && $err.length) {
-                        $errors_msg.push($err);
-                    }
-                    if ($errors < 1) $(this).focus();
-                    $errors++;
-                    $errors_el.push($name);
-                    $err_el = $.inArray($name, $errors_el);
+                else {
+                    forms_markError($(this), "success");
                 }
             }
-        }
 
-        if ($email && $err_el < 0) {
-            if ($(this).val().length > 0) {
-                if (forms_errorIfNotEmail(this)) {
-                    if ($err && $err.length) {
-                        $errors_msg.push($err);
+            if ($checkbox && $err_el < 0) {
+                if (!$(this).is(':checked')) {
+                    if (forms_errorIfNotPhone(this)) {
+                        if ($err && $err.length) {
+                            $errors_msg.push($err);
+                        }
+                        if ($errors < 1) $(this).focus();
+                        $errors++;
+                        $errors_el.push($name);
+                        $err_el = $.inArray($name, $errors_el);
                     }
-                    if ($errors < 1) $(this).focus();
-                    $errors++;
-                    $errors_el.push($name);
-                    $err_el = $.inArray($name, $errors_el);
-                }
-            }
-        }
-
-        if ($national && $err_el < 0) {
-            if ($(this).val().length > 0) {
-                if (forms_errorIfNotNationalCode(this)) {
-                    if ($err && $err.length) {
-                        $errors_msg.push($err);
-                    }
-                    if ($errors < 1) $(this).focus();
-                    $errors++;
-                    $errors_el.push($name);
-                    $err_el = $.inArray($name, $errors_el);
-                }
-            }
-        }
-
-        if ($mobile && $err_el < 0) {
-            if ($(this).val().length > 0) {
-                if (forms_errorIfNotMobile(this)) {
-                    if ($err && $err.length) {
-                        $errors_msg.push($err);
-                    }
-                    if ($errors < 1) $(this).focus();
-                    $errors++;
-                    $errors_el.push($name);
-                    $err_el = $.inArray($name, $errors_el);
-                }
-            }
-        }
-
-        if ($phone && $err_el < 0) {
-            if ($(this).val().length > 0) {
-                if (forms_errorIfNotPhone(this)) {
-                    if ($err && $err.length) {
-                        $errors_msg.push($err);
-                    }
-                    if ($errors < 1) $(this).focus();
-                    $errors++;
-                    $errors_el.push($name);
-                    $err_el = $.inArray($name, $errors_el);
-                }
-            }
-        }
-
-        if ($password && $err_el < 0) {
-            if ($(this).val().length > 0) {
-                if (forms_errorIfNotVerifyPassWord(this)) {
-                    if ($err && $err.length) {
-                        $errors_msg.push($err);
-                    }
-                    if ($errors < 1) $(this).focus();
-                    $errors++;
-                    $errors_el.push($name);
-                    $err_el = $.inArray($name, $errors_el);
-                }
-            }
-        }
-
-        if ($datepicker && $err_el < 0) {
-            if ($(this).val().length > 0) {
-                if (forms_errorIfNotDatePicker(this)) {
-                    if ($err && $err.length) {
-                        $errors_msg.push($err);
-                    }
-                    if ($errors < 1) $(this).focus();
-                    $errors++;
-                    $errors_el.push($name);
-                    $err_el = $.inArray($name, $errors_el);
-                }
-            }
-        }
-
-        if ($select && $err_el < 0) {
-            if ($(this).hasClass('form-required')) {
-                if (forms_errorIfNotSelect(this)) {
-                    if ($err && $err.length) {
-                        $errors_msg.push($err);
-                    }
-                    if ($errors < 1) $(this).focus();
-                    $errors++;
-                    $errors_el.push($name);
-                    $err_el = $.inArray($name, $errors_el);
-                }
-            }
-        }
-
-        if ($selectpicker && $err_el < 0) {
-            if ($val < 1) {
-                forms_markError($(this), "error");
-                if ($err && $err.length) {
-                    $errors_msg.push($err);
-                }
-                if ($errors < 1) $(this).focus();
-                $errors++;
-                $errors_el.push($name);
-                $err_el = $.inArray($name, $errors_el);
-            }
-            else {
-                forms_markError($(this), "success");
-            }
-        }
-
-        if ($checkbox && $err_el < 0) {
-            if (!$(this).is(':checked')) {
-                if (forms_errorIfNotPhone(this)) {
-                    if ($err && $err.length) {
-                        $errors_msg.push($err);
-                    }
-                    if ($errors < 1) $(this).focus();
-                    $errors++;
-                    $errors_el.push($name);
-                    $err_el = $.inArray($name, $errors_el);
                 }
             }
         }
