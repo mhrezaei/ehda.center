@@ -7,6 +7,7 @@ use App\Models\MetaOld;
 use App\Models\Post;
 use App\Models\PostsOld;
 use App\Models\Role;
+use App\Models\Setting;
 use App\Models\User;
 use App\Models\UsersOld;
 use Carbon\Carbon;
@@ -62,6 +63,14 @@ class ConvertController extends Controller
 			     'meta' => "{\"icon\":\"\",\"status_rule\":{\"1\":\"under_examination\",\"2\":\"waiting_for_data_completion\",\"3\":\"pending\",\"8\":\"active\"},\"fields\":\"\"}" ,
 			]) ;
 		}
+
+		Role::create([
+			'slug' => "card-holder" ,
+		     'title' => "کارت اهدای عضو" ,
+		     'plural_title' => "کارت‌های اهدای عضو" ,
+		]);
+
+		Setting::set('default_role' , 'card-holder') ;
 	}
 
 	public function postsMeta($take = 50 , $loop = true)
@@ -118,7 +127,7 @@ class ConvertController extends Controller
 
 	public function posts($take = 100 , $loop = true )
 	{
-		$olds = DB::table('posts_old')->where('converted' , '0')->take($take)->get() ;
+		$olds = PostsOld::where('converted' , '0')->take($take)->get() ;
 		$last_post_id = 0 ;
 		$counter = 0 ;
 		$category = "NOT DEFINED";
@@ -150,7 +159,7 @@ class ConvertController extends Controller
 			     'published_by' => $old->published_by + 0  ,
 			     'owned_by' => $old->created_by + 0  ,
 			     'moderated_by' => $old->published_by + 0  ,
-			     'moderated_at' => $old->published_at + 0  ,
+			     'moderated_at' => $old->published_at  ,
 			     'meta' => "" ,
 			] ;
 
