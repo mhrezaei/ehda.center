@@ -181,7 +181,7 @@ class Role extends Model
 	public function statusRule($key , $in_full = false)
 	{
 		if(!$this->has_status_rules) {
-			return null;
+			return $key;
 		}
 		if(is_numeric($key)) {
 			$this->spreadMeta();
