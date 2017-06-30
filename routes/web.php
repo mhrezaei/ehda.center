@@ -118,13 +118,15 @@ Route::group([
 
         Route::group(['prefix' => 'save'], function () {
             Route::post('/', 'UsersController@save');
+            Route::post('/smsMass' , 'UsersController@smsMass');
             Route::post('/password', 'UsersController@savePassword');
             Route::post('/permits', 'UsersController@savePermits');
-            Route::get('/role/{user_id}/{role_slug}/{new_status}', 'UsersController@saveRole');
-            Route::post('/delete', 'UsersController@delete');
-            Route::post('/undelete', 'UsersController@undelete');
-            Route::post('/destroy', 'UsersController@destroy');
-            Route::post('/receipt', 'UsersController@saveNewReceipt');
+
+	        Route::post('/delete', 'UsersController@delete');
+	        Route::post('/undelete', 'UsersController@undelete');
+	        Route::post('/destroy', 'UsersController@destroy');
+
+	        Route::get('/role/{user_id}/{role_slug}/{new_status}', 'UsersController@saveRole');
         });
     });
 

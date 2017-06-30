@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\Manage;
 
-use App\Http\Requests\Manage\ReceiptSaveRequest;
+use App\Http\Requests\Manage\MessageSendRequest;
 use App\Http\Requests\Manage\UserPasswordChangeRequest;
 use App\Http\Requests\Manage\UserSaveRequest;
 use App\Models\Posttype;
-use App\Models\Receipt;
 use App\Models\Role;
 use App\Models\User;
-use App\Providers\DrawingCodeServiceProvider;
 use App\Providers\SmsServiceProvider;
 use App\Traits\ManageControllerTrait;
 use App\Http\Controllers\Controller;
@@ -56,6 +54,26 @@ class UsersController extends Controller
 		}
 	}
 
+	protected function browseSwitches($request_role, $switches = [])
+	{
+		$switches = array_normalize($switches, [
+			'grid_row'          => "browse-row",
+			'grid_array'        => [
+				trans('validation.attributes.name_first'),
+				[trans('people.user_role'), 'NO', $request_role == 'all'],
+				[trans('cart.purchases'), 'NO', $request_role == 'customer'],
+				trans('forms.button.action'),
+			],
+			'url'               => "users/browse/$request_role",
+			'search_panel_view' => "search",
+			'mass_actions'      => [
+				['mobile', trans('people.commands.send_sms'), "modal:manage/users/act/0/sms/$request_role", user()->as('admin')->can("users-$request_role.send")],
+			],
+		]);
+
+		return $switches;
+	}
+
 	public function search($request_role, Request $request, $switches = [])
 	{
 		/*-----------------------------------------------
@@ -68,17 +86,7 @@ class UsersController extends Controller
 		/*-----------------------------------------------
 		| Switches ...
 		*/
-		$switches = array_normalize($switches , [
-			'grid_row' => "browse-row" ,
-			'grid_array' => [
-				trans('validation.attributes.name_first') ,
-				[trans('people.user_role'), 'NO' , $request_role=='all'],
-				[trans('cart.purchases') , 'NO' , $request_role=='customer'],
-				trans('forms.button.action'),
-			] ,
-			'url' => "users/browse/$request_role" ,
-		     'search_panel_view' => "search" ,
-		]);
+		$switches = $this->browseSwitches($request_role, $switches);
 
 
 		/*-----------------------------------------------
@@ -105,8 +113,8 @@ class UsersController extends Controller
 		];
 		$page[1] = [
 			'search',
-			trans('forms.button.search_for') . " $request->keyword " ,
-			$switches['url']. "/search"
+			trans('forms.button.search_for') . " $request->keyword ",
+			$switches['url'] . "/search",
 		];
 
 		//$page = [
@@ -121,7 +129,7 @@ class UsersController extends Controller
 			$db         = $this->Model;
 			$page[1][1] = trans('forms.button.search');
 
-			return view($this->view_folder . "." . $switches['search_panel_view'], compact('page', 'models', 'db', 'request_role', 'role' , 'switches'));
+			return view($this->view_folder . "." . $switches['search_panel_view'], compact('page', 'models', 'db', 'request_role', 'role', 'switches'));
 		}
 
 
@@ -139,7 +147,7 @@ class UsersController extends Controller
 		if(isset($request->id)) {
 			$selector_switches['id'] = $request->id;
 			//$page[1]                 = ['search', trans('forms.button.search_for') . " " . trans('people.particular_user'), "users/search/$request_role"];
-			$page[1]                 = ['search', trans('forms.button.search_for') . " " . trans('people.particular_user'), $switches['url']. "/search"];
+			$page[1] = ['search', trans('forms.button.search_for') . " " . trans('people.particular_user'), $switches['url'] . "/search"];
 
 		}
 
@@ -150,7 +158,7 @@ class UsersController extends Controller
 		| Views ...
 		*/
 
-		return view($this->view_folder . ".browse", compact('page', 'models', 'db', 'request_role', 'role', 'keyword' , 'switches'));
+		return view($this->view_folder . ".browse", compact('page', 'models', 'db', 'request_role', 'role', 'keyword', 'switches'));
 
 	}
 
@@ -166,17 +174,7 @@ class UsersController extends Controller
 		/*-----------------------------------------------
 		| Switches ...
 		*/
-		$switches = array_normalize($switches , [
-			'grid_row' => "browse-row" ,
-			'grid_array' => [
-				trans('validation.attributes.name_first') ,
-				[trans('people.user_role'), 'NO' , $request_role=='all'],
-				[trans('cart.purchases') , 'NO' , $request_role=='customer'],
-				trans('forms.button.action'),
-			] ,
-			'url' => "users/browse/$request_role" ,
-
-		]);
+		$switches = $this->browseSwitches($request_role, $switches);
 
 
 		/*-----------------------------------------------
@@ -205,7 +203,7 @@ class UsersController extends Controller
 		$page[1] = [
 			$request_tab,
 			trans("people.criteria." . $role->statusRule($request_tab)),
-			$switches['url']. "/$request_tab"
+			$switches['url'] . "/$request_tab",
 		];
 
 		/*-----------------------------------------------
@@ -583,37 +581,36 @@ class UsersController extends Controller
 
 	}
 
-	public function saveNewReceipt(ReceiptSaveRequest $request)
+	public function smsMass(MessageSendRequest $request)
 	{
-		//@TODO: Check Permission
 
-		//Validation...
-		$drawing_code = DrawingCodeServiceProvider::check_uniq($request->code);
-		if(!$drawing_code) {
-			return $this->jsonFeedback(trans('cart.invalid_purchase_code'));
+		//Collecting Numbers...
+		$id_array = explode(',', $request->ids);
+		$numbers  = [];
+
+		foreach($id_array as $id) {
+			$user = User::find($id);
+			if($user and $user->mobile) {
+				$numbers[] = $user->mobile;
+			}
 		}
 
-		$user = User::find($request->user_id);
-		if(!$user->id) {
-			return $this->jsonFeedback(trans('validation.http.Error410'));
+		//Sending....
+		$ok = SmsServiceProvider::send($numbers, $request->message);
+		if($ok) {
+			$count = count($numbers);
+		}
+		else {
+			$count = 0;
 		}
 
-		//Data Buildup...
-		$data = [
-			'user_id'          => $user->id,
-			'code'             => $request->code,
-			'purchased_at'     => Carbon::createFromTimestamp($drawing_code['date'], 'Asia/Tehran')->setTimezone('UTC'),
-			'purchased_amount' => $drawing_code['price'],
-		];
-
-		//Save & Feedback...
-		$is_saved = Receipt::store($data);
-
-		//$user->updatePurchases() ;
-		return $this->jsonAjaxSaveFeedback($is_saved, [
-			'success_modalClose' => false,
-			'success_callback'   => "divReload( 'divReceiptsTable' )",
-		]);
+		//Feedback...
+		return $this->jsonAjaxSaveFeedback($count, [
+			'success_message' => trans('people.form.message_sent_to', [
+				'count' => pd($count),
+			]),
+			'danger_message'  => trans('people.form.message_not_sent_to_anybody'),
+		]) ;
 
 	}
 }
