@@ -347,4 +347,15 @@ class ConvertController extends Controller
 			echo "<script>location.reload();</script>";
 		}
 	}
+
+	public function tests()
+	{
+		//user()->as('manager')->disable();
+		//ss(user()->rolesArray());
+		//ss(user()->withDisabled()->rolesArray());
+		$user = findUser('0074715623' , 'manager') ;
+
+		ss($user->full_name);
+		ss($user->rolesArray());
+	}
 }

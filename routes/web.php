@@ -41,6 +41,7 @@ Route::group([ //@TODO: Remove when project fully erected.
 	Route::get('/meta' , 'ConvertController@postsMeta');
 	Route::get('/posts' , 'ConvertController@posts');
 	Route::get('/users/{take?}/{loop?}' , 'ConvertController@users');
+	Route::get('/tests' , 'ConvertController@tests');
 });
 
 /*
@@ -91,7 +92,6 @@ Route::group([
 			Route::post('/delete', 'CardsController@delete');
 			Route::post('/bulk_delete', 'CardsController@bulk_delete');
 			Route::post('/sms', 'CardsController@sms');
-			Route::post('/bulk_sms', 'CardsController@bulk_sms');
 			Route::post('/email', 'CardsController@email');
 			Route::post('/bulk_email', 'CardsController@bulk_email');
 			Route::post('/print', 'CardsController@single_print');

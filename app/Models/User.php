@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Providers\DummyServiceProvider;
 use App\Traits\EhdaUsersTrait;
 use App\Traits\PermitsTrait;
@@ -93,8 +94,32 @@ class User extends Authenticatable
 	|--------------------------------------------------------------------------
 	|
 	*/
+	public static function finder($username , $as_role = null , $username_field = 'auto')
+	{
+		if($username_field == 'auto') {
+			$login_controller = new LoginController() ;
+			$username_field = $login_controller->username() ;
+		}
+		if($as_role=='admin') {
+			$as_role = Role::adminRoles() ;
+		}
+
+		$user = self::selector([
+			$username_field => $username,
+			'role'          => $as_role,
+			'banned'        => false,
+		])->orderBy('created_at' , 'desc')->first();
+
+		if(!$user) {
+			$user = new self() ;
+		}
+
+		return $user ;
+	}
 	public static function selector($parameters = [])
 	{
+		//@TODO: Role selection is not optimized. Processing `banned` and `status` should be done inside `role` section.
+		
 		$switch = array_normalize($parameters, [
 			'id'         => false,
 			'email'      => false,
@@ -212,6 +237,7 @@ class User extends Authenticatable
 			}
 			else {
 				$table->whereHas('roles', function ($query) use ($switch) {
+					$query->whereIn('roles.slug', $switch['role']);
 					$query->where('role_user.status', '<=', $switch['max_status']);
 				});
 			}
@@ -238,8 +264,19 @@ class User extends Authenticatable
 				//@TODO
 			}
 			else {
-				$table->whereHas('roles', function ($query) {
+				$table->whereHas('roles', function ($query) use ($switch) {
+					$query->whereIn('roles.slug', $switch['role']);
 					$query->whereNotNull('role_user.deleted_at');
+				});
+			}
+		} else {
+			if($default_role_included) {
+				//@TODO
+			}
+			else {
+				$table->whereHas('roles', function ($query) use ($switch) {
+					$query->whereIn('roles.slug', $switch['role']);
+					$query->whereNull('role_user.deleted_at');
 				});
 			}
 		}
