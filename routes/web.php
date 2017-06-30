@@ -30,7 +30,7 @@ Route::get('manage/heyCheck', 'Front\FrontController@heyCheck');
 |--------------------------------------------------------------------------
 |
 */
-Route::group([
+Route::group([ //@TODO: Remove when project fully erected.
 	'prefix' => "convert" ,
      //'middleware' => ['auth','is:developer'] ,
      'namespace' => "Manage" ,
@@ -63,11 +63,12 @@ Route::group([
 	/*-----------------------------------------------
 	| Cards ...
 	*/
-	Route::group(['prefix' => 'cards'], function () {
-		Route::get('/', 'CardsController@browse');
-		Route::get('/browse', 'CardsController@browseCards');
+	Route::group(['prefix' => 'cards'], function () { //@TODO: add Permissions
+		Route::get('/', 'CardsController@browseRole');
+		Route::get('/browse', 'CardsController@browseRole');
 		Route::get('/stats', 'CardsController@stats');
-		Route::get('/browse/{request_tab}/{volunteer?}/{post?}', 'CardsController@browseCards');
+		Route::get('/browse/search/{keyword?}' , 'CardsController@searchRole');
+		Route::get('/browse/{request_tab}/{volunteer?}/{post?}', 'CardsController@browseRole');
 		Route::get('/search', 'CardsController@search');
 		Route::get('/reports', 'CardsController@reports');//@TODO: INTACT!
 

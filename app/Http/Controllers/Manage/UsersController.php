@@ -56,7 +56,7 @@ class UsersController extends Controller
 		}
 	}
 
-	public function search($request_role, Request $request)
+	public function search($request_role, Request $request, $switches = [])
 	{
 		/*-----------------------------------------------
 		| Check Permission ...
@@ -64,6 +64,22 @@ class UsersController extends Controller
 		if(!Role::checkManagePermission($request_role, 'search')) {
 			return view('errors.403');
 		}
+
+		/*-----------------------------------------------
+		| Switches ...
+		*/
+		$switches = array_normalize($switches , [
+			'grid_row' => "browse-row" ,
+			'grid_array' => [
+				trans('validation.attributes.name_first') ,
+				[trans('people.user_role'), 'NO' , $request_role=='all'],
+				[trans('cart.purchases') , 'NO' , $request_role=='customer'],
+				trans('forms.button.action'),
+			] ,
+			'url' => "users/browse/$request_role" ,
+		     'search_panel_view' => "search" ,
+		]);
+
 
 		/*-----------------------------------------------
 		| Revealing the Role...
@@ -82,10 +98,21 @@ class UsersController extends Controller
 		/*-----------------------------------------------
 		| Page Browse ...
 		*/
-		$page = [
-			'0' => ["users/browse/$request_role", $role->plural_title, "users/browse/$request_role"],
-			'1' => ['search', trans('forms.button.search_for') . " $request->keyword ", "users/search/$request_role"],
+		$page[0] = [
+			$switches['url'],
+			$role->plural_title,
+			$switches['url'],
 		];
+		$page[1] = [
+			'search',
+			trans('forms.button.search_for') . " $request->keyword " ,
+			$switches['url']. "/search"
+		];
+
+		//$page = [
+		//	'0' => ["users/browse/$request_role", $role->plural_title, "users/browse/$request_role"],
+		//	'1' => ['search', trans('forms.button.search_for') . " $request->keyword ", "users/search/$request_role"],
+		//];
 
 		/*-----------------------------------------------
 		| Only Panel ...
@@ -94,7 +121,7 @@ class UsersController extends Controller
 			$db         = $this->Model;
 			$page[1][1] = trans('forms.button.search');
 
-			return view($this->view_folder . ".search", compact('page', 'models', 'db', 'request_role', 'role'));
+			return view($this->view_folder . "." . $switches['search_panel_view'], compact('page', 'models', 'db', 'request_role', 'role' , 'switches'));
 		}
 
 
@@ -111,7 +138,8 @@ class UsersController extends Controller
 		}
 		if(isset($request->id)) {
 			$selector_switches['id'] = $request->id;
-			$page[1]                 = ['search', trans('forms.button.search_for') . " " . trans('people.particular_user'), "users/search/$request_role"];
+			//$page[1]                 = ['search', trans('forms.button.search_for') . " " . trans('people.particular_user'), "users/search/$request_role"];
+			$page[1]                 = ['search', trans('forms.button.search_for') . " " . trans('people.particular_user'), $switches['url']. "/search"];
 
 		}
 
@@ -122,7 +150,7 @@ class UsersController extends Controller
 		| Views ...
 		*/
 
-		return view($this->view_folder . ".browse", compact('page', 'models', 'db', 'request_role', 'role', 'keyword'));
+		return view($this->view_folder . ".browse", compact('page', 'models', 'db', 'request_role', 'role', 'keyword' , 'switches'));
 
 	}
 
