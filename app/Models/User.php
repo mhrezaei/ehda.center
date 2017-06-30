@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Providers\DummyServiceProvider;
+use App\Traits\EhdaUsersTrait;
 use App\Traits\PermitsTrait;
 use App\Traits\PermitsTrait2;
 use App\Traits\TahaModelTrait;
@@ -17,9 +18,8 @@ use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
-	use Notifiable, TahaModelTrait, SoftDeletes;
-	//use PermitsTrait ;
-	use PermitsTrait2;
+	use Notifiable, TahaModelTrait, SoftDeletes , PermitsTrait2 ;
+	use EhdaUsersTrait ;
 
 	public static $meta_fields     = [
 		'preferences',

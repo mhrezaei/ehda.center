@@ -40,7 +40,7 @@ Route::group([
 	Route::get('/roles' , 'ConvertController@createRoles');
 	Route::get('/meta' , 'ConvertController@postsMeta');
 	Route::get('/posts' , 'ConvertController@posts');
-	Route::get('/users' , 'ConvertController@users');
+	Route::get('/users/{take?}/{loop?}' , 'ConvertController@users');
 });
 
 /*
@@ -59,9 +59,55 @@ Route::group([
     Route::get('/account', 'HomeController@account');
     Route::post('/password', 'HomeController@changePassword');
 
-    /*-----------------------------------------------
-    | Users ...
-    */
+
+	/*-----------------------------------------------
+	| Cards ...
+	*/
+	Route::group(['prefix' => 'cards'], function () {
+		Route::get('/', 'CardsController@browse');
+		Route::get('/browse', 'CardsController@browseCards');
+		Route::get('/stats', 'CardsController@stats');
+		Route::get('/browse/{request_tab}/{volunteer?}/{post?}', 'CardsController@browseCards');
+		Route::get('/search', 'CardsController@search');
+		Route::get('/reports', 'CardsController@reports');//@TODO: INTACT!
+
+		Route::get('/printings/modal/{printing_id}/{modal_action}', 'PrintingsController@modalActions');
+		Route::get('/printings/download_excel/{event_id}', 'PrintingsController@excelDownload');
+		Route::get('/printings/{request_tab?}/{event_id?}/{user_id?}/{volunteer_id?}' , 'PrintingsController@browse');
+
+		Route::get('/create/{volunteer_id?}', 'CardsController@create');
+		Route::get('/{card_id}', 'CardsController@show');
+		Route::get('/{card_id}/edit', 'CardsController@editor');
+		Route::get('/{card_id}/{modal_action}', 'CardsController@modalActions');
+
+		Route::group(['prefix' => 'save'], function () {
+			Route::post('/', 'CardsController@save');
+			Route::post('/volunteers', 'CardsController@saveForVolunteers');
+			Route::post('/inquiry', 'CardsController@inquiry');
+
+			Route::post('/add_to_print', 'CardsController@add_to_print');
+			Route::post('/change_password', 'CardsController@change_password');
+			Route::post('/delete', 'CardsController@delete');
+			Route::post('/bulk_delete', 'CardsController@bulk_delete');
+			Route::post('/sms', 'CardsController@sms');
+			Route::post('/bulk_sms', 'CardsController@bulk_sms');
+			Route::post('/email', 'CardsController@email');
+			Route::post('/bulk_email', 'CardsController@bulk_email');
+			Route::post('/print', 'CardsController@single_print');
+			Route::post('/bulk_print', 'CardsController@bulk_print');
+
+			Route::post('printings/bulk_excel' , 'PrintingsController@bulkExcel');
+			Route::post('printings/bulk_print' , 'PrintingsController@bulkPrint');
+			Route::post('printings/bulk_confirm' , 'PrintingsController@bulkConfirm');
+		});
+	});
+
+
+
+
+	/*-----------------------------------------------
+	| Users ...
+	*/
     Route::group(['prefix' => "users", 'middleware' => "can:users",], function () {
         Route::get('/update/{item_id}/{request_role}', 'UsersController@update');
         Route::get('browse/{role}/search/{keyword?}', 'UsersController@search');

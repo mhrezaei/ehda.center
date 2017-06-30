@@ -15,7 +15,7 @@
 			],
 		],
 		'search' =>[
-			'target' => url("manage/users/browse/$request_role/search") ,
+			'target' => url("manage/".$switches['url']."/search")  ,
 			'label' => trans('forms.button.search') ,
 			'value' => isset($keyword)? $keyword : '' ,
 		]
@@ -23,14 +23,9 @@
 
 	@include("manage.frame.widgets.grid" , [
 		'table_id' => "tblUsers",
-		'row_view' => "manage.users.browse-row",
+		'row_view' => "manage.users.".$switches['grid_row'] ,
 		'handle' => "selector",
-		'headings' => [
-			trans('validation.attributes.name_first') ,
-			[trans('people.user_role'), 'NO' , $request_role=='all'],
-			[trans('cart.purchases') , 'NO' , $request_role=='customer'],
-			trans('forms.button.action'),
-		],
+		'headings' => $switches['grid_array'],
 	])
 
 @endsection

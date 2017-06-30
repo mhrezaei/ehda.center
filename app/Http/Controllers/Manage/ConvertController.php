@@ -232,8 +232,15 @@ class ConvertController extends Controller
 
 	}
 
-	public function users($take = 50 , $loop = true)
+	public function users($take = 100 , $loop = true)
 	{
+		$last_time = session()->get('convert_last_time' , false);
+
+		if(!$last_time or is_int($last_time) ) {
+			session()->put('convert_last_time', Carbon::now());
+			echo "<script>location.reload();</script>";
+		}
+
 		$olds    = UsersOld::where('converted', '0')->take($take)->get();
 		$last_user_id = 0 ;
 		$counter = 0;
@@ -259,8 +266,6 @@ class ConvertController extends Controller
 			unset($data['event_id']);
 			unset($data['converted']) ;
 
-
-
 			/*-----------------------------------------------
 			| Set Simple Things ...
 			*/
@@ -282,15 +287,30 @@ class ConvertController extends Controller
 			$data['published_by'] = $old->published_by + 0 ;
 			$data['card_no'] = $old->card_no + 0 ;
 
+			$data['card_no'] = ed($data['card_no']);
+			$data['code_melli'] = ed($data['code_melli']);
+			$data['name_first'] = pd($data['name_first']);
+			$data['name_last'] = pd($data['name_last']) ;
+			$data['name_father'] = pd($data['name_father']) ;
+			$data['mobile'] = ed($data['mobile']);
+			$data['tel_emergency'] = ed($data['tel_emergency']);
+			$data['home_address'] = pd($data['home_address']) ;
+			$data['home_postal'] = ed($data['home_postal']);
+			$data['work_address'] = pd($data['work_address']) ;
+			$data['work_postal'] = ed($data['work_postal']);
+
+
 			if(!$old->birth_date or $old->birth_date == '0000-00-00' or intval($old->birth_date) > 2017) {
 				$data['birth_date'] = Carbon::createFromDate(1900,1,1)->toDateString()  ;
 			}
 
-			$user = User::create($data);
-			$old->update( [
-				'converted' => "1" ,
-			]) ;
-			$counter++;
+			if(!User::find($data['id'])) {
+				$user = User::create($data);
+				$old->update([
+					'converted' => "1",
+				]);
+				$counter++;
+			}
 
 			/*-----------------------------------------------
 			| Role Attachment ...
@@ -311,11 +331,19 @@ class ConvertController extends Controller
 		}
 
 		ss("Counter: $counter");
-		ss("last created id: " . $last_user_id);
+		ss("Last Created id: " . $last_user_id);
+		ss("Took " . strval($took = Carbon::now()->diffInSeconds($last_time)) . " Second(s) for $take Record(s). ") ;
 
+		if($took > $take) {
+			ss("(Average: " . strval( round($took/$take,2)) . " Seconds per Record.) ");
+		}
+		else {
+			ss("(Average: " . strval( round($take/$took,2)) . " Records per Second.) ");
+		}
 
 		//return ;
 		if($counter>0 and $loop) {
+			session()->put('convert_last_time',Carbon::now() );
 			echo "<script>location.reload();</script>";
 		}
 	}
