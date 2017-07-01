@@ -273,8 +273,11 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
         });
 
         // another route copy from ehda-b1 project
-            Route::get('/{id}', 'PostController@show')->where('id', '[0-9]+');
-            Route::get('/showPost/{id}/{url?}', 'PostController@show');
+            Route::get('/{identifier}', 'PostController@show_with_short_url')
+                ->where('identifier', '^' . config('prefix.routes.post.short') . '(\w|)+$');
+            // if identifier starts with value of config('prefix.routes.post.short')
+
+            Route::get('/show-post/{hashid}/{url?}', 'PostController@show_with_full_url');
             Route::get('/previewPost/{id}/{url?}', 'PostController@show');
             Route::get('/archive/{postType?}/{category?}', 'PostController@archive');
             Route::get('/gallery/categories/{branch}', 'GalleryController@show_categories');

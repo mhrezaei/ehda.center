@@ -103,7 +103,7 @@ JS;
         /************************* Generate Html for List View ********************** START */
 
         $filterData = [
-            'variables'    => [
+            'variables' => [
                 'twoColumns' => false, // @TODO: to be read from setting
             ],
         ];
@@ -123,7 +123,7 @@ JS;
             $filterData['category'] = $categorySlug;
         } // If "category" isn't specified, posts in all categories will be shown
 
-        $listHTML = PostsServiceProvider::showList($filterData);
+        $innerHTML = PostsServiceProvider::showList($filterData);
 
         /************************* Generate Html for List View ********************** END */
 
@@ -169,10 +169,79 @@ JS;
 
         /************************* Generate Position Info ********************** END */
 
-        return view('front.posts.general.list-frame.main', compact(
-            'listHTML',
-            'positionInfo'
-        ));
+        /************************* Set Other Values ********************** START */
+        $otherValues = [
+            'pageTitle' => trans('front.archive'),
+        ];
+        /************************* Set Other Values ********************** END */
+
+        /************************* Render View ********************** START */
+        return view('front.posts.general.frame.main', compact(
+                'innerHTML',
+                'positionInfo'
+            ) + $otherValues);
+    }
+
+    public function show_with_full_url($lang, $identifier)
+    {
+        return $this->show($identifier);
+    }
+
+    public function show_with_short_url($lang, $identifier)
+    {
+        $prefix = config('prefix.routes.post.short');
+
+        if (starts_with($identifier, $prefix)) {
+            $identifier = substr($identifier, strlen($prefix));
+            return $this->show($identifier);
+        }
+
+        return $this->abort('403');
+    }
+
+    private function show($hashid)
+    {
+        /************************* Find Post ********************** START */
+        $post = PostsServiceProvider::smartFindPost($hashid);
+        /************************* Find Post ********************** END */
+
+        if ($post->exists) { // If the specified $hashid relates on an existed post
+            /************************* Generate Html for Post View Part ********************** START */
+            $innerHTML = PostsServiceProvider::showPost($post, [
+                'variables' => [
+                    'showSideBar' => false, // @TODO: dynamicate this line
+                ],
+            ]);
+            /************************* Generate Html for Post View Part ********************** END */
+
+            /************************* Generate Position Info ********************** START */
+
+            $positionInfo = [];
+            $postType = $post->posttype;
+            $categories = $post->categories;
+            $positionInfo = [
+                'group'       => $postType->header_title,
+                'category'    => $postType->title,
+                'title'       => $categories->first() ? $categories->first()->title : '',
+            ];
+
+            /************************* Generate Position Info ********************** END */
+
+            /************************* Set Other Values ********************** START */
+            $otherValues = [
+                'pageTitle' => $post->title,
+            ];
+            /************************* Set Other Values ********************** END */
+
+            /************************* Render View ********************** START */
+            return view('front.posts.general.frame.main', compact(
+                    'innerHTML',
+                    'positionInfo'
+                ) + $otherValues);
+
+        } else {
+            $this->abort('404');
+        }
     }
 
 }

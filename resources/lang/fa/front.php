@@ -80,6 +80,8 @@ return [
     'send_work'                                => 'ارسال اثر',
     'personal_information'                     => 'اطلاعات فردی',
     'welcome_message'                          => 'خوش آمدید', // @TODO: new
+    'archive'                                  => 'آرشیو', // @TODO: new
+    'short_link'                                => 'لینک کوتاه', // @TODO: new
 
     'volunteer_section' => [
         'singular' => 'سفیر اهدای عضو',

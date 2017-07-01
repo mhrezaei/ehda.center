@@ -161,7 +161,7 @@ JS
 
 
         if ($userId) {
-            User::store(['id' => $userId, 'card_id' => $userId + 5000]);
+            User::store(['id' => $userId, 'card_no' => $userId + 5000]);
 
             if(Role::findBySlug('card-holder')->exists) {
                 $user = User::findBySlug($userId, 'id')->attachRole('card-holder');

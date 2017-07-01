@@ -43,7 +43,13 @@ class PostsServiceProvider extends ServiceProvider
         //
     }
 
-
+    /**
+     * Returns a view including list view of post with specified filters and conditions
+     *
+     * @param array $data Filters and Conditions
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public static function showList($data = [])
     {
         $defaultData = [
@@ -52,6 +58,7 @@ class PostsServiceProvider extends ServiceProvider
                 'role'             => "",
                 'criteria'         => "published",
                 'locale'           => getLocale(),
+                'domain'           => getUsableDomains(),
                 'owner'            => 0,
                 'type'             => "feature:searchable",
                 'category'         => "",
@@ -170,6 +177,14 @@ class PostsServiceProvider extends ServiceProvider
 //        ));
     }
 
+    /**
+     * Returns a view including single view of a post with specified filters and conditions
+     *
+     * @param Post|string|integer $identifier
+     * @param array               $data
+     *
+     * @return bool|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public static function showPost($identifier, $data = [])
     {
         // normalize data
@@ -205,6 +220,14 @@ class PostsServiceProvider extends ServiceProvider
         return view($viewFolder . '.main', compact('post', 'viewFolder', 'externalBlade') + $data['variables']);
     }
 
+    /**
+     * Returns a view to show error
+     *
+     * @param string $errorMessage Error message to be shown
+     * @param bool   $ajaxRequest  If true, error page will not be shown
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public static function showError($errorMessage, $ajaxRequest = false)
     {
         return view('front.posts.error', [
@@ -252,6 +275,14 @@ class PostsServiceProvider extends ServiceProvider
         ));
     }
 
+    /**
+     * Returns an array of categories of given posts
+     *
+     * @param \Illuminate\Database\Eloquent\Collection $posts
+     * @param string                                   $slug
+     *
+     * @return array
+     */
     public static function postsCategories($posts, $slug = 'id')
     {
         $cats = Category::whereHas('posts', function ($query) use ($posts) {
@@ -265,16 +296,38 @@ class PostsServiceProvider extends ServiceProvider
         return $cats;
     }
 
+    /**
+     * Returns the minimum price in given posts
+     *
+     * @param \Illuminate\Database\Eloquent\Collection $posts
+     *
+     * @return string|int
+     */
     public static function productsMinPrice($posts)
     {
         return $posts->pluck('current_price')->min();
     }
 
+    /**
+     * Returns the maximum price in given posts
+     *
+     * @param \Illuminate\Database\Eloquent\Collection $posts
+     *
+     * @return string|int
+     */
     public static function productsMaxPrice($posts)
     {
         return $posts->pluck('current_price')->max();
     }
 
+    /**
+     * Returns all posts of the specified post type
+     *
+     * @param string      $type
+     * @param null|string $locale
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
     public static function allPostsOfType($type, $locale = null)
     {
         $data = [
@@ -285,6 +338,14 @@ class PostsServiceProvider extends ServiceProvider
         return Post::selector($data)->get();
     }
 
+    /**
+     * Returns points of the $user in the $event
+     *
+     * @param string|integer $event
+     * @param string         $user
+     *
+     * @return bool|float
+     */
     public static function getUserPointOfEvent($event, $user = 'current')
     {
         if (!($event instanceof Post)) {
@@ -318,6 +379,14 @@ class PostsServiceProvider extends ServiceProvider
             ->first());
     }
 
+    /**
+     * Returns Collection of comments for a post
+     *
+     * @param \App\Models\Postt $post
+     * @param array             $parameters
+     *
+     * @return mixed
+     */
     public static function getPostComments($post, $parameters = [])
     {
         $post = self::smartFindPost($post);
@@ -353,20 +422,29 @@ class PostsServiceProvider extends ServiceProvider
     public static function smartFindPost($identifier)
     {
         if ($identifier instanceof Post) {
-            return $identifier;
+            $post = $identifier;
+        } else if (is_numeric($identifier)) {
+            $post = Post::find($identifier);
+        } else if (count($dehashed = hashid_decrypt($identifier, 'ids')) and
+            is_numeric($id = $dehashed[0])
+        ) {
+            $post = Post::find($id);
+        } else {
+            $post = Post::findBySlug($identifier);
         }
 
-        if (is_numeric($identifier)) {
-            return Post::find($identifier);
+        if ($post->exists and
+            (
+                !$post->domain or
+                // Domain isn't specified
+                ($post->domain() and in_array($post->domain, getUsableDomains()))
+                // Domain is specified and it is one of usable domains
+            )
+        ) {
+            return $post;
         }
 
-        $dehashed = hashid_decrypt($identifier, 'ids');
-        if (count($dehashed) and is_numeric($id = $dehashed[0])) {
-            return Post::find($id);
-
-        }
-
-        return Post::findBySlug($identifier);
+        return new Post();
     }
 
     private static function renderView($view, $data = [])

@@ -371,23 +371,35 @@ class Post extends Model
 		return $parent;
 	}
 
-	public function getDirectUrlAttribute()
-	{
-		switch ($this->type) {
-			case 'products':
-				return url_locale('products/pd-' . ($this->hash_id));
-				break;
-			case 'news':
-				return url_locale('news/nw-' . ($this->hash_id));
-				break;
-			case 'faqs':
-				return url_locale('faqs/faq-' . ($this->hash_id));
-				break;
-			case 'teammates':
-				return url_locale('teammates/tm-' . ($this->hash_id));
-				break;
-		}
-	}
+    public function getDirectUrlAttribute()
+    {
+        switch ($this->type) {
+//            case 'products':
+//                return url_locale('products' . DIRECTORY_SEPARATOR . 'pd-' . ($this->hash_id));
+//                break;
+//            case 'news':
+//                return url_locale('news' . DIRECTORY_SEPARATOR . 'nw-' . ($this->hash_id));
+//                break;
+//            case 'faqs':
+//                return url_locale('faqs' . DIRECTORY_SEPARATOR . 'faq-' . ($this->hash_id));
+//                break;
+//            case 'teammates':
+//                return url_locale('teammates' . DIRECTORY_SEPARATOR . 'tm-' . ($this->hash_id));
+//                break;
+            default:
+                return url_locale(implode(DIRECTORY_SEPARATOR, [
+                    'show-post',
+                    ($this->hash_id),
+                    urlencode($this->title),
+                ]));
+                break;
+        }
+    }
+
+    public function getShortUrlAttribute()
+    {
+        return url_locale('-' . $this->hash_id);
+    }
 
 	public function getViewableFeaturedImageAttribute()
 	{

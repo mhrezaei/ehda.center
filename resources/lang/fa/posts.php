@@ -45,8 +45,9 @@ return [
         'feedback'          => "بازخورد",
         'tags'              => 'برچسب‌ها',
         'similar_things'    => '<span>::things</span> مشابه',
-        'related_things'    => '<span>::things</span> مرتبط',
+        'related_things'    => '::things مرتبط',
         'maybe_you_like'    => '<span>شاید</span> علاقمند باشید',
+        'dont_miss'         => 'از دست ندهید',
     ],
 
     'templates' => [
@@ -187,7 +188,7 @@ return [
         'range_to'      => 'تا',
     ],
 
-    'packs' => [ 
+    'packs' => [
         'plural'            => "بسته‌های تحویل کالا",
         'single'            => "بسته",
         'add'               => "افزودن بسته جدید",
