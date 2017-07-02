@@ -26,6 +26,7 @@ class Posttype extends Model
 		'category'          => ['folder-o', 'info', []],
 		'cat_image'         => ['file-image-o', 'info', []],
 		'keywords'          => ['tags', 'info', []], //@TODO: feature_fields
+		'listable'          => ['bars', 'info', []],
 		'searchable'        => ['search', 'info', []],
 		'preview'           => ['eye', 'info', []],
 		'seo'               => ['stethoscope', 'info', ['seo_status:text']],

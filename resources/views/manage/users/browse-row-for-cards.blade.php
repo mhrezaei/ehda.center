@@ -1,5 +1,5 @@
 @include('manage.frame.widgets.grid-rowHeader' , [
-	'refresh_url' => "manage/cards/browse/$model->id"
+	'refresh_url' => "manage/cards/browse/update/$model->id"
 ])
 
 {{--
