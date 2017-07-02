@@ -8,7 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 
-trait EhdaUsersTrait
+trait EhdaUserTrait
 {
 
 	/*

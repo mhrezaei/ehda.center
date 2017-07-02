@@ -3,9 +3,7 @@
 namespace App\Models;
 
 use App\Http\Controllers\Auth\LoginController;
-use App\Providers\DummyServiceProvider;
-use App\Traits\EhdaUsersTrait;
-use App\Traits\PermitsTrait;
+use App\Traits\EhdaUserTrait;
 use App\Traits\PermitsTrait2;
 use App\Traits\TahaModelTrait;
 use Carbon\Carbon;
@@ -14,13 +12,12 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 
 
 class User extends Authenticatable
 {
 	use Notifiable, TahaModelTrait, SoftDeletes, PermitsTrait2;
-	use EhdaUsersTrait;
+	use EhdaUserTrait;
 
 	public static $meta_fields     = [
 		'preferences',

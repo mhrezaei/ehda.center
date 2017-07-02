@@ -67,6 +67,7 @@ Route::group([
 	Route::group(['prefix' => 'cards'], function () { //@TODO: add Permissions
 		Route::get('/', 'CardsController@browseRole');
 		Route::get('/browse', 'CardsController@browseRole');
+		Route::get('/browse/update/{model_id}' , 'CardsController@update');
 		Route::get('/stats', 'CardsController@stats');
 		Route::get('/browse/search/{keyword?}' , 'CardsController@searchRole');
 		Route::get('/browse/{request_tab}/{volunteer?}/{post?}', 'CardsController@browseRole');
