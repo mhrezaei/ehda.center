@@ -54,5 +54,30 @@ trait EhdaUsersTrait
 		return false;
 	}
 
+	/*
+	|--------------------------------------------------------------------------
+	| Helpers
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public function cards($type = 'mini', $mode = 'show')
+	{
+		$card_type = ['mini', 'single', 'social', 'full'];
+		$card_mode = ['show', 'download', 'print'];
+
+		if (!in_array($type, $card_type))
+		{
+			$type = 'mini';
+		}
+
+		if (!in_array($mode, $card_mode))
+		{
+			$mode = 'show';
+		}
+
+		return url('/card/show_card/' . $type . '/' . hashid_encrypt($this->id, 'ids') . '/' . $mode);
+
+	}
+
 
 }

@@ -233,7 +233,7 @@ class ConvertController extends Controller
 
 	}
 
-	public function users($take = 100 , $loop = true)
+	public function users($take = 500 , $loop = true)
 	{
 		$last_time = session()->get('convert_last_time' , false);
 

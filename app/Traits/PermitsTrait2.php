@@ -72,20 +72,21 @@ trait PermitsTrait2
 		$default_role = Role::findBySlug(self::defaultRole());
 		$roles_array  = $this->roles()->get()->toArray();
 
-		$roles_array[] = [
-			'id'    => $default_role->id,
-			'slug'  => $default_role->slug,
-			'title' => $default_role->title,
-			'pivot' => [
-				'user_id'     => $this->id,
-				'role_id'     => $default_role->id,
-				'status'      => $this->default_role_status,
-				'permissions' => '',
-				'key'         => $this->default_role_key,
-				'deleted_at'  => $this->default_role_deleted_at,
-			],
-		];
-		//dd( $this->default_role_deleted_at);
+		if($default_role and $default_role->exists) {
+			$roles_array[] = [
+				'id'    => $default_role->id,
+				'slug'  => $default_role->slug,
+				'title' => $default_role->title,
+				'pivot' => [
+					'user_id'     => $this->id,
+					'role_id'     => $default_role->id,
+					'status'      => $this->default_role_status,
+					'permissions' => '',
+					'key'         => $this->default_role_key,
+					'deleted_at'  => $this->default_role_deleted_at,
+				],
+			];
+		}
 
 		foreach($roles_array as $key => $role_row) {
 			$role_row['pivot']['permissions'] = self::adorn($role_row['pivot']['permissions']);
