@@ -348,7 +348,8 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
 
             Route::get('/show-post/{hashid}/{url?}', 'PostController@show_with_full_url');
             Route::get('/previewPost/{id}/{url?}', 'PostController@show');
-            Route::get('/archive/{postType?}/{category?}', 'PostController@archive');
+            Route::get('/archive/{postType?}/{category?}', 'PostController@archive')->name('post.archive');
+            Route::get('/categories/{postType}', 'PostController@categories')->name('post.postType');
             Route::get('/gallery/categories/{branch}', 'GalleryController@show_categories');
             Route::get('/gallery/posts/{category}', 'GalleryController@show_categories_posts');
             Route::get('/gallery/show/{id}/{url?}', 'GalleryController@show_gallery');

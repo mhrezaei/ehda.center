@@ -42,6 +42,15 @@ class Category extends Model
 		return Hashids::encode($this->id);
 	}
 
+	public function getDirectUrlAttribute()
+	{
+		return route('post.archive', [
+		    'lang' => getLocale(),
+		    'postType' => $this->folder->posttype->slug,
+            'category' => $this->slug,
+        ]);
+	}
+
 	/*
 	|--------------------------------------------------------------------------
 	| Helpers

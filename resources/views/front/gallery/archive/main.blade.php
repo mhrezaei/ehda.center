@@ -1,31 +1,29 @@
 @extends('front.frame.frame')
 
 @section('head')
-    <title>{{ setting()->ask('site_title')->gain() }} | {{ trans('front.gallery') }}</title>
+    <title>{{ setting()->ask('site_title')->gain() }} | {{ $pageTitle }}</title>
 @endsection
 
 @section('content')
-    <style>
-        .ehda-card {
-            display: none
-        }
-    </style>
     <div class="container-fluid">
-        @include('front.frame.position_info', [
-            'group' => 'توانستن',
-            'category' => 'گالری',
-            'title' => 'آرشیو',
+        @include('front.frame.position_info', $positionInfo + [
+            'groupColor' => 'green',
+            'categoryColor' => 'green',
         ])
         <div class="row gallery-archive">
             <div class="container">
                 <div class="row mt20 mb20">
-                    @for($i = 0; $i < 8; $i++)
-                        @include('front.gallery.archive.item')
-                    @endfor
+                    @if($items and $items->count())
+                        @foreach($items as $item)
+                            @include('front.gallery.archive.item')
+                        @endforeach
+                    @endif
                 </div>
             </div>
         </div>
     </div>
+
+@section('endOfBody')
     <script type="text/javascript">
         $(document).ready(function () {
             $("#gallery a").featherlightGallery({
@@ -38,4 +36,5 @@
             };
         });
     </script>
+@append
 @endsection
