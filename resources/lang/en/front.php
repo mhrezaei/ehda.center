@@ -64,8 +64,12 @@ return [
     'states'                                   => 'States',
     'gallery'                                  => 'Gallery',
     'news'                                     => 'News',
+    'hot_news'                                 => 'Hot News',
+    'ehda_news'                                => 'Organ Donation News',
     'faqs'                                     => 'Faqs',
     'faq_not_found_ask_yours'                  => 'Didn\'t find your answer? Ask your question.',
+    'read_more'                                => 'Read More',
+    'continue'                                 => 'Continue',
     'more'                                     => 'More',
     'teammates'                                => 'Teammates',
     'no_result_found'                          => 'No Results Found',
@@ -75,12 +79,46 @@ return [
     'send_works'                               => 'Send Works',
     'send_work'                                => 'Send Work',
     'personal_information'                     => 'Personal Information',
-    'contact_info'                             => 'اطلاعات تماس', // @TODO: new
-    'login_info'                               => 'اطلاعات ورود به سامانه', // @TODO: new
+    'welcome_message'                          => 'Welcome',
+    'archive'                                  => 'Archive',
+    'short_link'                               => 'Short Link',
+    'contact_info'                             => 'Contact Info',
+    'login_info'                               => 'Login Info',
+
+    'volunteer_section' => [
+        'singular' => 'Organ Donation Volunteer',
+        'plural'   => 'Organ Donation Volunteers',
+        'section'  => 'Organ Donation Volunteers Section',
+    ],
+
+    'organ_donation_card_section' => [
+        'singular' => 'Organ Donation Card',
+        'print'    => 'Print Organ Donation Card',
+        'download' => 'Save Organ Donation Card',
+        'preview'  => 'Preview Organ Donation Card',
+        'card'     => 'Card',
+        'partial'  => [
+            'part1' => 'Organ',
+            'part2' => 'Donation',
+            'part3' => 'Card',
+        ],
+    ],
+
+    'angels' => [
+        'plural'   => 'Angels',
+        'singular' => 'Angel',
+    ],
+
+    'member_section' => [
+        'profile_edit' => 'Edit Profile',
+        'sign_in'      => 'Sing In',
+        'sign_out'     => 'Sign Out',
+    ],
 
     'profile_messages' => [
         'not_enough_information'   => 'Not Enough Profile Information',
         'complete_to_join_drawing' => 'Now you can join the drawing by completing your profile.',
+        'welcome_user'             => 'Welcome ::user.',
     ],
 
     'file_types' => [
@@ -115,5 +153,29 @@ return [
         'copy_right' => 'All rights reserved for ::site.',
         'created_by' => 'Prepared by: ',
         'yasna_team' => 'Yasna Team'
-    ]
+    ],
+
+    'messages' => [
+        'you_are_volunteer'       => 'You are volunteer.',
+        'you_are_card_holder'     => 'You have organ donation card.',
+        'unable_to_register_card' => 'Unable to Register Card',
+        'login'                   => 'Login.',
+    ],
+
+    'notes' => [
+        'moments_are_important_to_save_life' => 'Every moment is important to save <span class="text-success">life</span>.',
+        'one_brain_dead_can_save_8_lives'    => 'One brain dead can save 8 lives.',
+        'organ_donation'                     => 'Organ Donation',
+        'life_donation'                      => 'Life Donation',
+        'follow_us_in_social'                => 'Follow us in social networks.',
+    ],
+
+    "main-menu" => [
+        'items' => [
+            'learn'   => 'to Learn',
+            'will'    => 'to Will',
+            'achieve' => 'to Achieve',
+            'join'    => 'to Join',
+        ]
+    ],
 ];

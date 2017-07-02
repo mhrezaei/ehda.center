@@ -108,7 +108,6 @@ class PostsServiceProvider extends ServiceProvider
                 $posts = $posts->paginate($data['max_per_page']);
             }
 
-
             if (!$posts->count()) {
                 if ($data['showError']) {
                     return self::showError(trans('front.no_result_found'), $ajaxRequest);
@@ -157,6 +156,7 @@ class PostsServiceProvider extends ServiceProvider
         } else {
             $viewFolder = "front.posts.list.$template";
         }
+
 
         return self::renderView($viewFolder . '.main', compact(
                 'posts',

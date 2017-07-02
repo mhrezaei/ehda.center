@@ -6,6 +6,7 @@ use App\Http\Requests\Front\RegisterSaveRequest;
 use App\Models\Comment;
 use App\Models\Folder;
 use App\Models\Post;
+use App\Models\Posttype;
 use App\Models\User;
 use App\Providers\EmailServiceProvider;
 use App\Providers\PostsServiceProvider;
@@ -23,29 +24,40 @@ class FrontController extends Controller
 
     public function index()
     {
+        /************************* Preparing Data for Main SlideShow ********************** START */
         $mainSlideShow = Post::selector([
             'type'     => 'slideshows',
             'category' => 'main-slideshow',
             'domain'   => getUsableDomains(),
         ])->get();
+        /************************* Preparing Data for Main SlideShow ********************** END */
 
-        $homePageTopParagraph = Post::findBySlug('home-page-top-paragraph');
+        /************************* Preparing Data for Top Paragraph ********************** START */
+        $homePageTopParagraph = Post::findBySlug('home-page-top-paragraph')->in(getLocale());
+        /************************* Preparing Data for Top Paragraph ********************** END */
 
+        /************************* Preparing Data for Event SlideShow ********************** START */
         $eventsSlideShow = Post::selector([
             'type'     => 'slideshows',
             'category' => 'event-slideshow',
             'domain'   => getUsableDomains(),
         ])->get();
+        /************************* Preparing Data for Event SlideShow ********************** END */
 
+        /************************* Preparing Html for Deadlines ********************** START */
         $deadlinesHTML = PostsServiceProvider::showList([
             'type'         => 'deadlines',
             'max_per_page' => -1,
             'sort'         => 'asc',
             'showError'    => false,
         ]);
+        /************************* Preparing Html for Deadlines ********************** END */
 
+        /************************* Preparing Data for Equation Post ********************** START */
         $equationPost = Post::findBySlug('home-page-fix-background-parag');
+        /************************* Preparing Data for Equation Post ********************** END */
 
+        /************************* Preparing Data for Bottom Section of Home Page ********************** START */
         $hotNews = Post::selector([
             'type'     => 'iran-news',
             'category' => 'hot-news',
@@ -68,12 +80,14 @@ class FrontController extends Controller
         ])->orderBy('published_at', 'desc')
             ->limit(5)
             ->get();
+        /************************* Preparing Data for Bottom Section of Home Page ********************** END */
 
         return view('front.home.main', compact(
-            'deadlinesHTML',
+            'mainMenu',
             'mainSlideShow',
             'homePageTopParagraph',
             'eventsSlideShow',
+            'deadlinesHTML',
             'equationPost',
             'hotNews',
             'events',

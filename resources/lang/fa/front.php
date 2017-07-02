@@ -69,7 +69,7 @@ return [
     'faqs'                                     => 'سوالات متداول',
     'faq_not_found_ask_yours'                  => 'پاسخ سوال خود را پیدا نکرده اید؟ از ما بپرسید',
     'read_more'                                => 'ادامه مطلب',
-    'continue'                                 => 'ادامه', // @TODO new
+    'continue'                                 => 'ادامه',
     'more'                                     => 'بیشتر',
     'teammates'                                => 'کارمندان مجموعه',
     'no_result_found'                          => 'نتیجه‌ای یافت نشد.',
@@ -79,33 +79,46 @@ return [
     'send_works'                               => 'ارسال آثار',
     'send_work'                                => 'ارسال اثر',
     'personal_information'                     => 'اطلاعات فردی',
-    'welcome_message'                          => 'خوش آمدید', // @TODO: new
-    'archive'                                  => 'آرشیو', // @TODO: new
-    'short_link'                                => 'لینک کوتاه', // @TODO: new
+    'welcome_message'                          => 'خوش آمدید',
+    'archive'                                  => 'آرشیو',
+    'short_link'                               => 'لینک کوتاه',
+    'contact_info'                             => 'اطلاعات تماس',
+    'login_info'                               => 'اطلاعات ورود به سامانه',
 
     'volunteer_section' => [
         'singular' => 'سفیر اهدای عضو',
         'plural'   => 'سفیران اهدای عضو',
         'section'  => 'بخش سفیران اهدای عضو',
-    ], // @TODO: new
+    ],
 
     'organ_donation_card_section' => [
-        'print'          => 'چاپ کارت اهدای عضو',
-        'download'       => 'ذخیره کارت اهدای عضو',
-        'preview'        => 'نمایش کارت اهدای عضو',
-        'card'           => 'کارت',
-        'organ_donation' => 'اهدای عضو',
-    ], // @TODO: new
+        'singular' => 'کارت اهدای عضو',
+        'print'    => 'چاپ کارت اهدای عضو',
+        'download' => 'ذخیره کارت اهدای عضو',
+        'preview'  => 'نمایش کارت اهدای عضو',
+        'card'     => 'کارت',
+        'partial'  => [
+            'part1' => 'کارت',
+            'part2' => 'اهدای',
+            'part3' => 'عضو',
+        ],
+    ],
+
+    'angels' => [
+        'plural'   => 'فرشتگاه ماندگار',
+        'singular' => 'فرشته ماندگار',
+    ],
 
     'member_section' => [
         'profile_edit' => 'ویرایش پروفایل',
         'sign_in'      => 'ورود',
         'sign_out'     => 'خروج',
-    ], // @TODO: new
+    ],
 
     'profile_messages' => [
         'not_enough_information'   => 'اطلاعات پروفایل شما کافی نیست.',
         'complete_to_join_drawing' => 'اکنون کافی‌ست با تکمیل اطلاعات خود وارد فهرست قرعه‌کشی شود.',
+        'welcome_user'             => '::user خوش آمدید.',
     ],
 
     'file_types' => [
@@ -147,10 +160,22 @@ return [
         'you_are_card_holder'     => 'شما کارت اعدای عضو دارید.',
         'unable_to_register_card' => 'امکان ثبت کارت وجود ندارد.',
         'login'                   => 'وارد شوید.',
-    ], // @TODO: new
+    ],
 
     'notes' => [
-        'minutes_are_important_to_save_life' => 'برای نجات <span class="text-success">زندگی</span> لحظه&zwnj;ها مهم است!',
+        'moments_are_important_to_save_life' => 'برای نجات <span class="text-success">زندگی</span> لحظه&zwnj;ها مهم است!',
         'one_brain_dead_can_save_8_lives'    => 'هر فرد مرگ مغزی می&zwnj;تواند جان ۸ نفر را نجات دهد.',
-    ], // @TODO: new
+        'organ_donation'                     => 'اهدای عضو',
+        'life_donation'                      => 'اهدای زندگی',
+        'follow_us_in_social'                => 'مارا در شبکه های اجتماعی دنبال کنید',
+    ],
+
+    "main-menu" => [
+        'items' => [
+            'learn'   => 'دانستن',
+            'will'    => 'خواستن',
+            'achieve' => 'توانستن',
+            'join'    => 'پیوستن',
+        ]
+    ],
 ];

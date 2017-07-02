@@ -47,6 +47,7 @@ return [
         'similar_things'    => 'Similar <span>::things</span>',
         'related_things'    => 'Related <span>::things</span>',
         'maybe_you_like'    => '<span>Maybe</span> You like',
+        'dont_miss'         => 'Don\'t miss',
     ],
 
     'templates' => [

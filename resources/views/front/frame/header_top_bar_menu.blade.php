@@ -1,7 +1,7 @@
-<ul class="pull-right list-inline no-margin">
+<ul class="pull-start list-inline no-margin">
     @if(user()->exists)
         <li class="has-child">
-            <a href="/">{{ user()->name_first }} {{ trans('front.welcome_message') }}</a>
+            <a href="/">{{ str_replace('::user', user()->name_first, trans('front.profile_messages.welcome_user')) }}</a>
             <ul class="list-unstyled bg-primary">
                 @if(user()->is_admin()) {{-- This user is a volunteer --}}
                     <li><a href="{{ url('/manage') }}">{{ trans('front.volunteer_section.section') }}</a></li>

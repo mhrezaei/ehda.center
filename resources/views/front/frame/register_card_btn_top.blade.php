@@ -1,5 +1,7 @@
 <a href="{{ url_locale('organ_donation_card') }}" class="ehda-card-menu">
-    <span>{{ trans('front.organ_donation_card_section.card') }}</span> {{ trans('front.organ_donation_card_section.organ_donation') }}
+    <span>{{ trans('front.organ_donation_card_section.partial.part1') }}</span>
+    {{ trans('front.organ_donation_card_section.partial.part2') }}
+    {{ trans('front.organ_donation_card_section.partial.part3') }}
     <span>
             <svg xmlns="http://www.w3.org/2000/svg" width="29.218" height="24.25" viewBox="0 0 29.218 24.25"
                  fill="#fff">

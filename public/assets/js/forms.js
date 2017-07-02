@@ -972,6 +972,13 @@ function ed(faDigit) {
     return forms_digit_en(faDigit);
 }
 
+function ad(digists) {
+    if (getLocale() == 'fa') {
+        return pd(digists);
+    }
+    return ed(digists);
+}
+
 function ad(string) {
     if ($.inArray(getLocale(), ['fa', 'ar']) > -1) {
         return pd(string);

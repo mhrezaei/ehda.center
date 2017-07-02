@@ -1,5 +1,5 @@
 <h3 class="text-center">
-    {!! trans('front.notes.minutes_are_important_to_save_life') !!}
+    {!! trans('front.notes.moments_are_important_to_save_life') !!}
 </h3>
 <div class="animated-people text-center">
     <span>
