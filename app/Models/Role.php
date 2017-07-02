@@ -181,7 +181,7 @@ class Role extends Model
 	public function statusRule($key , $in_full = false)
 	{
 		if(!$this->has_status_rules) {
-			return null;
+			return $key;
 		}
 		if(is_numeric($key)) {
 			$this->spreadMeta();
@@ -328,7 +328,7 @@ class Role extends Model
 		foreach($this->status_rule_array as $key => $string) {
 			$array[] = [$key, trans("people.criteria.$string")];
 		}
-		$array[] = ['banned', trans('people.criteria.banned')];
+		$array[] = ['bin', trans('people.criteria.banned')];
 		$array[] = ['search', trans('forms.button.search')];
 
 		return $array;

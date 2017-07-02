@@ -14,7 +14,7 @@
 				@include("manage.frame.widgets.toolbar_button" , $button)
 			@endforeach
 		@endif
-		@if(isset($mass_actions))
+		@if(isset($mass_actions) and count($mass_actions))
 			@include('manage.frame.widgets.toolbar_mass')
 		@endif
 		@if(isset($search))

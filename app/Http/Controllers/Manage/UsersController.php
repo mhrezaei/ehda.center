@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\Manage;
 
-use App\Http\Requests\Manage\ReceiptSaveRequest;
+use App\Http\Requests\Manage\MessageSendRequest;
 use App\Http\Requests\Manage\UserPasswordChangeRequest;
 use App\Http\Requests\Manage\UserSaveRequest;
 use App\Models\Posttype;
-use App\Models\Receipt;
 use App\Models\Role;
 use App\Models\User;
-use App\Providers\DrawingCodeServiceProvider;
 use App\Providers\SmsServiceProvider;
 use App\Traits\ManageControllerTrait;
 use App\Http\Controllers\Controller;
@@ -40,22 +38,43 @@ class UsersController extends Controller
 		$this->view_folder   = 'manage.users';
 	}
 
-	public function update($model_id , $request_role)
+	public function update($model_id, $request_role)
 	{
-		$model = User::withTrashed()->find($model_id) ;
-		$handle = 'selector' ;
+		$model  = User::withTrashed()->find($model_id);
+		$handle = 'selector';
 
 		//Run...
 		if(!$model) {
 			return view('errors.m410');
 		}
 		else {
-			$model->spreadMeta() ;
-			return view($this->view_folder . '.browse-row', compact('model', 'handle' , 'request_role'));
+			$model->spreadMeta();
+
+			return view($this->view_folder . '.browse-row', compact('model', 'handle', 'request_role'));
 		}
 	}
 
-	public function search($request_role, Request $request)
+	protected function browseSwitches($request_role, $switches = [])
+	{
+		$switches = array_normalize($switches, [
+			'grid_row'          => "browse-row",
+			'grid_array'        => [
+				trans('validation.attributes.name_first'),
+				[trans('people.user_role'), 'NO', $request_role == 'all'],
+				[trans('cart.purchases'), 'NO', $request_role == 'customer'],
+				trans('forms.button.action'),
+			],
+			'url'               => "users/browse/$request_role",
+			'search_panel_view' => "search",
+			'mass_actions'      => [
+				['mobile', trans('people.commands.send_sms'), "modal:manage/users/act/0/sms/$request_role", user()->as('admin')->can("users-$request_role.send")],
+			],
+		]);
+
+		return $switches;
+	}
+
+	public function search($request_role, Request $request, $switches = [])
 	{
 		/*-----------------------------------------------
 		| Check Permission ...
@@ -63,6 +82,12 @@ class UsersController extends Controller
 		if(!Role::checkManagePermission($request_role, 'search')) {
 			return view('errors.403');
 		}
+
+		/*-----------------------------------------------
+		| Switches ...
+		*/
+		$switches = $this->browseSwitches($request_role, $switches);
+
 
 		/*-----------------------------------------------
 		| Revealing the Role...
@@ -81,10 +106,21 @@ class UsersController extends Controller
 		/*-----------------------------------------------
 		| Page Browse ...
 		*/
-		$page = [
-			'0' => ["users/browse/$request_role", $role->plural_title, "users/browse/$request_role"],
-			'1' => ['search', trans('forms.button.search_for') . " $request->keyword ", "users/search/$request_role"],
+		$page[0] = [
+			$switches['url'],
+			$role->plural_title,
+			$switches['url'],
 		];
+		$page[1] = [
+			'search',
+			trans('forms.button.search_for') . " $request->keyword ",
+			$switches['url'] . "/search",
+		];
+
+		//$page = [
+		//	'0' => ["users/browse/$request_role", $role->plural_title, "users/browse/$request_role"],
+		//	'1' => ['search', trans('forms.button.search_for') . " $request->keyword ", "users/search/$request_role"],
+		//];
 
 		/*-----------------------------------------------
 		| Only Panel ...
@@ -93,7 +129,7 @@ class UsersController extends Controller
 			$db         = $this->Model;
 			$page[1][1] = trans('forms.button.search');
 
-			return view($this->view_folder . ".search", compact('page', 'models', 'db', 'request_role', 'role'));
+			return view($this->view_folder . "." . $switches['search_panel_view'], compact('page', 'models', 'db', 'request_role', 'role', 'switches'));
 		}
 
 
@@ -110,7 +146,8 @@ class UsersController extends Controller
 		}
 		if(isset($request->id)) {
 			$selector_switches['id'] = $request->id;
-			$page[1]                 = ['search', trans('forms.button.search_for') . " " . trans('people.particular_user'), "users/search/$request_role"];
+			//$page[1]                 = ['search', trans('forms.button.search_for') . " " . trans('people.particular_user'), "users/search/$request_role"];
+			$page[1] = ['search', trans('forms.button.search_for') . " " . trans('people.particular_user'), $switches['url'] . "/search"];
 
 		}
 
@@ -121,11 +158,11 @@ class UsersController extends Controller
 		| Views ...
 		*/
 
-		return view($this->view_folder . ".browse", compact('page', 'models', 'db', 'request_role', 'role', 'keyword'));
+		return view($this->view_folder . ".browse", compact('page', 'models', 'db', 'request_role', 'role', 'keyword', 'switches'));
 
 	}
 
-	public function browse($request_role, $request_tab = 'all')
+	public function browse($request_role, $request_tab = 'all', $switches = [])
 	{
 		/*-----------------------------------------------
 		| Check Permission ...
@@ -133,6 +170,12 @@ class UsersController extends Controller
 		if(!Role::checkManagePermission($request_role, $request_tab)) {
 			return view('errors.403');
 		}
+
+		/*-----------------------------------------------
+		| Switches ...
+		*/
+		$switches = $this->browseSwitches($request_role, $switches);
+
 
 		/*-----------------------------------------------
 		| Revealing the Role...
@@ -152,9 +195,15 @@ class UsersController extends Controller
 		/*-----------------------------------------------
 		| Page Browse ...
 		*/
-		$page = [
-			'0' => ["users/browse/$request_role", $role->plural_title, "users/browse/$request_role"],
-			'1' => [$request_tab, trans("people.criteria.".$role->statusRule($request_tab)), "users/browse/$request_role/$request_tab"],
+		$page[0] = [
+			$switches['url'],
+			$role->plural_title,
+			$switches['url'],
+		];
+		$page[1] = [
+			$request_tab,
+			trans("people.criteria." . $role->statusRule($request_tab)),
+			$switches['url'] . "/$request_tab",
 		];
 
 		/*-----------------------------------------------
@@ -172,7 +221,7 @@ class UsersController extends Controller
 		| Views ...
 		*/
 
-		return view($this->view_folder . ".browse", compact('page', 'models', 'db', 'request_role', 'role'));
+		return view($this->view_folder . ".browse", compact('page', 'models', 'db', 'request_role', 'role', 'switches'));
 
 	}
 
@@ -200,6 +249,40 @@ class UsersController extends Controller
 	}
 
 	public function savePermits(Request $request)
+	{
+		/*-----------------------------------------------
+		| Validation ...
+		*/
+		$model = User::find($request->id);
+		if(!$model or $model->is_not_a($request->role_slug)) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+		if(!$model->as('admin')->canPermit()) { //@TODO: Check for accurate result!
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+		}
+
+		/*-----------------------------------------------
+		| Self Privileges ... (Only for admin roles)
+		*/
+		if(in_array($request->role_slug, Role::adminRoles())) {
+			$permits = array_filter(explode(' ', $request->permissions));
+			if(!user()->as_any()->can_all($permits)) {
+				//return $this->jsonFeedback($request->permissions);
+				//
+				return $this->jsonFeedback(trans('validation.http.Error403'));
+			}
+		}
+
+		/*-----------------------------------------------
+		| Save and Return  ...
+		*/
+		$model->as($request->role_slug)->setPermission($request->permissions);
+
+		return $this->jsonAjaxSaveFeedback(true);
+
+	}
+
+	public function _savePermits(Request $request)
 	{
 		$data = $request->toArray();
 
@@ -353,19 +436,21 @@ class UsersController extends Controller
 
 	}
 
-	public function refreshRoleRowForm($model , $role_id)
+	public function refreshRoleRowForm($model, $role_id)
 	{
-		$role = Role::find($role_id) ;
-		return view("manage.users.roles-one",compact('model','role'));
-		
+		$role = Role::find($role_id);
+
+		return view("manage.users.roles-one", compact('model', 'role'));
+
 	}
 
 	public function saveRole($user_id, $role_slug, $new_status)
 	{
+
 		/*-----------------------------------------------
 		| Model and Permission ...
 		*/
-		$user = User::find($user_id) ;
+		$user = User::find($user_id);
 		if(!$user) {
 			return $this->jsonFeedback(trans('validation.http.Error410'));
 		}
@@ -377,25 +462,27 @@ class UsersController extends Controller
 		| Save ...
 		*/
 		if($new_status == 'detach') {
-			$user->detachRole($role_slug) ;
+			$user->detachRole($role_slug);
 		}
-		if($new_status == 'ban') {
-			$user->as($role_slug)->disable() ;
+		elseif($new_status == 'ban') {
+			$user->as($role_slug)->disable();
 		}
 		else {
 			if($user->withDisabled()->as($role_slug)->hasnotRole()) {
-				$user->attachRole($role_slug) ;
+				$user->attachRole($role_slug, '', $new_status);
 			}
 			elseif($user->as($role_slug)->disabled()) {
-				$user->as($role_slug)->enable() ;
+				$user->as($role_slug)->enable();
 			}
-			$user->as($role_slug)->setStatus($new_status) ;
+
+			//$user->as($role_slug)->setStatus($new_status) ;
 		}
 
 		/*-----------------------------------------------
 		| Feedback...
 		*/
-		return $this->jsonAjaxSaveFeedback( true ); //<~~ Row is automatically refreshed upon receiving of the done feedback!
+
+		return $this->jsonAjaxSaveFeedback(true); //<~~ Row is automatically refreshed upon receiving of the done feedback!
 
 	}
 
@@ -494,37 +581,36 @@ class UsersController extends Controller
 
 	}
 
-	public function saveNewReceipt(ReceiptSaveRequest $request)
+	public function smsMass(MessageSendRequest $request)
 	{
-		//@TODO: Check Permission
 
-		//Validation...
-		$drawing_code = DrawingCodeServiceProvider::check_uniq($request->code);
-		if(!$drawing_code) {
-			return $this->jsonFeedback(trans('cart.invalid_purchase_code'));
+		//Collecting Numbers...
+		$id_array = explode(',', $request->ids);
+		$numbers  = [];
+
+		foreach($id_array as $id) {
+			$user = User::find($id);
+			if($user and $user->mobile) {
+				$numbers[] = $user->mobile;
+			}
 		}
 
-		$user = User::find($request->user_id);
-		if(!$user->id) {
-			return $this->jsonFeedback(trans('validation.http.Error410'));
+		//Sending....
+		$ok = SmsServiceProvider::send($numbers, $request->message);
+		if($ok) {
+			$count = count($numbers);
+		}
+		else {
+			$count = 0;
 		}
 
-		//Data Buildup...
-		$data = [
-			'user_id'          => $user->id,
-			'code'             => $request->code,
-			'purchased_at'     => Carbon::createFromTimestamp($drawing_code['date'], 'Asia/Tehran')->setTimezone('UTC'),
-			'purchased_amount' => $drawing_code['price'],
-		];
-
-		//Save & Feedback...
-		$is_saved = Receipt::store($data);
-
-		//$user->updatePurchases() ;
-		return $this->jsonAjaxSaveFeedback($is_saved, [
-			'success_modalClose' => false,
-			'success_callback'   => "divReload( 'divReceiptsTable' )",
-		]);
+		//Feedback...
+		return $this->jsonAjaxSaveFeedback($count, [
+			'success_message' => trans('people.form.message_sent_to', [
+				'count' => pd($count),
+			]),
+			'danger_message'  => trans('people.form.message_not_sent_to_anybody'),
+		]) ;
 
 	}
 }

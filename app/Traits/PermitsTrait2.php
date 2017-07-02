@@ -67,24 +67,26 @@ trait PermitsTrait2
 	 * Gets a fresh list of roles, adds the virtual default role, and removes all illegally modified ones.
 	 * @return \Illuminate\Support\Collection
 	 */
-	private function fetchRoles() // <-- (From Database)
+	public function fetchRoles() // <-- (From Database)
 	{
 		$default_role = Role::findBySlug(self::defaultRole());
 		$roles_array  = $this->roles()->get()->toArray();
 
-		$roles_array[] = [
-			'id'    => $default_role->id,
-			'slug'  => $default_role->slug,
-			'title' => $default_role->title,
-			'pivot' => [
-				'user_id'     => $this->id,
-				'role_id'     => $default_role->id,
-				'status'      => $this->status,
-				'permissions' => '',
-				'key'         => $this->meta('key'), // <~~ RISKY :D
-				'deleted_at'  => $this->meta('default_role_deleted_at'),
-			],
-		];
+		if($default_role and $default_role->exists) {
+			$roles_array[] = [
+				'id'    => $default_role->id,
+				'slug'  => $default_role->slug,
+				'title' => $default_role->title,
+				'pivot' => [
+					'user_id'     => $this->id,
+					'role_id'     => $default_role->id,
+					'status'      => $this->default_role_status,
+					'permissions' => '',
+					'key'         => $this->default_role_key,
+					'deleted_at'  => $this->default_role_deleted_at,
+				],
+			];
+		}
 
 		foreach($roles_array as $key => $role_row) {
 			$role_row['pivot']['permissions'] = self::adorn($role_row['pivot']['permissions']);
@@ -326,7 +328,7 @@ trait PermitsTrait2
 	 * Adds permissions to the current permissions of a user.
 	 * Role must be passed via the chain method as(). multiple choices and default one are not allowed herein.
 	 *
-	 * @param $permissions: string|array
+	 * @param $permissions : string|array
 	 *
 	 * @return $this|bool
 	 */
@@ -353,7 +355,7 @@ trait PermitsTrait2
 	 * removes permissions from the current permissions of a user.
 	 * Role must be passed via the chain method as(). multiple choices and default one are not allowed herein.
 	 *
-	 * @param $permissions: string|array
+	 * @param $permissions : string|array
 	 *
 	 * @return $this|bool
 	 */
@@ -367,7 +369,7 @@ trait PermitsTrait2
 			$permissions = array_filter(explode(' ', $permissions));
 		}
 		foreach($permissions as $permission) {
-			$new_permissions = str_replace($permission , null , $new_permissions) ;
+			$new_permissions = str_replace($permission, null, $new_permissions);
 		}
 
 		return $this->as($as)->setPermission($new_permissions);
@@ -380,7 +382,7 @@ trait PermitsTrait2
 	 *
 	 * @param $status
 	 *
-	 * @return $this|bool
+	 * @return bool
 	 */
 	public function setStatus($status)
 	{
@@ -392,12 +394,10 @@ trait PermitsTrait2
 		}
 		else {
 			if($as == self::defaultRole()) {
-				$this->updateMeta([
-					'key' => $this->makeKey($current_row['id'], '', $status, $current_row['pivot']['deleted_at']),
+				$this->update([
+					'default_role_key'    => $this->makeKey($current_row['id'], '', $status, $current_row['pivot']['deleted_at']),
+					'default_role_status' => $status,
 				]);
-				$this->status = $status;
-
-				return $this->suppressMeta()->save();
 			}
 
 			$this->roles()->updateExistingPivot($current_row['id'], [
@@ -406,36 +406,54 @@ trait PermitsTrait2
 			])
 			;
 
-			return $this->fakeUpdate();
+			return boolval($this->fakeUpdate());
 		}
+	}
+
+	/**
+	 * Calls $this->disableRole
+	 *
+	 * @param $role_slug_array
+	 *
+	 * @return bool
+	 */
+	public function disableRoles($role_slug_array = 'all')
+	{
+		if($role_slug_array) {
+			$role_slug_array = $this->rolesArray();
+		}
+		foreach($role_slug_array as $role_slug) {
+			$this->disableRole($role_slug);
+		}
+
+		return true;
 	}
 
 	/**
 	 * Disables a single role of a user, using its `deleted_at` property.
 	 * Role must be passed via the cain method as(). Multiple choices are not allowed herein.
-	 * @return $this|bool
+	 *
+	 * @param $role_slug
+	 *
+	 * @return bool
 	 */
-	public function disableRole()
+	public function disableRole($role_slug)
 	{
-		$as          = $this->getChain('as');
-		$current_row = $this->as($as)->withDisabled()->rolesQuery()->first();
+		$current_row = $this->as($role_slug)->withDisabled()->rolesQuery()->first();
 		$now         = Carbon::now()->toDateTimeString();
 
-
-		if(!$as) {
+		if(!$role_slug) {
 			return false;
 		}
 		if(!$current_row['id']) {
 			return false;
 		}
 
-		if($as == self::defaultRole()) {
-			$this->updateMeta([
-				'key'                     => $this->makeKey($current_row['id'], '', $current_row['pivot']['status'], $now),
+		if($role_slug == self::defaultRole()) {
+			$this->update([
+				'default_role_key'        => $this->makeKey($current_row['id'], '', $current_row['pivot']['status'], $now),
 				'default_role_deleted_at' => $now,
 			]);
-
-			return $this->suppressMeta()->save();
 		}
 		else {
 			$this->roles()->updateExistingPivot($current_row['id'], [
@@ -443,32 +461,51 @@ trait PermitsTrait2
 				'deleted_at' => $now,
 			])
 			;
-
-			return $this->fakeUpdate();
 		}
+
+		return boolval($this->fakeUpdate());
 
 	}
 
 	/**
-	 * Enables a single role of a user, using its `deleted_at` property.
-	 * Role must be passed via the cain method as(). Multiple choices are not allowed herein.
-	 * @return $this|bool
+	 * Calls $this->disableRole
+	 *
+	 * @param $role_slug_array
+	 *
+	 * @return bool
 	 */
-	public function enableRole()
+	public function enableRoles($role_slug_array = 'all')
 	{
-		$as          = $this->getChain('as');
-		$current_row = $this->as($as)->withDisabled()->rolesQuery()->first();
-		if(!$as or !$current_row['id']) {
+		if($role_slug_array) {
+			$role_slug_array = $this->withDisabled()->rolesArray();
+		}
+		foreach($role_slug_array as $role_slug) {
+			$this->enableRole($role_slug);
+		}
+
+		return true;
+	}
+
+
+	/**
+	 * Enables a single role of a user, using its `deleted_at` property.
+	 *
+	 * @param $role_slug
+	 *
+	 * @return bool
+	 */
+	public function enableRole($role_slug)
+	{
+		$current_row = $this->as($role_slug)->withDisabled()->rolesQuery()->first();
+		if(!$role_slug or !$current_row['id']) {
 			return false;
 		}
 
-		if($as == self::defaultRole()) {
-			$this->updateMeta([
-				'key'                     => $this->makeKey($current_row['id'], '', $current_row['pivot']['status'], ''),
-				'default_role_deleted_at' => '',
+		if($role_slug == self::defaultRole()) {
+			$this->update([
+				'default_role_key'        => $this->makeKey($current_row['id'], '', $current_row['pivot']['status'], null),
+				'default_role_deleted_at' => null,
 			]);
-
-			return $this->suppressMeta()->save();
 		}
 		else {
 			$this->roles()->updateExistingPivot($current_row['id'], [
@@ -476,9 +513,10 @@ trait PermitsTrait2
 				'deleted_at' => null,
 			])
 			;
-
-			return $this->fakeUpdate();
 		}
+
+		return boolval($this->fakeUpdate());
+
 
 	}
 
@@ -491,7 +529,7 @@ trait PermitsTrait2
 	 *
 	 * @return $this|bool
 	 */
-	public function attachRole($role_slug, $permissions = '', $status = 1)
+	public function attachRole($role_slug, $status = 1, $permissions = '')
 	{
 		return $this->attachRoles([
 			[
@@ -522,16 +560,17 @@ trait PermitsTrait2
 				'permissions' => '',
 				'status'      => "1",
 			]);
-			$key  = $this->makeKey($role->id, $item['permissions'], $item['status'], '');
-
+			if($role->slug == self::defaultRole()) {
+				$item['permissions'] = '';
+			}
+			$key = $this->makeKey($role->id, $item['permissions'], $item['status'], null);
 
 			if($role->slug == self::defaultRole()) {
-				$this->updateMeta([
-					'key'                     => $key,
-					'default_role_deleted_at' => '',
+				$return = $this->update([
+					'default_role_key'        => $key,
+					'default_role_deleted_at' => null,
+					'default_role_status'     => $item['status'],
 				]);
-				$this->status = $item['status'];
-				$return       = $this->suppressMeta()->save();
 			}
 			else {
 				$this->roles()->detach($role->id);
@@ -546,7 +585,7 @@ trait PermitsTrait2
 			}
 		}
 
-		return $return;
+		return boolval($return);
 	}
 
 	/**
@@ -555,6 +594,7 @@ trait PermitsTrait2
 	public function detachAll()
 	{
 		$this->roles()->detach();
+		$this->detachRole(self::defaultRole());
 	}
 
 	/**
@@ -574,7 +614,7 @@ trait PermitsTrait2
 	 *
 	 * @param $role_slugs_array
 	 *
-	 * @return $this|bool
+	 * @return bool
 	 */
 	public function detachRoles($role_slugs_array)
 	{
@@ -584,13 +624,10 @@ trait PermitsTrait2
 			if(!$role) {
 				continue;
 			}
-
 			if($role_slug == self::defaultRole()) {
-				$this->updateMeta([
-					'key' => false,
+				$this->update([
+					'default_role_key' => null,
 				]);
-				$this->status = 0;
-				$return       = $this->suppressMeta()->save();
 			}
 			else {
 				$this->roles()->detach($role->id);
@@ -600,7 +637,7 @@ trait PermitsTrait2
 
 		}
 
-		return $return;
+		return boolval($return);
 	}
 
 
@@ -716,12 +753,15 @@ trait PermitsTrait2
 			$request = null;
 		}
 		foreach(self::$wildcards as $wildcard) {
-			$request = str_replace($wildcard, '', $request);
+			$request = str_replace($wildcard, null, $request);
 		}
 
 		/*-----------------------------------------------
 		| Simple Decisions ...
 		*/
+		if(!$request) {
+			return true;
+		}
 		if($request == 'developer' or $request == 'dev') {
 			return $this->isDeveloper();
 		}
@@ -852,7 +892,7 @@ trait PermitsTrait2
 	public function as ($requested_role)
 	{
 		if(is_object($requested_role)) {
-			$requested_role = $requested_role->slug ;
+			$requested_role = $requested_role->slug;
 		}
 		//if(is_array($requested_role)) {
 		//	$requested_role = $requested_role['slug'] ;
@@ -1185,18 +1225,18 @@ trait PermitsTrait2
 	/**
 	 * A mirror to call $this->disableRole()
 	 */
-	public function disable()
-	{
-		$this->disableRole();
-	}
-
-	/**
-	 * A mirror to call $this->enableRole()
-	 */
-	public function enable()
-	{
-		$this->enableRole();
-	}
+	//public function disable()
+	//{
+	//	$this->disableRole();
+	//}
+	//
+	///**
+	// * A mirror to call $this->enableRole()
+	// */
+	//public function enable()
+	//{
+	//	$this->enableRole();
+	//}
 
 	/**
 	 * A mirror to call $this->getStatus()

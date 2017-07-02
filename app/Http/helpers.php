@@ -507,6 +507,7 @@ function getDomain()
 
 /**
  * Returns an array including "global" and current domain (in specified)
+ *
  * @return array
  */
 function getUsableDomains()
@@ -514,9 +515,14 @@ function getUsableDomains()
     $domains = ['global'];
 
     $currentDomain = getDomain();
-    if($currentDomain) {
+    if ($currentDomain) {
         $domains[] = $currentDomain;
     }
 
     return $domains;
+}
+
+function findUser($username, $as_role = null, $username_field = 'auto')
+{
+    return model('user')::finder($username, $as_role, $username_field);
 }

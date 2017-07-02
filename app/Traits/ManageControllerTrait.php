@@ -99,7 +99,7 @@ trait ManageControllerTrait
 		return view($view, compact('model', 'option'));
 	}
 
-	public function massAction($view_file)
+	public function massAction($view_file , $option = null)
 	{
 		//If Special Method...
 		$special_method = camel_case($view_file . "_mass_form");
@@ -117,7 +117,7 @@ trait ManageControllerTrait
 			return view('errors.m404');
 		}
 
-		return view($view);
+		return view($view , compact('option'));
 
 
 	}

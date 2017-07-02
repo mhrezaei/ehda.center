@@ -12,7 +12,7 @@
 	<div class="panel panel-default m20">
 
 		@include('forms.opener',[
-			'url' => "manage/users/browse/$request_role/search" ,
+			'url' => "manage/". $switches['url'] ."/search" ,
 			'class' => 'js-' ,
 			'method' => 'get',
 		])
