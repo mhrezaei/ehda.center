@@ -257,6 +257,7 @@ return [
         'moderate_note' => "یادداشت سردبیر",
         'folder_id'     => "پوشه",
 
+        'id' => "شناسه" , //@TODO: New
         'order'               => "ترتیب",
         'template'            => 'قالب',
         "action"              => 'عملیات',

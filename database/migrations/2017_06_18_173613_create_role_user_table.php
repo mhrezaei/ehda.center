@@ -19,7 +19,7 @@ class CreateRoleUserTable extends Migration
             $table->unsignedInteger('role_id')->index();
             $table->longText('permissions')->nullable();
             $table->tinyInteger('status')->default(1);
-            $table->longText('key')->nullable();
+            $table->string('key')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

@@ -6,6 +6,26 @@
 
 {{--
 |--------------------------------------------------------------------------
+| Manual Menus
+|--------------------------------------------------------------------------
+|
+--}}
+@include("manage.frame.widgets.sidebar-link" , [
+	'fake' => $card_holder_role = model('role')::findBySlug('card-holder') ,
+	'caption' => $card_holder_role->title,
+	'permission' => "users-card-holder" ,
+	'link' => "" ,
+	'icon' => $card_holder_role->spreadMeta()->icon ,
+	'sub_menus' => [
+		['cards/create' , trans("ehda.cards.create") , 'plus-circle'],
+		['cards/browse/all' , trans('ehda.cards.browse') , 'bars'],
+		['cards/printings' , trans("ehda.cards.print") , 'print'],
+	] ,
+]     )
+
+
+{{--
+|--------------------------------------------------------------------------
 | Automatic Posts Menu
 |--------------------------------------------------------------------------
 |
