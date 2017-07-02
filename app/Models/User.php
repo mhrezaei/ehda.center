@@ -29,8 +29,8 @@ class User extends Authenticatable
 		'postal_code',
 		'address',
 		'reset_token',
-		'key',
-		'default_role_deleted_at',
+		//'key',
+		//'default_role_deleted_at',
 	];
 	public static $search_fields   = ['name_first', 'name_last', 'name_firm', 'code_melli', 'email', 'mobile'];
 	public static $required_fields = ['name_first', 'name_last', 'code_melli', 'mobile', 'home_tel', 'birth_date', 'gender', 'marital'];
@@ -43,6 +43,7 @@ class User extends Authenticatable
 		'published_at'          => 'datetime',
 		'marriage_date'         => 'datetime',
 		'birth_date'            => 'datetime',
+		//'default_role_deleted_at'            => 'datetime',
 	];
 
 
@@ -119,7 +120,7 @@ class User extends Authenticatable
 	public static function selector($parameters = [])
 	{
 		//@TODO: Role selection is not optimized. Processing `banned` and `status` should be done inside `role` section.
-		
+
 		$switch = array_normalize($parameters, [
 			'id'         => false,
 			'email'      => false,
@@ -166,6 +167,8 @@ class User extends Authenticatable
 			if($switch['role'] == 'all' or $switch['role'] == self::defaultRole()) {
 				if(self::defaultRole()) {
 					$default_role_included = true;
+					$table->where('default_role_status' , '>' , 0);
+					$table->whereNull('default_role_deleted_at') ;
 				}
 				//nothing to do :)
 			}
@@ -185,7 +188,7 @@ class User extends Authenticatable
 			if(is_array($switch['role']) and count($switch['role'])) {
 				if(in_array(self::defaultRole(), $switch['role'])) {
 					$default_role_included = true;
-					//nothing to do :)
+					$table->where('default_role_status' , '>' , 0);
 				}
 				else {
 					$table->whereHas('roles', function ($query) use ($switch) {
@@ -212,10 +215,11 @@ class User extends Authenticatable
 				}
 			}
 			elseif($default_role_included) {
-				$table->where('status', $switch['status']);
+				$table->where('default_role_status', $switch['status']);
 			}
 			else {
 				$table->whereHas('roles', function ($query) use ($switch) {
+					$query->whereIn('roles.slug', $switch['role']);
 					$query->where('role_user.status', $switch['status']);
 				});
 			}
@@ -223,17 +227,19 @@ class User extends Authenticatable
 
 		if($switch['min_status'] !== false) {
 			if($default_role_included) {
-				$table->where('status', '>=', $switch['min_status']);
+				$table->where('default_role_status', '>=', $switch['min_status']);
 			}
 			else {
 				$table->whereHas('roles', function ($query) use ($switch) {
+					$query->whereIn('roles.slug', $switch['role']);
+					$query->where('role_user.status', '<=', $switch['max_status']);
 					$query->where('role_user.status', '>=', $switch['min_status']);
 				});
 			}
 		}
 		if($switch['max_status'] !== false) {
 			if($default_role_included) {
-				$table->where('status', '>=', $switch['max_status']);
+				$table->where('default_role_status', '>=', $switch['max_status']);
 			}
 			else {
 				$table->whereHas('roles', function ($query) use ($switch) {
@@ -553,8 +559,8 @@ class User extends Authenticatable
 		if($this->is_a('developer')) {
 			return user()->is_a('developer');
 		}
-		elseif($this->is_an('admin')) {
-			return user()->is_a('superadmin');
+		elseif($this->is_admin()) {
+			//return user()->is_a('superadmin');
 		}
 
 		/*-----------------------------------------------
@@ -590,6 +596,7 @@ class User extends Authenticatable
 
 	public function canPermit()
 	{
+
 		$request_role = $this->getChain('as');
 
 		/*-----------------------------------------------

@@ -46,8 +46,8 @@ return [
 
          'ids' => [
              'salt' => "o,ah-ngd-;i-lnhl-hc-md-kzv-kv,n" ,
-             'length' => "8" ,
-             'alphabet' => "abcdefghijklmnopqrstuvwxyz" ,
+             'length' => "5" ,
+             'alphabet' => "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" ,
          ],
 
         'alternative' => [

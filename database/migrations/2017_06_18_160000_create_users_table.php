@@ -4,163 +4,169 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
+
 class CreateUsersTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::create('users', function (Blueprint $table) {
-            // Primary Key
-            $table->increments('id');
-            
-            // Card Info
-            $table->unsignedBigInteger('card_no');
+	/**
+	 * Run the migrations.
+	 *
+	 * @return void
+	 */
+	public function up()
+	{
+		Schema::create('users', function (Blueprint $table) {
+			// Primary Key
+			$table->increments('id');
 
-            // Personal Info
-            $table->string('code_melli', 20)->nullable()->index();
-            $table->string('email')->nullable()->index();
-            $table->string('name_first')->nullable()->index();
-            $table->string('name_last')->nullable()->index();
-            $table->string('name_father')->nullable();
-            $table->string('name_firm')->nullable();
-            $table->string('code_id')->nullable();
-            $table->unsignedInteger('card_id');
-            $table->tinyInteger('gender')->default(0);
+			// Card Info
+			$table->unsignedBigInteger('card_no');
 
-            // Birth Info
-            $table->date('birth_date')->nullable()->index();
-            $table->unsignedInteger('birth_city')->nullable()->index();
-            //$table->foreign('birth_city')
-            //    ->references('id')
-            //    ->on('states')
-            //    ->onDelete('NO ACTION')
-            //    ->onUpdate('CASCADE');
+			// Personal Info
+			$table->string('code_melli', 20)->nullable()->index();
+			$table->string('email')->nullable()->index();
+			$table->string('name_first')->nullable()->index();
+			$table->string('name_last')->nullable()->index();
+			$table->string('name_father')->nullable();
+			$table->string('name_firm')->nullable();
+			$table->string('code_id')->nullable();
+			$table->unsignedInteger('card_id');
+			$table->tinyInteger('gender')->default(0);
 
-            // Marriage Info
-            $table->tinyInteger('marital')->index();
-            $table->date('marriage_date')->nullable()->index();
+			// Birth Info
+			$table->date('birth_date')->nullable()->index();
+			$table->unsignedInteger('birth_city')->nullable()->index();
+			//$table->foreign('birth_city')
+			//    ->references('id')
+			//    ->on('states')
+			//    ->onDelete('NO ACTION')
+			//    ->onUpdate('CASCADE');
 
-            // Roles Registered Time
-            $table->timestamp('volunteer_registered_at')->nullable();
-            $table->timestamp('card_registered_at')->nullable();
+			// Marriage Info
+			$table->tinyInteger('marital')->index();
+			$table->date('marriage_date')->nullable()->index();
 
-            // Contact Info
-            $table->string('mobile')->nullable()->index();
-            $table->string('tel_emergency')->nullable()->index();
-            $table->longText('home_address')->nullable();
-            $table->unsignedInteger('home_province')->nullable();
-            //$table->foreign('home_province')
-            //    ->references('id')
-            //    ->on('states')
-            //    ->onDelete('NO ACTION')
-            //    ->onUpdate('CASCADE');
-            $table->unsignedInteger('home_city')->nullable();
-            //$table->foreign('home_city')
-            //    ->references('id')
-            //    ->on('states')
-            //    ->onDelete('NO ACTION')
-            //    ->onUpdate('CASCADE');
-            $table->string('home_tel')->nullable();
-            $table->string('home_postal')->nullable();
-            $table->longText('work_address')->nullable();
-            $table->unsignedInteger('work_province')->nullable();
-            //$table->foreign('work_province')
-            //    ->references('id')
-            //    ->on('states')
-            //    ->onDelete('NO ACTION')
-            //    ->onUpdate('CASCADE');
-            $table->unsignedInteger('work_city')->nullable();
-            //$table->foreign('work_city')
-            //    ->references('id')
-            //    ->on('states')
-            //    ->onDelete('NO ACTION')
-            //    ->onUpdate('CASCADE');
-            $table->string('work_tel')->nullable();
-            $table->string('work_postal')->nullable();
+			// Roles Registered Time
+			$table->timestamp('volunteer_registered_at')->nullable();
+			$table->timestamp('card_registered_at')->nullable();
 
-            // Education Info
-            $table->tinyInteger('edu_level')->nullable();
-            $table->unsignedInteger('edu_city')->nullable();
-            //$table->foreign('edu_city')
-            //    ->references('id')
-            //    ->on('states')
-            //    ->onDelete('NO ACTION')
-            //    ->onUpdate('CASCADE');
-            $table->string('edu_field')->nullable();
+			// Contact Info
+			$table->string('mobile')->nullable()->index();
+			$table->string('tel_emergency')->nullable()->index();
+			$table->longText('home_address')->nullable();
+			$table->unsignedInteger('home_province')->nullable();
+			//$table->foreign('home_province')
+			//    ->references('id')
+			//    ->on('states')
+			//    ->onDelete('NO ACTION')
+			//    ->onUpdate('CASCADE');
+			$table->unsignedInteger('home_city')->nullable();
+			//$table->foreign('home_city')
+			//    ->references('id')
+			//    ->on('states')
+			//    ->onDelete('NO ACTION')
+			//    ->onUpdate('CASCADE');
+			$table->string('home_tel')->nullable();
+			$table->string('home_postal')->nullable();
+			$table->longText('work_address')->nullable();
+			$table->unsignedInteger('work_province')->nullable();
+			//$table->foreign('work_province')
+			//    ->references('id')
+			//    ->on('states')
+			//    ->onDelete('NO ACTION')
+			//    ->onUpdate('CASCADE');
+			$table->unsignedInteger('work_city')->nullable();
+			//$table->foreign('work_city')
+			//    ->references('id')
+			//    ->on('states')
+			//    ->onDelete('NO ACTION')
+			//    ->onUpdate('CASCADE');
+			$table->string('work_tel')->nullable();
+			$table->string('work_postal')->nullable();
 
-            // Job Info
-            $table->string('job')->nullable();
+			// Education Info
+			$table->tinyInteger('edu_level')->nullable();
+			$table->unsignedInteger('edu_city')->nullable();
+			//$table->foreign('edu_city')
+			//    ->references('id')
+			//    ->on('states')
+			//    ->onDelete('NO ACTION')
+			//    ->onUpdate('CASCADE');
+			$table->string('edu_field')->nullable();
 
-            // Password
-            $table->string('password')->nullable();
-            $table->rememberToken();
-            $table->string('reset_token')->nullable();
-            $table->boolean('password_force_change')->default(0);
+			// Job Info
+			$table->string('job')->nullable();
 
-            // Meta
-            $table->longText('meta')->nullable();
-            $table->tinyInteger('status')->default(0);
+			// Password
+			$table->string('password')->nullable();
+			$table->rememberToken();
+			$table->string('reset_token')->nullable();
+			$table->boolean('password_force_change')->default(0);
 
-            // Temporary
-            $table->longText('unverified_changes')->nullable();
-            $table->tinyInteger('unverified_flag')->nullable();
+			// Meta
+			$table->longText('meta')->nullable();
 
-            // Exam
-            $table->timestamp('exam_passed_at')->nullable();
-            $table->longText('exam_sheet')->nullable();
-            $table->integer('exam_result')->nullalbe();
+			// Temporary
+			$table->longText('unverified_changes')->nullable();
+			$table->tinyInteger('unverified_flag')->nullable();
 
-            // Familiarization
-            $table->tinyInteger('familiarization')->nullable();
-            $table->string('motivation')->nullable();
+			// Exam
+			$table->timestamp('exam_passed_at')->nullable();
+			$table->longText('exam_sheet')->nullable();
+			$table->integer('exam_result')->nullalbe();
 
-            // Activation
-            $table->string('alloc_time')->nullable();
-            $table->string('activities')->nullable();
+			// Familiarization
+			$table->tinyInteger('familiarization')->nullable();
+			$table->string('motivation')->nullable();
 
-            // Domain
-            $table->string('domain')->nullable();
-            //$table->foreign('domain')
-            //    ->references('slug') //
-            //    ->on('domains')
-            //    ->onDelete('NO ACTION')
-            //    ->onUpdate('CASCADE');
-            $table->unsignedInteger('from_domain')->nullable();
-            //$table->foreign('from_domain')
-            //    ->references('id')
-            //    ->on('domains')
-            //    ->onDelete('NO ACTION')
-            //    ->onUpdate('CASCADE');
+			// Activation
+			$table->string('alloc_time')->nullable();
+			$table->string('activities')->nullable();
 
-            // NewsLetter
-            $table->boolean('newsletter')->default(0);
+			// Domain
+			$table->string('domain')->nullable();
+			//$table->foreign('domain')
+			//    ->references('slug') //
+			//    ->on('domains')
+			//    ->onDelete('NO ACTION')
+			//    ->onUpdate('CASCADE');
+			$table->unsignedInteger('from_domain')->nullable();
+			//$table->foreign('from_domain')
+			//    ->references('id')
+			//    ->on('domains')
+			//    ->onDelete('NO ACTION')
+			//    ->onUpdate('CASCADE');
 
-            // Event
-            $table->unsignedInteger('from_event_id');
+			// NewsLetter
+			$table->boolean('newsletter')->default(0);
 
-            // Activity Logs
-            $table->timestamps();
-            $table->index('created_at');
-            $table->softDeletes();
-            $table->timestamp('published_at')->nullable();
-            $table->unsignedInteger('created_by')->default(0)->index();
-            $table->unsignedInteger('updated_by')->default(0);
-            $table->unsignedInteger('deleted_by')->default(0);
-            $table->unsignedInteger('published_by')->default(0);
-        });
-    }
+			// Event
+			$table->unsignedInteger('from_event_id');
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('users');
-    }
+			// Default Role
+			$table->string('default_role_key')->nullable();
+			$table->tinyInteger('default_role_status')->default(0);
+			$table->timestamp('default_role_deleted_at')->nullable();
+
+
+			// Activity Logs
+			$table->timestamps();
+			$table->index('created_at');
+			$table->softDeletes();
+			$table->timestamp('published_at')->nullable();
+			$table->unsignedInteger('created_by')->default(0)->index();
+			$table->unsignedInteger('updated_by')->default(0);
+			$table->unsignedInteger('deleted_by')->default(0);
+			$table->unsignedInteger('published_by')->default(0);
+		});
+	}
+
+	/**
+	 * Reverse the migrations.
+	 *
+	 * @return void
+	 */
+	public function down()
+	{
+		Schema::dropIfExists('users');
+	}
 }

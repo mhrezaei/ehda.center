@@ -21,6 +21,7 @@ class ConvertController extends Controller
 {
 	public function index()
 	{
+		$this->testRole() ;
 		//$this->createTaha() ;
 		//$this->reset() ;
 		//return $this->users();
@@ -348,14 +349,48 @@ class ConvertController extends Controller
 		}
 	}
 
+	public function testRole()
+	{
+		$users = User::where('converted' , 0)->take(500)->get() ;
+		$counter = 0 ;
+		$last_user_id = 0 ;
+
+		foreach( $users as $user) {
+			$user->attachRole('test');
+			$user->update([
+				'converted' => "1" ,
+			]);
+			$last_user_id = $user->id ;
+			$counter++ ;
+		}
+
+		ss($counter) ;
+		ss($last_user_id) ;
+		echo "<script>location.reload();</script>";
+
+	}
+
 	public function tests()
 	{
-		//user()->as('manager')->disable();
-		//ss(user()->rolesArray());
-		//ss(user()->withDisabled()->rolesArray());
-		$user = findUser('0074715623' , 'manager') ;
 
-		ss($user->full_name);
-		ss($user->rolesArray());
+		$users = User::all() ;
+
+		foreach( $users as $user) {
+			$user->attachRole('test');
+		}
+
+		return ;
+		//$user = User::find(1401);
+		//
+		//$user->attachRole('card-holder');
+		//$user->enableRoles() ;
+		//$user->disableRoles() ;
+
+		//ss("is_admin: ".$user->is_admin());
+
+		ss($user->id);
+		//ss($user->is_admin());
+		ss($user->fetchRoles());
+
 	}
 }
