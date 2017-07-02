@@ -465,14 +465,14 @@ class UsersController extends Controller
 			$user->detachRole($role_slug);
 		}
 		elseif($new_status == 'ban') {
-			$user->as($role_slug)->disable();
+			$user->disableRole($role_slug);
 		}
 		else {
 			if($user->withDisabled()->as($role_slug)->hasnotRole()) {
 				$user->attachRole($role_slug, '', $new_status);
 			}
 			elseif($user->as($role_slug)->disabled()) {
-				$user->as($role_slug)->enable();
+				$user->enableRole($role_slug);
 			}
 
 			//$user->as($role_slug)->setStatus($new_status) ;

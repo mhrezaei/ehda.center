@@ -15,6 +15,8 @@ return [
 	'default_role'           => "نقش کاربری پیش‌فرض",
 	'choose_as_default_role' => "انتخاب به عنوان نقش پیش‌فرض",
 	'is_admin'               => "به عنوان مدیر",
+	'newsletter_member' => "عضو خبرنامه" , //@TODO: New
+	'membership' => "عضویت" , //@TODO: New
 
 	'commands' => [
 		'permit'          => "سطح دسترسی",

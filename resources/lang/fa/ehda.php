@@ -1,4 +1,4 @@
-<?php
+<?php //@TODO: NEW
 
 return [
 	'cards' => [
@@ -9,4 +9,7 @@ return [
 	] ,
 
 	'from_domain' => "از دامنه‌ی" ,
+     'donation_card' => "کارت اهدای عضو" ,
+     'volunteer' => "سفیر اهدای عضو" ,
+     'volunteers' => "سفیران اهدای عضو" ,
 ] ;

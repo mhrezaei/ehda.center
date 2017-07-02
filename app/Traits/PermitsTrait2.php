@@ -3,6 +3,7 @@ namespace App\Traits;
 
 use App\Models\Role;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -655,6 +656,31 @@ trait PermitsTrait2
 	public function rolesArray()
 	{
 		return $this->rolesQuery()->pluck('slug')->toArray();
+	}
+
+	/**
+	 * @return array: of the current row.
+	 * the role is passed via the as() chain method. first one is returned, therefore not intended to support multiple roles.
+	 */
+	public function row()
+	{
+		return $this->withDisabled()->rolesQuery()->first();
+	}
+
+	/**
+	 * @param null $key (if given, the requested key is returned.)
+	 *
+	 * @return array|string: of the current row pivot.
+	 * The role is passed via the as() chain method. first one is returned, therefore not intended to support multiple roles.
+	 */
+	public function pivot($key=null)
+	{
+		if($key) {
+			return $this->row()['pivot'][$key] ;
+		}
+		else {
+			return $this->row()['pivot'] ;
+		}
 	}
 
 

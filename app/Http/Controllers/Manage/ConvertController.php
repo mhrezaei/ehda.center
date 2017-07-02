@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Manage;
 
+use App\Models\Category;
 use App\Models\Domain;
+use App\Models\Folder;
 use App\Models\MetaOld;
 use App\Models\Post;
 use App\Models\PostsOld;
@@ -373,24 +375,10 @@ class ConvertController extends Controller
 	public function tests()
 	{
 
-		$users = User::all() ;
-
-		foreach( $users as $user) {
-			$user->attachRole('test');
-		}
-
-		return ;
-		//$user = User::find(1401);
-		//
-		//$user->attachRole('card-holder');
-		//$user->enableRoles() ;
-		//$user->disableRoles() ;
-
-		//ss("is_admin: ".$user->is_admin());
-
-		ss($user->id);
-		//ss($user->is_admin());
-		ss($user->fetchRoles());
+		$cats = Category::whereHas('folder' , function($query) {
+			$query->where('folders.locale' , 'en');
+		})->get();
+		ss($cats->toArray());
 
 	}
 }

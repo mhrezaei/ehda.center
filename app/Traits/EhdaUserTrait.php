@@ -6,6 +6,7 @@ use App\Models\Role;
 use App\Models\State;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Morilog\Jalali\jDate;
 
 
 trait EhdaUserTrait
@@ -42,6 +43,47 @@ trait EhdaUserTrait
 
 	}
 
+	public function getBirthCityNameAttribute()
+	{
+		$state = State::find($this->birth_city);
+		if($state) {
+			return $state->full_name;
+		}
+		else {
+			return '-';
+		}
+
+	}
+
+	public function getEduCityNameAttribute()
+	{
+		$state = State::find($this->edu_city);
+		if($state) {
+			return $state->full_name;
+		}
+		else {
+			return '-';
+		}
+
+	}
+
+
+	public function getGenderIconAttribute()
+	{
+		switch($this->gender) {
+			case 1 :
+				return 'male' ;
+			case 2 :
+				return 'female' ;
+			case 3 :
+				return 'transgender' ;
+			default :
+				return 'question-circle' ;
+		}
+	}
+
+
+
 	public function getFromDomainNameAttribute()
 	{
 		if($this->from_domain) {
@@ -53,6 +95,18 @@ trait EhdaUserTrait
 
 		return false;
 	}
+
+	public function getBirthDateOnCardAttribute()
+	{
+		if($this->birth_date and $this->birth_date != '0000-00-00') {
+			return pd(jDate::forge($this->birth_date)->format('Y/m/d'));
+		}
+		else {
+			return '-';
+		}
+
+	}
+
 
 	/*
 	|--------------------------------------------------------------------------

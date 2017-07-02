@@ -98,6 +98,7 @@ return [
         'submit'         => "ثبت",
         'nobody'         => "هیچ‌کس",
         'sorry'          => "شرمنده",
+        'no' => "شماره" , //@TODO: New
     ],
 
 
