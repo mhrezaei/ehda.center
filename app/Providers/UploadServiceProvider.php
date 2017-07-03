@@ -376,6 +376,11 @@ class UploadServiceProvider extends ServiceProvider
         }
     }
 
+    public static function getThumb($fileUrl, $thumbFolder = 'thumbs')
+    {
+        return str_replace_last('/', "/$thumbFolder/", $fileUrl);
+    }
+
     /**
      * Convert $fileTypeString to a meaning full array
      *

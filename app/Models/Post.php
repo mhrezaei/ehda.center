@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Providers\PostsServiceProvider;
+use App\Providers\UploadServiceProvider;
 use App\Traits\TahaModelTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -418,7 +420,7 @@ class Post extends Model
 	{
 		$image = $this->viewable_featured_image;
 
-		return str_replace_last('/', '/thumbs/', $image);
+		return UploadServiceProvider::getThumb($image);
 	}
 
 	public function getViewableAlbumAttribute()
@@ -1043,6 +1045,5 @@ class Post extends Model
 
 		return str_limit($this->text, 200);
 	}
-
 }
 
