@@ -217,7 +217,10 @@ class PostsServiceProvider extends ServiceProvider
 
         // render view
         $externalBlade = $data['externalBlade'];
-        return view($viewFolder . '.main', compact('post', 'viewFolder', 'externalBlade') + $data['variables']);
+        return self::renderView($viewFolder . '.main', compact('post',
+                'viewFolder',
+                'externalBlade'
+            ) + $data['variables']);
     }
 
     /**

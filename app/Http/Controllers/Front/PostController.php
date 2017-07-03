@@ -14,6 +14,7 @@ use App\Traits\ManageControllerTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\View;
 
 class PostController extends Controller
 {
@@ -233,12 +234,16 @@ JS;
         ];
         /************************* Set Other Values ********************** END */
 
-        return view('front.gallery.archive.main', compact(
-                'items',
-                'postType',
-                'positionInfo')
-            + $otherValues);
+        $view = "front.$postTypeSlug.archive.main";
+        if (View::exists($view)) {
+            return view($view, compact(
+                    'items',
+                    'postType',
+                    'positionInfo')
+                + $otherValues);
+        }
 
+        return view('errors.m404');
     }
 
     public function show_with_full_url($lang, $identifier)
@@ -260,6 +265,7 @@ JS;
 
     private function show($hashid)
     {
+//        return view('welcome');
         /************************* Find Post ********************** START */
         $post = PostsServiceProvider::smartFindPost($hashid);
         /************************* Find Post ********************** END */

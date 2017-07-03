@@ -1696,3 +1696,82 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 // Bootstrap --end
+
+// Player List --start
+
+.player-list {
+  margin-right: -3px;
+  margin-left: -3px;
+
+  .player-list-item {
+    padding-right: 3px;
+    padding-left: 3px;
+
+    &.current {
+      filter: grayscale(100%);
+
+      .player-list-item-inner {
+        @extend .border-blue;
+      }
+
+      .player-list-item-playing {
+        opacity: 1;
+      }
+    }
+
+    &:not(.current) {
+      .player-list-item-inner {
+        cursor: pointer;
+      }
+    }
+
+    &:hover, &.current {
+      .player-list-item-text {
+        opacity: 1;
+      }
+    }
+
+    .player-list-item-inner {
+      @extend .border-2, .border-gray;
+      width: 100%;
+      height: 100px;
+
+      img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .player-list-item-text {
+      @extend .text-center;
+      position: absolute;
+      bottom: 0;
+      font-size: 11.3px;
+      padding: 3px 5px;
+      background-color: rgba(255, 255, 255, 0.5);
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .player-list-item-playing {
+      opacity: 0;
+      font-weight: 600;
+    }
+
+    * {
+      $transition: all 1s;
+      -webkit-transition: #{$transition};
+      -moz-transition: #{$transition};
+      -ms-transition: #{$transition};
+      -o-transition: #{$transition};
+      transition: #{$transition};
+    }
+  }
+}
+
+// Player List --end

@@ -2,6 +2,15 @@
 
 
 <div class="row">
+    <div class="col-xs-12">
+        @if($post->abstract)
+            <div class="col-xs-12">
+                <p>
+                    {{ $post->abstract }}
+                </p>
+            </div>
+        @endif
+    </div>
     <div class="flex_wrapper" id="gallery">
         @if($post['post_photos'] and is_array($post['post_photos']))
             @foreach($post['post_photos'] as $key => $item)
