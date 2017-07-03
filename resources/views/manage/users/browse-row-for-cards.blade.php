@@ -78,6 +78,8 @@
 --}}
 
 @include("manage.frame.widgets.grid-actionCol" , [ 'actions' => [
+	['eye' , trans("forms.button.show_details") , 'modal:manage/users/act/-id-/card-view' , user()->as('admin')->can('users-card-holder.view')],
+
 	['pencil' , trans('forms.button.edit') , "modal:manage/users/act/-id-/edit" , $model->canEdit()],
 	['key' , trans('people.commands.change_password') , "modal:manage/users/act/-id-/password" , !$model->trashed() and $model->canEdit() ] ,
 	['shield' , trans('people.user_role') , "modal:manage/users/act/-id-/roles" , $model->canPermit()],

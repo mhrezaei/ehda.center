@@ -46,7 +46,7 @@ trait PermitsTrait2
 		if(user()->id == $this->id) {
 			$revealed_at = session()->get('logged_user_revealed_at', false);
 			$roles       = session()->get('logged_user_roles', false);
-			if(!$roles or !$revealed_at or $revealed_at < $this->updated_at) {
+			if(true or !$roles or !$revealed_at or $revealed_at < $this->updated_at) {
 				$roles = $this->fetchRoles();
 				session()->put('logged_user_roles', $roles);
 				session()->put('logged_user_revealed_at', Carbon::now()->toDateTimeString());

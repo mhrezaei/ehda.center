@@ -42,6 +42,7 @@ Route::group([ //@TODO: Remove when project fully erected.
 	Route::get('/posts' , 'ConvertController@posts');
 	Route::get('/users/{take?}/{loop?}' , 'ConvertController@users');
 	Route::get('/tests' , 'ConvertController@tests');
+	Route::get('/tests2' , 'ConvertController@tests2');
 });
 
 /*
@@ -65,12 +66,12 @@ Route::group([
 	| Cards ...
 	*/
 	Route::group(['prefix' => 'cards'], function () { //@TODO: add Permissions
-		Route::get('/', 'CardsController@browseRole');
-		Route::get('/browse', 'CardsController@browseRole');
+		Route::get('/', 'CardsController@browseChild');
+		Route::get('/browse', 'CardsController@browseChild');
 		Route::get('/browse/update/{model_id}' , 'CardsController@update');
 		Route::get('/stats', 'CardsController@stats');
-		Route::get('/browse/search/{keyword?}' , 'CardsController@searchRole');
-		Route::get('/browse/{request_tab}/{volunteer?}/{post?}', 'CardsController@browseRole');
+		Route::get('/browse/search/{keyword?}' , 'CardsController@searchChild');
+		Route::get('/browse/{request_tab}/{volunteer?}/{post?}', 'CardsController@browseChild');
 		Route::get('/search', 'CardsController@search');
 		Route::get('/reports', 'CardsController@reports');//@TODO: INTACT!
 
@@ -78,8 +79,7 @@ Route::group([
 		Route::get('/printings/download_excel/{event_id}', 'PrintingsController@excelDownload');
 		Route::get('/printings/{request_tab?}/{event_id?}/{user_id?}/{volunteer_id?}' , 'PrintingsController@browse');
 
-		Route::get('/create/{volunteer_id?}', 'CardsController@create');
-		Route::get('/{card_id}', 'CardsController@show');
+		Route::get('/create/{volunteer_id?}', 'CardsController@createChild');
 		Route::get('/{card_id}/edit', 'CardsController@editor');
 		Route::get('/{card_id}/{modal_action}', 'CardsController@modalActions');
 
@@ -89,7 +89,6 @@ Route::group([
 			Route::post('/inquiry', 'CardsController@inquiry');
 
 			Route::post('/add_to_print', 'CardsController@add_to_print');
-			Route::post('/change_password', 'CardsController@change_password');
 			Route::post('/delete', 'CardsController@delete');
 			Route::post('/bulk_delete', 'CardsController@bulk_delete');
 			Route::post('/sms', 'CardsController@sms');

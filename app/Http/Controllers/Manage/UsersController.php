@@ -69,6 +69,7 @@ class UsersController extends Controller
 			'mass_actions'      => [
 				['mobile', trans('people.commands.send_sms'), "modal:manage/users/act/0/sms/$request_role", user()->as('admin')->can("users-$request_role.send")],
 			],
+		     'toolbar_buttons' => [] ,
 		]);
 
 		return $switches;

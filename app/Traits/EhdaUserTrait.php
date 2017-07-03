@@ -6,6 +6,7 @@ use App\Models\Role;
 use App\Models\State;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Morilog\Jalali\jDate;
 
 
@@ -22,6 +23,23 @@ trait EhdaUserTrait
 	{
 		return $this->belongsTo('App\Models\Post', 'from_event_id');
 	}
+
+	public function getEventAttribute()
+	{
+		if($this->from_event_id) {
+			$event = Cache::remember("post-$this->from_event_id", 10, function ()  {
+				return $this->event()->first();
+			});
+		}
+
+		if(isset($event) and $event and $event->exists) {
+			return $event ;
+		}
+		else {
+			return false ;
+		}
+	}
+
 
 
 	/*

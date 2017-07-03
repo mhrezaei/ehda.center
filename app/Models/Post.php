@@ -715,6 +715,9 @@ class Post extends Model
 		| Process Domain ...
 		*/
 		if($switch['domain']) {
+			if($switch['domain'] == 'auto') {
+				$switch['domain'] = 'all' ; //@TODO: Must incorporate user()'s domain!
+			}
 			$switch['domain'] = (array) $switch['domain'];
 
 			foreach($switch['domain'] as $domain) {

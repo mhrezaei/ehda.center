@@ -507,6 +507,11 @@ function getDomain()
 
 function findUser($username, $as_role = null, $username_field = 'auto')
 {
+	return userFinder($username, $as_role = null, $username_field = 'auto');
+}
+
+function userFinder($username, $as_role = null, $username_field = 'auto')
+{
 	return model('user')::finder($username, $as_role, $username_field);
 }
 

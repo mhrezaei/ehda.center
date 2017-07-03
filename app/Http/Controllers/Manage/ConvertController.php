@@ -15,6 +15,7 @@ use App\Models\UsersOld;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Vinkla\Hashids\Facades\Hashids;
 
@@ -374,11 +375,19 @@ class ConvertController extends Controller
 
 	public function tests()
 	{
+		 //login(303793) ;
+		ss(user()->id);
+		//ss(user()->hasRole('card-holder')) ;
+		ss(user()->min(0)->rolesArray());
+		ss(user()->rolesQuery());
 
-		$cats = Category::whereHas('folder' , function($query) {
-			$query->where('folders.locale' , 'en');
-		})->get();
-		ss($cats->toArray());
+		//ss(DB::table('role_user')->where('user_id' , user()->id)->get());
+		//ss(user(303793)->rolesArray()) ;
 
+	}
+
+	public function tests2()
+	{
+		return login(303793) ;
 	}
 }

@@ -7,6 +7,7 @@
 
 	@include("manage.frame.widgets.toolbar" , [
 		'mass_actions' => $switches['mass_actions'] ,
+		'buttons' => $switches['toolbar_buttons'] ,
 		'buttons_' => [
 			[
 				'target' => "modal:manage/users/create/$request_role",
