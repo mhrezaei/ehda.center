@@ -2,75 +2,74 @@
 	'form_url' => url('manage/users/save/'),
 	'modal_title' => trans('ehda.donation_card'),
 ])
-<div class='modal-body profile'>
+<div class='modal-body profile {{ $model->withDisabled()->hasRole('card-holder')? '' : 'noDisplay' }}'>
 
 	{{--
 	|--------------------------------------------------------------------------
-	| Card Image
+	| Header
 	|--------------------------------------------------------------------------
-	|
+	| Card Image and Name, card no, badges etc.
 	--}}
-	@if($model->as('card-holder')->enabled())
-		<div style="position:absolute;top: 10px;left: 10px">
-			<a href="{{url("/card/show_card/full/$model->hash_id")}}" target="_blank">
-				<img src="{{url("/card/show_card/mini/$model->hash_id")}}" style="height: 450px">
-			</a>
-			{{--<div class="text-center" style="position: relative ; top: -80px;">--}}
-				{{--@if(Auth::user()->can($model->isActiveVolunteer()? 'volunteers.edit' : 'cards.edit'))--}}
-					{{--<a href="{{ url("manage/cards/$model->id/edit") }}" class="btn btn-lg btn-primary">{{ trans('people.cards.manage.edit') }}</a>--}}
-				{{--@endif--}}
-			{{--</div>--}}
-		</div>
-	@else
-		<div style="position:absolute;top: 10px;left: 10px">
-			<div style="height: 410px ; width: 330px ; background-color: #d8d8d8 ; padding: 220px 180px ; color: #414141 ; border-radius: 5px">X</div>
-		</div>
-	@endif
+	<div class="row">
+		<div class="col-md-6">
+				@include("manage.frame.widgets.grid-text" , [
+					'text' => $model->full_name,
+					'icon' => $model->gender_icon ,
+					'size' => "30" ,
+				]     )
+				@include("manage.frame.widgets.grid-text" , [
+					'text' => trans("ehda.donation_card").' '.trans("forms.general.no").' '.number_format($model->card_no),
+					'size' => "20" ,
+				]     )
 
+				@include("manage.frame.widgets.grid-badge" , [
+					'text' => trans("ehda.volunteer"),
+					'icon' => "child" ,
+					'color' => "info" ,
+					'condition' => $model->is_admin() ,
+				]     )
+				@include("manage.frame.widgets.grid-badge" , [
+					'text' => trans('people.newsletter_member'),
+					'icon' => "envelope-o" ,
+					'color' => "success" ,
+					'condition' => $model->newsletter ,
+				]     )
+				@include("manage.frame.widgets.grid-badge" , [
+					'text' => trans("forms.general.deleted"),
+					'color' => "danger" ,
+					'icon' => "times" ,
+					'condition' => $model->as('card-holder')->disabled() ,
+				]     )
 
-
-	{{--
-	|--------------------------------------------------------------------------
-	| Name, Badges and Card No
-	|--------------------------------------------------------------------------
-	|
-	--}}
-
-	<h2 class="mv20">
-		<i class="fa fa-{{$model->gender_icon}}"></i>
-		{{ $model->full_name }}
-		@include("manage.frame.widgets.grid-badge" , [
-			'text' => trans("ehda.volunteer"),
-			'icon' => "child" ,
-			'color' => "info" ,
-			'condition' => $model->is_admin() ,
-		]     )
-		@include("manage.frame.widgets.grid-badge" , [
-			'text' => trans('people.newsletter_member'),
-			'icon' => "envelope-o" ,
-			'color' => "success" ,
-			'condition' => $model->newsletter ,
-		]     )
-	</h2>
-
-	<h3>
-		@include("manage.frame.widgets.grid-text" , [
-			'text' => trans("ehda.donation_card").' '.trans("forms.general.no").' '.$model->card_no,
-			'size' => "20" ,
-		]     )
-	</h3>
-
-	<div class="panel panel-violet mh10" style="width: 30%">
-		<div class=" p5 panel-body bg-ultralight">
-			<div class="f14 ltr {{$model->email? '' : 'noDisplay'}} mv10">
-				<i class="fa fa-envelope-o mh10"></i>
-				{{ $model->email }}
+			<div class="panel panel-violet m10" >
+				<div class=" p20 panel-body bg-ultralight" style="min-height: 100px">
+					<div class="f14 ltr {{$model->email? '' : 'noDisplay'}} mv10">
+						<i class="fa fa-envelope-o mh10"></i>
+						{{ $model->email }}
+					</div>
+					<div class="f14 ltr {{$model->mobile? '' : 'noDisplay'}}">
+						<i class="fa fa-phone mh10"></i>
+						{{ pd(formatPhone($model->mobile)) }}
+					</div>
+				</div>
 			</div>
-			<div class="f14 ltr {{$model->mobile? '' : 'noDisplay'}}">
-				<i class="fa fa-phone mh10"></i>
-				{{ pd(formatPhone($model->mobile)) }}
-			</div>
+
 		</div>
+
+		<div class="col-md-6">
+			@if($model->as('card-holder')->enabled())
+				<div>
+					<a href="{{url("/card/show_card/full/$model->hash_id")}}" target="_blank">
+						<img src="{{url("/card/show_card/single/$model->hash_id")}}" style="width: 350px">
+					</a>
+				</div>
+			@else
+				<div>
+					<div style="height: 200px ; width: 350px ; background-color: #d8d8d8 ; padding: 90px 180px ; color: #414141 ; border-radius: 5px ; margin-top: 20px" >X</div>
+				</div>
+			@endif
+		</div>
+
 	</div>
 
 	<table>
@@ -191,5 +190,37 @@
 
 	</table>
 
+</div>
+
+
+{{--
+|--------------------------------------------------------------------------
+| Buttons
+|--------------------------------------------------------------------------
+|
+--}}
+
+<div class='modal-footer rtl {{ $model->withDisabled()->hasRole('card-holder')? '' : 'noDisplay' }}'>
+	@include("forms.button" , [
+		'label' => trans("forms.button.card_print"),
+		'shape' => "primary" ,
+	]     )
+	@include("forms.button" , [
+		'condition' => $model->canEdit() ,
+		'label' => trans("forms.button.edit"),
+		'shape' => "warning" ,
+	]     )
+</div>
+
+
+{{--
+|--------------------------------------------------------------------------
+| Error 410
+|--------------------------------------------------------------------------
+| When the person in question, doesn't have card-holder role, even in disabled mode.
+--}}
+
+<div class='modal-body profile {{ $model->withDisabled()->hasRole('card-holder')? 'noDisplay' : '' }}'>
+	@include("errors.m410")
 </div>
 @include('templates.modal.end')
