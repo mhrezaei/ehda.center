@@ -209,6 +209,7 @@
 		'condition' => $model->canEdit() ,
 		'label' => trans("forms.button.edit"),
 		'shape' => "warning" ,
+		'link' => url("manage/cards/edit/$model->hash_id") ,
 	]     )
 </div>
 

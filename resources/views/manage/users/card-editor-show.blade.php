@@ -10,6 +10,7 @@
 				'shape' => "default" ,
 				'class' => "btn-lg m30 w50" ,
 				'condition' => $model->canEdit() ,
+				'link' => url("manage/cards/edit/$model->hash_id") ,
 			]     )
 		</div>
 		
