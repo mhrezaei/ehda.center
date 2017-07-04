@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="col-md-6">
-		<img src="{{url("/card/show_card/single/$model->hash_id")}}" style="width: 450px">
+		<img src="{{ $model->cards('social' , 'show') }}" style="width: 450px">
 	</div>
 	<div class="col-md-6 p40">
 

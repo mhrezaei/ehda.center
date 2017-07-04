@@ -151,5 +151,15 @@ trait EhdaUserTrait
 
 	}
 
+	public static function generateCardNo()
+	{
+		$record = self::orderBy('card_no', 'desc')->first();
+		if(!$record) {
+			return 1500;
+		}
+		else {
+			return $record->card_no + 1;
+		}
+	}
 
 }

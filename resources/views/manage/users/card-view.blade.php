@@ -60,7 +60,7 @@
 			@if($model->as('card-holder')->enabled())
 				<div>
 					<a href="{{url("/card/show_card/full/$model->hash_id")}}" target="_blank">
-						<img src="{{url("/card/show_card/single/$model->hash_id")}}" style="width: 350px">
+						<img src="{{ $model->cards('single' , 'show') }}" style="width: 350px">
 					</a>
 				</div>
 			@else

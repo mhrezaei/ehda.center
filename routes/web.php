@@ -84,7 +84,7 @@ Route::group([
 		Route::get('/{card_id}/{modal_action}', 'CardsController@modalActions');
 
 		Route::group(['prefix' => 'save'], function () {
-			Route::post('/', 'CardsController@save');
+			Route::post('/', 'CardsController@saveChild');
 			Route::post('/volunteers', 'CardsController@saveForVolunteers');
 			Route::post('/inquiry', 'CardsController@inquiry');
 

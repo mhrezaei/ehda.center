@@ -4,13 +4,16 @@ namespace App\Http\Controllers\Manage;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Requests\Manage\CardInquiryRequest;
+use App\Http\Requests\Manage\CardSaveRequest;
 use App\Models\Post;
 use App\Models\Role;
 use App\Models\State;
 use App\Models\User;
 use App\Traits\ManageControllerTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 
 class CardsController extends UsersController
@@ -23,7 +26,7 @@ class CardsController extends UsersController
 	protected $view_folder;
 
 	protected $role_slug = 'card-holder';
-	protected $role ;
+	protected $role;
 	protected $url;
 	protected $grid_row;
 	protected $grid_array;
@@ -40,7 +43,7 @@ class CardsController extends UsersController
 
 		$this->browse_handle = 'counter';
 		$this->view_folder   = 'manage.users';
-		$this->role = Role::findBySlug($this->role_slug);
+		$this->role          = Role::findBySlug($this->role_slug);
 
 		return parent::__construct();
 	}
@@ -49,15 +52,15 @@ class CardsController extends UsersController
 	{
 		return [
 			//'role_slug'       => $this->role_slug,
-			'url'               => "cards/browse",
-			'grid_row'          => "browse-row-for-cards",
-			'grid_array'        => [
+			'url'             => "cards/browse",
+			'grid_row'        => "browse-row-for-cards",
+			'grid_array'      => [
 				trans('validation.attributes.name_first'),
 				trans("ehda.cards.register"),
 				trans('validation.attributes.home_city'),
 				trans('forms.button.action'),
 			],
-			'toolbar_buttons'   => [
+			'toolbar_buttons' => [
 				[
 					'target'    => "manage/cards/create",
 					'type'      => 'success',
@@ -104,7 +107,7 @@ class CardsController extends UsersController
 		/*-----------------------------------------------
 		| Model ...
 		*/
-		$model = User::findByHashid($model_hash_id) ;
+		$model = User::findByHashid($model_hash_id);
 		if(!$model or !$model->id or $model->is_not_a('card-holder')) {
 			return view('errors.410');
 		}
@@ -112,35 +115,37 @@ class CardsController extends UsersController
 			return view('errors.403');
 		}
 
-		$model->spreadMeta() ;
-		$states = State::combo() ;
+		$model->spreadMeta();
+		$states = State::combo();
 
 		$all_events = Post::selector([
-			'type' => "event" ,
-			'domain' => "auto" ,
-		])->orderBy('published_at' , 'desc')->get() ;
+			'type'   => "event",
+			'domain' => "auto",
+		])->orderBy('published_at', 'desc')->get()
+		;
 
 		$events = [];
 		foreach($all_events as $event) {
 			if($event->spreadMeta()->can_register_card) {
-				$events[] = $event ;
+				$events[] = $event;
 			}
 		}
 
-		$model->event_id = session()->get('user_last_used_event' , 0);
+		$model->event_id = session()->get('user_last_used_event', 0);
 
 		/*-----------------------------------------------
 		| Page Preparations ...
 		*/
-		$page = $this->page ;
-		$page[0] = ['cards/browse' , $this->role->plural_title] ;
-		$page[1] = ["cards/edut/$model_hash_id" , trans("ehda.cards.edit")] ;
+		$page    = $this->page;
+		$page[0] = ['cards/browse', $this->role->plural_title];
+		$page[1] = ["cards/edut/$model_hash_id", trans("ehda.cards.edit")];
 
 
 		/*-----------------------------------------------
 		| View ...
 		*/
-		return view("manage.users.card-editor",compact('page','model','states','events'));
+
+		return view("manage.users.card-editor", compact('page', 'model', 'states', 'events'));
 	}
 
 
@@ -156,9 +161,9 @@ class CardsController extends UsersController
 		/*-----------------------------------------------
 		| Preparations ...
 		*/
-		$page = $this->page ;
-		$page[0] = ['cards/browse' , $this->role->plural_title] ;
-		$page[1] = ['cards/create' , trans("ehda.cards.create")] ;
+		$page    = $this->page;
+		$page[0] = ['cards/browse', $this->role->plural_title];
+		$page[1] = ['cards/create', trans("ehda.cards.create")];
 
 		/*-----------------------------------------------
 		| If for Volunteer ...
@@ -168,45 +173,47 @@ class CardsController extends UsersController
 		/*-----------------------------------------------
 		| Model ...
 		*/
-		$model = new User() ;
-		$states = State::combo() ;
+		$model  = new User();
+		$states = State::combo();
 
-		$model->newsletter = 1 ;
+		$model->newsletter = 1;
 
 		$all_events = Post::selector([
-			'type' => "event" ,
-		     'domain' => "auto" ,
-		])->orderBy('published_at' , 'desc')->get() ;
-		$events = [];
+			'type'   => "event",
+			'domain' => "auto",
+		])->orderBy('published_at', 'desc')->get()
+		;
+		$events     = [];
 		foreach($all_events as $event) {
 			if($event->spreadMeta()->can_register_card) {
-				$events[] = $event ;
+				$events[] = $event;
 			}
 		}
 
-		$model->event_id = session()->get('user_last_used_event' , 0);
+		$model->event_id = session()->get('user_last_used_event', 0);
 
 
 		/*-----------------------------------------------
 		| View ...
 		*/
-		return view("manage.users.card-editor",compact('page','model','states','events'));
+
+		return view("manage.users.card-editor", compact('page', 'model', 'states', 'events'));
 
 	}
 
 	public function inquiry(CardInquiryRequest $request)
 	{
-		$user = userFinder($request->code_melli) ;
+		$user = userFinder($request->code_melli);
 
 		/*-----------------------------------------------
 		| If not found ...
 		*/
 		if(!$user or !$user->id) {
-			return $this->jsonFeedback(1,[
-				'ok' => 1 ,
-				'message' => trans('ehda.cards.inquiry_success') ,
-				'callback' => 'cardEditor(1)' ,
-				'redirectTime' => 1 ,
+			return $this->jsonFeedback(1, [
+				'ok'           => 1,
+				'message'      => trans('ehda.cards.inquiry_success'),
+				'callback'     => 'cardEditor(1)',
+				'redirectTime' => 1,
 			]);
 		}
 
@@ -214,11 +221,11 @@ class CardsController extends UsersController
 		| If already has card ...
 		*/
 		if($user->is_a('card-holder')) {
-			return $this->jsonFeedback(1,[
-				'ok' => 1 ,
-				'message' => trans('ehda.cards.inquiry_has_card') ,
-				'callback' => 'cardEditor(2 , "'. $user->hash_id .'")'  ,
-				'redirectTime' => 1 ,
+			return $this->jsonFeedback(1, [
+				'ok'           => 1,
+				'message'      => trans('ehda.cards.inquiry_has_card'),
+				'callback'     => 'cardEditor(2 , "' . $user->hash_id . '")',
+				'redirectTime' => 1,
 			]);
 		}
 
@@ -226,22 +233,108 @@ class CardsController extends UsersController
 		| If a volunteer without card ...
 		*/
 		if($user->min(8)->is_an('admin') and $user->is_not_a('card-holder')) {
-			return $this->jsonFeedback(1,[
-				'ok' => 1 ,
-				'message' => trans('ehda.cards.inquiry_is_volunteer') ,
-				'redirect' => url("manage/cards/create/$user->id") ,
-				'redirectTime' => 1 ,
+			return $this->jsonFeedback(1, [
+				'ok'           => 1,
+				'message'      => trans('ehda.cards.inquiry_is_volunteer'),
+				'redirect'     => url("manage/cards/create/$user->id"),
+				'redirectTime' => 1,
 			]);
 		}
 
-		if($user->max(6)->is_an('admin') ) {
-			return $this->jsonFeedback(1,[
-				'ok' => 1 ,
-				'message' => trans('inquiry_will_be_volunteer') ,
-				'redirect' => Auth::user()->can('cards.edit') ? url("manage/cards/$user->id/edit") : '' ,
+		if($user->max(6)->is_an('admin')) {
+			return $this->jsonFeedback(1, [
+				'ok'       => 1,
+				'message'  => trans('inquiry_will_be_volunteer'),
+				'redirect' => Auth::user()->can('cards.edit') ? url("manage/cards/$user->id/edit") : '',
 			]);
 
 		}
+
+	}
+
+	public function saveChild(CardSaveRequest $request)
+	{
+		/*-----------------------------------------------
+		| Model ...
+		*/
+		$data = $request->toArray();
+
+		if($request->id) {
+			unset($data['event_id']);
+			$model = User::find($request->id);
+			if(!$model or !$model->id) {
+				return $this->jsonFeedback(trans('validation.http.Error410'));
+			}
+			if(!$model->canEdit()) {
+				return $this->jsonFeedback(trans('validation.http.Error403'));
+			}
+		}
+
+		/*-----------------------------------------------
+		| Processing Dates ...
+		*/
+		$carbon             = new Carbon($request->birth_date);
+		$data['birth_date'] = $carbon->toDateString();
+
+		/*-----------------------------------------------
+		| Processing passwords ...
+		*/
+		if(!$data['id'] or $data['_password_set_to_mobile']) {
+			$data['password']              = Hash::make($data['mobile']);
+			$data['password_force_change'] = 1;
+		}
+
+		/*-----------------------------------------------
+		| Processing Domain ...
+		*/
+		$data['domain'] = user()->domain;
+		if(!$data['domain'] or $data['domain'] == 'global') {
+			$state = State::find(user()->home_city);
+			if($state) {
+				$data['domain'] = $state->domain->slug;
+			}
+		}
+
+		/*-----------------------------------------------
+		| Register Date and Card No...
+		*/
+		if(!$request->id or (isset($model) and $model->is_not_a('card-holder'))) {
+			$data['card_registered_at'] = Carbon::now()->toDateTimeString();
+			$data['card_no']            = User::generateCardNo();
+		}
+
+
+		/*-----------------------------------------------
+		| user_last_used_event ...
+		*/
+		session()->put('user_last_used_event', $request->event_id);
+
+		/*-----------------------------------------------
+		| Save ...
+		*/
+		$saved = User::store($data);
+
+		/*-----------------------------------------------
+		| Role...
+		*/
+		if($saved) {
+			$saved_user = User::find($saved);
+			if($saved_user and $saved_user->id and $saved_user->is_not_a('card-holder')) {
+				$saved_user->attachRole('card-holder');
+			}
+		}
+
+		/*-----------------------------------------------
+		| Send to Print ...
+		*/
+		if($data['_submit'] == 'print') {
+			//@TODO
+		}
+		/*-----------------------------------------------
+		| Return ...
+		*/
+
+		return $this->jsonAjaxSaveFeedback($saved, ['success_refresh' => true,]);
 
 	}
 

@@ -102,6 +102,12 @@ trait TahaModelTrait
 		return $this->getPerson('published_by');
 	}
 
+	public function getUpdaterAttribute()
+	{
+		return $this->getPerson('updated_by') ;
+	}
+
+
 	public function getDeleterAttribute()
 	{
 		return $this->getPerson('deleted_by');

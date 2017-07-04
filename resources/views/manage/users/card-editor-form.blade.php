@@ -7,7 +7,7 @@
 ])
 
 @include('forms.hiddens' , ['fields' => [
-	['id' , $model->id],
+	['id' , encrypt($model->id)],
 	['code_melli' , $model->code_melli]
 ]])
 
@@ -50,20 +50,20 @@
 @include('forms.input' , [
 	'name' => 'name_father',
 	'value' => $model->name_father ,
-	'class' => 'form-required' ,
+	'class' => '' ,
 ])
 
 @include('forms.input' , [
 	'name' => 'code_id',
 	'value' => $model->code_id ,
-	'class' => 'form-required form-number' ,
+	'class' => 'form-number' ,
 ])
 
 @include('forms.sep')
 
 @include('forms.select' , [
 	'name' => 'birth_city' ,
-	'class' => 'form-required',
+	'class' => '',
 	'value' => $model->id? $model->birth_city : '0' ,
 	'blank_value' => '' ,
 	'options' => $states ,
@@ -86,7 +86,7 @@
 
 @include('forms.select-education' , [
 	'name' => 'edu_level' ,
-	'class' => 'form-required' ,
+	'class' => '' ,
 	'blank_value' => '' ,
 	'value' => $model->edu_level ,
 ])
@@ -196,7 +196,7 @@
 	@include('forms.check' , [
 		'name' => '_password_set_to_mobile',
 		'value' => false ,
-		'label' => trans('people.form.default_password') ,
+		'label' => trans('people.form.password_set_to_mobile') ,
 	])
 
 @else
