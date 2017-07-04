@@ -48,7 +48,8 @@ trait ManageControllerTrait
 			return view('errors.m410');
 		}
 		else {
-			$model->spreadMeta() ;
+			$model->spreadMeta();
+
 			return view($this->view_folder . '.browse-row', compact('model', 'handle'));
 		}
 
@@ -56,6 +57,13 @@ trait ManageControllerTrait
 
 	public function singleAction($model_id, $view_file, $option = null)
 	{
+		//Process Hashids...
+		if(is_numeric($model_id)) {
+		}
+		else {
+			$model_id = hashid_decrypt($model_id, 'ids')[0];
+		}
+
 		//Redirect in mass actions...
 		if($model_id == 0) {
 			return $this->massAction($view_file, $option);
@@ -63,7 +71,7 @@ trait ManageControllerTrait
 
 		$special_method = camel_case($view_file . "_root_form");
 		if(method_exists($this, $special_method)) {
-			return $this->$special_method($model_id , $option);
+			return $this->$special_method($model_id, $option);
 		}
 
 		//Model...
@@ -99,7 +107,7 @@ trait ManageControllerTrait
 		return view($view, compact('model', 'option'));
 	}
 
-	public function massAction($view_file , $option = null)
+	public function massAction($view_file, $option = null)
 	{
 		//If Special Method...
 		$special_method = camel_case($view_file . "_mass_form");
@@ -117,7 +125,7 @@ trait ManageControllerTrait
 			return view('errors.m404');
 		}
 
-		return view($view , compact('option'));
+		return view($view, compact('option'));
 
 
 	}
@@ -195,15 +203,15 @@ trait ManageControllerTrait
 	{
 		//Preferences...
 		$default = [
-			'success_message'           => trans('forms.feed.done'),
-			'success_redirect'        => '',
-			'success_callback'        => '',
-			'success_refresh'         => '0',
-			'success_modalClose'      => '0',
-			'success_updater'         => '',
-            'success_form_reset'      => '',
-            'success_feed_timeout'    => 0,
-			'redirectTime'            => 1000,
+			'success_message'      => trans('forms.feed.done'),
+			'success_redirect'     => '',
+			'success_callback'     => '',
+			'success_refresh'      => '0',
+			'success_modalClose'   => '0',
+			'success_updater'      => '',
+			'success_form_reset'   => '',
+			'success_feed_timeout' => 0,
+			'redirectTime'         => 1000,
 
 			'danger_message'    => trans('validation.invalid'),
 			'danger_redirect'   => '',
@@ -253,15 +261,15 @@ trait ManageControllerTrait
 	{
 		//Preferences...
 		$default = [
-			'success_message'       => trans('forms.feed.done'),
-			'success_redirect'      => '',
-			'success_callback'      => '',
-			'success_refresh'       => '0',
-			'success_modalClose'    => '1',
-			'success_updater'       => '',
-			'success_form_reset'    => '',
-			'success_feed_timeout'  => 0,
-			'redirectTime'          => 1000,
+			'success_message'      => trans('forms.feed.done'),
+			'success_redirect'     => '',
+			'success_callback'     => '',
+			'success_refresh'      => '0',
+			'success_modalClose'   => '1',
+			'success_updater'      => '',
+			'success_form_reset'   => '',
+			'success_feed_timeout' => 0,
+			'redirectTime'         => 1000,
 
 			'danger_message'    => trans('validation.invalid'),
 			'danger_redirect'   => '',

@@ -99,6 +99,51 @@ class CardsController extends UsersController
 		return $this->search($this->role_slug, $this->browseSwitchesChild());
 	}
 
+	public function editorChild($model_hash_id)
+	{
+		/*-----------------------------------------------
+		| Model ...
+		*/
+		$model = User::findByHashid($model_hash_id) ;
+		if(!$model or !$model->id or $model->is_not_a('card-holder')) {
+			return view('errors.410');
+		}
+		if(!$model->canEdit()) {
+			return view('errors.403');
+		}
+
+		$model->spreadMeta() ;
+		$states = State::combo() ;
+
+		$all_events = Post::selector([
+			'type' => "event" ,
+			'domain' => "auto" ,
+		])->orderBy('published_at' , 'desc')->get() ;
+
+		$events = [];
+		foreach($all_events as $event) {
+			if($event->spreadMeta()->can_register_card) {
+				$events[] = $event ;
+			}
+		}
+
+		$model->event_id = session()->get('user_last_used_event' , 0);
+
+		/*-----------------------------------------------
+		| Page Preparations ...
+		*/
+		$page = $this->page ;
+		$page[0] = ['cards/browse' , $this->role->plural_title] ;
+		$page[1] = ["cards/edut/$model_hash_id" , trans("ehda.cards.edit")] ;
+
+
+		/*-----------------------------------------------
+		| View ...
+		*/
+		return view("manage.users.card-editor",compact('page','model','states','events'));
+	}
+
+
 	public function createChild($volunteer_id = 0)
 	{
 		/*-----------------------------------------------
@@ -135,7 +180,7 @@ class CardsController extends UsersController
 		$events = [];
 		foreach($all_events as $event) {
 			if($event->spreadMeta()->can_register_card) {
-				$event[] = $event ;
+				$events[] = $event ;
 			}
 		}
 
@@ -166,11 +211,11 @@ class CardsController extends UsersController
 		}
 
 		/*-----------------------------------------------
-		| If already has card ... //TODO: What if is a card-holder AND a volunteer, who shouldn't be redirected to edit page?
+		| If already has card ...
 		*/
 		if($user->is_a('card-holder')) {
 			return $this->jsonFeedback(1,[
-				'ok' => 0 ,
+				'ok' => 1 ,
 				'message' => trans('ehda.cards.inquiry_has_card') ,
 				'callback' => 'cardEditor(2 , "'. $user->hash_id .'")'  ,
 				'redirectTime' => 1 ,
@@ -199,4 +244,5 @@ class CardsController extends UsersController
 		}
 
 	}
+
 }

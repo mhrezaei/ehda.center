@@ -714,7 +714,7 @@ class Post extends Model
 		/*-----------------------------------------------
 		| Process Domain ...
 		*/
-		if($switch['domain']) {
+		if($switch['domain'] and $switch['domain']!='auto') {
 			if($switch['domain'] == 'auto') {
 				$switch['domain'] = 'all' ; //@TODO: Must incorporate user()'s domain!
 			}

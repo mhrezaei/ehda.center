@@ -80,7 +80,7 @@ Route::group([
 		Route::get('/printings/{request_tab?}/{event_id?}/{user_id?}/{volunteer_id?}' , 'PrintingsController@browse');
 
 		Route::get('/create/{volunteer_id?}', 'CardsController@createChild');
-		Route::get('/{card_id}/edit', 'CardsController@editor');
+		Route::get('/edit/{model_id}', 'CardsController@editorChild');
 		Route::get('/{card_id}/{modal_action}', 'CardsController@modalActions');
 
 		Route::group(['prefix' => 'save'], function () {

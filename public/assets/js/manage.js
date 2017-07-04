@@ -119,16 +119,22 @@ function tabReload() {
 
 function divReload(div_id) {
 	var $div = $("#" + div_id);
-	var url = $("#" + div_id + " .refresh").html();
+	var reload_url = $("#" + div_id + " .refresh").html();
 
-	if (!url) {
-		return;
+	if (!reload_url) {
+		reload_url = $div.attr('data-src') ;
+		reload_url = reload_url.replaceAll("-id-" , $div.attr('data-id')) ;
+		reload_url = url(reload_url);
+	}
+	if(!reload_url) {
+		return ;
 	}
 
+
 	$div.addClass('loading');
-	forms_log(url);
+	forms_log(reload_url);
 	$.ajax({
-		url  : url,
+		url  : reload_url,
 		cache: false
 	}).done(function (html) {
 		$div.html(html);
@@ -593,6 +599,29 @@ function permitSpread() {
 	)
 	;
 
+}
+
+function cardEditor($mood , $para='')
+{
+	$divCard = $('#divCard') ;
+	$divCard.slideUp('fast') ;
+
+	switch($mood) {
+		case 1 :
+			$('#divInquiry,#divForm').slideToggle('fast');
+			$('#frmEditor [name=code_melli]').val( $('#txtInquiry').val() ) ;
+			$('#frmEditor [name=gender]').focus() ;
+			break;
+
+		case 2:
+			$divCard.attr('data-id' , $para);
+			divReload('divCard');
+//			$('#imgCard').attr('src' , url('/card/show_card/mini/'+$para));
+//			$('#txtCard').val( $para );
+			$divCard.slideDown('fast');
+			break;
+	}
 
 }
+
 

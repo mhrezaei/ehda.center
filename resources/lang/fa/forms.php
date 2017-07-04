@@ -70,6 +70,7 @@ return [
     "general" => [
         'male'           => 'آقا',
         'female'         => 'خانم',
+        'other_gender' => "سایر" , //@TODO: New
         "single"         => 'بدون همسر',
         "married"        => 'متأهل',
         "all"            => "انتخاب همه",

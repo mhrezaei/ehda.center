@@ -27,6 +27,7 @@
 
 					//target...
 					$action[2] = str_replace('-id-' , $id , $action[2]);
+					$action[2] = str_replace('-hash_id-' , hashid_encrypt($id,'ids') , $action[2]);
 					if(str_contains($action[2],'(')) {
 						$js_command = $action[2] ;
 						$target = 'javascript:void(0)' ;
