@@ -59,6 +59,7 @@ class Kernel extends HttpKernel
         'is' => IsMiddleware::class,
         'can' => CanMiddleware::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'loggedIn' => \App\Http\Middleware\RedirectIfNotAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'DetectLanguage' => \App\Http\Middleware\DetectLanguage::class,
         'Setting' => \App\Http\Middleware\Setting::class,

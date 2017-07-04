@@ -262,6 +262,20 @@ function url_locale($url_string = '')
     return url('/' . getLocale() . '/' . $url_string);
 }
 
+/**
+ * Generate the URL to a named route with current language.
+ *
+ * @param  string $name
+ * @param  array  $parameters
+ * @param  bool   $absolute
+ *
+ * @return string
+ */
+function route_locale($name, $parameters = [])
+{
+    return app('url')->route($name, $parameters + ['lang' => getLocale()], true);
+}
+
 function login($id) //@TODO: Remove this function on production
 {
     \Illuminate\Support\Facades\Auth::loginUsingId($id);

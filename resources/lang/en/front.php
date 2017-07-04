@@ -115,10 +115,12 @@ return [
         'sign_out'     => 'Sign Out',
     ],
 
-    'profile_messages' => [
+    'profile_phrases' => [
         'not_enough_information'   => 'Not Enough Profile Information',
         'complete_to_join_drawing' => 'Now you can join the drawing by completing your profile.',
         'welcome_user'             => 'Welcome ::user.',
+        'profile'                  => 'Profile',
+        'user_profile'             => ':user Profile',
     ],
 
     'file_types' => [

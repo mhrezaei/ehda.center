@@ -16,15 +16,30 @@ $rtlRatio: 1;
 
 // Variables --end
 
-// Public Silent Classes --start
+// General Silent Classes --start
 %display-none {
   display: none;
 }
 
-// Public Silent Classes --end
+%display-flex {
+  display: flex;
+}
 
-// ،Top Main Header --start
+// General Silent Classes --end
 
+// Aligning --start
+@each $axis, $axisAligning in $aligning {
+  @each $aligningKey, $aligning in $axisAligning {
+    $justifyProperty: map_get($aligningProperties, $axis);
+    .align-#{$axis}-#{$aligning} {
+      @extend %display-flex;
+      #{$justifyProperty}: #{$aligning};
+    }
+  }
+}
+// Aligning --end
+
+// Top Main Header --start
 header {
   .top-bar {
     @media(max-width: 500px) {
@@ -1695,6 +1710,10 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   line-height: 1.7;
 }
 
+.popover {
+  font-family: "IranSans", Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+
 // Bootstrap --end
 
 // Player List --start
@@ -1753,9 +1772,6 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
       width: 100%;
       height: 100%;
       opacity: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .player-list-item-playing {

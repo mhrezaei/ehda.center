@@ -8,6 +8,13 @@ $verticalDirections: ("t": "top", "b": "bottom");
 $horizontalDirections: ("r": "right", "l": "left");
 $directions: map_merge($verticalDirections, $horizontalDirections);
 
+/* aligning */
+$alignCenter: ("c": "center");
+$verticalAligning: map_merge($verticalDirections, $alignCenter);
+$horizontalAligning: map_merge($horizontalDirections, $alignCenter);
+$aligning: ("vertical": $verticalAligning, "horizontal": $horizontalAligning);
+$aligningProperties: ("vertical": 'justify-content', "horizontal": 'align-items');
+
 /* colors */
 $darkColors: (
         "black": #3e3e3e,
@@ -38,3 +45,4 @@ $colors: map_merge($darkColors, $lightColors);
 $selectors: (
         "allInputs": "input, textarea, select",
 );
+

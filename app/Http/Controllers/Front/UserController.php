@@ -23,16 +23,16 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->session()->get('drawingCode'))
-            return redirect(url_locale('user/drawing'));
+        $profilePost = Post::findBySlug('my-card-detail')->in(getLocale());
 
-        return view('front.user.dashboard.0');
+        return view('front.user.dashboard.main', compact('profilePost'));
     }
 
-    public function previousComments($lang, $post_id) {
+    public function previousComments($lang, $post_id)
+    {
         $post = PostsServiceProvider::smartFindPost($post_id);
 
-        if(!$post) {
+        if (!$post) {
             $this->abort('410');
         }
 
@@ -60,9 +60,9 @@ class UserController extends Controller
                 $request->session()->forget('drawingCode');
 
             $new_receipt = [
-                'user_id' => user()->id,
-                'code' => $receipt,
-                'purchased_at' => Carbon::createFromTimestamp($drawing_code['date'], 'Asia/Tehran')->setTimezone('UTC'),
+                'user_id'          => user()->id,
+                'code'             => $receipt,
+                'purchased_at'     => Carbon::createFromTimestamp($drawing_code['date'], 'Asia/Tehran')->setTimezone('UTC'),
                 'purchased_amount' => $drawing_code['price'],
             ];
             Receipt::store($new_receipt);

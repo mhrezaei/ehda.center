@@ -31,17 +31,17 @@ Route::get('manage/heyCheck', 'Front\FrontController@heyCheck');
 |
 */
 Route::group([ //@TODO: Remove when project fully erected.
-	'prefix' => "convert" ,
-     //'middleware' => ['auth','is:developer'] ,
-     'namespace' => "Manage" ,
-], function() {
-	Route::get('/' , 'ConvertController@index');
-	Route::get('/taha' , 'ConvertController@createTaha');
-	Route::get('/roles' , 'ConvertController@createRoles');
-	Route::get('/meta' , 'ConvertController@postsMeta');
-	Route::get('/posts' , 'ConvertController@posts');
-	Route::get('/users/{take?}/{loop?}' , 'ConvertController@users');
-	Route::get('/tests' , 'ConvertController@tests');
+    'prefix'    => "convert",
+    //'middleware' => ['auth','is:developer'] ,
+    'namespace' => "Manage",
+], function () {
+    Route::get('/', 'ConvertController@index');
+    Route::get('/taha', 'ConvertController@createTaha');
+    Route::get('/roles', 'ConvertController@createRoles');
+    Route::get('/meta', 'ConvertController@postsMeta');
+    Route::get('/posts', 'ConvertController@posts');
+    Route::get('/users/{take?}/{loop?}', 'ConvertController@users');
+    Route::get('/tests', 'ConvertController@tests');
 });
 
 /*
@@ -61,55 +61,53 @@ Route::group([
     Route::post('/password', 'HomeController@changePassword');
 
 
-	/*-----------------------------------------------
-	| Cards ...
-	*/
-	Route::group(['prefix' => 'cards'], function () { //@TODO: add Permissions
-		Route::get('/', 'CardsController@browseRole');
-		Route::get('/browse', 'CardsController@browseRole');
-		Route::get('/browse/update/{model_id}' , 'CardsController@update');
-		Route::get('/stats', 'CardsController@stats');
-		Route::get('/browse/search/{keyword?}' , 'CardsController@searchRole');
-		Route::get('/browse/{request_tab}/{volunteer?}/{post?}', 'CardsController@browseRole');
-		Route::get('/search', 'CardsController@search');
-		Route::get('/reports', 'CardsController@reports');//@TODO: INTACT!
+    /*-----------------------------------------------
+    | Cards ...
+    */
+    Route::group(['prefix' => 'cards'], function () { //@TODO: add Permissions
+        Route::get('/', 'CardsController@browseRole');
+        Route::get('/browse', 'CardsController@browseRole');
+        Route::get('/browse/update/{model_id}', 'CardsController@update');
+        Route::get('/stats', 'CardsController@stats');
+        Route::get('/browse/search/{keyword?}', 'CardsController@searchRole');
+        Route::get('/browse/{request_tab}/{volunteer?}/{post?}', 'CardsController@browseRole');
+        Route::get('/search', 'CardsController@search');
+        Route::get('/reports', 'CardsController@reports');//@TODO: INTACT!
 
-		Route::get('/printings/modal/{printing_id}/{modal_action}', 'PrintingsController@modalActions');
-		Route::get('/printings/download_excel/{event_id}', 'PrintingsController@excelDownload');
-		Route::get('/printings/{request_tab?}/{event_id?}/{user_id?}/{volunteer_id?}' , 'PrintingsController@browse');
+        Route::get('/printings/modal/{printing_id}/{modal_action}', 'PrintingsController@modalActions');
+        Route::get('/printings/download_excel/{event_id}', 'PrintingsController@excelDownload');
+        Route::get('/printings/{request_tab?}/{event_id?}/{user_id?}/{volunteer_id?}', 'PrintingsController@browse');
 
-		Route::get('/create/{volunteer_id?}', 'CardsController@create');
-		Route::get('/{card_id}', 'CardsController@show');
-		Route::get('/{card_id}/edit', 'CardsController@editor');
-		Route::get('/{card_id}/{modal_action}', 'CardsController@modalActions');
+        Route::get('/create/{volunteer_id?}', 'CardsController@create');
+        Route::get('/{card_id}', 'CardsController@show');
+        Route::get('/{card_id}/edit', 'CardsController@editor');
+        Route::get('/{card_id}/{modal_action}', 'CardsController@modalActions');
 
-		Route::group(['prefix' => 'save'], function () {
-			Route::post('/', 'CardsController@save');
-			Route::post('/volunteers', 'CardsController@saveForVolunteers');
-			Route::post('/inquiry', 'CardsController@inquiry');
+        Route::group(['prefix' => 'save'], function () {
+            Route::post('/', 'CardsController@save');
+            Route::post('/volunteers', 'CardsController@saveForVolunteers');
+            Route::post('/inquiry', 'CardsController@inquiry');
 
-			Route::post('/add_to_print', 'CardsController@add_to_print');
-			Route::post('/change_password', 'CardsController@change_password');
-			Route::post('/delete', 'CardsController@delete');
-			Route::post('/bulk_delete', 'CardsController@bulk_delete');
-			Route::post('/sms', 'CardsController@sms');
-			Route::post('/email', 'CardsController@email');
-			Route::post('/bulk_email', 'CardsController@bulk_email');
-			Route::post('/print', 'CardsController@single_print');
-			Route::post('/bulk_print', 'CardsController@bulk_print');
+            Route::post('/add_to_print', 'CardsController@add_to_print');
+            Route::post('/change_password', 'CardsController@change_password');
+            Route::post('/delete', 'CardsController@delete');
+            Route::post('/bulk_delete', 'CardsController@bulk_delete');
+            Route::post('/sms', 'CardsController@sms');
+            Route::post('/email', 'CardsController@email');
+            Route::post('/bulk_email', 'CardsController@bulk_email');
+            Route::post('/print', 'CardsController@single_print');
+            Route::post('/bulk_print', 'CardsController@bulk_print');
 
-			Route::post('printings/bulk_excel' , 'PrintingsController@bulkExcel');
-			Route::post('printings/bulk_print' , 'PrintingsController@bulkPrint');
-			Route::post('printings/bulk_confirm' , 'PrintingsController@bulkConfirm');
-		});
-	});
-
-
+            Route::post('printings/bulk_excel', 'PrintingsController@bulkExcel');
+            Route::post('printings/bulk_print', 'PrintingsController@bulkPrint');
+            Route::post('printings/bulk_confirm', 'PrintingsController@bulkConfirm');
+        });
+    });
 
 
-	/*-----------------------------------------------
-	| Users ...
-	*/
+    /*-----------------------------------------------
+    | Users ...
+    */
     Route::group(['prefix' => "users", 'middleware' => "can:users",], function () {
         Route::get('/update/{item_id}/{request_role}', 'UsersController@update');
         Route::get('browse/{role}/search/{keyword?}', 'UsersController@search');
@@ -119,15 +117,15 @@ Route::group([
 
         Route::group(['prefix' => 'save'], function () {
             Route::post('/', 'UsersController@save');
-            Route::post('/smsMass' , 'UsersController@smsMass');
+            Route::post('/smsMass', 'UsersController@smsMass');
             Route::post('/password', 'UsersController@savePassword');
             Route::post('/permits', 'UsersController@savePermits');
 
-	        Route::post('/delete', 'UsersController@delete');
-	        Route::post('/undelete', 'UsersController@undelete');
-	        Route::post('/destroy', 'UsersController@destroy');
+            Route::post('/delete', 'UsersController@delete');
+            Route::post('/undelete', 'UsersController@undelete');
+            Route::post('/destroy', 'UsersController@destroy');
 
-	        Route::get('/role/{user_id}/{role_slug}/{new_status}', 'UsersController@saveRole');
+            Route::get('/role/{user_id}/{role_slug}/{new_status}', 'UsersController@saveRole');
         });
     });
 
@@ -284,7 +282,7 @@ Route::group(['prefix' => 'file'], function () {
     Route::post('remove', 'DropzoneController@remove_file')->name('dropzone.remove');
 });
 
-Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Setting', 'Subdomain']], function (){
+Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Setting', 'Subdomain']], function () {
 
     // if not set lang prefix
     Route::get('/', 'FrontController@index');
@@ -328,6 +326,14 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
         Route::post('/register/first_step', 'CardController@register_first_step');
         Route::post('/register/second_step', 'CardController@register_second_step');
 
+        // User Routes
+        Route::group(['prefix' => 'user', 'middleware' => ['loggedIn:card-holder', 'is:card-holder']], function () {
+            Route::get('/dashboard', 'UserController@index')->name('user.dashboard');
+            Route::get('/profile', 'UserController@profile')->name('user.profile.edit');
+            Route::get('/drawing', 'UserController@drawing');
+            Route::get('/events', 'UserController@events');
+        });
+
         /*
         |--------------------------------------------------------------------------
         | CARD HOLDER PANEL
@@ -342,33 +348,33 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
         });
 
         // another route copy from ehda-b1 project
-            Route::get('/{identifier}', 'PostController@show_with_short_url')
-                ->where('identifier', '^' . config('prefix.routes.post.short') . '(\w|)+$');
-            // if identifier starts with value of config('prefix.routes.post.short')
+        Route::get('/{identifier}', 'PostController@show_with_short_url')
+            ->where('identifier', '^' . config('prefix.routes.post.short') . '(\w|)+$');
+        // if identifier starts with value of config('prefix.routes.post.short')
 
-            Route::get('/show-post/{hashid}/{url?}', 'PostController@show_with_full_url');
-            Route::get('/previewPost/{id}/{url?}', 'PostController@show');
-            Route::get('/archive/{postType?}/{category?}', 'PostController@archive')->name('post.archive');
-            Route::get('/categories/{postType}', 'PostController@categories')->name('post.postType');
-            Route::get('/gallery/categories/{branch}', 'GalleryController@show_categories');
-            Route::get('/gallery/posts/{category}', 'GalleryController@show_categories_posts');
-            Route::get('/gallery/show/{id}/{url?}', 'GalleryController@show_gallery');
+        Route::get('/show-post/{hashid}/{url?}', 'PostController@show_with_full_url');
+        Route::get('/previewPost/{id}/{url?}', 'PostController@show');
+        Route::get('/archive/{postType?}/{category?}', 'PostController@archive')->name('post.archive');
+        Route::get('/categories/{postType}', 'PostController@categories')->name('post.postType');
+        Route::get('/gallery/categories/{branch}', 'GalleryController@show_categories');
+        Route::get('/gallery/posts/{category}', 'GalleryController@show_categories_posts');
+        Route::get('/gallery/show/{id}/{url?}', 'GalleryController@show_gallery');
 
-            Route::get('/convert', 'TestController@convertCardsFromMhr');
+        Route::get('/convert', 'TestController@convertCardsFromMhr');
 
-            // static pages
-            Route::get('/faq', 'PostController@faq');
-            Route::post('/faq/new', 'PostController@faq_new');
-            Route::get('/angels', 'PostController@angels');
-            Route::post('/angels/find', 'PostController@angels_find');
+        // static pages
+        Route::get('/faq', 'PostController@faq');
+        Route::post('/faq/new', 'PostController@faq_new');
+        Route::get('/angels', 'PostController@angels');
+        Route::post('/angels/find', 'PostController@angels_find');
 
-            // volunteer pages
-            Route::get('/volunteers', 'members\VolunteersController@index');
-            Route::post('/volunteer/first_step', 'members\VolunteersController@register_first_step');
-            Route::post('/volunteer/second_step', 'members\VolunteersController@register_second_step');
-            Route::get('/volunteers/exam', 'members\VolunteersController@exam');
-            Route::get('/volunteers/final_step', 'members\VolunteersController@register_final_step');
-            Route::post('/volunteers/final_step/submit', 'members\VolunteersController@register_final_step_submit');
+        // volunteer pages
+        Route::get('/volunteers', 'members\VolunteersController@index');
+        Route::post('/volunteer/first_step', 'members\VolunteersController@register_first_step');
+        Route::post('/volunteer/second_step', 'members\VolunteersController@register_second_step');
+        Route::get('/volunteers/exam', 'members\VolunteersController@exam');
+        Route::get('/volunteers/final_step', 'members\VolunteersController@register_final_step');
+        Route::post('/volunteers/final_step/submit', 'members\VolunteersController@register_final_step_submit');
 
     });
 

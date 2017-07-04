@@ -163,7 +163,7 @@ JS
         if ($userId) {
             User::store(['id' => $userId, 'card_no' => $userId + 5000]);
 
-            if(Role::findBySlug('card-holder')->exists) {
+            if (Role::findBySlug('card-holder')->exists) {
                 $user = User::findBySlug($userId, 'id')->attachRole('card-holder');
             }
 
@@ -250,7 +250,13 @@ JS
         return $return;
     }
 
-    public function save_registration(Requests\CardRegisterRequest $request)
+    /**
+     * @param string                                 $lang Locale values that is detected from url
+     * @param \App\Http\Requests\CardRegisterRequest $request
+     *
+     * @return mixed|string
+     */
+    public function save_registration($lang, Requests\CardRegisterRequest $request)
     {
         switch ($request->_step) {
             case 1:

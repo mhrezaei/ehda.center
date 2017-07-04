@@ -84,6 +84,9 @@ return [
     'short_link'                               => 'لینک کوتاه',
     'contact_info'                             => 'اطلاعات تماس',
     'login_info'                               => 'اطلاعات ورود به سامانه',
+    'download'                                 => 'دانلود',
+    'print'                                    => 'چاپ',
+    'share'                                    => 'اشتراک',
 
     'volunteer_section' => [
         'singular' => 'سفیر اهدای عضو',
@@ -102,6 +105,24 @@ return [
             'part2' => 'اهدای',
             'part3' => 'عضو',
         ],
+        'types'    => [
+            'mini'   => [
+                'title'       => 'کم‌حجم',
+                'description' => 'این فایل کم‌حجم است.',
+            ],
+            'single' => [
+                'title'       => 'فقط رو',
+                'description' => 'این فایل فقط رو است.',
+            ],
+            'social' => [
+                'title'       => 'قابل اشتراک',
+                'description' => 'این فایل قابل اشتراک است.',
+            ],
+            'full'   => [
+                'title'       => 'قابل چاپ',
+                'description' => 'این فایل قابل چاپ است.',
+            ],
+        ], // @TODO: new
     ],
 
     'angels' => [
@@ -115,10 +136,12 @@ return [
         'sign_out'     => 'خروج',
     ],
 
-    'profile_messages' => [
+    'profile_phrases' => [
         'not_enough_information'   => 'اطلاعات پروفایل شما کافی نیست.',
         'complete_to_join_drawing' => 'اکنون کافی‌ست با تکمیل اطلاعات خود وارد فهرست قرعه‌کشی شود.',
         'welcome_user'             => '::user خوش آمدید.',
+        'profile'                  => 'پروفایل',
+        'user_profile'             => 'پروفایل :user',
     ],
 
     'file_types' => [

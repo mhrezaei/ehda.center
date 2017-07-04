@@ -12,6 +12,7 @@
 @endif
 
 <div class="row mb20">
+
     @if(isset($group) and $group)
         <div class="page-{{ $groupColor }}-title col-xs-12">
             <h3 class="container">{{ $group }}</h3>
