@@ -257,7 +257,7 @@ return [
         'moderate_note' => "یادداشت سردبیر",
         'folder_id'     => "پوشه",
 
-        'id' => "شناسه" , //@TODO: New
+        'id'                  => "شناسه", //@TODO: New
         'order'               => "ترتیب",
         'template'            => 'قالب',
         "action"              => 'عملیات',
@@ -504,6 +504,8 @@ return [
         'audio_uploader' => 'فایل(های) صوتی',
         'text_uploader'  => 'فایل(های) متنی',
         'text_content'   => 'محتوای فایل متنی',
+
+        'has_medal' => 'مدال افتخار دارد.',
     ],
 
     "http" => [

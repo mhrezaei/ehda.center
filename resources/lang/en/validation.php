@@ -511,6 +511,8 @@ return [
         'audio_uploader' => 'Audio Files',
         'text_uploader'  => 'Text Files',
         'text_content'   => 'Text Content',
+
+        'has_medal' => 'Has medal.',
     ],
 
     "http" => [

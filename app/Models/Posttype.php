@@ -363,6 +363,16 @@ class Posttype extends Model
 		}
 	}
 
+    /**
+     * Still Temporary
+     *
+     * @param string $locale
+     */
+    public function headerTitleIn($locale = 'fa')
+    {
+        return $this->header_title;
+	}
+
 	public function singularTitleIn($locale)
 	{
 		if($locale == 'fa') {

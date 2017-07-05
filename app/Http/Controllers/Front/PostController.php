@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Requests\Front\CommentRequest;
+use App\Http\Requests\Manage\PostSaveRequest;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Folder;
@@ -322,6 +323,37 @@ JS;
         } else {
             $this->abort('404');
         }
+    }
+
+    public function special_volunteers()
+    {
+        $postType = Posttype::findBySlug('celebs');
+
+        /************************* Generate Html for List View ********************** START */
+        $innerHTML = PostsServiceProvider::showList([
+            'type' => 'celebs',
+            'max_per_page' => -1,
+        ]);
+        /************************* Generate Html for List View ********************** END */
+
+        /************************* Generate Position Info ********************** START */
+        $positionInfo = [
+            'group' => $postType->headerTitleIn(getLocale()),
+            'category' => $postType->titleIn(getLocale()),
+        ];
+        /************************* Generate Position Info ********************** END */
+
+        /************************* Set Other Values ********************** START */
+        $otherValues = [
+            'pageTitle' => trans('front.special_volunteers'),
+        ];
+        /************************* Set Other Values ********************** END */
+
+        /************************* Render View ********************** START */
+        return view('front.posts.general.frame.main', compact(
+                'innerHTML',
+                'positionInfo'
+            ) + $otherValues);
     }
 
 }

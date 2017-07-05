@@ -92,6 +92,10 @@ return [
         'singular' => 'سفیر اهدای عضو',
         'plural'   => 'سفیران اهدای عضو',
         'section'  => 'بخش سفیران اهدای عضو',
+        'special'  => [
+            'singular' => 'سفیر ویژه',
+            'plural'   => 'سفیران ویژه',
+        ], // @TODO: new
     ],
 
     'organ_donation_card_section' => [

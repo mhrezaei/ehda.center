@@ -365,7 +365,9 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
         Route::get('/convert', 'TestController@convertCardsFromMhr');
 
         // static pages
-        Route::get('/faq', 'PostController@faqs');
+        Route::get('faq', 'PostController@faqs');
+        Route::get('volunteers/special', 'PostController@special_volunteers');
+
         Route::get('/angels', 'PostController@angels');
         Route::post('/angels/find', 'PostController@angels_find');
 
