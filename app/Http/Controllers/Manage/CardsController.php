@@ -12,6 +12,7 @@ use App\Models\State;
 use App\Models\User;
 use App\Traits\ManageControllerTrait;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -412,6 +413,31 @@ class CardsController extends UsersController
 		*/
 
 		return view("manage.printings.browse", compact('page', 'events_array', 'event_title', 'models', 'db', 'request_tab', 'volunteer', 'volunteer_id', 'event_id', 'user_id'));
+
+	}
+
+	public function printingAction($action)
+	{
+		$view = "manage.printings.act-$action" ;
+
+		if($action=='add-to-excel' or $action=='add-to-direct') {
+			$additive = str_replace('add-to' , null , $action) ;
+			if(user()->as('admin')->cannot("users-card-holder.print-$additive")) {
+				return view('errors.m403');
+			}
+		}
+
+		//if(!View::exists($view)) {
+		//	return view('errors.m404');
+		//}
+
+		return view($view);
+
+	}
+
+	public function printingActionSave(Request $request)
+	{
+		return $this->jsonFeedback($request->_submit);
 
 	}
 

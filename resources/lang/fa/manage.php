@@ -44,6 +44,7 @@ return [
         'print-excel' => "چاپ اکسل" , //@TODO: New
         'settings' => "تنظیمات" , //@TODO: New
         'permit' => "تعیین سطح دسترسی" , //@TODO: New
+
     ],
 
 

@@ -77,7 +77,9 @@ Route::group([
 		Route::get('/search', 'CardsController@search');
 		Route::get('/reports', 'CardsController@reports');//@TODO: INTACT!
 
-		Route::get('/printings/modal/{printing_id}/{modal_action}', 'PrintingsController@modalActions');
+		Route::get('/printings/act/{action}' , 'CardsController@printingAction');
+
+		Route::get('/printings/modal/{printing_id}/{modal_action}', 'CardsController@modalActions');
 		Route::get('/printings/download_excel/{event_id}', 'PrintingsController@excelDownload');
 		Route::get('/printings/{request_tab?}/{event_id?}/{user_id?}/{volunteer_id?}' , 'CardsController@printingBrowse');
 
@@ -99,9 +101,7 @@ Route::group([
 			Route::post('/print', 'CardsController@single_print');
 			Route::post('/bulk_print', 'CardsController@bulk_print');
 
-			Route::post('printings/bulk_excel' , 'PrintingsController@bulkExcel');
-			Route::post('printings/bulk_print' , 'PrintingsController@bulkPrint');
-			Route::post('printings/bulk_confirm' , 'PrintingsController@bulkConfirm');
+			Route::post('printings/' , 'CardsController@printingActionSave');
 		});
 	});
 

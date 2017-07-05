@@ -1,6 +1,8 @@
 @extends('manage.frame.use.0')
 
 @section('section')
+	<input id="txtEventId" type="hidden" value="{{$event_id}}">
+
 	<div id="divTab">
 		@include('manage.printings.tabs')
 	</div>
@@ -8,28 +10,28 @@
 	@include("manage.frame.widgets.toolbar" , [
 		'buttons' => [
 			[
-				'target' => "modal:manage/cards/printings/0/revert-to-pending" ,
+				'target' => "modal:manage/cards/printings/act/revert-to-pending" ,
 				'type' => "danger" ,
 				'condition' => true ,
 				'icon' => "undo" ,
 				'caption' => trans("ehda.printings.revert_to_pending") ,
 			],
 			[
-				'target' => "modal:manage/cards/printings/0/confirm-quality" ,
+				'target' => "modal:manage/cards/printings/act/confirm-quality" ,
 				'type' => "success" ,
 				'condition' => true ,
 				'icon' => "check" ,
 				'caption' => trans("ehda.printings.verify_quality") ,
 			],
 			[
-				'target' => "modal:manage/cards/printings/0/add-to-excel" ,
+				'target' => "modal:manage/cards/printings/act/add-to-excel" ,
 				'type' => "primary" ,
 				'condition' => user()->as('admin')->can('users-card-holder.print-excel') ,
 				'icon' => "file-excel-o" ,
 				'caption' => trans("manage.permissions.print-excel") ,
 			],
 			[
-				'target' => "modal:manage/cards/printings/0/add-to-direct" ,
+				'target' => "modal:manage/cards/printings/act/add-to-direct" ,
 				'type' => "primary" ,
 				'condition' => user()->as('admin')->can('users-card-holder.print-direct') ,
 				'icon' => "print" ,
