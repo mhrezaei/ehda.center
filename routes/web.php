@@ -335,6 +335,7 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
             Route::post('update', 'UserController@update')->name('user.profile.update');
         });
 
+
         /*
         |--------------------------------------------------------------------------
         | CARD HOLDER PANEL
@@ -364,8 +365,7 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
         Route::get('/convert', 'TestController@convertCardsFromMhr');
 
         // static pages
-        Route::get('/faq', 'PostController@faq');
-        Route::post('/faq/new', 'PostController@faq_new');
+        Route::get('/faq', 'PostController@faqs');
         Route::get('/angels', 'PostController@angels');
         Route::post('/angels/find', 'PostController@angels_find');
 

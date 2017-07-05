@@ -9,7 +9,7 @@
             'name',
             'email',
             'mobile',
-            'title',
+            'subject',
             'text',
         ] }}
 
@@ -87,12 +87,12 @@
             </div>
         </div>
 
-        <div class="col-xs-{{ $inputSize['title'] }}">
+        <div class="col-xs-{{ $inputSize['subject'] }}">
             <div class="row">
                 @include('front.forms.input', [
-                    'name' => 'title',
-                    'placeholder' => trans('validation.attributes.title'),
-                ] + $inputData['title'])
+                    'name' => 'subject',
+                    'placeholder' => trans('validation.attributes.subject'),
+                ] + $inputData['subject'])
             </div>
         </div>
 
@@ -126,4 +126,9 @@
 @section('endOfBody')
     {!! Html::script ('assets/libs/jquery.form.js') !!}
     {!! Html::script ('assets/js/forms.js') !!}
+    <script>
+        function customResetForm() {
+            $('#commentForm').find(':input:visible').val('')
+        }
+    </script>
 @append

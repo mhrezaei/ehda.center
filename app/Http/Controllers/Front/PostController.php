@@ -67,9 +67,10 @@ class PostController extends Controller
         $request['type'] = $post->type;
 
         $callbackFn = <<<JS
-        if(isDefined(customResetForm) && $.isFunction(customResetForm)) {
+        if((typeof customResetForm !== "undefined") && $.isFunction(customResetForm)) {
             customResetForm();
         }
+        
 JS;
 
 
@@ -261,6 +262,20 @@ JS;
         }
 
         return $this->abort('403');
+    }
+
+    public function faqs()
+    {
+        $faqsHTML = PostsServiceProvider::showList(['type' => 'faq']);
+
+        $newFaqPost = Post::findBySlug('ask-question');
+        if ($newFaqPost->exists and $newFaqPost->canRecieveComments()) {
+            $getNewFaq = true;
+            $newFaqForm = PostsServiceProvider::showPost($newFaqPost);
+        } else {
+            $getNewFaq = false;
+        }
+        return view('front.test.faqs.main', compact('faqsHTML', 'getNewFaq', 'newFaqForm'));
     }
 
     private function show($hashid)
