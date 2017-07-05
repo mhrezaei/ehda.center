@@ -25,7 +25,7 @@ class CreateCommentsTable extends Migration
             $table->string('ip');
             $table->string('name');
             $table->string('email')->index();
-            $table->unsignedBigInteger('mobile');
+            $table->string('mobile');
             $table->string('subject');
             $table->longText('text');
 

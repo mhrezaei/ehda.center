@@ -147,6 +147,7 @@ return [
         'organs'               => 'Select at least one organ.',
         'term_of_service'      => 'You didn\'t accept terms and conditions.',
         'password_reset_token' => 'Enter reset password token.',
+        'name'                 => 'Enter name with english characters.',
     ],
 
     'attributes_example' => [
