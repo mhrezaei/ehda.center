@@ -27,21 +27,23 @@ class ProfileSaveRequest extends FormRequest
     {
         $input = $this->all();
         return [
-            'name_first' => 'required|persian:60',
-            'name_last' => 'required|persian:60',
-            'name_father' => 'persian:60',
-            'birth_date' => 'required|before_or_equal:' . date('Y-m-d'),
-            'education' => 'numeric|in:' . implode(',', array_keys(\Illuminate\Support\Facades\Lang::get('people.edu_level_full'))),
-            'mobile' => 'required|phone:mobile',
-            'home_tel' => 'required|phone:fixed',
-            'email' => 'email',
-            'postal_code' => 'postal_code',
-            'address' => 'persian:60',
-            'gender' => 'required|numeric|in:' . implode(',', array_keys(\Illuminate\Support\Facades\Lang::get('forms.gender'))),
-            'marital' => 'required|numeric|in:1,2',
-            'marriage_date' => 'date|required_if:marital,2',
-            'new_password' => 'same:new_password2|min:8|max:50|',
-//            'new_password2' => 'required_with:password|same:password|min:8|max:50|',
+            'name_first'  => 'required|persian:60',
+            'name_last'   => 'required|persian:60',
+            'gender'      => 'required|numeric|min:1|max:3',
+            'name_father' => 'required|persian:60',
+            'code_id'     => 'numeric',
+            'birth_date'  => 'required|min:6',
+            'birth_city'  => 'required|numeric|min:1',
+            'edu_level'   => 'required|numeric|min:1|max:6',
+            'job'         => 'required|persian:60',
+            'mobile'      => 'required|phone:mobile',
+            'home_tel'    => 'required|phone:fixed',
+            'home_city'   => 'required|numeric|min:1',
+            'email'       => 'email',
+            'password'    => 'same:password2|min:8|max:50|',
+            'password2'   => 'required_with:password',
+//            'chRegisterAll' => 'required_without_all:chRegisterHeart,chRegisterLung,chRegisterLiver,chRegisterKidney,chRegisterPancreas,chRegisterTissues'
+
         ];
     }
 
@@ -49,14 +51,14 @@ class ProfileSaveRequest extends FormRequest
     {
         $value = parent::all();
         $purified = ValidationServiceProvider::purifier($value, [
-            'name_first' => 'pd',
-            'name_last' => 'pd',
-            'name_father' => 'pd',
-            'birth_date' => 'gDate',
+            'name_first'    => 'pd',
+            'name_last'     => 'pd',
+            'name_father'   => 'pd',
+            'birth_date'    => 'gDate',
             'marriage_date' => 'gDate',
-            'mobile' => 'ed',
-            'password' => 'ed',
-            'password2' => 'ed',
+            'mobile'        => 'ed',
+            'password'      => 'ed',
+            'password2'     => 'ed',
         ]);
         return $purified;
 

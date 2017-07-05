@@ -327,11 +327,12 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
         Route::post('/register/second_step', 'CardController@register_second_step');
 
         // User Routes
-        Route::group(['prefix' => 'user', 'middleware' => ['loggedIn:card-holder', 'is:card-holder']], function () {
-            Route::get('/dashboard', 'UserController@index')->name('user.dashboard');
-            Route::get('/profile', 'UserController@profile')->name('user.profile.edit');
-            Route::get('/drawing', 'UserController@drawing');
-            Route::get('/events', 'UserController@events');
+        Route::group(['prefix' => 'user', 'middleware' => ['auth', 'is:card-holder']], function () {
+            Route::get('dashboard', 'UserController@index')->name('user.dashboard');
+            Route::get('profile', 'UserController@profile')->name('user.profile.edit');
+            Route::get('drawing', 'UserController@drawing');
+            Route::get('events', 'UserController@events');
+            Route::post('update', 'UserController@update')->name('user.profile.update');
         });
 
         /*

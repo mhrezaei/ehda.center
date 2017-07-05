@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Front;
 use App\Http\Requests\Front\ProfileSaveRequest;
 use App\Models\Post;
 use App\Models\Receipt;
+use App\Models\State;
 use App\Models\User;
 use App\Providers\DrawingCodeServiceProvider;
 use App\Providers\PostsServiceProvider;
@@ -43,7 +44,7 @@ class UserController extends Controller
     {
         user()->spreadMeta();
 
-        return view('front.user.profile.0');
+        return view('front.user.profile.edit.main');
     }
 
     public function drawing(Request $request)
@@ -96,9 +97,7 @@ class UserController extends Controller
             $request['password'] = Hash::make($request['new_password']);
         }
         $request['id'] = user()->id;
-        if ($request['marital'] != 2) {
-            unset($request['marriage_date']);
-        }
+
         return $this->jsonAjaxSaveFeedback(User::store($request, ['new_password', 'new_password2']), [
             'success_refresh' => 1,
         ]);

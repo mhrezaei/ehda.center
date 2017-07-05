@@ -681,6 +681,7 @@ function forms_errorIfNotVerifyPassWord(selector) {
     var min = $(selector).attr('minlength');
     var id = $(selector).attr('id');
     var verify = '#' + id + '2';
+
     if ($(selector).val() == $(verify).val()) {
         if (max && min) {
             if ($(selector).val().length > max || $(selector).val().length < min) {
