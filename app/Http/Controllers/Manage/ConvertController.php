@@ -8,6 +8,7 @@ use App\Models\Folder;
 use App\Models\MetaOld;
 use App\Models\Post;
 use App\Models\PostsOld;
+use App\Models\PrintingsOld;
 use App\Models\Role;
 use App\Models\Setting;
 use App\Models\User;
@@ -234,6 +235,11 @@ class ConvertController extends Controller
 			echo "<script>location.reload();</script>" ;
 		}
 
+	}
+
+	public function printing($take = 500 , $loop = true)
+	{
+		dd("GO TO HELL, Thank you by the way. :)") ;
 	}
 
 	public function users($take = 500 , $loop = true)

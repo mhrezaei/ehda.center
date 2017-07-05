@@ -39,6 +39,9 @@ return [
         'view'     => "نمایش",
         'send'     => "ارسال ایمیل/پیامک",
         'search'   => "جست‌وجو",
+        'print' => "چاپ" ,
+        'print-direct' => "چاپ مستقیم" , //@TODO: New
+        'print-excel' => "چاپ اکسل" , //@TODO: New
         'settings' => "تنظیمات" , //@TODO: New
         'permit' => "تعیین سطح دسترسی" , //@TODO: New
     ],

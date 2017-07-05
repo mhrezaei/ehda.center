@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\EhdaPostTrait;
 use App\Traits\TahaModelTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -13,6 +14,7 @@ use Vinkla\Hashids\Facades\Hashids;
 class Post extends Model
 {
 	use TahaModelTrait, SoftDeletes;
+	use EhdaPostTrait ;
 
 	public static    $reserved_slugs  = "none,without";
 	public static    $meta_fields     = ['dynamic'];

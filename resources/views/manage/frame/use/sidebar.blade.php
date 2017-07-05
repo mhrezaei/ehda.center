@@ -19,7 +19,7 @@
 	'sub_menus' => [
 		['cards/create' , trans("ehda.cards.create") , 'plus-circle'],
 		['cards/browse/all' , trans('ehda.cards.browse') , 'bars'],
-		['cards/printings' , trans("ehda.cards.print") , 'print'],
+		['cards/printings' , trans("ehda.printings.title") , 'print'],
 	] ,
 ]     )
 

@@ -370,6 +370,7 @@ class ComposerStaticInitc163ed33e856e3abf8986dc792906912
 
     public static $classMap = array (
         'CreateAddressesTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_18_181432_create_addresses_table.php',
+        'CreateApiTokensTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_08_151359_create_api_tokens_table.php',
         'CreateBranchesTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_18_173741_create_branches_table.php',
         'CreateCartsTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_18_181421_create_carts_table.php',
         'CreateCategoriesTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_18_174713_create_categories_table.php',
@@ -385,6 +386,8 @@ class ComposerStaticInitc163ed33e856e3abf8986dc792906912
         'CreatePasswordResetsTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
         'CreatePosteventsTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_18_172907_create_postevents_table.php',
         'CreatePostsTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_18_172551_create_posts_table.php',
+        'CreatePrintersTable' => __DIR__ . '/../..' . '/database/migrations/2017_07_05_103315_create_printers_table.php',
+        'CreatePrintingsTable' => __DIR__ . '/../..' . '/database/migrations/2017_07_05_102357_create_printings_table.php',
         'CreateReceiptsTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_18_175802_create_receipts_table.php',
         'CreateRoleUserTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_18_173613_create_role_user_table.php',
         'CreateRolesTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_18_173324_create_roles_table.php',
@@ -848,7 +851,6 @@ class ComposerStaticInitc163ed33e856e3abf8986dc792906912
         'PHP_Token_YIELD' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'PHP_Token_YIELD_FROM' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'ProjectSeeder' => __DIR__ . '/../..' . '/database/seeds/ProjectSeeder.php',
-        //'RemoveAnnoyingKeysFromUsers' => __DIR__ . '/../..' . '/database/migrations/2017_06_25_161536_remove_annoying_keys_from_users.php',
         'SebastianBergmann\\CodeCoverage\\CodeCoverage' => __DIR__ . '/..' . '/phpunit/php-code-coverage/src/CodeCoverage.php',
         'SebastianBergmann\\CodeCoverage\\CoveredCodeNotExecutedException' => __DIR__ . '/..' . '/phpunit/php-code-coverage/src/Exception/CoveredCodeNotExecutedException.php',
         'SebastianBergmann\\CodeCoverage\\Driver\\Driver' => __DIR__ . '/..' . '/phpunit/php-code-coverage/src/Driver/Driver.php',

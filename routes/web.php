@@ -41,6 +41,8 @@ Route::group([ //@TODO: Remove when project fully erected.
 	Route::get('/meta' , 'ConvertController@postsMeta');
 	Route::get('/posts' , 'ConvertController@posts');
 	Route::get('/users/{take?}/{loop?}' , 'ConvertController@users');
+	Route::get('/printing/{take?}/{loop?}' , 'ConvertController@printing') ;
+
 	Route::get('/tests' , 'ConvertController@tests');
 	Route::get('/tests2' , 'ConvertController@tests2');
 });
@@ -77,7 +79,7 @@ Route::group([
 
 		Route::get('/printings/modal/{printing_id}/{modal_action}', 'PrintingsController@modalActions');
 		Route::get('/printings/download_excel/{event_id}', 'PrintingsController@excelDownload');
-		Route::get('/printings/{request_tab?}/{event_id?}/{user_id?}/{volunteer_id?}' , 'PrintingsController@browse');
+		Route::get('/printings/{request_tab?}/{event_id?}/{user_id?}/{volunteer_id?}' , 'CardsController@printingBrowse');
 
 		Route::get('/create/{volunteer_id?}', 'CardsController@createChild');
 		Route::get('/edit/{model_id}', 'CardsController@editorChild');

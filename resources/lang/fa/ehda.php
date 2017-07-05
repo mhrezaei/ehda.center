@@ -16,6 +16,16 @@ return [
 		'event_hint_for_card_edits'   => "اگر کارت را به صف چاپ فیزیکی می‌فرستید، می‌توانید رویداد را انتخاب کنید. در غیر این صورت انتخاب رویداد تأثیری ندارد.",
 	],
 
+	'printings' => [
+		'title' => "چاپ‌خانه" ,
+	     'under_any_action' => "در دست اقدام" ,
+	     'pending' => "صف انتظار" ,
+	     'under_direct_printing' => "در حال چاپ مستقیم" ,
+	     'under_excel_printing' => "در حال چاپ اکسل" ,
+		'revert_to_pending' => "عودت به صف انتظار" ,
+		'verify_quality' => "تأیید کیفیت" ,
+	],
+
 	'from_domain'           => "از دامنه‌ی",
 	'donation_card'         => "کارت اهدای عضو",
 	'donation_cards'        => "کارت‌های اهدای عضو",

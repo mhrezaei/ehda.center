@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Requests\Manage\CardInquiryRequest;
 use App\Http\Requests\Manage\CardSaveRequest;
 use App\Models\Post;
+use App\Models\Printing;
 use App\Models\Role;
 use App\Models\State;
 use App\Models\User;
@@ -138,7 +139,7 @@ class CardsController extends UsersController
 		*/
 		$page    = $this->page;
 		$page[0] = ['cards/browse', $this->role->plural_title];
-		$page[1] = ["cards/edut/$model_hash_id", trans("ehda.cards.edit")];
+		$page[1] = ["cards/edit/$model_hash_id", trans("ehda.cards.edit")];
 
 
 		/*-----------------------------------------------
@@ -330,11 +331,87 @@ class CardsController extends UsersController
 		if($data['_submit'] == 'print') {
 			//@TODO
 		}
+
 		/*-----------------------------------------------
 		| Return ...
 		*/
 
 		return $this->jsonAjaxSaveFeedback($saved, ['success_refresh' => true,]);
+
+	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Printings
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public function printingBrowse($request_tab = 'pending', $event_id = 0, $user_id = 0, $volunteer_id = 0)
+	{
+		/*-----------------------------------------------
+		| Preparations ...
+		*/
+		if(!in_array($request_tab, ['pending', 'under_direct_printing', 'under_excel_printing'])) {
+			return view('errors.404');
+		}
+
+		if(user()->as('admin')->cannot('users-card-holder.print')) {
+			return view('errors.403');
+		}
+		if($request_tab == 'direct' or $request_tab == 'excel') {
+			if(user()->as('admin')->cannot("users-card-holder.print_".$request_tab)) {
+				return view('errors.403');
+			}
+		}
+
+		/*-----------------------------------------------
+		| Page ...
+		*/
+		$page[0] = ['cards/printings', trans("ehda.printings.title"), 'cards/printings'];
+		$page[1] = [$request_tab , trans("ehda.printings.$request_tab") , "cards/printings/$request_tab"];
+
+		/*-----------------------------------------------
+		| Events Menu ...
+		*/
+		$all_events   = Post::getAllEvents();
+		$events_array = [
+			[
+				$event_id == '0' ? 'check' : '',
+				trans('people.printings.all_events'),
+				url("manage/cards/printings/$request_tab/all"),
+			],
+			['-'],
+		];
+
+		foreach($all_events as $event) {
+			if($event_id == $event->id) {
+				$event_title = $event->title;
+			}
+			array_push($events_array, [
+				$event_id == $event->id ? 'check' : '',
+				$event->title,
+				url("manage/cards/printings/$request_tab/$event->id"),
+			]);
+		}
+
+		/*-----------------------------------------------
+		| Printings Model ...
+		*/
+		$models = Printing::selector([
+			'criteria'   => $request_tab,
+			'event_id'   => $event_id,
+			'user_id'    => $user_id,
+			'created_by' => $volunteer_id,
+		])->orderBy('updated_at', 'desc')->paginate(50)
+		;
+
+		$db = new Printing();
+
+		/*-----------------------------------------------
+		| View ...
+		*/
+
+		return view("manage.printings.browse", compact('page', 'events_array', 'event_title', 'models', 'db', 'request_tab', 'volunteer', 'volunteer_id', 'event_id', 'user_id'));
 
 	}
 

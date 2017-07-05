@@ -202,14 +202,16 @@
 
 <div class='modal-footer rtl {{ $model->withDisabled()->hasRole('card-holder')? '' : 'noDisplay' }}'>
 	@include("forms.button" , [
-		'label' => trans("forms.button.card_print"),
-		'shape' => "primary" ,
-	]     )
-	@include("forms.button" , [
 		'condition' => $model->canEdit() ,
 		'label' => trans("forms.button.edit"),
-		'shape' => "warning" ,
+		'shape' => "default" ,
 		'link' => url("manage/cards/edit/$model->hash_id") ,
+		'class' => "btn-lg w35" ,
+	]     )
+	@include("forms.button" , [
+		'label' => trans("forms.button.card_print"),
+		'shape' => "primary" ,
+		'class' => "btn-lg w30" ,
 	]     )
 </div>
 
