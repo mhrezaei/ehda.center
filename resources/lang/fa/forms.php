@@ -65,11 +65,14 @@ return [
         'activate_only'        => "به جای ذخیره‌سازی، فعال‌سازی شود",
         'duration'             => "از :date1 تا :date2",
         'change_status'        => "تغییر وضعیت",
+        'download_excel_file'         => "دانلود فایل اکسل", //@Todo: New
+
     ],
 
     "general" => [
         'male'           => 'آقا',
         'female'         => 'خانم',
+        'other_gender' => "سایر" , //@TODO: New
         "single"         => 'بدون همسر',
         "married"        => 'متأهل',
         "all"            => "انتخاب همه",
@@ -98,6 +101,7 @@ return [
         'submit'         => "ثبت",
         'nobody'         => "هیچ‌کس",
         'sorry'          => "شرمنده",
+        'no' => "شماره" , //@TODO: New
     ],
 
 

@@ -7,5 +7,6 @@
 	'options' => [
 		['id'=>'2' , 'title'=>trans('forms.general.female')],
 		['id'=>'1' , 'title'=>trans('forms.general.male')],
+		['id'=>'3' , 'title'=>trans('forms.general.other_gender')],
 	]
 ])

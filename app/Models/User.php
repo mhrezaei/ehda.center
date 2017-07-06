@@ -92,7 +92,7 @@ class User extends Authenticatable
 	|--------------------------------------------------------------------------
 	|
 	*/
-	public static function finder($username, $as_role = null, $username_field = 'auto')
+	public static function finder($username, $as_role = false, $username_field = 'auto')
 	{
 		if($username_field == 'auto') {
 			$login_controller = new LoginController();

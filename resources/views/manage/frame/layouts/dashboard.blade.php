@@ -1,6 +1,8 @@
 @extends('manage.frame.layouts.plane')
 
 @section('body')
+	<i id="sidebarHandle" class="fa fa-chevron-right" onclick="sidebarToggle('fast')"></i>
+
 	<div id="wrapper">
 
 		<!-- Navigation -->
@@ -28,6 +30,7 @@
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
+
 			</div>
 			<!-- /.navbar-static-side -->
 		</nav>
@@ -47,5 +50,4 @@
 			@yield('modal')
 		</div>
 	</div>
-	<i id="sidebarHandle" class="fa fa-chevron-right" onclick="sidebarToggle('fast')"></i>
 @endsection

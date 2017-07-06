@@ -12,7 +12,7 @@
 <td>
 	@include("manage.frame.widgets.grid-text" , [
 		'text' => $model->full_name,
-//		'link' => $model->canEdit()? "modal:manage/users/act/-id-/edit" : '',
+		'link' => user()->as('admin')->can('users-card-holder.view')? "modal:manage/users/act/-id-/card-view" : '',
 	])
 	@include("manage.frame.widgets.grid-tiny" , [
 		'text' => trans('validation.attributes.card_no').': '.$model->card_no,
@@ -78,7 +78,9 @@
 --}}
 
 @include("manage.frame.widgets.grid-actionCol" , [ 'actions' => [
-	['pencil' , trans('forms.button.edit') , "modal:manage/users/act/-id-/edit" , $model->canEdit()],
+	['eye' , trans("forms.button.show_details") , 'modal:manage/users/act/-id-/card-view' , user()->as('admin')->can('users-card-holder.view')],
+
+	['pencil' , trans('forms.button.edit') , "url:manage/cards/edit/-hash_id-" , $model->canEdit()],
 	['key' , trans('people.commands.change_password') , "modal:manage/users/act/-id-/password" , !$model->trashed() and $model->canEdit() ] ,
 	['shield' , trans('people.user_role') , "modal:manage/users/act/-id-/roles" , $model->canPermit()],
 

@@ -21,7 +21,7 @@ else {
 ?>
 
 @if(!isset($condition) or $condition)
-	<a href="{{$target}}" class="btn btn-{{$type or 'default'}} btn-sm" title="{{$caption or ''}}" onclick="{{$on_click or ''}}">
+	<a id="{{$id or ''}}" href="{{$target}}" class="btn btn-{{$type or 'default'}} btn-sm {{$class or ''}}" title="{{$caption or ''}}" onclick="{{$on_click or ''}}">
 		<i class="fa fa-{{$icon or 'dot-circle-o'}}"></i>
 		{{ $caption }}
 	</a>

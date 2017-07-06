@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Manage;
 
+use App\Models\Category;
 use App\Models\Domain;
+use App\Models\Folder;
 use App\Models\MetaOld;
 use App\Models\Post;
 use App\Models\PostsOld;
+use App\Models\PrintingsOld;
 use App\Models\Role;
 use App\Models\Setting;
 use App\Models\User;
@@ -13,6 +16,7 @@ use App\Models\UsersOld;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Vinkla\Hashids\Facades\Hashids;
 
@@ -233,6 +237,11 @@ class ConvertController extends Controller
 
 	}
 
+	public function printing($take = 500 , $loop = true)
+	{
+		dd("GO TO HELL, Thank you by the way. :)") ;
+	}
+
 	public function users($take = 500 , $loop = true)
 	{
 		$last_time = session()->get('convert_last_time' , false);
@@ -372,25 +381,19 @@ class ConvertController extends Controller
 
 	public function tests()
 	{
+		 //login(303793) ;
+		ss(user()->id);
+		//ss(user()->hasRole('card-holder')) ;
+		ss(user()->min(0)->rolesArray());
+		ss(user()->rolesQuery());
 
-		$users = User::all() ;
+		//ss(DB::table('role_user')->where('user_id' , user()->id)->get());
+		//ss(user(303793)->rolesArray()) ;
 
-		foreach( $users as $user) {
-			$user->attachRole('test');
-		}
+	}
 
-		return ;
-		//$user = User::find(1401);
-		//
-		//$user->attachRole('card-holder');
-		//$user->enableRoles() ;
-		//$user->disableRoles() ;
-
-		//ss("is_admin: ".$user->is_admin());
-
-		ss($user->id);
-		//ss($user->is_admin());
-		ss($user->fetchRoles());
-
+	public function tests2()
+	{
+		return login(303793) ;
 	}
 }

@@ -102,6 +102,7 @@ span.navbar-brand {
   bottom: 30px;
   //color: #337ab7 ;
   opacity: 0.3;
+  z-index: 10000;
 }
 #sidebarHandle.gray {
   color: #d8d8d8;
@@ -206,6 +207,7 @@ div.grid_count {
 
   td {
     padding: 10px;
+    font-size: 14px;
 
     span {
       margin-right: 20px;

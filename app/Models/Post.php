@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\EhdaPostTrait;
 use App\Traits\TahaModelTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -13,6 +14,7 @@ use Vinkla\Hashids\Facades\Hashids;
 class Post extends Model
 {
 	use TahaModelTrait, SoftDeletes;
+	use EhdaPostTrait ;
 
 	public static    $reserved_slugs  = "none,without";
 	public static    $meta_fields     = ['dynamic'];
@@ -714,7 +716,10 @@ class Post extends Model
 		/*-----------------------------------------------
 		| Process Domain ...
 		*/
-		if($switch['domain']) {
+		if($switch['domain'] and $switch['domain']!='auto') {
+			if($switch['domain'] == 'auto') {
+				$switch['domain'] = 'all' ; //@TODO: Must incorporate user()'s domain!
+			}
 			$switch['domain'] = (array) $switch['domain'];
 
 			foreach($switch['domain'] as $domain) {

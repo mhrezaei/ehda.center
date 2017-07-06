@@ -15,16 +15,22 @@ use Vinkla\Hashids\Facades\Hashids;
 
 function getLocale()
 {
-    return \Illuminate\Support\Facades\App::getLocale();
+	return \Illuminate\Support\Facades\App::getLocale();
 }
 
-function user()
+function user($id=0)
 {
-    if (Auth::check()) {
-        return Auth::user();
-    } else {
-        return new \App\Models\User();
-    }
+	if($id) {
+		return \App\Models\User::find($id);
+	}
+	else {
+		if(Auth::check()) {
+			return Auth::user();
+		}
+		else {
+			return new \App\Models\User();
+		}
+	}
 }
 
 /**
@@ -36,7 +42,7 @@ function user()
  */
 function getSetting($slug)
 {
-    return setting($slug)->gain();
+	return setting($slug)->gain();
 }
 
 /**
@@ -48,56 +54,65 @@ function getSetting($slug)
  */
 function setting($slug = null)
 {
-    return \App\Models\Setting::builder($slug);
+	return \App\Models\Setting::builder($slug);
 }
 
 /**
  * convert english digits to persian digits
+ *
  * @param $string
+ *
  * @return mixed
  */
 function pd($string)
 {
-    $farsi_chars = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹', '۴', '۵', '۶', 'ی', 'ک', 'ک',];
-    $latin_chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '٤', '٥', '٦', 'ي', 'ك', 'ك',];
-    return str_replace($latin_chars, $farsi_chars, $string);
+	$farsi_chars = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹', '۴', '۵', '۶', 'ی', 'ک', 'ک',];
+	$latin_chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '٤', '٥', '٦', 'ي', 'ك', 'ك',];
+
+	return str_replace($latin_chars, $farsi_chars, $string);
 }
 
 /**
  * convert persian digits to english digits
+ *
  * @param $string
+ *
  * @return mixed
  */
 function ed($string)
 {
-    $farsi_chars = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹', '۴', '۵', '۶', 'ی', 'ک', 'ک',];
-    $latin_chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '٤', '٥', '٦', 'ي', 'ك', 'ك',];
-    return str_replace($farsi_chars, $latin_chars, $string);
+	$farsi_chars = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹', '۴', '۵', '۶', 'ی', 'ک', 'ک',];
+	$latin_chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '٤', '٥', '٦', 'ي', 'ك', 'ك',];
+
+	return str_replace($farsi_chars, $latin_chars, $string);
 }
 
 /**
  * smart convert digits depending on site locale
+ *
  * @param $string
+ *
  * @return mixed
  */
 function ad($string)
 {
 
-    if (isLangRtl()) {
-        return pd($string);
-    }
+	if(isLangRtl()) {
+		return pd($string);
+	}
 
-    return ed($string);
+	return ed($string);
 }
 
 function isLangRtl()
 {
-    $rtlLangs = ['fa', 'ar'];
+	$rtlLangs = ['fa', 'ar'];
 
-    if (in_array(getLocale(), $rtlLangs)) {
-        return true;
-    }
-    return false;
+	if(in_array(getLocale(), $rtlLangs)) {
+		return true;
+	}
+
+	return false;
 }
 
 
@@ -118,13 +133,13 @@ function isLangRtl()
  */
 function array_default($array, $defaults)
 {
-    foreach ($defaults as $key => $value) {
-        if (!array_has($array, $key)) {
-            $array[$key] = $value;
-        }
-    }
+	foreach($defaults as $key => $value) {
+		if(!array_has($array, $key)) {
+			$array[ $key ] = $value;
+		}
+	}
 
-    return $array;
+	return $array;
 }
 
 /**
@@ -137,16 +152,17 @@ function array_default($array, $defaults)
  */
 function array_normalize($array, $reference)
 {
-    $result = [];
-    foreach ($reference as $key => $value) {
-        if (!array_has($array, $key)) {
-            $result[$key] = $value;
-        } else {
-            $result[$key] = $array[$key];
-        }
-    }
+	$result = [];
+	foreach($reference as $key => $value) {
+		if(!array_has($array, $key)) {
+			$result[ $key ] = $value;
+		}
+		else {
+			$result[ $key ] = $array[ $key ];
+		}
+	}
 
-    return $result;
+	return $result;
 
 }
 
@@ -161,63 +177,63 @@ function array_normalize($array, $reference)
  */
 function array_normalize_keep_originals($array, $reference)
 {
-    foreach ($reference as $key => $value) {
-        if (!array_has($array, $key)) {
-            $array[$key] = $value;
-        }
-    }
+	foreach($reference as $key => $value) {
+		if(!array_has($array, $key)) {
+			$array[ $key ] = $value;
+		}
+	}
 
-    return $array;
+	return $array;
 }
 
 function array_maker($string, $first_delimiter = '-', $second_delimiter = '=')
 {
-    $array = explode($first_delimiter, str_replace(' ', null, $string));
-    foreach ($array as $key => $switch) {
-        $switch = explode($second_delimiter, $switch);
-        unset($array[$key]);
-        if (sizeof($switch) < 2) {
-            continue;
-        }
-        $array[$switch[0]] = $switch[1];
-    }
+	$array = explode($first_delimiter, str_replace(' ', null, $string));
+	foreach($array as $key => $switch) {
+		$switch = explode($second_delimiter, $switch);
+		unset($array[ $key ]);
+		if(sizeof($switch) < 2) {
+			continue;
+		}
+		$array[ $switch[0] ] = $switch[1];
+	}
 
-    return $array;
+	return $array;
 
 }
 
 function array_random($array)
 {
-    $key = rand(0, sizeof($array) - 1);
+	$key = rand(0, sizeof($array) - 1);
 
-    return $array[$key];
+	return $array[ $key ];
 }
 
 function array_has_required($required, $array)
 {
-    return arrayHasRequired($required, $array);
+	return arrayHasRequired($required, $array);
 }
 
 function arrayHasRequired($required, $array)
 {
-    if (!is_array($required)) {
-        $required = [$required];
-    }
+	if(!is_array($required)) {
+		$required = [$required];
+	}
 
-    foreach ($required as $fieldName) {
-        if (!isset($array[$fieldName]) or !$array[$fieldName]) {
-            return false;
-        }
-    }
+	foreach($required as $fieldName) {
+		if(!isset($array[ $fieldName ]) or !$array[ $fieldName ]) {
+			return false;
+		}
+	}
 
-    return true;
+	return true;
 }
 
 function isJson($string)
 {
-    json_decode($string);
+	json_decode($string);
 
-    return (json_last_error() == JSON_ERROR_NONE);
+	return (json_last_error() == JSON_ERROR_NONE);
 }
 
 /**
@@ -229,246 +245,236 @@ function isJson($string)
  */
 function ss($anything)
 {
-    echo view('templates.say', ['array' => $anything]);
+	echo view('templates.say', ['array' => $anything]);
 
-    return null;
+	return null;
 }
 
 
 function v0()
 {
-    return "javascript:void(0)";
+	return "javascript:void(0)";
 
 
 }
 
 function makeDateTimeString($date, $hour = 0, $minute = 0, $seccond = 0)
 {
-    $date = "$date $hour:$minute:$seccond";
-    $carbon = new Carbon($date);
+	$date   = "$date $hour:$minute:$seccond";
+	$carbon = new Carbon($date);
 
-    return $carbon->toDateTimeString();
+	return $carbon->toDateTimeString();
 
 }
 
 function url_locale($url_string = '')
 {
-    return url('/' . getLocale() . '/' . $url_string);
+	return url('/' . getLocale() . '/' . $url_string);
 }
 
 function login($id) //@TODO: Remove this function on production
 {
-    \Illuminate\Support\Facades\Auth::loginUsingId($id);
+	\Illuminate\Support\Facades\Auth::loginUsingId($id);
 
-    return user()->full_name;
+	return user()->full_name;
 }
 
 function echoDate($date, $foramt = 'default', $language = 'auto', $pd = false)
 {
-    /*-----------------------------------------------
-    | Safety Bypass ...
-    */
-    if (in_array($date, [null, '0000-00-00 00:00:00', '0000-00-00'])) {
-        return '-';
-    }
+	/*-----------------------------------------------
+	| Safety Bypass ...
+	*/
+	if(in_array($date, [null, '0000-00-00 00:00:00', '0000-00-00'])) {
+		return '-';
+	}
 
-    /*-----------------------------------------------
-    | Process ...
-    */
-    if ($foramt == 'default') {
-        $foramt = 'j F Y [H:m]';
-    }
+	/*-----------------------------------------------
+	| Process ...
+	*/
+	if($foramt == 'default') {
+		$foramt = 'j F Y [H:m]';
+	}
 
-    if ($language == 'auto') {
-        $language = getLocale();
-    }
+	if($language == 'auto') {
+		$language = getLocale();
+	}
 
-    switch ($language) {
-        case 'fa':
-            $date = jDate::forge($date)->format($foramt);
-            break;
+	switch ($language) {
+		case 'fa':
+			$date = jDate::forge($date)->format($foramt);
+			break;
 
-        case 'en':
-            $date = $date->format($foramt);
-            break;
+		case 'en':
+			$date = $date->format($foramt);
+			break;
 
-        default:
-            $date = $date->format($foramt);
-    }
+		default:
+			$date = $date->format($foramt);
+	}
 
-    if ($pd) {
-        return pd($date);
-    } else {
-        return $date;
-    }
+	if($pd) {
+		return pd($date);
+	}
+	else {
+		return $date;
+	}
 }
 
 function fakeDrawingCode($amount = false, $timestamp = false) //@TODO: Remove this on production
 {
-    if (!$timestamp) {
-        $timestamp = time();
-    }
-    if (!$amount) {
-        $amount = rand(5, 150) * 10000;
-    }
+	if(!$timestamp) {
+		$timestamp = time();
+	}
+	if(!$amount) {
+		$amount = rand(5, 150) * 10000;
+	}
 
-    return \App\Providers\DrawingCodeServiceProvider::create_uniq($timestamp, $amount);
+	return \App\Providers\DrawingCodeServiceProvider::create_uniq($timestamp, $amount);
 }
 
 
 function model($class_name, $id = 0)
 {
-    $class = '\App\Models\\' . camel_case($class_name);
+	$class = '\App\Models\\' . camel_case($class_name);
 
-    if (!$id) {
-        return $class;
-    }
+	if(!$id) {
+		return $class;
+	}
 
-    if (in_array('Illuminate\Database\Eloquent\SoftDeletes', class_uses($class))) {
-        $object = $class::withTrashed()->find($id);
-    } else {
-        $object = $class::find($id);
-    }
+	if(in_array('Illuminate\Database\Eloquent\SoftDeletes', class_uses($class))) {
+		$object = $class::withTrashed()->find($id);
+	}
+	else {
+		$object = $class::find($id);
+	}
 
-    return $object;
+	return $object;
 }
 
 
 function fakeData()
 {
-    for ($i = 1; $i <= 1000; $i++) {
-        \App\Models\Drawing::create([
-            'user_id'    => 100 + $i,
-            'post_id'    => 65,
-            'amount'     => rand(1000, 1000000000),
-            'lower_line' => rand(1, 100),
-            'upper_line' => rand(1000, 5000),
-        ]);
-    }
+	for($i = 1; $i <= 1000; $i++) {
+		\App\Models\Drawing::create([
+			'user_id'    => 100 + $i,
+			'post_id'    => 65,
+			'amount'     => rand(1000, 1000000000),
+			'lower_line' => rand(1, 100),
+			'upper_line' => rand(1000, 5000),
+		]);
+	}
 }
 
-function emitisConverter()
-{
-    $data = \App\Models\Post::where([
-        'type'       => 'products',
-        'sale_price' => '0.00',
-    ])->get();
-
-    if (!$data->count()) {
-        return 'Nothing needed! :)';
-    }
-
-    foreach ($data as &$datum) {
-        $datum->sale_price = $datum->price;
-        $datum->save();
-    }
-    return 'All done ^_^';
-}
 
 function url_exists($url)
 {
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_NOBODY, true);
-    curl_exec($ch);
-    $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+	$ch = curl_init($url);
+	curl_setopt($ch, CURLOPT_NOBODY, true);
+	curl_exec($ch);
+	$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-    if ($code == 200) {
-        $status = true;
-    } else {
-        $status = false;
-    }
-    curl_close($ch);
+	if($code == 200) {
+		$status = true;
+	}
+	else {
+		$status = false;
+	}
+	curl_close($ch);
 
-    return $status;
+	return $status;
 
 }
 
 /**
  * @param delimiter $string
- * @param string $string
+ * @param string    $string
  */
 function explodeNotEmpty($delimiter, $string)
 {
-    return array_values(array_filter(explode($delimiter, $string)));
+	return array_values(array_filter(explode($delimiter, $string)));
 }
 
 function arrayPrefixToIndex($delimiter, $haystack)
 {
-    if (is_array($haystack)) {
-        foreach ($haystack as $index => $field) {
-            $parts = explode($delimiter, $field, 2);
-            if (count($parts) == 2) {
-                $key = $parts[0];
-                $value = $parts[1];
-                $value = arrayPrefixToIndex($delimiter, $value);
+	if(is_array($haystack)) {
+		foreach($haystack as $index => $field) {
+			$parts = explode($delimiter, $field, 2);
+			if(count($parts) == 2) {
+				$key   = $parts[0];
+				$value = $parts[1];
+				$value = arrayPrefixToIndex($delimiter, $value);
 
-                $target = &$haystack[$key];
-                if (isset($target)) {
-                    if (!is_array($target)) {
-                        $target = [$target];
-                    }
+				$target = &$haystack[ $key ];
+				if(isset($target)) {
+					if(!is_array($target)) {
+						$target = [$target];
+					}
 
-                    if (!is_array($value)) {
-                        $value = [$value];
-                    }
+					if(!is_array($value)) {
+						$value = [$value];
+					}
 
-                    $target = array_merge($target, $value);
-                } else {
-                    $target = $value;
-                }
-            }
-            unset($haystack[$index]);
-        }
+					$target = array_merge($target, $value);
+				}
+				else {
+					$target = $value;
+				}
+			}
+			unset($haystack[ $index ]);
+		}
 
-        return $haystack;
-    }
+		return $haystack;
+	}
 
-    if (is_string($haystack)) {
-        $parts = explode($delimiter, $haystack, 2);
-        if (count($parts) == 2) {
-            $key = $parts[0];
-            $value = $parts[1];
-            $value = arrayPrefixToIndex($delimiter, $value);
+	if(is_string($haystack)) {
+		$parts = explode($delimiter, $haystack, 2);
+		if(count($parts) == 2) {
+			$key   = $parts[0];
+			$value = $parts[1];
+			$value = arrayPrefixToIndex($delimiter, $value);
 
-            $haystack = [
-                $key => $value,
-            ];
+			$haystack = [
+				$key => $value,
+			];
 
-            return $haystack;
-        }
-    }
+			return $haystack;
+		}
+	}
 
-    return $haystack;
+	return $haystack;
 }
 
 function hashid_encrypt($id, $connection = 'main')
 {
-    return Hashids::connection($connection)->encode($id);
+	return Hashids::connection($connection)->encode($id);
 }
 
 function hashid_decrypt($hash, $connection = 'main')
 {
-    return Hashids::connection($connection)->decode($hash);
+	return Hashids::connection($connection)->decode($hash);
 }
 
 /**
  * checks if $code is a valid color code
+ *
  * @param $code
+ *
  * @return bool
  */
 function validateColorCode($code)
 {
-    if (is_string($code)) {
-        if (!starts_with($code, '#')) {
-            $code = '#' . $code;
-        }
+	if(is_string($code)) {
+		if(!starts_with($code, '#')) {
+			$code = '#' . $code;
+		}
 
 
-        if (preg_match('/^#[a-fA-F0-9]{6}$/i', $code)) {
-            return $code;
-        }
-    }
-    return false;
+		if(preg_match('/^#[a-fA-F0-9]{6}$/i', $code)) {
+			return $code;
+		}
+	}
+
+	return false;
 }
 
 /**
@@ -476,7 +482,7 @@ function validateColorCode($code)
  */
 function setDomain($domain = 'global')
 {
-    session()->put('domain', $domain);
+	session()->put('domain', $domain);
 
 }
 
@@ -485,24 +491,34 @@ function setDomain($domain = 'global')
  */
 function getDomain()
 {
-    if (session()->has('domain'))
-    {
-        $domain = Session::get('domain');
-        if ($domain == 'global')
-        {
-            return null;
-        }
-        else
-        {
-            return $domain;
-        }
-    }
-    else
-    {
-        return null;
-    }
+	if(session()->has('domain')) {
+		$domain = Session::get('domain');
+		if($domain == 'global') {
+			return null;
+		}
+		else {
+			return $domain;
+		}
+	}
+	else {
+		return null;
+	}
 }
 
-function findUser($username , $as_role = null , $username_field = 'auto') {
-	return model('user')::finder($username , $as_role , $username_field);
+function findUser($username, $as_role = null, $username_field = 'auto')
+{
+	return userFinder($username, $as_role = null, $username_field = 'auto');
+}
+
+function userFinder($username, $as_role = null, $username_field = 'auto')
+{
+	return model('user')::finder($username, $as_role, $username_field);
+}
+
+function formatPhone($data)
+{
+	if(substr($data,0,1) == 0 ) {
+		$data = substr($data,1,10);
+	}
+	return '('.substr($data, 0, 3).') '.substr($data, 3, 3).'-'.substr($data,6) ;
 }

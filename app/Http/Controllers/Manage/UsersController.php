@@ -69,6 +69,7 @@ class UsersController extends Controller
 			'mass_actions'      => [
 				['mobile', trans('people.commands.send_sms'), "modal:manage/users/act/0/sms/$request_role", user()->as('admin')->can("users-$request_role.send")],
 			],
+		     'toolbar_buttons' => [] ,
 		]);
 
 		return $switches;
@@ -465,14 +466,14 @@ class UsersController extends Controller
 			$user->detachRole($role_slug);
 		}
 		elseif($new_status == 'ban') {
-			$user->as($role_slug)->disable();
+			$user->disableRole($role_slug);
 		}
 		else {
 			if($user->withDisabled()->as($role_slug)->hasnotRole()) {
 				$user->attachRole($role_slug, '', $new_status);
 			}
 			elseif($user->as($role_slug)->disabled()) {
-				$user->as($role_slug)->enable();
+				$user->enableRole($role_slug);
 			}
 
 			//$user->as($role_slug)->setStatus($new_status) ;
