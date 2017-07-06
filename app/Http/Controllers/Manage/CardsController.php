@@ -73,6 +73,9 @@ class CardsController extends UsersController
 					'caption'   => trans("ehda.cards.create"),
 				],
 			],
+		     'more_mass_actions' => [
+			     ['print', trans('ehda.printings.send_to'), "modal:manage/users/act/0/card-print"],
+		     ],
 			//'search_panel_view' => "search-for-cards",
 		];
 
@@ -626,6 +629,42 @@ class CardsController extends UsersController
 		session()->put('user_last_used_event',$event->id);
 		$saved = Printing::addTo($event , $user);
 		return $this->jsonAjaxSaveFeedback( $saved );
+
+	}
+
+	public function addToPrintingsMass(Request $request)
+	{
+		$id_array = explode(',', $request->ids);
+		$done = 0;
+
+		/*-----------------------------------------------
+		| Security ...
+		*/
+		if(user()->as('admin')->cannot('users-card-holder')) {
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+		}
+
+		/*-----------------------------------------------
+		| Action ...
+		*/
+		$event = Post::find($request->event_if_for_print) ;
+		session()->put('user_last_used_event',$event->id);
+		foreach($id_array as $id) {
+			$user = User::find($id);
+			if($user and $user->id) {
+				$done += boolval(Printing::addTo($event , $user)) ;
+			}
+		}
+
+		/*-----------------------------------------------
+		| Return ...
+		*/
+		return $this->jsonAjaxSaveFeedback($done, [
+			'success_message' => trans("forms.feed.mass_done", [
+				"count" => pd($done),
+			]),
+		]);
+
 
 	}
 

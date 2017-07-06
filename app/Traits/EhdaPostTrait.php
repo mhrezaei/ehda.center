@@ -12,7 +12,7 @@ trait EhdaPostTrait
 		])->orderBy('published_at' , 'desc')->get() ;
 	}
 
-	public static function activeEventsArray($mark_user_last_choice = true)
+	public static function activeEventsArray()
 	{
 		$events     = [];
 		foreach(self::getAllEvents() as $event) {

@@ -69,8 +69,11 @@ class UsersController extends Controller
 			'mass_actions'      => [
 				['mobile', trans('people.commands.send_sms'), "modal:manage/users/act/0/sms/$request_role", user()->as('admin')->can("users-$request_role.send")],
 			],
-		     'toolbar_buttons' => [] ,
+			'more_mass_actions' => [] ,
+			'toolbar_buttons'   => [],
 		]);
+
+		$switches['mass_actions'] = array_merge( $switches['mass_actions'] , $switches['more_mass_actions']) ;
 
 		return $switches;
 	}
@@ -611,7 +614,7 @@ class UsersController extends Controller
 				'count' => pd($count),
 			]),
 			'danger_message'  => trans('people.form.message_not_sent_to_anybody'),
-		]) ;
+		]);
 
 	}
 }

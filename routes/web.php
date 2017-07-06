@@ -75,28 +75,28 @@ Route::group([
 		Route::get('/browse/search/{keyword?}' , 'CardsController@searchChild');
 		Route::get('/browse/{request_tab}/{volunteer?}/{post?}', 'CardsController@browseChild');
 		Route::get('/search', 'CardsController@search');
-		Route::get('/reports', 'CardsController@reports');//@TODO: INTACT!
+		//Route::get('/reports', 'CardsController@reports');
 
 		Route::get('/printings/act/{action}' , 'CardsController@printingAction');
 
-		Route::get('/printings/modal/{printing_id}/{modal_action}', 'CardsController@modalActions');
+		//Route::get('/printings/modal/{printing_id}/{modal_action}', 'CardsController@modalActions');
 		Route::get('/printings/download_excel/{event_id}', 'CardsController@printingExcelDownload');
 		Route::get('/printings/{request_tab?}/{event_id?}/{user_id?}/{volunteer_id?}' , 'CardsController@printingBrowse');
 
 		Route::get('/create/{volunteer_id?}', 'CardsController@createChild');
 		Route::get('/edit/{model_id}', 'CardsController@editorChild');
-		Route::get('/{card_id}/{modal_action}', 'CardsController@modalActions');
 
 		Route::group(['prefix' => 'save'], function () {
-			Route::post('/', 'CardsController@saveChild');
+			//Route::post('/', 'CardsController@saveChild');
 			Route::post('/volunteers', 'CardsController@saveForVolunteers');
-			Route::post('/inquiry', 'CardsController@inquiry');
+			//Route::post('/inquiry', 'CardsController@inquiry');
 
 			Route::post('/add_to_print', 'CardsController@addToPrintings');
-			Route::post('/delete', 'CardsController@delete');
-			Route::post('/bulk_delete', 'CardsController@bulk_delete');
-			Route::post('/sms', 'CardsController@sms');
-			Route::post('/email', 'CardsController@email');
+			Route::post('/add_to_print_mass', 'CardsController@addToPrintingsMass');
+			//Route::post('/delete', 'CardsController@delete');
+			//Route::post('/bulk_delete', 'CardsController@bulk_delete');
+			//Route::post('/sms', 'CardsController@sms');
+			//Route::post('/email', 'CardsController@email');
 			Route::post('/bulk_email', 'CardsController@bulk_email');
 			Route::post('/print', 'CardsController@single_print');
 			Route::post('/bulk_print', 'CardsController@bulk_print');
