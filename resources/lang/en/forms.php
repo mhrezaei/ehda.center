@@ -111,6 +111,11 @@ return [
         '3' => 'Other',
     ],
 
+    "marital" => [
+        'single'  => 'Single',
+        'married' => 'Married',
+    ],
+
     "alphabet" => [
         'A' => 'A',
         'B' => 'B',

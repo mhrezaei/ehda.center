@@ -7,7 +7,7 @@
     </div>
     <div class="col-xs-5">
         {{-- @TODO: should make its link to go to suitable link for voluteer --}}
-        <a href="#"
+        <a href="{{ route_locale('volunteer.register.step.final.get') }}"
            class="btn btn-success btn-block">
             {{ trans('front.volunteer_section.plural') }}
         </a>

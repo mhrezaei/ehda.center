@@ -79,23 +79,31 @@ return [
     'send_works'                               => 'ارسال آثار',
     'send_work'                                => 'ارسال اثر',
     'personal_information'                     => 'اطلاعات فردی',
+    'educational_information'                  => 'اطلاعات تحصیلی',
     'welcome_message'                          => 'خوش آمدید',
     'archive'                                  => 'آرشیو',
     'short_link'                               => 'لینک کوتاه',
     'contact_info'                             => 'اطلاعات تماس',
+    'home_info'                                => 'اطلاعات محل سکونت', // @TODO: new
+    'job_info'                                 => 'اطلاعات شغل', // @TODO: new
+    'supplementary_info'                       => 'اطلاعات تکمیلی', // @TODO: new
+    'your_activity'                            => 'درچه زمینه ای می توانید فعالیت کنید؟', // @TODO: new
     'login_info'                               => 'اطلاعات ورود به سامانه',
     'download'                                 => 'دانلود',
     'print'                                    => 'چاپ',
     'share'                                    => 'اشتراک',
 
     'volunteer_section' => [
-        'singular' => 'سفیر اهدای عضو',
-        'plural'   => 'سفیران اهدای عضو',
-        'section'  => 'بخش سفیران اهدای عضو',
-        'special'  => [
+        'singular'         => 'سفیر اهدای عضو',
+        'plural'           => 'سفیران اهدای عضو',
+        'section'          => 'بخش سفیران اهدای عضو',
+        'go_section'       => 'ورود به بخش سفیران اهدای عضو', // @todo: new
+        'register'         => 'ثبت نام سفیر',
+        'register_success' => 'ثبت نام سفیر با موفقیت انجام شد. به زودی جهت شرکت در جلسه‌ی توجیحی سفیران، با شما تماس گرفته خواهد شد.', // @TODO: changed
+        'special'          => [
             'singular' => 'سفیر ویژه',
             'plural'   => 'سفیران ویژه',
-        ], // @TODO: new
+        ],
     ],
 
     'organ_donation_card_section' => [
@@ -183,10 +191,11 @@ return [
     ],
 
     'messages' => [
-        'you_are_volunteer'       => 'شما سفیر هستید.',
-        'you_are_card_holder'     => 'شما کارت اعدای عضو دارید.',
-        'unable_to_register_card' => 'امکان ثبت کارت وجود ندارد.',
-        'login'                   => 'وارد شوید.',
+        'you_are_volunteer'            => 'شما سفیر هستید.',
+        'you_are_card_holder'          => 'شما کارت اعدای عضو دارید.',
+        'unable_to_register_card'      => 'امکان ثبت کارت وجود ندارد.',
+        'unable_to_register_volunteer' => 'امکان ثبت سفیر وجود ندارد.', // @TODO: new
+        'login'                        => 'وارد شوید.',
     ],
 
     'notes' => [

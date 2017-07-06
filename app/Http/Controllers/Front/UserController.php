@@ -98,6 +98,12 @@ class UserController extends Controller
         }
         $request['id'] = user()->id;
 
+        if(isset($request['code_melli'])) {
+            // If the form has been manipulated
+            // Because we've set "code_melli" disabled in the form and it should't have been posted
+            unset($request['code_melli']);
+        }
+
         return $this->jsonAjaxSaveFeedback(User::store($request, ['new_password', 'new_password2']), [
             'success_refresh' => 1,
         ]);

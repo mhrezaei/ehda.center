@@ -1,143 +1,181 @@
-{!! Html::script ('assets/libs/jquery.form.min.js') !!}
-{!! Html::script ('assets/js/forms.js') !!}
+@section('head')
+    {!! Html::style('assets/libs/bootstrap-select/bootstrap-select.min.css') !!}
+    <style>
+        a.ehda-card {
+            display: none;
+        }
+    </style>
+@append
 
 <div class="row article">
-    <div class="col-xs-12">
-        <div class="container">
+    <div class="container">
+        <div class="col-xs-12">
             <div class="row">
-                <p style="text-align: justify;">
-                {!! $volunteer->text !!}
-                    @if(Auth::check())
-                        @if(Auth::user()->volunteer_status >= 3 or Auth::user()->volunteer_status < 0)
-                            @include('forms.button', [
-                            'shape' => 'success',
-                            'link' => url('/volunteers/exam'),
-                            'label' => trans('site.global.volunteer_register_page'),
-                            'extra' => 'disabled=disabled',
-                            ])
-                        @elseif(Auth::user()->volunteer_status == 2)
-                            @include('forms.button', [
-                            'shape' => 'success',
-                            'link' => url('/volunteers/final_step'),
-                            'label' => trans('site.global.volunteer_complete_form'),
-                            ])
-                        @elseif(Auth::user()->volunteer_status == 1)
-                            @if(\Carbon\Carbon::parse(Auth::user()->exam_passed_at)->diffInHours(\Carbon\Carbon::now()) >= 24)
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="row border-2 border-blue pt15 pb15 rounded-corners-5">
+                        @if(auth()->guest())
+                            {!! Form::open([
+                                'url'	=> route_locale('volunteer.register.step1.post') ,
+                                'method'=> 'post',
+                                'class' => 'clearfix ehda-card-form js',
+                                'name' => 'register_form',
+                                'id' => 'register_form',
+                            ]) !!}
+
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <h5 class="form-heading">{{ trans('front.personal_information') }}</h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    @include('front.forms.input', [
+                                        'name' => 'name_first',
+                                        'class' => 'form-persian form-required',
+                                        'dataAttributes' => [
+                                            'toggle' => 'tooltip',
+                                            'placement' => 'top',
+                                        ],
+                                        'otherAttributes' => [
+                                            'title' => trans('validation.attributes_example.name_first'),
+                                            'minlength' => 2,
+                                        ]
+                                    ])
+                                </div>
+                                <div class="col-xs-12">
+                                    @include('front.forms.input', [
+                                        'name' => 'name_last',
+                                        'class' => 'form-persian form-required',
+                                        'dataAttributes' => [
+                                            'toggle' => 'tooltip',
+                                            'placement' => 'top',
+                                        ],
+                                        'otherAttributes' => [
+                                            'title' => trans('validation.attributes_example.name_last'),
+                                            'minlength' => 2,
+                                        ]
+                                    ])
+                                </div>
+                                <div class="col-xs-12">
+                                    @include('front.forms.input', [
+                                        'name' => 'code_melli',
+                                        'class' => 'form-national form-required',
+                                        'dataAttributes' => [
+                                            'toggle' => 'tooltip',
+                                            'placement' => 'top',
+                                        ],
+                                        'otherAttributes' => [
+                                            'title' => trans('validation.attributes_example.code_melli'),
+                                            'minlength' => 10,
+                                            'maxlength' => 10,
+                                        ]
+                                    ])
+                                </div>
+                                <div class="col-xs-12">
+                                    @include('front.forms.input', [
+                                        'name' => 'mobile',
+                                        'class' => 'form-mobile form-required',
+                                        'dataAttributes' => [
+                                            'toggle' => 'tooltip',
+                                            'placement' => 'top',
+                                        ],
+                                        'otherAttributes' => [
+                                            'title' => trans('validation.attributes_example.mobile'),
+                                            'minlength' => 11,
+                                            'maxlength' => 11,
+                                        ]
+                                    ])
+                                </div>
+                                <div class="col-xs-12">
+                                    @include('front.forms.input', [
+                                        'name' => 'email',
+                                        'class' => 'form-email form-required',
+                                        'dataAttributes' => [
+                                            'toggle' => 'tooltip',
+                                            'placement' => 'top',
+                                        ],
+                                        'otherAttributes' => [
+                                            'title' => trans('validation.attributes_example.email'),
+                                        ]
+                                    ])
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 pt15">
+                                @include('forms.feed')
+                            </div>
+                            <div id="form-buttons" class="col-xs-12 text-center">
                                 @include('forms.button', [
-                                'shape' => 'success',
-                                'link' => url('/volunteers/exam'),
-                                'label' => trans('site.global.volunteer_exam'),
+                                    'shape' => 'success',
+                                    'label' => trans('forms.button.send'),
+                                    'type' => 'submit',
                                 ])
-                            @else
-                                @include('forms.button', [
-                                'shape' => 'success',
-                                'link' => url('/volunteers/exam'),
-                                'label' => 24 - \Carbon\Carbon::parse(Auth::user()->exam_passed_at)->diffInHours(\Carbon\Carbon::now()) . trans('site.global.volunteer_waiting_time_for_exam'),
-                                'extra' => 'disabled=disabled',
-                                ])
-                            @endif
-                        @elseif(Auth::user()->volunteer_status == 0)
-                            @include('forms.button', [
-                                'shape' => 'success',
-                                'link' => url('/volunteers/exam'),
-                                'label' => trans('site.global.volunteer_exam'),
-                                ])
+                            </div>
+                            {!! Form::close() !!}
                         @else
-                            @include('forms.button', [
-                            'shape' => 'success stepOneBtn',
-                            'link' => 'volunteer_register_step_one("start")',
-                            'label' => trans('site.global.volunteer_register_page')
-                            ])
+                            <div class="col-xs-12 align-vertical-center align-horizontal-center text-center"
+                                 style="min-height: 200px">
+                                @if(user()->is_admin())
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            {{ trans('front.messages.you_are_volunteer') }}
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <a href="{{ url('manage') }}"
+                                               class="btn btn-info">{{ trans('front.volunteer_section.go_section') }}</a>
+                                        </div>
+                                    </div>
+                                @elseif (user()->withDisabled()->is_admin())
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            {{ trans('front.messages.unable_to_register_volunteer') }}
+                                        </div>
+                                    </div>
+                                @elseif (user()->is('card_holder'))
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            {{ trans('front.messages.you_are_card_holder') }}
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <a href="{{ route_locale('volunteer.register.step.final.get') }}"
+                                               class="btn btn-info">{{ trans('front.volunteer_section.register') }}</a>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
                         @endif
-                    @else
-                        @include('forms.button', [
-                        'shape' => 'success stepOneBtn',
-                        'link' => 'volunteer_register_step_one("start")',
-                        'label' => trans('site.global.volunteer_register_page')
-                        ])
-                    @endif
-
-                    @include('forms.button', [
-                        'shape' => 'info pdf-book',
-                        'link' => url('') . '/assets/files/safiran-learning.pdf',
-                        'label' => trans('site.global.volunteer_resource_pdf'),
-                    ])
-                </p>
-            </div>
-            <div class="col-xs-12 col-md-8 col-md-offset-2 stepOneForm">
-                {!! Form::open([
-                            'url'	=> 'volunteer/first_step' ,
-                            'method'=> 'post',
-                            'class' => 'clearfix js',
-                            'name' => 'volunteer_form_step_one',
-                            'id' => 'volunteer_form_step_one',
-                        ]) !!}
-
-                <div class="form-group">
-                    <div>اطلاعات فردی</div>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-12 col-sm-6">
-                        <div class="form-group">
-                            <label for="name_first">{{ trans('validation.attributes.name_first') }}: <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control form-persian form-required" id="name_first" name="name_first" data-toggle="tooltip" data-placement="top" placeholder="{{ trans('validation.attributes_placeholder.name_first') }}" title="{{ trans('validation.attributes_example.name_first') }}" minlength="2" error-value="{{ trans('validation.javascript_validation.name_first') }}">
-                        </div>
                     </div>
-                    <div class="col-xs-12 col-sm-6">
-                        <div class="form-group">
-                            <label for="name_last">{{ trans('validation.attributes.name_last') }}: <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control form-persian form-required" id="name_last" name="name_last" data-toggle="tooltip" data-placement="top" placeholder="{{ trans('validation.attributes_placeholder.name_last') }}" title="{{ trans('validation.attributes_example.name_last') }}" minlength="2" error-value="{{ trans('validation.javascript_validation.name_last') }}">
+                </div>
+                <div class="col-md-8 col-sm-6 col-xs-12">
+                    <div class="row">
+                        <div class="col-xs-12 text-justify">
+                            {!! $post->text !!}
                         </div>
                     </div>
                 </div>
-
-                <div class="row">
-                    <div class="col-xs-12 col-sm-6">
-                        <div class="form-group">
-                            <label for="code_melli">{{ trans('validation.attributes.code_melli') }}: <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control form-national form-required" id="code_melli" name="code_melli" data-toggle="tooltip" data-placement="top" placeholder="{{ trans('validation.attributes_placeholder.code_melli') }}" title="{{ trans('validation.attributes_example.code_melli') }}" minlength="10" maxlength="10" error-value="{{ trans('validation.javascript_validation.code_melli') }}">
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-6">
-                        <div class="form-group">
-                            <label for="tel_mobile">{{ trans('validation.attributes.tel_mobile') }}: <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control form-mobile form-required" id="tel_mobile" name="tel_mobile" data-toggle="tooltip" data-placement="top" placeholder="{{ trans('validation.attributes_placeholder.tel_mobile') }}" title="{{ trans('validation.attributes_example.tel_mobile') }}" minlength="11" maxlength="11" error-value="{{ trans('validation.javascript_validation.tel_mobile') }}">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-12 col-sm-6">
-                        <div class="form-group">
-                            <label for="email">{{ trans('validation.attributes.email') }}: <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control form-email form-required" id="email" name="email" data-toggle="tooltip" data-placement="top" placeholder="{{ trans('validation.attributes_placeholder.email') }}" title="{{ trans('validation.attributes_example.email') }}" error-value="{{ trans('validation.javascript_validation.email') }}">
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-6">
-                        <div class="form-group">
-                            <label for="security">{{ $captcha['question'] }} <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control form-number form-required" id="security" name="security" data-toggle="tooltip" data-placement="top" placeholder="{{ trans('validation.attributes_placeholder.security') }}" title="{{ trans('validation.attributes_example.security') }}" minlength="1" error-value="{{ trans('validation.javascript_validation.security') }}">
-                            <input type="hidden" name="key" value="{{$captcha['key']}}">
-                        </div>
-                    </div>
-                </div>
-                @include('forms.feed')
-                <p>
-                    @include('forms.button', [
-                        'shape' => 'success',
-                        'label' => trans('forms.button.send'),
-                        'type' => 'submit',
-                    ])
-
-                    @include('forms.button', [
-                        'shape' => 'warning',
-                        'link' => 'register_card_step_one("stop")',
-                        'label' => trans('forms.button.cancel'),
-                    ])
-                </p>
-                {!! Form::close() !!}
             </div>
         </div>
     </div>
 </div>
+
+@section('endOfBody')
+    <script>
+        var bootstrapTooltip = $.fn.tooltip.noConflict(); // return $.fn.tooltip to previously assigned value
+
+        $(document).on({
+            click: function (e) {
+                return false;
+            }
+        }, '.dropdown-toggle');
+    </script>
+
+    {!! Html::script ('assets/libs/bootstrap-select/bootstrap-select.min.js') !!}
+    {!! Html::script ('assets/libs/jquery.form.min.js') !!}
+    {!! Html::script ('assets/js/forms.js') !!}
+    {!! Html::script ('assets/libs/jquery-ui/jquery-ui.min.js') !!}
+    @include('front.frame.datepicker_assets')
+
+    <script>
+        $.fn.tooltip = bootstrapTooltip; // give $().bootstrapTooltip the Bootstrap functionality
+    </script>
+@append

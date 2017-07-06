@@ -97,6 +97,7 @@
             ],
             'otherAttributes' => [
                 'title' => trans('validation.attributes_example.code_melli'),
+                'disabled' => 'disabled',
                 'minlength' => 10,
                 'maxlength' => 10,
             ]

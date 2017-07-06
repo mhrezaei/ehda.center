@@ -13,7 +13,7 @@ $alignCenter: ("c": "center");
 $verticalAligning: map_merge($verticalDirections, $alignCenter);
 $horizontalAligning: map_merge($horizontalDirections, $alignCenter);
 $aligning: ("vertical": $verticalAligning, "horizontal": $horizontalAligning);
-$aligningProperties: ("vertical": 'justify-content', "horizontal": 'align-items');
+$aligningProperties: ("vertical": 'align-items', "horizontal": 'justify-content');
 
 /* colors */
 $darkColors: (

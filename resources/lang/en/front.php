@@ -79,6 +79,7 @@ return [
     'send_works'                               => 'Send Works',
     'send_work'                                => 'Send Work',
     'personal_information'                     => 'Personal Information',
+    'educational_information'                  => 'Educational Information',
     'welcome_message'                          => 'Welcome',
     'archive'                                  => 'Archive',
     'short_link'                               => 'Short Link',
@@ -86,9 +87,15 @@ return [
     'login_info'                               => 'Login Info',
 
     'volunteer_section' => [
-        'singular' => 'Organ Donation Volunteer',
-        'plural'   => 'Organ Donation Volunteers',
-        'section'  => 'Organ Donation Volunteers Section',
+        'singular'         => 'Organ Donation Volunteer',
+        'plural'           => 'Organ Donation Volunteers',
+        'section'          => 'Organ Donation Volunteers Section',
+        'register'         => 'Register Volunteer',
+        'register_success' => 'Volunteer registered successfuly.',
+        'special'          => [
+            'singular' => 'Special Volunteer',
+            'plural'   => 'Special Volunteers',
+        ],
     ],
 
     'organ_donation_card_section' => [

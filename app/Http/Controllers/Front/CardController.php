@@ -30,7 +30,10 @@ class CardController extends Controller
     {
         $captcha = SecKeyServiceProvider::getQuestion('fa');
         $post = Post::findBySlug('organ-donation-card');
-        return view('front.card_info.0', compact('captcha', 'post', 'states'));
+        if (!$post or !$post->exists) {
+            return redirect(url_locale());
+        }
+        return view('front.card.card_info.0', compact('captcha', 'post', 'states'));
     }
 
     public function register()
@@ -133,7 +136,7 @@ JS
 
     }
 
-    public function register_third_step($request)
+    private function register_third_step($request)
     {
         $submittedIDs = session()->get('register_card');
         if (!array_key_exists($request->code_melli, $submittedIDs)
@@ -169,7 +172,7 @@ JS
 
             Auth::loginUsingId($userId);
             $return = $this->jsonFeedback(null, [
-                'redirect'     => url('members/my_card'),
+                'redirect'     => route_locale('user.dashboard'),
                 'ok'           => 1,
                 'message'      => trans('forms.feed.register_success'),
                 'redirectTime' => 2000,

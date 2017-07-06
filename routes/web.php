@@ -322,7 +322,7 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
 
         // register new card
         Route::get('/organ_donation_card', 'CardController@index')->name('register_card');
-        Route::post('/register/card', 'CardController@save_registration');
+        Route::post('/register/card', 'CardController@save_registration')->name('register_card.post');
         Route::post('/register/first_step', 'CardController@register_first_step');
         Route::post('/register/second_step', 'CardController@register_second_step');
 
@@ -372,12 +372,15 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
         Route::post('/angels/find', 'PostController@angels_find');
 
         // volunteer pages
-        Route::get('/volunteers', 'members\VolunteersController@index');
-        Route::post('/volunteer/first_step', 'members\VolunteersController@register_first_step');
-        Route::post('/volunteer/second_step', 'members\VolunteersController@register_second_step');
+        Route::get('volunteers', 'VolunteersController@index')->name('volunteer.register.step.1.get');
+        Route::post('volunteer/first-step', 'VolunteersController@register_first_step')
+            ->name('volunteer.register.step1.post');
+        Route::get('volunteers/final-step', 'VolunteersController@register_final_step')
+            ->name('volunteer.register.step.final.get');
+        Route::post('volunteers/final-step', 'VolunteersController@register_final_step_submit')
+            ->name('volunteer.register.step.final.post');
+        Route::post('volunteer/second_step', 'VolunteersController@register_second_step');
         Route::get('/volunteers/exam', 'members\VolunteersController@exam');
-        Route::get('/volunteers/final_step', 'members\VolunteersController@register_final_step');
-        Route::post('/volunteers/final_step/submit', 'members\VolunteersController@register_final_step_submit');
 
     });
 

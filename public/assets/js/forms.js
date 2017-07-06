@@ -349,11 +349,12 @@ function forms_validate(formData, jqForm, options) {
                 }
             }
         }
+console.log($(this))
+console.log($errors)
     });
 
 
     //TODO: Taha i need an value for set it to default for validation, my default value is 0
-
     if (typeof window[$formId + "_validate"] == 'function') {
         var validate = window[$formId + "_validate"](formData, jqForm, options);
         if (validate != 0) {
@@ -363,6 +364,7 @@ function forms_validate(formData, jqForm, options) {
     }
 
     if ($errors > 0) {
+        console.log($errors)
         $('#' + $formId + ' button').prop('disabled', false);
         if ($errors_msg.length) {
             var $m = '<ul>';

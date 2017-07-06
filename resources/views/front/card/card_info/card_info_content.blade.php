@@ -147,12 +147,12 @@
                 <div class="col-md-4 col-sm-6 col-xs-12">
                     @if(!user()->exists)
                         {!! Form::open([
-                                    'url'	=> 'register/card' ,
-                                    'method'=> 'post',
-                                    'class' => 'clearfix ehda-card-form js',
-                                    'name' => 'register_form',
-                                    'id' => 'register_form',
-                                ]) !!}
+                            'url'	=> route_locale('register_card.post') ,
+                            'method'=> 'post',
+                            'class' => 'clearfix ehda-card-form js',
+                            'name' => 'register_form',
+                            'id' => 'register_form',
+                        ]) !!}
 
                         @include('forms.hidden', [
                             'id' => 'step-number',

@@ -6,7 +6,9 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'CreateActivityTable' => $baseDir . '/database/migrations/2017_07_06_141716_create_activity_table.php',
     'CreateAddressesTable' => $baseDir . '/database/migrations/2017_06_18_181432_create_addresses_table.php',
+    'CreateApiTokensTable' => $baseDir . '/database/migrations/2017_05_08_151359_create_api_tokens_table.php',
     'CreateBranchesTable' => $baseDir . '/database/migrations/2017_06_18_173741_create_branches_table.php',
     'CreateCartsTable' => $baseDir . '/database/migrations/2017_06_18_181421_create_carts_table.php',
     'CreateCategoriesTable' => $baseDir . '/database/migrations/2017_06_18_174713_create_categories_table.php',
@@ -485,7 +487,6 @@ return array(
     'PHP_Token_YIELD' => $vendorDir . '/phpunit/php-token-stream/src/Token.php',
     'PHP_Token_YIELD_FROM' => $vendorDir . '/phpunit/php-token-stream/src/Token.php',
     'ProjectSeeder' => $baseDir . '/database/seeds/ProjectSeeder.php',
-    'RemoveAnnoyingKeysFromUsers' => $baseDir . '/database/migrations/2017_06_25_161536_remove_annoying_keys_from_users.php',
     'SebastianBergmann\\CodeCoverage\\CodeCoverage' => $vendorDir . '/phpunit/php-code-coverage/src/CodeCoverage.php',
     'SebastianBergmann\\CodeCoverage\\CoveredCodeNotExecutedException' => $vendorDir . '/phpunit/php-code-coverage/src/Exception/CoveredCodeNotExecutedException.php',
     'SebastianBergmann\\CodeCoverage\\Driver\\Driver' => $vendorDir . '/phpunit/php-code-coverage/src/Driver/Driver.php',

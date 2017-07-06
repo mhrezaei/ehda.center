@@ -369,7 +369,9 @@ class ComposerStaticInitc163ed33e856e3abf8986dc792906912
     );
 
     public static $classMap = array (
+        'CreateActivityTable' => __DIR__ . '/../..' . '/database/migrations/2017_07_06_141716_create_activity_table.php',
         'CreateAddressesTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_18_181432_create_addresses_table.php',
+        'CreateApiTokensTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_08_151359_create_api_tokens_table.php',
         'CreateBranchesTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_18_173741_create_branches_table.php',
         'CreateCartsTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_18_181421_create_carts_table.php',
         'CreateCategoriesTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_18_174713_create_categories_table.php',
@@ -848,7 +850,6 @@ class ComposerStaticInitc163ed33e856e3abf8986dc792906912
         'PHP_Token_YIELD' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'PHP_Token_YIELD_FROM' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'ProjectSeeder' => __DIR__ . '/../..' . '/database/seeds/ProjectSeeder.php',
-        //'RemoveAnnoyingKeysFromUsers' => __DIR__ . '/../..' . '/database/migrations/2017_06_25_161536_remove_annoying_keys_from_users.php',
         'SebastianBergmann\\CodeCoverage\\CodeCoverage' => __DIR__ . '/..' . '/phpunit/php-code-coverage/src/CodeCoverage.php',
         'SebastianBergmann\\CodeCoverage\\CoveredCodeNotExecutedException' => __DIR__ . '/..' . '/phpunit/php-code-coverage/src/Exception/CoveredCodeNotExecutedException.php',
         'SebastianBergmann\\CodeCoverage\\Driver\\Driver' => __DIR__ . '/..' . '/phpunit/php-code-coverage/src/Driver/Driver.php',
