@@ -2,13 +2,23 @@
 
 {{--
 |--------------------------------------------------------------------------
+| Safe Delete
+|--------------------------------------------------------------------------
+|
+--}}
+{{ '' , $user = $model->user }}
+@if(!$user or !$user->id)
+	{{ null , $model->delete() }}
+@endif
+
+{{--
+|--------------------------------------------------------------------------
 | Name
 |--------------------------------------------------------------------------
 |
 --}}
 <td>
 	@include("manage.frame.widgets.grid-text" , [
-		'fake' => $user = $model->user  ,
 		'text' => $user->full_name ,
 		'link' => ($user->id and user()->as('admin')->can('users-card-holder.view'))? "modal:manage/users/act/$user->id/card-view" : '',
 		'link-' => "modal:manage/users/act/$user->id/card-view"
@@ -19,7 +29,7 @@
 		'icon' => "credit-card",
 	])
 	@include("manage.frame.widgets.grid-tiny" , [
-		'text' => trans("validation.attributes.id").': '.$user->id,
+		'text' => trans("validation.attributes.id").': '.$model->id,
 		'color' => "darkgray" ,
 		'condition' => user()->isDeveloper() ,
 		'icon' => "github-alt" ,
@@ -72,4 +82,3 @@
 		'text' => ($domain_name = $user->from_domain_name) ? $domain_name : '-',
 	]     )
 </td>
-

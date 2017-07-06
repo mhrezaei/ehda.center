@@ -17,7 +17,7 @@
 	])
 
 	@include("forms.note" , [
-		'text' => trans('ehda.printings.confirm_good_print_hint'),
+		'text' => trans('ehda.printings.revert_to_pending_hint'),
 		'shape' => "danger" ,
 	])
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Requests\Manage\CardInquiryRequest;
 use App\Http\Requests\Manage\CardSaveRequest;
 use App\Models\Post;
+use App\Models\Printer;
 use App\Models\Printing;
 use App\Models\Role;
 use App\Models\State;
@@ -360,7 +361,7 @@ class CardsController extends UsersController
 			return view('errors.403');
 		}
 		if($request_tab == 'direct' or $request_tab == 'excel') {
-			if(user()->as('admin')->cannot("users-card-holder.print_".$request_tab)) {
+			if(user()->as('admin')->cannot("users-card-holder.print_" . $request_tab)) {
 				return view('errors.403');
 			}
 		}
@@ -369,7 +370,7 @@ class CardsController extends UsersController
 		| Page ...
 		*/
 		$page[0] = ['cards/printings', trans("ehda.printings.title"), 'cards/printings'];
-		$page[1] = [$request_tab , trans("ehda.printings.$request_tab") , "cards/printings/$request_tab"];
+		$page[1] = [$request_tab, trans("ehda.printings.$request_tab"), "cards/printings/$request_tab"];
 
 		/*-----------------------------------------------
 		| Events Menu ...
@@ -418,10 +419,10 @@ class CardsController extends UsersController
 
 	public function printingAction($action)
 	{
-		$view = "manage.printings.act-$action" ;
+		$view = "manage.printings.act-$action";
 
-		if($action=='add-to-excel' or $action=='add-to-direct') {
-			$additive = str_replace('add-to' , null , $action) ;
+		if($action == 'add-to-excel' or $action == 'add-to-direct') {
+			$additive = str_replace('add-to', null, $action);
 			if(user()->as('admin')->cannot("users-card-holder.print-$additive")) {
 				return view('errors.m403');
 			}
@@ -437,7 +438,150 @@ class CardsController extends UsersController
 
 	public function printingActionSave(Request $request)
 	{
-		return $this->jsonFeedback($request->_submit);
+		$action = $request->_submit;
+
+		/*-----------------------------------------------
+		| Available Actions ...
+		*/
+		if(!in_array($action, ['add-to-direct', 'add-to-excel', 'confirm-quality', 'revert-to-pending'])) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+
+		/*-----------------------------------------------
+		| Security ...
+		*/
+		if(in_array($action, ['add-to-direct', 'add-to-excel'])) {
+			$additive = str_replace('add-to', null, $action);
+			if(user()->as('admin')->cannot("users-card-holder.print-$additive")) {
+				return $this->jsonFeedback(trans('validation.http.Error403'));
+			}
+		}
+
+		/*-----------------------------------------------
+		| Model ...
+		*/
+		if(in_array($action, ['add-to-direct', 'add-to-excel']) and $request->select_all) {
+			$table = Printing::selector([
+				'event_id' => $request->browse_event_id,
+				'criteria' => "pending",
+			]);
+		}
+		else {
+			$table = Printing::whereIn('id', explode(',', $request->ids));
+		}
+
+		/*-----------------------------------------------
+		| Action ...
+		*/
+		$now      = Carbon::now()->toDateTimeString();
+		$admin_id = user()->id;
+		switch ($action) {
+			case 'add-to-direct' :
+				$data = [
+					'printed_at'    => null,
+					'queued_at'     => $now,
+					'verified_at'   => null,
+					'dispatched_at' => null,
+					'delivered_at'  => null,
+					'printed_by'   => 0,
+					'queued_by'     => $admin_id,
+					'verified_by'   => 0,
+					'dispatched_by' => 0,
+					'delivered_by'  => 0,
+				];
+				$this->printingActionSave_direct($table);
+				break;
+			case 'add-to-excel' :
+				$data = [
+					'printed_at' => $now,
+					'queued_at'  => $now,
+					'verified_at'   => null,
+					'dispatched_at' => null,
+					'delivered_at'  => null,
+					'printed_by' => $admin_id,
+					'queued_by'  => $admin_id,
+					'verified_by'   => 0,
+					'dispatched_by' => 0,
+					'delivered_by'  => 0,
+				];
+				$this->printingActionSave_excel($table);
+				break;
+			case 'confirm-quality' :
+				$data = [
+					'verified_at'   => $now,
+					'dispatched_at' => $now,
+					'delivered_at'  => $now,
+					'verified_by'   => $admin_id,
+					'dispatched_by' => $admin_id,
+					'delivered_by'  => $admin_id,
+				];
+				$this->printingActionSave_revert($table); // <~~ to safely delete the relevant rows in `printers` table
+				break;
+			case 'revert-to-pending' :
+				$data = [
+					'printed_at'    => null,
+					'queued_at'     => null,
+					'verified_at'   => null,
+					'dispatched_at' => null,
+					'delivered_at'  => null,
+					'printed_by'   => 0,
+					'queued_by'     => 0,
+					'verified_by'   => 0,
+					'dispatched_by' => 0,
+					'delivered_by'  => 0,
+				];
+				$this->printingActionSave_revert($table);
+				break;
+
+			default:
+				return $this->jsonFeedback(trans('validation.http.Error410'));
+
+
+		}
+
+		/*-----------------------------------------------
+		| Execution and Return ...
+		*/
+		return $this->jsonAjaxSaveFeedback( $table->update($data) , [
+				'success_refresh' => 1,
+		]);
+
+	}
+
+	protected function printingActionSave_revert($table)
+	{
+		$ids = $table->pluck('id')->toArray();
+		Printer::whereIn('printing_id' , $ids)->delete() ;
+	}
+
+	protected function printingActionSave_direct($table)
+	{
+		foreach($table->get() as $row) {
+			$user = $row->user ;
+			if(!$user or !$user->id) {
+				continue ;
+			}
+
+			if(Printer::where('user_id' , $user->id)->count()) {
+				continue ;
+			}
+
+			Printer::create([
+				'user_id' => $user->id ,
+			     'printing_id' => $row->id ,
+			     'name_full' => $user->full_name ,
+			     'name_father' => $user->name_father ,
+			     'code_melli' => pd($user->code_melli) ,
+			     'birth_date' => $user->birth_date_on_card ,
+			     'card_no' => pd($user->card_no) ,
+			]);
+		}
+
+		return ;
+	}
+
+	protected function printingActionSave_excel($table)
+	{
 
 	}
 
