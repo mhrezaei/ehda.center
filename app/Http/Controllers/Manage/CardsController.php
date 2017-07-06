@@ -602,4 +602,31 @@ class CardsController extends UsersController
 
 	}
 
+	public function addToPrintings(Request $request)
+	{
+		/*-----------------------------------------------
+		| Security ...
+		*/
+		if(user()->as('admin')->cannot('users-card-holder')) {
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+		}
+
+		/*-----------------------------------------------
+		| Model ...
+		*/
+		$user = User::find($request->user_id) ;
+		$event = Post::find($request->event_if_for_print) ;
+		if(!$user or !$user->id or !$event or !$event->id) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+
+		/*-----------------------------------------------
+		| Action ...
+		*/
+		session()->put('user_last_used_event',$event->id);
+		$saved = Printing::addTo($event , $user);
+		return $this->jsonAjaxSaveFeedback( $saved );
+
+	}
+
 }

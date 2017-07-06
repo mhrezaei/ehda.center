@@ -92,7 +92,7 @@ Route::group([
 			Route::post('/volunteers', 'CardsController@saveForVolunteers');
 			Route::post('/inquiry', 'CardsController@inquiry');
 
-			Route::post('/add_to_print', 'CardsController@add_to_print');
+			Route::post('/add_to_print', 'CardsController@addToPrintings');
 			Route::post('/delete', 'CardsController@delete');
 			Route::post('/bulk_delete', 'CardsController@bulk_delete');
 			Route::post('/sms', 'CardsController@sms');

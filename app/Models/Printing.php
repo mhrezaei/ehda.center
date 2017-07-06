@@ -232,4 +232,30 @@ class Printing extends Model
 		}
 	}
 
+	/*
+	|--------------------------------------------------------------------------
+	| Helpers
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public static function addTo($event, $user)
+	{
+		/*-----------------------------------------------
+		| Delete current rows where a pending request is already in the queue ...
+		*/
+		self::selector([
+			'user_id' => $user->id ,
+	          'criteria' => "under_any_action" ,
+		])->delete() ;
+
+		/*-----------------------------------------------
+		| Add New Row ...
+		*/
+		return self::store([
+			'user_id' => $user->id ,
+			'event_id' => $event->id ,
+		]);
+
+	}
+
 }
