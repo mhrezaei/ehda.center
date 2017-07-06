@@ -80,7 +80,7 @@ Route::group([
 		Route::get('/printings/act/{action}' , 'CardsController@printingAction');
 
 		Route::get('/printings/modal/{printing_id}/{modal_action}', 'CardsController@modalActions');
-		Route::get('/printings/download_excel/{event_id}', 'PrintingsController@excelDownload');
+		Route::get('/printings/download_excel/{event_id}', 'CardsController@printingExcelDownload');
 		Route::get('/printings/{request_tab?}/{event_id?}/{user_id?}/{volunteer_id?}' , 'CardsController@printingBrowse');
 
 		Route::get('/create/{volunteer_id?}', 'CardsController@createChild');

@@ -65,6 +65,8 @@ return [
         'activate_only'        => "به جای ذخیره‌سازی، فعال‌سازی شود",
         'duration'             => "از :date1 تا :date2",
         'change_status'        => "تغییر وضعیت",
+        'download_excel_file'         => "دانلود فایل اکسل", //@Todo: New
+
     ],
 
     "general" => [

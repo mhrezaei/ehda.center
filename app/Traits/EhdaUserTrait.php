@@ -114,16 +114,40 @@ trait EhdaUserTrait
 		return false;
 	}
 
-	public function getBirthDateOnCardAttribute()
+	public function getRegisterDateOnCardEnAttribute()
 	{
-		if($this->birth_date and $this->birth_date != '0000-00-00') {
-			return pd(jDate::forge($this->birth_date)->format('Y/m/d'));
+		if($this->card_registered_at and $this->card_registered_at != '0000-00-00') {
+			return jDate::forge($this->card_registered_at)->format('Y/m/d');
 		}
 		else {
 			return '-';
 		}
 
 	}
+
+	public function getRegisterDateOnCardAttribute()
+	{
+		return pd($this->register_date_on_card_en) ;
+	}
+
+
+
+	public function getBirthDateOnCardEnAttribute()
+	{
+		if($this->birth_date and $this->birth_date != '0000-00-00') {
+			return jDate::forge($this->birth_date)->format('Y/m/d');
+		}
+		else {
+			return '-';
+		}
+
+	}
+
+	public function getBirthDateOnCardAttribute()
+	{
+		return pd($this->birth_date_on_card_en) ;
+	}
+
 
 
 	/*

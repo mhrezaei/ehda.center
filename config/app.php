@@ -200,6 +200,8 @@ return [
         App\Providers\CommentServiceProvider::class,
         App\Providers\FaGDServiceProvider::class,
         App\Providers\SecKeyServiceProvider::class,
+        App\Providers\EhdaServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
     ],
 
     /*
@@ -261,7 +263,8 @@ return [
         'PostsServiceProvider' => \App\Providers\PostsServiceProvider::class,
         'UploadServiceProvider' => App\Providers\UploadServiceProvider::class,
         'CommentServiceProvider' => App\Providers\CommentServiceProvider::class,
-
+        'EhdaServiceProvider' => App\Providers\EhdaServiceProvider::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         //          'Setting' => \App\Providers\SettingServiceProvider::class,
     ],
 

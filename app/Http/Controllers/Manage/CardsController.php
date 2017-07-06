@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class CardsController extends UsersController
@@ -438,7 +439,8 @@ class CardsController extends UsersController
 
 	public function printingActionSave(Request $request)
 	{
-		$action = $request->_submit;
+		$action   = $request->_submit;
+		$callback = null;
 
 		/*-----------------------------------------------
 		| Available Actions ...
@@ -483,7 +485,7 @@ class CardsController extends UsersController
 					'verified_at'   => null,
 					'dispatched_at' => null,
 					'delivered_at'  => null,
-					'printed_by'   => 0,
+					'printed_by'    => 0,
 					'queued_by'     => $admin_id,
 					'verified_by'   => 0,
 					'dispatched_by' => 0,
@@ -492,19 +494,19 @@ class CardsController extends UsersController
 				$this->printingActionSave_direct($table);
 				break;
 			case 'add-to-excel' :
-				$data = [
-					'printed_at' => $now,
-					'queued_at'  => $now,
+				$data     = [
+					'printed_at'    => $now,
+					'queued_at'     => $now,
 					'verified_at'   => null,
 					'dispatched_at' => null,
 					'delivered_at'  => null,
-					'printed_by' => $admin_id,
-					'queued_by'  => $admin_id,
+					'printed_by'    => $admin_id,
+					'queued_by'     => $admin_id,
 					'verified_by'   => 0,
 					'dispatched_by' => 0,
 					'delivered_by'  => 0,
 				];
-				$this->printingActionSave_excel($table);
+				$callback = "$('#btnDownloadExcel').change()";
 				break;
 			case 'confirm-quality' :
 				$data = [
@@ -524,7 +526,7 @@ class CardsController extends UsersController
 					'verified_at'   => null,
 					'dispatched_at' => null,
 					'delivered_at'  => null,
-					'printed_by'   => 0,
+					'printed_by'    => 0,
 					'queued_by'     => 0,
 					'verified_by'   => 0,
 					'dispatched_by' => 0,
@@ -542,8 +544,10 @@ class CardsController extends UsersController
 		/*-----------------------------------------------
 		| Execution and Return ...
 		*/
-		return $this->jsonAjaxSaveFeedback( $table->update($data) , [
-				'success_refresh' => 1,
+
+		return $this->jsonAjaxSaveFeedback($table->update($data), [
+			'success_refresh' => 1,
+			'success_callback'        => $callback,
 		]);
 
 	}
@@ -551,37 +555,50 @@ class CardsController extends UsersController
 	protected function printingActionSave_revert($table)
 	{
 		$ids = $table->pluck('id')->toArray();
-		Printer::whereIn('printing_id' , $ids)->delete() ;
+		Printer::whereIn('printing_id', $ids)->delete();
 	}
 
 	protected function printingActionSave_direct($table)
 	{
 		foreach($table->get() as $row) {
-			$user = $row->user ;
+			$user = $row->user;
 			if(!$user or !$user->id) {
-				continue ;
+				continue;
 			}
 
-			if(Printer::where('user_id' , $user->id)->count()) {
-				continue ;
+			if(Printer::where('user_id', $user->id)->count()) {
+				continue;
 			}
 
 			Printer::create([
-				'user_id' => $user->id ,
-			     'printing_id' => $row->id ,
-			     'name_full' => $user->full_name ,
-			     'name_father' => $user->name_father ,
-			     'code_melli' => pd($user->code_melli) ,
-			     'birth_date' => $user->birth_date_on_card ,
-			     'card_no' => pd($user->card_no) ,
+				'user_id'     => $user->id,
+				'printing_id' => $row->id,
+				'name_full'   => $user->full_name,
+				'name_father' => $user->name_father,
+				'code_melli'  => pd($user->code_melli),
+				'birth_date'  => $user->birth_date_on_card,
+				'card_no'     => pd($user->card_no),
 			]);
 		}
 
-		return ;
+		return;
 	}
 
-	protected function printingActionSave_excel($table)
+	protected function printingExcelDownload($event_id)
 	{
+		$event_id = intval($event_id);
+		session()->put('excel_event_id', $event_id);
+
+		Excel::create('Cards-To-Excel-For-Hard-Print', function ($excel) {
+			$excel->sheet('print', function ($sheet) {
+
+				$sheet->loadView('manage.printings.excel_file');
+
+			});
+
+
+		})->download('xls')
+		;
 
 	}
 

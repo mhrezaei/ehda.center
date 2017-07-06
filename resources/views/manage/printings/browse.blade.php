@@ -8,32 +8,33 @@
 	</div>
 	
 	@include("manage.frame.widgets.toolbar" , [
+		'subtitle_view' => "manage.printings.browse-subtitle" ,
 		'buttons' => [
 			[
 				'target' => "modal:manage/cards/printings/act/revert-to-pending" ,
 				'type' => "danger" ,
-				'condition' => true ,
+				'condition' => ($request_tab != 'pending') ,
 				'icon' => "undo" ,
 				'caption' => trans("ehda.printings.revert_to_pending") ,
 			],
 			[
 				'target' => "modal:manage/cards/printings/act/confirm-quality" ,
 				'type' => "success" ,
-				'condition' => true ,
+				'condition' => ($request_tab != 'pending') ,
 				'icon' => "check" ,
 				'caption' => trans("ehda.printings.verify_quality") ,
 			],
 			[
 				'target' => "modal:manage/cards/printings/act/add-to-excel" ,
 				'type' => "primary" ,
-				'condition' => user()->as('admin')->can('users-card-holder.print-excel') ,
+				'condition' => ($request_tab == 'pending' and user()->as('admin')->can('users-card-holder.print-excel')) ,
 				'icon' => "file-excel-o" ,
 				'caption' => trans("manage.permissions.print-excel") ,
 			],
 			[
 				'target' => "modal:manage/cards/printings/act/add-to-direct" ,
 				'type' => "primary" ,
-				'condition' => user()->as('admin')->can('users-card-holder.print-direct') ,
+				'condition' => ($request_tab == 'pending' and user()->as('admin')->can('users-card-holder.print-direct')) ,
 				'icon' => "print" ,
 				'caption' => trans("manage.permissions.print-direct") ,
 			],
