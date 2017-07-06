@@ -19,9 +19,15 @@
 				'label' => trans("ehda.cards.send_to_print_quee"),
 				'shape' => "default" ,
 				'class' => "btn-lg w50" ,
+				'link' => "$('#divSendToPanel').slideToggle('fast')" ,
 			]     )
 		</div>
 
+	</div>
+	<div class="col-md-12">
+		@include("manage.printings.send-to-panel" , [
+			'user_id' => $model->id ,
+		]     )
 	</div>
 </div>
 

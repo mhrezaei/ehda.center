@@ -1,5 +1,5 @@
 @include('templates.modal.start' , [
-	'form_url' => url('manage/users/save/'),
+//	'form_url' => url('manage/cards/save/send-to-printings'),
 	'modal_title' => trans('ehda.donation_card'),
 ])
 <div class='modal-body profile {{ $model->withDisabled()->hasRole('card-holder')? '' : 'noDisplay' }}'>
@@ -200,7 +200,7 @@
 |
 --}}
 
-<div class='modal-footer rtl {{ $model->withDisabled()->hasRole('card-holder')? '' : 'noDisplay' }}'>
+<div class='modal-footer {{ $model->withDisabled()->hasRole('card-holder')? '' : 'noDisplay' }}'>
 	@include("forms.button" , [
 		'condition' => $model->canEdit() ,
 		'label' => trans("forms.button.edit"),
@@ -208,12 +208,20 @@
 		'link' => url("manage/cards/edit/$model->hash_id") ,
 		'class' => "btn-lg w35" ,
 	]     )
+
 	@include("forms.button" , [
 		'label' => trans("forms.button.card_print"),
-		'shape' => "primary" ,
+		'shape' => "default" ,
 		'class' => "btn-lg w30" ,
+		'link' => "$('#divSendToPanel').slideToggle('fast')" ,
 	]     )
+
+	@include("manage.printings.send-to-panel" , [
+		'user_id' => $model->id ,
+	]     )
+
 </div>
+
 
 
 {{--
