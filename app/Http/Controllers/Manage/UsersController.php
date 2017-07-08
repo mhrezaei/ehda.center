@@ -450,7 +450,6 @@ class UsersController extends Controller
 
 	public function saveRole($user_id, $role_slug, $new_status)
 	{
-
 		/*-----------------------------------------------
 		| Model and Permission ...
 		*/
@@ -472,8 +471,8 @@ class UsersController extends Controller
 			$user->disableRole($role_slug);
 		}
 		else {
-			if($user->withDisabled()->as($role_slug)->hasnotRole()) {
-				$user->attachRole($role_slug, '', $new_status);
+			if($user->withDisabled()->hasnotRole($role_slug)) {
+				$user->attachRole($role_slug, $new_status);
 			}
 			elseif($user->as($role_slug)->disabled()) {
 				$user->enableRole($role_slug);

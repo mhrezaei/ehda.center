@@ -14,7 +14,7 @@
 	'fake' => $card_holder_role = model('role')::findBySlug('card-holder') ,
 	'caption' => $card_holder_role->title,
 	'permission' => "users-card-holder" ,
-	'link' => "" ,
+	'link' => "cards" ,
 	'icon' => $card_holder_role->spreadMeta()->icon ,
 	'sub_menus' => [
 		['cards/create' , trans("ehda.cards.create") , 'plus-circle'],

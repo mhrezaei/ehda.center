@@ -508,6 +508,7 @@ return [
 		//@TODO: New up to the end of this array..
 		'from_event_id'  => "رویداد",
 	     'domains' => "دامنه" ,
+	     'source' => "منبع" ,
 	],
 
 	"http" => [

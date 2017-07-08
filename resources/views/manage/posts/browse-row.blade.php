@@ -35,6 +35,7 @@
 	@include("manage.frame.widgets.grid-text" , [
 		'text' => $model->title,
 		'link' => $model->canEdit()? url("manage/posts/$model->type/edit/-id-") : '',
+		'size' => "14" ,
 //		'link' => $model->canEdit()? "modal:manage/posts/act/-id-/quick_edit" : '',
 	])
 	
@@ -73,6 +74,12 @@
 			'color' => "danger",
 			'icon' => "exclamation-triangle",
 			'condition' => !$model->trashed() and $model->has('price') and !$model->is_available,
+		],
+		[
+			'condition' => $domain_name = $model->domain_name ,
+			'text' => $domain_name ,
+			'icon' => "code-fork" ,
+			'color' => "info" ,
 		],
 		[
 			'text' => trans("forms.lang.$model->locale"),
@@ -146,6 +153,7 @@
 		])
 	</td>
 @endif
+
 
 {{--
 |--------------------------------------------------------------------------

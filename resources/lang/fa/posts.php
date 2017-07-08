@@ -155,6 +155,7 @@ return [
 		'copy_suggestion_when_can_publish'    => "این مطلب نهایی شده است. برای تغییرات گسترده، بهتر است رونوشتی از آن تهیه کنید.",
 		'copy_suggestion_deny'                => "همیشه می‌توانید با دکمه‌ی «ذخیره پیش‌نویس» همین کار را بکنید.",
 		'reflect_in_global'                   => "انعکاس در دامنه‌ی سراسری",
+		'reflect_in_global_short'             => "انعکاس سراسری",
 	],
 
 	'comments' => [

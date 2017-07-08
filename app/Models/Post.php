@@ -14,7 +14,7 @@ use Vinkla\Hashids\Facades\Hashids;
 class Post extends Model
 {
 	use TahaModelTrait, SoftDeletes;
-	use EhdaPostTrait ;
+	use EhdaPostTrait;
 
 	public static    $reserved_slugs  = "none,without";
 	public static    $meta_fields     = ['dynamic'];
@@ -196,6 +196,42 @@ class Post extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+	public function getDomainNameAttribute()
+	{
+		if(!$this->domains or $this->hasnot('domains')) {
+			return false ;
+		}
+		$domain_value = str_replace('|', null, $this->domains);
+
+		/*-----------------------------------------------
+		| If simply 'global' ...
+		*/
+		if($domain_value == 'global') {
+			return trans('posts.form.global');
+		}
+
+		/*-----------------------------------------------
+		| Otherwise ...
+		*/
+		if(str_contains($domain_value, 'global')) {
+			$extra  = " ( ".trans("posts.form.reflect_in_global_short")." ) ";
+			$domain_value = str_replace('global', null, $domain_value);
+		}
+		else {
+			$extra = null;
+		}
+
+		$domain = Domain::findBySlug($domain_value) ;
+		if(!$domain) {
+			return false ;
+		}
+		else {
+			return $domain->title . $extra ;
+		}
+
+	}
+
 
 	/**
 	 * @return array ;
@@ -718,15 +754,15 @@ class Post extends Model
 		*/
 		if($switch['domain'] == 'auto') {
 			if(user()->is_a('manager')) {
-				$switch['domain'] = null ;
+				$switch['domain'] = null;
 			}
 			else {
-				$switch['domain'] = user()->domainsArray() ;
+				$switch['domain'] = user()->domainsArray();
 			}
 		}
 
 		if($switch['domain']) {
-			$switch['domain'] = (array) $switch['domain'];
+			$switch['domain'] = (array)$switch['domain'];
 
 			foreach($switch['domain'] as $domain) {
 				$table->where('domains', 'like', "%$domain%");

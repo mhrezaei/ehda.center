@@ -413,6 +413,8 @@ function roleAttachmentSave(user_id, role_id, role_slug) {
 	var new_status = $("#cmbStatus-" + role_id).val();
 	var $button = $("#btnRoleSave-" + role_id);
 
+//	forms_log('user_id: ' + user_id + '| role_slug: ' + role_slug + '| new_status: ' + new_status ) ;
+
 	$.ajax({
 		url     : url('manage/users/save/role/' + user_id + '/' + role_slug + '/' + new_status),
 		dataType: "json",
