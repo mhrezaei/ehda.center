@@ -106,7 +106,7 @@ class CardsController extends UsersController
 
 	public function searchChild(Request $request)
 	{
-		return $this->search($this->role_slug, $this->browseSwitchesChild());
+		return $this->search($this->role_slug, $request , $this->browseSwitchesChild());
 	}
 
 	public function editorChild($model_hash_id)

@@ -249,6 +249,13 @@ class PostsController extends Controller
 			return view('errors.410');
 		}
 
+		if(user()->is_a('manager')) {
+			$model->domains = 'global' ;
+		}
+		elseif( count($roles_array = user()->rolesArray())==1) {
+			$model->domains = $roles_array[0] ;
+		}
+
 		//Page...
 		$page = [
 			'0' => ["posts/$type_slug", $model->posttype->title, "posts/$type_slug"],
@@ -308,8 +315,6 @@ class PostsController extends Controller
 		|--------------------------------------------------------------------------
 		|
 		*/
-
-
 		$command = $data['_submit'];
 		$allowed = true;
 		if(in_array($command, ['delete', 'delete_original'])) {
@@ -382,6 +387,26 @@ class PostsController extends Controller
 		unset($data['publish_date']);
 		unset($data['publish_hour']);
 		unset($data['publish_minute']);
+
+		/*-----------------------------------------------
+		| Domain ...
+		*/
+		if($model->hasnot('domains')) {
+			$data['domains'] = 'global' ;
+		}
+		elseif($data['domains'] == 'global') {
+			if(user()->is_not_a('manager')) {
+				return $this->jsonFeedback(trans('validation.http.Error403'));
+			}
+		}
+		elseif(!in_array($data['domains'] , user()->domainsArray() )) {
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+		}
+
+		$data['domains'] = "|".$data['domains']."|" ;
+		if($data['_reflect_in_global'] and $data['domains'] != 'global') {
+			$data['domains'] .= '|global|' ;
+		}
 
 		/*-----------------------------------------------
 		| Price ...

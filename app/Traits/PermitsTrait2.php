@@ -1,6 +1,7 @@
 <?php
 namespace App\Traits;
 
+use App\Models\Domain;
 use App\Models\Role;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 
 trait PermitsTrait2
 {
+	public static $role_prefix_for_domain_admins = 'volunteer' ;
 	protected static $wildcards         = ['', 'any', '*'];
 	protected static $default_role      = 'admin';
 	protected static $available_permits = ['browse', 'process', 'view', 'send', 'search', 'create', 'edit', 'publish', 'activate', 'report', 'delete', 'bin'];
@@ -648,6 +650,43 @@ trait PermitsTrait2
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+	/**
+	 * @return Model: of all the domains, the user has access to
+	 * Important: don't forget to use get() after calling this method.
+	 * Example: user()->domainsQuery()->orderBy('folan')->get()
+	 */
+	public function domainsQuery()
+	{
+		/*-----------------------------------------------
+		| Bypass if the user in question is a manager ...
+		*/
+		if($this->is_a('manager')) {
+			return Domain::where('id' , '>' , '0') ;
+		}
+
+		/*-----------------------------------------------
+		| Normal Process ...
+		*/
+		$roles = $this->rolesArray() ;
+		$array = [] ;
+		foreach($roles as $role) {
+			if(str_contains($role , self::$role_prefix_for_domain_admins . '-' )) {
+				$array[] = str_replace( self::$role_prefix_for_domain_admins . '-' , null , $role) ;
+			}
+		}
+
+		$domains = Domain::whereIn('slug' , $array) ;
+		return $domains ;
+	}
+
+	/**
+	 * @return array: of all the domains, the user has access to
+	 */
+	public function domainsArray()
+	{
+		return $this->domainsQuery()->get()->pluck('slug')->toArray() ;
+	}
 
 	/**
 	 * @return array: of all the available roles.

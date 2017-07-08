@@ -503,10 +503,11 @@ return [
 		'video_uploader' => 'فایل(های) ویدیویی',
 		'audio_uploader' => 'فایل(های) صوتی',
 		'text_uploader'  => 'فایل(های) متنی',
-		'text_content'   => 'محتوای فایل متنی',
+		'≈'   => 'محتوای فایل متنی',
 
-		//@TODO: New up to the end of this array...
+		//@TODO: New up to the end of this array..
 		'from_event_id'  => "رویداد",
+	     'domains' => "دامنه" ,
 	],
 
 	"http" => [

@@ -716,10 +716,16 @@ class Post extends Model
 		/*-----------------------------------------------
 		| Process Domain ...
 		*/
-		if($switch['domain'] and $switch['domain']!='auto') {
-			if($switch['domain'] == 'auto') {
-				$switch['domain'] = 'all' ; //@TODO: Must incorporate user()'s domain!
+		if($switch['domain'] == 'auto') {
+			if(user()->is_a('manager')) {
+				$switch['domain'] = null ;
 			}
+			else {
+				$switch['domain'] = user()->domainsArray() ;
+			}
+		}
+
+		if($switch['domain']) {
 			$switch['domain'] = (array) $switch['domain'];
 
 			foreach($switch['domain'] as $domain) {

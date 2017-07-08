@@ -13,19 +13,7 @@
 			|--------------------------------------------------------------------------
 			| //@TODO: Check Users's Privilages before showing the menu
 			--}}
-			@include("forms.select_self" , [
-				'condition' => $model->has('domains'),
-				'top_label' => trans('validation.attributes.domain') ,
-				'name' => "domains" ,
-				'id' => "cmbDomain" ,
-				'search' => true ,
-				'value_field' => "slug" ,
-				'blank_value' => "global" ,
-				'blank_label' => trans('posts.form.global'),
-				'on_change' => '' , //@TODO: What on-change should do? Check Ehda
-				'options' => model('Domain')::orderBy('title')->get() ,
-				'value' => str_replace('*' , null , $model->domains) ,
-			]     )
+			@include("manage.posts.editor-domains")
 			<div class="m10"></div>
 
 			{{--
