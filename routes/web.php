@@ -245,6 +245,7 @@ Route::group([
         Route::group(['prefix' => 'save'], function () {
             Route::post('role', 'UpstreamController@saveRole');
             Route::post('role-titles', 'UpstreamController@saveRoleTitles');
+            Route::post('role-mass', 'UpstreamController@saveRoleMass');
             Route::post('role-activeness', 'UpstreamController@saveRoleActiveness');
             Route::post('role-default', 'UpstreamController@saveRoleDefault');
             Route::post('state', 'UpstreamController@saveProvince');

@@ -117,20 +117,20 @@ class ManageServiceProvider extends ServiceProvider
 		| Browsing the roles and making array for both folded and unfolded ways of display ...
 		*/
 
-		foreach( Role::all() as $role) {
-			if(user()->as('admin')->can('users-'.$role->slug)) {
-				array_push($unfolded_menu , [
-					'icon' => $role->menu_icon,
-				     'caption' => $role->plural_title,
-				     'link' => "users/browse/$role->slug",
-				]);
-				array_push($folded_menu, [
-					"users/browse/$role->slug",
-				     $role->plural_title ,
-				     $role->menu_icon ,
-				]);
-			}
-		}
+		//foreach( Role::all() as $role) {
+		//	if(user()->as('admin')->can('users-'.$role->slug)) {
+		//		array_push($unfolded_menu , [
+		//			'icon' => $role->menu_icon,
+		//		     'caption' => $role->plural_title,
+		//		     'link' => "users/browse/$role->slug",
+		//		]);
+		//		array_push($folded_menu, [
+		//			"users/browse/$role->slug",
+		//		     $role->plural_title ,
+		//		     $role->menu_icon ,
+		//		]);
+		//	}
+		//}
 
 		/*-----------------------------------------------
 		| Adding the "all users" button to both folded and unfolded arrays ...
@@ -155,7 +155,7 @@ class ManageServiceProvider extends ServiceProvider
 			return [[
 				'icon' => "users",
 			     'caption' => trans('people.site_users'),
-			     'link' => "asd",
+			     'link' => "users",
 			     'sub_menus' => $folded_menu,
 			     'permission' => count($folded_menu)? 'any' : 'dev',
 			]];

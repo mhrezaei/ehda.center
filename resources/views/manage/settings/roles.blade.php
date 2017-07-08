@@ -6,6 +6,12 @@
 	@include("manage.frame.widgets.toolbar" , [
 		'buttons' => [
 			[
+				'target' => "modal:manage/upstream/edit/admin-roles/0" ,
+				'type' => "warning" ,
+				'caption' => trans("people.all_admin_roles") ,
+				'icon' => "grav" ,
+			],
+			[
 				'target' => "modal:manage/upstream/edit/role/0",
 				'type' => "success",
 				'caption' => trans('forms.button.add'),

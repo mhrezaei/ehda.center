@@ -17,6 +17,7 @@ return [
 	'is_admin'               => "به عنوان مدیر",
 	'newsletter_member'      => "عضو خبرنامه", //@TODO: New
 	'membership'             => "عضویت", //@TODO: New
+	'all_admin_roles' => "همه‌ی مدیریتی‌ها ییهو" ,
 
 	'commands' => [
 		'permit'          => "سطح دسترسی",

@@ -95,8 +95,14 @@
 		'date' => $model->created_at,
 	])
 
+	@include("manage.frame.widgets.grid-tiny" , [
+		'text' => trans('posts.form.post_owner').': '.$model->getPerson('owned_by')->full_name,
+		'link' => "modal:manage/posts/act/-id-/owner" ,
+		'icon' => "user-o" ,
+	]     )
+
 	@include("manage.frame.widgets.grid-date" , [
-		'text' => trans('forms.general.published_at').': ',
+		'text' => trans('posts.form.publish').': ',
 		'text2' => trans('forms.general.by').' '.$model->publisher->full_name,
 		'date' => $model->published_at,
 		'condition' => $model->isPublished(),
@@ -110,11 +116,6 @@
 		'color' => "danger",
 	])
 	
-	@include("manage.frame.widgets.grid-tiny" , [
-		'text' => trans('posts.form.post_owner').': '.$model->getPerson('owned_by')->full_name,
-		'link' => "modal:manage/posts/act/-id-/owner" ,
-		'icon' => "user-o" ,
-	]     )
 
 </td>
 

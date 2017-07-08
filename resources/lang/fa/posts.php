@@ -96,6 +96,7 @@ return [
 		'copy'                                => "رونوشت",
 		'copy_of'                             => "رونوشت از",
 		'published_post'                      => "مطلب منتشر شده",
+		'publish'                             => "انتشار", //@TODO: New
 		'approved_post'                       => "مطلب پذیرفته‌شده",
 		'copy_status_hint'                    => "در حال دستکاری یک رونوشت هستید.",
 		'title_placeholder'                   => "عنوان را اینجا وارد کنید",
