@@ -27,6 +27,12 @@
 	{!! Html::script ('assets/libs/jquery.inputmask.bundle.js') !!}
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+	{{-- Charts --}}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
+	{!! HTML::script ('assets/libs/chartsjs/Chart.PieceLabel.js') !!}
+
+
 	{{-- BOOTSTRAP --}}
 	{!! Html::style('assets/libs/bootstrap/css/bootstrap.min.css') !!}
 	{!! Html::style('assets/libs/bootstrap/css/bootstrap-rtl.min.css') !!}
@@ -44,7 +50,7 @@
 	{!! Html::style('assets/libs/sb-admin/metisMenu.css') !!}
 	{!! Html::style('assets/libs/sb-admin/sb-admin-2.css') !!}
 	{!! Html::style('assets/libs/sb-admin/timeline.css') !!}
-	{!! HTML::script ('assets/libs/sb-admin/Chart.js') !!}
+	{{--{!! HTML::script ('assets/libs/sb-admin/Chart.js') !!}--}}
 	{{--{!! HTML::script ('assets/libs/sb-admin/frontend.js') !!}--}}
 	{!! HTML::script ('assets/libs/sb-admin/metisMenu.js') !!}
 	{!! HTML::script ('assets/libs/sb-admin/sb-admin-2.js') !!}

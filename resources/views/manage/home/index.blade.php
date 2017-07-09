@@ -2,8 +2,15 @@
 
 @section('section')
 
-	{{--{{ getLocale() }}--}}
-{{--	@include('manage.index.hello')--}}
+	<div class="row">
+		<div id="divCardsByGender" class="col-md-3" data-src="manage/widget/cards-pie" data-loading="no">
+			@include("manage.home.index-cards-pie")
+		</div>
+		<div id="divCardsTimebar" class="col-md-9" data-src="manage/widget/cards-line"  data-loading="no">
+			@include("manage.home.index-cards-line")
+		</div>
+	</div>
+
 
 	{{--<div class="row">--}}
 		{{--@foreach($digests as $digest)--}}
@@ -11,7 +18,6 @@
 		{{--@endforeach--}}
 	{{--</div>--}}
 
-	{{--@include('templates.say' , ['array'=>user()->as('user')->role()->toArray()])--}}
-	{{--@include('templates.say' , ['array'=>user()->as('user')->can()])--}}
-	{{--@include('templates.say' , ['array'=>user()->enableRole('user')->shh()])--}}
+
+
 @endsection
