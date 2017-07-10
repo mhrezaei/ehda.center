@@ -29,7 +29,7 @@ class User extends Authenticatable
 		//'key',
 		//'default_role_deleted_at',
 	];
-	public static $search_fields   = ['name_first', 'name_last', 'name_firm', 'code_melli', 'email', 'mobile'];
+	public static $search_fields   = ['name_first', 'name_last', 'name_firm', 'code_melli', 'email', 'mobile','card_no'];
 	public static $required_fields = ['name_first', 'name_last', 'code_melli', 'mobile', 'home_tel', 'birth_date', 'gender', 'marital'];
 	protected     $guarded         = ['status'];
 	protected     $hidden          = ['password', 'remember_token'];
@@ -175,6 +175,9 @@ class User extends Authenticatable
 		*/
 		if($switch['role']) {
 			if($switch['role'] == 'all') {
+			}
+			elseif($switch['role']=='auto') {
+				$switch['role'] = user()->userRolesArray() ;
 			}
 			elseif($switch['role'] == 'no') {
 				$table->has('roles', '=', 0);

@@ -272,6 +272,9 @@ class Role extends Model
 		if($role_slug == 'all') {
 			$role_slug = 'all'; //@TODO: Check in operation
 		}
+		elseif($role_slug == 'auto') {
+			return true ;
+	}
 		elseif($role_slug == 'admin') {
 			//return user()->is_superadmin() ; //@TODO: Check in operation
 		}

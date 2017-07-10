@@ -38,6 +38,8 @@
 	{!! Html::style('assets/libs/bootstrap/css/bootstrap-rtl.min.css') !!}
 	{!! HTML::script ('assets/libs/bootstrap/js/bootstrap.min.js') !!}
 
+	{!! HTML::script ('assets/js/pinterest_grid.js') !!}
+
 	{{-- fonts stuff --}}
 	{!! Html::style('assets/css/fontiran.css') !!}
 	{!! Html::style('assets/libs/font-awesome/css/font-awesome.min.css') !!}

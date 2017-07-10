@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Manage;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Requests\Manage\CardInquiryRequest;
 use App\Http\Requests\Manage\CardSaveRequest;
+use App\Http\Requests\Manage\SearchRequest;
 use App\Models\Post;
 use App\Models\Printer;
 use App\Models\Printing;
@@ -104,7 +105,7 @@ class CardsController extends UsersController
 		return $this->browse($this->role_slug, $request_tab, $this->browseSwitchesChild());
 	}
 
-	public function searchChild(Request $request)
+	public function searchChild(SearchRequest $request)
 	{
 		return $this->search($this->role_slug, $request , $this->browseSwitchesChild());
 	}

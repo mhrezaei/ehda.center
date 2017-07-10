@@ -23,7 +23,7 @@
 		    ?>
 
 			@include("manage.frame.widgets.t-charts.line" , [
-				'height' => "180",
+				'height' => "185",
 				'data' => $data ,
 				'label_size' => "10" ,
 				'label' => trans("ehda.cards.register_full") ,
@@ -38,7 +38,7 @@
 			--}}
 			@include("manage.frame.widgets.t-charts.line" , [
 				'label' => trans("ehda.cards.register_full") ,
-				'height' => "180",
+				'height' => "185",
 				'data' => [
 				] ,
 				'label_size' => "10" ,

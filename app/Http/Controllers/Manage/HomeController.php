@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Manage;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Manage\ChangeSelfPasswordRequest;
+use App\Http\Requests\Manage\SearchRequest;
+use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Posttype;
 use App\Models\State;
@@ -115,6 +117,17 @@ class HomeController extends Controller
 	{
 		$ajax = true ;
 		return view("manage.home.index-$widget" , compact('ajax'));
+	}
+
+	public function searchPeople(SearchRequest $request)
+	{
+		if(user()->as('admin')->can('users')) {
+			$controller = new UsersController() ;
+			return $controller->search('auto' , $request);
+		}
+		else {
+			return $this->index() ;
+		}
 	}
 
 }

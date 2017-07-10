@@ -24,26 +24,28 @@ return [
 	],
 
 	"button" => [
-		'edit'                 => "ویرایش",
-		'cancel'               => 'انصراف',
-		'ok'                   => "بسیار خوب!",
-		'discard'              => "بی‌خیال!",
-		'signup'               => 'ثبت نام',
-		'Inquiry'              => 'استعلام',
-		'oh_no'                => 'نه! اشتباه شد!',
-		'details'              => 'جزئیات بیش‌تر',
-		'show_details'         => "نمایش جزئیات",
-		'lets_see_them'        => "برویم ببینیم",//@TODO: New
-		'save'                 => 'ذخیره',
-		'send_and_save'        => 'ذخیره و ارسال',
-		'undo_changes'         => 'لغو تغییرات',
-		'browse_image'         => 'انتخاب عکس',
-		'flush_image'          => "تخلیه عکس",
-		'login'                => 'ورود',
-		'refresh'              => 'بازخوانی',
-		'add'                  => 'افزودن',
-		'add_to'               => "افزودن به",
-		'search'               => 'جست‌وجو',
+		'edit'          => "ویرایش",
+		'cancel'        => 'انصراف',
+		'ok'            => "بسیار خوب!",
+		'discard'       => "بی‌خیال!",
+		'signup'        => 'ثبت نام',
+		'Inquiry'       => 'استعلام',
+		'oh_no'         => 'نه! اشتباه شد!',
+		'details'       => 'جزئیات بیش‌تر',
+		'show_details'  => "نمایش جزئیات",
+		'lets_see_them' => "برویم ببینیم",//@TODO: New
+		'save'          => 'ذخیره',
+		'send_and_save' => 'ذخیره و ارسال',
+		'undo_changes'  => 'لغو تغییرات',
+		'browse_image'  => 'انتخاب عکس',
+		'flush_image'   => "تخلیه عکس",
+		'login'         => 'ورود',
+		'refresh'       => 'بازخوانی',
+		'add'           => 'افزودن',
+		'add_to'        => "افزودن به",
+		'search'        => 'جست‌وجو',
+		'find'          => "بیاب!", //@TODO: New
+
 		'search_for'           => 'جست‌وجو به دنبال',
 		'search_for_something' => 'جست‌وجو به دنبال «::something»',
 		'flush_search'         => "تخلیه جست‌وجو",
@@ -103,6 +105,7 @@ return [
 		'nobody'         => "هیچ‌کس",
 		'sorry'          => "شرمنده",
 		'no'             => "شماره", //@TODO: New
+		'so_far'         => "تا این لحظه", //@TODO: New
 	],
 
 

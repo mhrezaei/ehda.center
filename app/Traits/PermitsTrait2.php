@@ -652,6 +652,23 @@ trait PermitsTrait2
 	*/
 
 	/**
+	 * @return array: of roles, the user has access to as an admin!
+	 */
+	public function userRolesArray($permit = 'browse')
+	{
+		$roles = Role::all() ;
+		$array = [] ;
+		foreach($roles as $role) {
+			$slug = $role->slug ;
+			if($this->as('admin')->can("users-$slug.$permit")) {
+				$array[] = $slug ;
+			}
+		}
+
+		return $array ;
+	}
+
+	/**
 	 * @return Model: of all the domains, the user has access to
 	 * Important: don't forget to use get() after calling this method.
 	 * Example: user()->domainsQuery()->orderBy('folan')->get()

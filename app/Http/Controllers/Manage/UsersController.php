@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Manage;
 
 use App\Http\Requests\Manage\MessageSendRequest;
+use App\Http\Requests\Manage\SearchRequest;
 use App\Http\Requests\Manage\UserPasswordChangeRequest;
 use App\Http\Requests\Manage\UserSaveRequest;
 use App\Models\Posttype;
@@ -78,7 +79,7 @@ class UsersController extends Controller
 		return $switches;
 	}
 
-	public function search($request_role, Request $request, $switches = [])
+	public function search($request_role, SearchRequest $request, $switches = [])
 	{
 		/*-----------------------------------------------
 		| Check Permission ...
@@ -86,6 +87,7 @@ class UsersController extends Controller
 		if(!Role::checkManagePermission($request_role, 'search')) {
 			return view('errors.403');
 		}
+
 
 		/*-----------------------------------------------
 		| Switches ...
@@ -96,7 +98,7 @@ class UsersController extends Controller
 		/*-----------------------------------------------
 		| Revealing the Role...
 		*/
-		if($request_role != 'all') {
+		if($request_role != 'all' and $request_role!='auto') {
 			$role = Role::findBySlug($request_role);
 			if(!$role->exists) {
 				return view('errors.404');
