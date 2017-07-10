@@ -5,7 +5,7 @@
         &nbsp;
         {{ trans('front.download') }}
     </a>
-    <a class="btn btn-blue" href="{{ user()->cards('full', 'print') }}"
+    <a class="btn btn-blue print-btn" href="{{ user()->cards('full', 'print') }}"
        target="_blank">
         <i class="fa fa-print"></i>
         &nbsp;

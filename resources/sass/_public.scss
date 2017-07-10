@@ -25,7 +25,41 @@ $rtlRatio: 1;
   display: flex;
 }
 
+%font-family-awesome {
+  font-family: FontAwesome;
+}
+
 // General Silent Classes --end
+
+// Keyframes --start
+@-webkit-keyframes emitis-heartbeat {
+  0% {
+    -webkit-transform: scale(1);
+  }
+  30% {
+    -webkit-transform: scale(1);
+  }
+  40% {
+    -webkit-transform: scale(1.10);
+  }
+  50% {
+    -webkit-transform: scale(1);
+  }
+  60% {
+    -webkit-transform: scale(1);
+  }
+  70% {
+    -webkit-transform: scale(1.06);
+  }
+  80% {
+    -webkit-transform: scale(1);
+  }
+  100% {
+    -webkit-transform: scale(1);
+  }
+}
+
+// Keyframes --end
 
 // Aligning --start
 @each $axis, $axisAligning in $aligning {
@@ -37,6 +71,7 @@ $rtlRatio: 1;
     }
   }
 }
+
 // Aligning --end
 
 // Top Main Header --start
@@ -351,7 +386,38 @@ header {
   }
 }
 
-// ،Top Main Header --end
+// Top Main Header --end
+
+// Footer --start
+footer {
+  @extend .pt80, .pr0, .pb40, .pl0;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  @media(max-width: 990px) {
+    padding: 40px 0;
+  }
+  .list-unstyled {
+    a {
+      @extend .right-bordered-link;
+      &:hover {
+        border-color: color(#fff);
+      }
+    }
+  }
+}
+
+.go-to-top {
+  position: fixed;
+  z-index: 10;
+  left: 10px;
+  bottom: 10px;
+  border-radius: 50%;
+  background-color: #e6e6e6;
+  padding: 14px 17px;
+}
+
+// Footer --end
 
 // Font Size --start
 @for $i from 5 to 101 {
@@ -921,6 +987,48 @@ img%img-cover {
   label {
     margin-bottom: 0 !important;
   }
+
+  .buttonset {
+    width: 100%;
+
+    .ui-button {
+      width: 100%;
+      display: block;
+      text-align: center;
+      border-width: 2px;
+
+      &:not(.ui-state-active) {
+        background: #fff;
+        border-color: #BDC3C7;
+        color: #34495e;
+      }
+
+      &.ui-state-active {
+        @extend .border-green;
+        background: map_get($colors, 'green');
+      }
+
+      &:not(.ui-corner-right):not(.ui-corner-left) {
+        border-radius: 0;
+      }
+    }
+
+    td:first-of-type {
+      .ui-button {
+        @extend .ui-corner-#{$startSide};
+        border-top-#{$endSide}-radius: 0;
+        border-bottom-#{$endSide}-radius: 0;
+      }
+    }
+
+    td:last-of-type {
+      .ui-button {
+        @extend .ui-corner-#{$endSide};
+        border-top-#{$startSide}-radius: 0;
+        border-bottom-#{$startSide}-radius: 0;
+      }
+    }
+  }
 }
 
 // JqueryUi --end
@@ -952,19 +1060,13 @@ form {
   border: none;
   outline: none;
   padding: 0;
-  -webkit-transition: $transitionValue;
-  -moz-transition: $transitionValue;
-  -ms-transition: $transitionValue; /* IE10 is actually unprefixed */
-  -o-transition: $transitionValue;
-  transition: $transitionValue;
 
   &:hover {
-    $scaleValue: 'scale(1.1)';
-    -webkit-transform: #{$scaleValue};
-    -moz-transform: #{$scaleValue};
-    -ms-transform: #{$scaleValue};
-    -o-transform: #{$scaleValue};
-    transform: #{$scaleValue};
+    -webkit-animation-name: emitis-heartbeat;
+    -webkit-animation-duration: 900ms;
+    -webkit-transform-origin: 70% 70%;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: linear;
   }
 
   img {
@@ -1009,10 +1111,6 @@ form {
   -webkit-font-smoothing: subpixel-antialiased;
   -webkit-transition: border 0.25s linear, color 0.25s linear, background-color 0.25s linear;
   transition: border 0.25s linear, color 0.25s linear, background-color 0.25s linear;
-  &:hover, &:focus {
-    outline: none;
-    color: #ffffff;
-  }
   &:active, &.active {
     outline: none;
     box-shadow: none;
@@ -1803,3 +1901,103 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 // Player List --end
+
+// Featherlight --start
+.featherlight {
+  .featherlight-previous,
+  .featherlight-next {
+    @extend %font-family-awesome;
+    height: auto;
+    right: 4px;
+
+    &:hover {
+      background: none;
+    }
+
+    span {
+      @extend .f50;
+    }
+  }
+
+  .featherlight-previous {
+    left: 4px;
+    right: 80%;
+  }
+
+  .featherlight-content {
+    padding: 4px 4px 0;
+    border-bottom-width: 4px;
+  }
+
+  .featherlight-caption {
+    position: absolute;
+    bottom: -10px;
+    background-color: rgba(255, 255, 255, 0.5);
+    display: block;
+    width: calc(100% - 8px);
+    line-height: 50px;
+  }
+
+  .featherlight-close-icon {
+    border-bottom-left-radius: 80%;
+  }
+}
+
+// Featherlight --end
+
+// Celebs --start
+.celebs {
+  .celebs-item {
+    $itemHeight: 240;
+    $imageWidth: ($itemHeight * 4 /3);
+    .celebs-item-inner {
+      @extend .pull-start, .border-blue, .border-2, .mb20;
+      width: 100%;
+      height: #{$itemHeight}px;
+      overflow: hidden;
+
+      .celebs-item-img {
+        $transform: skew(20deg, 0);
+        $marginLeft: $imageWidth / 5;
+        @extend .pull-end, .border-right-2, .border-right-blue;
+        width: #{$imageWidth}px;
+        height: 100%;
+        -webkit-transform: #{$transform};
+        -moz-transform: #{$transform};
+        -ms-transform: #{$transform};
+        -o-transform: #{$transform};
+        transform: #{$transform};
+        margin-left: -#{$marginLeft}px;
+        position: relative;
+        overflow: hidden;
+
+        &:before {
+          content: " ";
+          width: 130%;
+          height: 100%;
+          //background: url("http://localhost/ehda.center/public/photos/shares/special volunteers/Tarane Alidoustin.jpg");
+          position: absolute;
+          transform: skew(-20deg, 0);
+          top: 0;
+          left: -30px;
+          background-size: cover;
+        }
+
+        img {
+          width: 100%;
+          transform: skew(-20deg, 0);
+          margin-right: -14%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+
+      .celebs-item-text {
+        @extend .pull-start, .pr10;
+        width: calc(100% - #{$imageWidth}px);
+      }
+    }
+  }
+}
+
+// Celebs --end

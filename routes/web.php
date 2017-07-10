@@ -285,7 +285,7 @@ Route::group(['prefix' => 'file'], function () {
 Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Setting', 'Subdomain']], function () {
 
     // if not set lang prefix
-    Route::get('/', 'FrontController@index');
+    Route::get('/', 'FrontController@index')->name('home');
 
     // organ donation card
     Route::get('/card/show_card/{type}/{user_hash_id}/{mode?}', 'OrganDonationCardController@index');
@@ -313,6 +313,9 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
             Route::get('works/send', 'TestController@works_send');
         });
         Route::get('about', 'TestController@about');
+
+        // send users works
+        Route::get('works/send', 'PostController@works_send')->name('users.works.send');
 
         // register new user
         Route::post('/register/new', 'FrontController@register');
@@ -354,11 +357,10 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
             ->where('identifier', '^' . config('prefix.routes.post.short') . '(\w|)+$');
         // if identifier starts with value of config('prefix.routes.post.short')
 
-        Route::get('/show-post/{hashid}/{url?}', 'PostController@show_with_full_url');
+        Route::get('/show-post/{identifier}/{url?}', 'PostController@show_with_full_url')->name('post.single');
         Route::get('/previewPost/{id}/{url?}', 'PostController@show');
         Route::get('/archive/{postType?}/{category?}', 'PostController@archive')->name('post.archive');
-        Route::get('/categories/{postType}', 'PostController@categories')->name('post.postType');
-        Route::get('/gallery/categories/{branch}', 'GalleryController@show_categories');
+        Route::get('/gallery/categories/{postType}', 'GalleryController@show_categories')->name('gallery.categories');
         Route::get('/gallery/posts/{category}', 'GalleryController@show_categories_posts');
         Route::get('/gallery/show/{id}/{url?}', 'GalleryController@show_gallery');
 
@@ -366,7 +368,7 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
 
         // static pages
         Route::get('faq', 'PostController@faqs');
-        Route::get('volunteers/special', 'PostController@special_volunteers');
+        Route::get('volunteers/special', 'PostController@special_volunteers')->name('volunteers.special');
 
         Route::get('/angels', 'PostController@angels');
         Route::post('/angels/find', 'PostController@angels_find');

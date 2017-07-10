@@ -24,7 +24,7 @@
                 <h2 class="text-{{ $categoryColor }}">{{ $category }}</h2>
             @endif
             @if(isset($title) and $title)
-                <h3 class="gallery-title text-{{ $titleColor }}">{{ $title }}</h3>
+                <h3 class="gallery-title sub-title text-{{ $titleColor }}">{{ $title }}</h3>
             @endif
             @if(isset($description) and $description)
                 <p class="gallery-description text-{{ $descriptionColor }}">{{ $description }}</p>

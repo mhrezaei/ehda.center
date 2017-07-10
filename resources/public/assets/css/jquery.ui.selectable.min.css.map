@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA;;;;;;;;;GASG,AAEH,qBAAsB,CACrB,QAAQ,CAAE,QAAQ,CAClB,OAAO,CAAE,GAAG,CACZ,MAAM,CAAE,gBAAgB",
+"sources": ["../../../sass/jquery-ui/jquery.ui.selectable.scss"],
+"names": [],
+"file": "jquery.ui.selectable.min.css"
+}

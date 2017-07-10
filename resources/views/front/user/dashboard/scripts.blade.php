@@ -43,6 +43,11 @@
                 $('a.has-popover-tab[data-card-type=social]').tab('show')
             }
         });
+
+        $('.print-btn').click(function (e) {
+            $('a.has-popover-tab[data-card-type=full]').tab('show')
+        });
+
     });
 
     var downloadLinks = {!! json_encode($downloadLinks) !!};

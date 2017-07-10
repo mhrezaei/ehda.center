@@ -390,24 +390,6 @@ body.sticky-header {
   }
 }
 
-footer {
-  padding: 80px 0;
-  position: absolute;
-  width: 100%;
-  bottom: 0;
-  @media(max-width: 990px) {
-    padding: 40px 0;
-  }
-  .list-unstyled {
-    a {
-      @extend .right-bordered-link;
-      &:hover {
-        border-color: color(#fff);
-      }
-    }
-  }
-}
-
 .social-links {
   a {
     display: block;
@@ -1105,16 +1087,6 @@ select.form-control {
     height: 28px;
     padding: 1px 3px !important;
   }
-}
-
-.go-to-top {
-  position: fixed;
-  z-index: 10;
-  left: 10px;
-  bottom: 10px;
-  border-radius: 50%;
-  background-color: #e6e6e6;
-  padding: 20px 17px;
 }
 
 .media-start, .media-end {

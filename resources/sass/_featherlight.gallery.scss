@@ -1,8 +1,8 @@
 /**
  * Featherlight Gallery – an extension for the ultra slim jQuery lightbox
- * Version 1.5.0 - http://noelboss.github.io/featherlight/
+ * Version 1.7.1 - http://noelboss.github.io/featherlight/
  *
- * Copyright 2016, Noël Raoul Bossart (http://www.noelboss.com)
+ * Copyright 2017, Noël Raoul Bossart (http://www.noelboss.com)
  * MIT Licensed.
 **/
 @media all {
@@ -10,11 +10,10 @@
   .featherlight-previous {
     display: block;
     position: absolute;
-    top: 0;
+    top: 25px;
     right: 25px;
     bottom: 0;
-    left: 90%;
-    margin: auto;
+    left: 80%;
     cursor: pointer;
     /* preventing text selection */
     -webkit-touch-callout: none;
@@ -25,12 +24,11 @@
     user-select: none;
     /* IE9 hack, otherwise navigation doesn't appear */
     background: rgba(0,0,0,0);
-    height: 50%;
   }
 
   .featherlight-previous {
     left: 25px;
-    right: 90%;
+    right: 80%;
   }
 
   .featherlight-next:hover,
@@ -71,6 +69,11 @@
   .featherlight-next:hover span,
   .featherlight-previous:hover span {
     display: inline-block;
+  }
+
+  .featherlight-swipe-aware .featherlight-next,
+  .featherlight-swipe-aware .featherlight-previous {
+    display: none;
   }
 
   /* Hide navigation while loading */

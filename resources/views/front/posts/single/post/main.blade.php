@@ -1,3 +1,5 @@
+{{ null, $showSideBar = isset($showSideBar) ? $showSideBar : false }}
+
 <div class="container">
     <div class="row">
         <div class="article @if($showSideBar) col-xs-12 col-md-8 @endif">

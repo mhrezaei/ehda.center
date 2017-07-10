@@ -1,17 +1,27 @@
 <ul class="pull-start list-inline no-margin">
+    @if(!\App\Providers\FrontServiceProvider::isHome())
+        <li>
+            <a href="{{ url_locale() }}" class="f22" title="{{ trans('front.home') }}"
+               style="padding-top: 0; padding-bottom: 0">
+                <i class="fa fa-home"></i>
+            </a>
+        </li>
+    @endif
     @if(user()->exists)
         <li class="has-child">
             <a href="/">{{ str_replace('::user', user()->name_first, trans('front.profile_phrases.welcome_user')) }}</a>
             <ul class="list-unstyled bg-primary">
                 @if(user()->is_admin()) {{-- This user is a volunteer --}}
-                    <li><a href="{{ url('/manage') }}">{{ trans('front.volunteer_section.section') }}</a></li>
+                <li><a href="{{ url('/manage') }}">{{ trans('front.volunteer_section.section') }}</a></li>
                 @endif
                 @if(user()->is_an('card-holder')) {{-- This user has card --}}
-                    <li>
-                        <a href="{{ route_locale('user.dashboard') }}">{{ trans('front.organ_donation_card_section.singular') }}
-                        </a>
-                    </li>
-                    <li><a href="{{ url_locale('members/my_card/edit') }}">{{ trans('front.member_section.profile_edit') }}</a></li>
+                <li>
+                    <a href="{{ route_locale('user.dashboard') }}">{{ trans('front.organ_donation_card_section.singular') }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_locale('members/my_card/edit') }}">{{ trans('front.member_section.profile_edit') }}</a>
+                </li>
                 @endif
                 <li><a href="{{ url('/logout') }}">{{ trans('front.member_section.sign_out') }}</a></li>
             </ul>
@@ -22,6 +32,6 @@
         </li>
     @endif
     {{--<li>--}}
-        {{--<a href="/">ورود استان&zwnj;ها</a>--}}
+    {{--<a href="/">ورود استان&zwnj;ها</a>--}}
     {{--</li>--}}
 </ul>

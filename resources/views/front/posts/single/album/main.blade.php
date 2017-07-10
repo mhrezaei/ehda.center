@@ -11,12 +11,14 @@
             </div>
         @endif
     </div>
-    <div class="flex_wrapper" id="gallery">
-        @if($post['post_photos'] and is_array($post['post_photos']))
-            @foreach($post['post_photos'] as $key => $item)
-                @include($viewFolder . '.item')
-            @endforeach
-        @endif
+    <div class="col-xs-12">
+        <div class="flex_wrapper" id="gallery">
+            @if($post['post_photos'] and is_array($post['post_photos']))
+                @foreach($post['post_photos'] as $key => $item)
+                    @include($viewFolder . '.item')
+                @endforeach
+            @endif
+        </div>
     </div>
 </div>
 
@@ -32,9 +34,11 @@
                     $(this).trigger('load');
                 }
             });
-            
+
             $("#gallery a").featherlightGallery({
-                openSpeed: 300
+                openSpeed: 300,
+                previousIcon: '&#xf053;',
+                nextIcon: '&#xf054;',
             });
             $.featherlightGallery.prototype.afterContent = function () {
                 var caption = this.$currentTarget.find('img').attr('alt');

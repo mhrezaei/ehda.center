@@ -75,7 +75,7 @@ return [
     'no_result_found'                          => 'No Results Found',
     'view_on_map'                              => 'View on Map',
     'volunteers'                               => 'Volunteers',
-    'special_volunteers'                       => 'Special Volunteers',
+    'special_volunteers'                       => 'Celebrities',
     'send_works'                               => 'Send Works',
     'send_work'                                => 'Send Work',
     'personal_information'                     => 'Personal Information',
@@ -85,6 +85,7 @@ return [
     'short_link'                               => 'Short Link',
     'contact_info'                             => 'Contact Info',
     'login_info'                               => 'Login Info',
+    'powered_by_yasna'                         => 'Powered by Yasna Team',
 
     'volunteer_section' => [
         'singular'         => 'Organ Donation Volunteer',
@@ -93,8 +94,8 @@ return [
         'register'         => 'Register Volunteer',
         'register_success' => 'Volunteer registered successfuly.',
         'special'          => [
-            'singular' => 'Special Volunteer',
-            'plural'   => 'Special Volunteers',
+            'singular' => 'Celebrity',
+            'plural'   => 'Celebrities',
         ],
     ],
 
@@ -181,10 +182,68 @@ return [
 
     "main-menu" => [
         'items' => [
-            'learn'   => 'to Learn',
-            'will'    => 'to Will',
-            'achieve' => 'to Achieve',
+            'learn'   => 'to Know',
+            'will'    => 'to Desire',
+            'achieve' => 'to Do',
             'join'    => 'to Join',
-        ]
+        ],
+
+        'sub_menus' => [
+            "learn" => [
+                'academic'                          => 'Scientific',
+                'brain_death'                       => 'Brain Death',
+                'organ_donation'                    => 'Organ Donation',
+                'allocation'                        => 'Organ Allocation',
+                'organ_transplant'                  => 'Organ Transplant',
+                'organ_transplant_history'          => 'Organ Transplant History',
+                'statistics'                        => 'Statistics',
+                'cultural'                          => 'Cultural',
+                'organ_donation_in_religion'        => 'Organ Donation and Religion',
+                'organ_donation_in_another_country' => 'Organ Donation in Other Countries',
+                'organ_donation_card'               => 'Organ Donation Card',
+                'faq'                               => 'FAQ',
+                'iran_news'                         => 'Iran News',
+                'iran_procurement'                  => 'Organ Donation and Transplant',
+                'iran_transplant'                   => 'Transplant',
+                'provinces'                         => 'States',
+                'internal-ngo'                      => 'Internal',
+                'world_news'                        => 'World News',
+                'world_procurement'                 => 'Organ Donation and Transplant',
+                'world_transplant'                  => 'Transplant',
+
+            ],
+
+            "will" => [
+                'donations'                         => 'Funding',
+                'volunteers'                        => 'Volunteers',
+                'organ_donation_volunteers'         => 'Organ Donation Volunteers',
+                'special_volunteers'                => 'Celebrities',
+                'participation_in_the_notification' => 'Awareness Rising',
+                'supporters'                        => 'Supporters',
+                'you_say'                           => 'You Say',
+                'your_works'                        => 'Your Works',
+                'your_memories'                     => 'Your Memories',
+                'suggestions'                       => 'Suggestions',
+            ],
+
+            "achieve" => [
+                'about_us'             => 'About Us',
+                'activities'           => 'Activities',
+                'ngo_history'          => 'Background',
+                'board_of_directories' => 'Board of Directors',
+                'board_of_trustees'    => 'Board of Trustees',
+                'founding'             => 'Funding Board',
+                'organizational_chart' => 'Chart',
+                'statute'              => 'Statue',
+                'tasks_goals'          => 'Duties',
+                'committees'           => 'Committees',
+                'gallery'              => 'Gallery',
+                'pictures'             => 'Pictures',
+                'films'                => 'Videos',
+                'photo_donors'         => 'Lasting Angels',
+                'contact_us'           => 'Contact Us',
+
+            ],
+        ],
     ],
 ];

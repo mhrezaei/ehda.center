@@ -31,6 +31,11 @@ class MenuServiceProvider extends ServiceProvider
         //
     }
 
+    /**
+     * Generates array of menu from post types and their categories
+     *
+     * @return array
+     */
     public static function getMenuArray()
     {
         $menu = trans('front.main-menu.items');
@@ -51,7 +56,6 @@ class MenuServiceProvider extends ServiceProvider
                     $tmpColumn = [
                         'children' => [],
                         'title'    => $postType->titleIn(getLocale()),
-                        'slug'     => $postType->slug,
                     ];
 
                     $folder = $postType->folders()
@@ -65,7 +69,11 @@ class MenuServiceProvider extends ServiceProvider
                         foreach ($categories as $category) {
                             $tmpColumn['children'][] = [
                                 'title' => $category->title,
-                                'slug'  => $category->slug,
+                                'link'  => url_locale(implode(DIRECTORY_SEPARATOR, [
+                                    'archive',
+                                    $postType->slug,
+                                    $category->slug,
+                                ])),
                             ];
                         }
                     }
@@ -81,5 +89,281 @@ class MenuServiceProvider extends ServiceProvider
         }
 
         return $menu;
+    }
+
+    /**
+     * Returns a hard coded array for menu
+     *
+     * @return array
+     */
+    public static function getStaticMenuArray()
+    {
+        return [
+            'learn'   => [
+                'title'    => trans('front.main-menu.items.learn'),
+                'children' => [
+                    [
+                        'title'    => trans('front.main-menu.sub_menus.learn.world_news'),
+                        'children' => [
+                            [
+                                'title' => trans('front.main-menu.sub_menus.learn.world_procurement'),
+                                'link'  => route_locale('post.archive', [
+                                    'postType' => 'word-news',
+                                    'category' => 'world-opu-transplant',
+                                ]),
+                            ],
+                        ],
+                    ],
+                    [
+                        'title'    => trans('front.main-menu.sub_menus.learn.iran_news'),
+                        'children' => [
+                            [
+                                'title' => trans('front.main-menu.sub_menus.learn.iran_procurement'),
+                                'link'  => route_locale('post.archive', [
+                                    'postType' => 'iran-news',
+                                    'category' => 'iran-opu-transplant',
+                                ]),
+                            ],
+                            [
+                                'title' => trans('front.main-menu.sub_menus.learn.internal-ngo'),
+                                'link'  => route_locale('post.archive', [
+                                    'postType' => 'iran-news',
+                                    'category' => 'internal-ngo',
+                                ]),
+                            ],
+                        ],
+                    ],
+                    [
+                        'title' => trans('front.main-menu.sub_menus.learn.faq'),
+                        'link'  => url_locale('faq')
+                    ],
+                    [
+                        'title'    => trans('front.main-menu.sub_menus.learn.academic'),
+                        'children' => [
+                            [
+                                'title' => trans('front.main-menu.sub_menus.learn.brain_death'),
+                                'link'  => route_locale('post.single', [
+                                    'identifier' => 'brain-death',
+                                    'url'        => urlencode(trans('front.main-menu.sub_menus.learn.brain_death')),
+                                ]),
+                            ],
+                            [
+                                'title' => trans('front.main-menu.sub_menus.learn.organ_donation'),
+                                'link'  => route_locale('post.single', [
+                                    'identifier' => 'organ-donation',
+                                    'url'        => urlencode(trans('front.main-menu.sub_menus.learn.organ_donation')),
+                                ]),
+                            ],
+                            [
+                                'title' => trans('front.main-menu.sub_menus.learn.allocation'),
+                                'link'  => route_locale('post.single', [
+                                    'identifier' => 'allocation',
+                                    'url'        => urlencode(trans('front.main-menu.sub_menus.learn.allocation')),
+                                ]),
+                            ],
+                            [
+                                'title' => trans('front.main-menu.sub_menus.learn.organ_transplant'),
+                                'link'  => route_locale('post.single', [
+                                    'identifier' => 'organ-transplant',
+                                    'url'        => urlencode(trans('front.main-menu.sub_menus.learn.organ_transplant')),
+                                ]),
+                            ],
+                            [
+                                'title' => trans('front.main-menu.sub_menus.learn.organ_transplant_history'),
+                                'link'  => route_locale('post.single', [
+                                    'identifier' => 'organ-transplant-history',
+                                    'url'        => urlencode(trans('front.main-menu.sub_menus.learn.organ_transplant_history')),
+                                ]),
+                            ],
+                            [
+                                'title' => trans('front.main-menu.sub_menus.learn.statistics'),
+                                'link'  => route_locale('post.single', [
+                                    'identifier' => 'statistics',
+                                    'url'        => urlencode(trans('front.main-menu.sub_menus.learn.statistics')),
+                                ]),
+                            ],
+                        ],
+                    ],
+                    [
+                        'title'    => trans('front.main-menu.sub_menus.learn.cultural'),
+                        'children' => [
+                            [
+                                'title' => trans('front.main-menu.sub_menus.learn.organ_donation_in_religion'),
+                                'link'  => route_locale('post.single', [
+                                    'identifier' => 'organ-donation-in-religion',
+                                    'url'        => urlencode(trans('front.main-menu.sub_menus.learn.organ_donation_in_religion')),
+                                ]),
+                            ],
+                            [
+                                'title' => trans('front.main-menu.sub_menus.learn.organ_donation_in_another_country'),
+                                'link'  => route_locale('post.single', [
+                                    'identifier' => 'organ-donation-in-another-country',
+                                    'url'        => urlencode(trans('front.main-menu.sub_menus.learn.organ_donation_in_another_country')),
+                                ]),
+                            ],
+                            [
+                                'title' => trans('front.main-menu.sub_menus.learn.organ_donation_card'),
+                                'link'  => route_locale('register_card'),
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+            'will'    => [
+                'title'    => trans('front.main-menu.items.will'),
+                'children' => [
+                    [
+                        'title' => trans('front.main-menu.sub_menus.will.donations'),
+                        'link'  => route_locale('post.single', [
+                            'identifier' => 'donations',
+                            'url'        => urlencode(trans('front.main-menu.sub_menus.will.donations')),
+                        ]),
+                    ],
+                    [
+                        'title'    => trans('front.main-menu.sub_menus.will.volunteers'),
+                        'children' => [
+                            [
+                                'title' => trans('front.main-menu.sub_menus.will.special_volunteers'),
+                                'link'  => route_locale('volunteers.special'),
+                            ],
+                            [
+                                'title' => trans('front.main-menu.sub_menus.will.organ_donation_volunteers'),
+                                'link'  => route_locale('volunteer.register.step.1.get'),
+                            ],
+                        ]
+                    ],
+                    [
+                        'title' => trans('front.main-menu.sub_menus.will.participation_in_the_notification'),
+                        'link'  => route_locale('post.single', [
+                            'identifier' => 'participation-in-the-notification',
+                            'url'        => urlencode(trans('front.main-menu.sub_menus.will.participation_in_the_notification')),
+                        ]),
+                    ],
+                    [
+                        'title' => trans('front.main-menu.sub_menus.will.supporters'),
+                        'link'  => route_locale('post.single', [
+                            'identifier' => 'supporters',
+                            'url'        => urlencode(trans('front.main-menu.sub_menus.will.supporters')),
+                        ]),
+                    ],
+                    [
+                        'title'    => trans('front.main-menu.sub_menus.will.you_say'),
+                        'children' => [
+                            [
+                                'title' => trans('front.main-menu.sub_menus.will.your_works'),
+                                'link'  => route_locale('users.works.send'),
+                            ],
+//                            [
+//                                'title' => trans('front.main-menu.sub_menus.will.your_memories'),
+//                                'link'  => '#',
+//                            ],
+//                            [
+//                                'title' => trans('front.main-menu.sub_menus.will.suggestions'),
+//                                'link'  => '#',
+//                            ],
+                        ]
+                    ],
+
+                ]
+            ],
+            'achieve' => [
+                'title'    => trans('front.main-menu.items.achieve'),
+                'children' => [
+                    [
+                        'title'    => trans('front.main-menu.sub_menus.achieve.about_us'),
+                        'children' => [
+                            [
+                                'title' => trans('front.main-menu.sub_menus.achieve.ngo_history'),
+                                'link'  => route_locale('post.single', [
+                                    'identifier' => 'ngo-history',
+                                    'url'        => urlencode(trans('front.main-menu.sub_menus.achieve.ngo_history')),
+                                ]),
+                            ],
+                            [
+                                'title' => trans('front.main-menu.sub_menus.achieve.activities'),
+                                'link'  => route_locale('post.single', [
+                                    'identifier' => 'activities',
+                                    'url'        => urlencode(trans('front.main-menu.sub_menus.achieve.activities')),
+                                ]),
+                            ],
+                            [
+                                'title' => trans('front.main-menu.sub_menus.achieve.board_of_directories'),
+                                'link'  => route_locale('post.single', [
+                                    'identifier' => 'board-of-directories',
+                                    'url'        => urlencode(trans('front.main-menu.sub_menus.achieve.board_of_directories')),
+                                ]),
+                            ],
+                            [
+                                'title' => trans('front.main-menu.sub_menus.achieve.board_of_trustees'),
+                                'link'  => route_locale('post.single', [
+                                    'identifier' => 'board-of-trustees',
+                                    'url'        => urlencode(trans('front.main-menu.sub_menus.achieve.board_of_trustees')),
+                                ]),
+                            ],
+                            [
+                                'title' => trans('front.main-menu.sub_menus.achieve.founding'),
+                                'link'  => route_locale('post.single', [
+                                    'identifier' => 'founding',
+                                    'url'        => urlencode(trans('front.main-menu.sub_menus.achieve.founding')),
+                                ]),
+                            ],
+//                            [
+//                                'title' => trans('front.main-menu.sub_menus.achieve.organizational_chart'),
+//                                'link'  => route_locale('post.single', [
+//                                    'identifier' => 'organizational_chart',
+//                                    'url'        => urlencode(trans('front.main-menu.sub_menus.achieve.organizational_chart')),
+//                                ]),
+//                            ],
+//                            [
+//                                'title' => trans('front.main-menu.sub_menus.achieve.statute'),
+//                                'link'  => route_locale('post.single', [
+//                                    'identifier' => 'statute',
+//                                    'url'        => urlencode(trans('front.main-menu.sub_menus.achieve.statute')),
+//                                ]),
+//                            ],
+//                            [
+//                                'title' => trans('front.main-menu.sub_menus.achieve.tasks_goals'),
+//                                'link'  => route_locale('post.single', [
+//                                    'identifier' => 'tasks_goals',
+//                                    'url'        => urlencode(trans('front.main-menu.sub_menus.achieve.tasks_goals')),
+//                                ]),
+//                            ],
+                            [
+                                'title' => trans('front.main-menu.sub_menus.achieve.committees'),
+                                'link'  => route_locale('post.single', [
+                                    'identifier' => 'committees',
+                                    'url'        => urlencode(trans('front.main-menu.sub_menus.achieve.committees')),
+                                ]),
+                            ],
+                        ]
+                    ],
+                    [
+                        'title'    => trans('front.main-menu.sub_menus.achieve.gallery'),
+                        'children' => [
+                            [
+                                'title' => trans('front.main-menu.sub_menus.achieve.pictures'),
+                                'link'  => route_locale('gallery.categories', [
+                                    'postType' => 'gallery',
+                                ])
+                            ],
+                            [
+                                'title' => trans('front.main-menu.sub_menus.achieve.films'),
+                                'link'  => route_locale('gallery.categories', [
+                                    'postType' => 'films',
+                                ])
+                            ],
+//                            [
+//                                'title' => trans('front.main-menu.sub_menus.achieve.photo_donors'),
+//                                'link'  => '#'
+//                            ],
+                        ]
+                    ],
+                    [
+                        'title' => trans('front.main-menu.sub_menus.achieve.contact_us'),
+                        'link'  => '#'
+                    ],
+                ]
+            ],
+        ];
     }
 }

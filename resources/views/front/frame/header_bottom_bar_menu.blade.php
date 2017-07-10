@@ -1,23 +1,32 @@
-{{ null, $menu = \App\Providers\MenuServiceProvider::getMenuArray() }}
+{{--{{ null, $menu = \App\Providers\MenuServiceProvider::getMenuArray() }}--}}
+{{ null, $menu = \App\Providers\MenuServiceProvider::getStaticMenuArray() }}
 
 <ul class="list-inline">
     @if($menu and is_array($menu) and count($menu))
         @foreach($menu as $group)
             <li class="has-child">
                 <a href="/">{{ $group['title'] }}</a>
-                @if($group['children'] and is_array($group['children']) and count($group['children']))
+                @if(isset($group['children']) and
+                    $group['children'] and
+                    is_array($group['children']) and
+                    count($group['children'])
+                )
                     <ul class="bg-primary mega-menu col-xs-12">
                         @foreach($group['children'] as $postType)
                             <ul class="list-unstyled">
-                                <h3>{{ $postType['title'] }}</h3>
-                                @if($postType['children'] and is_array($postType['children']) and count($postType['children']))
+                                <h3>
+                                    <a @isset($postType['link']) href="{{ $postType['link'] }}" @endisset>
+                                        {{ $postType['title'] }}
+                                    </a>
+                                </h3>
+                                @if(isset($postType['children']) and
+                                    $postType['children'] and
+                                    is_array($postType['children']) and
+                                    count($postType['children'])
+                                )
                                     @foreach($postType['children'] as $category)
                                         <li>
-                                            <a href="{{ url_locale(implode(DIRECTORY_SEPARATOR, [
-                                                'archive',
-                                                $postType['slug'],
-                                                $category['slug'],
-                                            ])) }}">
+                                            <a href="{{ $category['link'] or '#' }}">
                                                 {{ $category['title'] }}
                                             </a>
                                         </li>

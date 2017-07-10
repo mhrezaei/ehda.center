@@ -109,6 +109,8 @@ JS;
             'variables' => [
                 'twoColumns' => false, // @TODO: to be read from setting
             ],
+            'showError' => false,
+            // If set "showError" to false, showList function will be return "false" in case of no result
         ];
 
         if ($postTypeSlug) {
@@ -127,6 +129,11 @@ JS;
         } // If "category" isn't specified, posts in all categories will be shown
 
         $innerHTML = PostsServiceProvider::showList($filterData);
+
+        if (!$innerHTML) {
+            // If no result found
+            return redirect(getLocale());
+        }
 
         /************************* Generate Html for List View ********************** END */
 
@@ -185,7 +192,85 @@ JS;
             ) + $otherValues);
     }
 
-    public function categories($lang, $postTypeSlug = null)
+    public function show_with_full_url($lang, $identifier)
+    {
+        return $this->show($identifier);
+    }
+
+    public function show_with_short_url($lang, $identifier)
+    {
+        $prefix = config('prefix.routes.post.short');
+
+        if (starts_with($identifier, $prefix)) {
+            $identifier = substr($identifier, strlen($prefix));
+            return $this->show($identifier);
+        }
+
+        return $this->abort('403');
+    }
+
+    public function faqs()
+    {
+        $faqsHTML = PostsServiceProvider::showList(['type' => 'faq']);
+
+        $newFaqPost = Post::findBySlug('ask-question');
+        if ($newFaqPost->exists and $newFaqPost->canRecieveComments()) {
+            $getNewFaq = true;
+            $newFaqForm = PostsServiceProvider::showPost($newFaqPost);
+        } else {
+            $getNewFaq = false;
+        }
+        return view('front.test.faqs.main', compact('faqsHTML', 'getNewFaq', 'newFaqForm'));
+    }
+
+    private function show($hashid)
+    {
+        /************************* Find Post ********************** START */
+        $post = PostsServiceProvider::smartFindPost($hashid);
+        /************************* Find Post ********************** END */
+
+        if ($post->exists) { // If the specified $hashid relates on an existed post
+            $post->spreadMeta();
+
+            /************************* Generate Html for Post View Part ********************** START */
+            $innerHTML = PostsServiceProvider::showPost($post, [
+                'variables' => [
+                    'showSideBar' => false, // @TODO: dynamicate this line
+                ],
+            ]);
+            /************************* Generate Html for Post View Part ********************** END */
+
+            /************************* Generate Position Info ********************** START */
+
+            $positionInfo = [];
+            $postType = $post->posttype;
+            $categories = $post->categories;
+            $positionInfo = [
+                'group'    => $post->header_title ?: $postType->header_title,
+                'category' => $post->category_title ?: $postType->title,
+                'title'    => $categories->first() ? $categories->first()->title : '',
+            ];
+
+            /************************* Generate Position Info ********************** END */
+
+            /************************* Set Other Values ********************** START */
+            $otherValues = [
+                'pageTitle' => $post->title,
+            ];
+            /************************* Set Other Values ********************** END */
+
+            /************************* Render View ********************** START */
+            return view('front.posts.general.frame.main', compact(
+                    'innerHTML',
+                    'positionInfo'
+                ) + $otherValues);
+
+        } else {
+            $this->abort('404');
+        }
+    }
+
+    private function show_categories($postTypeSlug = null)
     {
         /************************* Generate Data for List View ********************** START */
 
@@ -248,97 +333,20 @@ JS;
         return view('errors.m404');
     }
 
-    public function show_with_full_url($lang, $identifier)
-    {
-        return $this->show($identifier);
-    }
-
-    public function show_with_short_url($lang, $identifier)
-    {
-        $prefix = config('prefix.routes.post.short');
-
-        if (starts_with($identifier, $prefix)) {
-            $identifier = substr($identifier, strlen($prefix));
-            return $this->show($identifier);
-        }
-
-        return $this->abort('403');
-    }
-
-    public function faqs()
-    {
-        $faqsHTML = PostsServiceProvider::showList(['type' => 'faq']);
-
-        $newFaqPost = Post::findBySlug('ask-question');
-        if ($newFaqPost->exists and $newFaqPost->canRecieveComments()) {
-            $getNewFaq = true;
-            $newFaqForm = PostsServiceProvider::showPost($newFaqPost);
-        } else {
-            $getNewFaq = false;
-        }
-        return view('front.test.faqs.main', compact('faqsHTML', 'getNewFaq', 'newFaqForm'));
-    }
-
-    private function show($hashid)
-    {
-//        return view('welcome');
-        /************************* Find Post ********************** START */
-        $post = PostsServiceProvider::smartFindPost($hashid);
-        /************************* Find Post ********************** END */
-
-        if ($post->exists) { // If the specified $hashid relates on an existed post
-            /************************* Generate Html for Post View Part ********************** START */
-            $innerHTML = PostsServiceProvider::showPost($post, [
-                'variables' => [
-                    'showSideBar' => false, // @TODO: dynamicate this line
-                ],
-            ]);
-            /************************* Generate Html for Post View Part ********************** END */
-
-            /************************* Generate Position Info ********************** START */
-
-            $positionInfo = [];
-            $postType = $post->posttype;
-            $categories = $post->categories;
-            $positionInfo = [
-                'group'    => $postType->header_title,
-                'category' => $postType->title,
-                'title'    => $categories->first() ? $categories->first()->title : '',
-            ];
-
-            /************************* Generate Position Info ********************** END */
-
-            /************************* Set Other Values ********************** START */
-            $otherValues = [
-                'pageTitle' => $post->title,
-            ];
-            /************************* Set Other Values ********************** END */
-
-            /************************* Render View ********************** START */
-            return view('front.posts.general.frame.main', compact(
-                    'innerHTML',
-                    'positionInfo'
-                ) + $otherValues);
-
-        } else {
-            $this->abort('404');
-        }
-    }
-
     public function special_volunteers()
     {
         $postType = Posttype::findBySlug('celebs');
 
         /************************* Generate Html for List View ********************** START */
         $innerHTML = PostsServiceProvider::showList([
-            'type' => 'celebs',
+            'type'         => 'celebs',
             'max_per_page' => -1,
         ]);
         /************************* Generate Html for List View ********************** END */
 
         /************************* Generate Position Info ********************** START */
         $positionInfo = [
-            'group' => $postType->headerTitleIn(getLocale()),
+            'group'    => $postType->headerTitleIn(getLocale()),
             'category' => $postType->titleIn(getLocale()),
         ];
         /************************* Generate Position Info ********************** END */
@@ -356,4 +364,31 @@ JS;
             ) + $otherValues);
     }
 
+    public function works_send()
+    {
+        $postsPrefix = 'send-work-';
+        UploadServiceProvider::setUserType('client');
+        UploadServiceProvider::setSection('work');
+
+
+        // get related posts
+        $posts = Post::selector(['type' => 'commenting'])
+            ->where('slug', 'like', "$postsPrefix%")
+            ->get();
+
+
+        // remove posts that are related to inactive file types (in config/upload.php)
+        foreach ($posts as $key => $post) {
+            $fileType = str_replace($postsPrefix, '', $post->slug);
+            if (UploadServiceProvider::isActive($fileType)) {
+                $post->fileType = $fileType;
+            } else {
+                $posts->forget($key);
+            }
+        }
+
+        $sendingArea = view('front.test.works.sending_area.main', compact('posts'));
+        $postContentHTML = PostsServiceProvider::showPost('send-works-text', ['externalBlade' => $sendingArea]);
+        return view('front.test.works.main', compact('postContentHTML'));
+    }
 }

@@ -418,15 +418,16 @@ class PostsServiceProvider extends ServiceProvider
     /**
      * Find post with multiple types of identifiers
      *
-     * @param $identifier
+     * @param         $identifier
+     * @param boolean $checkDirectId If false, post will not be searched with id of db table
      *
      * @return \App\Models\Post
      */
-    public static function smartFindPost($identifier)
+    public static function smartFindPost($identifier, $checkDirectId = false)
     {
         if ($identifier instanceof Post) {
             $post = $identifier;
-        } else if (is_numeric($identifier)) {
+        } else if (is_numeric($identifier) and $checkDirectId) {
             $post = Post::find($identifier);
         } else if (count($dehashed = hashid_decrypt($identifier, 'ids')) and
             is_numeric($id = $dehashed[0])
@@ -444,6 +445,9 @@ class PostsServiceProvider extends ServiceProvider
                 // Domain is specified and it is one of usable domains
             )
         ) {
+            // Find sister of found post in current locale
+            $post = $post->in(getLocale());
+
             return $post;
         }
 

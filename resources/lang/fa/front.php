@@ -92,6 +92,7 @@ return [
     'download'                                 => 'دانلود',
     'print'                                    => 'چاپ',
     'share'                                    => 'اشتراک',
+    'powered_by_yasna'                         => 'طراحی و اجرا: گروه یسنا',
 
     'volunteer_section' => [
         'singular'         => 'سفیر اهدای عضو',
@@ -207,12 +208,69 @@ return [
     ],
 
     "main-menu" => [
-        'items' => [
+        'items'     => [
             'learn'   => 'دانستن',
             'will'    => 'خواستن',
             'achieve' => 'توانستن',
             'join'    => 'پیوستن',
-        ]
+        ],
+        'sub_menus' => [
+            "learn" => [
+                'academic'                          => 'علمی',
+                'brain_death'                       => 'مرگ مغزی',
+                'organ_donation'                    => 'اهدای عضو',
+                'allocation'                        => 'تخصیص اعضا',
+                'organ_transplant'                  => 'پیوند اعضا',
+                'organ_transplant_history'          => 'تاریخچه پیوند',
+                'statistics'                        => 'آمار',
+                'cultural'                          => 'فرهنگی',
+                'organ_donation_in_religion'        => 'اهدای عضو در دین',
+                'organ_donation_in_another_country' => 'اهدای عضو در کشور های دیگر',
+                'organ_donation_card'               => 'کارت اهدای عضو',
+                'faq'                               => 'سوالات رایج',
+                'iran_news'                         => 'اخبار ایران',
+                'iran_procurement'                  => 'فراهم آوری و پیوند',
+                'iran_transplant'                   => 'پیوند',
+                'provinces'                         => 'استان ها',
+                'internal-ngo'                      => 'داخلی انجمن',
+                'world_news'                        => 'اخبار جهان',
+                'world_procurement'                 => 'فراهم آوری و پیوند',
+                'world_transplant'                  => 'پیوند',
+
+            ],
+
+            "will" => [
+                'donations'                         => 'کمک های مالی',
+                'volunteers'                        => 'سفیران',
+                'organ_donation_volunteers'         => 'سفیران اهدای عضو',
+                'special_volunteers'                => 'سفیران ویژه',
+                'participation_in_the_notification' => 'مشارکت در اطلاع رسانی',
+                'supporters'                        => 'حامیان',
+                'you_say'                           => 'شما هم بگویید',
+                'your_works'                        => 'آثار شما',
+                'your_memories'                     => 'خاطرات شما',
+                'suggestions'                       => 'پیشنهادات و انتقادات',
+            ],
+
+            "achieve" => [
+                'about_us'             => 'درباره ما',
+                'activities'           => 'فعالیت ها',
+                'ngo_history'          => 'تاریخچه انجمن',
+                'board_of_directories' => 'هیات مدیره',
+                'board_of_trustees'    => 'هیات امنا',
+                'founding'             => 'هیات موسس',
+                'organizational_chart' => 'چارت سازمانی',
+                'statute'              => 'اساسنامه',
+                'tasks_goals'          => 'شرح وظایف، اهداف',
+                'committees'           => 'کمیته ها',
+                'gallery'              => 'گالری',
+                'pictures'             => 'تصویر',
+                'films'                => 'فیلم',
+                'photo_donors'         => 'فرشتگان ماندگار',
+                'contact_us'           => 'تماس با ما',
+
+            ],
+        ],
     ],
 
     'media' => [
