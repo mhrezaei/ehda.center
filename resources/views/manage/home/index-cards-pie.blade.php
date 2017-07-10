@@ -54,7 +54,7 @@
 	<div class="panel-heading text-center">
 		@if(isset($ajax))
 
-			<a href="{{url('manage/cards')}}" style="text-decoration: none">
+			<a href="{{user()->as('admin')->can('users-card-holder.browse')? url('manage/cards') : v0()}}" style="text-decoration: none">
 				<div class="panel-heading f14">
 					{{ pd(number_format($total)) }}
 					{{ trans("ehda.donation_card") }}
@@ -65,7 +65,7 @@
 
 		@else
 
-			<a href="{{url('manage/cards')}}" style="text-decoration: none">
+			<a href="{{user()->as('admin')->can('users-card-holder.browse')? url('manage/cards') : v0()}}" style="text-decoration: none">
 				<div class="panel-heading f14">
 					{{ trans("ehda.donation_cards") }}
 				</div>
