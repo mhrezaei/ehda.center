@@ -1,78 +1,79 @@
 <div class="panel panel-green">
 
+	{{--
+	|--------------------------------------------------------------------------
+	| Calculations
+	|--------------------------------------------------------------------------
+	|
+	--}}
+	@if(isset($ajax))
+		{{ '' , $total = model('user')::selector(['role' => "card-holder" ,])->count() }}
+		{{ '' , $females = model('user')::selector(['role' => "card-holder" ,])->where('gender',2)->count() }}
+		{{ '' , $males = model('user')::selector(['role' => "card-holder" ,])->where('gender',1)->count() }}
+	@endif
+
+
+	{{--
+	|--------------------------------------------------------------------------
+	| Header
+	|--------------------------------------------------------------------------
+	|
+	--}}
+	<div class="panel-heading">
+		<i class="fa fa-credit-card"></i>
+		<span class="mh5">
+			{{ trans("ehda.donation_cards") }}
+		</span>
+		<span class="pull-left">
+			<i class="fa fa-refresh clickable -refresh" onclick="divReload('divCardsByGender');$('#divCardsByGender .-refresh').slideToggle()"></i>
+		</span>
+	</div>
+
+
+	{{--
+	|--------------------------------------------------------------------------
+	| Body
+	|--------------------------------------------------------------------------
+	|
+	--}}
+
 	<div class="panel-footer">
 
+
 		@if(isset($ajax))
-			{{--
-			|--------------------------------------------------------------------------
-			| Real Chart
-			|--------------------------------------------------------------------------
-			|
-			--}}
 
 			@include("manage.frame.widgets.t-charts.pie" , [
-				'calculations' => [
-					$total = model('user')::selector(['role' => "card-holder" ,])->count() ,
-					$females = model('user')::selector(['role' => "card-holder" ,])->where('gender',2)->count(),
-					$males = model('user')::selector(['role' => "card-holder" ,])->where('gender',1)->count(),
-//					$others = model('user')::selector(['role' => "card-holder" ,])->where('gender',3)->count(),
-//					$unknown = ($total - $females - $males - $others )x
-				] ,
 				'height' => "120",
 				'data' => [
 					trans("forms.gender.2") => $females/$total ,
 					trans("forms.gender.1") => $males/$total ,
-//					trans("forms.gender.3") => $others/$total ,
-//					trans("forms.status_text.unknown") => $others/$total ,
 				] ,
-				'label_size' => "10" ,
-			]     )
+					'label_size' => "10" ,
+			])
 
-		@else
-			{{--
-			|--------------------------------------------------------------------------
-			| Chart Placeholder
-			|--------------------------------------------------------------------------
-			|
-			--}}
-			@include("manage.frame.widgets.t-charts.pie" , [
-				'height' => "120",
-				'data' => [
-					trans("forms.gender.2") => '' ,
-					trans("forms.gender.1") => '' ,
-				] ,
-				'label_size' => "10" ,
-			]     )
-
-
-		@endif
-
-	</div>
-
-
-
-	<div class="panel-heading text-center">
-		@if(isset($ajax))
-
-			<a href="{{user()->as('admin')->can('users-card-holder.browse')? url('manage/cards') : v0()}}" style="text-decoration: none">
-				<div class="panel-heading f14">
+			<div class="text-center w100 p5" style="margin-top: 10px">
+				<a class="btn btn-default" href="{{user()->as('admin')->can('users-card-holder.browse')? url('manage/cards') : v0()}}">
 					{{ pd(number_format($total)) }}
+					&nbsp;
 					{{ trans("ehda.donation_card") }}
-				</div>
-			</a>
-
-
+				</a>
+			</div>
+			<div class="text-center w100">
+				@include("manage.frame.widgets.loading" , [
+					'class' => "-refresh noDisplay" ,
+				])
+			</div>
 
 		@else
 
-			<a href="{{user()->as('admin')->can('users-card-holder.browse')? url('manage/cards') : v0()}}" style="text-decoration: none">
-				<div class="panel-heading f14">
-					{{ trans("ehda.donation_cards") }}
-				</div>
-			</a>
-			<script>divReload('divCardsByGender')</script>
+			<div class="m30 margin-auto text-center">
+				@include("manage.frame.widgets.loading")
+				<script>divReload('divCardsByGender')</script>
+			</div>
 
 		@endif
+
+
 	</div>
 
 </div>

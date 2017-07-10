@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Post;
 use App\Models\Posttype;
+use App\Models\Printing;
 use App\Models\Role;
 use Illuminate\Support\ServiceProvider;
 
@@ -166,4 +168,102 @@ class ManageServiceProvider extends ServiceProvider
 
 	}
 
+	public static function topbarCreateMenu()
+	{
+		$posttypes = Posttype::all() ;
+		$array = [] ;
+
+		/*-----------------------------------------------
+		| Post Types ...
+		*/
+
+		foreach($posttypes as $posttype) {
+			if(user()->as('admin')->can("posts-$posttype->slug.create")) {
+				$array[] = [
+					"manage/posts/$posttype->slug/create/all" ,
+				     trans("forms.button.create_in" , ['thing' => $posttype->title ,]),
+				     $posttype->spreadMeta()->icon,
+				];
+			}
+		}
+
+		$array[] = ['-'] ;
+
+		/*-----------------------------------------------
+		| Donation Card ...
+		*/
+		if(user()->as('admin')->can('users-card-holder.create')) {
+			$array[] = [
+				"manage/cards/create" ,
+			     trans("ehda.cards.create"),
+			     'credit-card'
+			] ;
+		}
+
+		/*-----------------------------------------------
+		| Return ...
+		*/
+		return $array ;
+
+	}
+
+
+	public static function topbarNotificationMenu()
+	{
+		$posttypes = Posttype::all() ;
+		$array = [] ;
+		$total = 0 ;
+
+		/*-----------------------------------------------
+		| Post Types ...
+		*/
+
+		foreach($posttypes as $posttype) {
+			if(user()->as('admin')->can("posts-$posttype->slug.publish")) {
+				$count = Post::selector([
+					'type' => $posttype->slug ,
+				     'domain' => "auto" ,
+				     'criteria' => "pending" ,
+				])->count() ;
+				$total += $count ;
+				if($count) {
+					$array[] = [
+						"manage/posts/$posttype->slug/pending",
+						$posttype->title . ' ' .trans("posts.criteria.pending") . pd(" ( $count )") ,
+						$posttype->spreadMeta()->icon,
+					];
+				}
+			}
+		}
+
+		$array[] = ['-'] ;
+
+		/*-----------------------------------------------
+		| Printings ...
+		*/
+		if(user()->as('admin')->can('users-card-holder.print')) {
+			$count = Printing::selector([
+				'criteria' => "pending" ,
+			     'domain' => "auto" ,
+			])->count() ;
+			$total += $count ;
+
+			if($count) {
+				$array[] = [
+					"manage/cards/printings" ,
+					trans("ehda.printings.pending_cards") . pd(" ( $count )"),
+				     'print' ,
+				];
+			}
+		}
+
+
+
+		/*-----------------------------------------------
+		| Return ...
+		*/
+		$array['total'] = $total ;
+		return $array ;
+
+	}
 }

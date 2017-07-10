@@ -409,6 +409,7 @@ class CardsController extends UsersController
 			'event_id'   => $event_id,
 			'user_id'    => $user_id,
 			'created_by' => $volunteer_id,
+		     'domain' => "auto" ,
 		])->orderBy('updated_at', 'desc')->paginate(50)
 		;
 

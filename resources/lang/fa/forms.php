@@ -69,6 +69,7 @@ return [
 		'duration'             => "از :date1 تا :date2",
 		'change_status'        => "تغییر وضعیت",
 		'download_excel_file'  => "دانلود فایل اکسل", //@Todo: New
+		'create_in'            => "افزودن به :thing", //@TODO: New
 
 	],
 
@@ -155,6 +156,7 @@ return [
 		'private'       => "خصوصی",
 		'unknown'       => "نامشخص",
 		'so_far_absent' => "فعلاً وجود ندارد",
+	     'action_required' => "منتظر اقدام" , //@TODO: New
 	],
 
 	'status_color' => [
