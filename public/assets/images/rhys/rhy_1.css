@@ -1,0 +1,120 @@
+@charset "utf-8";
+/* CSS Document */
+
+@-webkit-keyframes r1slide {
+	0%{background-position:2654px;}
+	100%{background-position:0px;}
+}
+#r1rhy{
+	width:928px;height:90px;background:url(r1.png);
+	
+	-webkit-animation: r1slide 20s linear infinite;
+}
+
+@-webkit-keyframes r2slide {
+	0%{background-position:2653px;}
+	
+	100%{    background-position:0px;}
+}#r2rhy{width:928px;height:90px;background:url(r2.png);-webkit-animation: r2slide 20s linear infinite;}
+
+
+@-webkit-keyframes r3slide {0%{background-position:2649px;}
+100%{    background-position:0px;}}#r3rhy{width:928px;height:90px;background:url(r3.png);-webkit-animation: r3slide 20s linear infinite;}
+
+@-webkit-keyframes r4slide {0%{background-position:2651px;}
+100%{    background-position:0px;}}#r4rhy{width:928px;height:90px;background:url(r4.png);-webkit-animation: r4slide 20s linear infinite;}
+
+@-webkit-keyframes r5slide {0%{background-position:2651px;}
+100%{    background-position:0px;}}#r5rhy{width:928px;height:90px;background:url(r5.png);-webkit-animation: r5slide 20s linear infinite;}
+
+@-webkit-keyframes r6slide {0%{background-position:2653px;}
+100%{    background-position:0px;}}#r6rhy{width:928px;height:90px;background:url(r6.png);-webkit-animation: r6slide 20s linear infinite;}
+
+@-webkit-keyframes r7slide {0%{background-position:2650px;}
+100%{    background-position:0px;}}#r7rhy{width:928px;height:90px;background:url(r7.png);-webkit-animation: r7slide 20s linear infinite;}
+
+@-webkit-keyframes r8slide {0%{background-position:2651px;}
+
+100%{    background-position:0px;}}#r8rhy{width:928px;height:90px;background:url(r8.png);-webkit-animation: r8slide 20s linear infinite;}
+
+@-webkit-keyframes r9slide {0%{background-position:2655px;}
+
+100%{    background-position:0px;}}#r9rhy{width:928px;height:90px;background:url(r9.png);-webkit-animation: r9slide 20s linear infinite;}
+
+@-webkit-keyframes r10slide {0%{background-position:2651px;}
+
+100%{    background-position:0px;}}#r10rhy{width:928px;height:90px;background:url(r10.png);-webkit-animation: r10slide 20s linear infinite;}
+
+@-webkit-keyframes r28slide {0%{background-position:2390px;}
+
+100%{    background-position:0px;}}#r28rhy{width:928px;height:90px;background:url(r28.png);-webkit-animation: r28slide 20s linear infinite;}
+
+@-webkit-keyframes r22slide {0%{background-position:2651px;}
+
+100%{    background-position:0px;}}#r22rhy{width:928px;height:90px;background:url(r22.png);-webkit-animation: r22slide 20s linear infinite;}
+
+@-webkit-keyframes r23slide {0%{background-position:2650px;}
+100%{    background-position:0px;}}#r23rhy{width:928px;height:90px;background:url(r23.png);-webkit-animation: r23slide 20s linear infinite;}
+
+@-webkit-keyframes r24slide {0%{background-position:2651px;}
+100%{    background-position:0px;}}#r24rhy{width:928px;height:90px;background:url(r24.png);-webkit-animation: r24slide 20s linear infinite;}
+
+@-webkit-keyframes r11slide {0%{background-position:2651px;}
+100%{    background-position:0px;}}#r11rhy{width:928px;height:90px;background:url(r11.png);-webkit-animation: r11slide 20s linear infinite;}
+
+@-webkit-keyframes r25slide {0%{background-position:2651px;}
+100%{    background-position:0px;}}#r25rhy{width:928px;height:90px;background:url(r25.png);-webkit-animation: r25slide 20s linear infinite;}
+
+@-webkit-keyframes r12slide {0%{background-position:2651px;}
+100%{    background-position:0px;}}#r12rhy{width:928px;height:90px;background:url(r12.png);-webkit-animation: r12slide 20s linear infinite;}
+
+@-webkit-keyframes r13slide {0%{background-position:2651px;}
+100%{    background-position:0px;}}#r13rhy{width:928px;height:90px;background:url(r13.png);-webkit-animation: r13slide 20s linear infinite;}
+
+@-webkit-keyframes r14slide {0%{background-position:2650px;}
+100%{    background-position:0px;}}#r14rhy{width:928px;height:90px;background:url(r14.png);-webkit-animation: r14slide 20s linear infinite;}
+
+@-webkit-keyframes r15slide {0%{background-position:2650px;}
+100%{    background-position:0px;}}#r15rhy{width:928px;height:90px;background:url(r15.png);-webkit-animation: r15slide 20s linear infinite;}
+
+@-webkit-keyframes r27slide {0%{background-position:2563px;}
+100%{    background-position:0px;}}#r27rhy{width:928px;height:90px;background:url(r27.png);-webkit-animation: r27slide 20s linear infinite;}
+
+@-webkit-keyframes r16slide {0%{background-position:2651px;}
+100%{    background-position:0px;}}#r16rhy{width:928px;height:90px;background:url(r16.png);-webkit-animation: r16slide 20s linear infinite;}
+
+@-webkit-keyframes r17slide {0%{background-position:2650px;}
+100%{    background-position:0px;}}#r17rhy{width:928px;height:90px;background:url(r17.png);-webkit-animation: r17slide 20s linear infinite;}
+
+@-webkit-keyframes r18slide {0%{background-position:2649px;}
+100%{    background-position:0px;}}#r18rhy{width:928px;height:90px;background:url(r18.png);-webkit-animation: r18slide 20s linear infinite;}
+
+@-webkit-keyframes r19slide {0%{background-position:2651px;}
+100%{    background-position:0px;}}#r19rhy{width:928px;height:90px;background:url(r19.png);-webkit-animation: r19slide 20s linear infinite;}
+
+@-webkit-keyframes r20slide {0%{background-position:2652px;}100%{    background-position:0px;}}#r20rhy{width:928px;height:90px;background:url(r20.png);-webkit-animation: r20slide 20s linear infinite;}
+
+
+
+@-webkit-keyframes r26slide {0%{background-position:2409px;}
+100%{    background-position:0px;}}#r26rhy{width:928px;height:90px;background:url(r26.png);-webkit-animation: r26slide 20s linear infinite;}
+#r1rhy,#r2rhy,#r3rhy,#r4rhy,#r5rhy,#r6rhy,#r7rhy,#r8rhy,#r9rhy,#r10rhy,#r11rhy,#r12rhy,#r13rhy,#r14rhy,#r15rhy,#r16rhy,#r17rhy,#r18rhy,#r19rhy,#r20rhy,#r21rhy,#r22rhy,#r23rhy,#r24rhy,#r25rhy,#r26rhy,#r27rhy,#r28rhy {
+   /*-webkit-transform: translateZ(10);
+   -moz-transform: translateZ(10);
+   -ms-transform: translateZ(10);
+   -o-transform: translateZ(10);
+   transform: translateZ(10);
+   -webkit-backface-visibility: hidden;
+   -moz-backface-visibility: hidden;
+   -ms-backface-visibility: hidden;
+   backface-visibility: hidden;
+	transform: rotateX(1deg);
+	-webkit-transform: rotateX(1deg);
+   -webkit-perspective: 1000;
+   -moz-perspective: 1000;
+   -ms-perspective: 1000;
+   perspective: 1000;
+   background-repeat:repeat-x;*/
+   /* Other transform properties here */
+   background-repeat:repeat-x;
+}

@@ -386,4 +386,10 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
 
     });
 
+
+    // ECG
+    Route::group(['prefix' => 'ecg'], function () {
+        // Implementation of skillstat
+        Route::get('copy', 'ECGController@copy');
+    });
 });
