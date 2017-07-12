@@ -186,16 +186,21 @@ class UsersController extends Controller
 		/*-----------------------------------------------
 		| Revealing the Role...
 		*/
-		if($request_role != 'all') {
+		if($request_role=='all') {
+			$role = new Role() ;
+			$role->slug = 'all' ;
+			$role->plural_title = trans("people.commands.all_users") ;
+		}
+		elseif($request_role=='admin') {
+			$role = new Role() ;
+			$role->slug = 'admin' ;
+			$role->plural_title = trans("ehda.volunteers.plural") ;
+		}
+		else {
 			$role = Role::findBySlug($request_role);
 			if(!$role->exists) {
 				return view('errors.404');
 			}
-		}
-		else {
-			$role               = new Role();
-			$role->slug         = 'all';
-			$role->plural_title = trans('people.commands.all_users');
 		}
 
 		/*-----------------------------------------------

@@ -73,6 +73,23 @@ trait EhdaUserTrait
 
 	}
 
+	public function getEduLevelAttribute($original_value)
+	{
+		return $original_value + 0 ;
+	}
+
+
+	public function getEduLevelNameAttribute()
+	{
+		return trans("people.edu_level_full.$this->edu_level") ;
+	}
+
+	public function getEduLevelShortAttribute()
+	{
+		return trans("people.edu_level_short.$this->edu_level") ;
+	}
+
+
 	public function getEduCityNameAttribute()
 	{
 		$state = State::find($this->edu_city);
@@ -146,6 +163,24 @@ trait EhdaUserTrait
 	public function getBirthDateOnCardAttribute()
 	{
 		return pd($this->birth_date_on_card_en) ;
+	}
+
+	public function getOccupationAttribute()
+	{
+		$return = null;
+
+		if($this->job) {
+			$return .= $this->job . " . ";
+		}
+
+		$return .= $this->edu_level_short ;
+
+		if($this->edu_field) {
+			$return .= " . " . $this->edu_field;
+		}
+
+		return $return;
+
 	}
 
 

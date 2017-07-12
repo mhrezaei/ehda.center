@@ -1,4 +1,4 @@
-<div class="panel panel-green">
+<div class="panel panel-pink">
 
 	<div class="panel-footer">
 

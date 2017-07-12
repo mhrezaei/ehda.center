@@ -173,8 +173,9 @@ class User extends Authenticatable
 		/*-----------------------------------------------
 		| Role ...
 		*/
-		if($switch['role']) {
-			if($switch['role'] == 'all') {
+		if($switch['role'] and $switch['role'] != 'all') {
+			if($switch['role']=='admin') {
+				$switch['role'] = Role::adminRoles() ;
 			}
 			elseif($switch['role']=='auto') {
 				$switch['role'] = user()->userRolesArray() ;

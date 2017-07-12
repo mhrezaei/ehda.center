@@ -23,6 +23,17 @@
 	] ,
 ]     )
 
+@include("manage.frame.widgets.sidebar-link" , [
+	'caption' => trans("ehda.volunteers.plural"),
+	'permission' => "users-volunteer" ,
+	'link' => "volunteers" ,
+	'icon' => "child" ,
+	'sub_menus' => [
+		['volunteers/create' , trans("ehda.volunteers.create") , 'plus-circle'],
+		['volunteers/browse/all' , trans("ehda.volunteers.actives") , 'bars'],
+	] ,
+]     )
+
 
 {{--
 |--------------------------------------------------------------------------

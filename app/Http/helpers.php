@@ -94,25 +94,31 @@ function ed($string)
  *
  * @return mixed
  */
-function ad($string)
+function ad($string , $default_language=false)
 {
-
-	if(isLangRtl()) {
+	if(isLangRtl($default_language)) {
 		return pd($string);
 	}
-
-	return ed($string);
+	else {
+		return ed($string);
+	}
 }
 
-function isLangRtl()
+function isLangRtl($default_language=false)
 {
-	$rtlLangs = ['fa', 'ar'];
+	$rtl_languages = ['fa', 'ar'];
 
-	if(in_array(getLocale(), $rtlLangs)) {
-		return true;
+	if(!$default_language) {
+		$default_language = getLocale() ;
 	}
 
-	return false;
+	if(in_array($default_language, $rtl_languages)) {
+		return true;
+	}
+	else {
+		return false ;
+	}
+
 }
 
 

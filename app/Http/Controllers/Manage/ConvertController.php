@@ -242,7 +242,7 @@ class ConvertController extends Controller
 		dd("GO TO HELL, Thank you by the way. :)") ;
 	}
 
-	public function users($take = 500 , $loop = true)
+	public function users($take = 500 , $loop = 1)
 	{
 		$last_time = session()->get('convert_last_time' , false);
 
@@ -251,7 +251,7 @@ class ConvertController extends Controller
 			echo "<script>location.reload();</script>";
 		}
 
-		$olds    = UsersOld::where('converted', '0')->take($take)->get();
+		$olds    = UsersOld::where('converted', '0')->orderBy('id','desc')->take($take)->get();
 		$last_user_id = 0 ;
 		$counter = 0;
 
@@ -330,10 +330,10 @@ class ConvertController extends Controller
 			}
 			if($old->volunteer_status>0) {
 				if($old->domain) {
-					$user->attachRole('volunteer-'.$old->domain  , '' , $old->volunteer_status) ;
+					$user->attachRole('volunteer-'.$old->domain , $old->volunteer_status) ;
 				}
 				else {
-					$user->attachRole('manager' , '' , $old->volunteer_status) ;
+					$user->attachRole('manager' , $old->volunteer_status) ;
 				}
 			}
 

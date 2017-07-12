@@ -33,6 +33,11 @@
 			</div>
 		@endif
 
+		{{-- Volunteers --}}
+		<div id="divVolunteers" class="pinBoot-inside" data-src="manage/widget/volunteers" data-loading="no">
+			@include("manage.home.index-volunteers")
+		</div>
+
 
 	</div>
 

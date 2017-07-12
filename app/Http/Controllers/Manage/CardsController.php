@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Manage;
 
-use App\Http\Controllers\Auth\LoginController;
 use App\Http\Requests\Manage\CardInquiryRequest;
 use App\Http\Requests\Manage\CardSaveRequest;
 use App\Http\Requests\Manage\SearchRequest;
@@ -14,7 +13,6 @@ use App\Models\State;
 use App\Models\User;
 use App\Traits\ManageControllerTrait;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;

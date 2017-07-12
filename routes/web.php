@@ -68,14 +68,24 @@ Route::group([
 		Route::get('search-people' , 'HomeController@searchPeople');
 	});
 
-	/*-----------------------------------------------
-	| Cards ...
-	*/
-	Route::group(['prefix' => 'cards'], function () { //@TODO: add Permissions
+	Route::group(['prefix' => 'volunteers' , 'middleware' => "can:users-volunteer" ,], function () {
+		Route::get('/', 'VolunteersController@browseChild');
+		Route::get('/browse', 'VolunteersController@browseChild');
+		Route::get('/browse/update/{model_id}', 'VolunteersController@update');
+		Route::get('/browse/search/{keyword?}', 'VolunteersController@searchChild');
+		Route::get('/browse/{request_tab}/{volunteer?}/{post?}', 'VolunteersController@browseChild');
+		Route::get('/search', 'VolunteersController@search');
+
+	});
+
+		/*-----------------------------------------------
+		| Cards ...
+		*/
+	Route::group(['prefix' => 'cards' , 'middleware' => "can:users-card-holder" ], function () {
 		Route::get('/', 'CardsController@browseChild');
 		Route::get('/browse', 'CardsController@browseChild');
 		Route::get('/browse/update/{model_id}', 'CardsController@update');
-		Route::get('/stats', 'CardsController@stats');
+		//Route::get('/stats', 'CardsController@stats'); //TODO
 		Route::get('/browse/search/{keyword?}', 'CardsController@searchChild');
 		Route::get('/browse/{request_tab}/{volunteer?}/{post?}', 'CardsController@browseChild');
 		Route::get('/search', 'CardsController@search');

@@ -9,6 +9,8 @@ if(!isset($id)) {
 <script>
 	var labels = [<?php echo '"' . implode('","', array_keys($data)) . '"' ?>];
 	var data = [<?php echo '"' . implode('","', array_values($data)) . '"' ?>];
+
+
 	forms_log(data);
 	var ctx = $("#{{$id}}");
 	var myChart = new Chart(ctx, {
@@ -48,7 +50,7 @@ if(!isset($id)) {
 			},
 			pieceLabel: {
 				// mode 'label', 'value' or 'percentage', default is 'percentage'
-				mode: 'percentage',
+				mode: '{{ $piece_label or  'percentage'}}' ,
 
 				// precision for percentage, default is 0
 				precision: 1,

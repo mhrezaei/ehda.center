@@ -107,6 +107,7 @@ return [
 		'sorry'          => "شرمنده",
 		'no'             => "شماره", //@TODO: New
 		'so_far'         => "تا این لحظه", //@TODO: New
+		'buddies'         => "نفر", //@TODO: New
 	],
 
 

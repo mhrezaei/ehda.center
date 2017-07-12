@@ -178,7 +178,7 @@ class Role extends Model
 		return boolval($default_role == $this->slug);
 	}
 
-	public function statusRule($key , $in_full = false)
+	public function statusRule($key, $in_full = false)
 	{
 		if(!$this->has_status_rules) {
 			return $key;
@@ -193,7 +193,7 @@ class Role extends Model
 			}
 
 			if($in_full) {
-				return Lang::has("forms.status_text.$string") ? trans("forms.status_text.$string") : $string ;
+				return Lang::has("forms.status_text.$string") ? trans("forms.status_text.$string") : $string;
 			}
 			else {
 				return $string;
@@ -262,9 +262,8 @@ class Role extends Model
 
 	public function getHasStatusRulesAttribute()
 	{
-		return boolval(count($this->status_rule_array)) ;
+		return boolval(count($this->status_rule_array));
 	}
-
 
 
 	public static function checkManagePermission($role_slug, $criteria)
@@ -273,14 +272,13 @@ class Role extends Model
 			$role_slug = 'all'; //@TODO: Check in operation
 		}
 		elseif($role_slug == 'auto') {
-			return true ;
-	}
-		elseif($role_slug == 'admin') {
-			//return user()->is_superadmin() ; //@TODO: Check in operation
+			return true;
 		}
-		//if(in_array($role_slug, ['admin', 'all'])) {
-		//	return user()->isSuper();
-		//}
+		elseif($role_slug == 'admin') {
+			return true; //just like 'auto'
+		}
+
+
 		switch ($criteria) {
 			case 'bin' :
 			case 'banned' :
@@ -315,9 +313,9 @@ class Role extends Model
 		/*-----------------------------------------------
 		| When all roles are being browsed ...
 		*/
-		if($this->slug == 'all') {
+		if($this->slug == 'all' or $this->slug == 'admin') {
 			return [
-				["all", trans('people.criteria.actives')],
+				["all", trans('people.criteria.all')],
 				['bin', trans('manage.tabs.bin'), '0'],
 				['search', trans('forms.button.search')],
 			];

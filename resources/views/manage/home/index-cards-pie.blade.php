@@ -1,4 +1,4 @@
-<div class="panel panel-green">
+<div class="panel panel-pink">
 
 	{{--
 	|--------------------------------------------------------------------------
@@ -43,7 +43,7 @@
 		@if(isset($ajax))
 
 			@include("manage.frame.widgets.t-charts.pie" , [
-				'height' => "120",
+				'height' => "200",
 				'data' => [
 					trans("forms.gender.2") => $females/$total ,
 					trans("forms.gender.1") => $males/$total ,

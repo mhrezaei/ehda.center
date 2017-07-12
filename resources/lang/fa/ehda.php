@@ -32,11 +32,17 @@ return [
 		'send_to'                  => "ارسال به چاپ‌خانه",
 	],
 
+	'volunteers' => [
+		'single' => "سفیر اهدای عضو" ,
+	     'plural' => "سفیران اهدای عضو" ,
+	     'create' => "افزودن سفیر تازه" ,
+	     'actives' => "سفیران فعال" ,
+	],
+
 	'from_domain'           => "از دامنه‌ی",
+	'without_donation_card' => "بدون کارت اهدا" ,
 	'donation_card'         => "کارت اهدای عضو",
 	'donation_cards'        => "کارت‌های اهدای عضو",
-	'volunteer'             => "سفیر اهدای عضو",
-	'volunteers'            => "سفیران اهدای عضو",
 	'newsletter'            => "خبرنامه‌ی ایمیلی سامانه‌ی اهدای عضو",
 	'newsletter_membership' => "عضویت در خبرنامه‌ی ایمیلی سامانه‌ی اهدای عضو",
 ];

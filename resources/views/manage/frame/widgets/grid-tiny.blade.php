@@ -3,6 +3,7 @@
 	!isset($size)? $size = 11 : '' ;
 	!isset($color)? $color = 'grey' : '' ;
 	!isset($class)? $class = '' : '' ;
+	!isset($locale)? $locale=false : '' ;
 	$class = " f".$size." text-$color $class" ;
 
 	//target...
@@ -34,16 +35,16 @@
 
 ?>
 @if(!isset($condition) or $condition)
-	<div class="" style="">
+	<div class="{{ $div_class or '' }}" style="{{$div_style or ''}}">
 		@if(isset($link) and $link)
 			<a href="{{$target}}" onclick="{{$js_command}}" class="{{$class}}" {{$extra}}>
 				<i class="fa fa-{{$icon or 'hand-o-left'}} mhl5"></i>
-				@pd($text)
+				{{ ad($text , $locale) }}
 			</a>
 		@else
 			<span class="{{$class}}">
 				<i class="fa fa-{{$icon or 'hand-o-left'}} mhl5"></i>
-				@pd($text)
+				{{ ad($text , $locale) }}
 			</span>
 		@endif
 	</div>
