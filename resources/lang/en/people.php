@@ -24,6 +24,8 @@ return [
         'login_as'        => "Login as",
         'create_new_user' => "Add New :role_title",
         'all_users'       => "All Users",
+        'send_sms'        => "Send SMS",
+        'send_email'      => "Send Email",
 
     ],
 
@@ -57,6 +59,8 @@ return [
         'send_password_reset_link'    => "Send Reset Password Link",
         'have_a_code'                 => "I have a code.",
         'check_password_token'        => "Check Password Token",
+        'message_sent_to'             => "Message will be sent to :count persons.",
+        'message_not_sent_to_anybody' => "Message will not be sent to anyone.",
     ],
 
     'criteria' => [
@@ -65,6 +69,14 @@ return [
         'pending' => "Pending",
         'banned'  => "Banned",
         'bin'     => "Bin",
+    ],
+
+    "familization" => [
+        '0' => 'Not Specified',
+        '1' => 'Friends and Acquaintances',
+        '2' => 'Media',
+        '3' => 'Website',
+        '4' => 'Other Ways',
     ],
 
     "edu_level_full"  => [
@@ -89,5 +101,12 @@ return [
         '1' => 'Male',
         '2' => 'Female',
         '3' => 'Other',
+    ],
+    "marital"         => [
+        '0' => 'Not Specified',
+        "1" => 'Married',
+        "2" => 'Single',
+        "3" => 'Divorced',
+        "4" => 'Widow',
     ],
 ];

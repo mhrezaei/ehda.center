@@ -17,6 +17,8 @@ use Illuminate\Http\Testing\MimeType;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use App\Models\Test\Post as PostOld;
+use Illuminate\Support\Facades\Lang;
+use function Sodium\compare;
 
 
 class TestController extends Controller
@@ -43,9 +45,86 @@ class TestController extends Controller
 
     public function index()
     {
-        die();
-        $file = File::findBySlug(6, 'id');
-        dd($file->related_files, $file->related_files_pathname);
+
+        function compareTrans($n1, $n2, $map = [], $diffLog = [])
+        {
+            if (!is_array($n1) or !is_array($n2)) {
+                $diffLog[] = implode('.', $map);
+                return $diffLog;
+            }
+
+            $diff = array_diff_key($n1, $n2);
+            if (count($diff)) {
+                foreach ($diff as $index => $item) {
+                    $diffLog[] = implode('.', array_merge($map, [$index]));
+                }
+            }
+
+            foreach ($n1 as $key => $value) {
+                if (is_array($value)) {
+                    if (!isset($n2[$key])) {
+                        $n2[$key] = null;
+                    }
+                    if (!is_array($n2[$key])) {
+                        $n2[$key] = [$n2[$key]];
+                    }
+                    $map = array_merge($map, [$key]);
+                    $diffLog = compareTrans($n1[$key], $n2[$key], $map, $diffLog);
+                }
+            }
+
+            return $diffLog;
+        }
+
+        $files = [
+            'auth',
+            'cart',
+            'colors',
+            'ehda',
+            'forms',
+            'front',
+            'manage',
+            'passwords',
+            'people',
+            'posts',
+            'project_front',
+            'settings',
+            'validation',
+        ];
+
+        $langs = ['fa', 'en'];
+
+
+        $langsNum = count($langs);
+        $finalLog = [];
+
+
+        for ($i = 0; $i < ($langsNum - 1); $i++) {
+            for ($j = 1; $j < $langsNum; $j++) {
+                $diffLog1 = [];
+                $diffLog2 = [];
+
+                foreach ($files as $file) {
+                    $l1 = $langs[$i];
+                    $l2 = $langs[$j];
+
+                    $n1 = trans($file, [], $l1);
+                    $n2 = trans($file, [], $l2);
+
+                    $diffLog1 = compareTrans($n1, $n2, [$file], $diffLog1);
+                    $diffLog2 = compareTrans($n2, $n1, [$file], $diffLog2);
+                }
+
+                if (count($diffLog1)) {
+                    $finalLog[$l1 . '-' . $l2] = $diffLog1;
+                }
+                if (count($diffLog2)) {
+                    $finalLog[$l2 . '-' . $l1] = $diffLog2;
+                }
+            }
+        }
+
+        dd($finalLog);
     }
 
     public function states()

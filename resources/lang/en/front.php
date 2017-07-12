@@ -84,15 +84,23 @@ return [
     'archive'                                  => 'Archive',
     'short_link'                               => 'Short Link',
     'contact_info'                             => 'Contact Info',
+    'home_info'                                => 'Home Info',
+    'job_info'                                 => 'Job Info',
+    'supplementary_info'                       => 'Supplementary Info',
+    'your_activity'                            => 'What field can you do?',
     'login_info'                               => 'Login Info',
+    'download'                                 => 'Download',
+    'print'                                    => 'Print',
+    'share'                                    => 'Share',
     'powered_by_yasna'                         => 'Powered by Yasna Team',
 
     'volunteer_section' => [
         'singular'         => 'Organ Donation Volunteer',
         'plural'           => 'Organ Donation Volunteers',
         'section'          => 'Organ Donation Volunteers Section',
+        'go_section'       => 'Go to Organ Donation Volunteers Section',
         'register'         => 'Register Volunteer',
-        'register_success' => 'Volunteer registered successfuly.',
+        'register_success' => 'Volunteer registered successfully.',
         'special'          => [
             'singular' => 'Celebrity',
             'plural'   => 'Celebrities',
@@ -109,6 +117,24 @@ return [
             'part1' => 'Organ',
             'part2' => 'Donation',
             'part3' => 'Card',
+        ],
+        'types'    => [
+            'mini'   => [
+                'title'       => 'Mini',
+                'description' => 'Small Size File',
+            ],
+            'single' => [
+                'title'       => 'Single',
+                'description' => 'Single Side',
+            ],
+            'social' => [
+                'title'       => 'Social',
+                'description' => 'Shareable File',
+            ],
+            'full'   => [
+                'title'       => 'Print',
+                'description' => 'Ready for Print',
+            ],
         ],
     ],
 
@@ -166,10 +192,11 @@ return [
     ],
 
     'messages' => [
-        'you_are_volunteer'       => 'You are volunteer.',
-        'you_are_card_holder'     => 'You have organ donation card.',
-        'unable_to_register_card' => 'Unable to Register Card',
-        'login'                   => 'Login.',
+        'you_are_volunteer'            => 'You are volunteer.',
+        'you_are_card_holder'          => 'You have organ donation card.',
+        'unable_to_register_card'      => 'Unable to Register Card',
+        'unable_to_register_volunteer' => 'Unable to Register Volunteer',
+        'login'                        => 'Login.',
     ],
 
     'notes' => [
@@ -245,5 +272,9 @@ return [
 
             ],
         ],
+    ],
+
+    'media' => [
+        'playing' => 'Playing',
     ],
 ];

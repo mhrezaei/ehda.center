@@ -84,10 +84,10 @@ return [
     'archive'                                  => 'آرشیو',
     'short_link'                               => 'لینک کوتاه',
     'contact_info'                             => 'اطلاعات تماس',
-    'home_info'                                => 'اطلاعات محل سکونت', // @TODO: new
-    'job_info'                                 => 'اطلاعات شغل', // @TODO: new
-    'supplementary_info'                       => 'اطلاعات تکمیلی', // @TODO: new
-    'your_activity'                            => 'درچه زمینه ای می توانید فعالیت کنید؟', // @TODO: new
+    'home_info'                                => 'اطلاعات محل سکونت',
+    'job_info'                                 => 'اطلاعات شغل',
+    'supplementary_info'                       => 'اطلاعات تکمیلی',
+    'your_activity'                            => 'درچه زمینه ای می توانید فعالیت کنید؟',
     'login_info'                               => 'اطلاعات ورود به سامانه',
     'download'                                 => 'دانلود',
     'print'                                    => 'چاپ',
@@ -98,9 +98,9 @@ return [
         'singular'         => 'سفیر اهدای عضو',
         'plural'           => 'سفیران اهدای عضو',
         'section'          => 'بخش سفیران اهدای عضو',
-        'go_section'       => 'ورود به بخش سفیران اهدای عضو', // @todo: new
+        'go_section'       => 'ورود به بخش سفیران اهدای عضو',
         'register'         => 'ثبت نام سفیر',
-        'register_success' => 'ثبت نام سفیر با موفقیت انجام شد. به زودی جهت شرکت در جلسه‌ی توجیحی سفیران، با شما تماس گرفته خواهد شد.', // @TODO: changed
+        'register_success' => 'ثبت نام سفیر با موفقیت انجام شد. به زودی جهت شرکت در جلسه‌ی توجیحی سفیران، با شما تماس گرفته خواهد شد.',
         'special'          => [
             'singular' => 'سفیر ویژه',
             'plural'   => 'سفیران ویژه',
@@ -135,7 +135,7 @@ return [
                 'title'       => 'قابل چاپ',
                 'description' => 'این فایل قابل چاپ است.',
             ],
-        ], // @TODO: new
+        ],
     ],
 
     'angels' => [
@@ -195,7 +195,7 @@ return [
         'you_are_volunteer'            => 'شما سفیر هستید.',
         'you_are_card_holder'          => 'شما کارت اعدای عضو دارید.',
         'unable_to_register_card'      => 'امکان ثبت کارت وجود ندارد.',
-        'unable_to_register_volunteer' => 'امکان ثبت سفیر وجود ندارد.', // @TODO: new
+        'unable_to_register_volunteer' => 'امکان ثبت سفیر وجود ندارد.',
         'login'                        => 'وارد شوید.',
     ],
 

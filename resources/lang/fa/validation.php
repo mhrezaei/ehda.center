@@ -27,7 +27,8 @@ return [
 
     "accepted"             => ":attribute باید پذیرفته شده باشد.",
     "active_url"           => "نشانی :attribute معتبر نیست",
-    "after"                => ":attribute منطقی نیست.", ":attribute باید تاریخی بعد از :date باشد.",
+//    "after"                => ":attribute باید تاریخی بعد از :date باشد.",
+    "after"                => ":attribute منطقی نیست.",
     'after_or_equal'       => 'The :attribute must be a date after or equal to :date.',
     "alpha"                => ":attribute باید شامل حروف الفبا باشد.",
     "alpha_dash"           => ":attribute فقط می‌تواند شامل حروف الفبا و عدد و خط (underline یا dash) باشد.",
@@ -51,12 +52,18 @@ return [
     "different"            => ":attribute و :other باید متفاوت باشند.",
     "digits"               => ":attribute باید :digits رقم باشد.",
     "digits_between"       => ":attribute باید بین :min و :max رقم باشد.",
+    'dimensions'           => 'در :attribute ابعاد تصویر صحیح نیست.',
+    'distinct'             => 'مقدار :attribute تکراری است.',
     "email"                => "قالب :attribute معتبر نیست.",
     "exists"               => ":attribute واردشده، معتبر نیست.",
+    'file'                 => ':attribute باید یک فایل باشد.',
+    'filled'               => ':attribute الزامی است.',
     "image"                => ":attribute باید تصویر باشد.",
     "in"                   => ":attribute معتبر نیست.",
+    'in_array'             => 'مقدار :attribute باید یکی از مقادیر  :other باشد.',
     "integer"              => ":attribute باید نوع داده‌ای عددی (integer) باشد.",
     "ip"                   => ":attribute باید آی‌پی نشانی معتبر باشد.",
+    'json'                 => 'مقدار :attribute باید یک رشته‌ی JSON صحیح باشد.',
     "max"                  => [
         "numeric" => ":attribute نباید بزرگ‌تر از :max باشد.",
         "file"    => ":attribute نباید بزرگ‌تر از :max کیلوبایت باشد.",
@@ -64,6 +71,7 @@ return [
         "array"   => ":attribute نباید بیشتر از :max آیتم باشد.",
     ],
     "mimes"                => ":attribute باید یکی از قالب‌های :values باشد.",
+    "mimetypes"            => ":attribute باید یکی از قالب‌های :values باشد.",
     "min"                  => [
         "numeric" => ":attribute نباید کم‌تر از :min باشد.",
         "file"    => ":attribute نباید کوچک‌تر از :min کیلوبایت باشد.",
@@ -72,9 +80,11 @@ return [
     ],
     "not_in"               => ":attribute انتخاب شده، معتبر نیست.",
     "numeric"              => ":attribute باید به صورت عددی وارد شود.",
+    'present'              => ':attribute باید مقدار صحیح درصدی باشد.',
     "regex"                => ":attribute یک قالب معتبر نیست",
     "required"             => "وارد کردن «:attribute» الزامی است.",
     "required_if"          => "وارد کردن  «:attribute» الزامی است.",
+    'required_unless'      => 'وارد کردن :attribute الزامی است، مگر این که مقدار  :other یکی از مقادیر :values باشد.',
     "required_with"        => ":attribute الزامی است زمانی که :values موجود است.",
     "required_with_all"    => ":attribute الزامی است زمانی که :values موجود است.",
     "required_without"     => ":attribute الزامی است زمانی که :values موجود نیست.",
@@ -86,8 +96,10 @@ return [
         "string"  => ":attribute باید :size کاراکتر باشد.",
         "array"   => ":attribute باید شامل :size آیتم باشد.",
     ],
-    "timezone"             => "The :attribute must be a valid zone.",
+    'string'               => ':attribute باید یک رشته‌ی صحیح باشد.',
+    "timezone"             => ":attribute باید یک منطقه زمانی صحیح باشد.",
     "unique"               => ":attribute تکراری است.",
+    'uploaded'             => ':attribute به آپلود نشد.',
     "url"                  => "قالب نشانی :attribute اشتباه است.",
     "auth.fail"            => "شناسه‌ی کاربری یا گذرواژه اشتباه است.",
     "search"               => "جست‌وجو بی‌نتیجه بود.",
@@ -115,7 +127,7 @@ return [
         "marriage_date"        => "تاریخ ازدواج را به درستی وارد نمایید.",
         "birth_city"           => "محل تولد را با حروف فارسی وارد نمایید.",
         "marital_status"       => "وضعیت تأهل را انتخاب نمایید.",
-        "marital"              => "وضعیت تأهل را انتخاب نمایید.", // @TODO: new
+        "marital"              => "وضعیت تأهل را انتخاب نمایید.",
         "occupation"           => "شغل و تحصیلات را انتخاب نمایید.",
         "education"            => "تحصیلات انتخاب نمایید.",
         "edu_level"            => "میزان تحصیلات را انتخاب نمایید.",
@@ -262,7 +274,7 @@ return [
         'moderate_note' => "یادداشت سردبیر",
         'folder_id'     => "پوشه",
 
-        'id'                  => "شناسه", //@TODO: New
+        'id'                  => "شناسه",
         'order'               => "ترتیب",
         'template'            => 'قالب',
         "action"              => 'عملیات',
@@ -510,8 +522,7 @@ return [
         'text_uploader'  => 'فایل(های) متنی',
         'text_content'   => 'محتوای فایل متنی',
 
-        //@TODO: New up to the end of this array...
-        'from_event_id'  => "رویداد",
+        'from_event_id' => "رویداد",
 
         'has_medal' => 'مدال افتخار دارد.',
     ],

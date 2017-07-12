@@ -234,6 +234,10 @@ Route::group([
     | Upstream ...
     */
     Route::group(['prefix' => 'upstream', 'middleware' => 'is:developer'], function () {
+        Route::group(['prefix' => 'trans'], function () {
+            Route::get('diff', 'TransController@diff');
+        });
+
         Route::get('/{request_tab?}', 'UpstreamController@index');
         Route::get('/{request_tab}/search/', 'UpstreamController@search');
         Route::get('/edit/{request_tab?}/{item_id?}/{parent_id?}', 'UpstreamController@editor');

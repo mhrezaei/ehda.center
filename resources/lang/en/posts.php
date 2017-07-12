@@ -33,6 +33,7 @@ return [
         'category'          => "Category",
         'cat_image'         => "Category Image",
         'searchable'        => "Searchable",
+        'listable'          => "Listable",
         'preview'           => "Preview",
         'digest'            => "Display in Dashboard",
         'schedule'          => "Schedule",
