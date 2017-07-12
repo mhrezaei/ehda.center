@@ -27,8 +27,10 @@ return [
 		'login_as'        => "لاگین به جای ایشان",
 		'create_new_user' => "افزودن :role_title جدید",
 		'all_users'       => "همه کاربران",
-		'send_sms'        => "ارسال پیامک", //@TODO: New
-		'send_email'      => "ارسال ایمیل", //@TODO: New
+		//@TODO: New from here up to the end of this array...
+		'send_sms'        => "ارسال پیامک",
+		'send_email'      => "ارسال ایمیل",
+	     'according_to_domain' => "بر اساس دامنه" ,
 
 	],
 

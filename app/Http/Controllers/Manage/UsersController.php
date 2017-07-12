@@ -72,6 +72,8 @@ class UsersController extends Controller
 			],
 			'more_mass_actions' => [] ,
 			'toolbar_buttons'   => [],
+		     'browse_tabs' => 'auto' ,
+		     'free_toolbar_view' => "NO" ,
 		]);
 
 		$switches['mass_actions'] = array_merge( $switches['mass_actions'] , $switches['more_mass_actions']) ;
@@ -182,7 +184,6 @@ class UsersController extends Controller
 		*/
 		$switches = $this->browseSwitches($request_role, $switches);
 
-
 		/*-----------------------------------------------
 		| Revealing the Role...
 		*/
@@ -202,6 +203,7 @@ class UsersController extends Controller
 				return view('errors.404');
 			}
 		}
+
 
 		/*-----------------------------------------------
 		| Page Browse ...

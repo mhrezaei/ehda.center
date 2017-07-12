@@ -1,12 +1,8 @@
 
-@if(sizeof($topbar_notification_menu = Manage::topbarNotificationMenu() )>1)
-	@include('manage.frame.widgets.topbar' , [
-		'icon' => 'bell' ,
-		'items' => $topbar_notification_menu ,
-		'counter' => $topbar_notification_menu['total']  ,
-		'color' => 'coral'
-	])
-@endif
+<span id="spnTopbarNotification" data-src="manage/widget/topbar-notification" ondblclick="divReload('spnTopbarNotification')">
+	<i class="fa fa-bell-o text-gray"></i>
+	<script>divReload('spnTopbarNotification')</script>
+</span>
 
 @if(sizeof($topbar_create_menu = Manage::topbarCreateMenu() ))
 	@include('manage.frame.widgets.topbar' , [

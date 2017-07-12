@@ -65,23 +65,25 @@ Route::group([
 	Route::get('/widget/{widget}', 'HomeController@widget');
 
 	Route::group(['prefix' => 'act'], function () {
-		Route::get('search-people' , 'HomeController@searchPeople');
+		Route::get('search-people', 'HomeController@searchPeople');
 	});
 
-	Route::group(['prefix' => 'volunteers' , 'middleware' => "can:users-volunteer" ,], function () {
+	/*-----------------------------------------------
+	| Volunteers ...
+	*/
+	Route::group(['prefix' => 'volunteers', 'middleware' => "can:users-volunteer",], function () {
 		Route::get('/', 'VolunteersController@browseChild');
-		Route::get('/browse', 'VolunteersController@browseChild');
 		Route::get('/browse/update/{model_id}', 'VolunteersController@update');
 		Route::get('/browse/search/{keyword?}', 'VolunteersController@searchChild');
-		Route::get('/browse/{request_tab}/{volunteer?}/{post?}', 'VolunteersController@browseChild');
+		Route::get('/browse/{request_role?}/{request_tab?}/{volunteer?}/{post?}', 'VolunteersController@browseChild');
 		Route::get('/search', 'VolunteersController@search');
 
 	});
 
-		/*-----------------------------------------------
-		| Cards ...
-		*/
-	Route::group(['prefix' => 'cards' , 'middleware' => "can:users-card-holder" ], function () {
+	/*-----------------------------------------------
+	| Cards ...
+	*/
+	Route::group(['prefix' => 'cards', 'middleware' => "can:users-card-holder"], function () {
 		Route::get('/', 'CardsController@browseChild');
 		Route::get('/browse', 'CardsController@browseChild');
 		Route::get('/browse/update/{model_id}', 'CardsController@update');

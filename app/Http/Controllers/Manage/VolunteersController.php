@@ -49,16 +49,16 @@ class VolunteersController extends UsersController
 	{
 		return [
 			//'role_slug'       => $this->role_slug,
-			'url'             => "volunteers/browse",
-			'grid_row'        => "browse-row-for-volunteers",
-			'grid_array'      => [
+			'url'               => "volunteers/browse",
+			'grid_row'          => "browse-row-for-volunteers",
+			'free_toolbar_view' => "manage.users.browse-free-toolbar-for-volunteers",
+			'grid_array'        => [
 				trans('validation.attributes.name_first'),
-//				trans('validation.attributes.home_city'),
 				trans("validation.attributes.occupation"),
 				trans("validation.attributes.status"),
 				trans('forms.button.action'),
 			],
-			'toolbar_buttons' => [
+			'toolbar_buttons'   => [
 				[
 					'target'    => "manage/volunteers/create",
 					'type'      => 'success',
@@ -67,8 +67,12 @@ class VolunteersController extends UsersController
 					'caption'   => trans("ehda.volunteers.create"),
 				],
 			],
-		     'more_mass_actions' => [
-		     ],
+			'more_mass_actions' => [
+			],
+			'browse_tabs'       => [
+				["all", trans('people.criteria.all')],
+				['search', trans('forms.button.search')],
+			],
 			//'search_panel_view' => "search-for-cards",
 		];
 
@@ -92,14 +96,31 @@ class VolunteersController extends UsersController
 	}
 
 
-	public function browseChild($request_tab = 'all')
+	public function browseChild($domain_slug = 'all', $request_tab = 'all')
 	{
-		return $this->browse($this->role_slug, $request_tab, $this->browseSwitchesChild());
+		/*-----------------------------------------------
+		| If generally called ...
+		*/
+		if($domain_slug == 'all') {
+			return $this->browse($this->role_slug, $request_tab, $this->browseSwitchesChild());
+		}
+
+		/*-----------------------------------------------
+		| If called for a specific domain ...
+		*/
+		$switches = $this->browseSwitchesChild() ;
+
+		$this->role_slug = "volunteer-$domain_slug" ;
+		$switches['browse_tabs'] = 'auto' ;
+		$switches['url'] .= "/$domain_slug" ;
+
+		return $this->browse( $this->role_slug , $request_tab , $switches) ;
+
 	}
 
 	public function searchChild(SearchRequest $request)
 	{
-		return $this->search($this->role_slug, $request , $this->browseSwitchesChild());
+		return $this->search($this->role_slug, $request, $this->browseSwitchesChild());
 	}
 
 	public function editorChild($model_hash_id)
@@ -338,7 +359,6 @@ class VolunteersController extends UsersController
 		return $this->jsonAjaxSaveFeedback($saved, ['success_refresh' => true,]);
 
 	}
-
 
 
 }

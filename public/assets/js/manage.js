@@ -138,7 +138,7 @@ function divReload(div_id) {
 	if (has_loading != 'no') {
 		$div.addClass('loading');
 	}
-//	forms_log(reload_url);
+	forms_log('loading ['+reload_url+'] in ['+div_id+']');
 
 	//Ajax...
 	$.ajax({
