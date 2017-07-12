@@ -540,3 +540,26 @@ function findUser($username, $as_role = null, $username_field = 'auto')
 {
     return model('user')::finder($username, $as_role, $username_field);
 }
+
+
+/**
+ * Returns current url in given locale
+ *
+ * @param string $locale
+ *
+ * @return \Illuminate\Contracts\Routing\UrlGenerator|string
+ */
+function localeLink($locale)
+{
+    $route = request()->route();
+    $route->setParameter('lang', $locale);
+
+    $parameters = $route->parameters();
+    $uri = $route->uri();
+
+    foreach ($parameters as $key => $value) {
+        $uri = str_replace('{' . $key . '}', $value, $uri);
+    }
+
+    return url($uri);
+}
