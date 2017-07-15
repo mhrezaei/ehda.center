@@ -14,10 +14,6 @@
             'groupColor' => 'green',
             'categoryColor' => 'green',
         ])
-        <div class="container content">
-            <div class="row">
-                {!! $innerHTML !!}
-            </div>
-        </div>
+        {!! $innerHTML !!}
     </div>
 @endsection

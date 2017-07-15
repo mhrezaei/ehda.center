@@ -139,8 +139,9 @@ return [
     ],
 
     'angels' => [
-        'plural'   => 'Angels',
-        'singular' => 'Angel',
+        'plural'    => 'Angels',
+        'singular'  => 'Angel',
+        'not_found' => 'Angel not found.',
     ],
 
     'member_section' => [

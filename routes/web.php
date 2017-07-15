@@ -374,8 +374,12 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
         Route::get('faq', 'PostController@faqs');
         Route::get('volunteers/special', 'PostController@special_volunteers')->name('volunteers.special');
 
-        Route::get('/angels', 'PostController@angels');
-        Route::post('/angels/find', 'PostController@angels_find');
+        Route::group(['prefix' => 'angels'], function () {
+            Route::get('/', 'PostController@angels')->name('angels.list');
+            Route::post('find', 'PostController@angels_find')->name('angels.find');
+            Route::get('new', 'PostController@new_angel_form')->name('angels.new.form');
+            Route::post('new/submit', 'PostController@new_angel_submit')->name('angels.new.submit');
+        });
 
         // volunteer pages
         Route::get('volunteers', 'VolunteersController@index')->name('volunteer.register.step.1.get');

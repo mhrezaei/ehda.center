@@ -291,6 +291,7 @@ return [
         "code_melli"          => "National Id",
         "code_id"             => "ID",
         "gender"              => "Gender",
+        "city"                => "City",
         "birth_date"          => "Birth Date",
         "birth_city"          => "Birth City",
         "marriage_date"       => "Marriage Date",
@@ -512,12 +513,14 @@ return [
         'submission_work_owner_mobile' => 'Owner\'s Mobile Number',
         'submission_work_owner_email'  => 'Owner\'s Email',
 
-        'name'           => 'Name',
-        'image_uploader' => 'Image Files',
-        'video_uploader' => 'Video Fies',
-        'audio_uploader' => 'Audio Files',
-        'text_uploader'  => 'Text Files',
-        'text_content'   => 'Text Content',
+        'name'            => 'Name',
+        'image_uploader'  => 'Image Files',
+        'video_uploader'  => 'Video Fies',
+        'audio_uploader'  => 'Audio Files',
+        'text_uploader'   => 'Text Files',
+        'text_content'    => 'Text Content',
+        'submitter_name'  => 'Submitter Name',
+        'submitter_phone' => 'Submitter Phone Number',
 
         'from_event_id' => "Event",
 

@@ -67,7 +67,8 @@ class PostsServiceProvider extends ServiceProvider
                 'search'           => "",
                 'from'             => "",
                 'to'               => "",
-                'max_per_page'     => 12,
+                'max_per_page'     => 12, // If this is set as "-1" pagination will be applied
+                'random'           => false,
                 'sort'             => 'DESC',
                 'sort_by'          => 'published_at',
                 'show_filter'      => true,
@@ -99,8 +100,11 @@ class PostsServiceProvider extends ServiceProvider
 
             // select posts
             $posts = Post::selector($data)
-                ->where($data['conditions'])
-                ->orderBy($data['sort_by'], $data['sort']);
+                ->where($data['conditions']);
+
+            if($data['random']) {
+                $posts = $posts->inRandomOrder();
+            }
 
             if ($data['max_per_page'] == -1) {
                 $posts = $posts->get();

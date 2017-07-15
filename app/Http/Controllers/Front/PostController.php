@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Http\Requests\Front\AngelsSearchRequest;
 use App\Http\Requests\Front\CommentRequest;
 use App\Http\Requests\Manage\PostSaveRequest;
 use App\Models\Category;
@@ -393,5 +394,47 @@ JS;
         $sendingArea = view('front.test.works.sending_area.main', compact('posts'));
         $postContentHTML = PostsServiceProvider::showPost('send-works-text', ['externalBlade' => $sendingArea]);
         return view('front.test.works.main', compact('postContentHTML'));
+    }
+
+    public function angels()
+    {
+        $innerHTML = PostsServiceProvider::showList([
+            'type'         => 'angels',
+            'random'       => true,
+            'max_per_page' => 19,
+        ]);
+
+        return view('front.angles.main', compact('innerHTML'));
+    }
+
+    public function angels_find(AngelsSearchRequest $request)
+    {
+        $foundAngels = Post::selector([
+            'type'   => 'angels',
+            'domain' => getUsableDomains(),
+        ])->where('title', 'LIKE', "%{$request->angel_name}%")
+            ->get();
+
+        if ($foundAngels->count()) {
+            foreach ($foundAngels as $angel) {
+                $angel->spreadMeta();
+
+                $resultAngels[] = [
+                    'id'            => $angel->id,
+                    'name'          => $angel->title,
+                    'picture_url'   => $angel->viewable_featured_image,
+                    'donation_date' => $angel->donation_date,
+                ];
+            }
+            $result = [
+                'status' => true,
+                'angels' => $resultAngels,
+            ];
+
+            return response()->json($result);
+        } else {
+            return response()->json(['status' => false]);
+        }
+
     }
 }

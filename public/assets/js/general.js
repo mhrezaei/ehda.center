@@ -142,7 +142,7 @@ function hideActiveStar(){
     });
 }
 
-function showStar(circleIndex, name, imgSrc, donate_time){
+function showStar(circleIndex, name, imgSrc, donate_time) {
     hideActiveStar();
     var userCard = $('\
         <div class="user-card" style="display:none;">\
@@ -165,22 +165,30 @@ function showStar(circleIndex, name, imgSrc, donate_time){
     var cardWidth = 140;
     var cardHeight = 160;
     userCard.css({
-        left: ((circleParent.offset().left+parseInt(circle.attr('cx'))) * circleParent.outerWidth() / 873.296875) - (cardWidth/2),
-        top: circleParent.offset().top+parseInt(circle.attr('cy')) - (cardHeight/2)
+        left: ((circleParent.offset().left + parseInt(circle.attr('cx'))) * circleParent.outerWidth() / 873.296875) - (cardWidth / 2),
+        top: circleParent.offset().top + parseInt(circle.attr('cy')) - (cardHeight / 2)
     });
 }
 var angles_slide;
 function random_angles(angels) {
-    var rand = Math.floor(Math.random() * (19 - 1 + 1)) + 1;
-    var angel = angels[rand];
-    if (! angel)
-    {
-        rand = Math.floor(Math.random() * (19 - 1 + 1)) + 1;
-        angel = angels[rand];
+    if(typeof window.reservedAngels != 'undefined' && window.reservedAngels.length) {
+        // check if there is a queue to be shown
+        var angelIndex = window.reservedAngels.shift();
+    } else {
+        var angelsNo = angels.length;
+        var angelIndex = Math.floor(Math.random() * (angelsNo - 1 + 1)) + 1;
     }
-    var circle = $('.circle' + rand);
+    var angel = angels[angelIndex];
+
+    if (!angel) {
+        angelIndex = Math.floor(Math.random() * (angelsNo - 1 + 1)) + 1;
+        angel = angels[angelIndex];
+    }
+    var circle = $('.circle' + angelIndex);
     circle.addClass('active');
     var circleIndex = circle.parent().find('circle').index(circle);
     showStar(circleIndex, angel.name, angel.picture_url, angel.donate_time);
-    angles_slide = setTimeout(function(){ random_angles(angels); }, 3000);
+    angles_slide = setTimeout(function () {
+        random_angles(angels);
+    }, 3000);
 }

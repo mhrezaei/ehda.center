@@ -294,6 +294,7 @@ return [
         "code_melli"          => "کد ملی",
         "code_id"             => "شماره شناسنامه",
         "gender"              => "جنسیت",
+        "city"                => "شهر",
         "birth_date"          => "تاریخ تولد",
         "birth_city"          => "محل تولد",
         "marriage_date"       => "تاریخ ازدواج",
@@ -515,12 +516,14 @@ return [
         'submission_work_owner_mobile' => 'تلفن همراه صاحب اثر',
         'submission_work_owner_email'  => 'ایمیل صاحب اثر',
 
-        'name'           => 'نام',
-        'image_uploader' => 'فایل(های) تصویری',
-        'video_uploader' => 'فایل(های) ویدیویی',
-        'audio_uploader' => 'فایل(های) صوتی',
-        'text_uploader'  => 'فایل(های) متنی',
-        'text_content'   => 'محتوای فایل متنی',
+        'name'            => 'نام',
+        'image_uploader'  => 'فایل(های) تصویری',
+        'video_uploader'  => 'فایل(های) ویدیویی',
+        'audio_uploader'  => 'فایل(های) صوتی',
+        'text_uploader'   => 'فایل(های) متنی',
+        'text_content'    => 'محتوای فایل متنی',
+        'submitter_name'  => 'نام ارسال کننده',
+        'submitter_phone' => 'شماره تلفن ارسال کننده',
 
         'from_event_id' => "رویداد",
 
