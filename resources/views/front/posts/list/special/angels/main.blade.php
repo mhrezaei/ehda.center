@@ -1,23 +1,12 @@
 @section('head')
     <title>{{ setting()->ask('site_title')->gain() }} | {{ trans('front.angels.plural') }}</title>
     <style>
-        footer {
-            bottom: auto !important;
+.ui-menu.ui-autocomplete {
+            max-height: 100px;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
 
-        .user-card {
-            background: none !important;
-            height: auto;
-        }
-
-        .user-card img {
-            border: 2px solid green;
-        }
-
-        .search_angles_form {
-            text-align: center !important;
-            margin-top: 60px !important;
-        }
     </style>
 @append
 
@@ -54,16 +43,19 @@ $circle = [
 </div>
 
 
-{!! Form::open([
-        'method'=> 'post',
-        'class' => 'search-angel form-horizontal search_angles_form col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4',
-        'name' => 'angels_find',
-        'id' => 'angels_find',
-        'url' => '#',
-    ]) !!}
-<button type="submit"><i class="icon icon-search"></i></button>
-<input type="search" name="angels_name" id="angels_name" value="" placeholder="جستجوی فرشته">
-{!! Form::close() !!}
+{{--{!! Form::open([--}}
+{{--'method'=> 'post',--}}
+{{--'class' => 'search-angel form-horizontal search_angles_form col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4',--}}
+{{--'name' => 'angels_find',--}}
+{{--'id' => 'angels_find',--}}
+{{--'url' => '#',--}}
+{{--]) !!}--}}
+<div class="search-angel col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
+    <button class="btn-search" type="button"><i class="icon icon-search"></i></button>
+    <input type="search" name="angels_name" id="angels_name" value="" placeholder="جستجوی فرشته" autocomplete="off"
+           style="width: 80%">
+</div>
+{{--{!! Form::close() !!}--}}
 
 <div class="row stars-bg text-center">
     <div class="stars">
@@ -72,8 +64,8 @@ $circle = [
              style="enable-background:new 0 0 873.3 379.5" xml:space="preserve">
 
                 @for ($i = 0; $i < count($posts); $i++)
-                    {!! $circle[$i] !!}
-                @endfor
+                {!! $circle[$i] !!}
+            @endfor
 
                 </svg>
     </div>
@@ -90,22 +82,23 @@ $circle = [
 
 @section('endOfBody')
     @foreach($posts as $post)
+        {{ null, $post->spreadMeta() }}
         {{ null, $jsAngles[] = [
                 'id' => $post->id,
                 'name' => $post->title,
                 'picture_url' => $post->viewable_featured_image,
-                'donation_date' => $post->donation_date,
+                'donation_date' => ad(echoDate($post->donation_date, 'j F Y')),
             ]
         }}
     @endforeach
 
+
+    {!! Html::script ('assets/libs/jquery-ui/jquery-ui.min.js') !!}
     <script>
+        var searchUrl = "{{ route_locale('angels.find') }}";
         var angels = {!! json_encode($jsAngles) !!};
         $(document).ready(function () {
             random_angles(angels);
-            setTimeout(function () {
-                location.reload();
-            }, 60000);
         })
     </script>
     {!! Html::script ('assets/js/angels.js') !!}

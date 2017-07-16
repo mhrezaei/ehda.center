@@ -10,6 +10,7 @@ use App\Models\Comment;
 use App\Models\Folder;
 use App\Models\Post;
 use App\Models\Posttype;
+use App\Providers\DummyServiceProvider;
 use App\Providers\PostsServiceProvider;
 use App\Providers\UploadServiceProvider;
 use App\Traits\ManageControllerTrait;
@@ -20,6 +21,7 @@ use Illuminate\Routing\Route;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
+use Vinkla\Hashids\Facades\Hashids;
 
 class PostController extends Controller
 {
@@ -398,6 +400,69 @@ JS;
 
     public function angels()
     {
+//        $posts = Post::selector(['type' => 'angels'])->get();
+//        dd($posts);
+//
+//        $celebs = Post::selector(['type' => 'celebs'])->get();
+//        foreach ($celebs as $key => $celeb) {
+//            $celebs[$key] = $celeb->spreadMeta();
+//        }
+//
+//        $images = $celebs->pluck('viewable_featured_image')->toArray();
+//
+//        $cities = [
+//            'تهران',
+//            'شیراز',
+//            'اهواز',
+//            'اصفهان',
+//            'تبریز',
+//            'ارومیه',
+//            'مشهد',
+//            'کرج',
+//            'یزد',
+//            'اراک',
+//            'قم',
+//            'ساری',
+//        ];
+//
+//        $phoneNumbers = [
+//            '09121234567',
+//            '02133333333',
+//            '09191234567',
+//            '09123333333',
+//            '02122222222',
+//            '02155555555',
+//            '02177777777',
+//            '02144444444',
+//            '09190123456',
+//        ];
+//
+//        for ($i = 0; $i < 500; $i++) {
+//            $days = rand(0, 28);
+//            $month = rand(0, 12);
+//            $years = rand(0, 8);
+//
+//            $data = [
+//                'type'            => 'angels',
+//                'published_at'    => Carbon::now()->toDateTimeString(),
+//                'published_by'    => 4,
+//                'created_by'      => 4,
+//                'title'           => DummyServiceProvider::persianName(),
+//                'featured_image'  => $images[rand(0, sizeof($images) - 1)],
+//                'sisterhood'      => Hashids::encode(time()),
+//                'domains'         => 'global',
+//                'submitter_phone' => $phoneNumbers[rand(0, sizeof($phoneNumbers) - 1)],
+//                'city'            => $cities[rand(0, sizeof($cities) - 1)],
+//                'donation_date'   => Carbon::now()->subYears($years)->subMonth($month)->subDay($days)
+//                    ->toDateTimeString(),
+//                'submitter_name'  => DummyServiceProvider::persianName(),
+//            ];
+//
+//            $id = Post::store($data);
+//            echo $id . '<br />';
+//        }
+//        die();
+
         $innerHTML = PostsServiceProvider::showList([
             'type'         => 'angels',
             'random'       => true,
@@ -413,6 +478,7 @@ JS;
             'type'   => 'angels',
             'domain' => getUsableDomains(),
         ])->where('title', 'LIKE', "%{$request->angel_name}%")
+            ->limit(100)// limit data in query
             ->get();
 
         if ($foundAngels->count()) {
@@ -422,18 +488,13 @@ JS;
                 $resultAngels[] = [
                     'id'            => $angel->id,
                     'name'          => $angel->title,
+                    'label'         => $angel->title . ($angel->city ? '، ' . $angel->city : ''),
                     'picture_url'   => $angel->viewable_featured_image,
-                    'donation_date' => $angel->donation_date,
+                    'donation_date' => ad(echoDate($angel->donation_date, 'j F Y')),
                 ];
             }
-            $result = [
-                'status' => true,
-                'angels' => $resultAngels,
-            ];
 
-            return response()->json($result);
-        } else {
-            return response()->json(['status' => false]);
+            return response()->json($resultAngels);
         }
 
     }
