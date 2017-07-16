@@ -40,14 +40,14 @@ function random_angles(angels) {
         var angelsNo = angels.length;
         var angelIndex = Math.floor(Math.random() * (angelsNo - 1 + 1)) + 1;
     }
-    var circlesNo = $('circle').length;
-    var circleIndex = angelIndex % circlesNo;
     var angel = angels[angelIndex];
-
-    if (!angel) {
+    while (!angel) {
         angelIndex = Math.floor(Math.random() * (angelsNo - 1 + 1)) + 1;
         angel = angels[angelIndex];
     }
+
+    var circlesNo = $('circle').length;
+    var circleIndex = angelIndex % circlesNo;
     var circle = $('.circle' + circleIndex);
     circle.addClass('active');
     showStar(circleIndex, angel.name, angel.picture_url, angel.donation_date);
