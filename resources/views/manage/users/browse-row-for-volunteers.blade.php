@@ -103,7 +103,7 @@
 			'text' => trans("people.criteria.$status") ,
 			'color' => trans("people.criteria_color.$status") ,
 			'icon' => trans("people.criteria_icon.$status") ,
-			'link' => $model->as($request_role)->canEdit()? "modal:manage/users/act/-id-/volunteer-status" : '' ,
+			'link' => $model->as($request_role)->canEdit()? "modal:manage/users/act/-id-/user-status/$request_role" : '' ,
 		]     )
 	@endif
 
@@ -119,6 +119,7 @@
 @include("manage.frame.widgets.grid-actionCol" , [ 'actions' => [
 	['pencil' , trans('forms.button.edit') , "url:manage/cards/edit/-hash_id-" , $model->canEdit()],
 	['key' , trans('people.commands.change_password') , "modal:manage/users/act/-id-/password" , !$model->trashed() and $model->canEdit() ] ,
+	['gavel', trans('forms.button.change_status'), "modal:manage/users/act/-id-/user-status/".$request_role , $request_role != 'admin'],
 
 //	['trash', trans('forms.button.delete') , 'modal:manage/users/act/-id-/delete' , !$model->trashed() and $model->canDelete()],
 //	['undo', trans(//'forms.button.undelete') , 'modal:manage/users/act/-id-/undelete' , $model->trashed() and $model->canBin()],

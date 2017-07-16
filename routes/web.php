@@ -137,6 +137,8 @@ Route::group([
 		Route::group(['prefix' => 'save'], function () {
 			Route::post('/', 'UsersController@save');
 			Route::post('/smsMass', 'UsersController@smsMass');
+			Route::post('/statusMass', 'UsersController@saveStatusMass');
+			Route::post('/status', 'UsersController@saveStatus');
 			Route::post('/password', 'UsersController@savePassword');
 			Route::post('/permits', 'UsersController@savePermits');
 

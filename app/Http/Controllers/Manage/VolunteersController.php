@@ -68,6 +68,7 @@ class VolunteersController extends UsersController
 				],
 			],
 			'more_mass_actions' => [
+				['gavel', trans('forms.button.change_status'), "modal:manage/users/act/0/user-status/".$this->role_slug , $this->role_slug != 'admin'],
 			],
 			'browse_tabs'       => [
 				["all", trans('people.criteria.all')],
@@ -114,11 +115,12 @@ class VolunteersController extends UsersController
 		/*-----------------------------------------------
 		| If called for a specific domain ...
 		*/
-		$switches = $this->browseSwitchesChild();
 
 		$this->role_slug         = "volunteer-$domain_slug";
+		$switches = $this->browseSwitchesChild();
 		$switches['browse_tabs'] = 'auto';
 		$switches['url'] .= "/$domain_slug";
+
 
 		return $this->browse($this->role_slug, $request_tab, $switches);
 

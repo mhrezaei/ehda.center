@@ -594,6 +594,91 @@ class UsersController extends Controller
 
 	}
 
+	public function saveStatus(Request $request)
+	{
+		/*-----------------------------------------------
+		| Role Model ...
+		*/
+		$role = Role::findByHashid($request->role_id) ;
+		if(!$role or !$role->id) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+		if($role->statusRule($request->new_status) == '!') {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+
+		/*-----------------------------------------------
+		| User ...
+		*/
+		$user = User::find($request->id) ;
+		if(!$user or !$user->id) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+		if(user()->as('admin')->cannot("volunteer-$role->slug.edit")) {
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+		}
+
+		/*-----------------------------------------------
+		| Action ...
+		*/
+		$done = $user->as($role->slug)->setStatus($request->new_status) ;
+
+		/*-----------------------------------------------
+		| Feedback ...
+		*/
+		return $this->jsonAjaxSaveFeedback( $done , [
+				'success_callback' => "rowUpdate('tblUsers','$user->id')",
+		]);
+		
+
+
+	}
+
+	public function saveStatusMass(Request $request)
+	{
+		/*-----------------------------------------------
+		| Role Model ...
+		*/
+		$role = Role::findByHashid($request->role_id) ;
+		if(!$role) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+		if($role->statusRule($request->new_status) == '!') {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+
+		/*-----------------------------------------------
+		| Security ...
+		*/
+		if(user()->as('admin')->cannot("volunteer-$role->slug.edit")) {
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+		}
+
+
+		/*-----------------------------------------------
+		| Action ...
+		*/
+		$users = User::whereIn('id' , explode(',', $request->ids) )->get() ;
+		$count = 0 ;
+		foreach($users as $user) {
+			$count += $user->as($role->slug)->setStatus($request->new_status) ;
+		}
+
+		/*-----------------------------------------------
+		| Feedback ...
+		*/
+		return $this->jsonAjaxSaveFeedback($count, [
+			'success_message' => trans('forms.feed.mass_done', [
+				'count' => pd($count),
+			]),
+			'success_refresh' => true ,
+			'danger_message'  => trans('forms.feed.error'),
+		]);
+
+
+
+	}
+
 	public function smsMass(MessageSendRequest $request)
 	{
 

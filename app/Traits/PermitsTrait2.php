@@ -43,9 +43,9 @@ trait PermitsTrait2
 	 * Gets array of roles from either database or if possible from the session.
 	 * @return \Illuminate\Support\Collection
 	 */
-	private function getRoles()
+	private function getRoles($force_fresh_data = false)
 	{
-		if(user()->id == $this->id) {
+		if(!$force_fresh_data and user()->id == $this->id) {
 			$revealed_at = session()->get('logged_user_revealed_at', false);
 			$roles       = session()->get('logged_user_roles', false);
 			if(true or !$roles or !$revealed_at or $revealed_at < $this->updated_at) {
@@ -55,7 +55,7 @@ trait PermitsTrait2
 			}
 			$this->stored_roles = $roles;
 		}
-		elseif($this->stored_roles) {
+		elseif(!$force_fresh_data and $this->stored_roles) {
 			$roles = $this->stored_roles;
 		}
 		else {
@@ -133,7 +133,7 @@ trait PermitsTrait2
 	 * Runs a query through the available collection, considering all the Chain property limitations.
 	 * @return \Illuminate\Support\Collection|static
 	 */
-	public function rolesQuery()
+	public function rolesQuery($force_fresh_data = false)
 	{
 		/*-----------------------------------------------
 		| Parameters ...
@@ -154,7 +154,7 @@ trait PermitsTrait2
 		/*-----------------------------------------------
 		| Query Buildup ...
 		*/
-		$query = $this->getRoles();
+		$query = $this->getRoles($force_fresh_data);
 
 		if($request_roles) {
 			$query = $query->whereIn('slug', $request_roles);
@@ -288,7 +288,7 @@ trait PermitsTrait2
 	 */
 	public function rolesCacheUpdate()
 	{
-		$query = $this->rolesQuery() ;
+		$query = $this->rolesQuery(true) ;
 		$string = null ;
 
 		foreach($query as $item) {
@@ -1348,6 +1348,13 @@ trait PermitsTrait2
 	{
 		return $this->getTitle();
 	}
+
+
+	public function getCacheRolesAttribute($original_value)
+	{
+		return self::adorn($original_value) ;
+	}
+
 
 
 }

@@ -339,10 +339,10 @@ class Role extends Model
 	{
 		$array = [];
 		foreach($this->status_rule_array as $key => $item) {
-			$array[] = [$key, Lang::has("forms.status_text.$item") ? trans("forms.status_text.$item") : $item];
+			$array[] = [$key, Lang::has("people.criteria.$item") ? trans("people.criteria.$item") : $item];
 		}
 		if(!count($array)) {
-			$array[] = [1, trans("forms.status_text.active")];
+			$array[] = [1, trans("people.criteria.active")];
 		}
 		if($include_delete_options) {
 			$array[] = ['ban', trans("forms.status_text.blocked")];

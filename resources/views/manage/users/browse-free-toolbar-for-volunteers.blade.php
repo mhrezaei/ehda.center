@@ -28,7 +28,7 @@
 
 @endforeach
 @include('manage.frame.widgets.grid-action' , [
-	'id' => '0',
+	'id' => 'Filter',
 	'button_size' => 'sm' ,
 	'button_class' => 'default' ,
 	'button_label' => trans("people.commands.according_to_domain"),
