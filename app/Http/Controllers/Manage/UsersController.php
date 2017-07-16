@@ -594,6 +594,13 @@ class UsersController extends Controller
 
 	}
 
+	public function saveNewRole(Request $request)
+	{
+		return $this->jsonFeedback(12);
+
+	}
+
+
 	public function saveStatus(Request $request)
 	{
 		/*-----------------------------------------------

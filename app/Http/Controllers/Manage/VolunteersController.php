@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Manage;
 use App\Http\Requests\Manage\CardInquiryRequest;
 use App\Http\Requests\Manage\CardSaveRequest;
 use App\Http\Requests\Manage\SearchRequest;
+use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Role;
 use App\Models\State;
@@ -47,6 +48,9 @@ class VolunteersController extends UsersController
 
 	public function browseSwitchesChild()
 	{
+		$role_slug     = $this->role_slug;
+		$permit_module = "users-$role_slug";
+
 		return [
 			//'role_slug'       => $this->role_slug,
 			'url'               => "volunteers/browse",
@@ -60,20 +64,20 @@ class VolunteersController extends UsersController
 			],
 			'toolbar_buttons'   => [
 				[
-					'target'    => "manage/volunteers/create",
+					'target'    => "manage/volunteers/create/$role_slug",
 					'type'      => 'success',
-					'condition' => user()->as('admin')->can('users-volunteer.create'), //TODO: somehow check this on multiple roles
+					'condition' => $this->role_slug == 'admin' ? user()->as('admin')->can_any( Role::adminRoles('.create') ) : user()->as('admin')->can("$permit_module.create"), //TODO: Check performance in action!
 					'icon'      => 'plus-circle',
 					'caption'   => trans("ehda.volunteers.create"),
 				],
 			],
 			'more_mass_actions' => [
-				['gavel', trans('forms.button.change_status'), "modal:manage/users/act/0/user-status/".$this->role_slug , $this->role_slug != 'admin'],
+				['gavel', trans('forms.button.change_status'), "modal:manage/users/act/0/user-status/" . $role_slug, (user()->as('admin')->can("$permit_module.edit") and $role_slug != 'admin')],
 			],
 			'browse_tabs'       => [
-				["all", trans('people.criteria.all')],
-				['search', trans('forms.button.search')],
-			],
+		["all", trans('people.criteria.all')],
+		['search', trans('forms.button.search')],
+	],
 			//'search_panel_view' => "search-for-cards",
 		];
 
@@ -99,7 +103,7 @@ class VolunteersController extends UsersController
 		| Run ...
 		*/
 
-		return view($this->view_folder . '.' . $this->browseSwitchesChild()['grid_row'], compact('model', 'handle', 'request_role' , 'role'));
+		return view($this->view_folder . '.' . $this->browseSwitchesChild()['grid_row'], compact('model', 'handle', 'request_role', 'role'));
 	}
 
 
@@ -117,7 +121,7 @@ class VolunteersController extends UsersController
 		*/
 
 		$this->role_slug         = "volunteer-$domain_slug";
-		$switches = $this->browseSwitchesChild();
+		$switches                = $this->browseSwitchesChild();
 		$switches['browse_tabs'] = 'auto';
 		$switches['url'] .= "/$domain_slug";
 
@@ -178,12 +182,23 @@ class VolunteersController extends UsersController
 	}
 
 
-	public function createChild($volunteer_id = 0)
+	public function createChild($request_role = null)
 	{
 		/*-----------------------------------------------
 		| Permission ...
 		*/
-		if(user()->as('admin')->cannot('users-card-holder.create')) {
+		$permit = false ;
+		if(!$request_role or $request_role=='admin') {
+			if(user()->as('admin')->can_any( Role::adminRoles('.create') )) {
+				$permit = true ;
+			}
+		}
+		else {
+			if(user()->as('admin')->can("users-$request_role.create")) {
+				$permit = true ;
+			}
+		}
+		if(!$permit) {
 			return view('errors.403');
 		}
 
@@ -191,13 +206,8 @@ class VolunteersController extends UsersController
 		| Preparations ...
 		*/
 		$page    = $this->page;
-		$page[0] = ['cards/browse', $this->role->plural_title];
-		$page[1] = ['cards/create', trans("ehda.cards.create")];
-
-		/*-----------------------------------------------
-		| If for Volunteer ...
-		*/
-		//@TODO: proceed to special view (a good idea would be to use a modal instead of all this crap.
+		$page[0] = ["volunteers/browse/$request_role", trans("ehda.volunteers.plural")];
+		$page[1] = ["volunteers/create/$request_role", trans("ehda.volunteers.create")];
 
 		/*-----------------------------------------------
 		| Model ...
@@ -205,28 +215,10 @@ class VolunteersController extends UsersController
 		$model  = new User();
 		$states = State::combo();
 
-		$model->newsletter = 1;
-
-		$all_events = Post::selector([
-			'type'   => "event",
-			'domain' => "auto",
-		])->orderBy('published_at', 'desc')->get()
-		;
-		$events     = [];
-		foreach($all_events as $event) {
-			if($event->spreadMeta()->can_register_card) {
-				$events[] = $event;
-			}
-		}
-
-		$model->event_id = session()->get('user_last_used_event', 0);
-
-
 		/*-----------------------------------------------
 		| View ...
 		*/
-
-		return view("manage.users.card-editor", compact('page', 'model', 'states', 'events'));
+		return view("manage.users.volunteer-editor", compact('page', 'model', 'states' , 'request_role'));
 
 	}
 
@@ -240,46 +232,49 @@ class VolunteersController extends UsersController
 		if(!$user or !$user->id) {
 			return $this->jsonFeedback(1, [
 				'ok'           => 1,
-				'message'      => trans('ehda.cards.inquiry_success'),
+				'message'      => trans('ehda.volunteers.inquiry_success'),
 				'callback'     => 'cardEditor(1)',
 				'redirectTime' => 1,
 			]);
 		}
 
 		/*-----------------------------------------------
-		| If already has card ...
+		| If a Volunteer in the selected role ...
 		*/
-		if($user->is_a('card-holder')) {
-			return $this->jsonFeedback(1, [
-				'ok'           => 1,
-				'message'      => trans('ehda.cards.inquiry_has_card'),
-				'callback'     => 'cardEditor(2 , "' . $user->hash_id . '")',
-				'redirectTime' => 1,
+		if($request->request_role and $user->withDisabled()->is_a($request->request_role)) {
+			return $this->jsonFeedback([
+				'ok' => "1" ,
+				'message' => trans("ehda.volunteers.already_volunteer") ,
+			     'callback' => "$('#divCard').slideUp('fast').html('')" ,
 			]);
+
 		}
+
 
 		/*-----------------------------------------------
-		| If a volunteer without card ...
+		| If a volunteer (active or blocked) ...
 		*/
-		if($user->min(8)->is_an('admin') and $user->is_not_a('card-holder')) {
-			return $this->jsonFeedback(1, [
-				'ok'           => 1,
-				'message'      => trans('ehda.cards.inquiry_is_volunteer'),
-				'redirect'     => url("manage/cards/create/$user->id"),
-				'redirectTime' => 1,
+		if($user->withDisabled()->is_admin()) {
+			return $this->jsonFeedback( 1 , [
+				'ok' => "1" ,
+			     'message' => trans("ehda.volunteers.already_volunteer") ,
+				'callback'     => 'cardEditor(2 , "' . $user->hash_id . '")',
 			]);
 		}
 
-		if($user->max(6)->is_an('admin')) {
-			return $this->jsonFeedback(1, [
-				'ok'       => 1,
-				'message'  => trans('inquiry_will_be_volunteer'),
-				'redirect' => Auth::user()->can('cards.edit') ? url("manage/cards/$user->id/edit") : '',
-			]);
 
-		}
+		/*-----------------------------------------------
+		| Otherwise (if has card or even not) ...
+		*/
+		return $this->jsonFeedback(1, [
+			'ok'           => 1,
+			'message'      => trans('ehda.cards.inquiry_has_card'),
+			'callback'     => 'cardEditor(2 , "' . $user->hash_id . '")',
+			'redirectTime' => 1,
+		]);
 
 	}
+
 
 	public function saveChild(CardSaveRequest $request)
 	{

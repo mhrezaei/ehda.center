@@ -293,13 +293,13 @@ class Role extends Model
 
 	}
 
-	public static function adminRoles()
+	public static function adminRoles( $additive = null)
 	{
-		$admin_roles = Cache::remember("admin_roles", 100, function () {
+		$admin_roles = Cache::remember("admin_roles-$additive", 100, function () use ($additive) {
 			$roles = self::where('is_admin', true)->get();
 			$array = [];
 			foreach($roles as $role) {
-				$array[] = $role->slug;
+				$array[] = $role->slug . $additive;
 			}
 
 			return $array;

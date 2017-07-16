@@ -25,6 +25,7 @@ return [
 
 	"button" => [
 		'edit'          => "ویرایش",
+		'edit_info'     => "ویرایش اطلاعات",  //@TODO: New
 		'cancel'        => 'انصراف',
 		'ok'            => "بسیار خوب!",
 		'discard'       => "بی‌خیال!",
@@ -107,7 +108,7 @@ return [
 		'sorry'          => "شرمنده",
 		'no'             => "شماره", //@TODO: New
 		'so_far'         => "تا این لحظه", //@TODO: New
-		'buddies'         => "نفر", //@TODO: New
+		'buddies'        => "نفر", //@TODO: New
 	],
 
 
@@ -145,19 +146,19 @@ return [
 	],
 
 	'status_text' => [
-		'active'        => "فعال",
-		'blocked'       => "مسدودشده",
-		'deleted'       => "حذف‌شده",
-		'inactive'      => "غیرفعال",
-		'unsaved'       => "ذخیره‌نشده",
-		'published'     => "منتشرشده",
-		'scheduled'     => "صف انتشار",
-		'draft'         => "پیش‌نویس",
-		'pending'       => "منتظر بررسی",
-		'private'       => "خصوصی",
-		'unknown'       => "نامشخص",
-		'so_far_absent' => "فعلاً وجود ندارد",
-	     'action_required' => "منتظر اقدام" , //@TODO: New
+		'active'          => "فعال",
+		'blocked'         => "مسدودشده",
+		'deleted'         => "حذف‌شده",
+		'inactive'        => "غیرفعال",
+		'unsaved'         => "ذخیره‌نشده",
+		'published'       => "منتشرشده",
+		'scheduled'       => "صف انتشار",
+		'draft'           => "پیش‌نویس",
+		'pending'         => "منتظر بررسی",
+		'private'         => "خصوصی",
+		'unknown'         => "نامشخص",
+		'so_far_absent'   => "فعلاً وجود ندارد",
+		'action_required' => "منتظر اقدام", //@TODO: New
 	],
 
 	'status_color' => [

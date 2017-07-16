@@ -10,18 +10,18 @@ use Illuminate\Database\Eloquent\Model;
 
 trait PermitsTrait2
 {
-	public static $role_prefix_for_domain_admins = 'volunteer' ;
-	protected static $wildcards         = ['', 'any', '*'];
-	protected static $default_role      = 'admin';
-	protected static $available_permits = ['browse', 'process', 'view', 'send', 'search', 'create', 'edit', 'publish', 'activate', 'report', 'delete', 'bin'];
-	protected static $coder             = '~jFCQ?U0y&rvYp8<b9{Ew[V#N;7tx,M51]L(Bq@!^fa|2Z}XgD+lT4Ie>sJmP.huod:*Kkz3nHR-G_f)6iW%cAOS';
-	protected static $alpha             = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMfNOPQRSTUVWXYZ1234567890-!@#%^&*()_+~[]|;,.{}:<>?';
-	protected        $stored_roles      = false;
-	protected        $as                = null;
-	protected        $as_all            = false;
-	protected        $include_disabled  = false;
-	protected        $min_status        = false;
-	protected        $max_status        = false;
+	public static    $role_prefix_for_domain_admins = 'volunteer';
+	protected static $wildcards                     = ['', 'any', '*'];
+	protected static $default_role                  = 'admin';
+	protected static $available_permits             = ['browse', 'process', 'view', 'send', 'search', 'create', 'edit', 'publish', 'activate', 'report', 'delete', 'bin'];
+	protected static $coder                         = '~jFCQ?U0y&rvYp8<b9{Ew[V#N;7tx,M51]L(Bq@!^fa|2Z}XgD+lT4Ie>sJmP.huod:*Kkz3nHR-G_f)6iW%cAOS';
+	protected static $alpha                         = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMfNOPQRSTUVWXYZ1234567890-!@#%^&*()_+~[]|;,.{}:<>?';
+	protected        $stored_roles                  = false;
+	protected        $as                            = null;
+	protected        $as_all                        = false;
+	protected        $include_disabled              = false;
+	protected        $min_status                    = false;
+	protected        $max_status                    = false;
 
 	/*
 	|--------------------------------------------------------------------------
@@ -288,22 +288,22 @@ trait PermitsTrait2
 	 */
 	public function rolesCacheUpdate()
 	{
-		$query = $this->rolesQuery(true) ;
-		$string = null ;
+		$query  = $this->rolesQuery(true);
+		$string = null;
 
 		foreach($query as $item) {
-			$extension = $item['slug'] ;
+			$extension = $item['slug'];
 			if($item['pivot']['deleted_at']) {
-				$extension .= ".bin" ;
+				$extension .= ".bin";
 			}
 			else {
-				$extension .= '.'.strval($item['pivot']['status']) ;
+				$extension .= '.' . strval($item['pivot']['status']);
 			}
 
-			$string .= " $extension " ;
+			$string .= " $extension ";
 		}
 
-		return $this->update([ 'cache_roles' => self::deface($string)]) ;
+		return $this->update(['cache_roles' => self::deface($string)]);
 	}
 
 	/*
@@ -664,18 +664,20 @@ trait PermitsTrait2
 	/**
 	 * @return array: of roles, the user has access to as an admin!
 	 */
-	public function userRolesArray($permit = 'browse')
+	public function userRolesArray($permit = 'browse', $exceptions = [])
 	{
-		$roles = Role::all() ;
-		$array = [] ;
+		$roles = Role::all();
+		$array = [];
 		foreach($roles as $role) {
-			$slug = $role->slug ;
+			$slug = $role->slug;
 			if($this->as('admin')->can("users-$slug.$permit")) {
-				$array[] = $slug ;
+				if(!in_array($slug, $exceptions)) {
+					$array[] = $slug;
+				}
 			}
 		}
 
-		return $array ;
+		return $array;
 	}
 
 	/**
@@ -689,22 +691,23 @@ trait PermitsTrait2
 		| Bypass if the user in question is a manager ...
 		*/
 		if($this->is_a('manager')) {
-			return Domain::where('id' , '>' , '0') ;
+			return Domain::where('id', '>', '0');
 		}
 
 		/*-----------------------------------------------
 		| Normal Process ...
 		*/
-		$roles = $this->rolesArray() ;
-		$array = [] ;
+		$roles = $this->rolesArray();
+		$array = [];
 		foreach($roles as $role) {
-			if(str_contains($role , self::$role_prefix_for_domain_admins . '-' )) {
-				$array[] = str_replace( self::$role_prefix_for_domain_admins . '-' , null , $role) ;
+			if(str_contains($role, self::$role_prefix_for_domain_admins . '-')) {
+				$array[] = str_replace(self::$role_prefix_for_domain_admins . '-', null, $role);
 			}
 		}
 
-		$domains = Domain::whereIn('slug' , $array) ;
-		return $domains ;
+		$domains = Domain::whereIn('slug', $array);
+
+		return $domains;
 	}
 
 	/**
@@ -712,7 +715,7 @@ trait PermitsTrait2
 	 */
 	public function domainsArray()
 	{
-		return $this->domainsQuery()->get()->pluck('slug')->toArray() ;
+		return $this->domainsQuery()->get()->pluck('slug')->toArray();
 	}
 
 	/**
@@ -739,13 +742,13 @@ trait PermitsTrait2
 	 * @return array|string: of the current row pivot.
 	 * The role is passed via the as() chain method. first one is returned, therefore not intended to support multiple roles.
 	 */
-	public function pivot($key=null)
+	public function pivot($key = null)
 	{
 		if($key) {
-			return $this->row()['pivot'][$key] ;
+			return $this->row()['pivot'][ $key ];
 		}
 		else {
-			return $this->row()['pivot'] ;
+			return $this->row()['pivot'];
 		}
 	}
 
@@ -1352,9 +1355,8 @@ trait PermitsTrait2
 
 	public function getCacheRolesAttribute($original_value)
 	{
-		return self::adorn($original_value) ;
+		return self::adorn($original_value);
 	}
-
 
 
 }

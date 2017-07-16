@@ -79,6 +79,12 @@ Route::group([
 		Route::get('/browse/{request_role?}/{request_tab?}/{volunteer?}/{post?}', 'VolunteersController@browseChild');
 		Route::get('/search', 'VolunteersController@search');
 
+		Route::get('/create/{request_role?}' , 'VolunteersController@createChild');
+
+		Route::group(['prefix' => 'save'], function () {
+			Route::post('/inquiry', 'VolunteersController@inquiry');
+			Route::post('/new-role' , 'VolunteersController@saveNewRole');
+		});
 
 	});
 
@@ -107,7 +113,7 @@ Route::group([
 		Route::group(['prefix' => 'save'], function () {
 			//Route::post('/', 'CardsController@saveChild');
 			Route::post('/volunteers', 'CardsController@saveForVolunteers');
-			//Route::post('/inquiry', 'CardsController@inquiry');
+			Route::post('/inquiry', 'CardsController@inquiry');
 
 			Route::post('/add_to_print', 'CardsController@addToPrintings');
 			Route::post('/add_to_print_mass', 'CardsController@addToPrintingsMass');
