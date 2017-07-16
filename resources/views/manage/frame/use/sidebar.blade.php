@@ -15,7 +15,7 @@
 	'caption' => $card_holder_role->title,
 	'permission' => "users-card-holder" ,
 	'link' => "cards" ,
-	'icon' => $card_holder_role->spreadMeta()->icon ,
+	'icon' => 'credit-card' ,
 	'sub_menus' => [
 		['cards/create' , trans("ehda.cards.create") , 'plus-circle'],
 		['cards/browse/all' , trans('ehda.cards.browse') , 'bars'],

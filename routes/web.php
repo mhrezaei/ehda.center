@@ -41,6 +41,7 @@ Route::group([ //@TODO: Remove when project fully erected.
 	Route::get('/meta', 'ConvertController@postsMeta');
 	Route::get('/posts', 'ConvertController@posts');
 	Route::get('/users/{take?}/{loop?}', 'ConvertController@users');
+	Route::get('/userRoleCaches', 'ConvertController@userRoleCaches');
 	Route::get('/printing/{take?}/{loop?}', 'ConvertController@printing');
 
 	Route::get('/tests', 'ConvertController@tests');
@@ -73,10 +74,11 @@ Route::group([
 	*/
 	Route::group(['prefix' => 'volunteers', 'middleware' => "can:users-volunteer",], function () {
 		Route::get('/', 'VolunteersController@browseChild');
-		Route::get('/browse/update/{model_id}', 'VolunteersController@update');
+		Route::get('/browse/update/{model_id}/{request_role?}', 'VolunteersController@update');
 		Route::get('/browse/search/{keyword?}', 'VolunteersController@searchChild');
 		Route::get('/browse/{request_role?}/{request_tab?}/{volunteer?}/{post?}', 'VolunteersController@browseChild');
 		Route::get('/search', 'VolunteersController@search');
+
 
 	});
 

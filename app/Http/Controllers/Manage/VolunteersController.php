@@ -80,19 +80,25 @@ class VolunteersController extends UsersController
 
 	public function update($model_id, $request_role = null)
 	{
-		$request_role = $this->role_slug;
-		$model        = User::withTrashed()->find($model_id);
-		$handle       = 'selector';
+		/*-----------------------------------------------
+		| Model ...
+		*/
+		$role   = Role::findBySlug($request_role);
+		$model  = User::withTrashed()->find($model_id);
+		$handle = 'selector';
 
-		//Run...
-		if(!$model) {
+		if(!$model or !$role or !$model->id or !$role->id) {
 			return view('errors.m410');
 		}
 		else {
 			$model->spreadMeta();
 		}
 
-		return view($this->view_folder . '.' . $this->browseSwitchesChild()['grid_row'], compact('model', 'handle', 'request_role'));
+		/*-----------------------------------------------
+		| Run ...
+		*/
+
+		return view($this->view_folder . '.' . $this->browseSwitchesChild()['grid_row'], compact('model', 'handle', 'request_role' , 'role'));
 	}
 
 
@@ -108,13 +114,13 @@ class VolunteersController extends UsersController
 		/*-----------------------------------------------
 		| If called for a specific domain ...
 		*/
-		$switches = $this->browseSwitchesChild() ;
+		$switches = $this->browseSwitchesChild();
 
-		$this->role_slug = "volunteer-$domain_slug" ;
-		$switches['browse_tabs'] = 'auto' ;
-		$switches['url'] .= "/$domain_slug" ;
+		$this->role_slug         = "volunteer-$domain_slug";
+		$switches['browse_tabs'] = 'auto';
+		$switches['url'] .= "/$domain_slug";
 
-		return $this->browse( $this->role_slug , $request_tab , $switches) ;
+		return $this->browse($this->role_slug, $request_tab, $switches);
 
 	}
 

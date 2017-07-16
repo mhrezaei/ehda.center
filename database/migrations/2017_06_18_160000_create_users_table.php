@@ -157,6 +157,12 @@ class CreateUsersTable extends Migration
 			$table->unsignedInteger('updated_by')->default(0);
 			$table->unsignedInteger('deleted_by')->default(0);
 			$table->unsignedInteger('published_by')->default(0);
+
+			// Cache Management...
+			$table->text('cache_roles')->nullable();
+
+			// Special...
+			$table->tinyInteger('converted')->default(0);
 		});
 	}
 
@@ -165,7 +171,8 @@ class CreateUsersTable extends Migration
 	 *
 	 * @return void
 	 */
-	public function down()
+	public
+	function down()
 	{
 		Schema::dropIfExists('users');
 	}

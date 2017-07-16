@@ -283,17 +283,27 @@ trait PermitsTrait2
 	}
 
 	/**
-	 * Updates the main User row, so that the `updated_at` can be used to check if the session cache is expired.
-	 * @return $this
+	 * Updates the `cache_roles` field of the main User row, so that the `updated_at` can be used to check if the session cache is expired.
+	 * @return bool
 	 */
-	private function fakeUpdate()
+	public function rolesCacheUpdate()
 	{
-		$this->updated_at = Carbon::now()->toDateTimeString();
-		$this->update();
+		$query = $this->rolesQuery() ;
+		$string = null ;
 
-		$this->stored_roles = false;
+		foreach($query as $item) {
+			$extension = $item['slug'] ;
+			if($item['pivot']['deleted_at']) {
+				$extension .= ".bin" ;
+			}
+			else {
+				$extension .= '.'.strval($item['pivot']['status']) ;
+			}
 
-		return $this;
+			$string .= " $extension " ;
+		}
+
+		return $this->update([ 'cache_roles' => self::deface($string)]) ;
 	}
 
 	/*
@@ -324,7 +334,7 @@ trait PermitsTrait2
 		])
 		;
 
-		return $this->fakeUpdate();
+		return $this->rolesCacheUpdate();
 	}
 
 	/**
@@ -409,7 +419,7 @@ trait PermitsTrait2
 			])
 			;
 
-			return boolval($this->fakeUpdate());
+			return boolval($this->rolesCacheUpdate());
 		}
 	}
 
@@ -466,7 +476,7 @@ trait PermitsTrait2
 			;
 		}
 
-		return boolval($this->fakeUpdate());
+		return boolval($this->rolesCacheUpdate());
 
 	}
 
@@ -518,7 +528,7 @@ trait PermitsTrait2
 			;
 		}
 
-		return boolval($this->fakeUpdate());
+		return boolval($this->rolesCacheUpdate());
 
 
 	}
@@ -584,7 +594,7 @@ trait PermitsTrait2
 					'deleted_at'  => null,
 				])
 				;
-				$return = $this->fakeUpdate();
+				$return = $this->rolesCacheUpdate();
 			}
 		}
 
@@ -634,7 +644,7 @@ trait PermitsTrait2
 			}
 			else {
 				$this->roles()->detach($role->id);
-				$return = $this->fakeUpdate();
+				$return = $this->rolesCacheUpdate();
 			}
 
 

@@ -83,6 +83,9 @@ function rowUpdate($table_id, $model_id) {
 		var $row_selector = $table_selector + ' #tr-' + $model_id;
 		var $url = $($row_selector + ' .refresh ').html();
 		var $counter = $($row_selector + ' .-rowCounter ').html();
+
+		forms_log('loading ['+$url+'] in ['+$row_selector+']');
+
 		$($row_selector).addClass('loading');
 		$.ajax({
 			url  : $url,

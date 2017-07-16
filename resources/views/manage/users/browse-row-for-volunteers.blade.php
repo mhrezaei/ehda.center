@@ -1,5 +1,5 @@
 @include('manage.frame.widgets.grid-rowHeader' , [
-	'refresh_url' => "manage/volunteers/browse/update/$model->id"
+	'refresh_url' => "manage/volunteers/browse/update/$model->id/$request_role"
 ])
 
 {{--
@@ -73,26 +73,39 @@
 --}}
 <td>
 
-	@foreach($model->withDisabled()->rolesQuery() as $role)
-		@if($role['pivot']['deleted_at'])
-			{{ '' , $color = 'danger' }}
-			{{ '' , $icon = 'times '}}
-		@elseif($role['pivot']['status'] >= 8)
-			{{ '' , $color = 'success' }}
-			{{ '' , $icon = 'check '}}
-		@else
-			{{ '' , $color = 'default' }}
-			{{ '' , $icon = 'hourglass-half'}}
-		@endif
-		{{--{{ ss($role) }}--}}
-		@include("manage.frame.widgets.grid-badge" , [
-			'condition' => $role['is_admin'],
-			'text' => $role['title'] ,
-			'color' => $color ,
-			'icon' => $icon ,
-			'link' => $model->as($role['slug'])->canPermit()? "modal:manage/users/act/-id-/permits/".$role['slug'] : '',
+	@if($request_role == 'admin')
+
+		@foreach($model->withDisabled()->rolesQuery() as $role)
+			@if($role['pivot']['deleted_at'])
+				{{ '' , $color = 'danger' }}
+				{{ '' , $icon = 'times '}}
+			@elseif($role['pivot']['status'] >= 8)
+				{{ '' , $color = 'success' }}
+				{{ '' , $icon = 'check '}}
+			@else
+				{{ '' , $color = 'default' }}
+				{{ '' , $icon = 'hourglass-half'}}
+			@endif
+			{{--{{ ss($role) }}--}}
+			@include("manage.frame.widgets.grid-badge" , [
+				'condition' => $role['is_admin'],
+				'text' => $role['title'] ,
+				'color' => $color ,
+				'icon' => $icon ,
+				'link' => $model->as($role['slug'])->canPermit()? "modal:manage/users/act/-id-/permits/".$role['slug'] : '',
+			]     )
+		@endforeach
+
+
+	@else
+		{{ '' , $status =  $role->statusRule( $model->as($request_role)->status() )}}
+		@include("manage.frame.widgets.grid-text" , [
+			'text' => trans("people.criteria.$status") ,
+			'color' => trans("people.criteria_color.$status") ,
+			'icon' => trans("people.criteria_icon.$status") ,
+			'link' => $model->as($request_role)->canEdit()? "modal:manage/users/act/-id-/volunteer-status" : '' ,
 		]     )
-	@endforeach
+	@endif
 
 </td>
 

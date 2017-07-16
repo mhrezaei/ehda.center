@@ -40,7 +40,9 @@
 			{{ '' , $data = [] }}
 
 			@foreach(model('role')::where('is_admin',1)->first()->status_rule_array as $key => $status)
-				{{ '' , $count = model('user')::selector(['role' => "admin" , 'status' => "$key" ,])->count() }}
+{{--				{{ '' , $count = model('user')::selector(['role' => "admin" , 'status' => "$key" ,])->count() }}--}}
+{{--				{{ '' , $count = model('user')::selector(['roleString' => "admin.$key" ,])->count() }}--}}
+				{{ '' , $count = model('user')::selector(['roleString' => "volunteer-" ,])->where('cache_roles' , 'like' , "%". model('user')::deface(".$key") ."%")->count() }}
 				{{ '' , $total += $count }}
 				{{ '' , $data[trans("people.criteria.$status")] = $count  }}
 			@endforeach

@@ -7,9 +7,9 @@
 	|
 	--}}
 	@if(isset($ajax))
-		{{ '' , $total = model('user')::selector(['role' => "card-holder" ,])->count() }}
-		{{ '' , $females = model('user')::selector(['role' => "card-holder" ,])->where('gender',2)->count() }}
-		{{ '' , $males = model('user')::selector(['role' => "card-holder" ,])->where('gender',1)->count() }}
+		{{ '' , $females = model('user')::whereNotNull('card_registered_at')->where('gender',2)->count() }}
+		{{ '' , $males = model('user')::whereNotNull('card_registered_at')->where('gender',1)->count() }}
+		{{ '' , $total = $females + $males }}
 	@endif
 
 

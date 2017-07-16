@@ -223,7 +223,8 @@ class UsersController extends Controller
 		| Model ...
 		*/
 		$selector_switches = [
-			'role'   => $request_role,
+			'roleString' => "$request_role.$request_tab" ,
+			//'role'   => $request_role,
 			'status' => $request_tab,
 		];
 

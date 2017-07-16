@@ -123,6 +123,7 @@ class User extends Authenticatable
 			'email'      => false,
 			'code_melli' => false,
 			'mobile'     => false,
+			'roleString' => false , // <~~ Supports Arrays, with this pattern: [roleSlug.status] for active roles and [roleSlug-status] for disabled roles.
 			'role'       => false, // <~~ Supports Arrays
 			'status'     => false, // <~~ best works where only one role is given.
 			'min_status' => false, // <~~ best works where only one role is given.
@@ -157,7 +158,7 @@ class User extends Authenticatable
 		| Special commands inside status ...
 		*/
 		if($switch['status'] == 'bin') {
-			if($switch['role'] == 'all') {
+			if($switch['role'] == 'all' or str_contains($switch['roleString'] , 'all.')) {
 				$switch['bin'] = true;
 				$switch['status'] = false ;
 			}
@@ -169,6 +170,44 @@ class User extends Authenticatable
 		elseif($switch['status'] == 'all') {
 			$switch['status'] = false ;
 		}
+
+		/*-----------------------------------------------
+		| RoleStatus ...
+		*/
+		if($switch['roleString'] !== false and !str_contains($switch['roleString'] , 'all.')) {
+
+			if(!is_array($switch['roleString'])) {
+				if(str_contains($switch['roleString'], 'admin')) {
+					$additive             = str_replace('admin', null, $switch['roleString']);
+					$switch['roleString'] = Role::adminRoles();
+					foreach($switch['roleString'] as $key => $value) {
+						$switch['roleString'][ $key ] .= $additive;
+					}
+				}
+				elseif(str_contains($switch['roleString'], 'auto')) {
+					$additive             = str_replace('auto', null, $switch['roleString']);
+					$switch['roleString'] = user()->userRolesArray();
+					foreach($switch['roleString'] as $key => $value) {
+						$switch['roleString'][ $key ] = $value . $additive;
+					}
+				}
+			}
+
+			$switch['roleString'] = (array) $switch['roleString'] ;
+
+			$table->where( function($query) use ($switch) {
+				$query->where('id' , '0') ;
+
+				foreach($switch['roleString'] as $string) {
+					$string = str_replace('.all' , null , $string);
+					$string = self::deface($string) ;
+					$query->orWhere('cache_roles' , 'like' , "%$string%");
+				}
+
+			});
+
+		}
+
 
 		/*-----------------------------------------------
 		| Role ...

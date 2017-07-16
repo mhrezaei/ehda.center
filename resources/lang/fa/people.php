@@ -71,12 +71,30 @@ return [
 
 	'criteria' => [
 		'all'                         => "همه",
-		'active'                      => "فعال‌ها",
+		'active'                      => "فعال",
 		'pending'                     => "منتظر تأیید",
-		'banned'                      => "مسدودها",
-		'bin'                         => "زباله‌دان",
+		'banned'                      => "مسدود",
+		'bin'                         => "حذف‌شده",
 		'waiting_for_data_completion' => "در انتظار تکمیل مدارک", //@TODO
 		'under_examination'           => "در انتظار آزمون", //@TODO
+	],
+	
+	'criteria_icon' => [
+		'active' => "check" ,
+	     'pending' => "clock-o" ,
+	     'banned' => "ban" ,
+	     'bin' => "trash" ,
+	     'waiting_for_data_completion' => "hourglass-end" ,
+	     'under_examination' => "hourglass-start" ,
+	],
+
+	'criteria_color' => [
+		'active' => "success" ,
+		'pending' => "orange" ,
+		'banned' => "danger" ,
+		'bin' => "danger" ,
+		'waiting_for_data_completion' => "warning" ,
+		'under_examination' => "warning" ,
 	],
 
 	"edu_level_full"  => [

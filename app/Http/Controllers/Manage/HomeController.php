@@ -32,6 +32,11 @@ class HomeController extends Controller
 		$page = $this->page;
 		//$digests = $this->index_digests();
 
+		//$users = User::selector([
+		//	'roleString' => ["volunteer-ardebil.8" , "volunteer-ardebil.3"] ,
+		//]) ;
+		//
+		//return $users->count() ;
 		return view('manage.home.index', compact('page', 'digests'));
 
 	}
