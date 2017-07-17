@@ -88,7 +88,6 @@
 
 		@include("forms.select" , [
 			'name' => "role_slug",
-			'label' => trans("people.user_role") ,
 			'blank_value' => "" ,
 			'value' => $option ,
 			'options' => $combo ,

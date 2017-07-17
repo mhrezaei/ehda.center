@@ -509,6 +509,7 @@ return [
 		'from_event_id'  => "رویداد",
 		'domains'        => "دامنه",
 		'source'         => "منبع",
+	     'role_slug' => "نقش کاربری" ,
 	],
 
 	"http" => [

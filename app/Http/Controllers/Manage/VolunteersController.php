@@ -3,16 +3,14 @@
 namespace App\Http\Controllers\Manage;
 
 use App\Http\Requests\Manage\CardInquiryRequest;
-use App\Http\Requests\Manage\CardSaveRequest;
 use App\Http\Requests\Manage\SearchRequest;
+use App\Http\Requests\Manage\VolunteerSaveRequest;
 use Illuminate\Http\Request;
-use App\Models\Post;
 use App\Models\Role;
 use App\Models\State;
 use App\Models\User;
 use App\Traits\ManageControllerTrait;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -66,7 +64,7 @@ class VolunteersController extends UsersController
 				[
 					'target'    => "manage/volunteers/create/$role_slug",
 					'type'      => 'success',
-					'condition' => $this->role_slug == 'admin' ? user()->as('admin')->can_any( Role::adminRoles('.create') ) : user()->as('admin')->can("$permit_module.create"), //TODO: Check performance in action!
+					'condition' => $this->role_slug == 'admin' ? user()->as('admin')->can_any(Role::adminRoles('.create')) : user()->as('admin')->can("$permit_module.create"), //TODO: Check performance in action!
 					'icon'      => 'plus-circle',
 					'caption'   => trans("ehda.volunteers.create"),
 				],
@@ -75,9 +73,9 @@ class VolunteersController extends UsersController
 				['gavel', trans('forms.button.change_status'), "modal:manage/users/act/0/user-status/" . $role_slug, (user()->as('admin')->can("$permit_module.edit") and $role_slug != 'admin')],
 			],
 			'browse_tabs'       => [
-		["all", trans('people.criteria.all')],
-		['search', trans('forms.button.search')],
-	],
+				["all", trans('people.criteria.all')],
+				['search', trans('forms.button.search')],
+			],
 			//'search_panel_view' => "search-for-cards",
 		];
 
@@ -172,15 +170,15 @@ class VolunteersController extends UsersController
 		/*-----------------------------------------------
 		| Permission ...
 		*/
-		$permit = false ;
-		if(!$request_role or $request_role=='admin') {
-			if(user()->as('admin')->can_any( Role::adminRoles('.create') )) {
-				$permit = true ;
+		$permit = false;
+		if(!$request_role or $request_role == 'admin') {
+			if(user()->as('admin')->can_any(Role::adminRoles('.create'))) {
+				$permit = true;
 			}
 		}
 		else {
 			if(user()->as('admin')->can("users-$request_role.create")) {
-				$permit = true ;
+				$permit = true;
 			}
 		}
 		if(!$permit) {
@@ -203,7 +201,8 @@ class VolunteersController extends UsersController
 		/*-----------------------------------------------
 		| View ...
 		*/
-		return view("manage.users.volunteer-editor", compact('page', 'model', 'states' , 'request_role'));
+
+		return view("manage.users.volunteer-editor", compact('page', 'model', 'states', 'request_role'));
 
 	}
 
@@ -240,10 +239,10 @@ class VolunteersController extends UsersController
 		| If a volunteer (active or blocked) ...
 		*/
 		if($user->withDisabled()->is_admin()) {
-			return $this->jsonFeedback( 1 , [
-				'ok' => "1" ,
-			     'message' => trans("ehda.volunteers.already_volunteer") ,
-				'callback'     => 'cardEditor(2 , "' . $user->hash_id . '")',
+			return $this->jsonFeedback(1, [
+				'ok'       => "1",
+				'message'  => trans("ehda.volunteers.already_volunteer"),
+				'callback' => 'cardEditor(2 , "' . $user->hash_id . '")',
 			]);
 		}
 
@@ -251,6 +250,7 @@ class VolunteersController extends UsersController
 		/*-----------------------------------------------
 		| Otherwise (if has card or even not) ...
 		*/
+
 		return $this->jsonFeedback(1, [
 			'ok'           => 1,
 			'message'      => trans('ehda.cards.inquiry_has_card'),
@@ -261,7 +261,7 @@ class VolunteersController extends UsersController
 	}
 
 
-	public function saveChild(CardSaveRequest $request)
+	public function saveChild(VolunteerSaveRequest $request)
 	{
 		/*-----------------------------------------------
 		| Model ...
@@ -269,14 +269,23 @@ class VolunteersController extends UsersController
 		$data = $request->toArray();
 
 		if($request->id) {
-			unset($data['event_id']);
 			$model = User::find($request->id);
 			if(!$model or !$model->id) {
 				return $this->jsonFeedback(trans('validation.http.Error410'));
 			}
-			if(!$model->canEdit()) {
-				return $this->jsonFeedback(trans('validation.http.Error403'));
-			}
+		}
+
+		/*-----------------------------------------------
+		| Security ...
+		*/
+		if($request->id and $model->withDisabled()->is_admin()) {
+			$permit = $model->canEdit();
+		}
+		else {
+			$permit = user()->as('admin')->can("users-$request->role_slug.create");
+		}
+		if(!$permit) {
+			return $this->jsonFeedback(trans('validation.http.Error403'));
 		}
 
 		/*-----------------------------------------------
@@ -284,6 +293,28 @@ class VolunteersController extends UsersController
 		*/
 		$carbon             = new Carbon($request->birth_date);
 		$data['birth_date'] = $carbon->toDateString();
+
+		/*-----------------------------------------------
+		| Processing States ...
+		*/
+		$home_city = State::find($request->home_city);
+		if($home_city) {
+			$data['home_province'] = $home_city->parent_id;
+		}
+		else {
+			$data['home_city']     = 0;
+			$data['home_province'] = 0;
+		}
+
+		$work_city = State::find($request->work_city);
+		if($work_city) {
+			$data['work_province'] = $work_city->parent_id;
+		}
+		else {
+			$data['work_province'] = 0;
+			$data['home_province'] = 0;
+		}
+
 
 		/*-----------------------------------------------
 		| Processing passwords ...
@@ -296,48 +327,27 @@ class VolunteersController extends UsersController
 		/*-----------------------------------------------
 		| Processing Domain ...
 		*/
-		$data['domain'] = user()->domain;
-		if(!$data['domain'] or $data['domain'] == 'global') {
-			$state = State::find(user()->home_city);
-			if($state) {
-				$data['domain'] = $state->domain->slug;
-			}
-		}
-
-		/*-----------------------------------------------
-		| Register Date and Card No...
-		*/
-		if(!$request->id or (isset($model) and $model->is_not_a('card-holder'))) {
-			$data['card_registered_at'] = Carbon::now()->toDateTimeString();
-			$data['card_no']            = User::generateCardNo();
-		}
-
-
-		/*-----------------------------------------------
-		| user_last_used_event ...
-		*/
-		session()->put('user_last_used_event', $request->event_id);
+		//$data['domain'] = user()->domain;
+		//if(!$data['domain'] or $data['domain'] == 'global') {
+		//	$state = State::find(user()->home_city);
+		//	if($state) {
+		//		$data['domain'] = $state->domain->slug;
+		//	}
+		//}
 
 		/*-----------------------------------------------
 		| Save ...
 		*/
-		$saved = User::store($data);
+		$saved = User::store($data , ['status' , 'role_slug']);
 
 		/*-----------------------------------------------
 		| Role...
 		*/
 		if($saved) {
 			$saved_user = User::find($saved);
-			if($saved_user and $saved_user->id and $saved_user->is_not_a('card-holder')) {
-				$saved_user->attachRole('card-holder');
+			if($saved_user and $saved_user->id and $saved_user->is_not_a($request->role_slug)) {
+				$saved_user->attachRole($request->role_slug, $request->status);
 			}
-		}
-
-		/*-----------------------------------------------
-		| Send to Print ...
-		*/
-		if($data['_submit'] == 'print') {
-			//@TODO
 		}
 
 		/*-----------------------------------------------

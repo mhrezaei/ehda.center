@@ -83,6 +83,7 @@ Route::group([
 		Route::get('/edit/{model_id?}' , 'VolunteersController@editorChild');
 
 		Route::group(['prefix' => 'save'], function () {
+			Route::post('/', 'VolunteersController@saveChild');
 			Route::post('/inquiry', 'VolunteersController@inquiry');
 			Route::post('/new-role' , 'VolunteersController@saveNewRole');
 		});

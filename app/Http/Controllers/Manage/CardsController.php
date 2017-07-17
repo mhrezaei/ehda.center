@@ -283,6 +283,28 @@ class CardsController extends UsersController
 		$data['birth_date'] = $carbon->toDateString();
 
 		/*-----------------------------------------------
+		| Processing States ...
+		*/
+		$home_city = State::find($request->home_city);
+		if($home_city) {
+			$data['home_province'] = $home_city->parent_id;
+		}
+		else {
+			$data['home_city']     = 0;
+			$data['home_province'] = 0;
+		}
+
+		$work_city = State::find($request->work_city);
+		if($work_city) {
+			$data['work_province'] = $work_city->parent_id;
+		}
+		else {
+			$data['work_province'] = 0;
+			$data['home_province'] = 0;
+		}
+
+
+		/*-----------------------------------------------
 		| Processing passwords ...
 		*/
 		if(!$data['id'] or $data['_password_set_to_mobile']) {
@@ -333,8 +355,8 @@ class CardsController extends UsersController
 		/*-----------------------------------------------
 		| Send to Print ...
 		*/
-		if($data['_submit'] == 'print') {
-			//@TODO
+		if($saved and $data['_submit'] == 'print') {
+			$saved = Printing::addTo(Post::find($request->event_id) , $saved_user);
 		}
 
 		/*-----------------------------------------------

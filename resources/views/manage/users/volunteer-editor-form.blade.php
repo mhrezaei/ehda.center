@@ -15,7 +15,9 @@
 
 @include('forms.hiddens' , ['fields' => [
 	['id' , encrypt($model->id)],
-	['code_melli' , $model->code_melli]
+	['code_melli' , $model->code_melli],
+	['status', '0'],
+	['role_slug' , 'manager'],
 ]])
 
 @include('forms.input' , [
@@ -27,18 +29,40 @@
 @if(!$model->id or !$model->withDisabled()->is_admin())
 	@php
 		$array = user()->userRolesArray('create' , array_add( $model->withDisabled()->rolesArray()  , 'n' , 'card-holder') ) ;
-		$combo = model('role')::whereIn('slug' , $array)->orderBy('title')->get() ;
+		$combo = model('role')::whereIn('slug' , $array)->orderBy('title') ;
+		$role_model = model('role')::whereIn('slug' , $array)->first();
+		if(isset($option) and $option and $option != 'admin') {
+			$default_role = $option ;
+		}
+		elseif(isset($request_role) and $request_role and $request_role != 'admin') {
+			$default_role = $request_role ;
+		}
+		elseif($combo->count()==1) {
+			$default_role = $role_model->slug ;
+		}
+		else {
+			$default_role = null;
+		}
 	@endphp
 
 	@include("forms.select" , [
 		'name' => "role_slug",
-		'label' => trans("people.user_role") ,
 		'blank_value' => "" ,
-		'value' => isset($option)? $option : $request_role ,
-		'options' => $combo ,
+		'value' => $default_role ,
+		'options' => $combo->get() ,
 		'search' => true ,
 		'value_field' => "slug" ,
+		'class' => "form-required" ,
 	])
+
+	@include("forms.select" , [
+		'name' => "status" ,
+		'options' => $role_model->statusCombo() ,
+		'caption_field' => "1" ,
+		'value_field' => "0" ,
+		'class' => "form-required" ,
+		'blank_value' => "" ,
+	]     )
 @endif
 
 @include('forms.select-gender' , [
@@ -211,7 +235,7 @@
 
 @include('forms.input' , [
 	'name' => 'work_postal',
-	'value' =>  $model->work_postal_code,
+	'value' =>  $model->work_postal,
 	'class' => 'ltr',
 ])
 
@@ -233,7 +257,6 @@
 ])
 
 
-
 @include('forms.sep')
 
 
@@ -241,19 +264,19 @@
 	'label' => trans('validation.attributes.password')
 ])
 
-	@if($model->id)
-		@include('forms.check' , [
-			'name' => '_password_set_to_mobile',
-			'value' => false ,
-			'label' => trans('people.form.password_set_to_mobile') ,
-		])
+@if($model->id)
+	@include('forms.check' , [
+		'name' => '_password_set_to_mobile',
+		'value' => false ,
+		'label' => trans('people.form.password_set_to_mobile') ,
+	])
 
-	@else
-		<div class="text-danger disabled mv5">
-			<i class="fa fa-check-square"></i>
-			{{ trans('people.form.default_password') }}
-		</div>
-	@endif
+@else
+	<div class="text-danger disabled mv5">
+		<i class="fa fa-check-square"></i>
+		{{ trans('people.form.default_password') }}
+	</div>
+@endif
 
 
 @include('forms.group-end')
@@ -262,11 +285,11 @@
 
 @include('forms.group-start')
 
-	@include('forms.button' , [
-		'label' => trans('forms.button.save'),
-		'shape' => 'success',
-		'type' => 'submit' ,
-	])
+@include('forms.button' , [
+	'label' => trans('forms.button.save'),
+	'shape' => 'success',
+	'type' => 'submit' ,
+])
 
 @include('forms.group-end')
 
