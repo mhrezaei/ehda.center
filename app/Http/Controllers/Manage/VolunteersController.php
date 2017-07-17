@@ -141,7 +141,7 @@ class VolunteersController extends UsersController
 		| Model ...
 		*/
 		$model = User::findByHashid($model_hash_id);
-		if(!$model or !$model->id or $model->is_not_a('card-holder')) {
+		if(!$model or !$model->id or !$model->withDisabled()->is_admin()) {
 			return view('errors.410');
 		}
 		if(!$model->canEdit()) {
@@ -151,34 +151,19 @@ class VolunteersController extends UsersController
 		$model->spreadMeta();
 		$states = State::combo();
 
-		$all_events = Post::selector([
-			'type'   => "event",
-			'domain' => "auto",
-		])->orderBy('published_at', 'desc')->get()
-		;
-
-		$events = [];
-		foreach($all_events as $event) {
-			if($event->spreadMeta()->can_register_card) {
-				$events[] = $event;
-			}
-		}
-
-		$model->event_id = session()->get('user_last_used_event', 0);
-
 		/*-----------------------------------------------
 		| Page Preparations ...
 		*/
 		$page    = $this->page;
-		$page[0] = ['cards/browse', $this->role->plural_title];
-		$page[1] = ["cards/edit/$model_hash_id", trans("ehda.cards.edit")];
+		$page[0] = ["volunteers/browse/", trans("ehda.volunteers.plural")];
+		$page[1] = ["volunteers/edit/$model_hash_id", trans("ehda.volunteers.edit")];
 
 
 		/*-----------------------------------------------
 		| View ...
 		*/
 
-		return view("manage.users.card-editor", compact('page', 'model', 'states', 'events'));
+		return view("manage.users.volunteer-editor", compact('page', 'model', 'states'));
 	}
 
 
@@ -241,14 +226,14 @@ class VolunteersController extends UsersController
 		/*-----------------------------------------------
 		| If a Volunteer in the selected role ...
 		*/
-		if($request->request_role and $user->withDisabled()->is_a($request->request_role)) {
-			return $this->jsonFeedback([
-				'ok' => "1" ,
-				'message' => trans("ehda.volunteers.already_volunteer") ,
-			     'callback' => "$('#divCard').slideUp('fast').html('')" ,
-			]);
-
-		}
+		//if($request->request_role and $user->withDisabled()->is_a($request->request_role)) {
+		//	return $this->jsonFeedback([
+		//		'ok' => "1" ,
+		//		'message' => trans("ehda.volunteers.already_volunteer") ,
+		//	     'callback' => "$('#divCard').slideUp('fast').html('')" ,
+		//	]);
+		//
+		//}
 
 
 		/*-----------------------------------------------
@@ -269,7 +254,7 @@ class VolunteersController extends UsersController
 		return $this->jsonFeedback(1, [
 			'ok'           => 1,
 			'message'      => trans('ehda.cards.inquiry_has_card'),
-			'callback'     => 'cardEditor(2 , "' . $user->hash_id . '")',
+			'callback'     => 'cardEditor(3 , "' . $user->hash_id . '")',
 			'redirectTime' => 1,
 		]);
 

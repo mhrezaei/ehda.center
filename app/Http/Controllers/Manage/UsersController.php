@@ -596,7 +596,45 @@ class UsersController extends Controller
 
 	public function saveNewRole(Request $request)
 	{
-		return $this->jsonFeedback(12);
+		/*-----------------------------------------------
+		| Models ...
+		*/
+		$user = User::find($request->id) ;
+		$role = Role::findBySlug($request->role_slug) ;
+
+		if(!$user or !$user->id or !$role or !$role->id) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+
+		/*-----------------------------------------------
+		| Security ...
+		*/
+		if(user()->as('admin')->cannot("users-$role->slug.create")) {
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+		}
+
+		/*-----------------------------------------------
+		| Other Validation ...
+		*/
+		if($user->withDisabled()->is_a($role->slug)) {
+			return $this->jsonFeedback(trans("people.form.already_has_role"));
+		}
+		if($role->statusRule($request->status) == '!') {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+
+
+		/*-----------------------------------------------
+		| Process ...
+		*/
+		$ok = $user->attachRole($role->slug , $request->status) ;
+
+		/*-----------------------------------------------
+		| Feedback ...
+		*/
+		return $this->jsonAjaxSaveFeedback( $ok , [
+				'success_refresh' => true,
+		]);
 
 	}
 

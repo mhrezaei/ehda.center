@@ -17,20 +17,20 @@ return [
 	'is_admin'               => "به عنوان مدیر",
 	'newsletter_member'      => "عضو خبرنامه", //@TODO: New
 	'membership'             => "عضویت", //@TODO: New
-	'all_admin_roles'        => "همه‌ی مدیریتی‌ها ییهو",
+	'all_admin_roles'        => "همه‌ی مدیریتی‌ها با هم",
 
 	'commands' => [
-		'permit'          => "سطح دسترسی",
-		'change_password' => "تغییر گذرواژه",
-		'block'           => "مسدودسازی",
-		'unblock'         => "رفع مسدودی",
-		'login_as'        => "لاگین به جای ایشان",
-		'create_new_user' => "افزودن :role_title جدید",
-		'all_users'       => "همه کاربران",
+		'permit'              => "سطح دسترسی",
+		'change_password'     => "تغییر گذرواژه",
+		'block'               => "مسدودسازی",
+		'unblock'             => "رفع مسدودی",
+		'login_as'            => "لاگین به جای ایشان",
+		'create_new_user'     => "افزودن :role_title جدید",
+		'all_users'           => "همه کاربران",
 		//@TODO: New from here up to the end of this array...
-		'send_sms'        => "ارسال پیامک",
-		'send_email'      => "ارسال ایمیل",
-	     'according_to_domain' => "بر اساس دامنه" ,
+		'send_sms'            => "ارسال پیامک",
+		'send_email'          => "ارسال ایمیل",
+		'according_to_domain' => "بر اساس دامنه",
 
 	],
 
@@ -60,6 +60,7 @@ return [
 		'now_active'                  => "اکنون این نقش را دارد.",
 		'now_blocked'                 => "اکنون این نقش را دارد، ولی مسدود است.",
 		'detach_this_role'            => "حذف این نقش",
+		'already_has_role'            => "نقش مورد نظر برای این کاربر وجود دارد.", //@TODO: New
 		'attach_this_role'            => "افزودن این نقش",
 		'recover_password'            => "بازیابی گذرواژه",
 		'send_password_reset_link'    => "ارسال لینک بازیابی گذرواژه",
@@ -78,23 +79,23 @@ return [
 		'waiting_for_data_completion' => "در انتظار تکمیل مدارک", //@TODO
 		'under_examination'           => "در انتظار آزمون", //@TODO
 	],
-	
+
 	'criteria_icon' => [
-		'active' => "check" ,
-	     'pending' => "clock-o" ,
-	     'banned' => "ban" ,
-	     'bin' => "trash" ,
-	     'waiting_for_data_completion' => "hourglass-end" ,
-	     'under_examination' => "hourglass-start" ,
+		'active'                      => "check",
+		'pending'                     => "clock-o",
+		'banned'                      => "ban",
+		'bin'                         => "trash",
+		'waiting_for_data_completion' => "hourglass-end",
+		'under_examination'           => "hourglass-start",
 	],
 
 	'criteria_color' => [
-		'active' => "success" ,
-		'pending' => "orange" ,
-		'banned' => "danger" ,
-		'bin' => "danger" ,
-		'waiting_for_data_completion' => "warning" ,
-		'under_examination' => "warning" ,
+		'active'                      => "success",
+		'pending'                     => "orange",
+		'banned'                      => "danger",
+		'bin'                         => "danger",
+		'waiting_for_data_completion' => "warning",
+		'under_examination'           => "warning",
 	],
 
 	"edu_level_full"  => [
@@ -120,4 +121,13 @@ return [
 		'2' => 'خانم',
 		'3' => 'سایر',
 	],
+
+	"familiarization" => [
+		'0' => 'نامشخص',
+		'1' => 'دوست‌ها و آشنایان',
+		'2' => 'رسانه‌ها',
+		'3' => 'سایت',
+		'4' => 'راه‌های دیگر',
+	],
+
 ];

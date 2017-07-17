@@ -615,8 +615,11 @@ function permitSpread() {
 }
 
 function cardEditor($mood, $para = '') {
-	$divCard = $('#divCard');
-	$divCard.slideUp('fast');
+
+	let $divCard = $('#divCard');
+	let $divForm = $("#divForm");
+
+	$divCard.hide();
 
 	switch ($mood) {
 		case 1 :
@@ -632,6 +635,12 @@ function cardEditor($mood, $para = '') {
 //			$('#txtCard').val( $para );
 			$divCard.slideDown('fast');
 			break;
+
+		case 3: // <~~ Volunteer Editor
+			$divForm.attr('data-id', $para);
+			divReload('divForm');
+			$('#divInquiry,#divForm').slideToggle('fast');
+
 	}
 
 }

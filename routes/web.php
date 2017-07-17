@@ -80,6 +80,7 @@ Route::group([
 		Route::get('/search', 'VolunteersController@search');
 
 		Route::get('/create/{request_role?}' , 'VolunteersController@createChild');
+		Route::get('/edit/{model_id?}' , 'VolunteersController@editorChild');
 
 		Route::group(['prefix' => 'save'], function () {
 			Route::post('/inquiry', 'VolunteersController@inquiry');

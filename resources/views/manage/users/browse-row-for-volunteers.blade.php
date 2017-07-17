@@ -117,7 +117,7 @@
 --}}
 
 @include("manage.frame.widgets.grid-actionCol" , [ 'actions' => [
-	['pencil' , trans('forms.button.edit') , "url:manage/cards/edit/-hash_id-" , $model->canEdit()],
+	['pencil' , trans('forms.button.edit') , "url:manage/volunteers/edit/-hash_id-" , $model->canEdit()],
 	['key' , trans('people.commands.change_password') , "modal:manage/users/act/-id-/password" , !$model->trashed() and $model->canEdit() ] ,
 	['gavel', trans('forms.button.change_status'), "modal:manage/users/act/-id-/user-status/".$request_role , $request_role != 'admin'],
 

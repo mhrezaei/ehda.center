@@ -14,7 +14,7 @@
 
 		<a href="{{v0()}}" class="btn btn-default btn-lg mh10 w80" onclick="$('#divNewRole').slideDown('fast')">{{ trans("ehda.volunteers.add_role") }}</a>
 		@if($model->canEdit())
-			<a href="{{v0()}}" class="btn btn-default btn-lg mh10 mv5 w80">{{ trans("forms.button.edit_info") }}</a>
+			<a href="{{ url("manage/volunteers/edit/$model->hash_id") }}" class="btn btn-default btn-lg mh10 mv5 w80">{{ trans("forms.button.edit_info") }}</a>
 		@endif
 
 	</div>
