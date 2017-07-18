@@ -31,7 +31,6 @@ body {
       }
     }
 
-
     .pulse {
       animation: pulse 0.1s linear;
       -webkit-animation: pulse 0.1s linear;
@@ -64,7 +63,7 @@ body {
           font-weight: bold;
 
           .monitor-preview-info-box {
-            @extend .text-white, .text-center, .border-1, .mb10, .pt5;
+            @extend .text-white, .text-center, .mb10, .pt5, %display-flex;
 
             @each $colorName, $colorCode in $colors {
               &.#{$colorName} {
@@ -76,8 +75,22 @@ body {
               @extend .mb0;
             }
 
+            $titleWidth: 20;
+            .monitor-preview-info-title {
+              @extend .align-vertical-end, .align-horizontal-end, .pr5, .pl5;
+              width: $titleWidth * 1%;
+            }
+
             .monitor-preview-info-value {
+              $transform: scale(1, 1.7);
+              @extend .text-left, .pr10;
+              width: (100 - $titleWidth) * 1%;
               font-size: 3em;
+              -webkit-transform: #{$transform};
+              -moz-transform: #{$transform};
+              -ms-transform: #{$transform};
+              -o-transform: #{$transform};
+              transform: #{$transform};
             }
           }
         }

@@ -57,12 +57,18 @@
 
 // ********************* Aligning ********************** start
 @each $axis, $axisAligning in $aligning {
-  @each $aligningKey, $aligning in $axisAligning {
-    $justifyProperty: map_get($aligningProperties, $axis);
-    .align-#{$axis}-#{$aligning} {
-      @extend %display-flex;
-      #{$justifyProperty}: #{$aligning};
-    }
+  $justifyProperty: map_get($aligningProperties, $axis);
+  .align-#{$axis}-start {
+    @extend %display-flex;
+    #{$justifyProperty}: start;
+  }
+  .align-#{$axis}-end {
+    @extend %display-flex;
+    #{$justifyProperty}: end;
+  }
+  .align-#{$axis}-center {
+    @extend %display-flex;
+    #{$justifyProperty}: center;
   }
 }
 

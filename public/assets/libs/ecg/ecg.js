@@ -113,9 +113,9 @@ function playSound(id) {
 
 
 function pulheart() {
-    $('.hr-value').addClass("pulse");
-    var wait = window.setTimeout( function(){
-            $('.hr-value').removeClass("pulse")},
-        200
-    );
+    // $('.hr-value').addClass("pulse");
+    // var wait = window.setTimeout( function(){
+    //         $('.hr-value').removeClass("pulse")},
+    //     200
+    // );
 }

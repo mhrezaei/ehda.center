@@ -12,6 +12,16 @@
                 <div class="monitor-preview-container col-xs-9">
                     <div class="monitor-preview col-xs-12">
                         <div class="row-flex">
+                            <div class="col-xs-9" style="display: block">
+                                <div class="row">
+                                    <div class="monitor-preview-diagram-container col-xs-12">
+                                        <div class="monitor-preview-diagram">
+                                            @yield('diagram')
+                                        </div>
+                                    </div>
+                                </div>
+                                @yield('extra')
+                            </div>
                             <div class="col-xs-3">
                                 <div class="monitor-preview-info col-xs-12">
                                     <div class="row">
@@ -41,16 +51,6 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-xs-9" style="display: block">
-                                <div class="row">
-                                    <div class="monitor-preview-diagram-container col-xs-12">
-                                        <div class="monitor-preview-diagram">
-                                            @yield('diagram')
-                                        </div>
-                                    </div>
-                                </div>
-                                @yield('extra')
                             </div>
                         </div>
                     </div>
