@@ -181,6 +181,7 @@ trait ManageControllerTrait
 			'modalClose'   => 0,
 			'updater'      => '',
 			'redirectTime' => 1000,
+			'feed_class'   => "no",
 		];
 
 		foreach($default as $item => $value) {

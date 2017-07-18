@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Manage;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Manage\ChangeSelfPasswordRequest;
 use App\Http\Requests\Manage\SearchRequest;
+use App\Providers\YasnaServiceProvider;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Posttype;
@@ -13,6 +14,8 @@ use App\Models\User;
 use App\Traits\ManageControllerTrait;
 use Asanak\Sms\Facade\AsanakSms;
 use Illuminate\Support\Facades\Hash;
+use Psy\Util\Json;
+use Illuminate\Support\Facades\View;
 
 
 class HomeController extends Controller
@@ -124,15 +127,52 @@ class HomeController extends Controller
 		return view("manage.home.index-$widget" , compact('ajax'));
 	}
 
+	/**
+	 * searches `users` for the exact match of `code_melli`, `card_no`, `email`, `mobile` and returns the first one only.
+	 *
+	 * @param SearchRequest $request
+	 *
+	 * @return Json
+	 */
 	public function searchPeople(SearchRequest $request)
 	{
-		if(user()->as('admin')->can('users')) {
-			$controller = new UsersController() ;
-			return $controller->search('auto' , $request);
+		/*-----------------------------------------------
+		| Search ...
+		*/
+		$keyword = ed($request->keyword) ;
+		$field = null ;
+
+		if(str_contains($keyword , '@') and str_contains($keyword , '.')) { // <~~ Probably it's an email.
+			$field = 'email' ;
+		}
+		elseif(YasnaServiceProvider::isCodeMelli($keyword)) {
+			$field = 'code_melli' ;
+		}
+		elseif(YasnaServiceProvider::isPhoneNumber($keyword)) {
+			$field = 'mobile' ;
+		}
+		elseif( is_numeric($keyword)) {
+			$field = 'card_no' ;
 		}
 		else {
-			return $this->index() ;
+			$field = 'id' ;
 		}
+
+		$query = User::where($field , $keyword);
+		$total_found = $query->count() ;
+		$model = $query->orderBy('id' , 'desc')->first();
+
+		$success_message = View::make('manage.home.index-search-people-result' , compact('model' , 'total_found' , 'field' , 'keyword'))->render() ;
+
+
+		/*-----------------------------------------------
+		| Result ...
+		*/
+		return $this->jsonFeedback([
+			'message' => $success_message ,
+		     'feed_class' => "" ,
+		]);
+
 	}
 
 }

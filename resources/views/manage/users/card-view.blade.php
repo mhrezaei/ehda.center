@@ -10,7 +10,7 @@
 	|--------------------------------------------------------------------------
 	| Card Image and Name, card no, badges etc.
 	--}}
-	<div class="row">
+	<div class="row w90">
 		<div class="col-md-6">
 				@include("manage.frame.widgets.grid-text" , [
 					'text' => $model->full_name,
@@ -23,7 +23,7 @@
 				]     )
 
 				@include("manage.frame.widgets.grid-badge" , [
-					'text' => trans("ehda.volunteer"),
+					'text' => trans("ehda.volunteers.single"),
 					'icon' => "child" ,
 					'color' => "info" ,
 					'condition' => $model->is_admin() ,
@@ -42,14 +42,14 @@
 				]     )
 
 			<div class="panel panel-violet m10" >
-				<div class=" p20 panel-body bg-ultralight" style="min-height: 100px">
+				<div class=" p20 panel-body bg-ultralight" style="min-height: 100px;direction: ltr">
 					<div class="f14 ltr {{$model->email? '' : 'noDisplay'}} mv10">
 						<i class="fa fa-envelope-o mh10"></i>
 						{{ $model->email }}
 					</div>
 					<div class="f14 ltr {{$model->mobile? '' : 'noDisplay'}}">
 						<i class="fa fa-phone mh10"></i>
-						{{ pd(formatPhone($model->mobile)) }}
+						{{ ed(formatPhone($model->mobile)) }}
 					</div>
 				</div>
 			</div>

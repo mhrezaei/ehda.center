@@ -1,23 +1,29 @@
 <?php
 return [
-	'person'                 => "نفر",
-	'people'                 => "اشخاص",
-	'people_management'      => "مدیریت اشخاص",
-	'modules'                => "ماژول‌ها",
-	'deleted_user'           => "یک کاربر سابق",
-	'particular_user'        => "یک کاربر خاص",
-	'user'                   => "کاربر",
-	'users'                  => "کاربران",
-	'site_users'             => "کاربران مجموعه",
-	'user_role'              => "نقش کاربری",
-	'role_management'        => "مدیریت نقش‌ها",
-	'without_role'           => "بدون نقش",
-	'default_role'           => "نقش کاربری پیش‌فرض",
-	'choose_as_default_role' => "انتخاب به عنوان نقش پیش‌فرض",
-	'is_admin'               => "به عنوان مدیر",
-	'newsletter_member'      => "عضو خبرنامه", //@TODO: New
-	'membership'             => "عضویت", //@TODO: New
-	'all_admin_roles'        => "همه‌ی مدیریتی‌ها با هم",
+	'person'                   => "نفر",
+	'people'                   => "اشخاص",
+	'people_management'        => "مدیریت اشخاص",
+	'modules'                  => "ماژول‌ها",
+	'deleted_user'             => "یک کاربر سابق",
+	'particular_user'          => "یک کاربر خاص",
+	'user'                     => "کاربر",
+	'users'                    => "کاربران",
+	'site_users'               => "کاربران مجموعه",
+	'user_role'                => "نقش کاربری",
+	'role_management'          => "مدیریت نقش‌ها",
+	'without_role'             => "بدون نقش",
+	'default_role'             => "نقش کاربری پیش‌فرض",
+	'choose_as_default_role'   => "انتخاب به عنوان نقش پیش‌فرض",
+	'is_admin'                 => "به عنوان مدیر",
+
+	//@TODO: New from here up to the end of this array...
+
+	'newsletter_member'        => "عضو خبرنامه",
+	'membership'               => "عضویت",
+	'all_admin_roles'          => "همه‌ی مدیریتی‌ها با هم",
+	'smart_finder_placeholder' => "کد ملی، شماره عضویت، ایمیل، تلفن همراه",
+	'code_melli_not_found'     => "کسی با این کد ملی پیدا نشد.",
+	'nobody_found'             => "کسی با چنین مشخصاتی پیدا نشد.",
 
 	'commands' => [
 		'permit'              => "سطح دسترسی",

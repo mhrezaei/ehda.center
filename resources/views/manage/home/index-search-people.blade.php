@@ -13,11 +13,13 @@
 		@include("forms.opener" , [
 			'url' => url('manage/act/search-people'),
 			'method' => "get" ,
+			'class' => "js" ,
 		]     )
 
 		@include("forms.input-self" , [
 			'name' => "keyword",
-			'placeholder' => trans("forms.button.search_for").'...' ,
+			'placeholder' => trans("people.smart_finder_placeholder") ,
+			'class' => "ltr text-center" ,
 		]     )
 
 		@include("forms.button" , [
@@ -27,6 +29,7 @@
 			'type' => "submit" ,
 		]     )
 
+		@include("forms.feed")
 
 		@include("forms.closer")
 

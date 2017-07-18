@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Manage;
 use App\Http\Requests\Manage\CardInquiryRequest;
 use App\Http\Requests\Manage\SearchRequest;
 use App\Http\Requests\Manage\VolunteerSaveRequest;
+use App\Providers\YasnaServiceProvider;
 use Illuminate\Http\Request;
 use App\Models\Role;
 use App\Models\State;
@@ -188,7 +189,7 @@ class VolunteersController extends UsersController
 	}
 
 
-	public function createChild($request_role = null)
+	public function createChild($request_role = null , $given_code_melli = false)
 	{
 		/*-----------------------------------------------
 		| Permission ...
@@ -216,10 +217,28 @@ class VolunteersController extends UsersController
 		$page[1] = ["volunteers/create/$request_role", trans("ehda.volunteers.create")];
 
 		/*-----------------------------------------------
+		| If a Code Melli is Given ...
+		*/
+		if(!YasnaServiceProvider::isCodeMelli($given_code_melli)) {
+			$given_code_melli = false ;
+		}
+
+
+		/*-----------------------------------------------
 		| Model ...
 		*/
 		$model  = new User();
 		$states = State::combo();
+
+		if($given_code_melli) {
+			$user = userFinder($given_code_melli) ;
+			if(!$user or !$user->id) {
+				$model->code_melli = $given_code_melli ;
+			}
+			elseif(!$user->withDisabled()->is_admin()) {
+				$model = $user ;
+			}
+		}
 
 		/*-----------------------------------------------
 		| View ...

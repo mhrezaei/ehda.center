@@ -11,6 +11,7 @@ use App\Models\Printing;
 use App\Models\Role;
 use App\Models\State;
 use App\Models\User;
+use App\Providers\YasnaServiceProvider;
 use App\Traits\ManageControllerTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -155,7 +156,7 @@ class CardsController extends UsersController
 	}
 
 
-	public function createChild($volunteer_id = 0)
+	public function createChild($given_code_melli = false)
 	{
 		/*-----------------------------------------------
 		| Permission ...
@@ -172,9 +173,11 @@ class CardsController extends UsersController
 		$page[1] = ['cards/create', trans("ehda.cards.create")];
 
 		/*-----------------------------------------------
-		| If for Volunteer ...
+		| If a Code Melli is Given ...
 		*/
-		//@TODO: proceed to special view (a good idea would be to use a modal instead of all this crap.
+		if(!YasnaServiceProvider::isCodeMelli($given_code_melli) or userFinder($given_code_melli)->id) {
+			$given_code_melli = false ;
+		}
 
 		/*-----------------------------------------------
 		| Model ...
@@ -183,6 +186,7 @@ class CardsController extends UsersController
 		$states = State::combo();
 
 		$model->newsletter = 1;
+		$model->code_melli = $given_code_melli ;
 
 		$all_events = Post::selector([
 			'type'   => "event",

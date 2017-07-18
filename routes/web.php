@@ -80,7 +80,7 @@ Route::group([
 		Route::get('/browse/{request_role?}/{request_tab?}/{volunteer?}/{post?}', 'VolunteersController@browseChild');
 		Route::get('/search', 'VolunteersController@search');
 
-		Route::get('/create/{request_role?}' , 'VolunteersController@createChild');
+		Route::get('/create/{request_role?}/{code_melli?}' , 'VolunteersController@createChild');
 		Route::get('/edit/{model_id?}' , 'VolunteersController@editorChild');
 
 		Route::group(['prefix' => 'save'], function () {
@@ -110,7 +110,7 @@ Route::group([
 		Route::get('/printings/download_excel/{event_id}', 'CardsController@printingExcelDownload');
 		Route::get('/printings/{request_tab?}/{event_id?}/{user_id?}/{volunteer_id?}', 'CardsController@printingBrowse');
 
-		Route::get('/create/{volunteer_id?}', 'CardsController@createChild');
+		Route::get('/create/{code_melli?}', 'CardsController@createChild');
 		Route::get('/edit/{model_id}', 'CardsController@editorChild');
 
 		Route::group(['prefix' => 'save'], function () {

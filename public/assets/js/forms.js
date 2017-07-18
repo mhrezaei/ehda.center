@@ -430,6 +430,9 @@ function forms_responde(data, statusText, xhr, $form) {
 //            formEffect_markError(data.fields);
 //            $(data.fields).focus();
     }
+    if( data.feed_class != 'no') {
+        var cl = data.feed_class ;
+    }
 
     $($feedSelector).addClass(cl).html(me).show();
 
