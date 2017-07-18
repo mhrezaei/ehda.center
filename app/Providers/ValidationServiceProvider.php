@@ -173,14 +173,30 @@ class ValidationServiceProvider extends ServiceProvider
                 $data = $carbon->toDateTimeString();
                 break;
 
+            /**
+             * Convert persian date to english date
+             */
             case 'gDate' :
                 if ($data and strlen($data) >= 6) {
                     $jDate = explode('/', $data);
-                    $gDate = jDateTime::toGregorian($jDate[0], $jDate[1], $jDate[2]);
-                    $carbon = new Carbon(implode('/', $gDate));
-                    $data = $carbon->toDateTimeString();
+                    if (jDateTime::checkDate($jDate[0], $jDate[1], $jDate[2])) {
+                        // If $data is a Jalali date
+                        $gDate = jDateTime::toGregorian($jDate[0], $jDate[1], $jDate[2]);
+                        $carbon = new Carbon(implode('/', $gDate));
+                        $data = $carbon->toDateTimeString();
+                    }
                 } else {
                     $data = null;
+                }
+                break;
+
+            /**
+             * Dehash id of table
+             */
+            case 'dehash':
+                $dehashed = hashid_decrypt($data, 'ids');
+                if (is_numeric($dehashed[0])) {
+                    $data = $dehashed[0];
                 }
                 break;
 

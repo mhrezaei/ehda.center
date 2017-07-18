@@ -142,6 +142,8 @@ return [
         'plural'    => 'Angels',
         'singular'  => 'Angel',
         'not_found' => 'Angel not found.',
+        'search'    => 'Search Angel',
+        'new'       => 'New Angel',
     ],
 
     'member_section' => [

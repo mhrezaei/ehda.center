@@ -248,7 +248,7 @@ class TestController extends Controller
         $faqsHTML = PostsServiceProvider::showList(['type' => 'faq']);
 
         $newFaqPost = Post::findBySlug('ask-question');
-        if ($newFaqPost->exists and $newFaqPost->canRecieveComments()) {
+        if ($newFaqPost->exists and $newFaqPost->canReceiveComments()) {
             $getNewFaq = true;
             $newFaqForm = PostsServiceProvider::showPost($newFaqPost);
         } else {

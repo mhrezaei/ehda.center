@@ -167,7 +167,7 @@
             @section('hiddenFields')
                 @include('front.forms.hidden',[
                     'id' => "file-$fileType",
-                    'name' => "{$fileType}_uploader",
+                    'name' => "{$fileType}_files",
                     'extra' => "data-field=$dataField",
                     'class' => 'optional-input',
                 ])

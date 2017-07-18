@@ -45,7 +45,9 @@ class CommentRequest extends FormRequest
     {
         $value = parent::all();
         $purified = ValidationServiceProvider::purifier($value, [
-            'text' => 'pd',
+            'post_id'       => 'dehash',
+            'donation_date' => 'gDate',
+            'text'          => 'pd',
         ]);
         return $purified;
 

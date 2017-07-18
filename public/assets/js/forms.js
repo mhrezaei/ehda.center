@@ -100,6 +100,7 @@ function forms_listener() {
 
     $(".form-datepicker").each(function () {
         var options = $(this).dataStartsWith(juiDataPrefix.datapicker);
+        $(this).removeClass('form-datepicker');
         $(this).datepicker(options);
     });
 
@@ -120,7 +121,9 @@ function forms_listener() {
         setTimeout($(this).val(), $(this).attr('data-delay'));
     });
 
-    $('.selectpicker').selectpicker();
+    if ($('.selectpicker').length) {
+        $('.selectpicker').selectpicker();
+    }
     setTimeout("forms_listener()", 5);
 }
 
@@ -320,7 +323,7 @@ function forms_validate(formData, jqForm, options) {
             }
 
             if ($selectpicker && $err_el < 0) {
-                if ($val < 1) {
+                if ($(this).hasClass('form-required') && $val < 1) {
                     forms_markError($(this), "error");
                     if ($err && $err.length) {
                         $errors_msg.push($err);
@@ -329,9 +332,6 @@ function forms_validate(formData, jqForm, options) {
                     $errors++;
                     $errors_el.push($name);
                     $err_el = $.inArray($name, $errors_el);
-                }
-                else {
-                    forms_markError($(this), "success");
                 }
             }
 
@@ -349,8 +349,6 @@ function forms_validate(formData, jqForm, options) {
                 }
             }
         }
-console.log($(this))
-console.log($errors)
     });
 
 
@@ -364,7 +362,6 @@ console.log($errors)
     }
 
     if ($errors > 0) {
-        console.log($errors)
         $('#' + $formId + ' button').prop('disabled', false);
         if ($errors_msg.length) {
             var $m = '<ul>';

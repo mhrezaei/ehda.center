@@ -441,7 +441,7 @@
                                     'style' => 'display:none'
                                 ])
                             </div>
-                            <div id="last-step-buttons" class="col-xs-12 text-center" style="display: non">
+                            <div id="last-step-buttons" class="col-xs-12 text-center" style="display: none">
                                 <button class="img-btn" type="submit">
                                     <img src="{{ url('assets/images/template/join_ngo.png') }}" />
                                 </button>
