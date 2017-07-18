@@ -5,6 +5,32 @@ function hideActiveStar() {
     });
 }
 
+function showNewAngelForm() {
+    var bottomOfStars = $('.stars-bg').offset().top + $('.stars-bg').height();
+    var mainMenuHeight = $('.main-menu').height();
+
+    if ($('.new-angel-form-container').height() == 0) {
+
+        // scroll to bottom of stars box
+        $('body, html').scrollTop(bottomOfStars - $(window).height());
+
+        // make form visible
+        var h = $('.new-angel-form-container-inner').height();
+        $('.new-angel-form-container').height(h);
+
+        // animate stars box to top
+    }
+
+    $('body, html').animate({scrollTop: Math.max(bottomOfStars - mainMenuHeight, 0)}, 500);
+}
+
+function hideNewAngelForm() {
+    var bottomOfStars = $('.stars-bg').offset().top + $('.stars-bg').height();
+    $('body, html').animate({scrollTop: Math.max(bottomOfStars - $(window).height(), 0)}, 500, function () {
+        $('.new-angel-form-container').height('auto');
+    });
+}
+
 function showStar(circleIndex, name, imgSrc, donation_date) {
     hideActiveStar();
     var userCard = $('\
@@ -28,7 +54,7 @@ function showStar(circleIndex, name, imgSrc, donation_date) {
     var cardHeight = 160;
     userCard.css({
         left: ((circleParent.offset().left + parseInt(circle.attr('cx'))) * circleParent.outerWidth() / 873.296875) - (cardWidth / 2),
-        top: circleParent.offset().top + parseInt(circle.attr('cy')) - (cardHeight / 2)
+        top: circleParent.offset().top + parseInt(circle.attr('cy')) - (cardHeight / 2) - $('.stars-bg').offset().top
     });
 }
 var angles_slide;
@@ -135,4 +161,17 @@ $(document).ready(function () {
             showStar(circleIndex, angel.name, angel.picture_url, angel.donation_date);
         },
     });
+
+    $('.show-form-btn-container button').click(showNewAngelForm);
+
+    $(window).scroll(function () {
+        var bottomOfPage = $('html').scrollTop() + $(window).height();
+        var bottomOfStars = $('.stars-bg').offset().top + $('.stars-bg').height();
+        console.log(bottomOfStars)
+        console.log(bottomOfPage)
+
+        if (bottomOfPage > bottomOfStars && $('.new-angel-form-container').height() == 0) {
+            showNewAngelForm();
+        }
+    })
 });

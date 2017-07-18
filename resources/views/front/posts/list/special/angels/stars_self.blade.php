@@ -34,4 +34,7 @@ $circle = [
 
                 </svg>
     </div>
+    <div class="show-form-btn-container">
+        <button type="button"><i class="fa fa-chevron-down"></i></button>
+    </div>
 </div>

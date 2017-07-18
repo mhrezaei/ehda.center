@@ -890,6 +890,10 @@ img%img-cover {
   }
 }
 
+.dz-hidden-input { // this is in body
+  direction: ltr !important;
+}
+
 // DropZone --end
 
 // Shadow --start
@@ -2003,16 +2007,40 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 // Celebs --end
 
 // Angels --start
-
 .angels-main-container {
-  //position: static;
-  //.angels-main-container-inner {
-  //  //position: relative;
-  //}
+  position: static;
+  .angels-main-container-inner {
+    //position: relative;
+
+    & > *:not(.stars-bg):not(.new-angel-form-container) {
+      z-index: 1;
+    }
+  }
 
   .stars-bg {
     background: url(#{$imagesDir}angels-bg.jpg) no-repeat center center;
     background-size: cover;
+    position: relative;
+
+    .show-form-btn-container {
+      width: 100%;
+      position: absolute;
+      bottom: 20px;
+
+      > button {
+        $transform: scale(4, 1);
+        @extend .text-white, .f40;
+        background: transparent;
+        border: none;
+        line-height: 30px;
+        -webkit-transform: #{$transform};
+        -moz-transform: #{$transform};
+        -ms-transform: #{$transform};
+        -o-transform: #{$transform};
+        transform: #{$transform};
+        opacity: 0.5;
+      }
+    }
   }
 
   .stars {

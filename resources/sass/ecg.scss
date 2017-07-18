@@ -1,3 +1,4 @@
+@import "ecg/_fonts";
 @import "bootstrap";
 @import "ecg/variables";
 @import "public_silent_classes";
@@ -13,6 +14,7 @@
 
 body {
   @extend .bg-darkGray;
+  font-family: 'Roboto', sans-serif;
 
   .monitor {
     @extend %display-flex, .bg-black, .col-xs-12, .pt15, .pb15;
@@ -63,7 +65,7 @@ body {
           font-weight: bold;
 
           .monitor-preview-info-box {
-            @extend .text-white, .text-center, .mb10, .pt5, %display-flex;
+            @extend .text-white, .text-center, .mb30, .pt5, %display-flex;
 
             @each $colorName, $colorCode in $colors {
               &.#{$colorName} {
@@ -75,15 +77,16 @@ body {
               @extend .mb0;
             }
 
-            $titleWidth: 20;
+            $titleWidth: 30;
             .monitor-preview-info-title {
-              @extend .align-vertical-end, .align-horizontal-end, .pr5, .pl5;
+              @extend .align-vertical-end, .align-horizontal-start, .pr5, .pl5;
               width: $titleWidth * 1%;
+              font-size: 1.5em;
             }
 
             .monitor-preview-info-value {
-              $transform: scale(1, 1.7);
-              @extend .text-left, .pr10;
+              $transform: scale(1, 2);
+              @extend .text-left, .pr0;
               width: (100 - $titleWidth) * 1%;
               font-size: 3em;
               -webkit-transform: #{$transform};
