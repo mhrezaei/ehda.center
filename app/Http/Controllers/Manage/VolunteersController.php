@@ -51,7 +51,7 @@ class VolunteersController extends UsersController
 
 		return [
 			//'role_slug'       => $this->role_slug,
-			'url'               => "volunteers/browse",
+			'url'               => "volunteers/browse/all",
 			'grid_row'          => "browse-row-for-volunteers",
 			'free_toolbar_view' => "manage.users.browse-free-toolbar-for-volunteers",
 			'grid_array'        => [
@@ -84,22 +84,34 @@ class VolunteersController extends UsersController
 	public function update($model_id, $request_role = null)
 	{
 		/*-----------------------------------------------
-		| Model ...
+		| User Model ...
 		*/
-		$role   = Role::findBySlug($request_role);
-		$model  = User::withTrashed()->find($model_id);
-		$handle = 'selector';
+		$model = User::withTrashed()->find($model_id);
 
-		if(!$model or !$role or !$model->id or !$role->id) {
+		if(!$model or !$model->id) {
 			return view('errors.m410');
 		}
-		else {
-			$model->spreadMeta();
+
+		/*-----------------------------------------------
+		| Role Model ...
+		*/
+		if($request_role == 'admin') {
+			$role = Role::where('is_admin', 1)->first();
 		}
+		else {
+			$role = Role::findBySlug($request_role);
+		}
+
+		if(!$role or !$role->id) {
+			return view('errors.m410');
+		}
+
 
 		/*-----------------------------------------------
 		| Run ...
 		*/
+		$model->spreadMeta();
+		$handle = 'selector';
 
 		return view($this->view_folder . '.' . $this->browseSwitchesChild()['grid_row'], compact('model', 'handle', 'request_role', 'role'));
 	}
@@ -128,10 +140,21 @@ class VolunteersController extends UsersController
 
 	}
 
-	public function searchChild(SearchRequest $request)
+	public function searchChild(SearchRequest $request , $domain_slug = 'all')
 	{
-		return $this->search($this->role_slug, $request, $this->browseSwitchesChild());
+		if($domain_slug == 'all') {
+			$switches                = $this->browseSwitchesChild();
+		}
+		else {
+			$this->role_slug         = "volunteer-$domain_slug";
+			$switches                = $this->browseSwitchesChild();
+			$switches['browse_tabs'] = 'auto';
+			$switches['url'] .= "/$domain_slug";
+		}
+
+		return $this->search($this->role_slug, $request, $switches);
 	}
+
 
 	public function editorChild($model_hash_id)
 	{
@@ -338,7 +361,7 @@ class VolunteersController extends UsersController
 		/*-----------------------------------------------
 		| Save ...
 		*/
-		$saved = User::store($data , ['status' , 'role_slug']);
+		$saved = User::store($data, ['status', 'role_slug']);
 
 		/*-----------------------------------------------
 		| Role...

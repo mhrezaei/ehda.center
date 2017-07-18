@@ -98,13 +98,21 @@
 
 
 	@else
-		{{ '' , $status =  $role->statusRule( $model->as($request_role)->status() )}}
-		@include("manage.frame.widgets.grid-text" , [
-			'text' => trans("people.criteria.$status") ,
-			'color' => trans("people.criteria_color.$status") ,
-			'icon' => trans("people.criteria_icon.$status") ,
-			'link' => $model->as($request_role)->canEdit()? "modal:manage/users/act/-id-/user-status/$request_role" : '' ,
-		]     )
+		@if( $model->as($request_role)->enabled() )
+			{{ '' , $status =  $role->statusRule( $model->as($request_role)->status() )}}
+			@include("manage.frame.widgets.grid-text" , [
+				'text' => trans("people.criteria.$status") ,
+				'color' => trans("people.criteria_color.$status") ,
+				'icon' => trans("people.criteria_icon.$status") ,
+				'link' => $model->as($request_role)->canEdit()? "modal:manage/users/act/-id-/user-status/$request_role" : '' ,
+			]     )
+		@else
+			@include("manage.frame.widgets.grid-text" , [
+				'text' => trans("people.criteria.banned"),
+				'color' => "danger" ,
+				'icon' => "times" ,
+			]     )
+		@endif
 	@endif
 
 </td>

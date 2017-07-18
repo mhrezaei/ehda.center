@@ -84,7 +84,7 @@ function rowUpdate($table_id, $model_id) {
 		var $url = $($row_selector + ' .refresh ').html();
 		var $counter = $($row_selector + ' .-rowCounter ').html();
 
-		forms_log('loading ['+$url+'] in ['+$row_selector+']');
+		forms_log('loading [' + $url + '] in [' + $row_selector + ']');
 
 		$($row_selector).addClass('loading');
 		$.ajax({
@@ -136,12 +136,12 @@ function divReload(div_id) {
 	}
 
 	//Loading Effect...
-	has_loading = $div.attr('data-loading') ;
+	has_loading = $div.attr('data-loading');
 
 	if (has_loading != 'no') {
 		$div.addClass('loading');
 	}
-	forms_log('loading ['+reload_url+'] in ['+div_id+']');
+	forms_log('loading [' + reload_url + '] in [' + div_id + ']');
 
 	//Ajax...
 	$.ajax({

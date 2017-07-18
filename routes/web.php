@@ -75,7 +75,8 @@ Route::group([
 	Route::group(['prefix' => 'volunteers', 'middleware' => "can:users-volunteer",], function () {
 		Route::get('/', 'VolunteersController@browseChild');
 		Route::get('/browse/update/{model_id}/{request_role?}', 'VolunteersController@update');
-		Route::get('/browse/search/{keyword?}', 'VolunteersController@searchChild');
+		//Route::get('/browse/search/{keyword?}', 'VolunteersController@searchChild');
+		Route::get('/browse/{domain_slug}/search/{keyword?}', 'VolunteersController@searchChild');
 		Route::get('/browse/{request_role?}/{request_tab?}/{volunteer?}/{post?}', 'VolunteersController@browseChild');
 		Route::get('/search', 'VolunteersController@search');
 

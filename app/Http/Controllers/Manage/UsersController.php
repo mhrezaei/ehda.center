@@ -100,7 +100,10 @@ class UsersController extends Controller
 		/*-----------------------------------------------
 		| Revealing the Role...
 		*/
-		if($request_role != 'all' and $request_role!='auto') {
+		if($request_role=='admin') {
+			$role = Role::where('is_admin' , 1)->first() ;
+		}
+		elseif($request_role != 'all' and $request_role!='auto') {
 			$role = Role::findBySlug($request_role);
 			if(!$role->exists) {
 				return view('errors.404');

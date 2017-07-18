@@ -288,7 +288,7 @@ trait PermitsTrait2
 	 */
 	public function rolesCacheUpdate()
 	{
-		$query  = $this->rolesQuery(true);
+		$query  = $this->withDisabled()->rolesQuery(true);
 		$string = null;
 
 		foreach($query as $item) {
