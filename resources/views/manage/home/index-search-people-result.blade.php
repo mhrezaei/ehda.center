@@ -17,7 +17,7 @@
 			@if(user()->as('admin')->can('users-card-holder.create'))
 				<a href="{{ url("manage/cards/create/$keyword") }}" class="btn btn-default w70">{{ trans("ehda.cards.create") }}</a>
 			@endif
-			@if(user()->as('admin')->can_any(model('role')::adminRoles('.create')))
+			@if( user()->userRolesArray('create' , [] , model('role')::adminRoles()) )
 				<a href="{{ url("manage/volunteers/create/admin/$keyword") }}" class="btn btn-default w70">{{ trans("ehda.volunteers.create") }}</a>
 			@endif
 		</div>

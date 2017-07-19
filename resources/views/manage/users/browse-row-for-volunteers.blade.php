@@ -127,7 +127,7 @@
 @include("manage.frame.widgets.grid-actionCol" , [ 'actions' => [
 	['pencil' , trans('forms.button.edit') , "url:manage/volunteers/edit/-hash_id-" , $model->canEdit()],
 	['key' , trans('people.commands.change_password') , "modal:manage/users/act/-id-/password" , !$model->trashed() and $model->canEdit() ] ,
-	['gavel', trans('forms.button.change_status'), "modal:manage/users/act/-id-/user-status/".$request_role , $request_role != 'admin'],
+	['gavel', trans('forms.button.change_status'), "modal:manage/users/act/-id-/user-status/".$request_role , $request_role != 'admin' and $model->canEdit()],
 
 //	['trash', trans('forms.button.delete') , 'modal:manage/users/act/-id-/delete' , !$model->trashed() and $model->canDelete()],
 //	['undo', trans(//'forms.button.undelete') , 'modal:manage/users/act/-id-/undelete' , $model->trashed() and $model->canBin()],

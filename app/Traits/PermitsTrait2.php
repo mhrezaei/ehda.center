@@ -664,7 +664,7 @@ trait PermitsTrait2
 	/**
 	 * @return array: of roles, the user has access to as an admin!
 	 */
-	public function userRolesArray($permit = 'browse', $exceptions = [])
+	public function userRolesArray($permit = 'browse', $exceptions = [], $only_these = [])
 	{
 		$roles = Role::all();
 		$array = [];
@@ -672,7 +672,9 @@ trait PermitsTrait2
 			$slug = $role->slug;
 			if($this->as('admin')->can("users-$slug.$permit")) {
 				if(!in_array($slug, $exceptions)) {
-					$array[] = $slug;
+					if(!count($only_these) or in_array($slug, $only_these)) {
+						$array[] = $slug;
+					}
 				}
 			}
 		}
@@ -722,9 +724,9 @@ trait PermitsTrait2
 	 * @return array: of all the available roles.
 	 * Utilizing the chain methods before calling this method are supported.
 	 */
-	public function rolesArray()
+	public function rolesArray($force_fresh_data = false)
 	{
-		return $this->rolesQuery()->pluck('slug')->toArray();
+		return $this->rolesQuery($force_fresh_data)->pluck('slug')->toArray();
 	}
 
 	/**

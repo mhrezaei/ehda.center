@@ -1,4 +1,6 @@
-@if(sizeof($topbar_notification_menu = Manage::topbarNotificationMenu() )>1)
+{{ '' , $topbar_notification_menu = Manage::topbarNotificationMenu() }}
+
+@if($topbar_notification_menu['total'])
 	@include('manage.frame.widgets.topbar' , [
 	'icon' => 'bell' ,
 	'items' => $topbar_notification_menu ,

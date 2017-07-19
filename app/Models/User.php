@@ -179,7 +179,7 @@ class User extends Authenticatable
 			if(!is_array($switch['roleString'])) {
 				if(str_contains($switch['roleString'], 'admin')) {
 					$additive             = str_replace('admin', null, $switch['roleString']);
-					$switch['roleString'] = Role::adminRoles();
+					$switch['roleString'] = user()->userRolesArray('browse' , [] , Role::adminRoles() ) ;
 					foreach($switch['roleString'] as $key => $value) {
 						$switch['roleString'][ $key ] .= $additive;
 					}
@@ -724,7 +724,7 @@ class User extends Authenticatable
 
 	public function canEdit()
 	{
-		$request_role = $this->getChain('as');
+		//$request_role = $this->getChain('as');
 
 		/*-----------------------------------------------
 		| Power users ...
@@ -732,19 +732,32 @@ class User extends Authenticatable
 		if($this->is_a('developer')) {
 			return user()->is_a('developer');
 		}
-		elseif($this->is_an('admin')) {
-			return user()->is_a('superadmin');
+		if($this->id == user()->id) {
+			return false ;
 		}
+		//elseif($this->is_an('admin')) {
+		//	return user()->is_a('superadmin');
+		//}
 
 		/*-----------------------------------------------
 		| Other Users ...
 		*/
-		if(!$request_role or $request_role == 'admin') {
-			return user()->is_a('superadmin');
+		foreach($this->as('all')->rolesArray() as $role_slug) {
+			if(user()->as('admin')->can("users-$role_slug.edit"))
+				return true ;
 		}
-		else {
-			return Role::checkManagePermission($request_role, 'edit');
-		}
+		return false ;
+
+		//if($this->is_admin()) {
+		//	$allowed_roles = user()->userRolesArray('edit' , [] , model('role')::adminRoles() ;
+		//}
+		//
+		//if(!$request_role or $request_role == 'admin') {
+		//	return user()->is_a('superadmin');
+		//}
+		//else {
+		//	return Role::checkManagePermission($request_role, 'edit');
+		//}
 	}
 
 	public function canDelete()

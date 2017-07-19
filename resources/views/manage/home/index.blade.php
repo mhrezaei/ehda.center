@@ -13,10 +13,10 @@
 	<div class="pinBoot noDisplay">
 
 
-		{{-- Search People --}}
-		<div id="divSearchPeople" class="pinBoot-inside">
-			@include("manage.home.index-search-people")
-		</div>
+	{{-- Search People --}}
+	<div id="divSearchPeople" class="pinBoot-inside">
+		@include("manage.home.index-search-people")
+	</div>
 
 	{{-- Create Post--}}
 	@if(sizeof($topbar_create_menu = Manage::topbarCreateMenu()))
@@ -27,7 +27,8 @@
 
 
 	{{-- Notifications --}}
-	@if(sizeof($topbar_notification_menu = Manage::topbarNotificationMenu() )>1)
+	{{ '' , $topbar_notification_menu = Manage::topbarNotificationMenu() }}
+	@if($topbar_notification_menu['total'])
 		<div id="divNotifications" class="pinBoot-inside" data-src="manage/widget/notifications">
 			@include("manage.home.index-notifications")
 		</div>

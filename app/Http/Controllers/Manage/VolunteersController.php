@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Manage;
 
 use App\Http\Requests\Manage\CardInquiryRequest;
 use App\Http\Requests\Manage\SearchRequest;
+use App\Http\Requests\Manage\VolunteerInquiryRequest;
 use App\Http\Requests\Manage\VolunteerSaveRequest;
 use App\Providers\YasnaServiceProvider;
 use Illuminate\Http\Request;
@@ -118,33 +119,47 @@ class VolunteersController extends UsersController
 	}
 
 
-	public function browseChild($domain_slug = 'all', $request_tab = 'all')
+	public function browseChild($domain_slug = 'all', $request_tab = null)
 	{
 		/*-----------------------------------------------
 		| If generally called ...
 		*/
 		if($domain_slug == 'all') {
-			return $this->browse($this->role_slug, $request_tab, $this->browseSwitchesChild());
+			$allowed_array = user()->userRolesArray('browse', [], Role::adminRoles());
+			if(count($allowed_array) == 1) {
+				$domain_slug = str_replace("volunteer-", null, $allowed_array[0]);
+				if(!$request_tab) {
+					$request_tab = '8';
+				}
+			}
+			else {
+				return $this->browse($this->role_slug, $request_tab, $this->browseSwitchesChild());
+			}
+		}
+
+		if(!$request_tab) {
+			$request_tab = 'all';
 		}
 
 		/*-----------------------------------------------
 		| If called for a specific domain ...
 		*/
 
+		//dd($domain_slug) ;
 		$this->role_slug         = "volunteer-$domain_slug";
 		$switches                = $this->browseSwitchesChild();
 		$switches['browse_tabs'] = 'auto';
-		$switches['url'] .= "/$domain_slug";
+		$switches['url']         = "volunteers/browse/$domain_slug";
 
 
 		return $this->browse($this->role_slug, $request_tab, $switches);
 
 	}
 
-	public function searchChild(SearchRequest $request , $domain_slug = 'all')
+	public function searchChild(SearchRequest $request, $domain_slug = 'all')
 	{
 		if($domain_slug == 'all') {
-			$switches                = $this->browseSwitchesChild();
+			$switches = $this->browseSwitchesChild();
 		}
 		else {
 			$this->role_slug         = "volunteer-$domain_slug";
@@ -189,14 +204,14 @@ class VolunteersController extends UsersController
 	}
 
 
-	public function createChild($request_role = null , $given_code_melli = false)
+	public function createChild($request_role = null, $given_code_melli = false)
 	{
 		/*-----------------------------------------------
 		| Permission ...
 		*/
 		$permit = false;
 		if(!$request_role or $request_role == 'admin') {
-			if(user()->as('admin')->can_any(Role::adminRoles('.create'))) {
+			if(user()->userRolesArray('create', [], model('role')::adminRoles())) {
 				$permit = true;
 			}
 		}
@@ -220,7 +235,7 @@ class VolunteersController extends UsersController
 		| If a Code Melli is Given ...
 		*/
 		if(!YasnaServiceProvider::isCodeMelli($given_code_melli)) {
-			$given_code_melli = false ;
+			$given_code_melli = false;
 		}
 
 
@@ -231,12 +246,12 @@ class VolunteersController extends UsersController
 		$states = State::combo();
 
 		if($given_code_melli) {
-			$user = userFinder($given_code_melli) ;
+			$user = userFinder($given_code_melli);
 			if(!$user or !$user->id) {
-				$model->code_melli = $given_code_melli ;
+				$model->code_melli = $given_code_melli;
 			}
 			elseif(!$user->withDisabled()->is_admin()) {
-				$model = $user ;
+				$model = $user;
 			}
 		}
 
@@ -248,7 +263,7 @@ class VolunteersController extends UsersController
 
 	}
 
-	public function inquiry(CardInquiryRequest $request)
+	public function inquiry(VolunteerInquiryRequest $request)
 	{
 		$user = userFinder($request->code_melli);
 

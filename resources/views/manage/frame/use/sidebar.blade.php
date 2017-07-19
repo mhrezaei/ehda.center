@@ -17,9 +17,9 @@
 	'link' => "cards" ,
 	'icon' => 'credit-card' ,
 	'sub_menus' => [
-		['cards/create' , trans("ehda.cards.create") , 'plus-circle'],
-		['cards/browse/all' , trans('ehda.cards.browse') , 'bars'],
-		['cards/printings' , trans("ehda.printings.title") , 'print'],
+		['cards/create' , trans("ehda.cards.create") , 'plus-circle'], //@TODO: Permission?
+		['cards/browse/all' , trans('ehda.cards.browse') , 'bars'], //@TODO: Permission?
+		['cards/printings' , trans("ehda.printings.title") , 'print'], //@TODO: Permission?
 	] ,
 ]     )
 
@@ -29,8 +29,8 @@
 	'link' => "volunteers" ,
 	'icon' => "child" ,
 	'sub_menus' => [
-		['volunteers/create' , trans("ehda.volunteers.create") , 'plus-circle'],
-		['volunteers/browse/all' , trans("ehda.volunteers.actives") , 'bars'],
+		['volunteers/create' , trans("ehda.volunteers.create") , 'plus-circle' , count(user()->userRolesArray('create' , [] , model('role')::adminRoles()))],
+		['volunteers/browse/all' , trans("ehda.volunteers.actives") , 'bars' , count(user()->userRolesArray('browse' , [] , model('role')::adminRoles()))],
 	] ,
 ]     )
 
