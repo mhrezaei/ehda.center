@@ -157,6 +157,9 @@ return [
 		'copy_suggestion_deny'                => "همیشه می‌توانید با دکمه‌ی «ذخیره پیش‌نویس» همین کار را بکنید.",
 		'reflect_in_global'                   => "انعکاس در دامنه‌ی سراسری",
 		'reflect_in_global_short'             => "انعکاس سراسری",
+	     //@TODO: New from here to down...
+	     'new_content' => "محتوای جدید" ,
+	     'create_new_post' => "ایجاد مطلب جدید" ,
 	],
 
 	'comments' => [
