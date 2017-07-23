@@ -14,9 +14,7 @@
                         <div class="monitor-vital-sign-unit">mmHg/mmHg</div>
                     </div>
                     <div class="monitor-vital-sign-body">
-                        <div class="monitor-vital-sign-value">
-                            60/40
-                        </div>
+                        <div class="monitor-vital-sign-value preview-bp"></div>
                     </div>
                 </div>
                 <div class="monitor-vital-sign neonGreen">
@@ -25,9 +23,7 @@
                         <div class="monitor-vital-sign-unit">bpm</div>
                     </div>
                     <div class="monitor-vital-sign-body">
-                        <div class="monitor-vital-sign-value">
-                            160
-                        </div>
+                        <div class="monitor-vital-sign-value preview-hr"></div>
                     </div>
                 </div>
                 <div class="monitor-vital-sign neonYellow">
@@ -36,9 +32,7 @@
                         <div class="monitor-vital-sign-unit">bpm</div>
                     </div>
                     <div class="monitor-vital-sign-body">
-                        <div class="monitor-vital-sign-value">
-                            10
-                        </div>
+                        <div class="monitor-vital-sign-value preview-rr"></div>
                     </div>
                 </div>
                 <div class="monitor-vital-sign darkOrange">
@@ -47,9 +41,7 @@
                         <div class="monitor-vital-sign-unit">%</div>
                     </div>
                     <div class="monitor-vital-sign-body">
-                        <div class="monitor-vital-sign-value">
-                            60
-                        </div>
+                        <div class="monitor-vital-sign-value preview-spo2"></div>
                     </div>
                 </div>
                 <div class="monitor-vital-sign cyan">
@@ -58,9 +50,7 @@
                         <div class="monitor-vital-sign-unit">mmHg</div>
                     </div>
                     <div class="monitor-vital-sign-body">
-                        <div class="monitor-vital-sign-value">
-                            2
-                        </div>
+                        <div class="monitor-vital-sign-value preview-cvp"></div>
                     </div>
                 </div>
                 <div class="monitor-vital-sign neonRed">
@@ -69,9 +59,7 @@
                         <div class="monitor-vital-sign-unit">&#8451;</div>
                     </div>
                     <div class="monitor-vital-sign-body">
-                        <div class="monitor-vital-sign-value">
-                            33
-                        </div>
+                        <div class="monitor-vital-sign-value preview-temperature"></div>
                     </div>
                 </div>
             </div>
@@ -230,8 +218,8 @@
                                         </tr>
                                         <tr>
                                             <td></td>
-                                            <td>Creat</td>
-                                            <td><span class="case-biochemistry-creat"></span></td>
+                                            <td>Cr</td>
+                                            <td><span class="case-biochemistry-cr"></span></td>
                                         </tr>
                                         <tr>
                                             <td>4</td>
@@ -490,7 +478,7 @@
                             <div class="tab-content">
                                 <div id="treatment-modalities-fluid" class="tab-pane fade in active">
                                     <h3>1-1. Stat</h3>
-                                    <form class="form-horizontal treatment-form" data-treatment="1-1">
+                                    <div class="form-horizontal treatment-form" data-treatment="1-1">
                                         <div class="col-xs-12">
                                             <div class="row">
                                                 <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
@@ -517,7 +505,6 @@
                                                                 1-1-2. Amount of Fluid:
                                                             </label>
                                                             <select class="form-control" name="1-1-2" id="t-1-1-2">
-                                                                <option></option>
                                                                 <option value="1">1 lit</option>
                                                                 <option value="2">2 lit</option>
                                                                 <option value="3">3 lit</option>
@@ -530,17 +517,342 @@
                                                     <label class="control-label">&nbsp;</label>
                                                     <div class="row">
                                                         <div class="col-xs-12">
-                                                            <button class="btn">Apply</button>
+                                                            @include('front.ecg.simulator.apply-button')
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </form>
+                                    </div>
                                     <h3>1-2. Maintenance</h3>
+                                    <div class="form-horizontal treatment-form" data-treatment="1-2">
+                                        <div class="col-xs-12">
+                                            <div class="row">
+                                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class="col-xs-12">
+                                                            <label class="control-label">
+                                                                1-2-1. Type of the Fluid:
+                                                            </label>
+                                                            <select class="form-control" name="1-2-1" id="t-1-2-1"
+                                                                    data-relted="#t-1-2-2">
+                                                                <option></option>
+                                                                <option value="1">Serum Normal Saline</option>
+                                                                <option value="2">Serum Half Saline</option>
+                                                                <option value="3">Serum DW5%</option>
+                                                                <option value="4">Water Gavage</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="form-group" style="display: none;">
+                                                        <div class="col-xs-12">
+                                                            <label class="control-label">
+                                                                1-2-2. Amount of Fluid:
+                                                            </label>
+                                                            <select class="form-control" name="1-2-2" id="t-1-2-2">
+                                                                <option value="1">200-300 cc/q3h</option>
+                                                                <option value="2">300-400 cc/q3h</option>
+                                                                <option value="3">400-500 cc/q3h</option>
+                                                                <option value="4">500-600 cc/q3h</option>
+                                                                <option value="5">600-700 cc/q3h</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                                    <label class="control-label">&nbsp;</label>
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            @include('front.ecg.simulator.apply-button')
+                                                            <button type="button" class="btn"
+                                                                    onclick="$('#reserved-maintenance').slideDown(); $(this).hide()">
+                                                                <span class="glyphicon glyphicon-plus"
+                                                                      aria-hidden="true"></span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="reserved-maintenance" class="form-horizontal treatment-form"
+                                         data-treatment="1-2" style="display: none;">
+                                        <div class="col-xs-12">
+                                            <div class="row">
+                                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class="col-xs-12">
+                                                            <label class="control-label">
+                                                                1-2-1. Type of the Fluid:
+                                                            </label>
+                                                            <select class="form-control" name="1-2-1" id="t-1-2-1"
+                                                                    data-relted="#t-1-2-2">
+                                                                <option></option>
+                                                                <option value="1">Serum Normal Saline</option>
+                                                                <option value="2">Serum Half Saline</option>
+                                                                <option value="3">Serum DW5%</option>
+                                                                <option value="4">Water Gavage</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="form-group" style="display: none;">
+                                                        <div class="col-xs-12">
+                                                            <label class="control-label">
+                                                                1-2-2. Amount of Fluid:
+                                                            </label>
+                                                            <select class="form-control" name="1-2-2" id="t-1-2-2">
+                                                                <option value="1">200-300 cc/q3h</option>
+                                                                <option value="2">300-400 cc/q3h</option>
+                                                                <option value="3">400-500 cc/q3h</option>
+                                                                <option value="4">500-600 cc/q3h</option>
+                                                                <option value="5">600-700 cc/q3h</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                                    <label class="control-label">&nbsp;</label>
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            @include('front.ecg.simulator.apply-button')
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="treatment-modalities-vasopressor" class="tab-pane fade">
+                                    <h3>2-1. Type of the Vasopressor</h3>
+                                    <div class="form-horizontal treatment-form" data-treatment="2-1">
+                                        <div class="col-xs-12">
+                                            <div class="row">
+                                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class="col-xs-12">
+                                                            <select class="form-control" name="2-1" id="t-2-1">
+                                                                <option></option>
+                                                                <option value="1">Dopamine</option>
+                                                                <option value="2">Norepinephrine</option>
+                                                                <option value="3">Vasopressin</option>
+                                                                <option value="4">Epinephrine</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            @include('front.ecg.simulator.apply-button')
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="treatment-modalities-ventilator" class="tab-pane fade">
+                                    <h3>3-1. FIO2</h3>
+                                    <div class="form-horizontal treatment-form" data-treatment="3-1">
+                                        <div class="col-xs-12">
+                                            <div class="row">
+                                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class="col-xs-12">
+                                                            <select class="form-control" name="3-1" id="t-3-1">
+                                                                <option></option>
+                                                                <option value="1">40%</option>
+                                                                <option value="2">60%</option>
+                                                                <option value="3">80%</option>
+                                                                <option value="4">100%</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            @include('front.ecg.simulator.apply-button')
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h3>3-2. Respiratory Rate</h3>
+                                    <div class="form-horizontal treatment-form" data-treatment="3-2">
+                                        <div class="col-xs-12">
+                                            <div class="row">
+                                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class="col-xs-12">
+                                                            <select class="form-control" name="3-2" id="t-3-2">
+                                                                <option></option>
+                                                                <option value="1">12</option>
+                                                                <option value="2">14</option>
+                                                                <option value="3">16</option>
+                                                                <option value="4">18</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            @include('front.ecg.simulator.apply-button')
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="treatment-modalities-temperature" class="tab-pane fade">
+                                    <h3>4-1. Warming the patient</h3>
+                                    <div class="form-horizontal treatment-form" data-treatment="4-1">
+                                        <div class="col-xs-12">
+                                            <div class="row">
+                                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class="col-xs-12">
+                                                            <select class="form-control" name="4-1" id="t-4-1" multiple>
+                                                                <option value="1">Nothing</option>
+                                                                <option value="2">Warmer Blanket</option>
+                                                                <option value="3">Serum Warmer</option>
+                                                                <option value="4">Ventilator Humidifier</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            @include('front.ecg.simulator.apply-button')
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="treatment-modalities-medications" class="tab-pane fade">
+                                    <h3>5-1. Desmopressin</h3>
+                                    <div class="form-horizontal treatment-form" data-treatment="5-1">
+                                        <div class="col-xs-12">
+                                            <div class="row">
+                                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class="col-xs-12">
+                                                            <select class="form-control" name="5-1" id="t-5-1">
+                                                                <option></option>
+                                                                <option value="1">Nasal Spray</option>
+                                                                <option value="2">Subcutaneous</option>
+                                                                <option value="3">IV bullous</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            @include('front.ecg.simulator.apply-button')
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h3>5-2. Ca</h3>
+                                    <div class="form-horizontal treatment-form" data-treatment="5-2">
+                                        <div class="col-xs-12">
+                                            <div class="row">
+                                                <input type="hidden" name="5-2" id="t-5-2" value="1"/>
+                                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="row">
+                                                        <div class="col-xs-12 mb15">
+                                                            @include('front.ecg.simulator.apply-button')
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h3>5-3. Packed Cell</h3>
+                                    <div class="form-horizontal treatment-form" data-treatment="5-3">
+                                        <div class="col-xs-12">
+                                            <div class="row">
+                                                <input type="hidden" name="5-3" id="t-5-3" value="1"/>
+                                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="row">
+                                                        <div class="col-xs-12 mb15">
+                                                            @include('front.ecg.simulator.apply-button')
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h3>5-4. FFP</h3>
+                                    <div class="form-horizontal treatment-form" data-treatment="5-4">
+                                        <div class="col-xs-12">
+                                            <div class="row">
+                                                <input type="hidden" name="5-4" id="t-5-4" value="1"/>
+                                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="row">
+                                                        <div class="col-xs-12 mb15">
+                                                            @include('front.ecg.simulator.apply-button')
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h3>5-5. Albumin</h3>
+                                    <div class="form-horizontal treatment-form" data-treatment="5-5">
+                                        <div class="col-xs-12">
+                                            <div class="row">
+                                                <input type="hidden" name="5-5" id="t-5-5" value="1"/>
+                                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="row">
+                                                        <div class="col-xs-12 mb15">
+                                                            @include('front.ecg.simulator.apply-button')
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="second-preview" style="display: none">
+                        Urine Output: <span class="preview-uop"></span> cc/hour
+                        &emsp;&emsp;&emsp;&emsp;
+                        HgB: <span class="preview-hgb"></span>
+                        &emsp;&emsp;&emsp;&emsp;
+                        INR: <span class="preview-inr"></span>
+                        <br/>
+                        BS: <span class="preview-bs"></span>
+                        &emsp;&emsp;&emsp;&emsp;
+                        Na: <span class="preview-na"></span>
+                        &emsp;&emsp;&emsp;&emsp;
+                        K: <span class="preview-k"></span>
+                        &emsp;&emsp;&emsp;&emsp;
+                        Ca: <span class="preview-ca"></span>
+                        <br/>
+                        PH: <span class="preview-ph"></span>
+                        &emsp;&emsp;&emsp;&emsp;
+                        PCO<sub>2</sub>: <span class="preview-pco2"></span>
+                        &emsp;&emsp;&emsp;&emsp;
+                        HCO<sub>3</sub>: <span class="preview-hco3"></span>
+                        &emsp;&emsp;&emsp;&emsp;
+                        PO<sub>2</sub>: <span class="preview-po2"></span>
                     </div>
                 </div>
             </div>

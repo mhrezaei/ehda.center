@@ -24,7 +24,7 @@ $(document).ready(function () {
         backStep(page);
     });
 
-    $('form.treatment-form').find(':input').change(function () {
+    $('.treatment-form').find(':input').change(function () {
         var that = $(this);
         var related = that.attr('data-relted');
         if (related) {
@@ -36,38 +36,72 @@ $(document).ready(function () {
         }
     });
 
-    $('form.treatment-form').submit(function (event) {
+    $('.treatment-form').find('.btn-inject').click(function (event) {
         event.preventDefault();
-        var form = $(this);
-        var equations = window.caseData.calculations;
-        var treatment = form.attr('data-treatment');
-        var data = form.serializeObject();
-        var toDo = eval('equations' + dash2brace(treatment));
-        var doneActions = [];
+        var btn = $(this);
+        var box = btn.closest('.treatment-form');
+        var treatment = box.attr('data-treatment');
+        var data = box.find(':input').serializeObject();
 
-        $.each(toDo, function (num, tasks) {
-            // var fieldName = treatment + '-' + num;
+        if (!Object.values(data).includes("")) { // check for empty value
+            var equations = window.caseData.calculations;
+            var toDo = eval('equations' + dash2brace(treatment));
+            var doneActions = [];
 
-            $.each(tasks, function (val, targets) {
-                $.each(targets, function (targetName, equation) {
-                    $.each(data, function (fieldName, fieldValue) {
-                        equation = equation.replace('{{' + fieldName + '}}', fieldValue);
-                    });
+            $.each(toDo, function (num, tasks) {
+                if (num) {
+                    var checkingField = [treatment, num].join('-');
+                } else {
+                    var checkingField = treatment;
+                }
 
-                    doneActions.push({
-                        target: targetName,
-                        equation: equation
-                    });
+                if (!$.isArray(data[checkingField])) {
+                    data[checkingField] = [data[checkingField]];
+                }
 
-                    equation = equation.replace('{{orig}}', window.currentData[targetName]);
+                $.each(tasks, function (val, targets) {
+                    if ($.inArray(val, data[checkingField]) > -1) {
+                        $.each(targets, function (targetName, equation) {
+                            $.each(data, function (fieldName, fieldValue) {
+                                equation = equation.replace(new RegExp('{{' + fieldName + '}}', 'g'), fieldValue);
+                            });
 
-                    window.currentData[targetName] = eval(equation);
+                            var tmpAction = {
+                                target: targetName,
+                                equation: equation,
+                                before: window.currentData[targetName]
+                            };
+
+                            equation = equation.replace(new RegExp('{{orig}}', 'g'), window.currentData[targetName]);
+
+                            var result = eval(equation);
+                            window.currentData[targetName] = Number(result.toFixed(2));
+                            tmpAction.after = window.currentData[targetName];
+
+                            doneActions.push(tmpAction);
+                        });
+                    }
                 });
             });
-        });
 
-        console.log(doneActions);
-        window.reactions.push(doneActions);
+            var lastReaction = window.reactions.last();
+            window.reactions.push({
+                fromStep: lastReaction.toStep,
+                toStep: lastReaction.toStep,
+                fromPage: lastReaction.toPage,
+                toPage: lastReaction.toPage,
+                forward: true,
+                calculations: doneActions,
+            });
+
+            refreshScreen();
+
+            if (!$('.second-preview').is(':visible')) {
+                $('.second-preview').slideDown();
+            }
+
+            btn.hide();
+        }
     });
 });
 
@@ -120,6 +154,9 @@ function loadData() {
                 $('.' + targetClass).html(data);
             });
         });
+
+        refreshScreen();
+
         // window.calculations = data[window.caseId][defaultData];
         loading("hide");
     });
@@ -196,6 +233,11 @@ function passStartQuestionStep(page) {
 
                 window.tmpReaction.toStep = $('#treatment-modalities').attr('data-step');
                 window.tmpReaction.toPage = $('#treatment-modalities');
+
+                $('#treatment-modalities').find('select').each(function () {
+                    $(this).val($(this).children('option').first().val());
+                });
+
                 break;
         }
 
@@ -240,8 +282,47 @@ function pageTimeout(page, time, timeoutAction) {
 }
 
 function ventricularTachycardia() {
-    alert('VTACH!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    var newHR = 210;
+
+    $('.monitor-ecg-preview-inner').addClass('VTach');
+
+    var lastReaction = window.reactions.last();
+    window.reactions.push({
+        fromStep: lastReaction.toStep,
+        toStep: lastReaction.toStep,
+        fromPage: lastReaction.toPage,
+        toPage: lastReaction.toPage,
+        forward: true,
+        calculations: [
+            {
+                before: window.currentData.HR,
+                after: newHR,
+                target: 'HR'
+            }
+        ],
+    });
+
+    window.currentData.HR = newHR;
+
+    refreshScreen();
 }
 
 function refreshScreen() {
+    $('.preview-bp').html(window.currentData.SBP + '/' + window.currentData.DBP);
+    $('.preview-hr').html(window.currentData.HR);
+    $('.preview-rr').html(window.currentData.RR);
+    $('.preview-spo2').html(window.currentData.SPO2);
+    $('.preview-cvp').html(window.currentData.CVP);
+    $('.preview-temperature').html(window.currentData.T);
+    $('.preview-uop').html(window.currentData.UOP);
+    $('.preview-hgb').html(window.currentData.HgB);
+    $('.preview-inr').html(window.currentData.INR);
+    $('.preview-bs').html(window.currentData.BS);
+    $('.preview-na').html(window.currentData.Na);
+    $('.preview-k').html(window.currentData.K);
+    $('.preview-ca').html(window.currentData.Ca);
+    $('.preview-ph').html(window.currentData.PH);
+    $('.preview-pco2').html(window.currentData.PCO2);
+    $('.preview-hco3').html(window.currentData.HCO3);
+    $('.preview-po2').html(window.currentData.PO2);
 }
