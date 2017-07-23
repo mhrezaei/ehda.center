@@ -21,15 +21,19 @@ $darkColors: (
         "black": #070707,
         "green": #3AB637,
         "red": #e80000,
+        "neonRed": #FD0100,
         "purple": #9013FE,
         "teal": #23999d,
         "blue": #337ab7,
         "brown": #4F3111,
         "violet": #4F5B93,
         "orange": #F18432,
+        "darkOrange": #C87800,
         "pink": #D359E0,
+        "neonPink": #FF0080,
         "orangeRed": #A400AC,
-        "darkGray": #3e3e3e,
+        "darkGray": #232323,
+        "dimGray": #3e3e3e,
         "gray": #808080,
         "gold": #FFD700,
         "silver": #C0C0C0,
@@ -37,9 +41,11 @@ $darkColors: (
 
 $lightColors: (
         "white": #ffffff,
-        "lightGray": #eeeeee,
+        "lightGray": #aaaaaa,
         "cyan": #00FFFF,
+        "neonGreen": #AAFF01,
         "yellow": #EDD120,
+        "neonYellow": #FFEA00,
 );
 
 $colors: map_merge($darkColors, $lightColors);

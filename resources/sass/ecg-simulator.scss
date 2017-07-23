@@ -1,0 +1,324 @@
+@import "bootstrap";
+@import "bootstrap/media";
+@import "ecg/variables";
+@import "public_silent_classes";
+@import "local-variables/ltr";
+@import "colors";
+@import "measurement_and_alignment";
+
+body {
+  @extend .bg-black;
+
+  height: 100vh;
+
+  .container-main {
+    $gapsSize: 10;
+    $sidesPaddingSize: 15;
+
+    @extend .container-fluid, .p#{$gapsSize};
+
+    .container-inner {
+      @extend .border-1, .border-white, .full-width, .pull-start, .p#{$gapsSize};
+
+      &.monitor {
+
+        > .monitor-column-1 {
+          @extend .pl0, .pr0;
+
+          @media #{map_get($screenSizesToTopMedia, "md")} {
+            padding-#{$endSide}: #{$gapsSize}px;
+          }
+
+          .monitor-vital-sign {
+            @extend .full-width, .pull-start, .border-lightGray, .border-right-2, .border-left-2, .border-bottom-2;
+
+            @media #{map_get($screenSizesBetweenMedia, "sm")} {
+              width: 50%;
+            }
+
+            @each $colorName, $colorCode in $colors {
+              &.#{$colorName} {
+                @extend .text-#{$colorName};
+              }
+            }
+
+            .monitor-vital-sign-heading {
+              @extend .full-width, .pull-start, .bg-lightGray, .pl5, .pr5, .f18, .fw700;
+
+              .monitor-vital-sign-title {
+                @extend .pull-start;
+              }
+
+              .monitor-vital-sign-unit {
+                @extend .pull-end;
+              }
+            }
+
+            .monitor-vital-sign-body {
+              @extend .full-width, .pull-start;
+              .monitor-vital-sign-value {
+                @extend .full-width, .pull-start, .text-center, .f50, .pt15, .fw700;
+              }
+            }
+          }
+        }
+
+        > .monitor-column-2 {
+          @extend .p#{$gapsSize}, .border-2, .border-lightGray, .mt20;
+
+          @media #{map_get($screenSizesToTopMedia, "md")} {
+            min-height: 100%;
+            margin-top: 0;
+          }
+
+          .monitor-ecg-preview {
+            @extend .border-1, .border-white, .full-width, .pull-start, .pt20, .pb20;
+            height: 160px;
+
+            .monitor-ecg-preview-inner {
+              @extend .full-width, .full-height, .pull-start;
+
+              background-size: cover;
+              background-repeat: repeat-x;
+              // temporary background image
+              background-image: url("#{$rhysImagesDir}/r1.png");
+            }
+          }
+
+          .monitor-case-management-panel {
+            @extend .full-width, .pull-start, .pt#{$gapsSize};
+
+            .monitor-case-management-panel-inner {
+              @extend .border-1, .border-white, .full-width, .pull-start, .full-height, .text-white, .pl#{$sidesPaddingSize}, .pr#{$sidesPaddingSize};
+              font-family: Arial;
+
+              .page {
+                @extend .full-width, .pull-start;
+                display: none;
+
+                &.current {
+                  display: block;
+                }
+
+                &.page-fluid {
+                  margin-right: -#{$sidesPaddingSize}px;
+                  margin-left: -#{$sidesPaddingSize}px;
+                  width: calc(100% + #{($sidesPaddingSize * 2)}px);
+                }
+
+                .biography {
+                  @extend .full-width, .pull-start, .pt25, .f20;
+
+                  @media #{map_get($screenSizesToTopMedia, "md")} {
+                    $sidesPaddingSizeInBigScreen: 50;
+                    padding-right: #{$sidesPaddingSizeInBigScreen}px;
+                    padding-left: #{$sidesPaddingSizeInBigScreen}px;
+                  }
+                }
+
+                .page-content {
+                  @extend .full-width, .pull-start, .pt20, .mb20;
+                }
+
+                /*********************** Tabs ********************** start */
+                .nav {
+                  li {
+                    > a {
+                      @extend .border-1, .border-white, .link-white;
+                      border-radius: 0;
+
+                      &:hover,
+                      &:focus {
+                        @extend .bg-darkGray;
+                      }
+                    }
+
+                    &.active {
+                      > a {
+                        &,
+                        &:hover,
+                        &:focus {
+                          background-color: map_get($colors, "white");
+                          color: map_get($colors, "black");
+                        }
+                      }
+                    }
+                  }
+                }
+
+                .tab-content {
+                  .tab-pane {
+                    @extend .pl#{$sidesPaddingSize}, .pr#{$sidesPaddingSize}, .pt10, .pb10;
+                  }
+                }
+                /*********************** Tabs ********************** end */
+
+                /*********************** Tables ********************** start */
+                table {
+                  td {
+                    @extend .pl10, .pr10, .text-center, .border-1, .border-white;
+                  }
+                }
+                /*********************** Tables ********************** end */
+
+                /*********************** Inputs ********************** start */
+                .form-control {
+                  @extend .bg-transparent, .text-white, .border-white;
+                  border-radius: 0;
+                }
+
+                .control-label {
+                  @extend .mb5;
+                }
+                /*********************** Inputs ********************** end */
+
+              }
+            }
+          }
+
+          .btn {
+            @extend .bg-transparent, .border-1, .border-white;
+
+            &:hover,
+            &:focus {
+              @extend .text-white;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .cover-page {
+    @extend .bg-black, .align-horizontal-center;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    padding-top: 30vh;
+    top: 0;
+
+    .radial-timer {
+      // CONFIG
+      $size: 50px;
+      $thickness: 5px;
+      $duration: 1s;
+      $color: map_get($colors, "white");
+      $background: map_get($colors, "black");
+
+      overflow: hidden;
+      height: $size;
+      width: $size;
+      position: relative;
+
+      .radial-timer-half {
+        height: $size;
+        width: $size/2;
+        border-radius: $size/2 0 0 $size/2;
+        background: $color;
+        position: absolute;
+        &:nth-of-type(2) {
+          z-index: 99999999;
+          -webkit-transform-origin: center right;
+          -webkit-transform: rotate(180deg);
+        }
+
+        &:before {
+          content: "";
+          position: absolute;
+          top: $thickness;
+          left: $thickness;
+          height: $size - 2*$thickness;
+          width: ($size - 2*$thickness)/2;
+          border-radius: ($size - $thickness)/2 0 0 ($size - $thickness)/2;
+          background: $background;
+        }
+        &:after {
+          content: "";
+          position: absolute;
+          background: $background;
+          height: $size*2;
+          width: $size*1.5;
+          left: -$size;
+          top: -$size/2;
+          -webkit-transform-origin: center right;
+        }
+      }
+
+      &.s-animate {
+        -webkit-transform-origin: center right;
+        .radial-timer-half:nth-of-type(1):after {
+          -webkit-animation: rotateLeftMask $duration infinite linear;
+        }
+        .radial-timer-half:nth-of-type(2):after {
+          -webkit-animation: rotateRightMask $duration infinite linear;
+        }
+      }
+    }
+
+    @-webkit-keyframes rotateLeftMask {
+      0% {
+        -webkit-transform: rotate(0deg);
+      }
+      50% {
+        -webkit-transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(180deg);
+      }
+    }
+    @-webkit-keyframes rotateRightMask {
+      0% {
+        -webkit-transform: rotate(0deg);
+      }
+      50% {
+        -webkit-transform: rotate(180deg);
+        visibility: hidden;
+      }
+      100% {
+        -webkit-transform: rotate(180deg);
+        visibility: hidden;
+      }
+    }
+  }
+
+  .radio {
+    input[type=radio] {
+      opacity: 0;
+      position: absolute;
+    }
+
+    input[type=radio],
+    label {
+      display: inline-block;
+      vertical-align: middle;
+      cursor: pointer;
+    }
+
+    label {
+      @extend .pl10;
+      position: relative;
+    }
+
+    input[type=radio] + label:before {
+      @extend .bg-white, .border-1, .text-center, .mr10;
+      content: '';
+      border-color: #ddd;
+      display: inline-block;
+      vertical-align: middle;
+      width: 20px;
+      height: 20px;
+      padding: 2px;
+      border-radius: 50%;
+    }
+
+    input[type=radio]:checked + label:before {
+      @extend .bg-black;
+      box-shadow: inset 0 0 0 4px #fff;
+    }
+
+    input[type=radio]:focus + label:before {
+      outline: 1px solid #ddd; /* focus style */
+    }
+  }
+}
+

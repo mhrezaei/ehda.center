@@ -1,0 +1,107 @@
+{
+  "1": {
+    "caseInfo": {
+      "information": "You were informed about a 55 years old gentleman felt a severe headache and dropped on the ground while he was eating lunch. He was transformed to the hospital by ambulance and was immediately admitted in ICU. The day after, he was declared brain dead and OPU was informed.",
+      "height": 170,
+      "weight": 70,
+      "urineOutput": 20,
+      "moreInformation": "He has had a story of well-controlled hypertension, no diabetes, some exertional chest pain in heavy exercise. He has a cardiac arrest on the way in the Ambulance that was reserverd after 10 minutes of cardiac massage and 200J of DC shock. His blood pressure was stable at the addmission and urine output was 40cc/h but after 8 hours, he started to have 400cc/h of urine output and a drop in blood pressure. Now his BP and his urine output are both low."
+    },
+    "defaultData": {
+      "SBP": 60,
+      "DBP": 40,
+      "HR": 160,
+      "RR": 10,
+      "SPO2": 60,
+      "CVP": 2,
+      "T": 33,
+      "Na": 170,
+      "UO": 20,
+      "exams": {
+        "CBC": {
+          "Hgb": 12,
+          "HCT": 36,
+          "WBC": 12000,
+          "Platelet": "100.000",
+          "ESR": 10
+        },
+        "Biochemistry": {
+          "Blood Sugar": 160,
+          "BUN": 40,
+          "Creat": 2.8,
+          "Na": 170,
+          "K": 3,
+          "Ca": 6,
+          "P": 2,
+          "Mg": 2,
+          "AST": 70,
+          "ALT": 100,
+          "ALKp": 250,
+          "Albumin": 2.5
+        },
+        "Coagulation Tests": {
+          "PT": 16,
+          "PTT": 45,
+          "INR": 2
+        },
+        "AGB": {
+          "PH": 7.25,
+          "PCO2": 50,
+          "HCO3": 17,
+          "PO2": 50,
+          "O2Sat": 70,
+          "Lactate": 8
+        },
+        "Urine Analysis": {
+          "Specific Gravity": 1008,
+          "Urine Osmolality": 200,
+          "WBC": "2-3",
+          "RBC": "2-4",
+          "Sugar": "-",
+          "protein": 30
+        },
+        "Echocardiography": {
+          "EF": 50,
+          "Wall Motion Abnormality": "-",
+          "Valvular Problems": "-",
+          "RAP": 30
+        },
+        "Virology Tests": {
+          "HBsAg": "-",
+          "HBsAb": 10,
+          "HBcAb": "-",
+          "HBeAb": "-",
+          "HCVAb": "-"
+        }
+      }
+    },
+    "calculations": {
+      "1": {
+        "1": {
+          "1": {
+            "1": {
+              "SBP": "{{orig}} + ({{1-1-2}} + 10)",
+              "DBP": "{{orig}} + ({{1-1-2}} + 10)"
+            },
+            "2": {
+              "SBP": "{{orig}} + ({{1-1-2}} + 8)",
+              "DBP": "{{orig}} + ({{1-1-2}} + 6)",
+              "CVP": "{{orig}} + ({{1-1-2}} + 0.5)",
+              "Na": "{{orig}} + ({{1-1-2}} - 1)"
+            },
+            "3": {
+              "SBP": "{{orig}} + ({{1-1-2}} + 5)",
+              "DBP": "{{orig}} + ({{1-1-2}} + 0)",
+              "Na": "{{orig}} + ({{1-1-2}} - 2)"
+            },
+            "4": {
+              "SBP": "{{orig}} + ({{1-1-2}} + 2.5)",
+              "DBP": "{{orig}} + ({{1-1-2}} + 0)",
+              "Na": "{{orig}} + ({{1-1-2}} - 1)"
+            }
+          }
+        }
+      }
+    }
+  }
+}

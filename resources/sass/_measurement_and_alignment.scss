@@ -55,6 +55,28 @@
 
 // ********************* Padding, Margins and Sides Borders ********************** end
 
+// ********************* Font Size ********************** start
+@for $i from 5 to 101 {
+  .f#{$i} {
+    font-size: 1px * $i;
+    @if ($i<10) {
+      font-weight: 100;
+    }
+  }
+}
+
+// ********************* Font Size ********************** end
+
+// ********************* Font Weight ********************** start
+@for $i from 5 to 8 {
+  $value: $i * 100;
+  .fw#{$value} {
+    font-weight: #{$value};
+  }
+}
+
+// ********************* Font Weight ********************** end
+
 // ********************* Aligning ********************** start
 @each $axis, $axisAligning in $aligning {
   $justifyProperty: map_get($aligningProperties, $axis);

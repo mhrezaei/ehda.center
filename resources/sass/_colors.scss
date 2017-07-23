@@ -1,6 +1,10 @@
 $firstDarkColor: nth($darkColors, 1);
 $firsLightColor: nth($lightColors, 1);
 
+.bg-transparent {
+  background-color: transparent;
+}
+
 @each $colorName, $colorCode in $colors {
   .bg-#{$colorName} {
     background-color: $colorCode;

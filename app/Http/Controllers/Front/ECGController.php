@@ -9,6 +9,11 @@ class ECGController extends Controller
 {
     public function copy()
     {
-        return view('front.ecg.main');
+        return view('front.ecg.copy.main');
+    }
+
+    public function simulator()
+    {
+        return view('front.ecg.simulator.main');
     }
 }

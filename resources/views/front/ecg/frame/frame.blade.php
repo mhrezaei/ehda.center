@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <html lang="{{ getLocale() }}">
 @include('front.ecg.frame.head')
-@include('front.ecg.frame.body')
+<body>
+
+</body>
+@yield('body')
+@include('front.ecg.frame.scripts')
+@yield('end-of-body')
 </html>
