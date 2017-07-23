@@ -133,6 +133,9 @@ class VolunteersController extends UsersController
 				}
 			}
 			else {
+				if(!$request_tab) {
+					$request_tab = 'all';
+				}
 				return $this->browse($this->role_slug, $request_tab, $this->browseSwitchesChild());
 			}
 		}

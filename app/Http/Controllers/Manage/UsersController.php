@@ -283,10 +283,10 @@ class UsersController extends Controller
 		*/
 		if(in_array($request->role_slug, Role::adminRoles())) {
 			$permits = array_filter(explode(' ', $request->permissions));
-			if(!user()->as_any()->can_all($permits)) {
-				//return $this->jsonFeedback($request->permissions);
-				//
-				return $this->jsonFeedback(trans('validation.http.Error403'));
+			foreach($permits as $permit) {
+				if(user()->as_any()->cannot($permit) and $model->as_any()->cannot($permit)) {
+					return $this->jsonFeedback($permit);
+				}
 			}
 		}
 
@@ -662,7 +662,7 @@ class UsersController extends Controller
 		if(!$user or !$user->id) {
 			return $this->jsonFeedback(trans('validation.http.Error410'));
 		}
-		if(user()->as('admin')->cannot("volunteer-$role->slug.edit")) {
+		if(!$user->canEdit()) {
 			return $this->jsonFeedback(trans('validation.http.Error403'));
 		}
 
@@ -696,20 +696,14 @@ class UsersController extends Controller
 		}
 
 		/*-----------------------------------------------
-		| Security ...
-		*/
-		if(user()->as('admin')->cannot("volunteer-$role->slug.edit")) {
-			return $this->jsonFeedback(trans('validation.http.Error403'));
-		}
-
-
-		/*-----------------------------------------------
 		| Action ...
 		*/
 		$users = User::whereIn('id' , explode(',', $request->ids) )->get() ;
 		$count = 0 ;
 		foreach($users as $user) {
-			$count += $user->as($role->slug)->setStatus($request->new_status) ;
+			if($user->canEdit()) {
+				$count += $user->as($role->slug)->setStatus($request->new_status);
+			}
 		}
 
 		/*-----------------------------------------------

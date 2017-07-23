@@ -822,6 +822,9 @@ class User extends Authenticatable
 		if($this->is_a('developer')) {
 			return user()->is_a('developer');
 		}
+		if($this->as($request_role)->status()<8) {
+			return false ;
+		}
 
 		/*-----------------------------------------------
 		| In case of a specified role ...

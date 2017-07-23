@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
 			$table->increments('id');
 
 			// Card Info
-			$table->unsignedBigInteger('card_no');
+			$table->unsignedBigInteger('card_no')->index();
 
 			// Personal Info
 			$table->string('code_melli', 20)->nullable()->index();

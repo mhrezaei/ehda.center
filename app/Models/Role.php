@@ -329,7 +329,7 @@ class Role extends Model
 		foreach($this->status_rule_array as $key => $string) {
 			$array[] = [$key, trans("people.criteria.$string")];
 		}
-		$array[] = ['bin', trans('people.criteria.banned')];
+		$array[] = ['bin', trans('people.criteria.banned') , null ,user()->as('admin')->can("users-$this->slug.bin")];
 		$array[] = ['search', trans('forms.button.search')];
 
 		return $array;

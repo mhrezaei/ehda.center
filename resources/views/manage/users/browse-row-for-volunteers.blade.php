@@ -106,6 +106,14 @@
 				'icon' => trans("people.criteria_icon.$status") ,
 				'link' => $model->as($request_role)->canEdit()? "modal:manage/users/act/-id-/user-status/$request_role" : '' ,
 			]     )
+			@include("manage.frame.widgets.grid-text" , [
+				'text' => trans("people.commands.permit"),
+				'class' => "btn btn-default" ,
+				'size' => "10" ,
+				'link' => $model->as($request_role)->canPermit()? "modal:manage/users/act/-id-/permits/$request_role" : '',
+				'icon' => "shield" ,
+				'condition' => $model->as($request_role)->canPermit() ,
+			]     )
 		@else
 			@include("manage.frame.widgets.grid-text" , [
 				'text' => trans("people.criteria.banned"),
