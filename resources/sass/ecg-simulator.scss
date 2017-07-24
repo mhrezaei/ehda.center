@@ -142,6 +142,7 @@ body {
                     > a {
                       @extend .border-1, .border-white, .link-white;
                       border-radius: 0;
+                      white-space: nowrap;
 
                       &:hover,
                       &:focus {
