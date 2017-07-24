@@ -60,6 +60,14 @@
 		'condition' => $model->is_admin() ,
 	]     )
 
+	@include("manage.frame.widgets.grid-text" , [
+		'text' => trans("people.commands.login_as"),
+		'icon' => "sign-in" ,
+		'class' => "btn btn-default w70" ,
+		'size' => "12" ,
+		'link' => 'modal:manage/users/act/-id-/login_as' ,
+		'condition' => user()->isDeveloper() and !$model->trashed() ,
+	]     )
 
 
 @endif

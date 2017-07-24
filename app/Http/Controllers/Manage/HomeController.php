@@ -145,6 +145,10 @@ class HomeController extends Controller
 		if(str_contains($keyword , '@') and str_contains($keyword , '.')) { // <~~ Probably it's an email.
 			$field = 'email' ;
 		}
+		if(str_contains($keyword , 'id')) {
+			$field = 'id' ;
+			$keyword = str_replace('id' , null , $keyword);
+		}
 		elseif(YasnaServiceProvider::isCodeMelli($keyword)) {
 			$field = 'code_melli' ;
 		}
