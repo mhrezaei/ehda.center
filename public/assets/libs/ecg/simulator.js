@@ -376,7 +376,7 @@ function refreshScreen() {
     $('.preview-po2').html(window.currentData.PO2);
 
     runECG(window.currentData.HR);
-    // playHeartSound(window.currentData.HR);
+    playHeartSound(window.currentData.HR);
 }
 
 function runECG(hr) {
@@ -482,12 +482,21 @@ function getValueOf(data) {
 
 function playHeartSound(hr) {
     var intervalTime = (60 * 1000) / hr;
+    stopHeartSound();
 
-    window.timers.soundHR = setInterval(playSound('heartSound'), interval);
+    window.timers.soundHR = setInterval(function () {
+        playSound('heartSound')
+    }, intervalTime);
+}
+
+function stopHeartSound() {
+    if (typeof window.timers.soundHR != 'undefined') {
+        clearInterval(window.timers.soundHR);
+        delete window.timers.soundHR;
+    }
 }
 
 function playSound(id) {
-    console.log('playing')
     switch (id) {
         case "heartSound":
             lowLag.play('pluck1');
