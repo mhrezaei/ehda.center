@@ -5,6 +5,7 @@
 window.caseId = 1;
 window.reactions = [];
 window.timers = {};
+window.shockerCharge = 0;
 
 $(document).ready(function () {
     fixBodyHeight();
@@ -102,6 +103,19 @@ $(document).ready(function () {
 
             btn.hide();
         }
+    });
+
+    $('.monitor-ecg-shock-box').find('.btn-charge-shocker').click(function () {
+        var energy = $('.shocker-energy').val();
+        console.log(energy)
+        chargeShocker(energy);
+
+    });
+
+    $('.monitor-ecg-shock-box').find('.btn-shock').click(function () {
+        $('.shocker-charger-box').css('opacity', 0);
+
+        doShock();
     });
 });
 
@@ -247,10 +261,13 @@ function passStartQuestionStep(page) {
 
 function backStep(page) {
     var lastStep = window.reactions.last();
+    console.log(lastStep)
 
-    var timeoutName = page.attr('timeout');
-    if (timeoutName) {
-        clearTimeout(window.timers[timeoutName]);
+    if (typeof page != 'undefined') {
+        var timeoutName = page.attr('timeout');
+        if (timeoutName) {
+            clearTimeout(window.timers[timeoutName]);
+        }
     }
 
     var newReaction = {
@@ -260,6 +277,22 @@ function backStep(page) {
         toPage: lastStep.fromPage,
         forward: false,
     };
+
+    if (lastStep.calculations) {
+        newReaction.calculations = [];
+        $.each(lastStep.calculations, function (index, item) {
+            newReaction.calculations.push({
+                after: item.before,
+                before: item.after,
+                target: item.target,
+            });
+
+            console.log(item.target)
+            window.currentData[item.target] = item.before;
+        });
+    }
+
+    refreshScreen();
 
     newReaction.fromPage.removeClass('current');
     newReaction.toPage.addClass('current');
@@ -305,6 +338,10 @@ function ventricularTachycardia() {
     window.currentData.HR = newHR;
 
     refreshScreen();
+
+    $('.monitor-ecg-shock-box').show();
+    $('.monitor-case-management-panel').hide();
+
 }
 
 function refreshScreen() {
@@ -325,4 +362,50 @@ function refreshScreen() {
     $('.preview-pco2').html(window.currentData.PCO2);
     $('.preview-hco3').html(window.currentData.HCO3);
     $('.preview-po2').html(window.currentData.PO2);
+
+    runECG(window.currentData.HR);
+}
+
+function runECG(hr) {
+    stopECG();
+    runECGPeriod(hr);
+    window.timers.ecgMotion = setInterval(function () {
+        runECGPeriod(hr);
+    }, 60 * 1000);
+}
+
+function runECGPeriod(hr) {
+    $('.monitor-ecg-preview-inner').animate(
+        {
+            'background-position-x': '+=' + hr + '%'
+        }, 60000, 'linear');
+}
+
+function stopECG(hr) {
+    clearInterval(window.timers.ecgMotion);
+    $('.monitor-ecg-preview-inner').stop();
+    delete window.timers.ecgMotion;
+}
+
+function chargeShocker(energy) {
+    var chargingSpeed = 100; // Joule/Second
+    var box = $('.shocker-charger-box');
+    var progressBar = box.find('.progress-bar');
+
+    var chargingTime = (energy / chargingSpeed) * 1000; // Miliseconds
+
+    box.css('opacity', 1);
+    progressBar.css('width', 0);
+    progressBar.animate({width: "100%"}, chargingTime, function () {
+        $('.monitor-ecg-shock-box').find('.btn-shock').removeAttr('disabled');
+        window.shockerCharge = energy;
+    });
+}
+
+function doShock() {
+    $('.monitor-ecg-preview-inner').removeClass('VTach');
+
+    backStep();
+    $('.monitor-case-management-panel').show();
+    $('.monitor-ecg-shock-box').hide();
 }

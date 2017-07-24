@@ -67,6 +67,34 @@
                 <div class="monitor-ecg-preview">
                     <div class="monitor-ecg-preview-inner"></div>
                 </div>
+                <div class="monitor-ecg-shock-box" style="display: none">
+                    <div class="col-xs-12">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-6 col-xs-12">
+                                <select class="form-control input-sm shocker-energy">
+                                    <option value="200">200 J</option>
+                                    <option value="360">360 J</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 col-sm-6 col-xs-12">
+                                <button type="button" class="btn btn-sm btn-orange btn-charge-shocker">CHARGE</button>
+                            </div>
+                            <div class="col-md-4 col-sm-6 col-xs-12">
+                                <button type="button" class="btn btn-sm btn-red btn-shock" disabled="disabled">
+                                    SHOCK
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 pt10 shocker-charger-box" style="opacity: 0;">
+                        <div class="progress shocker-charger">
+                            <div class="progress-bar progress-bar-warning progress-bar-striped active"
+                                 role="progressbar"
+                                 aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="monitor-case-management-panel">
                     <div class="monitor-case-management-panel-inner">
                         <div id="start" class="page current" data-step="Start">
@@ -587,8 +615,8 @@
                                                             <label class="control-label">
                                                                 1-2-1. Type of the Fluid:
                                                             </label>
-                                                            <select class="form-control" name="1-2-1" id="t-1-2-1"
-                                                                    data-relted="#t-1-2-2">
+                                                            <select class="form-control" name="1-2-1" id="t2-1-2-1"
+                                                                    data-relted="#t2-1-2-2">
                                                                 <option></option>
                                                                 <option value="1">Serum Normal Saline</option>
                                                                 <option value="2">Serum Half Saline</option>
@@ -604,7 +632,7 @@
                                                             <label class="control-label">
                                                                 1-2-2. Amount of Fluid:
                                                             </label>
-                                                            <select class="form-control" name="1-2-2" id="t-1-2-2">
+                                                            <select class="form-control" name="1-2-2" id="t2-1-2-2">
                                                                 <option value="1">200-300 cc/q3h</option>
                                                                 <option value="2">300-400 cc/q3h</option>
                                                                 <option value="3">400-500 cc/q3h</option>
