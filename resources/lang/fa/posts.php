@@ -160,6 +160,7 @@ return [
 	     //@TODO: New from here to down...
 	     'new_content' => "محتوای جدید" ,
 	     'create_new_post' => "ایجاد مطلب جدید" ,
+	     'for_each_number_of' => "برای هر تعداد :name" ,
 	],
 
 	'comments' => [

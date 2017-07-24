@@ -174,6 +174,14 @@ class UpstreamController extends Controller
 				return view('manage.settings.downstream-value', compact('model'));
 				break;
 
+			case 'update-posttype' :
+				$model = Posttype::find($item_id);
+				if(!$model) {
+					return view('errors.m410');
+				}
+				return view("manage.settings.posttypes-row",compact('model'));
+
+
 			default:
 				return view('templates.say', ['array' => "What the hell is $request_tab?"]); //@TODO: REMOVE THIS
 
@@ -411,7 +419,7 @@ class UpstreamController extends Controller
 			}
 
 			return $this->jsonAjaxSaveFeedback(Posttype::destroy($request->id), [
-				'success_refresh' => 1,
+				'success_callback' => "rowUpdate('tblPosttypes','$request->id')",
 			]);
 		}
 

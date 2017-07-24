@@ -13,7 +13,7 @@ return [
 		'not_allowed'                     => 'این درخواست برای شما معتبر نیست.',
 		'user_not_found'                  => 'کاربر مورد نظر را نیافتیم.',
 		'thing_not_found'                 => ':thing مورد نظر را نیافتیم.',
-		'all_count_search_results' => "همه‌ی :count نتیجه‌ی جست‌وجو" ,
+		'all_count_search_results'        => "همه‌ی :count نتیجه‌ی جست‌وجو",
 		'password_set_to_mobile'          => "شماره تلفن همراه به عنوان گذرواژه در نظر گرفته می‌شود.",
 		'wrong_current_password'          => "گذرواژه‌ی فعلی اشتباه است.",
 		'I_know'                          => "خودم می‌دانم",
@@ -76,6 +76,7 @@ return [
 	],
 
 	"general" => [
+		'comma'          => "،", //@TODO: New
 		'male'           => 'آقا',
 		'female'         => 'خانم',
 		'other_gender'   => "سایر", //@TODO: New
