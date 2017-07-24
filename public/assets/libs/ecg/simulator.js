@@ -55,6 +55,7 @@ $(document).ready(function () {
             var doneActions = [];
             var beforeData = getValueOf(window.currentData);
 
+            console.log(toDo)
             $.each(toDo, function (num, tasks) {
                 if (num) {
                     var checkingField = [treatment, num].join('-');
@@ -415,7 +416,7 @@ function refreshScreen() {
 
     if ($('#more-info').hasClass('current') || $('#laboratory-exams').hasClass('current')) {
         $('.case-info-buttons').hide();
-    } else if(!$('.case-info-buttons').is(':visible')) {
+    } else if (!$('.case-info-buttons').is(':visible')) {
         $('.case-info-buttons').show();
     }
 }
