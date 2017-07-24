@@ -11,6 +11,7 @@ $(document).ready(function () {
 
     lowLag.init({'urlPrefix': siteUrl + '/assets/sound/'});
     lowLag.load(['heartSound.mp3', 'heartSound.ogg'], 'pluck1');
+    lowLag.load(['beep.mp3'], 'beep');
 
     fixBodyHeight();
     loadData();
@@ -121,6 +122,13 @@ $(document).ready(function () {
     $('.monitor-ecg-shock-box').find('.btn-shock').click(function () {
         doShock();
     });
+
+    $('.show-case-info').click(function () {
+        var btn = $(this);
+        var target = btn.attr('data-page');
+        showPage($(target));
+        refreshScreen()
+    });
 });
 
 /**
@@ -215,6 +223,8 @@ function passStep(page) {
         window.reactions.push(window.tmpReaction);
         console.log(window.reactions)
     }
+    //
+    // refreshScreen();
 }
 
 function passStartStep() {
@@ -267,6 +277,24 @@ function passStartQuestionStep(page) {
     }
 }
 
+function showPage(pageToShow) {
+    var page = $('.page.current');
+
+    window.reactions.push({
+        fromStep: page.attr('data-step'),
+        fromPage: page,
+        toStep: pageToShow.attr('data-step'),
+        toPage: pageToShow,
+        forward: true,
+        done: false,
+        beforeData: getValueOf(window.currentData),
+        afterData: getValueOf(window.currentData),
+    });
+
+    page.removeClass('current');
+    pageToShow.addClass('current');
+}
+
 function backStep(page) {
     var lastStepIndex = window.reactions.length - 1;
     var lastStep = window.reactions[lastStepIndex];
@@ -296,12 +324,12 @@ function backStep(page) {
         afterData: getValueOf(window.currentData),
     };
 
-    refreshScreen();
-
     newReaction.fromPage.removeClass('current');
     newReaction.toPage.addClass('current');
 
     window.reactions.push(newReaction);
+
+    refreshScreen();
 }
 
 function pageTimeout(page, time, timeoutAction) {
@@ -319,12 +347,26 @@ function pageTimeout(page, time, timeoutAction) {
 function ventricularTachycardia() {
     console.log('VTach');
     console.log(currentTime());
-    var newHR = 210;
+    var changing = {
+        HR: 210,
+        SPO2: 20,
+        SBP: 0,
+        DBP: 0,
+        CVP: 8,
+    };
+    var calculations = [];
     var beforeData = getValueOf(window.currentData);
-    console.log('beforeData')
-    console.log(beforeData)
 
     $('.monitor-ecg-preview-inner').addClass('VTach');
+
+    $.each(changing, function (name, value) {
+        calculations.push({
+            before: getValueOf(window.currentData)[name],
+            after: value,
+            target: name
+        });
+        window.currentData[name] = value;
+    });
 
     var lastReaction = window.reactions.last();
     window.reactions.push({
@@ -334,18 +376,11 @@ function ventricularTachycardia() {
         toPage: lastReaction.toPage,
         forward: true,
         auto: true,
-        calculations: [
-            {
-                before: getValueOf(window.currentData).HR,
-                after: newHR,
-                target: 'HR'
-            }
-        ],
+        calculations: calculations,
         beforeData: beforeData,
         afterData: getValueOf(window.currentData),
     });
 
-    window.currentData.HR = newHR;
 
     refreshScreen();
 
@@ -377,6 +412,12 @@ function refreshScreen() {
 
     runECG(window.currentData.HR);
     playHeartSound(window.currentData.HR);
+
+    if ($('#more-info').hasClass('current') || $('#laboratory-exams').hasClass('current')) {
+        $('.case-info-buttons').hide();
+    } else if(!$('.case-info-buttons').is(':visible')) {
+        $('.case-info-buttons').show();
+    }
 }
 
 function runECG(hr) {
@@ -440,13 +481,30 @@ function currentTime() {
 function kill() {
     console.log('die');
     console.log(currentTime());
-    var newHR = 0;
+    var changing = {
+        HR: 0,
+        SPO2: 20,
+        SBP: 0,
+        DBP: 0,
+        CVP: 8,
+    };
+    var calculations = [];
+
     var beforeData = getValueOf(window.currentData);
     console.log('beforeData')
     console.log(beforeData)
 
     $('.monitor-ecg-preview-inner').removeClass('VTach')
         .addClass('dead');
+
+    $.each(changing, function (name, value) {
+        calculations.push({
+            before: getValueOf(window.currentData)[name],
+            after: value,
+            target: name
+        });
+        window.currentData[name] = value;
+    });
 
     var lastReaction = window.reactions.last();
     window.reactions.push({
@@ -456,18 +514,10 @@ function kill() {
         toPage: lastReaction.toPage,
         forward: true,
         auto: true,
-        calculations: [
-            {
-                before: getValueOf(window.currentData).HR,
-                after: newHR,
-                target: 'HR'
-            }
-        ],
+        calculations: calculations,
         beforeData: beforeData,
         afterData: getValueOf(window.currentData),
     });
-
-    window.currentData.HR = newHR;
 
     refreshScreen();
 
@@ -481,11 +531,17 @@ function getValueOf(data) {
 }
 
 function playHeartSound(hr) {
-    var intervalTime = (60 * 1000) / hr;
-    stopHeartSound();
+    if (hr) {
+        var intervalTime = (60 * 1000) / hr;
+        var soundId = 'heartSound';
+    } else {
+        var intervalTime = 200;
+        var soundId = 'beep';
+    }
 
+    stopHeartSound();
     window.timers.soundHR = setInterval(function () {
-        playSound('heartSound')
+        playSound(soundId)
     }, intervalTime);
 }
 
@@ -499,7 +555,10 @@ function stopHeartSound() {
 function playSound(id) {
     switch (id) {
         case "heartSound":
-            lowLag.play('pluck1');
+            lowLag.play('pluck1', false);
+            break;
+        case "beep":
+            lowLag.play('beep', false);
             break;
         case "wrong":
             boing.play();

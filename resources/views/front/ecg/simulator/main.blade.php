@@ -158,7 +158,7 @@
                             <div class="page-content">
                                 <h3>More Information</h3>
                                 <p class="text-justify case-more-information"></p>
-                                <div class="col-xs-12 text-right pt20">
+                                <div class="col-xs-12 text-left pt20">
                                     <button type="button" class="btn back-step">BACK</button>
                                 </div>
                             </div>
@@ -484,7 +484,7 @@
                             </div>
                         </div>
 
-                        <div id="treatment-modalities" class="page page-fluid">
+                        <div id="treatment-modalities" class="page page-fluid" data-step="TreatmentModalities">
                             <ul class="nav nav-tabs nav-justified">
                                 <li class="active">
                                     <a data-toggle="tab" href="#treatment-modalities-fluid">1. Fluid</a>
@@ -860,27 +860,53 @@
                     </div>
 
                     <div class="second-preview" style="display: none">
-                        Urine Output: <span class="preview-uop"></span> cc/hour
-                        &emsp;&emsp;&emsp;&emsp;
-                        HgB: <span class="preview-hgb"></span>
-                        &emsp;&emsp;&emsp;&emsp;
-                        INR: <span class="preview-inr"></span>
-                        <br/>
-                        BS: <span class="preview-bs"></span>
-                        &emsp;&emsp;&emsp;&emsp;
-                        Na: <span class="preview-na"></span>
-                        &emsp;&emsp;&emsp;&emsp;
-                        K: <span class="preview-k"></span>
-                        &emsp;&emsp;&emsp;&emsp;
-                        Ca: <span class="preview-ca"></span>
-                        <br/>
-                        PH: <span class="preview-ph"></span>
-                        &emsp;&emsp;&emsp;&emsp;
-                        PCO<sub>2</sub>: <span class="preview-pco2"></span>
-                        &emsp;&emsp;&emsp;&emsp;
-                        HCO<sub>3</sub>: <span class="preview-hco3"></span>
-                        &emsp;&emsp;&emsp;&emsp;
-                        PO<sub>2</sub>: <span class="preview-po2"></span>
+                        <div class="col-md-9 xol-xs-12 mb10">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    Urine Output: <span class="preview-uop"></span> cc/hour
+                                </div>
+                                <div class="col-md-3 col-sm-6 col-xs-12">
+                                    HgB: <span class="preview-hgb"></span>
+                                </div>
+                                <div class="col-md-3 col-sm-6 col-xs-12">
+                                    INR: <span class="preview-inr"></span>
+                                </div>
+                                <div class="col-md-3 col-sm-6 col-xs-12">
+                                    BS: <span class="preview-bs"></span>
+                                </div>
+                                <div class="col-md-3 col-sm-6 col-xs-12">
+                                    Na: <span class="preview-na"></span>
+                                </div>
+                                <div class="col-md-3 col-sm-6 col-xs-12">
+                                    K: <span class="preview-k"></span>
+                                </div>
+                                <div class="col-md-3 col-sm-6 col-xs-12">
+                                    Ca: <span class="preview-ca"></span>
+                                </div>
+                                <div class="col-md-3 col-sm-6 col-xs-12">
+                                    PH: <span class="preview-ph"></span>
+                                </div>
+                                <div class="col-md-3 col-sm-6 col-xs-12">
+                                    PCO<sub>2</sub>: <span class="preview-pco2"></span>
+                                </div>
+                                <div class="col-md-3 col-sm-6 col-xs-12">
+                                    HCO<sub>3</sub>: <span class="preview-hco3"></span>
+                                </div>
+                                <div class="col-md-3 col-sm-6 col-xs-12">
+                                    PO<sub>2</sub>: <span class="preview-po2"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 xol-xs-12 case-info-buttons">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-6 col-xs-12 mb10">
+                                    <button class="btn btn-block show-case-info" data-page="#more-info">More Info</button>
+                                </div>
+                                <div class="col-md-12 col-sm-6 col-xs-12 mb10">
+                                    <button class="btn btn-block show-case-info" data-page="#laboratory-exams">Exams</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
