@@ -150,7 +150,6 @@ class PostsController extends Controller
 			$locale = 'all';
 		}
 
-
 		/*-----------------------------------------------
 		| Page Browse ...
 		*/
@@ -168,19 +167,24 @@ class PostsController extends Controller
 			'locale'   => $locale,
 			'criteria' => $request_tab,
 			'id'       => $switches['id'],
+			'domain'   => $posttype->hasnot('locales')? null : 'auto' ,
 		];
 
 		if(in_array($request_tab, ['pending', 'bin']) and user()->as('admin')->cant("post-$type.publish")) {
 			$selector_switches['owner'] = user()->id;
 		}
 
+
 		$models = Post::selector($selector_switches)->orderBy('created_at', 'desc')->paginate(user()->preference('max_rows_per_page'));
+
 		//		$models->appends(['sort' => 'votes'])->links() ;
 		$db = $this->Model;
+
 
 		/*-----------------------------------------------
 		| View ...
 		*/
+		//return 'T' ;
 
 		return view($this->view_folder . ".browse", compact('page', 'models', 'db', 'locale', 'posttype'));
 
@@ -189,7 +193,7 @@ class PostsController extends Controller
 	public function editor($post_type, $post_id)
 	{
 		//Model...
-		$model = Post::find($post_id);
+		$model = Post::findByHashid($post_id);
 		if(!$model or $model->type != $post_type or !$model->posttype->exists) {
 			return view('errors.410');
 		}
@@ -211,12 +215,20 @@ class PostsController extends Controller
 
 	public function create($type_slug, $locale = null, $sisterhood = null)
 	{
-		//Permission...
-		if(user()->as('admin')->cannot("post-$type_slug.create")) {
+		/*-----------------------------------------------
+		| Permission ...
+		*/
+		$permit_string = "post-$type_slug.create";
+		if($locale != 'all') {
+			$permit_string .= ".$locale";
+		}
+		if(user()->as('admin')->cannot($permit_string)) {
 			return view('errors.403');
 		}
 
-		//Model...
+		/*-----------------------------------------------
+		| Model ...
+		*/
 		$model       = new Post();
 		$model->type = $type_slug;
 
@@ -250,19 +262,24 @@ class PostsController extends Controller
 		}
 
 		if(user()->is_a('manager')) {
-			$model->domains = 'global' ;
+			$model->domains = 'global';
 		}
-		elseif( count($roles_array = user()->rolesArray())==1) {
-			$model->domains = $roles_array[0] ;
+		elseif(count($roles_array = user()->rolesArray()) == 1) {
+			$model->domains = $roles_array[0];
 		}
 
-		//Page...
+		/*-----------------------------------------------
+		| Page ...
+		*/
 		$page = [
 			'0' => ["posts/$type_slug", $model->posttype->title, "posts/$type_slug"],
 			'1' => ["posts/$type_slug/create", trans('forms.button.add'), "posts/$type_slug/create"],
 		];
 
-		//View...
+		/*-----------------------------------------------
+		| View ...
+		*/
+
 		return view("manage.posts.editor", compact('page', 'model'));
 
 
@@ -329,7 +346,8 @@ class PostsController extends Controller
 				return $this->saveUnpublish($model);
 			}
 			else {
-				return $this->jsonFeedback(trans('validation.http.Error403'));}
+				return $this->jsonFeedback(trans('validation.http.Error403'));
+			}
 
 		}
 		if($request->id) {
@@ -392,20 +410,20 @@ class PostsController extends Controller
 		| Domain ...
 		*/
 		if($model->hasnot('domains')) {
-			$data['domains'] = 'global' ;
+			$data['domains'] = 'global';
 		}
 		elseif($data['domains'] == 'global') {
 			if(user()->is_not_a('manager')) {
 				return $this->jsonFeedback(trans('validation.http.Error403'));
 			}
 		}
-		elseif(!in_array($data['domains'] , user()->domainsArray() )) {
+		elseif(!in_array($data['domains'], user()->domainsArray("posts-$model->type.create"))) {
 			return $this->jsonFeedback(trans('validation.http.Error403'));
 		}
 
-		$data['domains'] = "|".$data['domains']."|" ;
-		if($data['_reflect_in_global'] and $data['domains'] != 'global') {
-			$data['domains'] .= '|global|' ;
+		$data['domains'] = "|" . $data['domains'] . "|";
+		if(isset($data['_reflect_in_global']) and $data['_reflect_in_global'] and $data['domains'] != 'global') {
+			$data['domains'] .= '|global|';
 		}
 
 		/*-----------------------------------------------
@@ -413,7 +431,7 @@ class PostsController extends Controller
 		*/
 
 		//if($model->has('price')) {
-			//$data['sale_price'] = $data['price'] - $data['discount_amount'];
+		//$data['sale_price'] = $data['price'] - $data['discount_amount'];
 		//}
 		//if($model->has('price') and $data['sale_expires_date']) {
 		//	if(!$data['sale_expires_hour']) {
@@ -488,7 +506,7 @@ class PostsController extends Controller
 					$data['id']              = $original->id;
 					$data['moderated_By']    = user()->id;
 					$data['moderated_at']    = Carbon::now()->toDateTimeString();
-					$redirect_url            = url("manage/posts/" . $data['type'] . "/edit/" . $original->id);
+					$redirect_url            = url("manage/posts/" . $data['type'] . "/edit/" . $original->hash_id);
 					break;
 
 				default:
@@ -651,7 +669,7 @@ class PostsController extends Controller
 		|
 		*/
 		if($redirect_url) {
-			$redirect_url = str_replace('-ID-', $saved, $redirect_url);
+			$redirect_url = str_replace('-ID-', hashid_encrypt($saved , 'ids') , $redirect_url);
 			$refresh_page = false;
 		}
 		else {
@@ -687,7 +705,8 @@ class PostsController extends Controller
 				$done = $model->delete();
 			}
 			else {
-				return $this->jsonFeedback(trans('validation.http.Error403'));}
+				return $this->jsonFeedback(trans('validation.http.Error403'));
+			}
 		}
 		elseif($command == 'delete_original') {
 			$original_model = $model->original();
@@ -695,7 +714,8 @@ class PostsController extends Controller
 				return $this->jsonFeedback(trans('validation.http.Error410'));
 			}
 			elseif(!$original_model->canDelete()) {
-				return $this->jsonFeedback(trans('validation.http.Error403'));}
+				return $this->jsonFeedback(trans('validation.http.Error403'));
+			}
 			else {
 				$done = $original_model->delete();
 				$done = $original_model->copies()->delete();
@@ -838,7 +858,8 @@ class PostsController extends Controller
 			return $this->jsonFeedback(trans('validation.http.Error410'));
 		}
 		if(!$post->canPublish()) {
-			return $this->jsonFeedback(trans('validation.http.Error403'));}
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+		}
 
 		/*-----------------------------------------------
 		| User Selection ...
@@ -969,34 +990,34 @@ class PostsController extends Controller
 			}
 		}
 		else {
-			if(user()->as('admin')->cannot("posts-".$switch['type'].".create")) {
-				return $this->jsonFeedback(trans('validation.http.Error403'));}
+			if(user()->as('admin')->cannot("posts-" . $switch['type'] . ".create")) {
+				return $this->jsonFeedback(trans('validation.http.Error403'));
+			}
 		}
-
 
 
 		/*-----------------------------------------------
 		| Sort ...
 		*/
 		if($switch['sort']) {
-			$string = strval( $switch['sort'] );
-			$string = str_replace( 'divGood[]:' , '' , $string) ;
-			$string = str_replace( 'amp;' , '' , $string) ;
-			$array = explode('&' , $string);
-			$order = 1 ;
-			$default_found = false ;
-			$default_price = 0;
+			$string             = strval($switch['sort']);
+			$string             = str_replace('divGood[]:', '', $string);
+			$string             = str_replace('amp;', '', $string);
+			$array              = explode('&', $string);
+			$order              = 1;
+			$default_found      = false;
+			$default_price      = 0;
 			$default_sale_price = 0;
 
 			foreach($array as $item) {
 				$good = Good::find($item);
 				if(!$default_found and $good->isAvailableIn($switch['locale'])) {
-					$default_found = true ;
-					$default_price = $good->price ;
-					$default_sale_price = $good->sale_price ;
+					$default_found      = true;
+					$default_price      = $good->price;
+					$default_sale_price = $good->sale_price;
 				}
-				$good->order = $order++ ;
-				$good->save() ;
+				$good->order = $order++;
+				$good->save();
 				//Good::where('id' , $item)->update([
 				//	'order' => $order++ ,
 				//]);
@@ -1007,11 +1028,10 @@ class PostsController extends Controller
 		| Save Default Price to the Post Table ...
 		*/
 		if(isset($post) and $post) {
-			$post->sale_price = $default_sale_price ;
-			$post->price = $default_price ;
+			$post->sale_price = $default_sale_price;
+			$post->price      = $default_price;
 			$post->save();
 		}
-
 
 
 		/*-----------------------------------------------
@@ -1099,11 +1119,13 @@ class PostsController extends Controller
 				return $this->jsonFeedback(trans('validation.http.Error410'));
 			}
 			if(!$post->canEdit()) {
-				return $this->jsonFeedback(trans('validation.http.Error403'));}
+				return $this->jsonFeedback(trans('validation.http.Error403'));
+			}
 		}
 		else {
 			if(user()->as('admin')->cannot("posts-$request->type.create")) {
-				return $this->jsonFeedback(trans('validation.http.Error403'));}
+				return $this->jsonFeedback(trans('validation.http.Error403'));
+			}
 		}
 
 		/*-----------------------------------------------
@@ -1117,11 +1139,11 @@ class PostsController extends Controller
 		| Data Verification and Completion ...
 		*/
 		if($request->_locale != 'fa') {
-			$title = $request->toArray()['_title_in_'.$request->_locale] ;
-			$data['locale_titles'][$request->_locale] = $title ;
+			$title                                      = $request->toArray()[ '_title_in_' . $request->_locale ];
+			$data['locale_titles'][ $request->_locale ] = $title;
 		}
 		else {
-			$title = $request->title ;
+			$title = $request->title;
 		}
 
 		if($request->pack_id) {
@@ -1155,15 +1177,15 @@ class PostsController extends Controller
 
 	public function deleteGood($id)
 	{
-		$model = Good::find($id) ;
+		$model = Good::find($id);
 		if($model) {
-			$ok = $model->delete() ;
+			$ok = $model->delete();
 		}
 		else {
-			$ok = false ;
+			$ok = false;
 		}
 
-		return $this->jsonAjaxSaveFeedback( $ok , [
+		return $this->jsonAjaxSaveFeedback($ok, [
 			'success_callback' => "divReload('divEditorGoods')",
 		]);
 	}

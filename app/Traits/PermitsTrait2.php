@@ -48,7 +48,7 @@ trait PermitsTrait2
 		if(!$force_fresh_data and user()->id == $this->id) {
 			$revealed_at = session()->get('logged_user_revealed_at', false);
 			$roles       = session()->get('logged_user_roles', false);
-			if(true or !$roles or !$revealed_at or $revealed_at < $this->updated_at) {
+			if(!$roles or !$revealed_at or $revealed_at < $this->updated_at) {
 				$roles = $this->fetchRoles();
 				session()->put('logged_user_roles', $roles);
 				session()->put('logged_user_revealed_at', Carbon::now()->toDateTimeString());
@@ -684,11 +684,14 @@ trait PermitsTrait2
 	}
 
 	/**
+	 * @param string $scope: any special permission that should be checked.
+	 * @param int  $min_status
+	 *
 	 * @return Model: of all the domains, the user has access to
 	 * Important: don't forget to use get() after calling this method.
 	 * Example: user()->domainsQuery()->orderBy('folan')->get()
 	 */
-	public function domainsQuery()
+	public function domainsQuery($scope = null , $min_status=8)
 	{
 		/*-----------------------------------------------
 		| Bypass if the user in question is a manager ...
@@ -700,9 +703,14 @@ trait PermitsTrait2
 		/*-----------------------------------------------
 		| Normal Process ...
 		*/
-		$roles = $this->rolesArray();
+		$roles = $this->min($min_status)->rolesArray();
 		$array = [];
 		foreach($roles as $role) {
+			if($scope) {
+				if($this->as($role)->cannot($scope)) {
+					continue ;
+				}
+			}
 			if(str_contains($role, self::$role_prefix_for_domain_admins . '-')) {
 				$array[] = str_replace(self::$role_prefix_for_domain_admins . '-', null, $role);
 			}
@@ -713,12 +721,16 @@ trait PermitsTrait2
 		return $domains;
 	}
 
+
 	/**
+	 * @param string $scope: any special permission that should be checked.
+	 * @param int  $min_status
+	 *
 	 * @return array: of all the domains, the user has access to
 	 */
-	public function domainsArray()
+	public function domainsArray($scope = null , $min_status=8)
 	{
-		return $this->domainsQuery()->get()->pluck('slug')->toArray();
+		return $this->domainsQuery($scope , $min_status)->get()->pluck('slug')->toArray();
 	}
 
 	/**

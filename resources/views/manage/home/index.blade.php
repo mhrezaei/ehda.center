@@ -19,7 +19,7 @@
 	</div>
 
 	{{-- Create Post--}}
-	@if(sizeof($topbar_create_menu = Manage::topbarCreateMenu()))
+	@if(sizeof($topbar_create_menu = Manage::topbarCreateMenu())>1)
 		<div id="divCreate" class="pinBoot-inside">
 			@include("manage.home.index-create")
 		</div>

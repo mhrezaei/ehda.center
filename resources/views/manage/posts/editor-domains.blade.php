@@ -6,7 +6,7 @@
 --}}
 
 @if($model->has('domains'))
-	{{ '' , $domains = user()->domainsQuery()->orderBy('title')->get() }}
+	{{ '' , $domains = user()->domainsQuery("posts-$model->type.create")->orderBy('title')->get() }}
 	{{ '' , $show_combo = true }}
 
 	{{--

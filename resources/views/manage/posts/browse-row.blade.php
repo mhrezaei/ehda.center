@@ -34,7 +34,7 @@
 <td>
 	@include("manage.frame.widgets.grid-text" , [
 		'text' => $model->title,
-		'link' => $model->canEdit()? url("manage/posts/$model->type/edit/-id-") : '',
+		'link' => $model->canEdit()? url("manage/posts/$model->type/edit/$model->hash_id") : '',
 		'size' => "14" ,
 //		'link' => $model->canEdit()? "modal:manage/posts/act/-id-/quick_edit" : '',
 	])
@@ -208,7 +208,7 @@
 	['eye-slash', trans('posts.form.preview') , "urlN:$model->preview_link" , $model->has('preview')],
 	['-' , $model->has('preview')],
 
-	['pencil' , trans('forms.button.edit') , "url:manage/posts/$model->type/edit/-id-" , $model->canEdit()],
+	['pencil' , trans('forms.button.edit') , "url:manage/posts/$model->type/edit/-hash_id-" , $model->canEdit()],
 //	['pencil-square-o' , trans('posts.form.quick_edit'), "modal:manage/posts/act/-id-/quick_edit" , $model->canEdit()],
 	['user-o' , trans('posts.form.post_owner') , "modal:manage/posts/act/-id-/owner/1" , $model->canPublish()],
 	['clone' , trans('posts.form.clone') , "modal:manage/posts/act/-id-/clone" , $model->can('create')],

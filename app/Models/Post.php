@@ -757,17 +757,25 @@ class Post extends Model
 				$switch['domain'] = null;
 			}
 			else {
-				$switch['domain'] = user()->domainsArray();
+				$switch['domain'] = user()->domainsArray("posts-".$switch['type']);
 			}
 		}
 
 		if($switch['domain']) {
 			$switch['domain'] = (array)$switch['domain'];
 
-			foreach($switch['domain'] as $domain) {
-				$table->where('domains', 'like', "%$domain%");
-			}
+			$table->where( function($query) use ($switch) {
+				$query->where('id' , '0') ;
+
+				foreach($switch['domain'] as $domain) {
+					$query->orWhere('domains', 'like', "%|$domain|%");
+				}
+
+			});
 		}
+
+
+
 
 
 		/*-----------------------------------------------

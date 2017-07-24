@@ -81,8 +81,8 @@ function pd($string)
  */
 function ed($string)
 {
-	$farsi_chars = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹', '۴', '۵', '۶', 'ی', 'ک', 'ک',];
-	$latin_chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '٤', '٥', '٦', 'ي', 'ك', 'ك',];
+	$farsi_chars = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹', '٤', '٥', '٦'];
+	$latin_chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '4', '5', '6'];
 
 	return str_replace($farsi_chars, $latin_chars, $string);
 }
@@ -462,7 +462,13 @@ function hashid_decrypt($hash, $connection = 'main')
 
 function hashid_decrypt0($hash, $connection = 'main')
 {
-	return Hashids::connection($connection)->decode($hash)[0];
+	$result = hashid_decrypt($hash, $connection ) ;
+	if(isset($result[0])) {
+		return $result[0] ;
+	}
+	else {
+		return null ;
+	}
 }
 
 /**

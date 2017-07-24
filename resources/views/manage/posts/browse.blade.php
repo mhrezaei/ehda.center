@@ -19,6 +19,7 @@
 				'type' => "success",
 				'caption' => trans('forms.button.add_to').' '.$posttype->title ,
 				'icon' => "plus-circle",
+				'condition' => $posttype->can('create') ,
 			],
 			[
 				'target' => "modal:manage/settings/act/$posttype->id/posttype" ,

@@ -145,9 +145,21 @@ class HomeController extends Controller
 		if(str_contains($keyword , '@') and str_contains($keyword , '.')) { // <~~ Probably it's an email.
 			$field = 'email' ;
 		}
-		if(str_contains($keyword , 'id')) {
+		elseif(str_contains($keyword , 'hashid')) {
+			$keyword = trim(str_replace('hashid' , null , $keyword));
+			if(is_numeric($keyword)) {
+				return $this->jsonFeedback(hashid_encrypt($keyword, 'ids'));
+			}
+			else {
+				return $this->jsonFeedback(hashid_decrypt0($keyword, 'ids'));
+			}
+		}
+		elseif(str_contains($keyword , 'id')) {
 			$field = 'id' ;
 			$keyword = str_replace('id' , null , $keyword);
+		}
+		elseif($keyword=='taha') {
+			return $this->jsonFeedback('جانم');
 		}
 		elseif(YasnaServiceProvider::isCodeMelli($keyword)) {
 			$field = 'code_melli' ;
