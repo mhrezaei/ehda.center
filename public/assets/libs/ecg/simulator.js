@@ -8,6 +8,10 @@ window.timers = {};
 window.shockerCharge = 0;
 
 $(document).ready(function () {
+
+    lowLag.init({'urlPrefix': siteUrl + '/assets/sound/'});
+    lowLag.load(['heartSound.mp3', 'heartSound.ogg'], 'pluck1');
+
     fixBodyHeight();
     loadData();
 
@@ -48,6 +52,7 @@ $(document).ready(function () {
             var equations = window.caseData.calculations;
             var toDo = eval('equations' + dash2brace(treatment));
             var doneActions = [];
+            var beforeData = getValueOf(window.currentData);
 
             $.each(toDo, function (num, tasks) {
                 if (num) {
@@ -70,14 +75,14 @@ $(document).ready(function () {
                             var tmpAction = {
                                 target: targetName,
                                 equation: equation,
-                                before: window.currentData[targetName]
+                                before: getValueOf(window.currentData)[targetName]
                             };
 
                             equation = equation.replace(new RegExp('{{orig}}', 'g'), window.currentData[targetName]);
 
                             var result = eval(equation);
                             window.currentData[targetName] = Number(result.toFixed(2));
-                            tmpAction.after = window.currentData[targetName];
+                            tmpAction.after = getValueOf(window.currentData)[targetName];
 
                             doneActions.push(tmpAction);
                         });
@@ -93,6 +98,8 @@ $(document).ready(function () {
                 toPage: lastReaction.toPage,
                 forward: true,
                 calculations: doneActions,
+                beforeData: beforeData,
+                afterData: getValueOf(window.currentData),
             });
 
             refreshScreen();
@@ -107,14 +114,11 @@ $(document).ready(function () {
 
     $('.monitor-ecg-shock-box').find('.btn-charge-shocker').click(function () {
         var energy = $('.shocker-energy').val();
-        console.log(energy)
         chargeShocker(energy);
 
     });
 
     $('.monitor-ecg-shock-box').find('.btn-shock').click(function () {
-        $('.shocker-charger-box').css('opacity', 0);
-
         doShock();
     });
 });
@@ -162,7 +166,7 @@ function loadData() {
         $('.case-urine-output').html(caseData.caseInfo.urineOutput);
         $('.case-more-information').html(caseData.caseInfo.moreInformation);
 
-        $.each(caseData.defaultData.exams, function (tableTitle, tableData) {
+        $.each(caseData.exams, function (tableTitle, tableData) {
             $.each(tableData, function (key, data) {
                 var targetClass = ['case', tableTitle, key].join(' ').title2kebab();
                 $('.' + targetClass).html(data);
@@ -197,6 +201,8 @@ function passStep(page) {
         fromPage: page,
         forward: true,
         done: false,
+        beforeData: getValueOf(window.currentData),
+        afterData: getValueOf(window.currentData),
     };
 
     // Call related function dynamically
@@ -232,7 +238,8 @@ function passStartQuestionStep(page) {
                 window.tmpReaction.toStep = $('#more-info').attr('data-step');
                 window.tmpReaction.toPage = $('#more-info');
 
-                pageTimeout($('#more-info'), 2 * 60 * 1000, ventricularTachycardia);
+                console.log(currentTime())
+                pageTimeout($('#more-info'), 30 * 1000, ventricularTachycardia);
                 break;
             case "2":
                 $('#laboratory-exams').addClass('current');
@@ -240,7 +247,8 @@ function passStartQuestionStep(page) {
                 window.tmpReaction.toStep = $('#laboratory-exams').attr('data-step');
                 window.tmpReaction.toPage = $('#laboratory-exams');
 
-                pageTimeout($('#laboratory-exams'), 2 * 60 * 1000, ventricularTachycardia);
+                console.log(currentTime())
+                pageTimeout($('#laboratory-exams'), 60 * 1000, ventricularTachycardia);
                 break;
             case "3":
                 $('#treatment-modalities').addClass('current');
@@ -260,7 +268,14 @@ function passStartQuestionStep(page) {
 }
 
 function backStep(page) {
-    var lastStep = window.reactions.last();
+    var lastStepIndex = window.reactions.length - 1;
+    var lastStep = window.reactions[lastStepIndex];
+    console.log(lastStep);
+
+    while (!lastStep.forward || lastStep.auto) {
+        lastStepIndex--;
+        lastStep = window.reactions[lastStepIndex];
+    }
     console.log(lastStep)
 
     if (typeof page != 'undefined') {
@@ -270,27 +285,16 @@ function backStep(page) {
         }
     }
 
+    window.currentData = lastStep.beforeData;
     var newReaction = {
         fromStep: lastStep.toStep,
         fromPage: lastStep.toPage,
         toStep: lastStep.fromStep,
         toPage: lastStep.fromPage,
         forward: false,
+        beforeData: lastStep.afterData,
+        afterData: getValueOf(window.currentData),
     };
-
-    if (lastStep.calculations) {
-        newReaction.calculations = [];
-        $.each(lastStep.calculations, function (index, item) {
-            newReaction.calculations.push({
-                after: item.before,
-                before: item.after,
-                target: item.target,
-            });
-
-            console.log(item.target)
-            window.currentData[item.target] = item.before;
-        });
-    }
 
     refreshScreen();
 
@@ -302,8 +306,6 @@ function backStep(page) {
 
 function pageTimeout(page, time, timeoutAction) {
     var timeoutName = "timeout" + $.now();
-    console.log(page)
-    console.log(time / 1000)
 
     window.timers[timeoutName] = setTimeout(function () {
         if (page.hasClass('current')) {
@@ -315,7 +317,12 @@ function pageTimeout(page, time, timeoutAction) {
 }
 
 function ventricularTachycardia() {
+    console.log('VTach');
+    console.log(currentTime());
     var newHR = 210;
+    var beforeData = getValueOf(window.currentData);
+    console.log('beforeData')
+    console.log(beforeData)
 
     $('.monitor-ecg-preview-inner').addClass('VTach');
 
@@ -326,22 +333,27 @@ function ventricularTachycardia() {
         fromPage: lastReaction.toPage,
         toPage: lastReaction.toPage,
         forward: true,
+        auto: true,
         calculations: [
             {
-                before: window.currentData.HR,
+                before: getValueOf(window.currentData).HR,
                 after: newHR,
                 target: 'HR'
             }
         ],
+        beforeData: beforeData,
+        afterData: getValueOf(window.currentData),
     });
 
     window.currentData.HR = newHR;
 
     refreshScreen();
 
+    $('.monitor-ecg-shock-box').find('.btn-shock').attr('disabled', 'disabled');
     $('.monitor-ecg-shock-box').show();
     $('.monitor-case-management-panel').hide();
 
+    window.timers.die = setTimeout(kill, 60 * 1000);
 }
 
 function refreshScreen() {
@@ -364,6 +376,7 @@ function refreshScreen() {
     $('.preview-po2').html(window.currentData.PO2);
 
     runECG(window.currentData.HR);
+    // playHeartSound(window.currentData.HR);
 }
 
 function runECG(hr) {
@@ -395,17 +408,105 @@ function chargeShocker(energy) {
     var chargingTime = (energy / chargingSpeed) * 1000; // Miliseconds
 
     box.css('opacity', 1);
-    progressBar.css('width', 0);
+
     progressBar.animate({width: "100%"}, chargingTime, function () {
         $('.monitor-ecg-shock-box').find('.btn-shock').removeAttr('disabled');
         window.shockerCharge = energy;
+        progressBar.attr('aria-valuenow', 100);
     });
 }
 
 function doShock() {
-    $('.monitor-ecg-preview-inner').removeClass('VTach');
+    $('.monitor-ecg-preview-inner').removeClass('VTach').removeClass('dead');
 
-    backStep();
-    $('.monitor-case-management-panel').show();
-    $('.monitor-ecg-shock-box').hide();
+    $('.shocker-charger-box').css('opacity', 0);
+    $('.shocker-charger-box').find('.progress-bar').css('width', "0").attr('aria-valuenow', 0);
+
+    if (true) { // check if energy is enough
+        clearTimeout(window.timers.die);
+        delete window.timers.die;
+        backStep();
+
+        $('.monitor-case-management-panel').show();
+        $('.monitor-ecg-shock-box').hide();
+    }
+}
+
+function currentTime() {
+    var time = new Date();
+    return time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds();
+}
+
+function kill() {
+    console.log('die');
+    console.log(currentTime());
+    var newHR = 0;
+    var beforeData = getValueOf(window.currentData);
+    console.log('beforeData')
+    console.log(beforeData)
+
+    $('.monitor-ecg-preview-inner').removeClass('VTach')
+        .addClass('dead');
+
+    var lastReaction = window.reactions.last();
+    window.reactions.push({
+        fromStep: lastReaction.toStep,
+        toStep: lastReaction.toStep,
+        fromPage: lastReaction.toPage,
+        toPage: lastReaction.toPage,
+        forward: true,
+        auto: true,
+        calculations: [
+            {
+                before: getValueOf(window.currentData).HR,
+                after: newHR,
+                target: 'HR'
+            }
+        ],
+        beforeData: beforeData,
+        afterData: getValueOf(window.currentData),
+    });
+
+    window.currentData.HR = newHR;
+
+    refreshScreen();
+
+    $('.monitor-ecg-shock-box').find('.btn-shock').attr('disabled', 'disabled');
+    $('.monitor-ecg-shock-box').show();
+    $('.monitor-case-management-panel').hide();
+}
+
+function getValueOf(data) {
+    return JSON.parse(JSON.stringify(data));
+}
+
+function playHeartSound(hr) {
+    var intervalTime = (60 * 1000) / hr;
+
+    window.timers.soundHR = setInterval(playSound('heartSound'), interval);
+}
+
+function playSound(id) {
+    console.log('playing')
+    switch (id) {
+        case "heartSound":
+            lowLag.play('pluck1');
+            break;
+        case "wrong":
+            boing.play();
+            break;
+        case "right":
+            right1.play();
+            break;
+        case "wellDone":
+            wellDone.play();
+            break;
+        case "helpMe":
+            helpMe.play();
+            break;
+        case "congrats":
+            congrats.play();
+            break;
+
+    }
 }

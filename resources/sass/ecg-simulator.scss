@@ -7,7 +7,7 @@
 @import "measurement_and_alignment";
 
 body {
-  @extend .bg-black;
+  @extend .bg-black, .f16;
 
   height: 100vh;
 
@@ -85,6 +85,10 @@ body {
 
               &.VTach {
                 background-image: url("#{$rhysImagesDir}/r19-(04D10A).png");
+              }
+
+              &.dead {
+                background-image: url("#{$rhysImagesDir}/dead-(04D10A).png");
               }
             }
           }

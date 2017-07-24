@@ -434,8 +434,8 @@
                                         </tr>
                                         <tr>
                                             <td>4</td>
-                                            <td>RAP</td>
-                                            <td><span class="case-echocardiography-rap"></span></td>
+                                            <td>PAP</td>
+                                            <td><span class="case-echocardiography-pap"></span></td>
                                         </tr>
                                         </tbody>
                                     </table>

@@ -29,63 +29,63 @@
       "PCO2": 50,
       "HCO3": 17,
       "PO2": 50,
-      "PT": 16,
-      "exams": {
-        "CBC": {
-          "Hgb": 12,
-          "HCT": 36,
-          "WBC": 12000,
-          "Platelet": "100.000",
-          "ESR": 10
-        },
-        "Biochemistry": {
-          "Blood Sugar": 160,
-          "BUN": 40,
-          "Cr": 2.8,
-          "Na": 170,
-          "K": 3,
-          "Ca": 6,
-          "P": 2,
-          "Mg": 2,
-          "AST": 70,
-          "ALT": 100,
-          "ALKp": 250,
-          "Albumin": 2.5
-        },
-        "Coagulation Tests": {
-          "PT": 16,
-          "PTT": 45,
-          "INR": 2
-        },
-        "AGB": {
-          "PH": 7.25,
-          "PCO2": 50,
-          "HCO3": 17,
-          "PO2": 50,
-          "O2Sat": 70,
-          "Lactate": 8
-        },
-        "Urine Analysis": {
-          "Specific Gravity": 1008,
-          "Urine Osmolality": 200,
-          "WBC": "2-3",
-          "RBC": "2-4",
-          "Sugar": "-",
-          "protein": 30
-        },
-        "Echocardiography": {
-          "EF": 50,
-          "Wall Motion Abnormality": "-",
-          "Valvular Problems": "-",
-          "RAP": 30
-        },
-        "Virology Tests": {
-          "HBsAg": "-",
-          "HBsAb": 10,
-          "HBcAb": "-",
-          "HBeAb": "-",
-          "HCVAb": "-"
-        }
+      "PT": 16
+    },
+    "exams": {
+      "CBC": {
+        "Hgb": 12,
+        "HCT": 36,
+        "WBC": 12000,
+        "Platelet": "100.000",
+        "ESR": 10
+      },
+      "Biochemistry": {
+        "Blood Sugar": 160,
+        "BUN": 40,
+        "Cr": 2.8,
+        "Na": 170,
+        "K": 3,
+        "Ca": 6,
+        "P": 2,
+        "Mg": 2,
+        "AST": 70,
+        "ALT": 100,
+        "ALKp": 250,
+        "Albumin": 2.5
+      },
+      "Coagulation Tests": {
+        "PT": 16,
+        "PTT": 45,
+        "INR": 2
+      },
+      "AGB": {
+        "PH": 7.25,
+        "PCO2": 50,
+        "HCO3": 17,
+        "PO2": 50,
+        "O2Sat": 70,
+        "Lactate": 8
+      },
+      "Urine Analysis": {
+        "Specific Gravity": 1008,
+        "Urine Osmolality": 200,
+        "WBC": "2-3",
+        "RBC": "2-4",
+        "Sugar": "-",
+        "protein": 30
+      },
+      "Echocardiography": {
+        "EF": 50,
+        "Wall Motion Abnormality": "-",
+        "Valvular Problems": "-",
+        "PAP": 30
+      },
+      "Virology Tests": {
+        "HBsAg": "-",
+        "HBsAb": 10,
+        "HBcAb": "-",
+        "HBeAb": "-",
+        "HCVAb": "-"
       }
     },
     "calculations": {
@@ -103,9 +103,9 @@
               "Ca": "{{orig}} + ({{1-1-2}} * (-0.2))",
               "HgB": "{{orig}} + ({{1-1-2}} * (-0.4))",
               "PH": "{{orig}} + ({{1-1-2}} * 0.02)",
-              "HCO3": "{{orig}} + ({{1-1-2}} * 2)",
-              "PO2": "if({{1-1-2}} == 3) {{orig}} - 4; else if({{1-1-2}} == 4) {{orig}} - 8; else {{orig}}",
-              "SPO2": "if({{1-1-2}} == 3) {{orig}} - 4; else if({{1-1-2}} == 4) {{orig}} - 8; else {{orig}} ",
+              "HCO3": "{{orig}} + ({{1-1-2}} * 1)",
+              "PO2": "if({{1-1-2}} == 3) {{orig}} - 2; else if({{1-1-2}} == 4) {{orig}} - 4; else {{orig}}",
+              "SPO2": "if({{1-1-2}} == 3) {{orig}} - 2; else if({{1-1-2}} == 4) {{orig}} - 4; else {{orig}} ",
               "T": "if({{1-1-2}} == 3) {{orig}} - 1; else if({{1-1-2}} == 4) {{orig}} - 2; else {{orig}} "
             },
             "2": {
@@ -120,9 +120,9 @@
               "Ca": "{{orig}} + ({{1-1-2}} * (-0.1))",
               "HgB": "{{orig}} + ({{1-1-2}} * (-0.2))",
               "PH": "{{orig}} + ({{1-1-2}} * 0.01)",
-              "HCO3": "{{orig}} + ({{1-1-2}} * 1)",
-              "PO2": "if({{1-1-2}} == 3) {{orig}} - 4; else if({{1-1-2}} == 4) {{orig}} - 8; else {{orig}} ",
-              "SPO2": "if({{1-1-2}} == 3) {{orig}} - 4; else if({{1-1-2}} == 4) {{orig}} - 8; else {{orig}} ",
+              "HCO3": "{{orig}} + ({{1-1-2}} * 0.5)",
+              "PO2": "if({{1-1-2}} == 3) {{orig}} - 2; else if({{1-1-2}} == 4) {{orig}} - 4; else {{orig}} ",
+              "SPO2": "if({{1-1-2}} == 3) {{orig}} - 2; else if({{1-1-2}} == 4) {{orig}} - 4; else {{orig}} ",
               "T": "if({{1-1-2}} == 3) {{orig}} - 1; else if({{1-1-2}} == 4) {{orig}} - 2; else {{orig}} "
             },
             "3": {
@@ -160,9 +160,9 @@
               "Ca": "{{orig}} + ({{1-2-2}} * (-0.2))",
               "HgB": "{{orig}} + ({{1-2-2}} * (-0.4))",
               "PH": "{{orig}} + ({{1-2-2}} * 0.02)",
-              "HCO3": "{{orig}} + ({{1-2-2}} * 2)",
-              "PO2": "if({{1-2-2}} == 3) {{orig}} - 4; else if({{1-2-2}} == 4) {{orig}} - 6; else if({{1-2-2}} == 5) {{orig}} - 8; else {{orig}}",
-              "SPO2": "if({{1-2-2}} == 3) {{orig}} - 4; else if({{1-2-2}} == 4) {{orig}} - 6; else if({{1-2-2}} == 5) {{orig}} - 8; else {{orig}}",
+              "HCO3": "{{orig}} + ({{1-2-2}} * 1)",
+              "PO2": "if({{1-2-2}} == 3) {{orig}} - 2; else if({{1-2-2}} == 4) {{orig}} - 3; else if({{1-2-2}} == 5) {{orig}} - 4; else {{orig}}",
+              "SPO2": "if({{1-2-2}} == 3) {{orig}} - 2; else if({{1-2-2}} == 4) {{orig}} - 3; else if({{1-2-2}} == 5) {{orig}} - 4; else {{orig}}",
               "T": "if({{1-2-2}} == 4) {{orig}} - 1; else if({{1-2-2}} == 5) {{orig}} - 2; else {{orig}}"
             },
             "2": {
@@ -177,9 +177,9 @@
               "Ca": "{{orig}} + ({{1-2-2}} * (-0.1))",
               "HgB": "{{orig}} + ({{1-2-2}} * (-0.2))",
               "PH": "{{orig}} + ({{1-2-2}} * 0.01)",
-              "HCO3": "{{orig}} + ({{1-2-2}} * 1)",
-              "PO2": "if({{1-2-2}} == 3) {{orig}} - 4; else if({{1-2-2}} == 4) {{orig}} - 6; else if({{1-2-2}} == 5) {{orig}} - 8; else {{orig}}",
-              "SPO2": "if({{1-2-2}} == 3) {{orig}} - 4; else if({{1-2-2}} == 4) {{orig}} - 6; else if({{1-2-2}} == 5) {{orig}} - 8; else {{orig}}",
+              "HCO3": "{{orig}} + ({{1-2-2}} * 0.5)",
+              "PO2": "if({{1-2-2}} == 3) {{orig}} - 2; else if({{1-2-2}} == 4) {{orig}} - 3; else if({{1-2-2}} == 5) {{orig}} - 4; else {{orig}}",
+              "SPO2": "if({{1-2-2}} == 3) {{orig}} - 2; else if({{1-2-2}} == 4) {{orig}} - 3; else if({{1-2-2}} == 5) {{orig}} - 4; else {{orig}}",
               "T": "if({{1-2-2}} == 4) {{orig}} - 1; else if({{1-2-2}} == 5) {{orig}} - 2; else {{orig}}"
             },
             "3": {
@@ -236,16 +236,20 @@
         "1": {
           "": {
             "1": {
-              "SPO2": "{{orig}} + 0"
+              "SPO2": "{{orig}} + 0",
+              "PO2": "{{orig}} + 0"
             },
             "2": {
-              "SPO2": "{{orig}} + 15"
+              "SPO2": "{{orig}} + 15",
+              "PO2": "{{orig}} + 30"
             },
             "3": {
-              "SPO2": "{{orig}} + 25"
+              "SPO2": "{{orig}} + 25",
+              "PO2": "{{orig}} + 60"
             },
             "4": {
-              "SPO2": "{{orig}} + 35"
+              "SPO2": "{{orig}} + 35",
+              "PO2": "{{orig}} + 90"
             }
           }
         },
@@ -261,11 +265,11 @@
             },
             "3": {
               "PCO2": "{{orig}} - 6",
-              "PH": "{{orig}} + 1.2"
+              "PH": "{{orig}} + 0.12"
             },
             "4": {
               "PCO2": "{{orig}} - 8",
-              "PH": "{{orig}} + 1.6"
+              "PH": "{{orig}} + 0.16"
             }
           }
         }
@@ -324,7 +328,7 @@
             "1": {
               "SBP": "{{orig}} + 10",
               "DBP": "{{orig}} + 10",
-              "INR": "{{orig}} + 0.5",
+              "INR": "{{orig}} - 0.5",
               "PT": "{{orig}} - 2"
             }
           }
