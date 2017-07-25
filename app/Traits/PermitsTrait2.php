@@ -304,7 +304,7 @@ trait PermitsTrait2
 			$string .= " $extension ";
 		}
 
-		return $this->update(['cache_roles' => self::deface($string)]);
+		return $this->update(['cache_roles' => self::deface($string) .rand(100000,999999)]);
 	}
 
 	/*

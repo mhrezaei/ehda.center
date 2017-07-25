@@ -274,7 +274,7 @@ class UsersController extends Controller
 		if(!$model or $model->is_not_a($request->role_slug)) {
 			return $this->jsonFeedback(trans('validation.http.Error410'));
 		}
-		if(!$model->as('admin')->canPermit()) { //@TODO: Check for accurate result!
+		if(!$model->as($request->role_slug)->canPermit()) { //@TODO: Check for accurate result!
 			return $this->jsonFeedback(trans('validation.http.Error403'));
 		}
 

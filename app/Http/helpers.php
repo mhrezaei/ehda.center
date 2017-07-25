@@ -347,6 +347,10 @@ function model($class_name, $id = 0)
 		return $class;
 	}
 
+	if(is_string($id)) {
+		$id = hashid($id , 'ids') ;
+	}
+
 	if(in_array('Illuminate\Database\Eloquent\SoftDeletes', class_uses($class))) {
 		$object = $class::withTrashed()->find($id);
 	}
@@ -467,7 +471,17 @@ function hashid_decrypt0($hash, $connection = 'main')
 		return $result[0] ;
 	}
 	else {
-		return null ;
+		return false ;
+	}
+}
+
+function hashid($string , $connection= 'main')
+{
+	if(is_numeric($string)) {
+		return hashid_encrypt($string , $connection) ;
+	}
+	else {
+		return hashid_decrypt0($string , $connection) ;
 	}
 }
 

@@ -194,7 +194,7 @@
 			'icon' => "comments-o" ,
 			'link' => "url:manage/comments/all/post_id=-id-" ,
 		]     )
-	</td>
+
 @endif
 
 {{--
@@ -212,7 +212,7 @@
 //	['pencil-square-o' , trans('posts.form.quick_edit'), "modal:manage/posts/act/-id-/quick_edit" , $model->canEdit()],
 	['user-o' , trans('posts.form.post_owner') , "modal:manage/posts/act/-id-/owner/1" , $model->canPublish()],
 	['clone' , trans('posts.form.clone') , "modal:manage/posts/act/-id-/clone" , $model->can('create')],
-	['globe' , trans('posts.features.locales') , "modal:manage/posts/act/-id-/locales/" , $model->can('create') and $model->has('locales')],
+	['globe' , trans('posts.features.locales') , "modal:manage/posts/act/-id-/locales/" , $model->has('locales')],
 	['-' , $model->can('create') or $model->canEdit()],
 
 	['trash-o' , trans('forms.button.soft_delete') , "modal:manage/posts/act/-id-/delete" , $model->canDelete() and !$model->trashed()] ,

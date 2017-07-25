@@ -196,6 +196,37 @@ class Post extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
+	public function getRequiredRolesArrayAttribute()
+	{
+		$domains_array = $this->domains_array ;
+		if(!count($domains_array)) {
+			return 'admin' ;
+		}
+		elseif( count($domains_array) == 1 and head($domains_array) == 'global') {
+			return 'manager' ;
+		}
+		else {
+			$result_array = [] ;
+			foreach($domains_array as $key => $domain) {
+				if($domain!='global') {
+					$result_array[] = User::$role_prefix_for_domain_admins.'-'.$domain ;
+				}
+			}
+			return $result_array ;
+		}
+	}
+
+
+	public function getDomainsArrayAttribute()
+	{
+		if($this->has('domains')) {
+			return array_unique(array_filter(explode('|' , $this->domains)));
+		}
+		else {
+			return [] ;
+		}
+	}
+
 
 	public function getDomainNameAttribute()
 	{
@@ -342,7 +373,7 @@ class Post extends Model
 
 	public function getEditLinkAttribute()
 	{
-		return url("manage/posts/" . $this->type . "/edit/" . $this->id);
+		return url("manage/posts/" . $this->type . "/edit/" . $this->hash_id);
 	}
 
 
@@ -521,7 +552,26 @@ class Post extends Model
 
 	public function can($permit)
 	{
-		return user()->as('admin')->can('post-' . $this->type . '.' . $permit);
+		/*-----------------------------------------------
+		| Considering Languages ...
+		*/
+		$full_permit = "posts-$this->type.$permit" ;
+		if($this->has('locales')) {
+			$full_permit .= ".$this->locale" ;
+		}
+
+		/*-----------------------------------------------
+		| Considering Domains ...
+		*/
+		$roles_array = $this->required_roles_array ;
+
+
+		/*-----------------------------------------------
+		| Return ...
+		*/
+		//ss($full_permit);
+		//ss(user()->as('volunteer-kashan')->pivot('permissions'));
+		return user()->as($roles_array)->can($full_permit) ;
 	}
 
 	public function canPublish()

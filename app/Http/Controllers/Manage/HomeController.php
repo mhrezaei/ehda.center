@@ -33,6 +33,8 @@ class HomeController extends Controller
 	public function index()
 	{
 		$page = $this->page;
+
+		//return user()->as('volunteer-kashan')->pivot('permissions');
 		//$digests = $this->index_digests();
 
 		//$users = User::selector([
