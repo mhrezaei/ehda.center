@@ -229,6 +229,7 @@ function passStep(page) {
     if (window.tmpReaction.done) {
         delete window.tmpReaction.done;
         window.reactions.push(window.tmpReaction);
+        eval(window.tmpReaction.toPage.attr('data-showing-action'));
         console.log(window.reactions)
     }
     //
@@ -281,14 +282,6 @@ function passStartQuestionStep(page) {
                     $(this).val($(this).children('option').first().val());
                 });
 
-
-                setTimeout(function () {
-                    var FIO2Key = '3-1';
-                    var done = doneTreatments();
-                    if ($.inArray(FIO2Key, done) == -1) { // didn't do FIO2
-                        ventricularTachycardia();
-                    }
-                }, 60 * 1000);
                 break;
         }
 
@@ -317,14 +310,14 @@ function showPage(pageToShow) {
 function backStep(page, returningStepIndex) {
     if (typeof returningStepIndex == 'undefined') {
         returningStepIndex = window.reactions.length - 1;
-        var lastStep = window.reactions[returningStepIndex];
-        console.log(lastStep);
 
-        while (!lastStep.forward || lastStep.auto) {
+        // Last step should be a step with "auto=false" or first consecutive in the end of steps
+        var lastStep = window.reactions[returningStepIndex];
+        while (!lastStep.forward || (lastStep.auto && window.reactions[returningStepIndex - 1].auto)) {
+
             returningStepIndex--;
             lastStep = window.reactions[returningStepIndex];
         }
-        console.log(lastStep)
     } else {
         var lastStep = window.reactions[returningStepIndex];
     }
@@ -352,6 +345,8 @@ function backStep(page, returningStepIndex) {
     newReaction.toPage.addClass('current');
 
     window.reactions.push(newReaction);
+
+    eval(newReaction.toPage.attr('data-showing-action'));
 
     refreshScreen();
 }
@@ -644,4 +639,23 @@ function doneTreatments() {
     return $.map(window.reactions, function (val) {
         return val.treatment;
     })
+}
+
+function needToFIO2() {
+    if (!checkFIO2()) {
+        setTimeout(function () {
+            if (!checkFIO2()) {
+                ventricularTachycardia();
+            }
+        }, 60 * 1000);
+    }
+}
+
+function checkFIO2() {
+    var FIO2Key = '3-1';
+    var done = doneTreatments();
+    if ($.inArray(FIO2Key, done) > -1) { // didn't do FIO2
+        return true;
+    }
+
 }

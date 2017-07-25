@@ -484,7 +484,8 @@
                             </div>
                         </div>
 
-                        <div id="treatment-modalities" class="page page-fluid" data-step="TreatmentModalities">
+                        <div id="treatment-modalities" class="page page-fluid" data-step="TreatmentModalities"
+                             data-showing-action="needToFIO2()">
                             <ul class="nav nav-tabs nav-justified">
                                 <li class="active">
                                     <a data-toggle="tab" href="#treatment-modalities-fluid">1. Fluid</a>
@@ -933,10 +934,12 @@
                         <div class="col-md-3 xol-xs-12 case-info-buttons">
                             <div class="row">
                                 <div class="col-md-12 col-sm-6 col-xs-12 mb10">
-                                    <button class="btn btn-block show-case-info" data-page="#more-info">More Info</button>
+                                    <button class="btn btn-block show-case-info" data-page="#more-info">More Info
+                                    </button>
                                 </div>
                                 <div class="col-md-12 col-sm-6 col-xs-12 mb10">
-                                    <button class="btn btn-block show-case-info" data-page="#laboratory-exams">Exams</button>
+                                    <button class="btn btn-block show-case-info" data-page="#laboratory-exams">Exams
+                                    </button>
                                 </div>
                             </div>
                         </div>
