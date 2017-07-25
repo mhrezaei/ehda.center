@@ -7,8 +7,13 @@ window.reactions = [];
 window.timers = {};
 window.shockerCharge = 0;
 window.currentData = {};
+window.optionsStatuses = {
+    playSound: true,
+};
 
 $(document).ready(function () {
+
+    $.ajaxSetup({cache: false});
 
     lowLag.init({'urlPrefix': siteUrl + '/assets/sound/'});
     lowLag.load(['heartSound.mp3', 'heartSound.ogg'], 'pluck1');
@@ -102,6 +107,8 @@ $(document).ready(function () {
                 calculations: doneActions,
                 beforeData: beforeData,
                 afterData: getValueOf(window.currentData),
+                treatment: treatment,
+                treatmentData: data
             });
 
             refreshScreen();
@@ -264,15 +271,25 @@ function passStartQuestionStep(page) {
                 pageTimeout($('#laboratory-exams'), 40 * 1000, ventricularTachycardia);
                 break;
             case "3":
-                $('#treatment-modalities').addClass('current');
+                var targetPage = $('#treatment-modalities');
+                targetPage.addClass('current');
 
-                window.tmpReaction.toStep = $('#treatment-modalities').attr('data-step');
-                window.tmpReaction.toPage = $('#treatment-modalities');
+                window.tmpReaction.toStep = targetPage.attr('data-step');
+                window.tmpReaction.toPage = targetPage;
 
-                $('#treatment-modalities').find('select').each(function () {
+                targetPage.find('select').each(function () {
                     $(this).val($(this).children('option').first().val());
                 });
 
+
+                setTimeout(function () {
+                    var FIO2Key = '3-1';
+                    var done = doneTreatments();
+                    console.log(done);
+                    if ($.inArray(FIO2Key, done) == -1) { // didn't do FIO2
+                        ventricularTachycardia();
+                    }
+                }, 10 * 1000);
                 break;
         }
 
@@ -298,16 +315,20 @@ function showPage(pageToShow) {
     pageToShow.addClass('current');
 }
 
-function backStep(page) {
-    var lastStepIndex = window.reactions.length - 1;
-    var lastStep = window.reactions[lastStepIndex];
-    console.log(lastStep);
+function backStep(page, returningStepIndex) {
+    if (typeof returningStepIndex == 'undefined') {
+        returningStepIndex = window.reactions.length - 1;
+        var lastStep = window.reactions[returningStepIndex];
+        console.log(lastStep);
 
-    while (!lastStep.forward || lastStep.auto) {
-        lastStepIndex--;
-        lastStep = window.reactions[lastStepIndex];
+        while (!lastStep.forward || lastStep.auto) {
+            returningStepIndex--;
+            lastStep = window.reactions[returningStepIndex];
+        }
+        console.log(lastStep)
+    } else {
+        var lastStep = window.reactions[returningStepIndex];
     }
-    console.log(lastStep)
 
     if (typeof page != 'undefined') {
         var timeoutName = page.attr('timeout');
@@ -323,6 +344,7 @@ function backStep(page) {
         toStep: lastStep.fromStep,
         toPage: lastStep.fromPage,
         forward: false,
+        inverse: returningStepIndex,
         beforeData: lastStep.afterData,
         afterData: getValueOf(window.currentData),
     };
@@ -529,8 +551,12 @@ function kill() {
     $('.monitor-case-management-panel').hide();
 }
 
-function getValueOf(data) {
-    return JSON.parse(JSON.stringify(data));
+function getValueOf(data, key) {
+    var data = JSON.parse(JSON.stringify(data));
+    if (typeof key != 'undefined') {
+        return data[key];
+    }
+    return data;
 }
 
 function playHeartSound(hr) {
@@ -556,6 +582,9 @@ function stopHeartSound() {
 }
 
 function playSound(id) {
+    if (!window.optionsStatuses.playSound) {
+        return;
+    }
     switch (id) {
         case "heartSound":
             lowLag.play('pluck1', false);
@@ -594,4 +623,10 @@ function setCaseData(param1, param2) {
 
         window.currentData[param1] = param2;
     }
+}
+
+function doneTreatments() {
+    return $.map(window.reactions, function (val) {
+        return val.treatment;
+    })
 }
