@@ -285,7 +285,6 @@ function passStartQuestionStep(page) {
                 setTimeout(function () {
                     var FIO2Key = '3-1';
                     var done = doneTreatments();
-                    console.log(done);
                     if ($.inArray(FIO2Key, done) == -1) { // didn't do FIO2
                         ventricularTachycardia();
                     }

@@ -854,6 +854,36 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <h3>5-6. K</h3>
+                                    <div class="form-horizontal treatment-form" data-treatment="5-6">
+                                        <div class="col-xs-12">
+                                            <div class="row">
+                                                <input type="hidden" name="5-6" id="t-5-6" value="1"/>
+                                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="row">
+                                                        <div class="col-xs-12 mb15">
+                                                            @include('front.ecg.simulator.apply-button')
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h3>5-7. Insulin</h3>
+                                    <div class="form-horizontal treatment-form" data-treatment="5-7">
+                                        <div class="col-xs-12">
+                                            <div class="row">
+                                                <input type="hidden" name="5-7" id="t-5-7" value="1"/>
+                                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="row">
+                                                        <div class="col-xs-12 mb15">
+                                                            @include('front.ecg.simulator.apply-button')
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

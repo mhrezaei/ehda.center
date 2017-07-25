@@ -349,6 +349,20 @@
               "Albumin": "{{orig}} + 1"
             }
           }
+        },
+        "6": {
+          "": {
+            "1": {
+              "K": "Number((Math.random() * (0.5) + 4).toFixed(1))"
+            }
+          }
+        },
+        "7": {
+          "": {
+            "1": {
+              "BS": "Number((Math.random() * (180 - 140) + 140).toFixed(0))"
+            }
+          }
         }
       }
     }
