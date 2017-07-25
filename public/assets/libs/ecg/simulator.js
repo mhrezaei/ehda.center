@@ -6,6 +6,7 @@ window.caseId = 1;
 window.reactions = [];
 window.timers = {};
 window.shockerCharge = 0;
+window.currentData = {};
 
 $(document).ready(function () {
 
@@ -55,7 +56,6 @@ $(document).ready(function () {
             var doneActions = [];
             var beforeData = getValueOf(window.currentData);
 
-            console.log(toDo)
             $.each(toDo, function (num, tasks) {
                 if (num) {
                     var checkingField = [treatment, num].join('-');
@@ -83,7 +83,7 @@ $(document).ready(function () {
                             equation = equation.replace(new RegExp('{{orig}}', 'g'), window.currentData[targetName]);
 
                             var result = eval(equation);
-                            window.currentData[targetName] = Number(result.toFixed(2));
+                            setCaseData(targetName, Number(result.toFixed(2)));
                             tmpAction.after = getValueOf(window.currentData)[targetName];
 
                             doneActions.push(tmpAction);
@@ -167,7 +167,7 @@ function loadData() {
         var caseData = data[window.caseId];
 
         window.caseData = caseData;
-        window.currentData = caseData.defaultData;
+        setCaseData(caseData.defaultData);
 
         $('.case-biography').html(caseData.caseInfo.information);
         $('.case-height').html(caseData.caseInfo.height);
@@ -314,7 +314,7 @@ function backStep(page) {
         }
     }
 
-    window.currentData = lastStep.beforeData;
+    setCaseData(lastStep.beforeData);
     var newReaction = {
         fromStep: lastStep.toStep,
         fromPage: lastStep.toPage,
@@ -366,8 +366,8 @@ function ventricularTachycardia() {
             after: value,
             target: name
         });
-        window.currentData[name] = value;
     });
+    setCaseData(changing);
 
     var lastReaction = window.reactions.last();
     window.reactions.push({
@@ -504,8 +504,8 @@ function kill() {
             after: value,
             target: name
         });
-        window.currentData[name] = value;
     });
+    setCaseData(changing);
 
     var lastReaction = window.reactions.last();
     window.reactions.push({
@@ -577,5 +577,19 @@ function playSound(id) {
             congrats.play();
             break;
 
+    }
+}
+
+function setCaseData(param1, param2) {
+    if ($.isPlainObject(param1)) {
+        $.each(param1, function (name, value) {
+            setCaseData(name, value);
+        });
+    } else {
+        if (param1 == 'SPO2') {
+            param2 = Math.min(param2, 100); // in percent
+        }
+
+        window.currentData[param1] = param2;
     }
 }
