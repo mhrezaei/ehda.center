@@ -81,10 +81,10 @@ body {
               background-size: cover;
               background-repeat: repeat-x;
               // temporary background image
-              background-image: url("#{$rhysImagesDir}/r1-(04D10A).png");
+              background-image: url("#{$rhysImagesDir}/r1-20pulses-(04D10A).png");
 
               &.VTach {
-                background-image: url("#{$rhysImagesDir}/r19-(04D10A).png");
+                background-image: url("#{$rhysImagesDir}/r19-20pulses-(04D10A).png");
               }
 
               &.dead {

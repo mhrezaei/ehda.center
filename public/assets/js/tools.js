@@ -30,6 +30,12 @@ String.prototype.ucfirst = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
 };
 
+String.prototype.filename=function(extension){
+    var s= this.replace(/\\/g, '/');
+    s= s.substring(s.lastIndexOf('/')+ 1);
+    return extension? s.replace(/[?#].+$/, ''): s.split('.')[0];
+};
+
 Array.prototype.last = function () {
     return this[this.length - 1];
 };

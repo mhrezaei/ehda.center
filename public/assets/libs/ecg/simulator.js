@@ -447,17 +447,32 @@ function refreshScreen() {
 
 function runECG(hr) {
     stopECG();
-    runECGPeriod(hr);
-    window.timers.ecgMotion = setInterval(function () {
-        runECGPeriod(hr);
-    }, 60 * 1000);
+    var ecgBox = $('.monitor-ecg-preview-inner');
+
+    var url = ecgBox.css('background-image').match(/^url\("?(.+?)"?\)$/)
+
+    if (url[1]) {
+        url = url[1];
+        image = new Image();
+
+        // just in case it is not already loaded
+        $(image).on('load', function () {
+            var periodWidth = (image.width * ecgBox.height()) / image.height / 20;
+            runECGPeriod(hr, periodWidth);
+
+            window.timers.ecgMotion = setInterval(function () {
+                runECGPeriod(hr, periodWidth)
+            }, 60000);
+        });
+
+        image.src = url;
+    }
 }
 
-function runECGPeriod(hr) {
-    $('.monitor-ecg-preview-inner').animate(
-        {
-            'background-position-x': '+=' + hr + '%'
-        }, 60000, 'linear');
+function runECGPeriod(hr, periodWidth) {
+    $('.monitor-ecg-preview-inner').animate({
+        'background-position-x': '-=' + (hr * periodWidth) + 'px'
+    }, 60000, 'linear');
 }
 
 function stopECG(hr) {
