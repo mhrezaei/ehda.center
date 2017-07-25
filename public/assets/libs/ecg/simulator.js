@@ -289,7 +289,7 @@ function passStartQuestionStep(page) {
                     if ($.inArray(FIO2Key, done) == -1) { // didn't do FIO2
                         ventricularTachycardia();
                     }
-                }, 10 * 1000);
+                }, 60 * 1000);
                 break;
         }
 
