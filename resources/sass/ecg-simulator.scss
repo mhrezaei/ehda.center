@@ -6,7 +6,29 @@
 @import "colors";
 @import "measurement_and_alignment";
 
+//@mixin scrollbars($size, $foreground-color, $background-color: mix($foreground-color, white, 50%)) {
+//  ::-webkit-scrollbar {
+//    width: $size;
+//    height: $size;
+//  }
+//
+//  ::-webkit-scrollbar-thumb {
+//    background: $foreground-color;
+//  }
+//
+//  ::-webkit-scrollbar-track {
+//    background: $background-color;
+//  }
+//
+//  // For Internet Explorer
+//  //body {
+//  //  scrollbar-face-color: $foreground-color;
+//  //  scrollbar-track-color: $background-color;
+//  //}
+//}
+
 body {
+  //@include scrollbars(.5em, red);
   @extend .bg-black, .f16;
 
   height: 100vh;
@@ -15,15 +37,16 @@ body {
     $gapsSize: 10;
     $sidesPaddingSize: 15;
 
-    @extend .container-fluid, .p#{$gapsSize};
+    @extend .container-fluid, .p#{$gapsSize}, .full-height;
 
     .container-inner {
-      @extend .border-1, .border-white, .full-width, .pull-start, .p#{$gapsSize};
+      @extend .border-1, .border-white, .full-width, .pull-start, .p#{$gapsSize}, .full-height;
 
       &.monitor {
 
         > .monitor-column-1 {
-          @extend .pl0, .pr0;
+          @extend .pl0, .pr0, .full-height;
+          overflow-y: auto;
 
           @media #{map_get($screenSizesToTopMedia, "md")} {
             padding-#{$endSide}: #{$gapsSize}px;
@@ -64,7 +87,8 @@ body {
         }
 
         > .monitor-column-2 {
-          @extend .p#{$gapsSize}, .border-2, .border-lightGray, .mt20;
+          @extend .p#{$gapsSize}, .border-2, .border-lightGray, .mt20, .full-height;
+          overflow-y: auto;
 
           @media #{map_get($screenSizesToTopMedia, "md")} {
             min-height: 100%;
