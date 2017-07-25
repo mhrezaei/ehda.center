@@ -895,6 +895,9 @@
                                 <div class="col-md-3 col-sm-6 col-xs-12">
                                     PO<sub>2</sub>: <span class="preview-po2"></span>
                                 </div>
+                                <div class="col-md-3 col-sm-6 col-xs-12">
+                                    Albumin: <span class="preview-albumin"></span>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-3 xol-xs-12 case-info-buttons">

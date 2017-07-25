@@ -434,6 +434,7 @@ function refreshScreen() {
     $('.preview-pco2').html(window.currentData.PCO2);
     $('.preview-hco3').html(window.currentData.HCO3);
     $('.preview-po2').html(window.currentData.PO2);
+    $('.preview-albumin').html(window.currentData.Albumin);
 
     runECG(window.currentData.HR);
     playHeartSound(window.currentData.HR);
