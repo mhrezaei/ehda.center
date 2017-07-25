@@ -193,7 +193,7 @@
                                     <table class="f22">
                                         <thead>
                                         <tr>
-                                            <td colspan="3">CBC1</td>
+                                            <td colspan="3">CBC</td>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -230,7 +230,7 @@
                                     <table class="f22">
                                         <thead>
                                         <tr>
-                                            <td colspan="3">Biochemistry1</td>
+                                            <td colspan="3">Biochemistry</td>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -245,7 +245,7 @@
                                             <td><span class="case-biochemistry-bun"></span></td>
                                         </tr>
                                         <tr>
-                                            <td></td>
+                                            <td>2</td>
                                             <td>Cr</td>
                                             <td><span class="case-biochemistry-cr"></span></td>
                                         </tr>
@@ -302,7 +302,7 @@
                                     <table class="f22">
                                         <thead>
                                         <tr>
-                                            <td colspan="3">Coagulation Tests1</td>
+                                            <td colspan="3">Coagulation Tests</td>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -329,7 +329,7 @@
                                     <table class="f22">
                                         <thead>
                                         <tr>
-                                            <td colspan="3">ABG1</td>
+                                            <td colspan="3">ABG</td>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -345,8 +345,8 @@
                                         </tr>
                                         <tr>
                                             <td>3</td>
-                                            <td>HCO<sub>2</sub></td>
-                                            <td><span class="case-agb-hco2"></span></td>
+                                            <td>HCO<sub>3</sub></td>
+                                            <td><span class="case-agb-hco3"></span></td>
                                         </tr>
                                         <tr>
                                             <td>4</td>
@@ -371,7 +371,7 @@
                                     <table class="f22">
                                         <thead>
                                         <tr>
-                                            <td colspan="3">Urine Analysis1</td>
+                                            <td colspan="3">Urine Analysis</td>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -403,7 +403,7 @@
                                         <tr>
                                             <td>6</td>
                                             <td>protein</td>
-                                            <td><span class="case-urine-analysis-protein"></span>g</td>
+                                            <td><span class="case-urine-analysis-protein"></span></td>
                                         </tr>
                                         </tbody>
                                     </table>

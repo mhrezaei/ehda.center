@@ -244,22 +244,24 @@ function passStartQuestionStep(page) {
 
         switch (val) {
             case "1":
-                $('#more-info').addClass('current');
+                var targetPage = $('#more-info');
+                targetPage.addClass('current');
 
-                window.tmpReaction.toStep = $('#more-info').attr('data-step');
-                window.tmpReaction.toPage = $('#more-info');
+                window.tmpReaction.toStep = targetPage.attr('data-step');
+                window.tmpReaction.toPage = targetPage;
 
                 console.log(currentTime())
-                pageTimeout($('#more-info'), 30 * 1000, ventricularTachycardia);
+                pageTimeout($('#more-info'), 20 * 1000, ventricularTachycardia);
                 break;
             case "2":
-                $('#laboratory-exams').addClass('current');
+                var targetPage = $('#laboratory-exams');
+                targetPage.addClass('current');
 
-                window.tmpReaction.toStep = $('#laboratory-exams').attr('data-step');
-                window.tmpReaction.toPage = $('#laboratory-exams');
+                window.tmpReaction.toStep = targetPage.attr('data-step');
+                window.tmpReaction.toPage = targetPage;
 
                 console.log(currentTime())
-                pageTimeout($('#laboratory-exams'), 60 * 1000, ventricularTachycardia);
+                pageTimeout($('#laboratory-exams'), 40 * 1000, ventricularTachycardia);
                 break;
             case "3":
                 $('#treatment-modalities').addClass('current');
