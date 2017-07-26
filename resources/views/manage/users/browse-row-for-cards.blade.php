@@ -12,7 +12,7 @@
 <td>
 	@include("manage.frame.widgets.grid-text" , [
 		'text' => $model->full_name,
-		'link' => user()->as('admin')->can('users-card-holder.view')? "modal:manage/users/act/-id-/card-view" : '',
+		'link' => user()->as('admin')->can('users-card-holder.view')? "modal:manage/cards/view/-hash_id-" : '',
 	])
 	@include("manage.frame.widgets.grid-tiny" , [
 		'text' => trans('validation.attributes.card_no').': '.$model->card_no,

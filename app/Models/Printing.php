@@ -115,14 +115,14 @@ class Printing extends Model
 				$switch['domain'] = false;
 			}
 			else {
-				$switch['domain'] = user()->domainsArray();
+				$switch['domain'] = user()->domainsArray('users-card-holder.print'); //@TODO: Vulnerability: What if a user() has access to 'print-excel' but not to 'print-direct'?
 			}
 		}
 
 		if($switch['domain'] !== false) {
 			$switch['domain'] = (array)$switch['domain'];
 
-			$table = self::whereIn('domains' , $switch['domain']);
+			$table = self::whereIn('domain' , $switch['domain']);
 		}
 
 

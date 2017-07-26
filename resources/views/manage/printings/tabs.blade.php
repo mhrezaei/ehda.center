@@ -7,8 +7,8 @@
 		'volunteer_id' => $volunteer_id,
 	],
 	'tabs' => [
-		["pending/$event_id/$user_id/$volunteer_id" , trans('ehda.printings.pending') , null /*, $db::counter($switches , 'pending' , 'info')*/  ],
-		["under_direct_printing/$event_id/$user_id/$volunteer_id" , trans('ehda.printings.under_direct_printing') , null   ],
-		["under_excel_printing/$event_id/$user_id/$volunteer_id" , trans('ehda.printings.under_excel_printing') , null  ],
+		["pending/$event_id/$user_id/$volunteer_id" , trans('ehda.printings.pending') , null  /*, $db::counter($switches , 'pending' , 'info')*/  ],
+		["under_direct_printing/$event_id/$user_id/$volunteer_id" , trans('ehda.printings.under_direct_printing') , null , user()->as('admin')->can('users-card-holder.print-direct')  ],
+		["under_excel_printing/$event_id/$user_id/$volunteer_id" , trans('ehda.printings.under_excel_printing') , null , user()->as('admin')->can('users-card-holder.print-excel') ],
 	] ,
 ])

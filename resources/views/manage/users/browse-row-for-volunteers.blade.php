@@ -21,7 +21,7 @@
 		@include("manage.frame.widgets.grid-badge" , [
 			'text' => trans("ehda.donation_card") ,
 			'color' => "default" ,
-			'link' => user()->as('admin')->can('users-card-holder.view')? "modal:manage/users/act/-id-/card-view" : '',
+			'link' => user()->as('admin')->can('users-card-holder.view')? "modal:manage/cards/view/-hash_id-" : '',
 			'size' => "9" ,
 			'icon' => "credit-card" ,
 			'class' => "text-success" ,

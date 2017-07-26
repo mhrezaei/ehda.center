@@ -17,9 +17,9 @@
 	'link' => "cards" ,
 	'icon' => 'credit-card' ,
 	'sub_menus' => [
-		['cards/create' , trans("ehda.cards.create") , 'plus-circle'], //@TODO: Permission?
-		['cards/browse/all' , trans('ehda.cards.browse') , 'bars'], //@TODO: Permission?
-		['cards/printings' , trans("ehda.printings.title") , 'print'], //@TODO: Permission?
+		['cards/create' , trans("ehda.cards.create") , 'plus-circle' , user()->as('admin')->can('card-holder.create') ],
+		['cards/browse/all' , trans('ehda.cards.browse') , 'bars' , user()->as('admin')->can('card-holder.browse')],
+		['cards/printings' , trans("ehda.printings.title") , 'print' , user()->as('admin')->can('card-holder.print')],
 	] ,
 ]     )
 

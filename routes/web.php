@@ -102,7 +102,8 @@ Route::group([
 		Route::get('/browse/search/{keyword?}', 'CardsController@searchChild');
 		Route::get('/browse/{request_tab}/{volunteer?}/{post?}', 'CardsController@browseChild');
 		Route::get('/search', 'CardsController@search');
-		//Route::get('/reports', 'CardsController@reports');
+
+		Route::get('/view/{model_id}' , 'CardsController@view');
 
 		Route::get('/printings/act/{action}', 'CardsController@printingAction');
 

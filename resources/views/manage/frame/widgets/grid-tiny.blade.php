@@ -9,6 +9,7 @@
 	//target...
 	if(isset($link) and $link) {
 		$link = str_replace('-id-' , $model->id , $link);
+	    $link = str_replace('-hash_id-' , $model->hash_id , $link);
 		$extra = '' ;
 		if(str_contains($link,'(')) {
 			$js_command = $link ;
