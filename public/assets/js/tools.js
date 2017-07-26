@@ -40,6 +40,12 @@ Array.prototype.last = function () {
     return this[this.length - 1];
 };
 
+Array.prototype.getColumn = function (columnName) {
+    return $.map(this, function (val) {
+        return val[columnName] ? val[columnName] : null;
+    })
+};
+
 Object.byString = function(o, s) {
     s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
     s = s.replace(/^\./, '');           // strip a leading dot

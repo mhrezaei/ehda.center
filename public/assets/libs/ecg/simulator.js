@@ -8,7 +8,13 @@ window.timers = {};
 window.shockerCharge = 0;
 window.currentData = {};
 window.optionsStatuses = {
-    playSound: true,
+    playSound: false,
+};
+
+window.timeouts = {
+    moreInfo: 20 * 1000,
+    exams: 30 * 1000,
+    VTack: 60 * 1000,
 };
 
 $(document).ready(function () {
@@ -18,6 +24,8 @@ $(document).ready(function () {
     lowLag.init({'urlPrefix': siteUrl + '/assets/sound/'});
     lowLag.load(['heartSound.mp3', 'heartSound.ogg'], 'pluck1');
     lowLag.load(['beep.mp3'], 'beep');
+    lowLag.load(['charging.mp3', 'charging.waw'], 'charging');
+    lowLag.load(['electricShock.mp3', 'electricShock.waw'], 'electricShock');
 
     fixBodyHeight();
     loadData();
@@ -259,7 +267,7 @@ function passStartQuestionStep(page) {
                 window.tmpReaction.toPage = targetPage;
 
                 console.log(currentTime())
-                pageTimeout($('#more-info'), 20 * 1000, ventricularTachycardia);
+                pageTimeout($('#more-info'), window.timeouts.moreInfo, ventricularTachycardia);
                 break;
             case "2":
                 var targetPage = $('#laboratory-exams');
@@ -269,7 +277,7 @@ function passStartQuestionStep(page) {
                 window.tmpReaction.toPage = targetPage;
 
                 console.log(currentTime())
-                pageTimeout($('#laboratory-exams'), 40 * 1000, ventricularTachycardia);
+                pageTimeout($('#laboratory-exams'), window.timeouts.exams, ventricularTachycardia);
                 break;
             case "3":
                 var targetPage = $('#treatment-modalities');
@@ -310,14 +318,18 @@ function showPage(pageToShow) {
 function backStep(page, returningStepIndex) {
     if (typeof returningStepIndex == 'undefined') {
         returningStepIndex = window.reactions.length - 1;
+        var inverseColumn = window.reactions.getColumn('inverse');
 
         // Last step should be a step with "auto=false" or first consecutive in the end of steps
         var lastStep = window.reactions[returningStepIndex];
-        while (!lastStep.forward || (lastStep.auto && window.reactions[returningStepIndex - 1].auto)) {
-
+        while (!lastStep.forward || // If found step is a backing step
+        (lastStep.auto && window.reactions[returningStepIndex - 1].auto) || // If found step is auto and isn't the first consecutive auto
+        ($.inArray(returningStepIndex, inverseColumn) > -1) // If we didn't get back from found step
+            ) {
             returningStepIndex--;
             lastStep = window.reactions[returningStepIndex];
         }
+
     } else {
         var lastStep = window.reactions[returningStepIndex];
     }
@@ -331,18 +343,25 @@ function backStep(page, returningStepIndex) {
 
     setCaseData(lastStep.beforeData);
     var newReaction = {
-        fromStep: lastStep.toStep,
+        fromStep: getValueOf(lastStep, 'toStep'),
         fromPage: lastStep.toPage,
-        toStep: lastStep.fromStep,
+        toStep: getValueOf(lastStep, 'fromStep'),
         toPage: lastStep.fromPage,
         forward: false,
         inverse: returningStepIndex,
-        beforeData: lastStep.afterData,
+        beforeData: getValueOf(lastStep.afterData),
         afterData: getValueOf(window.currentData),
     };
 
     newReaction.fromPage.removeClass('current');
     newReaction.toPage.addClass('current');
+
+    if (window.reactionForceData && $.isPlainObject(window.reactionForceData)) {
+        $.each(window.reactionForceData, function (key, value) {
+            newReaction[key] = value;
+        });
+        delete window.reactionForceData;
+    }
 
     window.reactions.push(newReaction);
 
@@ -396,7 +415,7 @@ function ventricularTachycardia() {
         forward: true,
         auto: true,
         calculations: calculations,
-        beforeData: beforeData,
+        beforeData: lastReaction.afterData,
         afterData: getValueOf(window.currentData),
     });
 
@@ -407,7 +426,7 @@ function ventricularTachycardia() {
     $('.monitor-ecg-shock-box').show();
     $('.monitor-case-management-panel').hide();
 
-    window.timers.die = setTimeout(kill, 60 * 1000);
+    window.timers.die = setTimeout(kill, window.timeouts.VTack);
 }
 
 function refreshScreen() {
@@ -481,8 +500,9 @@ function chargeShocker(energy) {
     var box = $('.shocker-charger-box');
     var progressBar = box.find('.progress-bar');
 
-    var chargingTime = (energy / chargingSpeed) * 1000; // Miliseconds
+    var chargingTime = (energy / chargingSpeed) * 2000; // Miliseconds
 
+    playSound('charging');
     box.css('opacity', 1);
 
     progressBar.animate({width: "100%"}, chargingTime, function () {
@@ -499,9 +519,13 @@ function doShock() {
     $('.shocker-charger-box').find('.progress-bar').css('width', "0").attr('aria-valuenow', 0);
 
     if (true) { // check if energy is enough
+        playSound('shock');
         clearTimeout(window.timers.die);
         delete window.timers.die;
+
+        window.reactionForceData = {auto: true};
         backStep();
+        delete window.reactionForceData;
 
         $('.monitor-case-management-panel').show();
         $('.monitor-ecg-shock-box').hide();
@@ -526,8 +550,6 @@ function kill() {
     var calculations = [];
 
     var beforeData = getValueOf(window.currentData);
-    console.log('beforeData')
-    console.log(beforeData)
 
     $('.monitor-ecg-preview-inner').removeClass('VTach')
         .addClass('dead');
@@ -599,6 +621,12 @@ function playSound(id) {
         case "heartSound":
             lowLag.play('pluck1', false);
             break;
+        case "charging":
+            lowLag.play('charging', false);
+            break;
+        case "shock":
+            lowLag.play('electricShock', false);
+            break;
         case "beep":
             lowLag.play('beep', false);
             break;
@@ -636,9 +664,7 @@ function setCaseData(param1, param2) {
 }
 
 function doneTreatments() {
-    return $.map(window.reactions, function (val) {
-        return val.treatment;
-    })
+    return window.reactions.getColumn('treatment');
 }
 
 function needToFIO2() {
@@ -657,5 +683,4 @@ function checkFIO2() {
     if ($.inArray(FIO2Key, done) > -1) { // didn't do FIO2
         return true;
     }
-
 }
