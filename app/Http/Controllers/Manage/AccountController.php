@@ -180,7 +180,7 @@ class AccountController extends Controller
 
 			$ok = User::store($data);
 
-			if($complete_profile) {
+			if($complete_profile) { //@TODO: To be tested for accurate result!
 				foreach(user()->max(7)->rolesArray() as $role_slug) {
 					user()->as($role_slug)->setStatus(3) ;
 				}

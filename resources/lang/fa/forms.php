@@ -108,10 +108,13 @@ return [
 		'submit'         => "ثبت",
 		'nobody'         => "هیچ‌کس",
 		'sorry'          => "شرمنده",
-		'no'             => "شماره", //@TODO: New
-		'so_far'         => "تا این لحظه", //@TODO: New
-		'buddies'        => "نفر", //@TODO: New
-	     'unknown' => "نامشخص" , //@TODO: New
+
+		//@TODO: New, up to the end of array...
+		'no'             => "شماره",
+		'so_far'         => "تا این لحظه",
+		'buddies'        => "نفر",
+	     'unknown' => "نامشخص" ,
+	     'ego' => "من" ,
 	],
 
 
