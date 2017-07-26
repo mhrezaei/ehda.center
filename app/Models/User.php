@@ -673,6 +673,38 @@ class User extends Authenticatable
 			return trans('people.deleted_user');
 		}
 	}
+	
+	public function getMaritalNameAttribute()
+	{
+		switch($this->marital) {
+			case 1 :
+				return trans('forms.general.married') ;
+			case 2 :
+				return trans('forms.general.single') ;
+			default:
+				return trans("forms.general.unknown");
+
+		}
+	}
+
+	public function getEduLevelAttribute($original_value)
+	{
+		return $original_value + 0 ;
+	}
+
+
+	public function getEduLevelNameAttribute()
+	{
+		return trans("people.edu_level_full.$this->edu_level") ;
+	}
+
+	public function getEduLevelShortAttribute()
+	{
+		return trans("people.edu_level_short.$this->edu_level") ;
+	}
+
+
+
 
 	public function _getStatusAttribute()
 	{

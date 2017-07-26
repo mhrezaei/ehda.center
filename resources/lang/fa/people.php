@@ -37,6 +37,8 @@ return [
 		'send_sms'            => "ارسال پیامک",
 		'send_email'          => "ارسال ایمیل",
 		'according_to_domain' => "بر اساس دامنه",
+	     'profile' => "پرونده" ,
+	     'delete_account' => "حذف حساب کاربری" ,
 
 	],
 

@@ -13,6 +13,8 @@ use Morilog\Jalali\jDate;
 trait EhdaUserTrait
 {
 
+	public static    $volunteers_mandatory_fields = ['code_melli', 'name_first', 'name_last', 'name_father', 'birth_date', 'birth_city', 'gender', 'home_province', 'home_city', 'email', 'mobile', 'tel_emergency'];
+
 	/*
 	|--------------------------------------------------------------------------
 	| Relationships
@@ -71,22 +73,6 @@ trait EhdaUserTrait
 			return '-';
 		}
 
-	}
-
-	public function getEduLevelAttribute($original_value)
-	{
-		return $original_value + 0 ;
-	}
-
-
-	public function getEduLevelNameAttribute()
-	{
-		return trans("people.edu_level_full.$this->edu_level") ;
-	}
-
-	public function getEduLevelShortAttribute()
-	{
-		return trans("people.edu_level_short.$this->edu_level") ;
 	}
 
 

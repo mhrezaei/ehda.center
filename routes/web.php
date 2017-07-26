@@ -61,12 +61,22 @@ Route::group([
 ], function () {
 	Route::get('/', 'HomeController@index');
 	Route::get('/index', 'HomeController@index');
-	Route::get('/account', 'HomeController@account');
-	Route::post('/password', 'HomeController@changePassword');
 	Route::get('/widget/{widget}', 'HomeController@widget');
 
 	Route::group(['prefix' => 'act'], function () {
 		Route::get('search-people', 'HomeController@searchPeople');
+	});
+
+	/*-----------------------------------------------
+	| Account ...
+	*/
+	Route::group(['prefix' => "account"], function () {
+		Route::get('/{request_tab?}', 'AccountController@index');
+
+		Route::group(['prefix' => 'save'], function () {
+			Route::post('/password', 'AccountController@savePassword');
+			Route::post('/profile', 'AccountController@saveProfile');
+		});
 	});
 
 	/*-----------------------------------------------
@@ -80,13 +90,13 @@ Route::group([
 		Route::get('/browse/{request_role?}/{request_tab?}/{volunteer?}/{post?}', 'VolunteersController@browseChild');
 		Route::get('/search', 'VolunteersController@search');
 
-		Route::get('/create/{request_role?}/{code_melli?}' , 'VolunteersController@createChild');
-		Route::get('/edit/{model_id?}' , 'VolunteersController@editorChild');
+		Route::get('/create/{request_role?}/{code_melli?}', 'VolunteersController@createChild');
+		Route::get('/edit/{model_id?}', 'VolunteersController@editorChild');
 
 		Route::group(['prefix' => 'save'], function () {
 			Route::post('/', 'VolunteersController@saveChild');
 			Route::post('/inquiry', 'VolunteersController@inquiry');
-			Route::post('/new-role' , 'VolunteersController@saveNewRole');
+			Route::post('/new-role', 'VolunteersController@saveNewRole');
 		});
 
 	});
@@ -103,7 +113,7 @@ Route::group([
 		Route::get('/browse/{request_tab}/{volunteer?}/{post?}', 'CardsController@browseChild');
 		Route::get('/search', 'CardsController@search');
 
-		Route::get('/view/{model_id}' , 'CardsController@view');
+		Route::get('/view/{model_id}', 'CardsController@view');
 
 		Route::get('/printings/act/{action}', 'CardsController@printingAction');
 

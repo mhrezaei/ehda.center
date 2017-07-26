@@ -18,7 +18,7 @@
 	'color' => 'grey' ,
 	'text' => Auth::user()->full_name ,
 	'items' => [
-		['manage/account' , trans('settings.account') , 'sliders'] ,
+		['manage/account' , trans('settings.account.title') , 'sliders'] ,
 		['-'] ,
 		['/logout' , trans('manage.logout') , 'sign-out'] ,
 	]

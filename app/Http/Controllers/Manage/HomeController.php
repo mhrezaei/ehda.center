@@ -6,13 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Manage\ChangeSelfPasswordRequest;
 use App\Http\Requests\Manage\SearchRequest;
 use App\Providers\YasnaServiceProvider;
-use Illuminate\Http\Request;
-use App\Models\Post;
 use App\Models\Posttype;
-use App\Models\State;
 use App\Models\User;
 use App\Traits\ManageControllerTrait;
-use Asanak\Sms\Facade\AsanakSms;
 use Illuminate\Support\Facades\Hash;
 use Psy\Util\Json;
 use Illuminate\Support\Facades\View;
@@ -84,44 +80,6 @@ class HomeController extends Controller
 
 	}
 
-
-	public function account()
-	{
-		$page[0] = ['account', trans('people.commands.change_password')];
-
-		return view("manage.home.password", compact('page'));
-	}
-
-	public function changePassword(ChangeSelfPasswordRequest $request)
-	{
-		$session_key = 'password_attempts';
-		$check       = Hash::check($request->current_password, user()->password);
-
-
-		if(!$check) {
-			$session_value = $request->session()->get($session_key, 0);
-			$request->session()->put($session_key, $session_value + 1);
-			if($session_value > 3) {
-				$request->session()->flush();
-				$ok = 0;
-			}
-			else {
-				return $this->jsonFeedback(trans('forms.feed.wrong_current_password'));
-			}
-		}
-		else {
-			$request->session()->forget($session_key);
-			user()->password = bcrypt($request->new_password);
-			$ok              = user()->update();
-		}
-
-		return $this->jsonAjaxSaveFeedback($ok, [
-			'success_redirect' => url('manage'),
-			'danger_refresh'   => true,
-		]);
-
-
-	}
 
 	public function widget($widget)
 	{

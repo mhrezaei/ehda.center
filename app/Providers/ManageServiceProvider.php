@@ -37,7 +37,7 @@ class ManageServiceProvider extends ServiceProvider
 		/*-----------------------------------------------
 		| Normal Options ...
 		*/
-		$array[] = ['account' , trans('settings.account') , 'sliders'] ;
+		$array[] = ['account' , trans('settings.account.title') , 'sliders'] ;
 		$array[] = ['settings' , trans('settings.downstream') , 'cog' , user()->isSuper()];
 		$array[] = ['categories' , trans('posts.categories.meaning') , 'folder-o' , user()->isSuper()];
 
