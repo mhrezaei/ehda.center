@@ -12,9 +12,9 @@ window.optionsStatuses = {
 };
 
 window.timeouts = {
-    moreInfo: 20 * 1000,
+    moreInfo: 3 * 1000,
     exams: 30 * 1000,
-    VTack: 60 * 1000,
+    VTack: 3 * 1000,
 };
 
 $(document).ready(function () {
