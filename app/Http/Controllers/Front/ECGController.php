@@ -16,4 +16,9 @@ class ECGController extends Controller
     {
         return view('front.ecg.simulator.main');
     }
+
+    public function simulator_dev()
+    {
+        return view('front.ecg.simulator.main', ['dev' => true]);
+    }
 }

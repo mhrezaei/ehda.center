@@ -1,3 +1,7 @@
+@if(!isset($dev))
+    @php $dev = false @endphp
+@endif
+
 @extends('front.ecg.frame.frame')
 
 @section('head')
@@ -958,5 +962,5 @@
 @append
 
 @section('end-of-body')
-    {{ Html::script('assets/libs/ecg/simulator.js') }}
+    @include('front.ecg.simulator.scripts')
 @append

@@ -400,5 +400,6 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
         // Implementation of skillstat
         Route::get('copy', 'ECGController@copy');
         Route::get('simulator', 'ECGController@simulator');
+        Route::get('simulator/dev', 'ECGController@simulator_dev')->middleware(['auth', 'is:developer']);
     });
 });

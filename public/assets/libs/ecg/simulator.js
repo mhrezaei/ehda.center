@@ -7,15 +7,6 @@ window.reactions = [];
 window.timers = {};
 window.shockerCharge = 0;
 window.currentData = {};
-window.optionsStatuses = {
-    playSound: false,
-};
-
-window.timeouts = {
-    moreInfo: 3 * 1000,
-    exams: 30 * 1000,
-    VTack: 3 * 1000,
-};
 
 $(document).ready(function () {
 
