@@ -5,6 +5,7 @@
 @extends('front.ecg.frame.frame')
 
 @section('head')
+    <title>ECG Simulator</title>
     {{ Html::style('assets/css/ecg-simulator.min.css') }}
 @append
 
