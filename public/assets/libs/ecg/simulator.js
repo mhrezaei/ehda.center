@@ -12,9 +12,9 @@ window.optionsStatuses = {
 };
 
 window.timeouts = {
-    moreInfo: 20 * 1000,
+    moreInfo: 3 * 1000,
     exams: 30 * 1000,
-    VTack: 60 * 1000,
+    VTack: 3 * 1000,
 };
 
 $(document).ready(function () {
@@ -56,78 +56,100 @@ $(document).ready(function () {
         }
     });
 
-    $('.treatment-form').find('.btn-inject').click(function (event) {
-        event.preventDefault();
-        var btn = $(this);
-        var box = btn.closest('.treatment-form');
-        var treatment = box.attr('data-treatment');
-        var data = box.find(':input').serializeObject();
+    $('.treatment-form').on({
+        click: function (event) {
+            event.preventDefault();
+            var btn = $(this);
+            var box = btn.closest('.treatment-form');
+            var treatment = box.attr('data-treatment');
+            var data = box.find(':input').serializeObject();
 
-        if (!Object.values(data).includes("")) { // check for empty value
-            var equations = window.caseData.calculations;
-            var toDo = eval('equations' + dash2brace(treatment));
-            var doneActions = [];
-            var beforeData = getValueOf(window.currentData);
+            if (!Object.values(data).includes("")) { // check for empty value
+                var equations = window.caseData.calculations;
+                var toDo = eval('equations' + dash2brace(treatment));
+                var doneActions = [];
+                var beforeData = getValueOf(window.currentData);
 
-            $.each(toDo, function (num, tasks) {
-                if (num) {
-                    var checkingField = [treatment, num].join('-');
-                } else {
-                    var checkingField = treatment;
-                }
-
-                if (!$.isArray(data[checkingField])) {
-                    data[checkingField] = [data[checkingField]];
-                }
-
-                $.each(tasks, function (val, targets) {
-                    if ($.inArray(val, data[checkingField]) > -1) {
-                        $.each(targets, function (targetName, equation) {
-                            $.each(data, function (fieldName, fieldValue) {
-                                equation = equation.replace(new RegExp('{{' + fieldName + '}}', 'g'), fieldValue);
-                            });
-
-                            var tmpAction = {
-                                target: targetName,
-                                equation: equation,
-                                before: getValueOf(window.currentData)[targetName]
-                            };
-
-                            equation = equation.replace(new RegExp('{{orig}}', 'g'), window.currentData[targetName]);
-
-                            var result = eval(equation);
-                            setCaseData(targetName, Number(result.toFixed(2)));
-                            tmpAction.after = getValueOf(window.currentData)[targetName];
-
-                            doneActions.push(tmpAction);
-                        });
+                $.each(toDo, function (num, tasks) {
+                    if (num) {
+                        var checkingField = [treatment, num].join('-');
+                    } else {
+                        var checkingField = treatment;
                     }
-                });
-            });
 
-            var lastReaction = window.reactions.last();
-            window.reactions.push({
-                fromStep: lastReaction.toStep,
-                toStep: lastReaction.toStep,
-                fromPage: lastReaction.toPage,
-                toPage: lastReaction.toPage,
-                forward: true,
-                calculations: doneActions,
-                beforeData: beforeData,
-                afterData: getValueOf(window.currentData),
-                treatment: treatment,
-                treatmentData: data
-            });
+                    if (!$.isArray(data[checkingField])) {
+                        data[checkingField] = [data[checkingField]];
+                    }
+
+                    $.each(tasks, function (val, targets) {
+                        if ($.inArray(val, data[checkingField]) > -1) {
+                            $.each(targets, function (targetName, equation) {
+                                $.each(data, function (fieldName, fieldValue) {
+                                    equation = equation.replace(new RegExp('{{' + fieldName + '}}', 'g'), fieldValue);
+                                });
+
+
+                                var tmpAction = {
+                                    target: targetName,
+                                    equation: equation,
+                                    before: getValueOf(window.currentData)[targetName]
+                                };
+
+                                equation = equation.replace(new RegExp('{{orig}}', 'g'), window.currentData[targetName]);
+
+                                var result = eval(equation);
+                                setCaseData(targetName, Number(result.toFixed(2)));
+                                tmpAction.after = getValueOf(window.currentData)[targetName];
+                                tmpAction.change = tmpAction.after - tmpAction.before;
+
+                                doneActions.push(tmpAction);
+                            });
+                        }
+                    });
+                });
+
+                var lastReaction = window.reactions.last();
+                var pushingNumber = window.reactions.push({
+                    fromStep: lastReaction.toStep,
+                    toStep: lastReaction.toStep,
+                    fromPage: lastReaction.toPage,
+                    toPage: lastReaction.toPage,
+                    forward: true,
+                    calculations: doneActions,
+                    beforeData: beforeData,
+                    afterData: getValueOf(window.currentData),
+                    treatment: treatment,
+                    treatmentData: data
+                });
+
+                btn.removeClass('btn-inject').addClass('btn-inject-remove');
+                btn.attr('data-reaction', pushingNumber - 1);
+                btn.html('Remove');
+
+                refreshScreen();
+
+                if (!$('.second-preview').is(':visible')) {
+                    $('.second-preview').slideDown();
+                }
+            }
+        }
+    }, '.btn-inject');
+
+    $('.treatment-form').on({
+        click: function (event) {
+            event.preventDefault();
+            var btn = $(this);
+
+            var reactionIndex = btn.attr('data-reaction');
+            backStep(undefined, reactionIndex);
+
+            btn.removeClass('btn-inject-remove').addClass('btn-inject');
+            btn.removeAttr('data-reaction');
+            btn.html('Apply');
 
             refreshScreen();
-
-            if (!$('.second-preview').is(':visible')) {
-                $('.second-preview').slideDown();
-            }
-
-            btn.hide();
         }
-    });
+    }, '.btn-inject-remove');
 
     $('.monitor-ecg-shock-box').find('.btn-charge-shocker').click(function () {
         var energy = $('.shocker-energy').val();
@@ -341,7 +363,20 @@ function backStep(page, returningStepIndex) {
         }
     }
 
-    setCaseData(lastStep.beforeData);
+    if (lastStep.auto) {
+        var newData = getValueOf(lastStep.beforeData);
+    } else {
+        var newData = {};
+        $.each(lastStep.beforeData, function (key, value) {
+            var change = lastStep.afterData[key] - lastStep.beforeData[key];
+            var result = getValueOf(window.currentData, key) - change;
+            result = result.toFixed(2);
+            result = Number(result);
+            newData[key] = result;
+        });
+    }
+
+    setCaseData(newData);
     var newReaction = {
         fromStep: getValueOf(lastStep, 'toStep'),
         fromPage: lastStep.toPage,
@@ -349,7 +384,7 @@ function backStep(page, returningStepIndex) {
         toPage: lastStep.fromPage,
         forward: false,
         inverse: returningStepIndex,
-        beforeData: getValueOf(lastStep.afterData),
+        beforeData: getValueOf(window.reactions.last().afterData),
         afterData: getValueOf(window.currentData),
     };
 
@@ -368,6 +403,8 @@ function backStep(page, returningStepIndex) {
     eval(newReaction.toPage.attr('data-showing-action'));
 
     refreshScreen();
+
+    return returningStepIndex;
 }
 
 function pageTimeout(page, time, timeoutAction) {
