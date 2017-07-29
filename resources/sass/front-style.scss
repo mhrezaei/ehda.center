@@ -6,13 +6,14 @@
 @import "jquery-ui/flat-ui-theme";
 //@import "flat-ui";
 @import "font-awesome/font-awesome";
+/* yt files */
+@import "colors";
+@import "fonts";
+/* plugins files */
 @import "owl-carousel";
 @import "owl-card-theme";
 @import "owl-theme";
 @import "owl-transitions";
-/* yt files */
-@import "colors";
-@import "fonts";
 /* other files */
 @import "sprites";
 
@@ -167,61 +168,6 @@ body.sticky-header {
   }
 }
 
-.events-slider {
-  .event-box {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    bottom: -1px;
-    text-align: right;
-    overflow: hidden;
-    &:before {
-      width: 100%;
-      right: 50%;
-      top: 0;
-      content: "";
-      position: absolute;
-      z-index: 1;
-      transform: skew(-45deg);
-      background-color: #7dbd48;
-      height: 100%;
-      border-right: 15px solid #fff;
-    }
-    &:after {
-      content: "";
-      position: absolute;
-      width: 250px;
-      height: 100%;
-      right: 80%;
-      top: 0;
-      z-index: 1;
-      background: url(#{$imagesDir}events-ribbon.png) no-repeat;
-      background-size: cover;
-    }
-  }
-  .text {
-    position: relative;
-    z-index: 2;
-    width: 50%;
-    padding: 5%;
-    color: #fff;
-    direction: rtl;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-    @media(max-width: 519px) {
-      width: 60%;
-      p {
-        margin-right: 18%;
-      }
-    }
-    @media (max-width: 700px) {
-      h2 {
-        font-size: 26px;
-      }
-    }
-  }
-}
-
 .fixed-background {
   background-attachment: fixed;
   background-position: center center;
@@ -233,73 +179,6 @@ body.sticky-header {
     }
   }
 }
-
-#current-members {
-  margin: 2em 0;
-  color: $color-primary;
-  h3 {
-    font-size: 100%;
-    white-space: nowrap;
-    line-height: 4em;
-  }
-}
-
-.ehda-card {
-  position: fixed;
-  top: 45%;
-  right: 0;
-  z-index: 10;
-  background-color: rgba(209, 209, 209, 0.56);
-  padding: 10px;
-  border-radius: 10px 0 0 10px;
-  text-align: left;
-  &:before {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    top: -30px;
-    bottom: -30px;
-    left: -30px;
-    right: 0;
-  }
-  &, * {
-    transition: all 0.2s;
-  }
-  &:hover {
-    background-color: #fff;
-    span:first-child {
-      background-color: #fff;
-      svg {
-        fill: #e87;
-        transform: scale(1.2);
-        animation: none;
-      }
-    }
-  }
-  svg {
-    animation: heartbeat 1300ms ease 0s infinite normal;
-  }
-  span:first-child {
-    display: inline-block;
-    background-color: #8da85d;
-    padding: 10px 20px;
-    background-color: #8da85d;
-    border-radius: 7px;
-  }
-  span:last-child {
-    white-space: nowrap;
-    margin: 20px 0 -40px;
-    display: block;
-    color: #8a8a8a;
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 0 10px;
-    border-radius: 4px;
-  }
-  @media (max-width: 700px) {
-    display: none;
-  }
-}
-
 .special-list {
   background-color: #f9f9f9;
   padding: 10px;
@@ -686,61 +565,6 @@ body.contact .content {
 @import "featherlight";
 @import "featherlight.gallery";
 
-%page-title {
-  color: #fff;
-  line-height: 64px;
-  white-space: nowrap;
-  &.center-title {
-    position: absolute;
-    z-index: 0;
-    &:before {
-      right: -50px;
-      left: 0;
-      margin: auto;
-      width: 10%;
-    }
-    &:after {
-      content: "";
-      //background-color: #5d962a;
-      transform: skew(45deg);
-      position: absolute;
-      right: 0;
-      left: -50px;
-      margin: auto;
-      width: 10%;
-      min-width: 300px;
-      height: 100%;
-      z-index: -1;
-      top: 0;
-    }
-  }
-
-  h3 {
-    margin-top: 10px;
-    margin-bottom: 15px;
-  }
-  &:before {
-    content: "";
-    //background-color: #5d962a;
-    transform: skew(-45deg);
-    position: absolute;
-    right: -100px;
-    width: 40%;
-    min-width: 300px;
-    height: 100%;
-    z-index: -1;
-  }
-}
-
-@each $colorName, $colorCode in $darkColors {
-  .page-#{$colorName}-title {
-    @extend %page-title;
-    &:after, &:before {
-      background-color: #{$colorCode};
-    }
-  }
-}
-
 span.container {
   display: block;
 }
@@ -897,26 +721,6 @@ span.container {
     a {
       margin-bottom: 5px;
     }
-  }
-}
-
-.archive {
-  margin-top: 30px;
-  margin-bottom: 30px;
-  .media-heading {
-    color: $color-primary;
-    line-height: 1.7;
-  }
-  .media-right,
-  .media-left {
-    min-width: 250px;
-    img {
-      width: 100%;
-      height: auto;
-    }
-  }
-  .media-body {
-    padding: 15px 0;
   }
 }
 

@@ -1,4 +1,4 @@
-<footer class="bg-primary">
+<footer class="bg-blue text-white-deep">
     <div class="container">
         <div class="row">
             @include('front.frame.footer_menu')

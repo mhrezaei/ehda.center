@@ -11,7 +11,7 @@
                     is_array($group['children']) and
                     count($group['children'])
                 )
-                    <ul class="bg-primary mega-menu col-xs-12">
+                    <ul class="bg-blue text-white-deep mega-menu col-xs-12">
                         @foreach($group['children'] as $postType)
                             <ul class="list-unstyled">
                                 <h3>

@@ -73,6 +73,12 @@ $rtlRatio: 1;
 }
 
 // Aligning --end
+// Body --start
+body {
+  @extend .text-darkGray;
+}
+
+// Body --end
 
 // Top Main Header --start
 header {
@@ -110,10 +116,9 @@ header {
     }
 
     .select-lang-btn {
-      @extend .bg-white, .rounded-corners-5;
+      @extend .rounded-corners-5;
       margin-#{$endSide}: 240px;
       margin-top: 8px;
-      padding: 2px 5px;
 
       > a {
         &,
@@ -121,16 +126,14 @@ header {
         &:focus,
         &:link,
         &:visited {
-          @extend .text-blue, .border-1, .border-blue, .rounded-corners-5, .f12;
-          background-color: lighten(map_get($colors, 'blue'), 50%);
+          @extend .text-blue, .bg-white, .border-1, .border-white, .rounded-corners-5, .f12;
           border: none;
           outline: none;
           padding: 0 5px;
           line-height: 10px;
 
           &.selected {
-            @extend .text-green, .border-green;
-            background-color: lighten(map_get($colors, 'green'), 50%);
+            @extend .text-white, .bg-transparent;
           }
         }
       }
@@ -160,9 +163,9 @@ header {
       z-index: 1;
     }
     .ehda-card-menu {
+      @extend .bg-green;
       position: absolute;
       z-index: 2;
-      background-color: $color-green;
       color: #fff;
       border-radius: 5px;
       padding: 5px 10px;
@@ -175,8 +178,7 @@ header {
         transition: all 0.2s 0s;
       }
       &:hover {
-        background-color: #e6e6e6;
-        color: #23527c;
+        @extend .bg-lightGray, .text-blue;
         svg {
           fill: red;
         }
@@ -231,7 +233,7 @@ header {
       }
       > li:hover {
         > a {
-          color: #23527c;
+          @extend .link-darkGray;
         }
       }
       @media (min-width: 1000px) {
@@ -295,7 +297,7 @@ header {
         //}
       }
       > a {
-        @extend .text-blue;
+        @extend .link-darkGray;
         display: block;
         font-size: 20px;
         font-weight: 500;
@@ -327,13 +329,13 @@ header {
       }
     }
     &:before {
+      @extend .bg-green;
       content: "";
       position: absolute;
       width: 100%;
       height: 100%;
       #{$endSide}: -50%;
       top: 0px;
-      background-color: $color-green;
       transform: skew(-30deg);
       z-index: 1;
       border-#{$startSide}: 5px solid #fff;
@@ -387,6 +389,218 @@ header {
 }
 
 // Top Main Header --end
+
+// Ehda Card --start
+.ehda-card {
+  position: fixed;
+  top: 45%;
+  right: 0;
+  z-index: 10;
+  background-color: rgba(209, 209, 209, 0.56);
+  padding: 10px;
+  border-radius: 10px 0 0 10px;
+  text-align: left;
+  &:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: -30px;
+    bottom: -30px;
+    left: -30px;
+    right: 0;
+  }
+  &, * {
+    transition: all 0.2s;
+  }
+  &:hover {
+    background-color: #fff;
+    span:first-child {
+      background-color: #fff;
+      svg {
+        fill: #e87;
+        transform: scale(1.2);
+        animation: none;
+      }
+    }
+  }
+  svg {
+    animation: heartbeat 1300ms ease 0s infinite normal;
+  }
+  span:first-child {
+    @extend .bg-green;
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 7px;
+  }
+  span:last-child {
+    white-space: nowrap;
+    margin: 20px 0 -40px;
+    display: block;
+    color: #8a8a8a;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 0 10px;
+    border-radius: 4px;
+  }
+  @media (max-width: 700px) {
+    display: none;
+  }
+}
+
+// Ehda Card --end
+
+// Current Members --start
+#current-members {
+  @extend .text-darkGray;
+  margin: 2em 0;
+  h3 {
+    font-size: 100%;
+    white-space: nowrap;
+    line-height: 4em;
+  }
+}
+
+// Current Members --end
+
+// Events Slider --start
+.events-slider {
+  .event-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    bottom: -1px;
+    text-align: right;
+    overflow: hidden;
+    &:before {
+      @extend .bg-green;
+      width: 100%;
+      right: 50%;
+      top: 0;
+      content: "";
+      position: absolute;
+      z-index: 1;
+      transform: skew(-45deg);
+      height: 100%;
+      border-right: 15px solid #fff;
+    }
+    &:after {
+      content: "";
+      position: absolute;
+      width: 250px;
+      height: 100%;
+      right: 80%;
+      top: 0;
+      z-index: 1;
+      background: url(#{$imagesDir}events-ribbon.png) no-repeat;
+      background-size: cover;
+    }
+  }
+  .text {
+    &,
+    * {
+      @extend .text-white;
+    }
+    position: relative;
+    z-index: 2;
+    width: 50%;
+    padding: 5%;
+    direction: rtl;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    @media(max-width: 519px) {
+      width: 60%;
+      p {
+        margin-right: 18%;
+      }
+    }
+    @media (max-width: 700px) {
+      h2 {
+        font-size: 26px;
+      }
+    }
+  }
+}
+
+// Events Slider --start
+
+// Page Title --start
+%page-title {
+  @extend .text-white-deep;
+  line-height: 64px;
+  white-space: nowrap;
+  &.center-title {
+    position: absolute;
+    z-index: 0;
+    &:before {
+      right: -50px;
+      left: 0;
+      margin: auto;
+      width: 10%;
+    }
+    &:after {
+      content: "";
+      //background-color: #5d962a;
+      transform: skew(45deg);
+      position: absolute;
+      right: 0;
+      left: -50px;
+      margin: auto;
+      width: 10%;
+      min-width: 300px;
+      height: 100%;
+      z-index: -1;
+      top: 0;
+    }
+  }
+
+  h3 {
+    margin-top: 10px;
+    margin-bottom: 15px;
+  }
+  &:before {
+    content: "";
+    //background-color: #5d962a;
+    transform: skew(-45deg);
+    position: absolute;
+    right: -100px;
+    width: 40%;
+    min-width: 300px;
+    height: 100%;
+    z-index: -1;
+  }
+}
+
+@each $colorName, $colorCode in $darkColors {
+  .page-#{$colorName}-title {
+    @extend %page-title;
+    &:after, &:before {
+      @extend .bg-#{$colorName};
+    }
+  }
+}
+
+// Page Title --end
+
+// Archive --start
+.archive {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  .media-heading {
+    line-height: 1.7;
+  }
+  .media-right,
+  .media-left {
+    min-width: 250px;
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+  .media-body {
+    padding: 15px 0;
+  }
+}
+
+// Archive --end
 
 // Footer --start
 footer {
@@ -686,7 +900,7 @@ footer {
 
 .underlined-heading {
   $borderSize: 3px;
-  @extend .border-bottom-black;
+  @extend .border-bottom-darkGray;
   @extend .mb15;
   border-bottom-width: #{$borderSize};
   border-bottom-style: solid;
@@ -1821,6 +2035,7 @@ fieldset[disabled] .select2-search input[type="text"] + .form-control-feedback, 
 
 // Bootstrap --start
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  @extend .text-darkGray;
   line-height: 1.1;
 }
 

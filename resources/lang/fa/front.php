@@ -65,6 +65,7 @@ return [
     'gallery'                                  => 'گالری',
     'news'                                     => 'اخبار',
     'hot_news'                                 => 'اخبار داغ',
+    'special_news'                             => 'اخبار ویژه',
     'ehda_news'                                => 'اخبار اهدا',
     'faqs'                                     => 'سوالات متداول',
     'faq_not_found_ask_yours'                  => 'پاسخ سوال خود را پیدا نکرده اید؟ از ما بپرسید',
@@ -203,7 +204,7 @@ return [
     ],
 
     'notes' => [
-        'moments_are_important_to_save_life' => 'برای نجات <span class="text-success">زندگی</span> لحظه&zwnj;ها مهم است!',
+        'moments_are_important_to_save_life' => 'برای نجات <span class="text-green">زندگی</span> لحظه&zwnj;ها مهم است!',
         'one_brain_dead_can_save_8_lives'    => 'هر فرد مرگ مغزی می&zwnj;تواند جان ۸ نفر را نجات دهد.',
         'organ_donation'                     => 'اهدای عضو',
         'life_donation'                      => 'اهدای زندگی',

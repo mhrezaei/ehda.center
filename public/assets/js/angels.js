@@ -44,10 +44,10 @@ function showStar(circleIndex, name, imgSrc, donation_date) {
     var circle = $($('.stars circle')[circleIndex]);
     var circleParent = circle.parent();
     userCard.find('.angel-img').attr('src', imgSrc);
-    userCard.find('.angel-name').text(name);
-    if (donation_date) {
-        userCard.find('.angel-time').text(donation_date);
-    }
+    // userCard.find('.angel-name').text(name);
+    // if (donation_date) {
+    //     userCard.find('.angel-time').text(donation_date);
+    // }
     $('.stars').prepend(userCard);
     $('.user-card').fadeIn();
     var cardWidth = 140;

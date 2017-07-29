@@ -65,6 +65,7 @@ return [
     'gallery'                                  => 'Gallery',
     'news'                                     => 'News',
     'hot_news'                                 => 'Hot News',
+    'special_news'                             => 'Special News',
     'ehda_news'                                => 'Organ Donation News',
     'faqs'                                     => 'Faqs',
     'faq_not_found_ask_yours'                  => 'Didn\'t find your answer? Ask your question.',
@@ -203,7 +204,7 @@ return [
     ],
 
     'notes' => [
-        'moments_are_important_to_save_life' => 'Every moment is important to save <span class="text-success">life</span>.',
+        'moments_are_important_to_save_life' => 'Every moment is important to save <span class="text-green">life</span>.',
         'one_brain_dead_can_save_8_lives'    => 'One brain dead can save 8 lives.',
         'organ_donation'                     => 'Organ Donation',
         'life_donation'                      => 'Life Donation',

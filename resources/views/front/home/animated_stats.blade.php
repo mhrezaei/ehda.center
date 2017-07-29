@@ -40,4 +40,4 @@
         <span class="person-icon dead animate-die"></span>
     </span>
 </div>
-<h3 class="text-center">{{ trans('front.notes.one_brain_dead_can_save_8_lives') }}</h3>
+<h3 class="text-center text-blue">{{ trans('front.notes.one_brain_dead_can_save_8_lives') }}</h3>

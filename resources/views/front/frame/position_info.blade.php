@@ -1,14 +1,14 @@
 @if(!isset($groupColor) or !$groupColor)
-    {{ null, $groupColor = 'black' }}
+    {{ null, $groupColor = 'darkGray' }}
 @endif
 @if(!isset($categoryColor) or !$categoryColor)
-    {{ null, $categoryColor = 'black' }}
+    {{ null, $categoryColor = 'darkGray' }}
 @endif
 @if(!isset($titleColor) or !$titleColor)
-    {{ null, $titleColor = 'black' }}
+    {{ null, $titleColor = 'darkGray' }}
 @endif
 @if(!isset($descriptionColor) or !$descriptionColor)
-    {{ null, $descriptionColor = 'black' }}
+    {{ null, $descriptionColor = 'darkGray' }}
 @endif
 
 <div class="row mb20">
