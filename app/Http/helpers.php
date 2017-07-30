@@ -563,3 +563,65 @@ function localeLink($locale)
 
     return url($uri);
 }
+
+/**
+ * Adds sub domain to a given url string.
+ *
+ * @param string $url
+ * @param string $subDomain
+ *
+ * @return string
+ */
+function addSubDomain($url, $subDomain)
+{
+    $parts = parse_url($url);
+    $hotsParts = explode('.', $parts['host']);
+    array_unshift($hotsParts, $subDomain);
+    $parts['host'] = implode('.', $hotsParts);
+    return unparse_url($parts);
+}
+
+/**
+ * Unparse url and returns a url string from a parsed url
+ *
+ * @param array $parsed_url
+ * @param array $ommit
+ *
+ * @return string
+ */
+function unparse_url($parsed_url, $ommit = array())
+{
+    //From Open Web Analytics owa_lib.php
+
+    $url = '';
+
+    $p = array();
+
+    $p['scheme'] = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
+
+    $p['host'] = isset($parsed_url['host']) ? $parsed_url['host'] : '';
+
+    $p['port'] = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
+
+    $p['user'] = isset($parsed_url['user']) ? $parsed_url['user'] : '';
+
+    $p['pass'] = isset($parsed_url['pass']) ? ':' . $parsed_url['pass'] : '';
+
+    $p['pass'] = ($p['user'] || $p['pass']) ? $p['pass'] . "@" : '';
+
+    $p['path'] = isset($parsed_url['path']) ? $parsed_url['path'] : '';
+
+    $p['query'] = isset($parsed_url['query']) ? '?' . $parsed_url['query'] : '';
+
+    $p['fragment'] = isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '';
+
+    if ($ommit) {
+        foreach ($ommit as $key) {
+            if (isset($p[$key])) {
+                $p[$key] = '';
+            }
+        }
+    }
+
+    return $p['scheme'] . $p['user'] . $p['pass'] . $p['host'] . $p['port'] . $p['path'] . $p['query'] . $p['fragment'];
+}

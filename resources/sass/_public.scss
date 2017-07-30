@@ -521,7 +521,113 @@ header {
   }
 }
 
-// Events Slider --start
+// Events Slider --end
+
+// Map --start
+.show-title {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  margin: 0 !important;
+  padding: 0 5px;
+  text-align: center;
+  line-height: 26px;
+  border-radius: 2px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  opacity: 0.8;
+}
+
+.iran-map {
+  user-select: none;
+}
+
+.iran-map svg {
+  height: 500px;
+  width: 500px;
+  max-width: 100%;
+}
+
+.iran-map .border path {
+  fill: #fff;
+}
+
+.iran-map .province path {
+  transition: all 0.2s;
+  fill: #8994b9;
+  &[disabled],
+  &[disabled]:hover,
+  &[disabled]:focus {
+    fill: #b1b1b1 !important;
+    cursor: default;
+  }
+}
+
+.iran-map .province path:hover, .iran-map .province path.hover {
+  fill: #9ddf60 !important;
+  cursor: pointer;
+}
+
+.choose-state {
+  cursor: pointer;
+  h3 {
+    display: inline-block;
+  }
+  &.active {
+    .icon {
+      transform: scale(-1);
+    }
+  }
+  .icon {
+    margin: 0 10px;
+    transition: all 0.2s;
+  }
+}
+
+.states-list {
+  display: none;
+  position: absolute;
+  height: 400px;
+  overflow: auto;
+  direction: ltr;
+  border: 1px solid #8994b9;
+  z-index: 100;
+  background-color: rgba(255, 255, 255, 0.6);
+  width: 70%;
+  @media(max-width: 770px) {
+    left: 0;
+    position: fixed;
+    top: 0;
+    background-color: #fff;
+    right: 0;
+    width: auto;
+    bottom: 0;
+    height: auto;
+    margin: 0;
+  }
+  li {
+    a {
+      display: block;
+      padding: 10px 15px;
+      direction: rtl;
+      text-align: right;
+      white-space: nowrap;
+      &:hover, &.active {
+        background-color: #d1dbe4;
+      }
+      &[disabled] {
+        background-color: #ccc !important;
+        &:after {
+          display: inline-block;
+          margin: 0 10px;
+        }
+      }
+    }
+  }
+}
+
+// Map --end
 
 // Page Title --start
 %page-title {
@@ -560,9 +666,13 @@ header {
   &:before {
     content: "";
     //background-color: #5d962a;
-    transform: skew(-45deg);
+    @if $rtl {
+      transform: skew(-45deg);
+    } @else {
+      transform: skew(45deg);
+    }
     position: absolute;
-    right: -100px;
+    #{$startSide}: -100px;
     width: 40%;
     min-width: 300px;
     height: 100%;

@@ -302,7 +302,7 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
     Route::post('/summer', 'LandingPageController@summer_count');
 
     Route::group(['prefix' => '{lang}'], function () {
-        Route::get('/', 'FrontController@index');
+        Route::get('/', 'FrontController@index')->name('site');
 
         // tests
         Route::group(['prefix' => 'test'], function () {
@@ -392,6 +392,10 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
         Route::post('volunteer/second_step', 'VolunteersController@register_second_step');
         Route::get('/volunteers/exam', 'members\VolunteersController@exam');
 
+        // States
+        Route::group(['prefix' => 'states'], function () {
+            Route::get('/', 'StatesController@map');
+        });
     });
 
 
