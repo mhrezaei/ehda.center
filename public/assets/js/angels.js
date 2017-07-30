@@ -164,14 +164,14 @@ $(document).ready(function () {
 
     $('.show-form-btn-container button').click(showNewAngelForm);
 
-    $(window).scroll(function () {
-        var bottomOfPage = $('html').scrollTop() + $(window).height();
-        var bottomOfStars = $('.stars-bg').offset().top + $('.stars-bg').height();
-        console.log(bottomOfStars)
-        console.log(bottomOfPage)
-
-        if (bottomOfPage > bottomOfStars && $('.new-angel-form-container').height() == 0) {
-            showNewAngelForm();
-        }
-    })
+    // $(window).scroll(function () {
+    //     var bottomOfPage = $('html').scrollTop() + $(window).height();
+    //     var bottomOfStars = $('.stars-bg').offset().top + $('.stars-bg').height();
+    //     console.log(bottomOfStars)
+    //     console.log(bottomOfPage)
+    //
+    //     if (bottomOfPage > bottomOfStars && $('.new-angel-form-container').height() == 0) {
+    //         showNewAngelForm();
+    //     }
+    // });
 });

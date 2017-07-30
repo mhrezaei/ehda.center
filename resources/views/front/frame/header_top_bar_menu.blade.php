@@ -1,14 +1,13 @@
 <ul class="pull-start list-inline no-margin">
     @if(!\App\Providers\FrontServiceProvider::isHome())
-        <li>
-            <a href="{{ url_locale() }}" class="f22" title="{{ trans('front.home') }}"
-               style="padding-top: 0; padding-bottom: 0">
-                <i class="fa fa-home"></i>
+        <li class="pull-start">
+            <a href="{{ url_locale() }}" title="{{ trans('front.home') }}">
+                <i class="fa fa-home f22" style="line-height: 18px"></i>
             </a>
         </li>
     @endif
     @if(user()->exists)
-        <li class="has-child">
+        <li class="has-child pull-start">
             <a href="/">{{ str_replace('::user', user()->name_first, trans('front.profile_phrases.welcome_user')) }}</a>
             <ul class="list-unstyled bg-primary">
                 @if(user()->is_admin()) {{-- This user is a volunteer --}}
@@ -27,7 +26,7 @@
             </ul>
         </li>
     @else
-        <li>
+        <li class="pull-start">
             <a href="{{ url('/login') }}">{{ trans('front.member_section.sign_in') }}</a>
         </li>
     @endif

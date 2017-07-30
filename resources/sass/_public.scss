@@ -88,6 +88,7 @@ header {
     }
     > ul {
       > li {
+        padding: 0;
         &:first-child {
           &:after {
             content: "";
@@ -106,7 +107,7 @@ header {
         }
       }
       a {
-        padding: 10px 20px;
+        @extend .pt10, .pb10, .pr15, .pl10;
         display: inline-block;
         @media(max-width: 500px) {
           padding: 12px 5px;
@@ -2236,6 +2237,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     background: url(#{$imagesDir}angels-bg.jpg) no-repeat center center;
     background-size: cover;
     position: relative;
+    z-index: 2;
 
     .show-form-btn-container {
       width: 100%;
@@ -2410,7 +2412,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
       bottom: 0;
       left: 0;
       background-color: #fff;
-      z-index: -1;
+      z-index: 0;
     }
   }
 }
