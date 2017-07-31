@@ -21,7 +21,7 @@
 	|
 	--}}
 	<div class="panel-heading">
-		<i class="fa fa-credit-card"></i>
+		<i class="fa fa-telegram"></i>
 		<span class="mh5">
 			{{ trans("ehda.cards.registry_media") }}
 		</span>

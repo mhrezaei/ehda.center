@@ -266,4 +266,17 @@ class ManageServiceProvider extends ServiceProvider
 		return $array ;
 
 	}
+
+	public static function upstreamSettings()
+	{
+		return [
+			['downstream', trans('settings.downstream')],
+			['posttypes', trans('settings.posttypes')],
+			['roles', trans('settings.roles')],
+			['packages', trans('settings.packages')],
+			['states', trans('settings.states')],
+			['domains', trans('settings.domains')],
+		];
+	}
+
 }

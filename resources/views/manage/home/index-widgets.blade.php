@@ -85,3 +85,21 @@
 
 
 
+{{--
+|--------------------------------------------------------------------------
+| Upstream Settings
+|--------------------------------------------------------------------------
+|
+--}}
+
+@if(user()->isDeveloper())
+	<div id="divUpstream" class="pinBoot-inside">
+		@include("manage.home.index-upstream")
+	</div>
+@endif
+
+
+
+
+
+

@@ -255,6 +255,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
 
         'Manage' => \App\Providers\ManageServiceProvider::class,
+        'Yasna' => \App\Providers\YasnaServiceProvider::class,
         'NoCaptcha' => 'Anhskohbo\NoCaptcha\Facades\NoCaptcha',
         'Hashids' => Vinkla\Hashids\Facades\Hashids::class,
         'jDate' => Morilog\Jalali\Facades\jDate::class,
