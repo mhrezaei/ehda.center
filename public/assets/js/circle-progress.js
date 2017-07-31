@@ -155,12 +155,12 @@ function count(elm, mins, down) {
     var circleProgress = elm.next().find('.circle-progress');
     var dashArray = parseInt(circleProgress.css('stroke-dasharray'));
     if (hours) {
-        elm.find('.hours').html(farsiDigits(twoDigits(hours)) + ':');
+        elm.find('.hours').html(ad(twoDigits(hours)) + ':');
     } else {
         elm.find('.hours').empty();
     }
-    elm.find('.minutes').html(farsiDigits(twoDigits(minutes)) + ':');
-    elm.find('.secconds').html(farsiDigits(twoDigits(secconds)));
+    elm.find('.minutes').html(ad(twoDigits(minutes)) + ':');
+    elm.find('.secconds').html(ad(twoDigits(secconds)));
     //circleProgress.css('stroke-dashoffset', Math.floor((delta*dashArray)/(mins*60)));
     elm.parent().find('.circle').circleProgress({
         value: Math.floor((delta * 100) / (mins * 60)) / 100,

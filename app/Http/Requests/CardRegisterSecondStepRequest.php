@@ -38,7 +38,7 @@ class CardRegisterSecondStepRequest extends Request
             'name_last' => 'required|persian:60',
             'gender' => 'required|numeric|min:1|max:3',
             'name_father' => 'required|persian:60',
-            'code_id' => 'required|numeric',
+            'code_id' => 'numeric',
             'birth_date' => 'required|min:6',
             'birth_city' => 'required|numeric|min:1',
             'edu_level' => 'required|numeric|min:1|max:6',

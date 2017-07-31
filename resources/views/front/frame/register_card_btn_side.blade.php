@@ -6,5 +6,5 @@
                 transform="translate(-273.313 -5.063)"/>
         </svg>
       </span>
-    <span>کارت اهدای عضو</span>
+    <span>{{ trans('front.organ_donation_card_section.singular') }}</span>
 </a>

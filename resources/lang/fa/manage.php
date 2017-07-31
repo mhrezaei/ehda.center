@@ -10,10 +10,11 @@ return [
 	'search-people'          => "آدم‌یاب", //@TODO: New
 
 	'tabs' => [
-		'actives'  => "فعال‌ها",
-		'blockeds' => "مسدودشده‌ها",
-		'deleteds' => "حذف‌شده‌ها",
-		'bin'      => "زباله‌دان",
+		'actives'   => "فعال‌ها",
+		'inactives' => "غیرفعال‌ها",
+		'blockeds'  => "مسدودشده‌ها",
+		'deleteds'  => "حذف‌شده‌ها",
+		'bin'       => "زباله‌دان",
 	],
 
 	'modules' => [

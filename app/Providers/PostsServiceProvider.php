@@ -43,7 +43,13 @@ class PostsServiceProvider extends ServiceProvider
         //
     }
 
-
+    /**
+     * Returns a view including list view of post with specified filters and conditions
+     *
+     * @param array $data Filters and Conditions
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public static function showList($data = [])
     {
         $defaultData = [
@@ -52,6 +58,7 @@ class PostsServiceProvider extends ServiceProvider
                 'role'             => "",
                 'criteria'         => "published",
                 'locale'           => getLocale(),
+                'domain'           => getUsableDomains(),
                 'owner'            => 0,
                 'type'             => "feature:searchable",
                 'category'         => "",
@@ -60,7 +67,8 @@ class PostsServiceProvider extends ServiceProvider
                 'search'           => "",
                 'from'             => "",
                 'to'               => "",
-                'max_per_page'     => 12,
+                'max_per_page'     => 12, // If this is set as "-1" pagination will be applied
+                'random'           => false,
                 'sort'             => 'DESC',
                 'sort_by'          => 'published_at',
                 'show_filter'      => true,
@@ -70,6 +78,8 @@ class PostsServiceProvider extends ServiceProvider
                 'paginate_url'     => '',
                 'paginate_current' => '',
                 'is_base_page'     => false,
+                'showError'        => true,
+                'variables'        => [],
             ]
         ];
 
@@ -90,8 +100,11 @@ class PostsServiceProvider extends ServiceProvider
 
             // select posts
             $posts = Post::selector($data)
-                ->where($data['conditions'])
-                ->orderBy($data['sort_by'], $data['sort']);
+                ->where($data['conditions']);
+
+            if ($data['random']) {
+                $posts = $posts->inRandomOrder();
+            }
 
             if ($data['max_per_page'] == -1) {
                 $posts = $posts->get();
@@ -99,9 +112,12 @@ class PostsServiceProvider extends ServiceProvider
                 $posts = $posts->paginate($data['max_per_page']);
             }
 
-
             if (!$posts->count()) {
-                return self::showError(trans('front.no_result_found'), $ajaxRequest);
+                if ($data['showError']) {
+                    return self::showError(trans('front.no_result_found'), $ajaxRequest);
+                } else {
+                    return false;
+                }
             }
 
             if ($data['paginate_hash']) {
@@ -117,7 +133,11 @@ class PostsServiceProvider extends ServiceProvider
         $allPosts = Post::selector($data)->get();
 
         if (!$allPosts->count()) {
-            return self::showError(trans('front.no_result_found'), $ajaxRequest);
+            if ($data['showError']) {
+                return self::showError(trans('front.no_result_found'), $ajaxRequest);
+            } else {
+                return false;
+            }
         }
 
         // set an array for sending data to view
@@ -141,33 +161,43 @@ class PostsServiceProvider extends ServiceProvider
             $viewFolder = "front.posts.list.$template";
         }
 
-        return self::renderView($viewFolder . '.main', compact(
-            'posts',
-            'viewFolder',
-            'showFilter',
-            'ajaxRequest',
-            'isBasePage',
-            'allPosts'
-        ));
-        return view($viewFolder . '.main', compact(
-            'posts',
-            'viewFolder',
-            'showFilter',
-            'ajaxRequest',
-            'isBasePage',
-            'allPosts'
-        ));
+
+        return self::generateView($viewFolder . '.main', compact(
+                'posts',
+                'viewFolder',
+                'showFilter',
+                'ajaxRequest',
+                'isBasePage',
+                'allPosts'
+            ) + $data['variables']);
+
+//        return view($viewFolder . '.main', compact(
+//            'posts',
+//            'viewFolder',
+//            'showFilter',
+//            'ajaxRequest',
+//            'isBasePage',
+//            'allPosts'
+//        ));
     }
 
+    /**
+     * Returns a view including single view of a post with specified filters and conditions
+     *
+     * @param Post|string|integer $identifier
+     * @param array               $data
+     *
+     * @return bool|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public static function showPost($identifier, $data = [])
     {
         // normalize data
         $data = array_normalize($data, [
-            'lang'      => getLocale(),
+            'lang'          => getLocale(),
             'externalBlade' => '',
-            'preview'   => false,
-            'showError' => true,
-            'variables' => [],
+            'preview'       => false,
+            'showError'     => true,
+            'variables'     => [],
         ]);
 
         $post = self::smartFindPost($identifier);
@@ -191,9 +221,20 @@ class PostsServiceProvider extends ServiceProvider
 
         // render view
         $externalBlade = $data['externalBlade'];
-        return view($viewFolder . '.main', compact('post', 'viewFolder', 'externalBlade') + $data['variables']);
+        return self::generateView($viewFolder . '.main', compact('post',
+                'viewFolder',
+                'externalBlade'
+            ) + $data['variables']);
     }
 
+    /**
+     * Returns a view to show error
+     *
+     * @param string $errorMessage Error message to be shown
+     * @param bool   $ajaxRequest  If true, error page will not be shown
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public static function showError($errorMessage, $ajaxRequest = false)
     {
         return view('front.posts.error', [
@@ -203,7 +244,9 @@ class PostsServiceProvider extends ServiceProvider
     }
 
     /**
-     * @param null $ajaxUrlPrefix : the prefix url for ajax calls that should be called for "waiting" and "expired" events
+     * @param null $ajaxUrlPrefix : the prefix url for ajax calls that should be called for "waiting" and "expired"
+     *                            events
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public static function showEventsAccordion($ajaxUrlPrefix = null)
@@ -239,6 +282,14 @@ class PostsServiceProvider extends ServiceProvider
         ));
     }
 
+    /**
+     * Returns an array of categories of given posts
+     *
+     * @param \Illuminate\Database\Eloquent\Collection $posts
+     * @param string                                   $slug
+     *
+     * @return array
+     */
     public static function postsCategories($posts, $slug = 'id')
     {
         $cats = Category::whereHas('posts', function ($query) use ($posts) {
@@ -252,16 +303,38 @@ class PostsServiceProvider extends ServiceProvider
         return $cats;
     }
 
+    /**
+     * Returns the minimum price in given posts
+     *
+     * @param \Illuminate\Database\Eloquent\Collection $posts
+     *
+     * @return string|int
+     */
     public static function productsMinPrice($posts)
     {
         return $posts->pluck('current_price')->min();
     }
 
+    /**
+     * Returns the maximum price in given posts
+     *
+     * @param \Illuminate\Database\Eloquent\Collection $posts
+     *
+     * @return string|int
+     */
     public static function productsMaxPrice($posts)
     {
         return $posts->pluck('current_price')->max();
     }
 
+    /**
+     * Returns all posts of the specified post type
+     *
+     * @param string      $type
+     * @param null|string $locale
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
     public static function allPostsOfType($type, $locale = null)
     {
         $data = [
@@ -272,6 +345,14 @@ class PostsServiceProvider extends ServiceProvider
         return Post::selector($data)->get();
     }
 
+    /**
+     * Returns points of the $user in the $event
+     *
+     * @param string|integer $event
+     * @param string         $user
+     *
+     * @return bool|float
+     */
     public static function getUserPointOfEvent($event, $user = 'current')
     {
         if (!($event instanceof Post)) {
@@ -305,6 +386,14 @@ class PostsServiceProvider extends ServiceProvider
             ->first());
     }
 
+    /**
+     * Returns Collection of comments for a post
+     *
+     * @param \App\Models\Postt $post
+     * @param array             $parameters
+     *
+     * @return mixed
+     */
     public static function getPostComments($post, $parameters = [])
     {
         $post = self::smartFindPost($post);
@@ -332,29 +421,78 @@ class PostsServiceProvider extends ServiceProvider
 
     /**
      * Find post with multiple types of identifiers
-     * @param $identifier
+     *
+     * @param         $identifier
+     * @param boolean $checkDirectId If false, post will not be searched with id of db table
+     *
      * @return \App\Models\Post
      */
-    public static function smartFindPost($identifier)
+    public static function smartFindPost($identifier, $checkDirectId = false)
     {
         if ($identifier instanceof Post) {
-            return $identifier;
+            $post = $identifier;
+        } else if (is_numeric($identifier) and $checkDirectId) {
+            $post = Post::find($identifier);
+        } else if (count($dehashed = hashid_decrypt($identifier, 'ids')) and
+            is_numeric($id = $dehashed[0])
+        ) {
+            $post = Post::find($id);
+        } else {
+            $post = Post::findBySlug($identifier);
         }
 
-        if (is_numeric($identifier)) {
-            return Post::find($identifier);
+        if ($post->exists and
+            (
+                !$post->domain or
+                // Domain isn't specified
+                ($post->domain() and in_array($post->domain, getUsableDomains()))
+                // Domain is specified and it is one of usable domains
+            )
+        ) {
+            // Find sister of found post in current locale
+            $post = $post->in(getLocale());
+
+            return $post;
         }
 
-        $dehashed = hashid_decrypt($identifier, 'ids');
-        if (count($dehashed) and is_numeric($id = $dehashed[0])) {
-            return Post::find($id);
-
-        }
-
-        return Post::findBySlug($identifier);
+        return new Post();
     }
 
-    private static function renderView($view, $data = [])
+    public static function forceFieldsInLocales($identifier, $fields, $locales)
+    {
+        $post = self::smartFindPost($identifier);
+
+        if ($post->exists) {
+            $parameters = [];
+            if (!is_array($fields)) {
+                $fields = [$fields];
+            }
+
+            if (!is_array($locales)) {
+                $locales = [$locales];
+            }
+
+            foreach ($locales as $locale) {
+                $sisterPost = $post->in($locale);
+                if ($sisterPost->exists) {
+                    $localeValue = [];
+                    foreach ($fields as $parameterKey => $field) {
+                        if (!is_string($parameters)) {
+                            $parameterKey = $field;
+                        }
+                        $localeValue[$parameterKey] = $sisterPost->$field;
+                    }
+                } else {
+                    $localeValue = false;
+                }
+                $parameters[$locale] = $localeValue;
+            }
+
+            TransServiceProvider::forceUrlParameters($parameters);
+        }
+    }
+
+    private static function generateView($view, $data = [])
     {
         if (View::exists($view)) {
             return view($view, $data);

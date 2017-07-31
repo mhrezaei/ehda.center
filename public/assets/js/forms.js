@@ -100,6 +100,7 @@ function forms_listener() {
 
     $(".form-datepicker").each(function () {
         var options = $(this).dataStartsWith(juiDataPrefix.datapicker);
+        $(this).removeClass('form-datepicker');
         $(this).datepicker(options);
     });
 
@@ -120,7 +121,9 @@ function forms_listener() {
         setTimeout($(this).val(), $(this).attr('data-delay'));
     });
 
-    $('.selectpicker').selectpicker();
+    if ($('.selectpicker').length) {
+        $('.selectpicker').selectpicker();
+    }
     setTimeout("forms_listener()", 5);
 }
 
@@ -320,7 +323,7 @@ function forms_validate(formData, jqForm, options) {
             }
 
             if ($selectpicker && $err_el < 0) {
-                if ($val < 1) {
+                if ($(this).hasClass('form-required') && $val < 1) {
                     forms_markError($(this), "error");
                     if ($err && $err.length) {
                         $errors_msg.push($err);
@@ -329,9 +332,6 @@ function forms_validate(formData, jqForm, options) {
                     $errors++;
                     $errors_el.push($name);
                     $err_el = $.inArray($name, $errors_el);
-                }
-                else {
-                    forms_markError($(this), "success");
                 }
             }
 
@@ -353,7 +353,6 @@ function forms_validate(formData, jqForm, options) {
 
 
     //TODO: Taha i need an value for set it to default for validation, my default value is 0
-
     if (typeof window[$formId + "_validate"] == 'function') {
         var validate = window[$formId + "_validate"](formData, jqForm, options);
         if (validate != 0) {
@@ -684,6 +683,7 @@ function forms_errorIfNotVerifyPassWord(selector) {
     var min = $(selector).attr('minlength');
     var id = $(selector).attr('id');
     var verify = '#' + id + '2';
+
     if ($(selector).val() == $(verify).val()) {
         if (max && min) {
             if ($(selector).val().length > max || $(selector).val().length < min) {
@@ -973,6 +973,13 @@ function pd(enDigit) {
 
 function ed(faDigit) {
     return forms_digit_en(faDigit);
+}
+
+function ad(digists) {
+    if (getLocale() == 'fa') {
+        return pd(digists);
+    }
+    return ed(digists);
 }
 
 function ad(string) {

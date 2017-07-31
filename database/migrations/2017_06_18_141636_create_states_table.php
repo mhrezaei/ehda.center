@@ -23,7 +23,7 @@ class CreateStatesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-
+            $table->boolean('converted')->default(0);
         });
     }
 

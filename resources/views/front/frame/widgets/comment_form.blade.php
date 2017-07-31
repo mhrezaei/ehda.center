@@ -1,4 +1,4 @@
-@if($post->canRecieveComments() or true)
+@if($post->canReceiveComments() or true)
 
     {{--to add any input:--}}
     {{--    1. add its name to $availableFields--}}
@@ -9,8 +9,13 @@
             'name',
             'email',
             'mobile',
-            'title',
+            'subject',
             'text',
+            'donation_date',
+            'city',
+            'submitter_name',
+            'submitter_phone',
+            'image',
         ] }}
 
     {{ null,
@@ -28,25 +33,8 @@
     {{ null, $inputSize = array_flip($availableFields) }}
     {{ null, $inputSize = array_fill_keys($availableFields, 12) }}
 
-
-    @foreach($availableFields as $fieldName)
-        @if(array_key_exists($fieldName, $fields))
-            {{ null, $inputData[$fieldName]['condition'] = true }}
-            {{ null, $inputData[$fieldName]['class'] =
-                ((array_key_exists($fieldName, $rules) and (array_search('required', $rules[$fieldName]) !== false)) ? 'form-required' : '') }}
-            {{ null, $inputData[$fieldName]['label'] = $fields[$fieldName]['label'] }}
-            @if(is_numeric($fields[$fieldName]['size'])
-                and is_int((int) $fields[$fieldName]['size'])
-                and $fields[$fieldName]['size'] <= 12)
-                {{ null, $inputSize[$fieldName] = $fields[$fieldName]['size'] }}
-            @endif
-        @else
-            {{ null, $inputData[$fieldName]['condition'] = false }}
-        @endif
-    @endforeach
-
     {!! Form::open([
-        'url' => \App\Providers\SettingServiceProvider::getLocale() . "/comment",
+        'url' => route_locale('comment.submit'),
         'method'=> 'post',
         'class' => 'js',
         'name' => 'commentForm',
@@ -56,55 +44,160 @@
     <div class="row">
         @include('front.forms.hidden',[
             'name' => 'post_id',
-            'value' => $post->id,
+            'value' => $post->hashid,
         ])
 
-        <div class="col-xs-{{ $inputSize['name'] }}">
-            <div class="row">
-                @include('front.forms.input', [
-                    'name' => 'name',
-                    'placeholder' => trans('validation.attributes.first_and_last_name'),
-                    'label' => trans('validation.attributes.first_and_last_name'),
-                ] + $inputData['name'])
-            </div>
-        </div>
 
-        <div class="col-xs-{{ $inputSize['email'] }}">
-            <div class="row">
-                @include('front.forms.input', [
-                    'name' => 'email',
-                    'placeholder' => trans('validation.attributes.email'),
-                ] + $inputData['email'])
-            </div>
-        </div>
+        @foreach($fields as $fieldName => $fieldInfo)
+            @if(in_array($fieldName, $availableFields))
+                @php
+                    $inputData = []
+                @endphp
 
-        <div class="col-xs-{{ $inputSize['mobile'] }}">
-            <div class="row">
-                @include('front.forms.input', [
-                    'name' => 'mobile',
-                    'placeholder' => trans('validation.attributes.mobile'),
-                ] + $inputData['mobile'])
-            </div>
-        </div>
+                {{-- Making decision about requirenment --}}
+                @if (array_key_exists($fieldName, $rules) and (array_search('required', $rules[$fieldName]) !== false))
+                    @php
+                        $inputClass ='form-required'
+                    @endphp
+                @else
+                    @php
+                        $inputClass =''
+                    @endphp
+                @endif
 
-        <div class="col-xs-{{ $inputSize['title'] }}">
-            <div class="row">
-                @include('front.forms.input', [
-                    'name' => 'title',
-                    'placeholder' => trans('validation.attributes.title'),
-                ] + $inputData['title'])
-            </div>
-        </div>
+                {{-- Making decision about label --}}
+                @if(!$fieldInfo['label'])
+                    @php
+                        $inputData['label'] = $fieldInfo['label']
+                    @endphp
+                @endif
 
-        <div class="col-xs-{{ $inputSize['text'] }}">
-            <div class="row">
-                @include('front.forms.textarea', [
-                    'name' => 'text',
-                    'rows' => 4,
-                    'placeholder' => trans('validation.attributes_placeholder.your_comment'),
-                ] + $inputData['text'])
-            </div>
-        </div>
+                {{-- Making decision about column size --}}
+                @if(is_numeric($fieldInfo['size'])
+                    and is_int((int) $fieldInfo['size'])
+                    and $fieldInfo['size'] <= 12)
+                    @php
+                        $inputSize = $fieldInfo['size']
+                    @endphp
+                @else
+                    @php
+                        $inputSize = 12
+                    @endphp
+                @endif
+
+
+                {{-- Generating view of field --}}
+                @if($fieldName == 'name')
+                    <div class="col-xs-{{ $inputSize }}">
+                        <div class="row">
+                            @include('front.forms.input', [
+                                'name' => $fieldName,
+                                'class' => $inputClass,
+                                'placeholder' => trans('validation.attributes.first_and_last_name'),
+                                'label' => trans('validation.attributes.first_and_last_name'),
+                            ] + $inputData)
+                        </div>
+                    </div>
+
+                @elseif(in_array($fieldName, [
+                    'email',
+                    'mobile',
+                    'subject',
+                    'submitter_name',
+                    'submitter_phone',
+                ]))
+
+                    @php $additiveClass = '' @endphp
+                    @if($fieldName == 'email')
+                        @php $additiveClass .= 'form-email' @endphp
+                    @elseif($fieldName == 'mobile')
+                        @php $additiveClass .= 'form-mobile' @endphp
+                    @endif
+
+                    <div class="col-xs-{{ $inputSize }}">
+                        <div class="row">
+                            @include('front.forms.input', [
+                                'name' => $fieldName,
+                                'class' => $inputClass . $additiveClass,
+                                'placeholder' => trans('validation.attributes.' . $fieldName),
+                            ] + $inputData)
+                        </div>
+                    </div>
+
+                @elseif($fieldName == 'donation_date')
+                    <div class="col-xs-{{ $inputSize }}">
+                        <div class="row">
+                            @include('front.forms.jquery-ui-datepicker', [
+                                'name' => $fieldName,
+                                'class' => $inputClass,
+                                'placeholder' => trans('validation.attributes.' . $fieldName),
+                                'label' => trans('validation.attributes.' . $fieldName),
+                                'options' => [
+                                    'maxDate' => 0,
+                                    'changeYear' => true,
+                                    'yearRange' => '-100,0',
+                                ]
+                            ] + $inputData)
+                        </div>
+                    </div>
+
+                @elseif($fieldName == 'city')
+                    <div class="col-xs-{{ $inputSize }}">
+                        <div class="row">
+                            @include('front.forms._states-selectpicker', [
+                                'name' => 'city' ,
+                                'class' => $inputClass,
+                            ] + $inputData)
+                        </div>
+                    </div>
+
+                @elseif($fieldName == 'city')
+                    <div class="col-xs-{{ $inputSize }}">
+                        <div class="row">
+                            @include('front.forms.textarea', [
+                                'name' => $fieldName,
+                                'class' => $inputClass,
+                                'rows' => 4,
+                                'placeholder' => trans('validation.attributes_placeholder.your_comment'),
+                            ] + $inputData)
+                        </div>
+                    </div>
+                @elseif($fieldName == 'image')
+                    {{--generate uploader panel--}}
+                    @php
+                        $dataField = "{$fieldName}_uploader";
+                        // id of whole dropzone element
+                        $id = "$fieldName-uploader";
+                        // name of dropzone object that will be created (if not set it will be automatically generated)
+                        $varName = camel_case($id . '-dropzone');
+                        // generate fileTypeString
+                        $fileTypeString = $fieldName;
+                    @endphp
+
+                    @isset($fileTypePrefix)
+                        @php $fileTypeString = $fileTypePrefix . '.' . $fileTypeString; @endphp
+                    @endisset
+
+                    <div class="col-xs-{{ $inputSize }}">
+                        {!! UploadServiceProvider::dropzoneUploader($fileTypeString, [
+                            'id' => $id,
+                            'varName' => $varName,
+                            'dataAttributes' => [
+                                'field' => $dataField,
+                            ],
+                            'target' => "file-$fieldName",
+                        ]) !!}
+
+                        @include('front.forms.hidden',[
+                            'id' => "file-$fieldName",
+                            'name' => "{$fieldName}_files",
+                            'extra' => "data-field=$dataField",
+                            'class' => 'optional-input',
+                        ])
+                    </div>
+                @endif
+            @endif
+        @endforeach
 
 
         <div class="col-xs-12">
@@ -124,6 +217,17 @@
 
 
 @section('endOfBody')
+    @include('front.frame.datepicker_assets')
+    {!! Html::script ('assets/libs/bootstrap-select/bootstrap-select.min.js') !!}
     {!! Html::script ('assets/libs/jquery.form.js') !!}
     {!! Html::script ('assets/js/forms.js') !!}
+    <script>
+        function customResetForm() {
+            $('#commentForm').find(':input:visible').val('').change();
+
+            $.each(Dropzone.instances, function (index, obj) {
+                obj.removeAllFiles();
+            });
+        }
+    </script>
 @append

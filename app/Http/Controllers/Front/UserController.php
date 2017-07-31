@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Front;
 use App\Http\Requests\Front\ProfileSaveRequest;
 use App\Models\Post;
 use App\Models\Receipt;
+use App\Models\State;
 use App\Models\User;
 use App\Providers\DrawingCodeServiceProvider;
 use App\Providers\PostsServiceProvider;
@@ -23,16 +24,16 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->session()->get('drawingCode'))
-            return redirect(url_locale('user/drawing'));
+        $profilePost = Post::findBySlug('my-card-detail')->in(getLocale());
 
-        return view('front.user.dashboard.0');
+        return view('front.user.dashboard.main', compact('profilePost'));
     }
 
-    public function previousComments($lang, $post_id) {
+    public function previousComments($lang, $post_id)
+    {
         $post = PostsServiceProvider::smartFindPost($post_id);
 
-        if(!$post) {
+        if (!$post) {
             $this->abort('410');
         }
 
@@ -43,7 +44,7 @@ class UserController extends Controller
     {
         user()->spreadMeta();
 
-        return view('front.user.profile.0');
+        return view('front.user.profile.edit.main');
     }
 
     public function drawing(Request $request)
@@ -60,9 +61,9 @@ class UserController extends Controller
                 $request->session()->forget('drawingCode');
 
             $new_receipt = [
-                'user_id' => user()->id,
-                'code' => $receipt,
-                'purchased_at' => Carbon::createFromTimestamp($drawing_code['date'], 'Asia/Tehran')->setTimezone('UTC'),
+                'user_id'          => user()->id,
+                'code'             => $receipt,
+                'purchased_at'     => Carbon::createFromTimestamp($drawing_code['date'], 'Asia/Tehran')->setTimezone('UTC'),
                 'purchased_amount' => $drawing_code['price'],
             ];
             Receipt::store($new_receipt);
@@ -96,9 +97,13 @@ class UserController extends Controller
             $request['password'] = Hash::make($request['new_password']);
         }
         $request['id'] = user()->id;
-        if ($request['marital'] != 2) {
-            unset($request['marriage_date']);
+
+        if(isset($request['code_melli'])) {
+            // If the form has been manipulated
+            // Because we've set "code_melli" disabled in the form and it should't have been posted
+            unset($request['code_melli']);
         }
+
         return $this->jsonAjaxSaveFeedback(User::store($request, ['new_password', 'new_password2']), [
             'success_refresh' => 1,
         ]);

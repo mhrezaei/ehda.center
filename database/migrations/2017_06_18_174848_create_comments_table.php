@@ -25,7 +25,7 @@ class CreateCommentsTable extends Migration
             $table->string('ip');
             $table->string('name');
             $table->string('email')->index();
-            $table->unsignedBigInteger('mobile');
+            $table->string('mobile');
             $table->string('subject');
             $table->longText('text');
 
@@ -45,6 +45,7 @@ class CreateCommentsTable extends Migration
             $table->index('published_at');
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');;
 
+            $table->boolean('converted')->default(0);
         });
     }
 

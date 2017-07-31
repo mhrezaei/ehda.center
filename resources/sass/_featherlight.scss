@@ -1,8 +1,8 @@
 /**
  * Featherlight – ultra slim jQuery lightbox
- * Version 1.5.0 - http://noelboss.github.io/featherlight/
+ * Version 1.7.1 - http://noelboss.github.io/featherlight/
  *
- * Copyright 2016, Noël Raoul Bossart (http://www.noelboss.com)
+ * Copyright 2017, Noël Raoul Bossart (http://www.noelboss.com)
  * MIT Licensed.
 **/
 @media all {
@@ -11,13 +11,12 @@
 
     /* dimensions: spanning the background from edge to edge */
     position:fixed;
-    overflow: auto;
-    padding: 20px;
     top: 0; right: 0; bottom: 0; left: 0;
     z-index: 2147483647; /* z-index needs to be >= elements on the site. */
 
     /* position: centering content */
     text-align: center;
+
     /* insures that the ::before pseudo element doesn't force wrap with fixed width content; */
     white-space: nowrap;
 
@@ -39,7 +38,6 @@
     display: inline-block;
     height: 100%;
     vertical-align: middle;
-    margin-right: -0.25em;
   }
 
   .featherlight .featherlight-content {
@@ -52,13 +50,14 @@
     display: inline-block;
 
     /* dimensions: cut off images */
-    overflow: visible;
-    padding: 4px 4px 0;
-    border-bottom: 4px solid transparent;
+    overflow: auto;
+    padding: 25px 25px 0;
+    border-bottom: 25px solid transparent;
 
     /* dimensions: handling large content */
     margin-left: 5%;
     margin-right: 5%;
+    max-height: 95%;
 
     /* styling */
     background: #fff;
@@ -66,9 +65,6 @@
 
     /* reset white-space wrapping */
     white-space: normal;
-
-    max-height: 100%;
-    overflow: hidden;
   }
 
   /* contains the content */
@@ -85,8 +81,8 @@
     right: 0;
 
     /* dimensions: 25px x 25px */
-    line-height: 45px;
-    width: 45px;
+    line-height: 25px;
+    width: 25px;
 
     /* styling */
     cursor: pointer;
@@ -95,10 +91,15 @@
     background: #fff; /* Set the background in case it overlaps the content */
     background: rgba(255, 255, 255, 0.3);
     color: #000;
-    margin: 6px;
-    font-size: 1.4em;
+    border: none;
+    padding: 0;
   }
 
+  /* See http://stackoverflow.com/questions/16077341/how-to-reset-all-default-styles-of-the-html5-button-element */
+  .featherlight .featherlight-close-icon::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+  }
 
   .featherlight .featherlight-image {
     /* styling */
@@ -110,6 +111,8 @@
     /* removed the border for image croping since iframe is edge to edge */
     border-bottom: 0;
     padding: 0;
+    -webkit-overflow-scrolling: touch;
+    overflow-y: scroll;
   }
 
   .featherlight iframe {
@@ -128,18 +131,11 @@
 @media only screen and (max-width: 1024px) {
   .featherlight .featherlight-content {
     /* dimensions: maximize lightbox with for small screens */
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-left: 0;
+    margin-right: 0;
     max-height: 98%;
+
+    padding: 10px 10px 0;
+    border-bottom: 10px solid transparent;
   }
-}
-.featherlight-caption {
-  position: absolute;
-  bottom: 0;
-  padding: 16px;
-  background-color: rgba(255,255,255,.5);
-  right: 0;
-  left: 0;
-  margin: 0;
-  border-top: 1px solid #fff;
 }

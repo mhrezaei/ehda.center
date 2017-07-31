@@ -40,7 +40,7 @@ return [
         'view'     => "View",
         'send'     => "Send Email/SMS",
         'search'   => "Search",
+        'settings' => "Settings",
+        'permit'   => "Permit",
     ],
-
-
 ];

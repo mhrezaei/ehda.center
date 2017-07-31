@@ -62,11 +62,20 @@ return [
     'from'                                     => 'از',
     'to'                                       => 'تا',
     'states'                                   => 'استان‌ها',
+    'this_state_is_disabled'                   => 'این استان غیرفعال است',
+    'states_entrance'                          => 'ورود استان&zwnj;ها',
+    'select_state'                             => 'انتخاب استان',
+    'select_your_intended_state'               => 'استان مورد نظر خود را انتخاب کنید',
     'gallery'                                  => 'گالری',
     'news'                                     => 'اخبار',
+    'hot_news'                                 => 'اخبار داغ',
+    'special_news'                             => 'اخبار ویژه',
+    'ehda_news'                                => 'اخبار اهدا',
     'faqs'                                     => 'سوالات متداول',
     'faq_not_found_ask_yours'                  => 'پاسخ سوال خود را پیدا نکرده اید؟ از ما بپرسید',
-    'more'                                     => 'ادامه مطلب',
+    'read_more'                                => 'ادامه مطلب',
+    'continue'                                 => 'ادامه',
+    'more'                                     => 'بیشتر',
     'teammates'                                => 'کارمندان مجموعه',
     'no_result_found'                          => 'نتیجه‌ای یافت نشد.',
     'view_on_map'                              => 'مشاهده بر روی نقشه',
@@ -75,31 +84,101 @@ return [
     'send_works'                               => 'ارسال آثار',
     'send_work'                                => 'ارسال اثر',
     'personal_information'                     => 'اطلاعات فردی',
-    'welcome_message'                          => 'خوش آمدید', // @TODO: new
+    'educational_information'                  => 'اطلاعات تحصیلی',
+    'welcome_message'                          => 'خوش آمدید',
+    'archive'                                  => 'آرشیو',
+    'short_link'                               => 'لینک کوتاه',
+    'contact_info'                             => 'اطلاعات تماس',
+    'home_info'                                => 'اطلاعات محل سکونت',
+    'job_info'                                 => 'اطلاعات شغل',
+    'supplementary_info'                       => 'اطلاعات تکمیلی',
+    'your_activity'                            => 'درچه زمینه ای می توانید فعالیت کنید؟',
+    'login_info'                               => 'اطلاعات ورود به سامانه',
+    'download'                                 => 'دانلود',
+    'print'                                    => 'چاپ',
+    'share'                                    => 'اشتراک',
+    'powered_by_yasna'                         => 'طراحی و اجرا: گروه یسنا',
 
     'volunteer_section' => [
-        'singular' => 'سفیر اهدای عضو',
-        'plural'   => 'سفیران اهدای عضو',
-        'section'  => 'بخش سفیران اهدای عضو',
-    ], // @TODO: new
+        'singular'                 => 'سفیر اهدای عضو',
+        'plural'                   => 'سفیران اهدای عضو',
+        'section'                  => 'بخش سفیران اهدای عضو',
+        'go_section'               => 'ورود به بخش سفیران اهدای عضو',
+        'register'                 => 'ثبت نام سفیر',
+        'register_success'         => 'ثبت نام سفیر با موفقیت انجام شد. به زودی جهت شرکت در جلسه‌ی توجیحی سفیران، با شما تماس گرفته خواهد شد.',
+        'special'                  => [
+            'singular' => 'سفیر ویژه',
+            'plural'   => 'سفیران ویژه',
+        ],
+        'register_success_message' => [
+            'sms'   => "سلام :name، \n\r
+ثبت نام سفیر با موفقیت انجام شد. به زودی جهت شرکت در جلسه‌ی توجیحی سفیران، با شما تماس گرفته خواهد شد.\n\r
+:site",
+            'email' => "سلام :name، \n\r
+ثبت نام سفیر با موفقیت انجام شد. به زودی جهت شرکت در جلسه‌ی توجیحی سفیران، با شما تماس گرفته خواهد شد.\n\r
+:site",
+        ],
+    ],
 
     'organ_donation_card_section' => [
-        'print'          => 'چاپ کارت اهدای عضو',
-        'download'       => 'ذخیره کارت اهدای عضو',
-        'preview'        => 'نمایش کارت اهدای عضو',
-        'card'           => 'کارت',
-        'organ_donation' => 'اهدای عضو',
-    ], // @TODO: new
+        'singular'                 => 'کارت اهدای عضو',
+        'print'                    => 'چاپ کارت اهدای عضو',
+        'download'                 => 'ذخیره کارت اهدای عضو',
+        'preview'                  => 'نمایش کارت اهدای عضو',
+        'card'                     => 'کارت',
+        'partial'                  => [
+            'part1' => 'کارت',
+            'part2' => 'اهدای',
+            'part3' => 'عضو',
+        ],
+        'types'                    => [
+            'mini'   => [
+                'title'       => 'کم‌حجم',
+                'description' => 'این فایل کم‌حجم است.',
+            ],
+            'single' => [
+                'title'       => 'فقط رو',
+                'description' => 'این فایل فقط رو است.',
+            ],
+            'social' => [
+                'title'       => 'قابل اشتراک',
+                'description' => 'این فایل قابل اشتراک است.',
+            ],
+            'full'   => [
+                'title'       => 'قابل چاپ',
+                'description' => 'این فایل قابل چاپ است.',
+            ],
+        ],
+        'register_success_message' => [
+            'sms'   => "سلام :name، \n\r
+کارت اهدای عضو شما با شماره عضویت :membershipNumber در سایت اهدا ثبت گردید.\n\r
+:site",
+            'email' => "سلام :name، \n\r
+کارت اهدای عضو شما با شماره عضویت :membershipNumber در سایت اهدا ثبت گردید.\n\r
+:site",
+        ],
+    ],
+
+    'angels' => [
+        'plural'    => 'فرشتگان ماندگار',
+        'singular'  => 'فرشته ماندگار',
+        'not_found' => 'فرشته‌ای با این نام یافت نشد.',
+        'search'    => 'جست و جوی فرشته',
+        'new'       => 'افزودن فرشته',
+    ],
 
     'member_section' => [
         'profile_edit' => 'ویرایش پروفایل',
         'sign_in'      => 'ورود',
         'sign_out'     => 'خروج',
-    ], // @TODO: new
+    ],
 
-    'profile_messages' => [
+    'profile_phrases' => [
         'not_enough_information'   => 'اطلاعات پروفایل شما کافی نیست.',
         'complete_to_join_drawing' => 'اکنون کافی‌ست با تکمیل اطلاعات خود وارد فهرست قرعه‌کشی شود.',
+        'welcome_user'             => '::user خوش آمدید.',
+        'profile'                  => 'پروفایل',
+        'user_profile'             => 'پروفایل :user',
     ],
 
     'file_types' => [
@@ -137,9 +216,88 @@ return [
     ],
 
     'messages' => [
-        'you_are_volunteer'       => 'شما سفیر هستید.',
-        'you_are_card_holder'     => 'شما کارت اعدای عضو دارید.',
-        'unable_to_register_card' => 'امکان ثبت کارت وجود ندارد.',
-        'login'                   => 'وارد شوید.',
-    ], // @TODO: new
+        'you_are_volunteer'            => 'شما سفیر هستید.',
+        'you_are_card_holder'          => 'شما کارت اعدای عضو دارید.',
+        'unable_to_register_card'      => 'امکان ثبت کارت وجود ندارد.',
+        'unable_to_register_volunteer' => 'امکان ثبت سفیر وجود ندارد.',
+        'login'                        => 'وارد شوید.',
+    ],
+
+    'notes' => [
+        'moments_are_important_to_save_life' => 'برای نجات <span class="text-green">زندگی</span> لحظه&zwnj;ها مهم است!',
+        'one_brain_dead_can_save_8_lives'    => 'هر فرد مرگ مغزی می&zwnj;تواند جان ۸ نفر را نجات دهد.',
+        'organ_donation'                     => 'اهدای عضو',
+        'life_donation'                      => 'اهدای زندگی',
+        'follow_us_in_social'                => 'مارا در شبکه های اجتماعی دنبال کنید',
+    ],
+
+    "main-menu" => [
+        'items'     => [
+            'learn'   => 'دانستن',
+            'will'    => 'خواستن',
+            'achieve' => 'توانستن',
+            'join'    => 'پیوستن',
+        ],
+        'sub_menus' => [
+            "learn" => [
+                'academic'                          => 'علمی',
+                'brain_death'                       => 'مرگ مغزی',
+                'organ_donation'                    => 'اهدای عضو',
+                'allocation'                        => 'تخصیص اعضا',
+                'organ_transplant'                  => 'پیوند اعضا',
+                'organ_transplant_history'          => 'تاریخچه پیوند',
+                'statistics'                        => 'آمار',
+                'cultural'                          => 'فرهنگی',
+                'organ_donation_in_religion'        => 'اهدای عضو در دین',
+                'organ_donation_in_another_country' => 'اهدای عضو در کشور های دیگر',
+                'organ_donation_card'               => 'کارت اهدای عضو',
+                'faq'                               => 'سوالات رایج',
+                'iran_news'                         => 'اخبار ایران',
+                'iran_procurement'                  => 'فراهم آوری و پیوند',
+                'iran_transplant'                   => 'پیوند',
+                'provinces'                         => 'استان ها',
+                'internal-ngo'                      => 'داخلی انجمن',
+                'world_news'                        => 'اخبار جهان',
+                'world_procurement'                 => 'فراهم آوری و پیوند',
+                'world_transplant'                  => 'پیوند',
+
+            ],
+
+            "will" => [
+                'donations'                         => 'کمک های مالی',
+                'volunteers'                        => 'سفیران',
+                'organ_donation_volunteers'         => 'سفیران اهدای عضو',
+                'special_volunteers'                => 'سفیران ویژه',
+                'participation_in_the_notification' => 'مشارکت در اطلاع رسانی',
+                'supporters'                        => 'حامیان',
+                'you_say'                           => 'شما هم بگویید',
+                'your_works'                        => 'آثار شما',
+                'your_memories'                     => 'خاطرات شما',
+                'suggestions'                       => 'پیشنهادات و انتقادات',
+            ],
+
+            "achieve" => [
+                'about_us'             => 'درباره ما',
+                'activities'           => 'فعالیت ها',
+                'ngo_history'          => 'تاریخچه انجمن',
+                'board_of_directories' => 'هیات مدیره',
+                'board_of_trustees'    => 'هیات امنا',
+                'founding'             => 'هیات موسس',
+                'organizational_chart' => 'چارت سازمانی',
+                'statute'              => 'اساسنامه',
+                'tasks_goals'          => 'شرح وظایف، اهداف',
+                'committees'           => 'کمیته ها',
+                'gallery'              => 'گالری',
+                'pictures'             => 'تصویر',
+                'films'                => 'فیلم',
+                'photo_donors'         => 'فرشتگان ماندگار',
+                'contact_us'           => 'تماس با ما',
+
+            ],
+        ],
+    ],
+
+    'media' => [
+        'playing' => 'در حال پخش',
+    ],
 ];

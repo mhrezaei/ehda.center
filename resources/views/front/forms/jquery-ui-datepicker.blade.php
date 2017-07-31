@@ -8,8 +8,11 @@ if (isset($class)) {
     if (str_contains($class, 'form-required')) {
         $required = true;
     }
-} else
+} else {
     $class = '';
+}
+
+$class .= ' form-datepicker';
 
 if (isset($disabled) and $disabled) {
     $required = false;
@@ -23,10 +26,19 @@ if (isset($value) and is_object($value))
 if (!isset($in_form))
     $in_form = true;
 
-if (isset($options)) {
-    foreach ($options as $optionName => $optionValue) {
-        $dataAttributes['datepicker-' . kebab_case($optionName)] = $optionValue;
-    }
+
+if (!isset($options)) {
+    $options = [];
+}
+if (!isset($options['language'])) {
+    $options['language'] = getLocale();
+}
+if ($options['language'] != 'fa') {
+    $options['regional'] = '';
+}
+
+foreach ($options as $optionName => $optionValue) {
+    $dataAttributes['datepicker-' . kebab_case($optionName)] = $optionValue;
 }
 
 ?>

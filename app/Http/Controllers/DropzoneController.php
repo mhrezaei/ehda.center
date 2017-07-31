@@ -9,15 +9,15 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use App\Models\UploadedFile as UploadedFileModel;
+use App\Models\File as UploadedFileModel;
 
 class DropzoneController extends Controller
 {
     public function upload_file(Request $request)
     {
         $file = $request->file;
-        $typeString = $request->uploadIdentifier;
-        $sessionName = $request->groupName;
+        $typeString = $request->_uploadIdentifier;
+        $sessionName = $request->_groupName;
 
         $typeStringParts = explode('.', $typeString);
         $sectionName = implode('.', array_slice($typeStringParts, 0, count($typeStringParts) - 1));
@@ -86,8 +86,8 @@ class DropzoneController extends Controller
 
     public function remove_file(Request $request)
     {
-        $typeString = $request->uploadIdentifier;
-        $sessionName = $request->groupName;
+        $typeString = $request->_uploadIdentifier;
+        $sessionName = $request->_groupName;
         $file = $request->file;
 
         if ($file) {

@@ -1,0 +1,330 @@
+{
+  "item": [
+    {
+      "@hr": "72",
+      "@name": "Sinus Rhythm",
+      "@id": "R1",
+      "data_title": "Regular Sinus Rhythm",
+      "data_des": "Sinus rhythm - also known as regular sinus rhythm (RSR) or normal sinus rhythm (NSR) - is the most common adult rhythm with rates between 60-100/minute. The QRS is most often narrow with upright P waves in Lead II."
+    },
+    {
+      "@hr": "54",
+      "@name": "Sinus Bradycardia",
+      "@id": "R2",
+      "data_title": "Sinus Bradycardia",
+      "data_des": "Sinus Bradycardia with rates greater than 50/minute may be well tolerated by healthy adults. Athletes may routinely be in sinus bradycardia due to an optimal cardiac stroke volume that requires less HR to yield acceptable cardiac output. Sinus bradycardia may also be produced with  Vagal stimulation or due to Sick Sinus Syndrome. Expect a narrow QRS with upright P waves in Lead II."
+    },
+    {
+      "@hr": "138",
+      "@name": "Sinus Tachycardia",
+      "@id": "R3",
+      "data_title": "Sinus Tachycardia",
+      "data_des": "Sinus Tachycardia most often results from increased sympathetic stimulation (i.e. due to pain, fever, increased oxygen demand, and/or hypovolemia). It usually has a narrow QRS. The rate is often  limited to below 150 / minute."
+    },
+    {
+      "@hr": "78",
+      "@name": "Sinus Arrhythmia",
+      "@id": "R4",
+      "data_title": "Sinus Arrhythmia",
+      "data_des": "Sinus Arrhythmia is most often a benign rhythm, common in children and less common with older adults. The irregular pattern of this rhythm fluctuates with inspiration (HR increases) and expiration (HR decreases). A narrow QRS and upright P waves in Lead II is expected."
+    },
+    {
+      "@hr": "48",
+      "@name": "Sinus Exit Block",
+      "@id": "R5",
+      "data_title": "Sinus Exit Block",
+      "data_des": "Sinus exit block (sinoatrial block) results from blocked sinus impulses - impulses not getting through to depolarize the atria. While the sinus is firing on schedule, the tissue around the SA node is not carrying the impulse. The seriousness of this dysrhythmia is related to the frequency and duration of the blocks. Note that each pause is equal to a multiple of previous P-P intervals."
+    },
+    {
+      "@hr": "54",
+      "@name": "Sinus Arrest",
+      "@id": "R6",
+      "data_title": "Sinus Arrest",
+      "data_des": "Sinus Arrest (a.k.a. sinus pause) occurs when the SA node fails to fire. The resulting pause is often NOT equal to the multiple of P-P intervals seen in Sinus Exit Block. Instead, often an escape pacemaker such as the AV junction will assume control of the heart. Again, like Sinus Exit Block, treatment is related to the frequency and duration of the periods of sinus arrest."
+    },
+    {
+      "@hr": "84",
+      "@name": "NSR with PAC",
+      "@id": "R7",
+      "data_title": "NSR with Premature Atrial Complexes",
+      "data_des": "Premature Atrial Complexes or PAC result from irritability to the atria resulting in increased automaticity of atrial tissue. Since the atria initiate an impulse earlier than expected from the SA node, this is a premature complex.  Expect narrow QRS and flattenned, notched, peaked or biphasic P waves for the PAC."
+    },
+    {
+      "@hr": "180",
+      "@name": "SVT",
+      "@id": "R8",
+      "data_title": "Supraventricular Tachycardia",
+      "data_des": "Supraventricular tachycardia is an ominous rhythm with rates often between 170-230 per minute. The telltale sign of supraventricular tachycardia is the narrow QRS which defines its supraventricular origin and its regular, rapid pattern. This rhythm is most likely not sinus tachycardia due to its very fast rate . For those who are at rest, narrow QRS tachycardias over 150 / minute are most often supraventricular tachycardia."
+    },
+    {
+      "@hr": "90",
+      "@name": "Atrial Fibrillation",
+      "@id": "R9",
+      "data_title": "Atrial Fibrillation",
+      "data_des": "Atrial fibrillation is a chaotic rhythm with recognizable QRS complexes. The chaotic rhythm pattern and the absence of P waves are the hallmarks of this dysrhythmia.The chaotic baseline - known as fibrillatory waves - is quickly seen. Note: 1) atrial kick is lost here; and 2) the risk of thrombus formation is particularly significant after 48 hours."
+    },
+    {
+      "@hr": "75",
+      "@name": "Atrial Flutter",
+      "@id": "R10",
+      "data_title": "Atrial Flutter",
+      "data_des": "Atrial flutter results from the development of a reentry circuit within the atria generating a loop that discharges impulses at a flutter rate of 250-350 / minute. Most often the AV junction passes every second (rate = 150, called a 2:1 response) or every fourth impulse(rate = 75, called a 4:1 response) through to the ventricles. Atrial flutter is readily identified by the sawtooth baseline."
+    },
+    {
+      "@hr": "60",
+      "@name": "Paced Atrial",
+      "@id": "R28",
+      "data_title": "Paced Atrial rhythm",
+      "data_des": "Atrial paced rhythm (or paced atrial rhythm) results from the electronic pacing of an atrium. Note the vertical spike before the P wave. An electronic pacemaker lead repeatedly generates a small but sufficient current to begin depolarization of the atria…and the resulting P wave."
+    },
+    {
+      "@hr": "74",
+      "@name": "NSR with 1° AVB",
+      "@id": "R22",
+      "data_title": "NSR with First Degree AV Block",
+      "data_des": "First degree AV block results from a prolonged transmission of the electrical impulse through the AV junction (AV node and the Bundle of His). The significant finding of this rhythm is a prolonged PR interval of more than .20 seconds. The underlying rhythm should be identified and named prior to claiming a first degree AV block. For example, this rhythm is a normal sinus rhythm WITH a first degree AV block."
+    },
+    {
+      "@hr": "48",
+      "@name": "2° AVB Type I",
+      "@id": "R23",
+      "data_title": "Second Degree AV Block Type I",
+      "data_des": "Second degree AV block Type I (Wenckebach or Mobitz Type I) results from a cyclical and progressive conduction delay through the AV junction. The ECG presents with a cyclical lengthening of the PR interval followed by a dropped QRS - a P wave not partnered with a QRS. The QRS complexes yield an irregular rhythm. Second degree AV block Type I may be caused by enhanced vagal tone, myocardial ischemia or the effects of drugs such as calcium-channel blockers, digitalis and beta-blockers."
+    },
+    {
+      "@hr": "60",
+      "@name": "2° AVB Type II",
+      "@id": "R24",
+      "data_title": "Second Degree AV Block Type II",
+      "data_des": "Second Degree AV Block Type II is typically caused by an intermittent block (interrupted supraventricular impulse) below the AV node. One or more QRS complexes are dropped with PR intervals that do not change (fixed PR interval). This irregular rhythm requires close monitoring: 1) low cardiac output is likely when multiple dropped QRS complexes occur; and 2) this rhythm can progress to complete heart block (third degree AVB)."
+    },
+    {
+      "@hr": "38",
+      "@name": "2° AVB 2:1",
+      "@id": "R11",
+      "data_title": "Second Degree AV Block with 2:1 Conduction",
+      "data_des": "Second Degree AV Block with 2:1 conduction is a special case of second degree AV block with each alternative P wave NOT paired with a QRS complex. The PR interval remains constant. This rhythm requires close monitoring due to risks of: 1) low cardiac output associated with a slow heart rate; and   2) the potential to progress to third degree AV block."
+    },
+    {
+      "@hr": "36",
+      "@name": "3° AV Block",
+      "@id": "R25",
+      "data_title": "Third Degree AV Block",
+      "data_des": "Third degree AV block (complete heart block) is often an ominous rhythm requiring close monitoring for hemodynamic compromise, progression to ventricular standstill or asystole and other lethal dysrhythmias. Significant characteristics of this rhythm are: 1) lonely P waves - P wave without an accompanied QRS complex; and 2) chaotic PR intervals. A narrow QRS denotes a higher junctional block while a wide QRS points more towards a sub-nodal block high in the bundle branches."
+    },
+    {
+      "@hr": "84",
+      "@name": "NSR with PJC",
+      "@id": "R12",
+      "data_title": "Premature Junctional Complex (PJC)",
+      "data_des": "A PJC arises from an irritable focus within the AV junction. Characteristics of a PJC include: 1) an absent or inverted P wave in lead II; 2) a shortened PR interval - less than .12 seconds; and 3) the complex comes early or premature."
+    },
+    {
+      "@hr": "48",
+      "@name": "Junctional Rhythm",
+      "@id": "R13",
+      "data_title": "Junctional Rhythm",
+      "data_des": "Junctional rhythm - also called junctional escape rhythm - originates from the AV junction (AV node and Bundle of His).  The expected pacemaker rate of the AV junction is 40-60 / minute. In lead II, a junctional rhythm presents with inverted or absent P waves. Note: an absent P wave in junctional rhythm is also associated with loss of atrial kick."
+    },
+    {
+      "@hr": "82",
+      "@name": "Accel Junctional",
+      "@id": "R14",
+      "data_title": "Accelerated Junctional",
+      "data_des": "Accelerated junctional rhythm results from enhanced automaticity, increased sympathetic nervous system activity (catecholamines) or ischemia. Key features of this rhythm include a rate between 60-100 / minute, inverted or absent P waves (in lead II) , shortened PR interval, and QRS complexes that are usually narrow."
+    },
+    {
+      "@hr": "186",
+      "@name": "Junctional Tachy",
+      "@id": "R15",
+      "data_title": "Junctional Tachycardia",
+      "data_des": "Junctional tachycardia results from enhanced automaticity, increased sympathetic activity (catecholamines) and ischemia. Key features of this rhythm include a rate over 100 / minute, inverted or absent P waves (in lead II) , shortened PR interval, and QRS complexes that are usually narrow. Note the inverted P wave buried in each QRS complex displayed here in this ECG."
+    },
+    {
+      "@hr": "78",
+      "@name": "Wandering Pacemaker",
+      "@id": "R27",
+      "data_title": "Wandering Pacemaker",
+      "data_des": "A wandering pacemaker rhythm is a supraventricular rhythm with varying locations of impulse formation resulting in three or more different P waves. With a narrow QRS complex, the absence of a P wave qualifies as one type of P wave. In the rhythm above, note the P waves from the sinus node, the atria and the junction."
+    },
+    {
+      "@hr": "68",
+      "@name": "NSR with PVC",
+      "@id": "R16",
+      "data_title": "Sinus Rhythm with Premature Ventricular Complex",
+      "data_des": "Premature ventricular complexes (PVC) often represent increased ventricular automaticity or reentry phenonomen. The presence of PVCs may be benign but can indicate irritable ventricles. PVCs arrive earlier than expected and is usually wide (.12 seconds or more). Note that the T wave often points in an opposite direction from the QRS complex. A PVC every second complex is called ventricular bigeminy...every 3rd - ventricular trigeminy."
+    },
+    {
+      "@hr": "36",
+      "@name": "Idioventricular",
+      "@id": "R17",
+      "data_title": "Idioventricular Rhythm (IVR)",
+      "data_des": "Idioventricular rhythm (IVR) occurs when the SA and AV nodes are either NOT firing or firing slower than the ventricular pacemaker rate. A common ventricular pacemaker rate is 20-40 / minute, a rate that is often not sufficient to sustain an adequate cardiac output."
+    },
+    {
+      "@hr": "84",
+      "@name": "Accelerated IVR",
+      "@id": "R18",
+      "data_title": "Accelerated Idioventricular Rhythm (AIVR)",
+      "data_des": "Accelerated idioventricular rhythm (AIVR) is a ventricular rhythm occuring at a rate between 41-100 / minute - faster than typical pacemaker rates expected of the ventricles (20-40 / minute) and less than what is considered a tachycardia (>100 / minute). Enhanced automaticity - possibly due to hypoxia or abundant sympathetic stimulation - increases rate of ventricular electrical impulses. Note that this rhythm is often unstable and can move quickly to either asystole or ventricular tachycardia (VT)."
+    },
+    {
+      "@hr": "210",
+      "@name": "VTach",
+      "@id": "R19",
+      "data_title": "Ventricular Tachycardia",
+      "data_des": "Ventricular tachycardia (VT) often results in hemodynamic compromise (due to minimal ventricular filling time and the absence of atrial kick). What makes this rhythm more ominous is its tendency to transition into ventricular fibrillation. Causes of VT include myocardial ischemia, a PVC landing on a T wave (R-on-T ), cardiac drug toxicity and electrolyte imbalance. Non-sustained VT (a group of 3 or more PVCs) is a run of VT."
+    },
+    {
+      "@hr": "0",
+      "@name": "VFib",
+      "@id": "R20",
+      "data_title": "Ventricular Fibrillation",
+      "data_des": "Ventricular fibrillation (VFib) is a chaotic rhythm originating in the ventricles, resulting in no cardiac output. Coarse VFib is noted when the amplitude (height) of the rhythm is equal to or more than 3 mm. Fine VFib is less than 3 mm in height and signifies less electrical energy within the myocardium - less opportunity for a successful defibrillation."
+    },
+    {
+      "@hr": "80",
+      "@name": "Paced Ventricular",
+      "@id": "R26",
+      "data_title": "Paced Ventricular Rhythm",
+      "data_des": "Ventricular paced rhythm (or paced ventricular rhythm) results from the electronic pacing of a ventricle. Note the vertical spike before the QRS complex. An electronic pacemaker lead repeatedly generates a small but sufficient current to begin depolarization of the ventricle…and the resulting QRS complex."
+    }
+  ],
+  "rs": {
+    "r1": {
+      "@w": "2654.25",
+      "@h": "90",
+      "#text": "2,108,216,324,435,541,649,757,878,992,1100,1208,1325,1431,1539,1647,1762,1867,1975,2083,2203,2315,2426,2538"
+    },
+    "r2": {
+      "@w": "2653.9",
+      "@h": "78",
+      "#text": "2,150,302,450,599,747,890,1035,1182,1329,1480,1628,1779,1927,2073,2214,2360,2508"
+    },
+    "r3": {
+      "@w": "2649.15",
+      "@h": "58",
+      "#text": "30,85,144,201,262,319,378,433,491,548,605,665,724,779,838,895,956,1013,1072,1127,1185,1241,1299,1358,1412,1466,1526,1583,1643,1700,1760,1814,1872,1929,1987,2046,2106,2161,2220,2277,2338,2395,2454,2508,2567,2623"
+    },
+    "r4": {
+      "@w": "2651.6",
+      "@h": "75",
+      "#text": "23,131,230,354,470,582,670,750,825,942,1050,1173,1265,1347,1458,1555,1679,1793,1904,1992,2072,2150,2268,2375,2497,2587"
+    },
+    "r5": {
+      "@w": "2651.7",
+      "@h": "78",
+      "#text": "46,167,286,525,646,1009,1126,1243,1371,1493,1611,1850,1971,2334,2450,2568"
+    },
+    "r6": {
+      "@w": "2653.15",
+      "@h": "79",
+      "#text": "2,177,269,369,587,696,929,1008,1243,1328,1503,1595,1697,1914,2022,2254,2333,2569"
+    },
+    "r7": {
+      "@w": "2650.35",
+      "@h": "78",
+      "#text": "15,118,186,306,406,473,593,696,795,865,984,1053,1153,1222,1341,1443,1510,1629,1730,1799,1918,2019,2120,2189,2309,2377,2476,2547"
+    },
+    "r8": {
+      "@w": "2651.05",
+      "@h": "78",
+      "#text": "16,60,104,148,190,234,278,322,367,411,455,499,542,586,630,674,719,763,807,851,893,937,982,1026,1075,1119,1163,1207,1251,1295,1339,1383,1428,1472,1516,1560,1604,1648,1692,1736,1780,1824,1868,1912,1955,1999,2044,2088,2132,2176,2220,2264,2309,2353,2398,2442,2488,2532,2577,2622"
+    },
+    "r9": {
+      "@w": "2655.5",
+      "@h": "78",
+      "#text": "12,87,188,255,329,444,553,632,706,770,883,949,1005,1140,1207,1338,1413,1513,1581,1655,1770,1880,1956,2031,2095,2209,2277,2329,2466,2532"
+    },
+    "r10": {
+      "@w": "2651.05",
+      "@h": "76",
+      "#text": "49,160,268,379,489,599,710,820,931,1041,1152,1262,1374,1484,1595,1705,1815,1926,2036,2146,2257,2367,2478,2588"
+    },
+    "r11": {
+      "@w": "2651.8",
+      "@h": "99",
+      "#text": "0,219,439,659,885,1104,1324,1543,1764,1984,2209,2429"
+    },
+    "r12": {
+      "@w": "2651.8",
+      "@h": "99",
+      "#text": "0,105,208,276,379,480,585,687,751,853,956,1014,1117,1221,1325,1429,1533,1602,1705,1807,1910,2013,2077,2178,2280,2339,2443,2547"
+    },
+    "r13": {
+      "@w": "2651.15",
+      "@h": "99",
+      "#text": "0,163,327,490,657,824,991,1158,1325,1488,1651,1815,1981,2148,2315,2482"
+    },
+    "r14": {
+      "@w": "2650.8",
+      "@h": "99",
+      "#text": "0,101,206,307,410,510,615,707,810,912,1014,1115,1219,1322,1427,1528,1631,1735,1836,1937,2032,2135,2237,2339,2442,2544"
+    },
+    "r15": {
+      "@w": "2650.8",
+      "@h": "99",
+      "#text": "0,44,87,128,172,215,258,301,344,385,428,471,515,558,601,641,684,727,770,813,856,898,941,984,1028,1071,1114,1155,1198,1241,1284,1327,1370,1413,1454,1497,1540,1582,1625,1669,1710,1753,1797,1840,1883,1926,1967,2010,2053,2096,2139,2181,2224,2267,2309,2353,2396,2439,2480,2523,2566,2609"
+    },
+    "r16": {
+      "@w": "2651.25",
+      "@h": "99",
+      "#text": "0,107,180,358,480,598,664,835,958,1079,1202,1325,1432,1503,1684,1805,1923,1988,2161,2283,2404,2527"
+    },
+    "r17": {
+      "@w": "2650.8",
+      "@h": "99",
+      "#text": "0,219,440,659,881,1100,1324,1545,1765,1986,2206,2427"
+    },
+    "r18": {
+      "@w": "2649.6",
+      "@h": "99",
+      "#text": "2,88,182,273,364,454,546,636,731,829,929,1028,1129,1230,1325,1415,1507,1597,1688,1780,1868,1962,2055,2153,2253,2350,2453,2553"
+    },
+    "r19": {
+      "@w": "2651.05",
+      "@h": "99",
+      "#text": "36,81,118,156,192,229,266,303,339,376,414,451,488,524,562,600,636,674,711,748,784,821,859,903,947,982,1020,1056,1096,1132,1171,1207,1243,1278,1316,1360,1406,1442,1479,1516,1555,1590,1627,1665,1704,1739,1776,1814,1850,1887,1923,1960,1998,2034,2070,2108,2145,2183,2227,2272,2309,2346,2384,2420,2456,2493,2530,2569,2605,2642"
+    },
+    "r20": {
+      "@w": "2652.15",
+      "@h": "99"
+    },
+    "r22": {
+      "@w": "2651.25",
+      "@h": "99",
+      "#text": "0,112,220,333,445,554,665,777,885,994,1106,1214,1436,1544,1659,1770,1879,1991,2102,2211,2318,2430,2538,1324"
+    },
+    "r23": {
+      "@w": "2650.8",
+      "@h": "99",
+      "#text": "16,135,269,419,643,809,965,1117,1342,1460,1594,1746,1970,2133,2290,2442"
+    },
+    "r24": {
+      "@w": "2651.5",
+      "@h": "99",
+      "#text": "16,119,220,424,527,832,937,1037,1140,1240,1341,1443,1545,1749,1852,2158,2262,2363,2465,2566"
+    },
+    "r25": {
+      "@w": "2651.5",
+      "@h": "99",
+      "#text": "149,369,592,813,1033,1253,1475,1695,1918,2139,2359,2580"
+    },
+    "r26": {
+      "@w": "2409.7",
+      "@h": "99",
+      "#text": "16,115,214,318,417,516,619,718,817,921,1020,1120,1221,1320,1421,1522,1621,1724,1823,1923,2021,2123,2222,2325"
+    },
+    "r27": {
+      "@w": "2563.7",
+      "@h": "99",
+      "#text": "23,154,257,359,460,563,665,795,897,999,1100,1201,1305,1435,1535,1640,1741,1842,1945,2076,2179,2281,2381,2483"
+    },
+    "r28": {
+      "@w": "2390.7",
+      "@h": "99",
+      "#text": "0,132,265,397,531,663,795,927,1060,1192,1326,1458,1591,1723,1857,1989,2122,2254"
+    }
+  }
+}
+

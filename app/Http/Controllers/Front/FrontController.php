@@ -6,6 +6,7 @@ use App\Http\Requests\Front\RegisterSaveRequest;
 use App\Models\Comment;
 use App\Models\Folder;
 use App\Models\Post;
+use App\Models\Posttype;
 use App\Models\User;
 use App\Providers\EmailServiceProvider;
 use App\Providers\PostsServiceProvider;
@@ -23,13 +24,75 @@ class FrontController extends Controller
 
     public function index()
     {
-        $deadlinesHTML = PostsServiceProvider::showList([
-            'type' => 'deadlines',
-            'max_per_page' => -1,
-            'sort' => 'asc',
-        ]);
+        /************************* Preparing Data for Main SlideShow ********************** START */
+        $mainSlideShow = Post::selector([
+            'type'     => 'slideshows',
+            'category' => 'main-slideshow',
+            'domain'   => getUsableDomains(),
+        ])->get();
+        /************************* Preparing Data for Main SlideShow ********************** END */
 
-        return view('front.home.main', compact('deadlinesHTML'));
+        /************************* Preparing Data for Top Paragraph ********************** START */
+        $homePageTopParagraph = Post::findBySlug('home-page-top-paragraph')->in(getLocale());
+        /************************* Preparing Data for Top Paragraph ********************** END */
+
+        /************************* Preparing Data for Event SlideShow ********************** START */
+        $eventsSlideShow = Post::selector([
+            'type'     => 'slideshows',
+            'category' => 'event-slideshow',
+            'domain'   => getUsableDomains(),
+        ])->get();
+        /************************* Preparing Data for Event SlideShow ********************** END */
+
+        /************************* Preparing Html for Deadlines ********************** START */
+        $deadlinesHTML = PostsServiceProvider::showList([
+            'type'         => 'deadlines',
+            'max_per_page' => -1,
+            'sort'         => 'asc',
+            'showError'    => false,
+        ]);
+        /************************* Preparing Html for Deadlines ********************** END */
+
+        /************************* Preparing Data for Equation Post ********************** START */
+        $equationPost = Post::findBySlug('home-page-fix-background-parag');
+        /************************* Preparing Data for Equation Post ********************** END */
+
+        /************************* Preparing Data for Bottom Section of Home Page ********************** START */
+        $hotNews = Post::selector([
+            'type'     => 'iran-news',
+            'category' => 'hot-news',
+            'domain'   => getUsableDomains(),
+        ])->orderBy('published_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        $events = Post::selector([
+            'type'   => 'event',
+            'domain' => getUsableDomains(),
+        ])->orderBy('published_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        $transplantNews = Post::selector([
+            'type'     => 'iran-news',
+            'category' => 'iran-opu-transplant',
+            'domain'   => getUsableDomains(),
+        ])->orderBy('published_at', 'desc')
+            ->limit(5)
+            ->get();
+        /************************* Preparing Data for Bottom Section of Home Page ********************** END */
+
+        return view('front.home.main', compact(
+            'mainMenu',
+            'mainSlideShow',
+            'homePageTopParagraph',
+            'eventsSlideShow',
+            'deadlinesHTML',
+            'equationPost',
+            'hotNews',
+            'events',
+            'transplantNews'
+        ));
     }
 
     public function register(RegisterSaveRequest $request)
@@ -41,12 +104,12 @@ class FrontController extends Controller
         if ($user) {
             if ($user->is_a('customer')) {
                 return $this->jsonFeedback(null, [
-                    'ok' => 1,
+                    'ok'      => 1,
                     'message' => trans('front.relogin'),
                 ]);
             } else {
                 return $this->jsonFeedback(null, [
-                    'ok' => 1,
+                    'ok'      => 1,
                     'message' => trans('front.code_melli_already_exists'),
                 ]);
             }
@@ -55,10 +118,10 @@ class FrontController extends Controller
         // store user to database
         $user = [
             'code_melli' => $input['code_melli'],
-            'mobile' => $input['mobile'],
+            'mobile'     => $input['mobile'],
             'name_first' => $input['name_first'],
-            'name_last' => $input['name_last'],
-            'password' => Hash::make($input['password']),
+            'name_last'  => $input['name_last'],
+            'password'   => Hash::make($input['password']),
 
         ];
 
@@ -95,13 +158,13 @@ class FrontController extends Controller
 
 
             return $this->jsonFeedback(null, [
-                'ok' => 1,
-                'message' => trans('front.register_success'),
+                'ok'       => 1,
+                'message'  => trans('front.register_success'),
                 'redirect' => url_locale('user/dashboard'),
             ]);
         } else {
             return $this->jsonFeedback(null, [
-                'ok' => 0,
+                'ok'      => 0,
                 'message' => trans('front.register_failed'),
             ]);
         }
@@ -135,7 +198,7 @@ class FrontController extends Controller
             $tmp->count = $key + 5;
             $cart->items[$key] = $tmp;
             $sum += $product->price;
-            if(!isset($mostExpensive) or $mostExpensive->price < $product->price ) {
+            if (!isset($mostExpensive) or $mostExpensive->price < $product->price) {
                 $mostExpensive = $product;
             }
         }

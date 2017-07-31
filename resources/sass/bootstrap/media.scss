@@ -1,0 +1,18 @@
+$screenSizes: (
+        "small": 768,
+        "medium": 992,
+        "large": 1200,
+);
+
+$screenSizesToTopMedia: (
+        "sm": "(min-width: " + map_get($screenSizes, "small") + "px)",
+        "md": "(min-width: " + map_get($screenSizes, "medium") + "px)",
+        "lg": "(min-width: " + map_get($screenSizes, "large") + "px)",
+);
+
+$screenSizesBetweenMedia: (
+        "xs": "(max-width: " + map_get($screenSizes, "small") + "px)",
+        "sm": "(min-width: " + map_get($screenSizes, "small") + "px) and (max-width: " + map_get($screenSizes, "medium") + "px)",
+        "md": "(min-width: " + map_get($screenSizes, "medium") + "px) and (max-width: " + map_get($screenSizes, "large") + "px)",
+        "lg": "(min-width: " + map_get($screenSizes, "large") + "px)",
+);

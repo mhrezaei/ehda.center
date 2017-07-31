@@ -29,8 +29,12 @@
                     {{ trans('people.form.recover_password') }}
                 </a>
             </div>
-            <button type="button" onclick="window.location = '{{ url('/register') }}';"
-                    class="btn btn-block btn-blue"> {{ trans('front.not_member_register_now') }} </button>
+            <div class="col-xs-12 mt10 mb10 f12">
+                <div class="row">
+                    <a type="button" href="{{ url('/register') }}"
+                       class="btn btn-block btn-blue"> {{ trans('front.not_member_register_now') }} </a>
+                </div>
+            </div>
         </div>
         <div class="row mt15">
             @if($errors->all())

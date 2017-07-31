@@ -138,7 +138,7 @@ class ForgotPasswordController extends Controller
     {
         if (session()->get('resetingPasswordNationalId') or ($haveCode == 'code')) {
             session()->keep(['resetingPasswordNationalId']);
-            return view('auth.passwords.token');
+            return view('auth.passwords.token', compact('haveCode'));
         } else {
             return redirect(SettingServiceProvider::getLocale() . '/password/reset');
         }

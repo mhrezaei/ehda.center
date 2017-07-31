@@ -23,6 +23,8 @@ class CreateRolesTable extends Migration
             $table->longText('meta')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->boolean('converted')->default(0);
         });
 
     }

@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Traits\EhdaPostTrait;
+use App\Providers\PostsServiceProvider;
+use App\Providers\UploadServiceProvider;
 use App\Traits\TahaModelTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -443,20 +445,33 @@ class Post extends Model
 	public function getDirectUrlAttribute()
 	{
 		switch ($this->type) {
-			case 'products':
-				return url_locale('products/pd-' . ($this->hash_id));
-				break;
-			case 'news':
-				return url_locale('news/nw-' . ($this->hash_id));
-				break;
-			case 'faqs':
-				return url_locale('faqs/faq-' . ($this->hash_id));
-				break;
-			case 'teammates':
-				return url_locale('teammates/tm-' . ($this->hash_id));
+			//            case 'products':
+			//                return url_locale('products' . DIRECTORY_SEPARATOR . 'pd-' . ($this->hash_id));
+			//                break;
+			//            case 'news':
+			//                return url_locale('news' . DIRECTORY_SEPARATOR . 'nw-' . ($this->hash_id));
+			//                break;
+			//            case 'faqs':
+			//                return url_locale('faqs' . DIRECTORY_SEPARATOR . 'faq-' . ($this->hash_id));
+			//                break;
+			//            case 'teammates':
+			//                return url_locale('teammates' . DIRECTORY_SEPARATOR . 'tm-' . ($this->hash_id));
+			//                break;
+			default:
+				return url_locale(implode(DIRECTORY_SEPARATOR, [
+					'show-post',
+					($this->hash_id),
+					urlencode($this->title),
+				]));
 				break;
 		}
 	}
+	public function getShortUrlAttribute()
+	{
+		return url_locale('-' . $this->hash_id);
+	}
+
+
 
 	public function getViewableFeaturedImageAttribute()
 	{
@@ -475,7 +490,7 @@ class Post extends Model
 	{
 		$image = $this->viewable_featured_image;
 
-		return str_replace_last('/', '/thumbs/', $image);
+		return UploadServiceProvider::getThumb($image);
 	}
 
 	public function getViewableAlbumAttribute()
@@ -1043,18 +1058,18 @@ class Post extends Model
 
 		// similar categories
 		$categories = $this->categories;
-		if($categories->count()) {
+		if ($categories->count()) {
 			$posts->whereHas('categories', function ($query) use ($categories) {
 				$query->whereIn('categories.id', $categories->pluck('id')->toArray());
 			});
 		}
 
 		// check availability for "products"
-		if($this->has('price')) {
+		if ($this->has('price')) {
 			$posts->where(['is_available' => true]);
 		}
 
-		if($number and is_int($number)) {
+		if ($number and is_int($number)) {
 			// sort
 			$posts->orderBy('published_at', 'DESC');
 
@@ -1064,15 +1079,17 @@ class Post extends Model
 		return $posts;
 	}
 
-	public function canRecieveComments()
+
+	public function canReceiveComments()
 	{
 		$this->spreadMeta();
-		if((user()->exists or $this->allow_anonymous_comment) and
-			(!$this->disable_receiving_comments)
+		if (
+			((user()->exists or $this->allow_anonymous_comment) and
+				(!$this->disable_receiving_comments)) or
+			setting()->ask('allow_anonymous_comment')->gain()
 		) {
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
@@ -1093,32 +1110,31 @@ class Post extends Model
 		$switch = strtoupper($switch);
 		switch ($switch) {
 			case 'NEW':
-				if(!$this->isIt('AVAILABLE')) {
+				if (!$this->isIt('AVAILABLE')) {
 					break;
 				}
-				$freshTime   = 100 * 24 * 60; // 100 days (in minutes) @TODO: should be saved in settings
+				$freshTime = 100 * 24 * 60; // 100 days (in minutes) @TODO: should be saved in settings
 				$publishTime = new Carbon($this->published_at);
-				$now         = Carbon::now();
-				if($now->gt($publishTime) and ($now->diffInMinutes($publishTime) <= $freshTime)) {
+				$now = Carbon::now();
+				if ($now->gt($publishTime) and ($now->diffInMinutes($publishTime) <= $freshTime)) {
 					return true;
 				}
 				break;
 
 			case 'IN_SALE':
-				if(!$this->isIt('AVAILABLE')) {
+				if (!$this->isIt('AVAILABLE')) {
 					break;
 				}
 				$this->spreadMeta();
-				if($this->sale_price and ($this->sale_price != $this->price)) {
+				if ($this->sale_price and ($this->sale_price != $this->price)) {
 					return true;
 				}
 				break;
 
 			case 'AVAILABLE':
-				if($this->is_available) {
+				if ($this->is_available) {
 					return true;
-				}
-				else {
+				} else {
 					return false;
 				}
 				break;
@@ -1136,6 +1152,7 @@ class Post extends Model
 
 		return str_limit($this->text, 200);
 	}
+
 
 }
 

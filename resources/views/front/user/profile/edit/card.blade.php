@@ -1,0 +1,1 @@
+<img src="{{ user()->cards('single') }}" class="img-responsive border-1 border-blue pt10 pb10 pr10 pl10" />

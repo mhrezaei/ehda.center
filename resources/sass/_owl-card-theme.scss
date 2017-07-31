@@ -15,10 +15,9 @@
 }
 
 .owl-card-theme .owl-item .slide-text {
+  @extend .bg-white, .text-darkGray;
   position: relative;
   display: block;
-  background-color: #fff;
-  color: #000;
   bottom: auto;
   left: auto;
   -webkit-border-radius: 0;

@@ -1,12 +1,24 @@
 $firstDarkColor: nth($darkColors, 1);
 $firsLightColor: nth($lightColors, 1);
 
+.bg-transparent {
+  background-color: transparent;
+}
+
 @each $colorName, $colorCode in $colors {
   .bg-#{$colorName} {
     background-color: $colorCode;
   }
   .text-#{$colorName} {
     color: $colorCode;
+  }
+  .text-#{$colorName}-deep {
+    &,
+    *,
+    a:hover,
+    a:focus {
+      @extend .text-#{$colorName};
+    }
   }
   .border-#{$colorName} {
     border-color: $colorCode;
@@ -35,10 +47,12 @@ $firsLightColor: nth($lightColors, 1);
     @extend .text-#{nth($firsLightColor, 1)};
   }
   .btn-#{$colorName},
+  .btn-#{$colorName}:focus,
   .btn-#{$colorName}:hover {
     @extend .bg-#{$colorName};
     @extend .text-#{nth($firsLightColor, 1)};
   }
+  .btn-#{$colorName}:focus,
   .btn-#{$colorName}:hover {
     background-color: darken($colorCode, 5%);
   }

@@ -30,6 +30,7 @@
                     @endif
                     {{$extra or ''}}
 {{--                    {{ dd($extra) }}--}}
+                    autocomplete="off"
             >
             @if(isset($icon) and $icon)
                 <i class="fa fa-{{ $icon }}"></i>

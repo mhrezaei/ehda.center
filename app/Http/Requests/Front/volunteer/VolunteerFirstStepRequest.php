@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\site\volunteer;
+namespace App\Http\Requests\Front\Volunteer;
 
 use App\Http\Requests\Request;
 use App\Providers\ValidationServiceProvider;
@@ -16,7 +16,8 @@ class VolunteerFirstStepRequest extends Request
      */
     public function authorize()
     {
-        if (Auth::check())
+        // If the user is logged in should be start registering as volunteer from next step
+        if (auth()->guest())
             return true;
         else
             return true;
@@ -31,25 +32,23 @@ class VolunteerFirstStepRequest extends Request
     {
         $input = $this->all();
         return [
-             'name_first' => 'required|persian:60',
-             'name_last' => 'required|persian:60',
-             'code_melli' => 'required|code_melli',
-             'tel_mobile' => 'required|phone:mobile',
-             'email' => 'required|email',
-             'security' => 'required|captcha:'.$input['key'],
+            'name_first' => 'required|persian:60',
+            'name_last'  => 'required|persian:60',
+            'code_melli' => 'required|code_melli',
+            'mobile'     => 'required|phone:mobile',
+            'email'      => 'required|email',
         ];
     }
 
     public function all()
     {
-        $value	= parent::all();
-        $purified = ValidationServiceProvider::purifier($value,[
-            'security'  =>  'ed',
-            'code_melli'  =>  'ed',
-            'tel_mobile'  =>  'ed',
-            'email'  =>  'ed',
-            'name_first'  =>  'pd',
-            'name_last'  =>  'pd',
+        $value = parent::all();
+        $purified = ValidationServiceProvider::purifier($value, [
+            'code_melli' => 'ed',
+            'mobile'     => 'ed',
+            'email'      => 'ed',
+            'name_first' => 'pd',
+            'name_last'  => 'pd',
         ]);
         return $purified;
 

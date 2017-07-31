@@ -29,6 +29,8 @@ class CreateCategoriesTable extends Migration
             $table->unsignedInteger('deleted_by')->default(0) ;
 
             $table->foreign('folder_id')->references('id')->on('folders')->onDelete('cascade');
+
+            $table->boolean('converted')->default(0);
         });
     }
 

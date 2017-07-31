@@ -26,6 +26,7 @@ class User extends Authenticatable
 		'postal_code',
 		'address',
 		'reset_token',
+		'reset_token_expire',
 		//'key',
 		//'default_role_deleted_at',
 	];
