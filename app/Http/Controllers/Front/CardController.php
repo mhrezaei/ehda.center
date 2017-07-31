@@ -320,7 +320,7 @@ JS
     /**
      * Send email and sms for verification after register card.
      *
-     * @param Request $request
+     * @param \App\Models\User $user
      */
     private function sendVerifications($user)
     {

@@ -8,8 +8,10 @@ use App\Models\Post;
 use App\Models\State;
 use App\Models\User;
 use App\Providers\AppServiceProvider;
+use App\Providers\EmailServiceProvider;
 use App\Providers\SecKeyServiceProvider;
 use App\Traits\TahaControllerTrait;
+use Asanak\Sms\Facade\AsanakSms;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -388,6 +390,7 @@ class VolunteersController extends Controller
         if ($userId) {
             $user = User::findBySlug($userId, 'id');
             $user->attachRole('volunteer_' . $domain, 1); // 1 status points to inactive volunteer
+            $this->sendVerifications($user);
 
             $return = $this->jsonFeedback(null, [
                 'ok'       => 1,
@@ -442,5 +445,44 @@ class VolunteersController extends Controller
         }
 
         return ['canRegister' => true];
+    }
+
+    /**
+     * Send email and sms for verification after register volunteer.
+     *
+     * @param \App\Models\User $user
+     */
+    private function sendVerifications($user)
+    {
+        // Sending SMS
+        if ($user->mobile) {
+            $smsText = str_replace([
+                ':name',
+                ':site',
+            ], [
+                $user->full_name,
+                setting()->ask('site_url')->gain(),
+            ],
+                trans('front.volunteer_section.register_success_message.sms'));
+
+            $sendingSmsResult = AsanakSms::send($user->mobile, $smsText);
+            $sendingSmsResult = json_decode($sendingSmsResult);
+        }
+
+        // Sending Mail
+        if ($user->email) {
+            $emailContent = str_replace([
+                ':name',
+                ':membershipNumber',
+                ':site',
+            ], [
+                $user->full_name,
+                $user->card_no,
+                setting()->ask('site_url')->gain(),
+            ],
+                trans('front.organ_donation_card_section.register_success_message.email'));
+
+            $sendingEmailResult = EmailServiceProvider::send($emailContent, $user['email'], trans('front.site_title'), trans('people.form.recover_password'), 'default_email');
+        }
     }
 }
