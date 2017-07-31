@@ -4,6 +4,7 @@ namespace App\Traits;
 use App\Models\Domain;
 use App\Models\Role;
 use App\Models\State;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
@@ -199,6 +200,16 @@ trait EhdaUserTrait
 	public function generateCardNo()
 	{
 		return $this->id + 5000 ;
+	}
+
+	/**
+	 * @return array of all the bot-users
+	 *
+	 */
+	public static function telegramBots()
+	{
+		$role = Role::findBySlug('telegram-bot') ;
+		return $role->users()->get()->pluck('id') ;
 	}
 
 	//public static function generateCardNo()

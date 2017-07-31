@@ -29,22 +29,17 @@
 
 		@if(isset($ajax))
 
-			<div class="text-center w100">
-				@include("manage.frame.widgets.loading" , [
-					'class' => "-refresh noDisplay" ,
-				])
-			</div>
-
 			{{ '' , $status_rule_array = array_reverse(model('role')::where('is_admin',1)->first()->status_rule_array) }}
 			{{ '' , $total = 0 }}
 			{{ '' , $data = [] }}
 
 			@foreach(model('role')::where('is_admin',1)->first()->status_rule_array as $key => $status)
-{{--				{{ '' , $count = model('user')::selector(['role' => "admin" , 'status' => "$key" ,])->count() }}--}}
-{{--				{{ '' , $count = model('user')::selector(['roleString' => "admin.$key" ,])->count() }}--}}
 				{{ '' , $count = model('user')::selector(['roleString' => "volunteer-" ,])->where('cache_roles' , 'like' , "%". model('user')::deface(".$key") ."%")->count() }}
 				{{ '' , $total += $count }}
 				{{ '' , $data[trans("people.criteria.$status")] = $count  }}
+				@if($status=='active')
+					{{ '' , $active_count = $count }}
+				@endif
 			@endforeach
 
 
@@ -53,6 +48,20 @@
 				'data' => $data ,
 				'label_size' => "10" ,
 			])
+			<div class="text-center w100 p5" style="margin-top: 10px">
+				{{ '' , $can_link = count(user()->userRolesArray('browse' , [] , model('role')::adminRoles())) }}
+				<a class="btn btn-default" {{ $can_link? '' : 'disabled' }} href="{{$can_link? url('manage/volunteers/browse/all') : v0()}}">
+					{{ pd(number_format($active_count)) }}
+					&nbsp;
+					{{ trans("ehda.volunteers.single_active") }}
+				</a>
+			</div>
+			<div class="text-center w100">
+				@include("manage.frame.widgets.loading" , [
+					'class' => "-refresh noDisplay" ,
+				])
+			</div>
+
 
 		@else
 

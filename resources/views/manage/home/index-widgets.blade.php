@@ -1,5 +1,42 @@
 {{--
 |--------------------------------------------------------------------------
+| Card Pie-Chart, by Gender
+|--------------------------------------------------------------------------
+|
+--}}
+
+<div id="divCardsByGender" class="pinBoot-inside" data-src="manage/widget/cards-pie" data-loading="no">
+	@include('manage.home.index-cards-pie')
+</div>
+
+{{--
+|--------------------------------------------------------------------------
+| Card Pie-Chart, by Bot Actions
+|--------------------------------------------------------------------------
+|
+--}}
+
+<div id="divCardsByMedia" class="pinBoot-inside" data-src="manage/widget/cards-media" data-loading="no">
+	@include('manage.home.index-cards-media')
+</div>
+
+
+
+{{--
+|--------------------------------------------------------------------------
+| Volunteers
+|--------------------------------------------------------------------------
+|
+--}}
+
+<div id="divVolunteers" class="pinBoot-inside" data-src="manage/widget/volunteers" data-loading="no">
+	@include("manage.home.index-volunteers")
+</div>
+
+
+
+{{--
+|--------------------------------------------------------------------------
 | Search People
 |--------------------------------------------------------------------------
 |
@@ -29,32 +66,6 @@
 @endif
 
 
-
-
-
-
-{{--
-|--------------------------------------------------------------------------
-| Volunteers
-|--------------------------------------------------------------------------
-|
---}}
-
-<div id="divVolunteers" class="pinBoot-inside" data-src="manage/widget/volunteers" data-loading="no">
-	@include("manage.home.index-volunteers")
-</div>
-
-
-{{--
-|--------------------------------------------------------------------------
-| Card Pie-Chart, by Gender
-|--------------------------------------------------------------------------
-|
---}}
-
-<div id="divCardsByGender" class="pinBoot-inside" data-src="manage/widget/cards-pie" data-loading="no">
-	@include('manage.home.index-cards-pie')
-</div>
 
 
 

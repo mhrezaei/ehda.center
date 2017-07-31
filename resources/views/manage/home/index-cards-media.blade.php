@@ -1,4 +1,4 @@
-<div class="panel panel-pink">
+<div class="panel panel-orangered">
 
 	{{--
 	|--------------------------------------------------------------------------
@@ -7,9 +7,10 @@
 	|
 	--}}
 	@if(isset($ajax))
-		{{ '' , $females = model('user')::whereNotNull('card_registered_at')->where('gender',2)->count() }}
-		{{ '' , $males = model('user')::whereNotNull('card_registered_at')->where('gender',1)->count() }}
-		{{ '' , $total = $females + $males }}
+		{{ '' , $role = model('role')::findBySlug('card-holder') }}
+		{{ '' , $total = $role->users()->count() }}
+		{{ '' , $bot_users = $role->users()->whereIn('created_by' , model('user')::telegramBots())->count() }}
+		{{ '' , $web_users = $total - $bot_users }}
 	@endif
 
 
@@ -22,10 +23,10 @@
 	<div class="panel-heading">
 		<i class="fa fa-credit-card"></i>
 		<span class="mh5">
-			{{ trans("ehda.donation_cards") }}
+			{{ trans("ehda.cards.registry_media") }}
 		</span>
 		<span class="pull-left">
-			<i class="fa fa-refresh clickable -refresh" onclick="divReload('divCardsByGender');$('#divCardsByGender .-refresh').slideToggle()"></i>
+			<i class="fa fa-refresh clickable -refresh" onclick="divReload('divCardsByMedia');$('#divCardsByMedia .-refresh').slideToggle()"></i>
 		</span>
 	</div>
 
@@ -45,19 +46,18 @@
 			@include("manage.frame.widgets.t-charts.pie" , [
 				'height' => "250",
 				'data' => [
-					trans("forms.gender.2") => $females/$total ,
-					trans("forms.gender.1") => $males/$total ,
+					trans("ehda.cards.bot_users") => $bot_users/$total ,
+					trans("ehda.cards.web_users") => $web_users/$total ,
 				] ,
 					'label_size' => "10" ,
 			])
 
 			<div class="text-center w100 p5" style="margin-top: 10px">
-				{{ '' , $can_link = user()->as('admin')->can('users-card-holder.browse') }}
-				<a class="btn btn-default" {{ $can_link? '' : 'disabled' }} href="{{$can_link? url('manage/cards') : v0()}}">
-					{{ pd(number_format($total)) }}
+				<span class="btn btn-default" disabled href="{{user()->as('admin')->can('users-card-holder.browse')? url('manage/cards') : v0()}}">
+					{{ pd(number_format($bot_users)) }}
 					&nbsp;
-					{{ trans("ehda.donation_card") }}
-				</a>
+					{{ trans("ehda.cards.register_via_telegram") }}
+				</span>
 			</div>
 			<div class="text-center w100">
 				@include("manage.frame.widgets.loading" , [
@@ -69,7 +69,7 @@
 
 			<div class="m30 margin-auto text-center">
 				@include("manage.frame.widgets.loading")
-				<script>divReload('divCardsByGender')</script>
+				<script>divReload('divCardsByMedia')</script>
 			</div>
 
 		@endif
