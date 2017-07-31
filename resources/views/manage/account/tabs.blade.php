@@ -4,6 +4,6 @@
 		['password' , trans('people.commands.change_password') ],
 		['profile' , trans('people.commands.profile') ],
 		['card' , trans('ehda.donation_card') ],
-		['delete' , trans('people.commands.delete_account') ],
+//		['delete' , trans('people.commands.delete_account') ],
 	] ,
 ])

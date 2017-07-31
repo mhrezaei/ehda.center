@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\Manage;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Manage\ChangeSelfPasswordRequest;
 use App\Http\Requests\Manage\SearchRequest;
 use App\Providers\YasnaServiceProvider;
 use App\Models\Posttype;
 use App\Models\User;
 use App\Traits\ManageControllerTrait;
-use Illuminate\Support\Facades\Hash;
 use Psy\Util\Json;
 use Illuminate\Support\Facades\View;
 

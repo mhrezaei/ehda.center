@@ -12,7 +12,7 @@ trait PermitsTrait2
 {
 	public static    $role_prefix_for_domain_admins = 'volunteer';
 	protected static $wildcards                     = ['', 'any', '*'];
-	protected static $default_role                  = 'admin';
+	//protected static $default_role                  = '';
 	protected static $available_permits             = ['browse', 'process', 'view', 'send', 'search', 'create', 'edit', 'publish', 'activate', 'report', 'delete', 'bin'];
 	protected static $coder                         = '~jFCQ?U0y&rvYp8<b9{Ew[V#N;7tx,M51]L(Bq@!^fa|2Z}XgD+lT4Ie>sJmP.huod:*Kkz3nHR-G_f)6iW%cAOS';
 	protected static $alpha                         = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMfNOPQRSTUVWXYZ1234567890-!@#%^&*()_+~[]|;,.{}:<>?';

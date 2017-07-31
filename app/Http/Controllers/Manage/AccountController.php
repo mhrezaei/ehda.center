@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Manage;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Manage\AccountProfileRequest;
 use App\Http\Requests\Manage\ChangeSelfPasswordRequest;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use App\Models\State;
 use App\Models\User;
 use App\Traits\ManageControllerTrait;
@@ -36,6 +38,10 @@ class AccountController extends Controller
 				$states                       = State::combo();
 				break;
 
+			case 'card' :
+				$page[1]                      = ['card', trans("ehda.donation_card")];
+				break;
+
 			default:
 				return view('errors.404');
 		}
@@ -45,6 +51,41 @@ class AccountController extends Controller
 		*/
 
 		return view("manage.account.$request_tab", compact('page', 'model', 'states'));
+
+	}
+
+	public function action($action)
+	{
+		return view("manage.account.$action");
+	}
+
+	public function saveCard(Request $request)
+	{
+		/*-----------------------------------------------
+		| Validation ...
+		*/
+		if(user()->is_a('card-holder')) {
+			return $this->jsonFeedback(trans("ehda.cards.you_already_have"));
+		}
+
+		/*-----------------------------------------------
+		| Action ...
+		*/
+		$ok = user()->attachRole('card-holder') ;
+		if($ok) {
+			$ok = user()->update([
+				'card_registered_at' => Carbon::now()->toDateTimeString(),
+				'card_no'            => user()->generateCardNo(),
+			]);
+		}
+
+		/*-----------------------------------------------
+		| Feedback ...
+		*/
+		return $this->jsonAjaxSaveFeedback( $ok , [
+				'success_refresh' => 1,
+		]);
+
 
 	}
 

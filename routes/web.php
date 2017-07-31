@@ -72,10 +72,13 @@ Route::group([
 	*/
 	Route::group(['prefix' => "account"], function () {
 		Route::get('/{request_tab?}', 'AccountController@index');
+		Route::get('/act/{action}', 'AccountController@action');
+
 
 		Route::group(['prefix' => 'save'], function () {
 			Route::post('/password', 'AccountController@savePassword');
 			Route::post('/profile', 'AccountController@saveProfile');
+			Route::post('/card-register', 'AccountController@saveCard');
 		});
 	});
 
