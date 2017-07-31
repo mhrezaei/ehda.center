@@ -1,0 +1,149 @@
+// ********************* Silent Classes ********************** start
+%border-solid {
+  border-style: solid;
+
+}
+
+/* floating elements */
+%floating {
+  position: absolute;
+}
+
+// ********************* Silent Classes ********************** end
+
+// ********************* Borders ********************** start
+@for $size from 1 to 6 {
+  .border-#{$size} {
+    @extend %border-solid;
+    border-width: #{$size}px;
+  }
+}
+
+// ********************* Borders ********************** end
+
+// ********************* Padding, Margins and Sides Borders ********************** start
+@each $directionShort, $directionLong in $directions {
+  %border-#{$directionLong}-solid {
+    border-#{$directionLong}-style: solid;
+  }
+  @for $i from 0 to 21 {
+    $value: $i * 5;
+    .m#{$directionShort}#{$value} {
+      margin-#{$directionLong}: #{$value}px;
+    }
+
+    .m#{$value} {
+      @extend .m#{$directionShort}#{$value};
+    }
+
+    .p#{$directionShort}#{$value} {
+      padding-#{$directionLong}: #{$value}px;
+    }
+
+    .p#{$value} {
+      @extend .p#{$directionShort}#{$value};
+    }
+  }
+
+  @for $size from 0 to 21 {
+    .border-#{$directionLong}-#{$size} {
+      @extend %border-#{$directionLong}-solid;
+      border-#{$directionLong}-width: #{$size}px;
+    }
+  }
+}
+
+// ********************* Padding, Margins and Sides Borders ********************** end
+
+// ********************* Font Size ********************** start
+@for $i from 5 to 101 {
+  .f#{$i} {
+    font-size: 1px * $i;
+    @if ($i<10) {
+      font-weight: 100;
+    }
+  }
+}
+
+// ********************* Font Size ********************** end
+
+// ********************* Font Weight ********************** start
+@for $i from 5 to 8 {
+  $value: $i * 100;
+  .fw#{$value} {
+    font-weight: #{$value};
+  }
+}
+
+// ********************* Font Weight ********************** end
+
+// ********************* Aligning ********************** start
+@each $axis, $axisAligning in $aligning {
+  $justifyProperty: map_get($aligningProperties, $axis);
+  .align-#{$axis}-start {
+    @extend %display-flex;
+    #{$justifyProperty}: start;
+  }
+  .align-#{$axis}-end {
+    @extend %display-flex;
+    #{$justifyProperty}: end;
+  }
+  .align-#{$axis}-center {
+    @extend %display-flex;
+    #{$justifyProperty}: center;
+  }
+}
+
+// ********************* Aligning ********************** end
+
+// ********************* Filling ********************** start
+.full-width {
+  width: 100%;
+}
+
+.full-height {
+  height: 100%;
+}
+
+// ********************* Filling ********************** end
+
+// ********************* Grids ********************** start
+.row-flex {
+  @extend .row, %display-flex;
+  width: calc(100% + 30px);
+}
+
+// ********************* Grids ********************** end
+
+// ********************* Locale Related ********************** start
+@if variable_exists(localeDirections) {
+  @each $side, $direction in $localeDirections {
+    @for $i from 0 to 11 {
+      $value: $i * 5;
+      .floating-#{$side}-#{$value} {
+        @extend %floating;
+        #{$direction}: #{$value}px;
+      }
+    }
+
+    .text-#{$side} {
+      @extend .text-#{$direction};
+    }
+
+    .pull-#{$side} {
+      @extend .pull-#{$direction};
+    }
+
+    @each $colorName, $colorCode in $colors {
+      .border-#{$side}-#{$colorName} {
+        @extend .border-#{$direction}-#{$colorName};
+      }
+    }
+
+    .media-#{$side} {
+      @extend .media-#{$direction};
+    }
+  }
+}
+
+// ********************* Locale Related ********************** end

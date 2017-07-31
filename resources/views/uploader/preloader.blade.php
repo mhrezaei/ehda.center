@@ -2,7 +2,7 @@
     {!! Html::style('assets/css/dropzone.min.css') !!}
 @append
 @section('endOfBody')
-    {!! Html::script('assets/libs/dropzone/dropzone.min.js') !!}
+    {!! Html::script('assets/libs/dropzone/dropzone.js') !!}
     <script>
         // if we miss this command, every elements with "dropzone" class will be automatically change to dropzone
         Dropzone.autoDiscover = false;

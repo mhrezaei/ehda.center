@@ -12,7 +12,7 @@ use Intervention\Image\Facades\Image;
 use Symfony\Component\HttpFoundation\File\File;
 use \Illuminate\Support\Facades\File as FilesFacades;
 use Symfony\Component\HttpFoundation\Request;
-use App\Models\UploadedFile as UploadedFileModel;
+use App\Models\File as UploadedFileModel;
 
 class UploadServiceProvider extends ServiceProvider
 {
@@ -115,7 +115,11 @@ class UploadServiceProvider extends ServiceProvider
             $fileTypeStringParts = self::translateFileTypeString($fileTypeString);
             $fileType = last($fileTypeStringParts);
             $uploadIdentifier = implode('.', $fileTypeStringParts);
-            return view('uploader.box', compact('fileType', 'preloaderView', 'uploadIdentifier') + $data);
+            return view('uploader.box', compact(
+                    'fileType',
+                    'preloaderView',
+                    'uploadIdentifier'
+                ) + $data);
         }
     }
 
@@ -184,8 +188,8 @@ class UploadServiceProvider extends ServiceProvider
     public static function validateFile($request)
     {
         $file = $request->file;
-        $typeString = $request->uploadIdentifier;
-        $sessionName = $request->groupName;
+        $typeString = $request->_uploadIdentifier;
+        $sessionName = $request->_groupName;
 
         $acceptedExtensions = self::getTypeRule($typeString, 'acceptedExtensions');
         if (!$acceptedExtensions or !is_array($acceptedExtensions) or !count($acceptedExtensions)) {
@@ -266,7 +270,7 @@ class UploadServiceProvider extends ServiceProvider
             $file = UploadedFileModel::findByHashid($file);
         }
 
-        if ($file->exists() and
+        if ($file->exists and
             FilesFacades::exists($file->pathname) and
             $file->hasStatus('temp')
         ) {
@@ -295,7 +299,7 @@ class UploadServiceProvider extends ServiceProvider
     public static function moveUploadedFiles(&$request)
     {
         foreach ($request->all() as $index => $value) {
-            if (ends_with($index, '_uploader')) {
+            if (ends_with($index, '_files')) {
                 $filesHashids = json_decode($value, true);
                 if ($filesHashids and is_array($filesHashids)) {
                     foreach ($filesHashids as $key => $fileHashid) {
@@ -374,6 +378,11 @@ class UploadServiceProvider extends ServiceProvider
             $fileNameParts[2] = $newVersion;
             return implode(self::$fileNameSeparator, $fileNameParts) . '.' . $ext;
         }
+    }
+
+    public static function getThumb($fileUrl, $thumbFolder = 'thumbs')
+    {
+        return str_replace_last('/', "/$thumbFolder/", $fileUrl);
     }
 
     /**

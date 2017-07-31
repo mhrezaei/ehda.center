@@ -3,20 +3,24 @@
 return [
 
     "feed" => [
-        'wait'                   => 'Please wait...',
-        'error'                  => 'Error',
-        'saved'                  => 'Saved.',
-        'done'                   => 'Done.',
-        'mass_done'              => ":count items done.",
-        'found'                  => ':count results found.',
-        'nothing'                => 'Nothing to Display',
-        'not_allowed'            => 'Not Allowed',
-        'user_not_found'         => 'User not Found',
-        'thing_not_found'        => ':thing not Found.',
-        'password_set_to_mobile' => "Mobile number will be set as password.",
-        'wrong_current_password' => "Current password is wrong.",
-        'I_know'                 => "I know.",
-        'not_now'                => "Not Now",
+        'wait'                            => 'Please wait...',
+        'error'                           => 'Error',
+        'saved'                           => 'Saved.',
+        'done'                            => 'Done.',
+        'mass_done'                       => ":count items done.",
+        'found'                           => ':count results found.',
+        'nothing'                         => 'Nothing to Display',
+        'not_allowed'                     => 'Not Allowed',
+        'user_not_found'                  => 'User not Found',
+        'thing_not_found'                 => ':thing not Found.',
+        'password_set_to_mobile'          => "Mobile number will be set as password.",
+        'wrong_current_password'          => "Current password is wrong.",
+        'I_know'                          => "I know.",
+        'not_now'                         => "Not Now",
+        'register_check_data_step_second' => 'All set to finish your registration. Please review your information and click on Sign.',
+        'no_im_wrong'                     => 'No! It\'s wrong!',
+        'register_success'                => 'Registration completed. Please wait...',
+        'register_not_complete'           => 'Registration didn\'t complete.',
     ],
 
     "button" => [
@@ -109,6 +113,11 @@ return [
         '1' => 'Male',
         '2' => 'Female',
         '3' => 'Other',
+    ],
+
+    "marital" => [
+        'single'  => 'Single',
+        'married' => 'Married',
     ],
 
     "alphabet" => [

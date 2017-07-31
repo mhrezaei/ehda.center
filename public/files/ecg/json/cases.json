@@ -1,0 +1,370 @@
+{
+  "1": {
+    "caseInfo": {
+      "information": "You were informed about a 55 years old gentleman felt a severe headache and dropped on the ground while he was eating lunch. He was transformed to the hospital by ambulance and was immediately admitted in ICU. The day after, he was declared brain dead and OPU was informed.",
+      "height": 170,
+      "weight": 70,
+      "urineOutput": 20,
+      "moreInformation": "He has had a story of well-controlled hypertension, no diabetes, some exertional chest pain in heavy exercise. He has a cardiac arrest on the way in the Ambulance that was reserverd after 10 minutes of cardiac massage and 200J of DC shock. His blood pressure was stable at the addmission and urine output was 40cc/h but after 8 hours, he started to have 400cc/h of urine output and a drop in blood pressure. Now his BP and his urine output are both low."
+    },
+    "defaultData": {
+      "SBP": 60,
+      "DBP": 40,
+      "HR": 160,
+      "RR": 10,
+      "SPO2": 60,
+      "CVP": 2,
+      "T": 33,
+      "UOP": 20,
+      "BS": 160,
+      "BUN": 40,
+      "Cr": 2.8,
+      "Na": 170,
+      "K": 3,
+      "Ca": 6,
+      "HgB": 12,
+      "HCT": 36,
+      "INR": 2,
+      "PH": 7.25,
+      "PCO2": 50,
+      "HCO3": 17,
+      "PO2": 50,
+      "PT": 16,
+      "Albumin": 2.5
+    },
+    "exams": {
+      "CBC": {
+        "Hgb": 12,
+        "HCT": 36,
+        "WBC": 12000,
+        "Platelet": "100.000",
+        "ESR": 10
+      },
+      "Biochemistry": {
+        "Blood Sugar": 160,
+        "BUN": 40,
+        "Cr": 2.8,
+        "Na": 170,
+        "K": 3,
+        "Ca": 6,
+        "P": 2,
+        "Mg": 2,
+        "AST": 70,
+        "ALT": 100,
+        "ALKp": 250,
+        "Albumin": 2.5
+      },
+      "Coagulation Tests": {
+        "PT": 16,
+        "PTT": 45,
+        "INR": 2
+      },
+      "AGB": {
+        "PH": 7.25,
+        "PCO2": 50,
+        "HCO3": 17,
+        "PO2": 50,
+        "O2Sat": 70,
+        "Lactate": 8
+      },
+      "Urine Analysis": {
+        "Specific Gravity": 1002,
+        "Urine Osmolality": 200,
+        "WBC": "2-3",
+        "RBC": "2-4",
+        "Sugar": "-",
+        "protein": 30
+      },
+      "Echocardiography": {
+        "EF": 50,
+        "Wall Motion Abnormality": "-",
+        "Valvular Problems": "-",
+        "PAP": 30
+      },
+      "Virology Tests": {
+        "HBsAg": "-",
+        "HBsAb": 10,
+        "HBcAb": "-",
+        "HBeAb": "-",
+        "HCVAb": "-"
+      }
+    },
+    "calculations": {
+      "1": {
+        "1": {
+          "1": {
+            "1": {
+              "SBP": "{{orig}} + ({{1-1-2}} * 10)",
+              "DBP": "{{orig}} + ({{1-1-2}} * 10)",
+              "CVP": "{{orig}} + ({{1-1-2}} * 1)",
+              "HR": "{{orig}} + ({{1-1-2}} * (-8))",
+              "UOP": "{{orig}} + ({{1-1-2}} * 10)",
+              "BUN": "{{orig}} + ({{1-1-2}} * (-2))",
+              "Cr": "{{orig}} + ({{1-1-2}} * (-0.2))",
+              "Ca": "{{orig}} + ({{1-1-2}} * (-0.2))",
+              "HgB": "{{orig}} + ({{1-1-2}} * (-0.4))",
+              "PH": "{{orig}} + ({{1-1-2}} * 0.02)",
+              "HCO3": "{{orig}} + ({{1-1-2}} * 1)",
+              "PO2": "if({{1-1-2}} == 3) {{orig}} - 2; else if({{1-1-2}} == 4) {{orig}} - 4; else {{orig}}",
+              "SPO2": "if({{1-1-2}} == 3) {{orig}} - 2; else if({{1-1-2}} == 4) {{orig}} - 4; else {{orig}} ",
+              "T": "if({{1-1-2}} == 3) {{orig}} - 1; else if({{1-1-2}} == 4) {{orig}} - 2; else {{orig}} "
+            },
+            "2": {
+              "SBP": "{{orig}} + ({{1-1-2}} * 8)",
+              "DBP": "{{orig}} + ({{1-1-2}} * 6)",
+              "CVP": "{{orig}} + ({{1-1-2}} * 0.5)",
+              "HR": "{{orig}} + ({{1-1-2}} * (-4))",
+              "UOP": "{{orig}} + ({{1-1-2}} * 20)",
+              "BUN": "{{orig}} + ({{1-1-2}} * (-1))",
+              "Cr": "{{orig}} + ({{1-1-2}} * (-0.1))",
+              "Na": "{{orig}} + ({{1-1-2}} * (-1))",
+              "Ca": "{{orig}} + ({{1-1-2}} * (-0.1))",
+              "HgB": "{{orig}} + ({{1-1-2}} * (-0.2))",
+              "PH": "{{orig}} + ({{1-1-2}} * 0.01)",
+              "HCO3": "{{orig}} + ({{1-1-2}} * 0.5)",
+              "PO2": "if({{1-1-2}} == 3) {{orig}} - 2; else if({{1-1-2}} == 4) {{orig}} - 4; else {{orig}} ",
+              "SPO2": "if({{1-1-2}} == 3) {{orig}} - 2; else if({{1-1-2}} == 4) {{orig}} - 4; else {{orig}} ",
+              "T": "if({{1-1-2}} == 3) {{orig}} - 1; else if({{1-1-2}} == 4) {{orig}} - 2; else {{orig}} "
+            },
+            "3": {
+              "SBP": "{{orig}} + ({{1-1-2}} * 5)",
+              "DBP": "{{orig}} + ({{1-1-2}} * 0)",
+              "HR": "{{orig}} + ({{1-1-2}} * (-2))",
+              "UOP": "{{orig}} + ({{1-1-2}} * 40)",
+              "BS": "{{orig}} + ({{1-1-2}} * 10)",
+              "Na": "{{orig}} + ({{1-1-2}} * (-2))",
+              "K": "{{orig}} + ({{1-1-2}} * (-0.2))",
+              "HgB": "{{orig}} + ({{1-1-2}} * (-0.1))",
+              "T": "if({{1-1-2}} == 3) {{orig}} - 1; else if({{1-1-2}} == 4) {{orig}} - 2; else {{orig}}"
+            },
+            "4": {
+              "SBP": "{{orig}} + ({{1-1-2}} * 2.5)",
+              "DBP": "{{orig}} + ({{1-1-2}} * 0)",
+              "HR": "{{orig}} + ({{1-1-2}} * (-1))",
+              "UOP": "{{orig}} + ({{1-1-2}} * 24)",
+              "Na": "{{orig}} + ({{1-1-2}} * (-1))",
+              "K": "{{orig}} + ({{1-1-2}} * (-0.1))"
+            }
+          }
+        },
+        "2": {
+          "1": {
+            "1": {
+              "SBP": "{{orig}} + ({{1-2-2}} * 8)",
+              "DBP": "{{orig}} + ({{1-2-2}} * 6)",
+              "CVP": "{{orig}} + ({{1-2-2}} * 1.5)",
+              "HR": "{{orig}} + ({{1-2-2}} * (-8))",
+              "UOP": "{{orig}} + ({{1-2-2}} * 10)",
+              "BUN": "{{orig}} + ({{1-2-2}} * (-4))",
+              "Cr": "{{orig}} + ({{1-2-2}} * (-0.4))",
+              "Na": "{{orig}} + ({{1-2-2}} * (-1))",
+              "Ca": "{{orig}} + ({{1-2-2}} * (-0.2))",
+              "HgB": "{{orig}} + ({{1-2-2}} * (-0.4))",
+              "PH": "{{orig}} + ({{1-2-2}} * 0.02)",
+              "HCO3": "{{orig}} + ({{1-2-2}} * 1)",
+              "PO2": "if({{1-2-2}} == 3) {{orig}} - 2; else if({{1-2-2}} == 4) {{orig}} - 3; else if({{1-2-2}} == 5) {{orig}} - 4; else {{orig}}",
+              "SPO2": "if({{1-2-2}} == 3) {{orig}} - 2; else if({{1-2-2}} == 4) {{orig}} - 3; else if({{1-2-2}} == 5) {{orig}} - 4; else {{orig}}",
+              "T": "if({{1-2-2}} == 4) {{orig}} - 1; else if({{1-2-2}} == 5) {{orig}} - 2; else {{orig}}"
+            },
+            "2": {
+              "SBP": "{{orig}} + ({{1-2-2}} * 4)",
+              "DBP": "{{orig}} + ({{1-2-2}} * 2)",
+              "CVP": "{{orig}} + ({{1-2-2}} * 1)",
+              "HR": "{{orig}} + ({{1-2-2}} * (-4))",
+              "UOP": "{{orig}} + ({{1-2-2}} * 20)",
+              "BUN": "{{orig}} + ({{1-2-2}} * (-2))",
+              "Cr": "{{orig}} + ({{1-2-2}} * (-0.2))",
+              "Na": "{{orig}} + ({{1-2-2}} * (-2))",
+              "Ca": "{{orig}} + ({{1-2-2}} * (-0.1))",
+              "HgB": "{{orig}} + ({{1-2-2}} * (-0.2))",
+              "PH": "{{orig}} + ({{1-2-2}} * 0.01)",
+              "HCO3": "{{orig}} + ({{1-2-2}} * 0.5)",
+              "PO2": "if({{1-2-2}} == 3) {{orig}} - 2; else if({{1-2-2}} == 4) {{orig}} - 3; else if({{1-2-2}} == 5) {{orig}} - 4; else {{orig}}",
+              "SPO2": "if({{1-2-2}} == 3) {{orig}} - 2; else if({{1-2-2}} == 4) {{orig}} - 3; else if({{1-2-2}} == 5) {{orig}} - 4; else {{orig}}",
+              "T": "if({{1-2-2}} == 4) {{orig}} - 1; else if({{1-2-2}} == 5) {{orig}} - 2; else {{orig}}"
+            },
+            "3": {
+              "SBP": "{{orig}} + ({{1-2-2}} * 2)",
+              "HR": "{{orig}} + ({{1-2-2}} * (-2))",
+              "UOP": "{{orig}} + ({{1-2-2}} * 40)",
+              "BS": "{{orig}} + ({{1-2-2}} * 20)",
+              "BUN": "{{orig}} + ({{1-2-2}} * (-1))",
+              "Cr": "{{orig}} + ({{1-2-2}} * (-0.1))",
+              "Na": "{{orig}} + ({{1-2-2}} * (-4))",
+              "K": "if({{1-2-2}} == 3) {{orig}} - 0.25; else if({{1-2-2}} == 4) {{orig}} - 0.5;  else if({{1-2-2}} == 5) {{orig}} - 1; else {{orig}} + ({{1-2-2}} * (-0.2))",
+              "HgB": "{{orig}} + ({{1-2-2}} * (-0.1))",
+              "T": "if({{1-2-2}} == 4) {{orig}} - 1; else if({{1-2-2}} == 5) {{orig}} - 2; else {{orig}}"
+            },
+            "4": {
+              "SBP": "{{orig}} + ({{1-2-2}} * 1)",
+              "UOP": "{{orig}} + ({{1-2-2}} * 24)",
+              "BUN": "{{orig}} + ({{1-2-2}} * (-0.6))",
+              "Cr": "{{orig}} + ({{1-2-2}} * (-0.06))",
+              "Na": "{{orig}} + ({{1-2-2}} * (-2.4))",
+              "K": "if({{1-2-2}} == 3) {{orig}} - 0.25; else if({{1-2-2}} == 4) {{orig}} - 0.5;  else if({{1-2-2}} == 5) {{orig}} - 1; else {{orig}} + ({{1-2-2}} * (-0.1))",
+              "T": "if({{1-2-2}} == 4) {{orig}} - 1; else if({{1-2-2}} == 5) {{orig}} - 1; else {{orig}}"
+            }
+          }
+        }
+      },
+      "2": {
+        "1": {
+          "": {
+            "1": {
+              "SBP": "{{orig}} + 20",
+              "DBP": "{{orig}} + 20",
+              "HR": "{{orig}} - 10"
+            },
+            "2": {
+              "SBP": "{{orig}} + 20",
+              "DBP": "{{orig}} + 20",
+              "HR": "{{orig}} - 30"
+            },
+            "3": {
+              "SBP": "{{orig}} + 20",
+              "DBP": "{{orig}} + 20",
+              "HR": "{{orig}} - 20"
+            },
+            "4": {
+              "SBP": "{{orig}} + 20",
+              "DBP": "{{orig}} + 20",
+              "HR": "{{orig}} - 10"
+            }
+          }
+        }
+      },
+      "3": {
+        "1": {
+          "": {
+            "1": {
+              "SPO2": "{{orig}} + 0",
+              "PO2": "{{orig}} + 0"
+            },
+            "2": {
+              "SPO2": "{{orig}} + 10",
+              "PO2": "{{orig}} + 30"
+            },
+            "3": {
+              "SPO2": "{{orig}} + 20",
+              "PO2": "{{orig}} + 60"
+            },
+            "4": {
+              "SPO2": "{{orig}} + 30",
+              "PO2": "{{orig}} + 90"
+            }
+          }
+        },
+        "2": {
+          "": {
+            "1": {
+              "PCO2": "{{orig}} - 2",
+              "PH": "{{orig}} + 0.04",
+              "RR": "12"
+            },
+            "2": {
+              "PCO2": "{{orig}} - 4",
+              "PH": "{{orig}} + 0.08",
+              "RR": "14"
+            },
+            "3": {
+              "PCO2": "{{orig}} - 6",
+              "PH": "{{orig}} + 0.12",
+              "RR": "16"
+            },
+            "4": {
+              "PCO2": "{{orig}} - 8",
+              "PH": "{{orig}} + 0.16",
+              "RR": "18"
+            }
+          }
+        }
+      },
+      "4": {
+        "1": {
+          "": {
+            "1": {
+              "T": "{{orig}} + 0"
+            },
+            "2": {
+              "T": "{{orig}} + 1"
+            },
+            "3": {
+              "T": "{{orig}} + 1"
+            },
+            "4": {
+              "T": "{{orig}} + 1"
+            }
+          }
+        }
+      },
+      "5": {
+        "1": {
+          "": {
+            "1": {
+              "Na": "{{orig}} - 4",
+              "UOP": "{{orig}} - ({{orig}} * 0.25)"
+            },
+            "2": {
+              "Na": "{{orig}} - 4",
+              "UOP": "{{orig}} - ({{orig}} * 0.25)"
+            },
+            "3": {
+              "Na": "{{orig}} - 8",
+              "UOP": "{{orig}} - ({{orig}} * 0.5)"
+            }
+          }
+        },
+        "2": {
+          "": {
+            "1": {
+              "Ca": "{{orig}} + 2"
+            }
+          }
+        },
+        "3": {
+          "": {
+            "1": {
+              "SBP": "{{orig}} + 10",
+              "DBP": "{{orig}} + 10",
+              "HgB": "{{orig}} + 1",
+              "HCT": "{{orig}} + 3"
+            }
+          }
+        },
+        "4": {
+          "": {
+            "1": {
+              "SBP": "{{orig}} + 10",
+              "DBP": "{{orig}} + 10",
+              "INR": "{{orig}} - 0.5",
+              "PT": "{{orig}} - 2"
+            }
+          }
+        },
+        "5": {
+          "": {
+            "1": {
+              "SBP": "{{orig}} + 10",
+              "DBP": "{{orig}} + 10",
+              "Albumin": "{{orig}} + 1"
+            }
+          }
+        },
+        "6": {
+          "": {
+            "1": {
+              "K": "Number((Math.random() * (0.5) + 4).toFixed(1))"
+            }
+          }
+        },
+        "7": {
+          "": {
+            "1": {
+              "BS": "Number((Math.random() * (180 - 140) + 140).toFixed(0))"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,4 +1,5 @@
 <a href="#" class="slogan pull-left">
-    <span>اهدای عضو</span><span>اهدای زندگی</span>
+    <span>{{ trans('front.notes.organ_donation') }}</span>
+    <span>{{ trans('front.notes.life_donation') }}</span>
 </a>
 

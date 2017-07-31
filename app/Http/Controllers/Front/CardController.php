@@ -6,9 +6,11 @@ use App\Models\Post;
 use App\Models\Role;
 use App\Models\State;
 use App\Models\User;
+use App\Providers\EmailServiceProvider;
 use App\Providers\FaGDServiceProvider;
 use App\Providers\SecKeyServiceProvider;
 use App\Traits\TahaControllerTrait;
+use Asanak\Sms\Facade\AsanakSms;
 use Carbon\Carbon;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
@@ -30,7 +32,10 @@ class CardController extends Controller
     {
         $captcha = SecKeyServiceProvider::getQuestion('fa');
         $post = Post::findBySlug('organ-donation-card');
-        return view('front.card_info.0', compact('captcha', 'post', 'states'));
+        if (!$post or !$post->exists) {
+            return redirect(url_locale());
+        }
+        return view('front.card.card_info.0', compact('captcha', 'post', 'states'));
     }
 
     public function register()
@@ -133,7 +138,7 @@ JS
 
     }
 
-    public function register_third_step($request)
+    private function register_third_step($request)
     {
         $submittedIDs = session()->get('register_card');
         if (!array_key_exists($request->code_melli, $submittedIDs)
@@ -161,15 +166,18 @@ JS
 
 
         if ($userId) {
-            User::store(['id' => $userId, 'card_id' => $userId + 5000]);
+            User::store(['id' => $userId, 'card_no' => $userId + 5000]);
+            $user = User::findBySlug($userId, 'id');
 
-            if(Role::findBySlug('card-holder')->exists) {
-                $user = User::findBySlug($userId, 'id')->attachRole('card-holder');
+            if (Role::findBySlug('card-holder')->exists) {
+                $user->attachRole('card-holder');
             }
+
+            $this->sendVerifications($user);
 
             Auth::loginUsingId($userId);
             $return = $this->jsonFeedback(null, [
-                'redirect'     => url('members/my_card'),
+                'redirect'     => route_locale('user.dashboard'),
                 'ok'           => 1,
                 'message'      => trans('forms.feed.register_success'),
                 'redirectTime' => 2000,
@@ -250,7 +258,13 @@ JS
         return $return;
     }
 
-    public function save_registration(Requests\CardRegisterRequest $request)
+    /**
+     * @param string                                 $lang Locale values that is detected from url
+     * @param \App\Http\Requests\CardRegisterRequest $request
+     *
+     * @return mixed|string
+     */
+    public function save_registration($lang, Requests\CardRegisterRequest $request)
     {
         switch ($request->_step) {
             case 1:
@@ -301,5 +315,37 @@ JS
         }
 
         return ['canRegister' => true];
+    }
+
+    /**
+     * Send email and sms for verification after register card.
+     *
+     * @param \App\Models\User $user
+     */
+    private function sendVerifications($user)
+    {
+        // Sending SMS
+        if ($user->mobile) {
+            $smsText = str_replace([
+                ':name',
+                ':membershipNumber',
+                ':site',
+            ], [
+                $user->full_name,
+                $user->card_no,
+                setting()->ask('site_url')->gain(),
+            ],
+                trans('front.organ_donation_card_section.register_success_message.sms'));
+
+            $sendingSmsResult = AsanakSms::send($user->mobile, $smsText);
+            $sendingSmsResult = json_decode($sendingSmsResult);
+        }
+
+        // Sending Mail
+        if ($user->email) {
+            $emailContent = view('front.card.verification.email', compact('user'))->render();
+
+            $sendingEmailResult = EmailServiceProvider::send($emailContent, $user['email'], trans('front.site_title'), trans('people.form.recover_password'), 'default_email');
+        }
     }
 }

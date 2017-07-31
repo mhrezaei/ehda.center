@@ -1,5 +1,5 @@
 <div class="col-xs-12 col-md-8">
-    <h5>مارا در شبکه های اجتماعی دنبال کنید</h5>
+    <h5>{{ trans('front.notes.follow_us_in_social') }}</h5>
     <ul class="social-links list-inline">
         {{ null, $telegram = setting()->ask('telegram_link')->gain() }}
         @if($telegram)

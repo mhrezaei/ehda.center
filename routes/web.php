@@ -278,6 +278,10 @@ Route::group([
 	| Upstream ...
 	*/
 	Route::group(['prefix' => 'upstream', 'middleware' => 'is:developer'], function () {
+		Route::group(['prefix' => 'trans'], function () {
+			Route::get('diff', 'TransController@diff');
+		});
+
 		Route::get('/{request_tab?}', 'UpstreamController@index');
 		Route::get('/{request_tab}/search/', 'UpstreamController@search');
 		Route::get('/edit/{request_tab?}/{item_id?}/{parent_id?}', 'UpstreamController@editor');
@@ -329,86 +333,123 @@ Route::group(['prefix' => 'file'], function () {
 
 Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Setting', 'Subdomain']], function () {
 
-	// if not set lang prefix
-	Route::get('/', 'FrontController@index');
+    // if not set lang prefix
+    Route::get('/', 'FrontController@index')->name('home');
 
-	// organ donation card
-	Route::get('/card/show_card/{type}/{user_hash_id}/{mode?}', 'OrganDonationCardController@index');
+    // organ donation card
+    Route::get('/card/show_card/{type}/{user_hash_id}/{mode?}', 'OrganDonationCardController@index');
 
-	// landing page
-	Route::get('/ramazan', 'LandingPageController@ramazan');
-	Route::post('/ramazan', 'LandingPageController@ramazan_count');
+    // landing page
+    Route::get('/ramazan', 'LandingPageController@ramazan');
+    Route::post('/ramazan', 'LandingPageController@ramazan_count');
 
-	Route::get('/summer', 'LandingPageController@summer');
-	Route::post('/summer', 'LandingPageController@summer_count');
+    Route::get('/summer', 'LandingPageController@summer');
+    Route::post('/summer', 'LandingPageController@summer_count');
 
-	Route::group(['prefix' => '{lang}'], function () {
-		Route::get('/', 'FrontController@index');
+    Route::group(['prefix' => '{lang}'], function () {
+        Route::get('/', 'FrontController@index')->name('site');
 
-		// tests
-		Route::group(['prefix' => 'test'], function () {
-			Route::get('/', 'TestController@index');
-			Route::get('states', 'TestController@states');
-			Route::get('gallery/archive', 'TestController@gallery_archive');
-			Route::get('gallery/single', 'TestController@gallery_single');
-			Route::get('post/single', 'TestController@post_single');
-			Route::get('post/archive', 'TestController@post_archive');
-			Route::get('volunteers', 'TestController@volunteers');
-			Route::get('faqs', 'TestController@faqs');
-			Route::get('works/send', 'TestController@works_send');
-		});
-		Route::get('about', 'TestController@about');
+        // tests
+        Route::group(['prefix' => 'test'], function () {
+            Route::get('/', 'TestController@index');
+            Route::get('states', 'TestController@states');
+            Route::get('gallery/archive', 'TestController@gallery_archive');
+            Route::get('gallery/single', 'TestController@gallery_single');
+            Route::get('post/single', 'TestController@post_single');
+            Route::get('post/archive', 'TestController@post_archive');
+            Route::get('volunteers', 'TestController@volunteers');
+            Route::get('faqs', 'TestController@faqs');
+            Route::get('works/send', 'TestController@works_send');
+        });
+        Route::get('about', 'TestController@about');
 
-		// register new user
-		Route::post('/register/new', 'FrontController@register');
+        // send users works
+        Route::get('works/send', 'PostController@works_send')->name('users.works.send');
 
-		// saving comments for all posts
-		Route::post('/comment', 'PostController@submit_comment')->name('comment.submit');
+        // register new user
+        Route::post('/register/new', 'FrontController@register');
 
-		// register new card
-		Route::get('/organ_donation_card', 'CardController@index')->name('register_card');
-		Route::post('/register/card', 'CardController@save_registration');
-		Route::post('/register/first_step', 'CardController@register_first_step');
-		Route::post('/register/second_step', 'CardController@register_second_step');
+        // saving comments for all posts
+        Route::post('/comment', 'PostController@submit_comment')->name('comment.submit');
 
-		/*
-		|--------------------------------------------------------------------------
-		| CARD HOLDER PANEL
-		|--------------------------------------------------------------------------
-		| For the holders of cards, in 'members' folder
-		*/
-		// @TODO: view not work check it
-		Route::group(['prefix' => 'members', 'middleware' => 'is:card-holder'], function () {
-			Route::get('/my_card', 'MembersController@index');
-			Route::get('/my_card/edit', 'MembersController@edit_my_card');
-			Route::post('/my_card/edit_process', 'MembersController@edit_card_process');
-		});
+        // register new card
+        Route::get('/organ_donation_card', 'CardController@index')->name('register_card');
+        Route::post('/register/card', 'CardController@save_registration')->name('register_card.post');
+        Route::post('/register/first_step', 'CardController@register_first_step');
+        Route::post('/register/second_step', 'CardController@register_second_step');
 
-		// another route copy from ehda-b1 project
-		Route::get('/{id}', 'PostController@show')->where('id', '[0-9]+');
-		Route::get('/showPost/{id}/{url?}', 'PostController@show');
-		Route::get('/previewPost/{id}/{url?}', 'PostController@show');
-		Route::get('/archive/{branch?}/{category?}', 'PostController@archive');
-		Route::get('/gallery/categories/{branch}', 'GalleryController@show_categories');
-		Route::get('/gallery/posts/{category}', 'GalleryController@show_categories_posts');
-		Route::get('/gallery/show/{id}/{url?}', 'GalleryController@show_gallery');
+        // User Routes
+        Route::group(['prefix' => 'user', 'middleware' => ['auth', 'is:card-holder']], function () {
+            Route::get('dashboard', 'UserController@index')->name('user.dashboard');
+            Route::get('profile', 'UserController@profile')->name('user.profile.edit');
+            Route::get('drawing', 'UserController@drawing');
+            Route::get('events', 'UserController@events');
+            Route::post('update', 'UserController@update')->name('user.profile.update');
+        });
 
-		Route::get('/convert', 'TestController@convertCardsFromMhr');
 
-		// static pages
-		Route::get('/faq', 'PostController@faq');
-		Route::post('/faq/new', 'PostController@faq_new');
-		Route::get('/angels', 'PostController@angels');
-		Route::post('/angels/find', 'PostController@angels_find');
+        /*
+        |--------------------------------------------------------------------------
+        | CARD HOLDER PANEL
+        |--------------------------------------------------------------------------
+        | For the holders of cards, in 'members' folder
+        */
+        // @TODO: view not work check it
+        Route::group(['prefix' => 'members', 'middleware' => 'is:card-holder'], function () {
+            Route::get('/my_card', 'MembersController@index');
+            Route::get('/my_card/edit', 'MembersController@edit_my_card');
+            Route::post('/my_card/edit_process', 'MembersController@edit_card_process');
+        });
 
-		// volunteer pages
-		Route::get('/volunteers', 'members\VolunteersController@index');
-		Route::post('/volunteer/first_step', 'members\VolunteersController@register_first_step');
-		Route::post('/volunteer/second_step', 'members\VolunteersController@register_second_step');
-		Route::get('/volunteers/exam', 'members\VolunteersController@exam');
-		Route::get('/volunteers/final_step', 'members\VolunteersController@register_final_step');
-		Route::post('/volunteers/final_step/submit', 'members\VolunteersController@register_final_step_submit');
+        // another route copy from ehda-b1 project
+        Route::get('/{identifier}', 'PostController@show_with_short_url')
+            ->where('identifier', '^' . config('prefix.routes.post.short') . '(\w|)+$');
+        // if identifier starts with value of config('prefix.routes.post.short')
 
-	});
+        Route::get('/show-post/{identifier}/{url?}', 'PostController@show_with_full_url')->name('post.single');
+        Route::get('/previewPost/{id}/{url?}', 'PostController@show');
+        Route::get('/archive/{postType?}/{category?}', 'PostController@archive')->name('post.archive');
+        Route::get('/gallery/categories/{postType}', 'GalleryController@show_categories')->name('gallery.categories');
+        Route::get('/gallery/posts/{category}', 'GalleryController@show_categories_posts');
+        Route::get('/gallery/show/{id}/{url?}', 'GalleryController@show_gallery');
 
+        Route::get('/convert', 'TestController@convertCardsFromMhr');
+
+        // static pages
+        Route::get('faq', 'PostController@faqs');
+        Route::get('volunteers/special', 'PostController@special_volunteers')->name('volunteers.special');
+
+        Route::group(['prefix' => 'angels'], function () {
+            Route::get('/', 'PostController@angels')->name('angels.list');
+            Route::post('find', 'PostController@angels_find')->name('angels.find');
+            Route::get('new', 'PostController@new_angel_form')->name('angels.new.form');
+            Route::post('new/submit', 'PostController@new_angel_submit')->name('angels.new.submit');
+        });
+
+        // volunteer pages
+        Route::get('volunteers', 'VolunteersController@index')->name('volunteer.register.step.1.get');
+        Route::post('volunteer/first-step', 'VolunteersController@register_first_step')
+            ->name('volunteer.register.step1.post');
+        Route::get('volunteers/final-step', 'VolunteersController@register_final_step')
+            ->name('volunteer.register.step.final.get');
+        Route::post('volunteers/final-step', 'VolunteersController@register_final_step_submit')
+            ->name('volunteer.register.step.final.post');
+        Route::post('volunteer/second_step', 'VolunteersController@register_second_step');
+        Route::get('/volunteers/exam', 'members\VolunteersController@exam');
+
+        // States
+        Route::group(['prefix' => 'states'], function () {
+            Route::get('/', 'StatesController@map');
+        });
+    });
+
+
+    // ECG
+    Route::group(['prefix' => 'ecg'], function () {
+        // Implementation of skillstat
+        Route::get('copy', 'ECGController@copy');
+
+        Route::get('simulator', 'ECGController@simulator');
+        Route::get('simulator/dev', 'ECGController@simulator_dev')->middleware(['auth', 'is:developer']);
+    });
 });

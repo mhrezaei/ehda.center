@@ -62,25 +62,107 @@ return [
     'from'                                     => 'from',
     'to'                                       => 'to',
     'states'                                   => 'States',
+    'this_state_is_disabled'                   => 'This state is disabled.',
+    'states_entrance'                          => 'States Entrance',
+    'select_state'                             => 'Select State',
+    'select_your_intended_state'               => 'Select your intended state.',
     'gallery'                                  => 'Gallery',
     'news'                                     => 'News',
+    'hot_news'                                 => 'Hot News',
+    'special_news'                             => 'Special News',
+    'ehda_news'                                => 'Organ Donation News',
     'faqs'                                     => 'Faqs',
     'faq_not_found_ask_yours'                  => 'Didn\'t find your answer? Ask your question.',
+    'read_more'                                => 'Read More',
+    'continue'                                 => 'Continue',
     'more'                                     => 'More',
     'teammates'                                => 'Teammates',
     'no_result_found'                          => 'No Results Found',
     'view_on_map'                              => 'View on Map',
     'volunteers'                               => 'Volunteers',
-    'special_volunteers'                       => 'Special Volunteers',
+    'special_volunteers'                       => 'Celebrities',
     'send_works'                               => 'Send Works',
     'send_work'                                => 'Send Work',
     'personal_information'                     => 'Personal Information',
-    'contact_info'                             => 'اطلاعات تماس', // @TODO: new
-    'login_info'                               => 'اطلاعات ورود به سامانه', // @TODO: new
+    'educational_information'                  => 'Educational Information',
+    'welcome_message'                          => 'Welcome',
+    'archive'                                  => 'Archive',
+    'short_link'                               => 'Short Link',
+    'contact_info'                             => 'Contact Info',
+    'home_info'                                => 'Home Info',
+    'job_info'                                 => 'Job Info',
+    'supplementary_info'                       => 'Supplementary Info',
+    'your_activity'                            => 'What field can you do?',
+    'login_info'                               => 'Login Info',
+    'download'                                 => 'Download',
+    'print'                                    => 'Print',
+    'share'                                    => 'Share',
+    'powered_by_yasna'                         => 'Powered by Yasna Team',
 
-    'profile_messages' => [
+    'volunteer_section' => [
+        'singular'         => 'Organ Donation Volunteer',
+        'plural'           => 'Organ Donation Volunteers',
+        'section'          => 'Organ Donation Volunteers Section',
+        'go_section'       => 'Go to Organ Donation Volunteers Section',
+        'register'         => 'Register Volunteer',
+        'register_success' => 'Volunteer registered successfully.',
+        'special'          => [
+            'singular' => 'Celebrity',
+            'plural'   => 'Celebrities',
+        ],
+    ],
+
+    'organ_donation_card_section' => [
+        'singular' => 'Organ Donation Card',
+        'print'    => 'Print Organ Donation Card',
+        'download' => 'Save Organ Donation Card',
+        'preview'  => 'Preview Organ Donation Card',
+        'card'     => 'Card',
+        'partial'  => [
+            'part1' => 'Organ',
+            'part2' => 'Donation',
+            'part3' => 'Card',
+        ],
+        'types'    => [
+            'mini'   => [
+                'title'       => 'Mini',
+                'description' => 'Small Size File',
+            ],
+            'single' => [
+                'title'       => 'Single',
+                'description' => 'Single Side',
+            ],
+            'social' => [
+                'title'       => 'Social',
+                'description' => 'Shareable File',
+            ],
+            'full'   => [
+                'title'       => 'Print',
+                'description' => 'Ready for Print',
+            ],
+        ],
+    ],
+
+    'angels' => [
+        'plural'    => 'Angels',
+        'singular'  => 'Angel',
+        'not_found' => 'Angel not found.',
+        'search'    => 'Search Angel',
+        'new'       => 'New Angel',
+    ],
+
+    'member_section' => [
+        'profile_edit' => 'Edit Profile',
+        'sign_in'      => 'Sing In',
+        'sign_out'     => 'Sign Out',
+    ],
+
+    'profile_phrases' => [
         'not_enough_information'   => 'Not Enough Profile Information',
         'complete_to_join_drawing' => 'Now you can join the drawing by completing your profile.',
+        'welcome_user'             => 'Welcome ::user.',
+        'profile'                  => 'Profile',
+        'user_profile'             => ':user Profile',
     ],
 
     'file_types' => [
@@ -115,5 +197,92 @@ return [
         'copy_right' => 'All rights reserved for ::site.',
         'created_by' => 'Prepared by: ',
         'yasna_team' => 'Yasna Team'
-    ]
+    ],
+
+    'messages' => [
+        'you_are_volunteer'            => 'You are volunteer.',
+        'you_are_card_holder'          => 'You have organ donation card.',
+        'unable_to_register_card'      => 'Unable to Register Card',
+        'unable_to_register_volunteer' => 'Unable to Register Volunteer',
+        'login'                        => 'Login.',
+    ],
+
+    'notes' => [
+        'moments_are_important_to_save_life' => 'Every moment is important to save <span class="text-green">life</span>.',
+        'one_brain_dead_can_save_8_lives'    => 'One brain dead can save 8 lives.',
+        'organ_donation'                     => 'Organ Donation',
+        'life_donation'                      => 'Life Donation',
+        'follow_us_in_social'                => 'Follow us in social networks.',
+    ],
+
+    "main-menu" => [
+        'items' => [
+            'learn'   => 'to Know',
+            'will'    => 'to Desire',
+            'achieve' => 'to Do',
+            'join'    => 'to Join',
+        ],
+
+        'sub_menus' => [
+            "learn" => [
+                'academic'                          => 'Scientific',
+                'brain_death'                       => 'Brain Death',
+                'organ_donation'                    => 'Organ Donation',
+                'allocation'                        => 'Organ Allocation',
+                'organ_transplant'                  => 'Organ Transplant',
+                'organ_transplant_history'          => 'Organ Transplant History',
+                'statistics'                        => 'Statistics',
+                'cultural'                          => 'Cultural',
+                'organ_donation_in_religion'        => 'Organ Donation and Religion',
+                'organ_donation_in_another_country' => 'Organ Donation in Other Countries',
+                'organ_donation_card'               => 'Organ Donation Card',
+                'faq'                               => 'FAQ',
+                'iran_news'                         => 'Iran News',
+                'iran_procurement'                  => 'Organ Donation and Transplant',
+                'iran_transplant'                   => 'Transplant',
+                'provinces'                         => 'States',
+                'internal-ngo'                      => 'Internal',
+                'world_news'                        => 'World News',
+                'world_procurement'                 => 'Organ Donation and Transplant',
+                'world_transplant'                  => 'Transplant',
+
+            ],
+
+            "will" => [
+                'donations'                         => 'Funding',
+                'volunteers'                        => 'Volunteers',
+                'organ_donation_volunteers'         => 'Organ Donation Volunteers',
+                'special_volunteers'                => 'Celebrities',
+                'participation_in_the_notification' => 'Awareness Rising',
+                'supporters'                        => 'Supporters',
+                'you_say'                           => 'You Say',
+                'your_works'                        => 'Your Works',
+                'your_memories'                     => 'Your Memories',
+                'suggestions'                       => 'Suggestions',
+            ],
+
+            "achieve" => [
+                'about_us'             => 'About Us',
+                'activities'           => 'Activities',
+                'ngo_history'          => 'Background',
+                'board_of_directories' => 'Board of Directors',
+                'board_of_trustees'    => 'Board of Trustees',
+                'founding'             => 'Funding Board',
+                'organizational_chart' => 'Chart',
+                'statute'              => 'Statue',
+                'tasks_goals'          => 'Duties',
+                'committees'           => 'Committees',
+                'gallery'              => 'Gallery',
+                'pictures'             => 'Pictures',
+                'films'                => 'Videos',
+                'photo_donors'         => 'Lasting Angels',
+                'contact_us'           => 'Contact Us',
+
+            ],
+        ],
+    ],
+
+    'media' => [
+        'playing' => 'Playing',
+    ],
 ];

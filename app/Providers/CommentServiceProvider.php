@@ -154,7 +154,7 @@ class CommentServiceProvider extends ServiceProvider
      */
     public static function getPostCommentRules($post, $detailed = true)
     {
-        $post = PostsServiceProvider::smartFindPost($post);
+        $post = PostsServiceProvider::smartFindPost($post, true);
         if ($post->exists) {
             $post->spreadMeta();
             $rulesString = $post->rules;

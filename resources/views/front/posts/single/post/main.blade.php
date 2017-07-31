@@ -1,10 +1,13 @@
-<div class="blog-single">
-    <div class="blog-cover"><img src="{{ $post->viewable_featured_image }}"></div>
-    <div class="blog-header">
-        @include($viewFolder . '.categories')
-        <h1 class="title"> {{ $post->title }} </h1>
-        @include($viewFolder . '.publish_info')
+{{ null, $showSideBar = isset($showSideBar) ? $showSideBar : false }}
+
+<div class="container">
+    <div class="row">
+        <div class="article @if($showSideBar) col-xs-12 col-md-8 @endif">
+            @include($viewFolder . '.content')
+            @include($viewFolder . '.post_footer')
+        </div>
+        @if($showSideBar)
+            @include($viewFolder . '.sidebar')
+        @endif
     </div>
-    @include($viewFolder . '.content')
 </div>
-@include($viewFolder . '.related_posts')

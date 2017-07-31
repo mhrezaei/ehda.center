@@ -1,0 +1,239 @@
+@import "ecg/_fonts";
+@import "bootstrap";
+@import "ecg/variables";
+@import "public_silent_classes";
+@import "local-variables/ltr";
+@import "keyframes";
+@import "ecg/_keyframes";
+@import "colors";
+@import "measurement_and_alignment";
+
+%padding-start-clear {
+  padding-#{$startSide}: 0;
+}
+
+body {
+  @extend .bg-darkGray;
+  font-family: 'Roboto', sans-serif;
+
+  .monitor {
+    @extend %display-flex, .bg-black, .col-xs-12, .pt15, .pb15;
+
+    .row-flex > * {
+      @extend %display-flex;
+    }
+
+    @for $i from 1 to 13 {
+      .col-xs-#{$i}:not(:first-of-type),
+      .col-sm-#{$i}:not(:first-of-type),
+      .col-md-#{$i}:not(:first-of-type),
+      .col-lg-#{$i}:not(:first-of-type),
+      .col-xl-#{$i}:not(:first-of-type) {
+        @extend %padding-start-clear;
+      }
+    }
+
+    .pulse {
+      animation: pulse 0.1s linear;
+      -webkit-animation: pulse 0.1s linear;
+    }
+
+    min-height: 600px;
+
+    .monitor-control-panel {
+      @extend .bg-gray, .p10, .text-black;
+      font-weight: bold;
+
+      .monitor-control-panel-section {
+        @extend .pt10, .mb15, .border-top-2, .border-top-black;
+
+        .rhy_item {
+          @extend %cursor-pointer;
+
+          &:hover {
+            background-color: darken(map_get($colors, 'gray'), 5%);
+          }
+        }
+      }
+    }
+
+    .monitor-preview-container {
+      .monitor-preview {
+        @extend .border-1, .border-white, .pt15, .pb15;
+
+        .monitor-preview-info {
+          font-weight: bold;
+
+          .monitor-preview-info-box {
+            @extend .text-white, .text-center, .mb30, .pt5, %display-flex;
+
+            @each $colorName, $colorCode in $colors {
+              &.#{$colorName} {
+                @extend .text-#{$colorName}, .border-#{$colorName};
+              }
+            }
+
+            &:last-child {
+              @extend .mb0;
+            }
+
+            $titleWidth: 30;
+            .monitor-preview-info-title {
+              @extend .align-vertical-end, .align-horizontal-start, .pr5, .pl5;
+              width: $titleWidth * 1%;
+              font-size: 1.5em;
+            }
+
+            .monitor-preview-info-value {
+              $transform: scale(1, 2);
+              @extend .text-left, .pr0;
+              width: (100 - $titleWidth) * 1%;
+              font-size: 3em;
+              -webkit-transform: #{$transform};
+              -moz-transform: #{$transform};
+              -ms-transform: #{$transform};
+              -o-transform: #{$transform};
+              transform: #{$transform};
+            }
+          }
+        }
+
+        .monitor-preview-diagram-container {
+          @extend %display-flex;
+          height: 150px;
+
+          .monitor-preview-diagram {
+            @extend .full-width, .border-1, .border-white, .pt20, .pb20;
+            overflow-x: hidden;
+            div.static-diagram {
+              background-size: cover;
+              background-repeat: repeat-x;
+              width: 100%;
+              height: 100%;
+              position: relative;
+
+              &:after {
+                content: " ";
+                backgroun-color: red;
+                position: absolute;
+                width: 100%;
+                height: 100%;
+              }
+
+              &#r1rhy {
+                -webkit-animation: r1slide 36s linear infinite;
+              }
+
+              &#r2rhy {
+                -webkit-animation: r2slide 49s linear infinite;
+              }
+
+              &#r3rhy {
+                -webkit-animation: r3slide 19s linear infinite;
+              }
+
+              &#r4rhy {
+                -webkit-animation: r4slide 33s linear infinite;
+              }
+
+              &#r5rhy {
+                -webkit-animation: r5slide 55s linear infinite;
+              }
+
+              &#r6rhy {
+                -webkit-animation: r6slide 49s linear infinite;
+              }
+
+              &#r7rhy {
+                -webkit-animation: r7slide 31s linear infinite;
+              }
+
+              &#r8rhy {
+                -webkit-animation: r8slide 14s linear infinite;
+              }
+
+              &#r9rhy {
+                -webkit-animation: r9slide 29s linear infinite;
+              }
+
+              &#r10rhy {
+                -webkit-animation: r10slide 35s linear infinite;
+              }
+
+              &#r11rhy {
+                -webkit-animation: r11slide 69s linear infinite;
+              }
+
+              &#r12rhy {
+                -webkit-animation: r12slide 31s linear infinite;
+              }
+              &#r13rhy {
+                -webkit-animation: r13slide 55s linear infinite;
+              }
+
+              &#r14rhy {
+                -webkit-animation: r14slide 32s linear infinite;
+              }
+
+              &#r15rhy {
+                -webkit-animation: r15slide 14s linear infinite;
+              }
+
+              &#r16rhy {
+                -webkit-animation: r16slide 38s linear infinite;
+              }
+              &#r17rhy {
+                -webkit-animation: r17slide 73s linear infinite;
+              }
+
+              &#r18rhy {
+                -webkit-animation: r18slide 31s linear infinite;
+              }
+
+              &#r19rhy {
+                -webkit-animation: r19slide 12s linear infinite;
+              }
+
+              &#r20rhy {
+                -webkit-animation: r20slide 14s linear infinite;
+              }
+              &#r22rhy {
+                -webkit-animation: r22slide 35s linear infinite;
+              }
+
+              &#r23rhy {
+                -webkit-animation: r23slide 55s linear infinite;
+              }
+              &#r24rhy {
+                -webkit-animation: r24slide 44s linear infinite;
+              }
+
+              &#r25rhy {
+                -webkit-animation: r25slide 73s linear infinite;
+              }
+
+              &#r26rhy {
+                -webkit-animation: r26slide 30s linear infinite;
+              }
+
+              &#r27rhy {
+                -webkit-animation: r27slide 32s linear infinite;
+              }
+
+              &#r28rhy {
+                -webkit-animation: r28slide 39s linear infinite;
+              }
+
+              @for $i from 1 to 29 {
+                &#r#{$i}rhy {
+                  background-image: url("#{$rhysImagesDir}/r#{$i}.png");
+                }
+              }
+
+            }
+          }
+        }
+      }
+    }
+  }
+}

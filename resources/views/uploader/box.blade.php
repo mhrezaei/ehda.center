@@ -36,12 +36,12 @@
     </div>
     @include('front.forms.hidden', [
         'id' => '',
-        'name' => 'uploadIdentifier',
+        'name' => '_uploadIdentifier',
         'value' => $uploadIdentifier,
     ])
     @include('front.forms.hidden', [
         'id' => '',
-        'name' => 'groupName',
+        'name' => '_groupName',
         'value' => time() . str_random(8),
     ])
 </div>
@@ -53,6 +53,7 @@
             @if(!isset($varName) or !$varName)
                 {{ null, $varName = camel_case($id . '-dropzone') }}
             @endif
+
             var {{ $varName }} = new Dropzone("#{{ $id }}", {
                 maxFileSize: {{ UploadServiceProvider::getTypeRule($fileType, "maxFileSize") }},
                 maxFiles: {{ UploadServiceProvider::getTypeRule($fileType, "maxFiles") }},

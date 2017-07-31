@@ -167,7 +167,7 @@
             @section('hiddenFields')
                 @include('front.forms.hidden',[
                     'id' => "file-$fileType",
-                    'name' => "{$fileType}_uploader",
+                    'name' => "{$fileType}_files",
                     'extra' => "data-field=$dataField",
                     'class' => 'optional-input',
                 ])
@@ -177,7 +177,7 @@
 
 
             {!! Form::open([
-                'url' => route('comment.submit'),
+                'url' => route('comment.submit', ['lang' => getLocale()]),
                 'method'=> 'post',
                 'class' => 'js',
                 'name' => 'commentForm',

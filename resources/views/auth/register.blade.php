@@ -108,8 +108,8 @@
         </div>
         <div class="col-xs-12 mb10">
             <div class="row">
-                <button type="button" onclick="window.location = '{{ route('login') }}';"
-                        class="btn btn-block btn-blue"> {{ trans('front.member_login') }} </button>
+                <a type="button" href="{{ route('login') }}"
+                   class="btn btn-block btn-blue"> {{ trans('front.member_login') }} </a>
             </div>
         </div>
     </div>

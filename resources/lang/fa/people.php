@@ -1,20 +1,20 @@
 <?php
 return [
-	'person'                   => "نفر",
-	'people'                   => "اشخاص",
-	'people_management'        => "مدیریت اشخاص",
-	'modules'                  => "ماژول‌ها",
-	'deleted_user'             => "یک کاربر سابق",
-	'particular_user'          => "یک کاربر خاص",
-	'user'                     => "کاربر",
-	'users'                    => "کاربران",
-	'site_users'               => "کاربران مجموعه",
-	'user_role'                => "نقش کاربری",
-	'role_management'          => "مدیریت نقش‌ها",
-	'without_role'             => "بدون نقش",
-	'default_role'             => "نقش کاربری پیش‌فرض",
-	'choose_as_default_role'   => "انتخاب به عنوان نقش پیش‌فرض",
-	'is_admin'                 => "به عنوان مدیر",
+	'person'                 => "نفر",
+	'people'                 => "اشخاص",
+	'people_management'      => "مدیریت اشخاص",
+	'modules'                => "ماژول‌ها",
+	'deleted_user'           => "یک کاربر سابق",
+	'particular_user'        => "یک کاربر خاص",
+	'user'                   => "کاربر",
+	'users'                  => "کاربران",
+	'site_users'             => "کاربران مجموعه",
+	'user_role'              => "نقش کاربری",
+	'role_management'        => "مدیریت نقش‌ها",
+	'without_role'           => "بدون نقش",
+	'default_role'           => "نقش کاربری پیش‌فرض",
+	'choose_as_default_role' => "انتخاب به عنوان نقش پیش‌فرض",
+	'is_admin'               => "به عنوان مدیر",
 
 	//@TODO: New from here up to the end of this array...
 
@@ -37,9 +37,8 @@ return [
 		'send_sms'            => "ارسال پیامک",
 		'send_email'          => "ارسال ایمیل",
 		'according_to_domain' => "بر اساس دامنه",
-	     'profile' => "پرونده" ,
-	     'delete_account' => "حذف حساب کاربری" ,
-
+		'profile'             => "پرونده",
+		'delete_account'      => "حذف حساب کاربری",
 	],
 
 	'admins' => [
@@ -136,6 +135,14 @@ return [
 		'2' => 'رسانه‌ها',
 		'3' => 'سایت',
 		'4' => 'راه‌های دیگر',
+	],
+
+	"marital" => [
+		'0' => 'نامشخص',
+		"1" => 'متأهل',
+		"2" => 'بدون همسر',
+		"3" => 'طلاق‌گرفته',
+		"4" => 'همسر وفات‌یافته',
 	],
 
 ];

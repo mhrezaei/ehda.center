@@ -197,7 +197,7 @@ $.extend(Datepicker.prototype, {
 			keypress(this._doKeyPress).keyup(this._doKeyUp).
 			bind("setData.datepicker", function(event, key, value) {
 				inst.settings[key] = value;
-			}).bind("getData.datepicker", function(event, key) {
+			}).bind("loadData.datepicker", function(event, key) {
 				return this._get(inst, key);
 			});
 		this._autoSize(inst);
@@ -274,7 +274,7 @@ $.extend(Datepicker.prototype, {
 		divSpan.addClass(this.markerClassName).append(inst.dpDiv).
 			bind("setData.datepicker", function(event, key, value){
 				inst.settings[key] = value;
-			}).bind("getData.datepicker", function(event, key){
+			}).bind("loadData.datepicker", function(event, key){
 				return this._get(inst, key);
 			});
 		$.data(target, PROP_NAME, inst);

@@ -25,7 +25,7 @@ if (isset($class)) {
             @endif
         </label>
     @endif
-    <div class="col-xs-12">
+    <div class="col-xs-12" style="min-height: 44px;">
         @include('front.forms.buttonset-self')
     </div>
 </div>

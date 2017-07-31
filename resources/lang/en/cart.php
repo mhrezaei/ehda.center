@@ -15,6 +15,8 @@ return [
     'redraw_prepare'        => "Draw Again",
     'reverse_results'       => "Reverse Draw Results",
     'drawing_winner'        => "Drawing Winner",
+    'drawing_winners'       => "Drawing Winners",
+    'drawing_video'         => "Drawing Video",
     'take_number_between'   => "Take a number from 1 to :number.",
     'random_number'         => "Random Number",
     'user_already_won'      => "This user has already won in this event.",

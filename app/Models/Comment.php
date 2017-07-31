@@ -20,6 +20,12 @@ class Comment extends Model
         'text_uploader',
         'text_content',
         'description',
+        'name',
+        'city',
+        'donation_date',
+        'submitter_name',
+        'submitter_phone',
+        'image_files',
     ];
     protected $guarded = ['id'];
     protected $casts = [
