@@ -95,8 +95,13 @@ body {
             margin-top: 0;
           }
 
+          > *:not(:first-child) {
+            @extend .mt#{$gapsSize}
+          }
+
+
           .monitor-ecg-preview {
-            @extend .border-1, .border-white, .full-width, .pull-start, .pt20, .pb20;
+            @extend .border-1, .border-white, .full-width, .pull-start, .pb20;
             height: 160px;
 
             .monitor-ecg-preview-inner {
@@ -118,7 +123,7 @@ body {
           }
 
           .monitor-ecg-shock-box {
-            @extend .full-width, .pull-start, .mt10, .border-1, .border-white, .p15;
+            @extend .full-width, .pull-start, .border-1, .border-white, .p15;
 
             .progress {
               @extend .mb0;
@@ -126,11 +131,12 @@ body {
           }
 
           .monitor-case-management-panel {
-            @extend .full-width, .pull-start, .pt#{$gapsSize};
+            @extend .full-width, .pull-start;
 
             .monitor-case-management-panel-inner {
               @extend .border-1, .border-white, .full-width, .pull-start, .full-height, .text-white, .pl#{$sidesPaddingSize}, .pr#{$sidesPaddingSize};
               font-family: Arial;
+              overflow-y: auto;
 
               .page {
                 @extend .full-width, .pull-start;
@@ -219,10 +225,10 @@ body {
 
               }
             }
+          }
 
-            .second-preview {
-              @extend .full-width, .pull-start, .mt10, .p15, .border-1, .border-white, .text-white, .f20;
-            }
+          .second-preview {
+            @extend .full-width, .pull-start, .p15, .border-1, .border-white, .text-white, .f20;
           }
 
           .btn {

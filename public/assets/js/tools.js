@@ -30,10 +30,10 @@ String.prototype.ucfirst = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
 };
 
-String.prototype.filename=function(extension){
-    var s= this.replace(/\\/g, '/');
-    s= s.substring(s.lastIndexOf('/')+ 1);
-    return extension? s.replace(/[?#].+$/, ''): s.split('.')[0];
+String.prototype.filename = function (extension) {
+    var s = this.replace(/\\/g, '/');
+    s = s.substring(s.lastIndexOf('/') + 1);
+    return extension ? s.replace(/[?#].+$/, '') : s.split('.')[0];
 };
 
 Array.prototype.last = function () {
@@ -46,7 +46,7 @@ Array.prototype.getColumn = function (columnName) {
     })
 };
 
-Object.byString = function(o, s) {
+Object.byString = function (o, s) {
     s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
     s = s.replace(/^\./, '');           // strip a leading dot
     var a = s.split('.');
@@ -61,11 +61,10 @@ Object.byString = function(o, s) {
     return o;
 };
 
-$.fn.serializeObject = function()
-{
+$.fn.serializeObject = function () {
     var o = {};
     var a = this.serializeArray();
-    $.each(a, function() {
+    $.each(a, function () {
         if (o[this.name]) {
             if (!o[this.name].push) {
                 o[this.name] = [o[this.name]];
@@ -77,3 +76,16 @@ $.fn.serializeObject = function()
     });
     return o;
 };
+
+/**
+ * Create event listener for show or hide elements
+ */
+$.each(['show', 'hide'], function (i, ev) {
+    var el = $.fn[ev];
+
+    $.fn[ev] = function () {
+        el.apply(this, arguments)
+        this.trigger(ev);
+        return $(this);
+    };
+});

@@ -9,6 +9,7 @@ window.shockerCharge = 0;
 window.currentData = {};
 
 $(document).ready(function () {
+    correctView();
 
     $.ajaxSetup({cache: false});
 
@@ -18,12 +19,21 @@ $(document).ready(function () {
     lowLag.load(['charging.mp3', 'charging.waw'], 'charging');
     lowLag.load(['electricShock.mp3', 'electricShock.waw'], 'electricShock');
 
-    fixBodyHeight();
     loadData();
 
     $(window).resize(function () {
-        fixBodyHeight();
+        correctView();
     });
+
+    $('.monitor-column-2')
+        .children()
+        .not('.monitor-case-management-panel')
+        .on('show', function () {
+            correctControlPanelHeight();
+        })
+        .on('hide', function () {
+            correctControlPanelHeight();
+        });
 
     $('.pass-step').click(function () {
         var page = $(this).closest('.page');
@@ -120,7 +130,7 @@ $(document).ready(function () {
                 refreshScreen();
 
                 if (!$('.second-preview').is(':visible')) {
-                    $('.second-preview').slideDown();
+                    $('.second-preview').show();
                 }
             }
         }
@@ -145,7 +155,6 @@ $(document).ready(function () {
     $('.monitor-ecg-shock-box').find('.btn-charge-shocker').click(function () {
         var energy = $('.shocker-energy').val();
         chargeShocker(energy);
-
     });
 
     $('.monitor-ecg-shock-box').find('.btn-shock').click(function () {
@@ -159,20 +168,6 @@ $(document).ready(function () {
         refreshScreen()
     });
 });
-
-/**
- * Make body height compatible with view port
- */
-function fixBodyHeight() {
-    var bodyHeight = $('body').height();
-    var containerHeight = $('.container-main').height();
-
-    if (containerHeight > bodyHeight) {
-        $('body').height(containerHeight);
-    } else {
-        $('body').height("");
-    }
-}
 
 function dash2brace(string) {
     var parts = string.split('-');
@@ -537,6 +532,8 @@ function chargeShocker(energy) {
         $('.monitor-ecg-shock-box').find('.btn-shock').removeAttr('disabled');
         window.shockerCharge = energy;
         progressBar.attr('aria-valuenow', 100);
+        $('.btn-charge-shocker').hide();
+        $('.btn-shock').show();
     });
 }
 
@@ -557,6 +554,8 @@ function doShock() {
 
         $('.monitor-case-management-panel').show();
         $('.monitor-ecg-shock-box').hide();
+        $('.btn-charge-shocker').show();
+        $('.btn-shock').hide();
     }
 }
 
@@ -692,7 +691,14 @@ function setCaseData(param1, param2) {
 }
 
 function doneTreatments() {
-    return window.reactions.getColumn('treatment');
+    var inverted = window.reactions.getColumn('inverse');
+    var result = [];
+    $.each(window.reactions, function (i, val) {
+        if (val.treatment && ($.inArray(i.toString(), inverted) == -1)) {
+            result.push(val.treatment);
+        }
+    });
+    return result;
 }
 
 function needToFIO2() {
@@ -701,14 +707,75 @@ function needToFIO2() {
             if (!checkFIO2()) {
                 ventricularTachycardia();
             }
-        }, 60 * 1000);
+        }, window.timeouts.needToFIO2);
     }
 }
 
 function checkFIO2() {
     var FIO2Key = '3-1';
     var done = doneTreatments();
-    if ($.inArray(FIO2Key, done) > -1) { // didn't do FIO2
+    if ($.inArray(FIO2Key, done) > -1) { // FIO2 done
         return true;
     }
+}
+
+function correctView() {
+    correctBodyHeight();
+    correctVitalSingsHeight();
+    correctControlPanelHeight();
+}
+
+/**
+ * Make body height compatible with view port
+ */
+function correctBodyHeight() {
+    var bodyHeight = $('body').height();
+    var containerHeight = $('.container-main').height();
+
+    if (containerHeight > bodyHeight) {
+        $('body').height(containerHeight);
+    } else {
+        $('body').height("");
+    }
+}
+
+function correctVitalSingsHeight() {
+    var items = $('.monitor-vital-sign');
+    var firstItem = items.first();
+    var totalHeight = $('.monitor-column-1').height();
+    var itemHeight = (totalHeight / items.length) - 2;
+
+    var textHeight = itemHeight -
+        firstItem.find('.monitor-vital-sign-heading').height() -
+        parseInt(firstItem.find('.monitor-vital-sign-value').css('padding-top'));
+
+    var fontSize = textHeight / window.styleConstants.line_height;
+
+    items.find('.monitor-vital-sign-value').css('font-size', fontSize + 'px');
+}
+
+function correctControlPanelHeight() {
+    var controlPanel = $('.monitor-case-management-panel');
+    var siblings = controlPanel.siblings(':visible');
+    var totalHeight = $('.monitor-column-2').height();
+
+    var siblingsTotalHeight = 0;
+    siblings.each(function () {
+        var item = $(this);
+        siblingsTotalHeight += (
+            item.outerHeight() +
+            parseInt(item.css('margin-top')) +
+            parseInt(item.css('margin-bottom'))
+        );
+    });
+
+    var availableHeight = totalHeight - siblingsTotalHeight;
+    var controlPanelHeight = availableHeight - (
+            parseInt(controlPanel.css('margin-top')) +
+            parseInt(controlPanel.css('margin-bottom'))
+        );
+    // console.log('correctControlPanelHeight')
+    // console.log(controlPanelHeight)
+
+    controlPanel.height(controlPanelHeight);
 }
