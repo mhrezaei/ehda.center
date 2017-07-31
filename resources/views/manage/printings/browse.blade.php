@@ -6,9 +6,9 @@
 	<div id="divTab">
 		@include('manage.printings.tabs')
 	</div>
-	
+
 	@include("manage.frame.widgets.toolbar" , [
-		'subtitle_view' => "manage.printings.browse-subtitle" ,
+		'free_toolbar_view' =>  "manage.printings.browse-free-toolbar",
 		'buttons' => [
 			[
 				'target' => "modal:manage/cards/printings/act/revert-to-pending" ,

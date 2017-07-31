@@ -35,6 +35,7 @@ class PostSaveRequest extends Request
 			case 'approval' :
 				$rules = [
 					'title' => "required",
+				     'domains' => "required" ,
 //					'slug' => 'english|not_in:'.Post::$reserved_slugs,
 				];
 				if(isset($input['_schedule']) and $input['_schedule']) {

@@ -6,6 +6,7 @@
 	</div>
 
 	@include("manage.frame.widgets.toolbar" , [
+		'free_toolbar_view' => $switches['free_toolbar_view'] ,
 		'mass_actions' => $switches['mass_actions'] ,
 		'buttons' => $switches['toolbar_buttons'] ,
 		'buttons_' => [

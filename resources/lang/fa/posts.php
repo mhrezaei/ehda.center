@@ -96,6 +96,7 @@ return [
 		'copy'                                => "رونوشت",
 		'copy_of'                             => "رونوشت از",
 		'published_post'                      => "مطلب منتشر شده",
+		'publish'                             => "انتشار", //@TODO: New
 		'approved_post'                       => "مطلب پذیرفته‌شده",
 		'copy_status_hint'                    => "در حال دستکاری یک رونوشت هستید.",
 		'title_placeholder'                   => "عنوان را اینجا وارد کنید",
@@ -154,6 +155,12 @@ return [
 		'copy_suggestion_when_cannot_publish' => "این مطلب مورد پذیرش سردبیر قرار گرفته و ویرایش امکان‌پذیر نیست، مگر آن که رونوشتی از آن تهیه کنید.",
 		'copy_suggestion_when_can_publish'    => "این مطلب نهایی شده است. برای تغییرات گسترده، بهتر است رونوشتی از آن تهیه کنید.",
 		'copy_suggestion_deny'                => "همیشه می‌توانید با دکمه‌ی «ذخیره پیش‌نویس» همین کار را بکنید.",
+		'reflect_in_global'                   => "انعکاس در دامنه‌ی سراسری",
+		'reflect_in_global_short'             => "انعکاس سراسری",
+	     //@TODO: New from here to down...
+	     'new_content' => "محتوای جدید" ,
+	     'create_new_post' => "ایجاد مطلب جدید" ,
+	     'for_each_number_of' => "برای هر تعداد :name" ,
 	],
 
 	'comments' => [

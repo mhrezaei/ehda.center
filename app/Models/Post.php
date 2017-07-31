@@ -14,7 +14,7 @@ use Vinkla\Hashids\Facades\Hashids;
 class Post extends Model
 {
 	use TahaModelTrait, SoftDeletes;
-	use EhdaPostTrait ;
+	use EhdaPostTrait;
 
 	public static    $reserved_slugs  = "none,without";
 	public static    $meta_fields     = ['dynamic'];
@@ -196,6 +196,73 @@ class Post extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
+	public function getRequiredRolesArrayAttribute()
+	{
+		$domains_array = $this->domains_array ;
+		if(!count($domains_array)) {
+			return 'admin' ;
+		}
+		elseif( count($domains_array) == 1 and head($domains_array) == 'global') {
+			return 'manager' ;
+		}
+		else {
+			$result_array = [] ;
+			foreach($domains_array as $key => $domain) {
+				if($domain!='global') {
+					$result_array[] = User::$role_prefix_for_domain_admins.'-'.$domain ;
+				}
+			}
+			return $result_array ;
+		}
+	}
+
+
+	public function getDomainsArrayAttribute()
+	{
+		if($this->has('domains')) {
+			return array_unique(array_filter(explode('|' , $this->domains)));
+		}
+		else {
+			return [] ;
+		}
+	}
+
+
+	public function getDomainNameAttribute()
+	{
+		if(!$this->domains or $this->hasnot('domains')) {
+			return false ;
+		}
+		$domain_value = str_replace('|', null, $this->domains);
+
+		/*-----------------------------------------------
+		| If simply 'global' ...
+		*/
+		if($domain_value == 'global') {
+			return trans('posts.form.global');
+		}
+
+		/*-----------------------------------------------
+		| Otherwise ...
+		*/
+		if(str_contains($domain_value, 'global')) {
+			$extra  = " ( ".trans("posts.form.reflect_in_global_short")." ) ";
+			$domain_value = str_replace('global', null, $domain_value);
+		}
+		else {
+			$extra = null;
+		}
+
+		$domain = Domain::findBySlug($domain_value) ;
+		if(!$domain) {
+			return false ;
+		}
+		else {
+			return $domain->title . $extra ;
+		}
+
+	}
+
 
 	/**
 	 * @return array ;
@@ -306,7 +373,7 @@ class Post extends Model
 
 	public function getEditLinkAttribute()
 	{
-		return url("manage/posts/" . $this->type . "/edit/" . $this->id);
+		return url("manage/posts/" . $this->type . "/edit/" . $this->hash_id);
 	}
 
 
@@ -485,7 +552,26 @@ class Post extends Model
 
 	public function can($permit)
 	{
-		return user()->as('admin')->can('post-' . $this->type . '.' . $permit);
+		/*-----------------------------------------------
+		| Considering Languages ...
+		*/
+		$full_permit = "posts-$this->type.$permit" ;
+		if($this->has('locales')) {
+			$full_permit .= ".$this->locale" ;
+		}
+
+		/*-----------------------------------------------
+		| Considering Domains ...
+		*/
+		$roles_array = $this->required_roles_array ;
+
+
+		/*-----------------------------------------------
+		| Return ...
+		*/
+		//ss($full_permit);
+		//ss(user()->as('volunteer-kashan')->pivot('permissions'));
+		return user()->as($roles_array)->can($full_permit) ;
 	}
 
 	public function canPublish()
@@ -716,16 +802,30 @@ class Post extends Model
 		/*-----------------------------------------------
 		| Process Domain ...
 		*/
-		if($switch['domain'] and $switch['domain']!='auto') {
-			if($switch['domain'] == 'auto') {
-				$switch['domain'] = 'all' ; //@TODO: Must incorporate user()'s domain!
+		if($switch['domain'] == 'auto') {
+			if(user()->is_a('manager')) {
+				$switch['domain'] = null;
 			}
-			$switch['domain'] = (array) $switch['domain'];
-
-			foreach($switch['domain'] as $domain) {
-				$table->where('domains', 'like', "%$domain%");
+			else {
+				$switch['domain'] = user()->domainsArray("posts-".$switch['type']);
 			}
 		}
+
+		if($switch['domain']) {
+			$switch['domain'] = (array)$switch['domain'];
+
+			$table->where( function($query) use ($switch) {
+				$query->where('id' , '0') ;
+
+				foreach($switch['domain'] as $domain) {
+					$query->orWhere('domains', 'like', "%|$domain|%");
+				}
+
+			});
+		}
+
+
+
 
 
 		/*-----------------------------------------------

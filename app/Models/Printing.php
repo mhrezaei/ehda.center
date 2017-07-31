@@ -103,12 +103,29 @@ class Printing extends Model
 		if($switch['event_id']) {
 			$table->where('event_id', $switch['event_id']);
 		}
-		if($switch['domain'] !== false) {
-			$table->where('domain', $switch['domain']);
-		}
 		if($switch['created_by']) {
 			$table->where('created_by', $switch['created_by']);
 		}
+
+		/*-----------------------------------------------
+		| Domain ...
+		*/
+		if($switch['domain'] == 'auto') {
+			if(user()->is_a('manager')) {
+				$switch['domain'] = false;
+			}
+			else {
+				$switch['domain'] = user()->domainsArray('users-card-holder.print'); //@TODO: Vulnerability: What if a user() has access to 'print-excel' but not to 'print-direct'?
+			}
+		}
+
+		if($switch['domain'] !== false) {
+			$switch['domain'] = (array)$switch['domain'];
+
+			$table = self::whereIn('domain' , $switch['domain']);
+		}
+
+
 
 		/*-----------------------------------------------
 		| Criteria ...

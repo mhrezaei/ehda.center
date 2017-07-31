@@ -2,8 +2,23 @@
 
 @section('section')
 
-	{{--{{ getLocale() }}--}}
-{{--	@include('manage.index.hello')--}}
+	<div id="divEgo" class="w100">
+		@include("manage.home.index-ego")
+	</div>
+
+	<div id="divCardsTimebar" class="w100" data-src="manage/widget/cards-line" data-loading="no">
+		@include("manage.home.index-cards-line")
+	</div>
+
+
+
+
+
+	<div class="pinBoot noDisplay">
+		@include("manage.home.index-widgets")
+	</div>
+
+
 
 	{{--<div class="row">--}}
 		{{--@foreach($digests as $digest)--}}
@@ -11,7 +26,8 @@
 		{{--@endforeach--}}
 	{{--</div>--}}
 
-	{{--@include('templates.say' , ['array'=>user()->as('user')->role()->toArray()])--}}
-	{{--@include('templates.say' , ['array'=>user()->as('user')->can()])--}}
-	{{--@include('templates.say' , ['array'=>user()->enableRole('user')->shh()])--}}
+	<div id="imgDashboardLoading" class="margin-auto text-center">
+		@include("manage.frame.widgets.loading")
+	</div>
+<script>setTimeout(function(){ $(".pinBoot , #imgDashboardLoading").slideToggle('fast')} , 1000)</script>
 @endsection

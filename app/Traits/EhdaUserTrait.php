@@ -4,6 +4,7 @@ namespace App\Traits;
 use App\Models\Domain;
 use App\Models\Role;
 use App\Models\State;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
@@ -12,6 +13,8 @@ use Morilog\Jalali\jDate;
 
 trait EhdaUserTrait
 {
+
+	public static    $volunteers_mandatory_fields = ['code_melli', 'name_first', 'name_last', 'name_father', 'birth_date', 'birth_city', 'gender', 'home_province', 'home_city', 'email', 'mobile', 'tel_emergency'];
 
 	/*
 	|--------------------------------------------------------------------------
@@ -72,6 +75,7 @@ trait EhdaUserTrait
 		}
 
 	}
+
 
 	public function getEduCityNameAttribute()
 	{
@@ -148,6 +152,24 @@ trait EhdaUserTrait
 		return pd($this->birth_date_on_card_en) ;
 	}
 
+	public function getOccupationAttribute()
+	{
+		$return = null;
+
+		if($this->job) {
+			$return .= $this->job . " . ";
+		}
+
+		$return .= $this->edu_level_short ;
+
+		if($this->edu_field) {
+			$return .= " . " . $this->edu_field;
+		}
+
+		return $return;
+
+	}
+
 
 
 	/*
@@ -175,15 +197,30 @@ trait EhdaUserTrait
 
 	}
 
-	public static function generateCardNo()
+	public function generateCardNo()
 	{
-		$record = self::orderBy('card_no', 'desc')->first();
-		if(!$record) {
-			return 1500;
-		}
-		else {
-			return $record->card_no + 1;
-		}
+		return $this->id + 5000 ;
 	}
+
+	/**
+	 * @return array of all the bot-users
+	 *
+	 */
+	public static function telegramBots()
+	{
+		$role = Role::findBySlug('telegram-bot') ;
+		return $role->users()->get()->pluck('id') ;
+	}
+
+	//public static function generateCardNo()
+	//{
+	//	$record = self::orderBy('card_no', 'desc')->first();
+	//	if(!$record) {
+	//		return 1500;
+	//	}
+	//	else {
+	//		return $record->card_no + 1;
+	//	}
+	//}
 
 }

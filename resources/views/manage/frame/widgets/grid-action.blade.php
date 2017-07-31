@@ -59,7 +59,7 @@
 					<li>
 						<a href="{{$target}}" onclick="{{$js_command}}" {{$extra}}>
 							<i class="fa fa-{{$icon or 'circle'}} fa-fw" style="position: relative;left: +10px"></i>
-							{{ $caption }}
+							{!! $caption !!}
 						</a>
 					</li>
 					{{--@if($key+1 < sizeof($actions))--}}

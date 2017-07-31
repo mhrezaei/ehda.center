@@ -64,7 +64,7 @@
 				<button type="submit" name="_submit" value="publish" class="btn btn-primary">{{ trans('posts.form.update_button') }}</button>
 			@elseif($model->canPublish() and !$model->isApproved())
 				<button type="submit" name="_submit" value="publish" class="btn btn-primary">{{ trans('posts.form.publish') }}</button>
-			@elseif($model->isApproved() and !$model->canPublish()))
+			@elseif($model->isApproved() and !$model->canPublish())
 				<button type="submit" name="_submit" disabled value="approval" class="btn btn-primary">{{ trans('posts.form.update_button') }}</button>
 			@else
 				<button type="submit" name="_submit" value="approval" class="btn btn-primary">{{ trans('posts.form.send_for_approval') }}</button>

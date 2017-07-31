@@ -72,7 +72,7 @@
 						'title' => $posttype->title,
 						'module' => "posts-$posttype->slug" ,
 						'permits' => $module_posts ,
-						'locales' => setting()->ask('site_locales')->gain() ,
+						'locales' => $posttype->locales_array,//setting()->ask('site_locales')->gain() ,
 					]     )
 				@endforeach
 			</div>

@@ -20,8 +20,7 @@
 <td>
 	@include("manage.frame.widgets.grid-text" , [
 		'text' => $user->full_name ,
-		'link' => ($user->id and user()->as('admin')->can('users-card-holder.view'))? "modal:manage/users/act/$user->id/card-view" : '',
-		'link-' => "modal:manage/users/act/$user->id/card-view"
+		'link' => ($user->id and user()->as('admin')->can('users-card-holder.view'))? "modal:manage/cards/view/$user->hash_id" : '',
 	])
 	@include("manage.frame.widgets.grid-tiny" , [
 		'text' => trans('validation.attributes.card_no').': '.$user->card_no,

@@ -178,7 +178,7 @@ class Role extends Model
 		return boolval($default_role == $this->slug);
 	}
 
-	public function statusRule($key , $in_full = false)
+	public function statusRule($key, $in_full = false)
 	{
 		if(!$this->has_status_rules) {
 			return $key;
@@ -193,7 +193,7 @@ class Role extends Model
 			}
 
 			if($in_full) {
-				return Lang::has("forms.status_text.$string") ? trans("forms.status_text.$string") : $string ;
+				return Lang::has("forms.status_text.$string") ? trans("forms.status_text.$string") : $string;
 			}
 			else {
 				return $string;
@@ -262,9 +262,8 @@ class Role extends Model
 
 	public function getHasStatusRulesAttribute()
 	{
-		return boolval(count($this->status_rule_array)) ;
+		return boolval(count($this->status_rule_array));
 	}
-
 
 
 	public static function checkManagePermission($role_slug, $criteria)
@@ -272,12 +271,14 @@ class Role extends Model
 		if($role_slug == 'all') {
 			$role_slug = 'all'; //@TODO: Check in operation
 		}
-		elseif($role_slug == 'admin') {
-			//return user()->is_superadmin() ; //@TODO: Check in operation
+		elseif($role_slug == 'auto') {
+			return true;
 		}
-		//if(in_array($role_slug, ['admin', 'all'])) {
-		//	return user()->isSuper();
-		//}
+		elseif($role_slug == 'admin') {
+			return true; //just like 'auto'
+		}
+
+
 		switch ($criteria) {
 			case 'bin' :
 			case 'banned' :
@@ -292,13 +293,13 @@ class Role extends Model
 
 	}
 
-	public static function adminRoles()
+	public static function adminRoles( $additive = null)
 	{
-		$admin_roles = Cache::remember("admin_roles", 100, function () {
+		$admin_roles = Cache::remember("admin_roles-$additive", 100, function () use ($additive) {
 			$roles = self::where('is_admin', true)->get();
 			$array = [];
 			foreach($roles as $role) {
-				$array[] = $role->slug;
+				$array[] = $role->slug . $additive;
 			}
 
 			return $array;
@@ -312,9 +313,9 @@ class Role extends Model
 		/*-----------------------------------------------
 		| When all roles are being browsed ...
 		*/
-		if($this->slug == 'all') {
+		if($this->slug == 'all' or $this->slug == 'admin') {
 			return [
-				["all", trans('people.criteria.actives')],
+				["all", trans('people.criteria.all')],
 				['bin', trans('manage.tabs.bin'), '0'],
 				['search', trans('forms.button.search')],
 			];
@@ -328,7 +329,7 @@ class Role extends Model
 		foreach($this->status_rule_array as $key => $string) {
 			$array[] = [$key, trans("people.criteria.$string")];
 		}
-		$array[] = ['bin', trans('people.criteria.banned')];
+		$array[] = ['bin', trans('people.criteria.banned') , null ,user()->as('admin')->can("users-$this->slug.bin")];
 		$array[] = ['search', trans('forms.button.search')];
 
 		return $array;
@@ -338,10 +339,10 @@ class Role extends Model
 	{
 		$array = [];
 		foreach($this->status_rule_array as $key => $item) {
-			$array[] = [$key, Lang::has("forms.status_text.$item") ? trans("forms.status_text.$item") : $item];
+			$array[] = [$key, Lang::has("people.criteria.$item") ? trans("people.criteria.$item") : $item];
 		}
 		if(!count($array)) {
-			$array[] = [1, trans("forms.status_text.active")];
+			$array[] = [1, trans("people.criteria.active")];
 		}
 		if($include_delete_options) {
 			$array[] = ['ban', trans("forms.status_text.blocked")];

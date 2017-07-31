@@ -1,6 +1,7 @@
 <?php
 namespace App\Traits;
 
+use App\Models\Domain;
 use App\Models\Role;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
@@ -9,17 +10,18 @@ use Illuminate\Database\Eloquent\Model;
 
 trait PermitsTrait2
 {
-	protected static $wildcards         = ['', 'any', '*'];
-	protected static $default_role      = 'admin';
-	protected static $available_permits = ['browse', 'process', 'view', 'send', 'search', 'create', 'edit', 'publish', 'activate', 'report', 'delete', 'bin'];
-	protected static $coder             = '~jFCQ?U0y&rvYp8<b9{Ew[V#N;7tx,M51]L(Bq@!^fa|2Z}XgD+lT4Ie>sJmP.huod:*Kkz3nHR-G_f)6iW%cAOS';
-	protected static $alpha             = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMfNOPQRSTUVWXYZ1234567890-!@#%^&*()_+~[]|;,.{}:<>?';
-	protected        $stored_roles      = false;
-	protected        $as                = null;
-	protected        $as_all            = false;
-	protected        $include_disabled  = false;
-	protected        $min_status        = false;
-	protected        $max_status        = false;
+	public static    $role_prefix_for_domain_admins = 'volunteer';
+	protected static $wildcards                     = ['', 'any', '*'];
+	//protected static $default_role                  = '';
+	protected static $available_permits             = ['browse', 'process', 'view', 'send', 'search', 'create', 'edit', 'publish', 'activate', 'report', 'delete', 'bin'];
+	protected static $coder                         = '~jFCQ?U0y&rvYp8<b9{Ew[V#N;7tx,M51]L(Bq@!^fa|2Z}XgD+lT4Ie>sJmP.huod:*Kkz3nHR-G_f)6iW%cAOS';
+	protected static $alpha                         = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMfNOPQRSTUVWXYZ1234567890-!@#%^&*()_+~[]|;,.{}:<>?';
+	protected        $stored_roles                  = false;
+	protected        $as                            = null;
+	protected        $as_all                        = false;
+	protected        $include_disabled              = false;
+	protected        $min_status                    = false;
+	protected        $max_status                    = false;
 
 	/*
 	|--------------------------------------------------------------------------
@@ -41,19 +43,19 @@ trait PermitsTrait2
 	 * Gets array of roles from either database or if possible from the session.
 	 * @return \Illuminate\Support\Collection
 	 */
-	private function getRoles()
+	private function getRoles($force_fresh_data = false)
 	{
-		if(user()->id == $this->id) {
+		if(!$force_fresh_data and user()->id == $this->id) {
 			$revealed_at = session()->get('logged_user_revealed_at', false);
 			$roles       = session()->get('logged_user_roles', false);
-			if(true or !$roles or !$revealed_at or $revealed_at < $this->updated_at) {
+			if(!$roles or !$revealed_at or $revealed_at < $this->updated_at) {
 				$roles = $this->fetchRoles();
 				session()->put('logged_user_roles', $roles);
 				session()->put('logged_user_revealed_at', Carbon::now()->toDateTimeString());
 			}
 			$this->stored_roles = $roles;
 		}
-		elseif($this->stored_roles) {
+		elseif(!$force_fresh_data and $this->stored_roles) {
 			$roles = $this->stored_roles;
 		}
 		else {
@@ -124,14 +126,15 @@ trait PermitsTrait2
 	 */
 	private function rolesPermits()
 	{
-		return implode(' ', $this->rolesQuery()->pluck('pivot.permissions')->toArray());
+
+		return implode(' ', $this->min(8)->rolesQuery()->pluck('pivot.permissions')->toArray());
 	}
 
 	/**
 	 * Runs a query through the available collection, considering all the Chain property limitations.
 	 * @return \Illuminate\Support\Collection|static
 	 */
-	public function rolesQuery()
+	public function rolesQuery($force_fresh_data = false)
 	{
 		/*-----------------------------------------------
 		| Parameters ...
@@ -142,7 +145,7 @@ trait PermitsTrait2
 		$request_roles    = $this->getChain('as');
 
 		if($min_status === false) {
-			$min_status = 1;
+			$min_status = 1; // <~~ Could be a little risky at use, but we need this for Ehda problems.
 		}
 
 		if($request_roles and !is_array($request_roles)) {
@@ -152,7 +155,7 @@ trait PermitsTrait2
 		/*-----------------------------------------------
 		| Query Buildup ...
 		*/
-		$query = $this->getRoles();
+		$query = $this->getRoles($force_fresh_data);
 
 		if($request_roles) {
 			$query = $query->whereIn('slug', $request_roles);
@@ -281,17 +284,27 @@ trait PermitsTrait2
 	}
 
 	/**
-	 * Updates the main User row, so that the `updated_at` can be used to check if the session cache is expired.
-	 * @return $this
+	 * Updates the `cache_roles` field of the main User row, so that the `updated_at` can be used to check if the session cache is expired.
+	 * @return bool
 	 */
-	private function fakeUpdate()
+	public function rolesCacheUpdate()
 	{
-		$this->updated_at = Carbon::now()->toDateTimeString();
-		$this->update();
+		$query  = $this->withDisabled()->rolesQuery(true);
+		$string = null;
 
-		$this->stored_roles = false;
+		foreach($query as $item) {
+			$extension = $item['slug'];
+			if($item['pivot']['deleted_at']) {
+				$extension .= ".bin";
+			}
+			else {
+				$extension .= '.' . strval($item['pivot']['status']);
+			}
 
-		return $this;
+			$string .= " $extension ";
+		}
+
+		return $this->update(['cache_roles' => self::deface($string) .rand(100000,999999)]);
 	}
 
 	/*
@@ -322,7 +335,7 @@ trait PermitsTrait2
 		])
 		;
 
-		return $this->fakeUpdate();
+		return $this->rolesCacheUpdate();
 	}
 
 	/**
@@ -407,7 +420,7 @@ trait PermitsTrait2
 			])
 			;
 
-			return boolval($this->fakeUpdate());
+			return boolval($this->rolesCacheUpdate());
 		}
 	}
 
@@ -464,7 +477,7 @@ trait PermitsTrait2
 			;
 		}
 
-		return boolval($this->fakeUpdate());
+		return boolval($this->rolesCacheUpdate());
 
 	}
 
@@ -516,7 +529,7 @@ trait PermitsTrait2
 			;
 		}
 
-		return boolval($this->fakeUpdate());
+		return boolval($this->rolesCacheUpdate());
 
 
 	}
@@ -559,7 +572,7 @@ trait PermitsTrait2
 			}
 			$item = array_normalize($item, [
 				'permissions' => '',
-				'status'      => "1",
+				'status'      => "8", //<~~ A Challenging Choice!
 			]);
 			if($role->slug == self::defaultRole()) {
 				$item['permissions'] = '';
@@ -582,7 +595,7 @@ trait PermitsTrait2
 					'deleted_at'  => null,
 				])
 				;
-				$return = $this->fakeUpdate();
+				$return = $this->rolesCacheUpdate();
 			}
 		}
 
@@ -632,7 +645,7 @@ trait PermitsTrait2
 			}
 			else {
 				$this->roles()->detach($role->id);
-				$return = $this->fakeUpdate();
+				$return = $this->rolesCacheUpdate();
 			}
 
 
@@ -650,12 +663,83 @@ trait PermitsTrait2
 	*/
 
 	/**
+	 * @return array: of roles, the user has access to as an admin!
+	 */
+	public function userRolesArray($permit = 'browse', $exceptions = [], $only_these = [])
+	{
+		$roles = Role::all();
+		$array = [];
+		foreach($roles as $role) {
+			$slug = $role->slug;
+			if($this->as('admin')->can("users-$slug.$permit")) {
+				if(!in_array($slug, $exceptions)) {
+					if(!count($only_these) or in_array($slug, $only_these)) {
+						$array[] = $slug;
+					}
+				}
+			}
+		}
+
+		return $array;
+	}
+
+	/**
+	 * @param string $scope: any special permission that should be checked.
+	 * @param int  $min_status
+	 *
+	 * @return Model: of all the domains, the user has access to
+	 * Important: don't forget to use get() after calling this method.
+	 * Example: user()->domainsQuery()->orderBy('folan')->get()
+	 */
+	public function domainsQuery($scope = null , $min_status=8)
+	{
+		/*-----------------------------------------------
+		| Bypass if the user in question is a manager ...
+		*/
+		if($this->is_a('manager')) {
+			return Domain::where('id', '>', '0');
+		}
+
+		/*-----------------------------------------------
+		| Normal Process ...
+		*/
+		$roles = $this->min($min_status)->rolesArray();
+		$array = [];
+		foreach($roles as $role) {
+			if($scope) {
+				if($this->as($role)->cannot($scope)) {
+					continue ;
+				}
+			}
+			if(str_contains($role, self::$role_prefix_for_domain_admins . '-')) {
+				$array[] = str_replace(self::$role_prefix_for_domain_admins . '-', null, $role);
+			}
+		}
+
+		$domains = Domain::whereIn('slug', $array);
+
+		return $domains;
+	}
+
+
+	/**
+	 * @param string $scope: any special permission that should be checked.
+	 * @param int  $min_status
+	 *
+	 * @return array: of all the domains, the user has access to
+	 */
+	public function domainsArray($scope = null , $min_status=8)
+	{
+		return $this->domainsQuery($scope , $min_status)->get()->pluck('slug')->toArray();
+	}
+
+	/**
 	 * @return array: of all the available roles.
 	 * Utilizing the chain methods before calling this method are supported.
 	 */
-	public function rolesArray()
+	public function rolesArray($force_fresh_data = false)
 	{
-		return $this->rolesQuery()->pluck('slug')->toArray();
+		return $this->rolesQuery($force_fresh_data)->pluck('slug')->toArray();
 	}
 
 	/**
@@ -673,13 +757,13 @@ trait PermitsTrait2
 	 * @return array|string: of the current row pivot.
 	 * The role is passed via the as() chain method. first one is returned, therefore not intended to support multiple roles.
 	 */
-	public function pivot($key=null)
+	public function pivot($key = null)
 	{
 		if($key) {
-			return $this->row()['pivot'][$key] ;
+			return $this->row()['pivot'][ $key ];
 		}
 		else {
-			return $this->row()['pivot'] ;
+			return $this->row()['pivot'];
 		}
 	}
 
@@ -1281,6 +1365,12 @@ trait PermitsTrait2
 	public function title()
 	{
 		return $this->getTitle();
+	}
+
+
+	public function getCacheRolesAttribute($original_value)
+	{
+		return self::adorn($original_value);
 	}
 
 

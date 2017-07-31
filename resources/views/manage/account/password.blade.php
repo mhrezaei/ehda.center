@@ -1,6 +1,7 @@
 @extends('manage.frame.use.0')
 
 @section('section')
+	@include("manage.account.tabs")
 
 	<div class="panel panel-default w80 mv30">
 		<div class="panel-heading">
@@ -11,7 +12,7 @@
 		</div>
 		<div class="panel-body p10">
 			@include('forms.opener',[
-				'url' => url('manage/password') ,
+				'url' => url('manage/account/save/password') ,
 				'class' => "js",
 			])
 

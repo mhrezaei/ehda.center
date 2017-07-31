@@ -34,7 +34,8 @@
 <td>
 	@include("manage.frame.widgets.grid-text" , [
 		'text' => $model->title,
-		'link' => $model->canEdit()? url("manage/posts/$model->type/edit/-id-") : '',
+		'link' => $model->canEdit()? url("manage/posts/$model->type/edit/$model->hash_id") : '',
+		'size' => "14" ,
 //		'link' => $model->canEdit()? "modal:manage/posts/act/-id-/quick_edit" : '',
 	])
 	
@@ -75,6 +76,12 @@
 			'condition' => !$model->trashed() and $model->has('price') and !$model->is_available,
 		],
 		[
+			'condition' => $domain_name = $model->domain_name ,
+			'text' => $domain_name ,
+			'icon' => "code-fork" ,
+			'color' => "info" ,
+		],
+		[
 			'text' => trans("forms.lang.$model->locale"),
 			'condition' => $model->has('locales'),
 			'link' => "modal:manage/posts/act/-id-/locales/" ,
@@ -88,8 +95,14 @@
 		'date' => $model->created_at,
 	])
 
+	@include("manage.frame.widgets.grid-tiny" , [
+		'text' => trans('posts.form.post_owner').': '.$model->getPerson('owned_by')->full_name,
+		'link' => "modal:manage/posts/act/-id-/owner" ,
+		'icon' => "user-o" ,
+	]     )
+
 	@include("manage.frame.widgets.grid-date" , [
-		'text' => trans('forms.general.published_at').': ',
+		'text' => trans('posts.form.publish').': ',
 		'text2' => trans('forms.general.by').' '.$model->publisher->full_name,
 		'date' => $model->published_at,
 		'condition' => $model->isPublished(),
@@ -103,11 +116,6 @@
 		'color' => "danger",
 	])
 	
-	@include("manage.frame.widgets.grid-tiny" , [
-		'text' => trans('posts.form.post_owner').': '.$model->getPerson('owned_by')->full_name,
-		'link' => "modal:manage/posts/act/-id-/owner" ,
-		'icon' => "user-o" ,
-	]     )
 
 </td>
 
@@ -147,6 +155,7 @@
 	</td>
 @endif
 
+
 {{--
 |--------------------------------------------------------------------------
 | Feedback
@@ -185,7 +194,7 @@
 			'icon' => "comments-o" ,
 			'link' => "url:manage/comments/all/post_id=-id-" ,
 		]     )
-	</td>
+
 @endif
 
 {{--
@@ -199,11 +208,11 @@
 	['eye-slash', trans('posts.form.preview') , "urlN:$model->preview_link" , $model->has('preview')],
 	['-' , $model->has('preview')],
 
-	['pencil' , trans('forms.button.edit') , "url:manage/posts/$model->type/edit/-id-" , $model->canEdit()],
+	['pencil' , trans('forms.button.edit') , "url:manage/posts/$model->type/edit/-hash_id-" , $model->canEdit()],
 //	['pencil-square-o' , trans('posts.form.quick_edit'), "modal:manage/posts/act/-id-/quick_edit" , $model->canEdit()],
 	['user-o' , trans('posts.form.post_owner') , "modal:manage/posts/act/-id-/owner/1" , $model->canPublish()],
 	['clone' , trans('posts.form.clone') , "modal:manage/posts/act/-id-/clone" , $model->can('create')],
-	['globe' , trans('posts.features.locales') , "modal:manage/posts/act/-id-/locales/" , $model->can('create') and $model->has('locales')],
+	['globe' , trans('posts.features.locales') , "modal:manage/posts/act/-id-/locales/" , $model->has('locales')],
 	['-' , $model->can('create') or $model->canEdit()],
 
 	['trash-o' , trans('forms.button.soft_delete') , "modal:manage/posts/act/-id-/delete" , $model->canDelete() and !$model->trashed()] ,

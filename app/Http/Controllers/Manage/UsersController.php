@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Manage;
 
 use App\Http\Requests\Manage\MessageSendRequest;
+use App\Http\Requests\Manage\SearchRequest;
 use App\Http\Requests\Manage\UserPasswordChangeRequest;
 use App\Http\Requests\Manage\UserSaveRequest;
 use App\Models\Posttype;
@@ -71,6 +72,8 @@ class UsersController extends Controller
 			],
 			'more_mass_actions' => [] ,
 			'toolbar_buttons'   => [],
+		     'browse_tabs' => 'auto' ,
+		     'free_toolbar_view' => "NO" ,
 		]);
 
 		$switches['mass_actions'] = array_merge( $switches['mass_actions'] , $switches['more_mass_actions']) ;
@@ -78,7 +81,7 @@ class UsersController extends Controller
 		return $switches;
 	}
 
-	public function search($request_role, Request $request, $switches = [])
+	public function search($request_role, SearchRequest $request, $switches = [])
 	{
 		/*-----------------------------------------------
 		| Check Permission ...
@@ -86,6 +89,7 @@ class UsersController extends Controller
 		if(!Role::checkManagePermission($request_role, 'search')) {
 			return view('errors.403');
 		}
+
 
 		/*-----------------------------------------------
 		| Switches ...
@@ -96,7 +100,10 @@ class UsersController extends Controller
 		/*-----------------------------------------------
 		| Revealing the Role...
 		*/
-		if($request_role != 'all') {
+		if($request_role=='admin') {
+			$role = Role::where('is_admin' , 1)->first() ;
+		}
+		elseif($request_role != 'all' and $request_role!='auto') {
 			$role = Role::findBySlug($request_role);
 			if(!$role->exists) {
 				return view('errors.404');
@@ -180,21 +187,26 @@ class UsersController extends Controller
 		*/
 		$switches = $this->browseSwitches($request_role, $switches);
 
-
 		/*-----------------------------------------------
 		| Revealing the Role...
 		*/
-		if($request_role != 'all') {
+		if($request_role=='all') {
+			$role = new Role() ;
+			$role->slug = 'all' ;
+			$role->plural_title = trans("people.commands.all_users") ;
+		}
+		elseif($request_role=='admin') {
+			$role = new Role() ;
+			$role->slug = 'admin' ;
+			$role->plural_title = trans("ehda.volunteers.plural") ;
+		}
+		else {
 			$role = Role::findBySlug($request_role);
 			if(!$role->exists) {
 				return view('errors.404');
 			}
 		}
-		else {
-			$role               = new Role();
-			$role->slug         = 'all';
-			$role->plural_title = trans('people.commands.all_users');
-		}
+
 
 		/*-----------------------------------------------
 		| Page Browse ...
@@ -214,7 +226,8 @@ class UsersController extends Controller
 		| Model ...
 		*/
 		$selector_switches = [
-			'role'   => $request_role,
+			'roleString' => "$request_role.$request_tab" ,
+			//'role'   => $request_role,
 			'status' => $request_tab,
 		];
 
@@ -261,7 +274,7 @@ class UsersController extends Controller
 		if(!$model or $model->is_not_a($request->role_slug)) {
 			return $this->jsonFeedback(trans('validation.http.Error410'));
 		}
-		if(!$model->as('admin')->canPermit()) { //@TODO: Check for accurate result!
+		if(!$model->as($request->role_slug)->canPermit()) { //@TODO: Check for accurate result!
 			return $this->jsonFeedback(trans('validation.http.Error403'));
 		}
 
@@ -270,10 +283,16 @@ class UsersController extends Controller
 		*/
 		if(in_array($request->role_slug, Role::adminRoles())) {
 			$permits = array_filter(explode(' ', $request->permissions));
+			foreach($permits as $permit) {
+				if(user()->as_any()->cannot($permit) and $model->as_any()->can()) {
+					return $this->jsonFeedback($permit);
+
+				}
+			}
 			if(!user()->as_any()->can_all($permits)) {
 				//return $this->jsonFeedback($request->permissions);
 				//
-				return $this->jsonFeedback(trans('validation.http.Error403'));
+				//return $this->jsonFeedback(trans('validation.http.Error403'));
 			}
 		}
 
@@ -450,7 +469,6 @@ class UsersController extends Controller
 
 	public function saveRole($user_id, $role_slug, $new_status)
 	{
-
 		/*-----------------------------------------------
 		| Model and Permission ...
 		*/
@@ -472,8 +490,8 @@ class UsersController extends Controller
 			$user->disableRole($role_slug);
 		}
 		else {
-			if($user->withDisabled()->as($role_slug)->hasnotRole()) {
-				$user->attachRole($role_slug, '', $new_status);
+			if($user->withDisabled()->hasnotRole($role_slug)) {
+				$user->attachRole($role_slug, $new_status);
 			}
 			elseif($user->as($role_slug)->disabled()) {
 				$user->enableRole($role_slug);
@@ -582,6 +600,130 @@ class UsersController extends Controller
 		return $this->jsonAjaxSaveFeedback($user->forceDelete(), [
 			'success_callback' => "rowHide('tblUsers','$request->id')",
 		]);
+
+	}
+
+	public function saveNewRole(Request $request)
+	{
+		/*-----------------------------------------------
+		| Models ...
+		*/
+		$user = User::find($request->id) ;
+		$role = Role::findBySlug($request->role_slug) ;
+
+		if(!$user or !$user->id or !$role or !$role->id) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+
+		/*-----------------------------------------------
+		| Security ...
+		*/
+		if(user()->as('admin')->cannot("users-$role->slug.create")) {
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+		}
+
+		/*-----------------------------------------------
+		| Other Validation ...
+		*/
+		if($user->withDisabled()->is_a($role->slug)) {
+			return $this->jsonFeedback(trans("people.form.already_has_role"));
+		}
+		if($role->statusRule($request->status) == '!') {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+
+
+		/*-----------------------------------------------
+		| Process ...
+		*/
+		$ok = $user->attachRole($role->slug , $request->status) ;
+
+		/*-----------------------------------------------
+		| Feedback ...
+		*/
+		return $this->jsonAjaxSaveFeedback( $ok , [
+				'success_refresh' => true,
+		]);
+
+	}
+
+
+	public function saveStatus(Request $request)
+	{
+		/*-----------------------------------------------
+		| Role Model ...
+		*/
+		$role = Role::findByHashid($request->role_id) ;
+		if(!$role or !$role->id) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+		if($role->statusRule($request->new_status) == '!') {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+
+		/*-----------------------------------------------
+		| User ...
+		*/
+		$user = User::find($request->id) ;
+		if(!$user or !$user->id) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+		if(!$user->canEdit()) {
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+		}
+
+		/*-----------------------------------------------
+		| Action ...
+		*/
+		$done = $user->as($role->slug)->setStatus($request->new_status) ;
+
+		/*-----------------------------------------------
+		| Feedback ...
+		*/
+		return $this->jsonAjaxSaveFeedback( $done , [
+				'success_callback' => "rowUpdate('tblUsers','$user->id')",
+		]);
+		
+
+
+	}
+
+	public function saveStatusMass(Request $request)
+	{
+		/*-----------------------------------------------
+		| Role Model ...
+		*/
+		$role = Role::findByHashid($request->role_id) ;
+		if(!$role) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+		if($role->statusRule($request->new_status) == '!') {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+
+		/*-----------------------------------------------
+		| Action ...
+		*/
+		$users = User::whereIn('id' , explode(',', $request->ids) )->get() ;
+		$count = 0 ;
+		foreach($users as $user) {
+			if($user->canEdit()) {
+				$count += $user->as($role->slug)->setStatus($request->new_status);
+			}
+		}
+
+		/*-----------------------------------------------
+		| Feedback ...
+		*/
+		return $this->jsonAjaxSaveFeedback($count, [
+			'success_message' => trans('forms.feed.mass_done', [
+				'count' => pd($count),
+			]),
+			'success_refresh' => true ,
+			'danger_message'  => trans('forms.feed.error'),
+		]);
+
+
 
 	}
 

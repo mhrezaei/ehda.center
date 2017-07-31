@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Manage;
 
-use App\Http\Controllers\Auth\LoginController;
 use App\Http\Requests\Manage\CardInquiryRequest;
 use App\Http\Requests\Manage\CardSaveRequest;
+use App\Http\Requests\Manage\SearchRequest;
 use App\Models\Post;
 use App\Models\Printer;
 use App\Models\Printing;
 use App\Models\Role;
 use App\Models\State;
 use App\Models\User;
+use App\Providers\YasnaServiceProvider;
 use App\Traits\ManageControllerTrait;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -56,15 +56,15 @@ class CardsController extends UsersController
 	{
 		return [
 			//'role_slug'       => $this->role_slug,
-			'url'             => "cards/browse",
-			'grid_row'        => "browse-row-for-cards",
-			'grid_array'      => [
+			'url'               => "cards/browse",
+			'grid_row'          => "browse-row-for-cards",
+			'grid_array'        => [
 				trans('validation.attributes.name_first'),
 				trans("ehda.cards.register"),
 				trans('validation.attributes.home_city'),
 				trans('forms.button.action'),
 			],
-			'toolbar_buttons' => [
+			'toolbar_buttons'   => [
 				[
 					'target'    => "manage/cards/create",
 					'type'      => 'success',
@@ -73,9 +73,9 @@ class CardsController extends UsersController
 					'caption'   => trans("ehda.cards.create"),
 				],
 			],
-		     'more_mass_actions' => [
-			     ['print', trans('ehda.printings.send_to'), "modal:manage/users/act/0/card-print"],
-		     ],
+			'more_mass_actions' => [
+				['print', trans('ehda.printings.send_to'), "modal:manage/users/act/0/card-print"],
+			],
 			//'search_panel_view' => "search-for-cards",
 		];
 
@@ -104,9 +104,9 @@ class CardsController extends UsersController
 		return $this->browse($this->role_slug, $request_tab, $this->browseSwitchesChild());
 	}
 
-	public function searchChild(Request $request)
+	public function searchChild(SearchRequest $request)
 	{
-		return $this->search($this->role_slug, $this->browseSwitchesChild());
+		return $this->search($this->role_slug, $request, $this->browseSwitchesChild());
 	}
 
 	public function editorChild($model_hash_id)
@@ -156,7 +156,7 @@ class CardsController extends UsersController
 	}
 
 
-	public function createChild($volunteer_id = 0)
+	public function createChild($given_code_melli = false)
 	{
 		/*-----------------------------------------------
 		| Permission ...
@@ -173,9 +173,11 @@ class CardsController extends UsersController
 		$page[1] = ['cards/create', trans("ehda.cards.create")];
 
 		/*-----------------------------------------------
-		| If for Volunteer ...
+		| If a Code Melli is Given ...
 		*/
-		//@TODO: proceed to special view (a good idea would be to use a modal instead of all this crap.
+		if(!YasnaServiceProvider::isCodeMelli($given_code_melli) or userFinder($given_code_melli)->id) {
+			$given_code_melli = false;
+		}
 
 		/*-----------------------------------------------
 		| Model ...
@@ -184,6 +186,7 @@ class CardsController extends UsersController
 		$states = State::combo();
 
 		$model->newsletter = 1;
+		$model->code_melli = $given_code_melli;
 
 		$all_events = Post::selector([
 			'type'   => "event",
@@ -284,6 +287,28 @@ class CardsController extends UsersController
 		$data['birth_date'] = $carbon->toDateString();
 
 		/*-----------------------------------------------
+		| Processing States ...
+		*/
+		$home_city = State::find($request->home_city);
+		if($home_city) {
+			$data['home_province'] = $home_city->parent_id;
+		}
+		else {
+			$data['home_city']     = 0;
+			$data['home_province'] = 0;
+		}
+
+		$work_city = State::find($request->work_city);
+		if($work_city) {
+			$data['work_province'] = $work_city->parent_id;
+		}
+		else {
+			$data['work_province'] = 0;
+			$data['home_province'] = 0;
+		}
+
+
+		/*-----------------------------------------------
 		| Processing passwords ...
 		*/
 		if(!$data['id'] or $data['_password_set_to_mobile']) {
@@ -334,8 +359,8 @@ class CardsController extends UsersController
 		/*-----------------------------------------------
 		| Send to Print ...
 		*/
-		if($data['_submit'] == 'print') {
-			//@TODO
+		if($saved and $data['_submit'] == 'print') {
+			$saved = Printing::addTo(Post::find($request->event_id), $saved_user);
 		}
 
 		/*-----------------------------------------------
@@ -364,8 +389,9 @@ class CardsController extends UsersController
 		if(user()->as('admin')->cannot('users-card-holder.print')) {
 			return view('errors.403');
 		}
-		if($request_tab == 'direct' or $request_tab == 'excel') {
-			if(user()->as('admin')->cannot("users-card-holder.print_" . $request_tab)) {
+		if($request_tab == 'under_direct_printing' or $request_tab == 'under_excel_printing') {
+			$permit = str_replace("under_" , null , str_replace("_printing" , null , $request_tab )) ;
+			if(user()->as('admin')->cannot("users-card-holder.print-" . $permit)) {
 				return view('errors.403');
 			}
 		}
@@ -408,6 +434,7 @@ class CardsController extends UsersController
 			'event_id'   => $event_id,
 			'user_id'    => $user_id,
 			'created_by' => $volunteer_id,
+			//'domain'     => "auto",
 		])->orderBy('updated_at', 'desc')->paginate(50)
 		;
 
@@ -426,7 +453,7 @@ class CardsController extends UsersController
 		$view = "manage.printings.act-$action";
 
 		if($action == 'add-to-excel' or $action == 'add-to-direct') {
-			$additive = str_replace('add-to', null, $action);
+			$additive = str_replace('add-to-', null, $action);
 			if(user()->as('admin')->cannot("users-card-holder.print-$additive")) {
 				return view('errors.m403');
 			}
@@ -456,7 +483,7 @@ class CardsController extends UsersController
 		| Security ...
 		*/
 		if(in_array($action, ['add-to-direct', 'add-to-excel'])) {
-			$additive = str_replace('add-to', null, $action);
+			$additive = str_replace('add-to-', null, $action);
 			if(user()->as('admin')->cannot("users-card-holder.print-$additive")) {
 				return $this->jsonFeedback(trans('validation.http.Error403'));
 			}
@@ -549,8 +576,8 @@ class CardsController extends UsersController
 		*/
 
 		return $this->jsonAjaxSaveFeedback($table->update($data), [
-			'success_refresh' => 1,
-			'success_callback'        => $callback,
+			'success_refresh'  => 1,
+			'success_callback' => $callback,
 		]);
 
 	}
@@ -617,8 +644,8 @@ class CardsController extends UsersController
 		/*-----------------------------------------------
 		| Model ...
 		*/
-		$user = User::find($request->user_id) ;
-		$event = Post::find($request->event_if_for_print) ;
+		$user  = User::find($request->user_id);
+		$event = Post::find($request->event_if_for_print);
 		if(!$user or !$user->id or !$event or !$event->id) {
 			return $this->jsonFeedback(trans('validation.http.Error410'));
 		}
@@ -626,16 +653,17 @@ class CardsController extends UsersController
 		/*-----------------------------------------------
 		| Action ...
 		*/
-		session()->put('user_last_used_event',$event->id);
-		$saved = Printing::addTo($event , $user);
-		return $this->jsonAjaxSaveFeedback( $saved );
+		session()->put('user_last_used_event', $event->id);
+		$saved = Printing::addTo($event, $user);
+
+		return $this->jsonAjaxSaveFeedback($saved);
 
 	}
 
 	public function addToPrintingsMass(Request $request)
 	{
 		$id_array = explode(',', $request->ids);
-		$done = 0;
+		$done     = 0;
 
 		/*-----------------------------------------------
 		| Security ...
@@ -647,23 +675,50 @@ class CardsController extends UsersController
 		/*-----------------------------------------------
 		| Action ...
 		*/
-		$event = Post::find($request->event_if_for_print) ;
-		session()->put('user_last_used_event',$event->id);
+		$event = Post::find($request->event_if_for_print);
+		session()->put('user_last_used_event', $event->id);
 		foreach($id_array as $id) {
 			$user = User::find($id);
 			if($user and $user->id) {
-				$done += boolval(Printing::addTo($event , $user)) ;
+				$done += boolval(Printing::addTo($event, $user));
 			}
 		}
 
 		/*-----------------------------------------------
 		| Return ...
 		*/
+
 		return $this->jsonAjaxSaveFeedback($done, [
 			'success_message' => trans("forms.feed.mass_done", [
 				"count" => pd($done),
 			]),
 		]);
+
+
+	}
+
+	public function view($model_hashid)
+	{
+		/*-----------------------------------------------
+		| Security ...
+		*/
+		if(user()->as('admin')->cannot('users-card-holder.view')) {
+			return view('errors.m403');
+		}
+
+		/*-----------------------------------------------
+		| Model ...
+		*/
+		$model = User::findByHashid($model_hashid);
+		if(!$model or !$model->id or $model->is_not_a('card-holder')) {
+			return view('errors.m410');
+		}
+
+		/*-----------------------------------------------
+		| View ...
+		*/
+
+		return view("manage.users.card-view", compact('model'));
 
 
 	}

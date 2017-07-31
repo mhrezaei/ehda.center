@@ -174,6 +174,14 @@ class UpstreamController extends Controller
 				return view('manage.settings.downstream-value', compact('model'));
 				break;
 
+			case 'update-posttype' :
+				$model = Posttype::find($item_id);
+				if(!$model) {
+					return view('errors.m410');
+				}
+				return view("manage.settings.posttypes-row",compact('model'));
+
+
 			default:
 				return view('templates.say', ['array' => "What the hell is $request_tab?"]); //@TODO: REMOVE THIS
 
@@ -274,6 +282,10 @@ class UpstreamController extends Controller
 				}
 
 				return view("manage.settings.roles-edit", compact('model'));
+
+			case 'admin-roles' :
+				$model = Role::findBySlug('manager') ;
+				return view("manage.settings.roles-edit-mass", compact('model'));
 
 			case 'role-titles' :
 				$model = Role::withTrashed()->find($item_id);
@@ -407,7 +419,7 @@ class UpstreamController extends Controller
 			}
 
 			return $this->jsonAjaxSaveFeedback(Posttype::destroy($request->id), [
-				'success_refresh' => 1,
+				'success_callback' => "rowUpdate('tblPosttypes','$request->id')",
 			]);
 		}
 
@@ -554,6 +566,33 @@ class UpstreamController extends Controller
 		return $this->jsonAjaxSaveFeedback($ok, [
 			'success_refresh' => 1,
 		]);
+
+	}
+
+	public function saveRoleMass(Request $request)
+	{
+		/*-----------------------------------------------
+		| Normalization ...
+		*/
+		$data['modules']     = Role::getModulesJson($request->modules);
+		$data['status_rule'] = Role::getStatusRuleArray($request->status_rule);
+
+		/*-----------------------------------------------
+		| Save ...
+		*/
+		$roles = Role::where('is_admin' , 1)->get() ;
+		foreach($roles as $role) {
+			$role->modules = $data['modules'] ;
+			$role->updateMeta( [
+				'status_rule' => $data['status_rule'] ,
+			] , true );
+		}
+
+		/*-----------------------------------------------
+		| Return ...
+		*/
+
+		return $this->jsonAjaxSaveFeedback(true);
 
 	}
 

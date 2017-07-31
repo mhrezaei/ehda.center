@@ -61,7 +61,7 @@ return [
 
     'criteria' => [
         'all'     => "All",
-        'actives' => "Active",
+        'active' => "Active",
         'pending' => "Pending",
         'banned'  => "Banned",
         'bin'     => "Bin",

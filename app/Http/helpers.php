@@ -81,8 +81,8 @@ function pd($string)
  */
 function ed($string)
 {
-	$farsi_chars = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹', '۴', '۵', '۶', 'ی', 'ک', 'ک',];
-	$latin_chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '٤', '٥', '٦', 'ي', 'ك', 'ك',];
+	$farsi_chars = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹', '٤', '٥', '٦'];
+	$latin_chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '4', '5', '6'];
 
 	return str_replace($farsi_chars, $latin_chars, $string);
 }
@@ -94,25 +94,31 @@ function ed($string)
  *
  * @return mixed
  */
-function ad($string)
+function ad($string , $default_language=false)
 {
-
-	if(isLangRtl()) {
+	if(isLangRtl($default_language)) {
 		return pd($string);
 	}
-
-	return ed($string);
+	else {
+		return ed($string);
+	}
 }
 
-function isLangRtl()
+function isLangRtl($default_language=false)
 {
-	$rtlLangs = ['fa', 'ar'];
+	$rtl_languages = ['fa', 'ar'];
 
-	if(in_array(getLocale(), $rtlLangs)) {
-		return true;
+	if(!$default_language) {
+		$default_language = getLocale() ;
 	}
 
-	return false;
+	if(in_array($default_language, $rtl_languages)) {
+		return true;
+	}
+	else {
+		return false ;
+	}
+
 }
 
 
@@ -341,6 +347,10 @@ function model($class_name, $id = 0)
 		return $class;
 	}
 
+	if(is_string($id)) {
+		$id = hashid($id , 'ids') ;
+	}
+
 	if(in_array('Illuminate\Database\Eloquent\SoftDeletes', class_uses($class))) {
 		$object = $class::withTrashed()->find($id);
 	}
@@ -452,6 +462,27 @@ function hashid_encrypt($id, $connection = 'main')
 function hashid_decrypt($hash, $connection = 'main')
 {
 	return Hashids::connection($connection)->decode($hash);
+}
+
+function hashid_decrypt0($hash, $connection = 'main')
+{
+	$result = hashid_decrypt($hash, $connection ) ;
+	if(isset($result[0])) {
+		return $result[0] ;
+	}
+	else {
+		return false ;
+	}
+}
+
+function hashid($string , $connection= 'main')
+{
+	if(is_numeric($string)) {
+		return hashid_encrypt($string , $connection) ;
+	}
+	else {
+		return hashid_decrypt0($string , $connection) ;
+	}
 }
 
 /**

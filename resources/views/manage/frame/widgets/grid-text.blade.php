@@ -3,11 +3,13 @@
 	!isset($size)? $size = 12 : '' ;
 	!isset($color)? $color = '' : '' ;
 	!isset($class)? $class = '' : '' ;
+	!isset($locale)? $locale=false : '' ;
 	$class = " f".$size." text-$color $class" ;
 
 	//target...
 	if(isset($link) and $link) {
 		$link = str_replace('-id-' , $model->id , $link);
+		$link = str_replace('-hash_id-' , $model->hash_id , $link);
 		$extra = '' ;
 		if(str_contains($link,'(')) {
 			$js_command = $link ;
@@ -39,13 +41,13 @@
 
 ?>
 @if(!isset($condition) or $condition)
-	<div id="{{$id or ''}}" class="" style="margin-bottom: 5px">
+	<div id="{{$id or ''}}" class="{{ $div_class or '' }}" style="margin-bottom: 5px ;{{$div_style or ''}}">
 		@if(isset($link) and $link)
 			<a href="{{$target}}" onclick="{{$js_command}}" class="{{$class}}" {{$extra}}>
 				@if(isset($icon))
 					<i class="fa fa-{{$icon}} mhl5"></i>
 				@endif
-				@pd($text)
+				{{ ad($text , $locale) }}
 			</a>
 		@else
 			<span class="{{$class}}">
@@ -53,14 +55,14 @@
 					<i class="fa fa-{{$icon}} mhl5"></i>
 				@endif
 				<span class="text1 {{$class}}">
-					@pd($text)
-					@if(isset($text2) and $text != $text2)
+				{{ ad($text , $locale) }}
+				@if(isset($text2) and $text != $text2)
 						<span class="fa fa-angle-double-down clickable text-green" onclick="$(this).parent().parent().children(' .text2 , .text1').toggle()"></span>
 					@endif
 				</span>
 				@if(isset($text2))
 					<span class="text2 {{$class}} noDisplay" >
-						@pd($text2)
+						{{ ad($text2 , $locale) }}
 						@if(isset($text2) and $text != $text2)
 							<span class="fa fa-angle-double-up clickable text-green" onclick="$(this).parent().parent().children(' .text2 , .text1').toggle()"></span>
 						@endif

@@ -29,7 +29,7 @@ class User extends Authenticatable
 		//'key',
 		//'default_role_deleted_at',
 	];
-	public static $search_fields   = ['name_first', 'name_last', 'name_firm', 'code_melli', 'email', 'mobile'];
+	public static $search_fields   = ['name_first', 'name_last', 'name_firm', 'code_melli', 'email', 'mobile','card_no'];
 	public static $required_fields = ['name_first', 'name_last', 'code_melli', 'mobile', 'home_tel', 'birth_date', 'gender', 'marital'];
 	protected     $guarded         = ['status'];
 	protected     $hidden          = ['password', 'remember_token'];
@@ -123,6 +123,7 @@ class User extends Authenticatable
 			'email'      => false,
 			'code_melli' => false,
 			'mobile'     => false,
+			'roleString' => false , // <~~ Supports Arrays, with this pattern: [roleSlug.status] for active roles and [roleSlug-status] for disabled roles.
 			'role'       => false, // <~~ Supports Arrays
 			'status'     => false, // <~~ best works where only one role is given.
 			'min_status' => false, // <~~ best works where only one role is given.
@@ -157,7 +158,7 @@ class User extends Authenticatable
 		| Special commands inside status ...
 		*/
 		if($switch['status'] == 'bin') {
-			if($switch['role'] == 'all') {
+			if($switch['role'] == 'all' or str_contains($switch['roleString'] , 'all.')) {
 				$switch['bin'] = true;
 				$switch['status'] = false ;
 			}
@@ -171,10 +172,52 @@ class User extends Authenticatable
 		}
 
 		/*-----------------------------------------------
+		| RoleStatus ...
+		*/
+		if($switch['roleString'] !== false and !str_contains($switch['roleString'] , 'all.')) {
+
+			if(!is_array($switch['roleString'])) {
+				if(str_contains($switch['roleString'], 'admin')) {
+					$additive             = str_replace('admin', null, $switch['roleString']);
+					$switch['roleString'] = user()->userRolesArray('browse' , [] , Role::adminRoles() ) ;
+					foreach($switch['roleString'] as $key => $value) {
+						$switch['roleString'][ $key ] .= $additive;
+					}
+				}
+				elseif(str_contains($switch['roleString'], 'auto')) {
+					$additive             = str_replace('auto', null, $switch['roleString']);
+					$switch['roleString'] = user()->userRolesArray();
+					foreach($switch['roleString'] as $key => $value) {
+						$switch['roleString'][ $key ] = $value . $additive;
+					}
+				}
+			}
+
+			$switch['roleString'] = (array) $switch['roleString'] ;
+
+			$table->where( function($query) use ($switch) {
+				$query->where('id' , '0') ;
+
+				foreach($switch['roleString'] as $string) {
+					$string = str_replace('.all' , null , $string);
+					$string = self::deface($string) ;
+					$query->orWhere('cache_roles' , 'like' , "%$string%");
+				}
+
+			});
+
+		}
+
+
+		/*-----------------------------------------------
 		| Role ...
 		*/
-		if($switch['role']) {
-			if($switch['role'] == 'all') {
+		if($switch['role'] and $switch['role'] != 'all') {
+			if($switch['role']=='admin') {
+				$switch['role'] = Role::adminRoles() ;
+			}
+			elseif($switch['role']=='auto') {
+				$switch['role'] = user()->userRolesArray() ;
 			}
 			elseif($switch['role'] == 'no') {
 				$table->has('roles', '=', 0);
@@ -630,6 +673,38 @@ class User extends Authenticatable
 			return trans('people.deleted_user');
 		}
 	}
+	
+	public function getMaritalNameAttribute()
+	{
+		switch($this->marital) {
+			case 1 :
+				return trans('forms.general.married') ;
+			case 2 :
+				return trans('forms.general.single') ;
+			default:
+				return trans("forms.general.unknown");
+
+		}
+	}
+
+	public function getEduLevelAttribute($original_value)
+	{
+		return $original_value + 0 ;
+	}
+
+
+	public function getEduLevelNameAttribute()
+	{
+		return trans("people.edu_level_full.$this->edu_level") ;
+	}
+
+	public function getEduLevelShortAttribute()
+	{
+		return trans("people.edu_level_short.$this->edu_level") ;
+	}
+
+
+
 
 	public function _getStatusAttribute()
 	{
@@ -681,7 +756,7 @@ class User extends Authenticatable
 
 	public function canEdit()
 	{
-		$request_role = $this->getChain('as');
+		//$request_role = $this->getChain('as');
 
 		/*-----------------------------------------------
 		| Power users ...
@@ -689,19 +764,32 @@ class User extends Authenticatable
 		if($this->is_a('developer')) {
 			return user()->is_a('developer');
 		}
-		elseif($this->is_an('admin')) {
-			return user()->is_a('superadmin');
+		if($this->id == user()->id) {
+			return false ;
 		}
+		//elseif($this->is_an('admin')) {
+		//	return user()->is_a('superadmin');
+		//}
 
 		/*-----------------------------------------------
 		| Other Users ...
 		*/
-		if(!$request_role or $request_role == 'admin') {
-			return user()->is_a('superadmin');
+		foreach($this->as('all')->rolesArray() as $role_slug) {
+			if(user()->as('admin')->can("users-$role_slug.edit"))
+				return true ;
 		}
-		else {
-			return Role::checkManagePermission($request_role, 'edit');
-		}
+		return false ;
+
+		//if($this->is_admin()) {
+		//	$allowed_roles = user()->userRolesArray('edit' , [] , model('role')::adminRoles() ;
+		//}
+		//
+		//if(!$request_role or $request_role == 'admin') {
+		//	return user()->is_a('superadmin');
+		//}
+		//else {
+		//	return Role::checkManagePermission($request_role, 'edit');
+		//}
 	}
 
 	public function canDelete()
@@ -765,6 +853,9 @@ class User extends Authenticatable
 		}
 		if($this->is_a('developer')) {
 			return user()->is_a('developer');
+		}
+		if($this->as($request_role)->status()<8) {
+			return false ;
 		}
 
 		/*-----------------------------------------------

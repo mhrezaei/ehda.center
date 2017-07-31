@@ -22,12 +22,15 @@
 	@include("manage.frame.widgets.grid" , [
 		'table_id' => "tblPosttypes",
 		'row_view' => "manage.settings.posttypes-row",
-		'handle' => "counter",
+		'handle' => "",
 		'headings' => [
-			[trans('validation.attributes.title'),150],
-			trans('posts.features.meaning'),
-			trans('forms.button.action')
-		],
+			['#',50],
+			[trans('validation.attributes.title')] ,
+			[trans('forms.button.action'),100] ,
+			[null,100] ,
+			[null,150] ,
+			[null] ,
+		] ,
 	])
 
 @endsection

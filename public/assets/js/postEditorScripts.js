@@ -7,6 +7,7 @@
 
 function postsInit()
 {
+	postDomainToggle() ;
 }
 
 /*
@@ -233,4 +234,16 @@ function postFormChange()
 		$flag.val('0');
 	}
 	$('#txtChangeDetected').val('1');
+}
+
+function postDomainToggle()
+{
+	combo_value = $("#cmbDomain").val() ;
+	$checkbox = $("#chkReflectInGlobal") ;
+	if(combo_value == 'global') {
+		$checkbox.hide() ;
+	}
+	else {
+		$checkbox.slideDown('fast') ;
+	}
 }

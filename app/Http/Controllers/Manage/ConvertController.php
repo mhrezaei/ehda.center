@@ -242,7 +242,7 @@ class ConvertController extends Controller
 		dd("GO TO HELL, Thank you by the way. :)") ;
 	}
 
-	public function users($take = 500 , $loop = true)
+	public static function userRoleCaches($take = 500, $loop = 1)
 	{
 		$last_time = session()->get('convert_last_time' , false);
 
@@ -251,7 +251,46 @@ class ConvertController extends Controller
 			echo "<script>location.reload();</script>";
 		}
 
-		$olds    = UsersOld::where('converted', '0')->take($take)->get();
+		$users = User::whereNull('cache_roles')->take($take)->get() ;
+		$last_user_id = 0 ;
+		$counter = 0;
+
+		foreach($users as $user) {
+			$user->rolesCacheUpdate() ;
+			$counter++ ;
+			$last_user_id = $user->id ;
+		}
+
+		ss("Updating Role Caches...") ;
+		ss("Counter: $counter");
+		ss("Last Processed id: " . $last_user_id);
+		ss("Took " . strval($took = Carbon::now()->diffInSeconds($last_time)) . " Second(s) for $take Record(s). ") ;
+
+		if($took > $take) {
+			ss("(Average: " . strval( round($took/$take,2)) . " Seconds per Record.) ");
+		}
+		else {
+			ss("(Average: " . strval( round($take/$took,2)) . " Records per Second.) ");
+		}
+
+		//return ;
+		if($counter>0 and $loop) {
+			session()->put('convert_last_time',Carbon::now() );
+			echo "<script>location.reload();</script>";
+		}
+
+	}
+
+	public function users($take = 500 , $loop = 1)
+	{
+		$last_time = session()->get('convert_last_time' , false);
+
+		if(!$last_time or is_int($last_time) ) {
+			session()->put('convert_last_time', Carbon::now());
+			echo "<script>location.reload();</script>";
+		}
+
+		$olds    = UsersOld::where('converted', '0')->orderBy('id','desc')->take($take)->get();
 		$last_user_id = 0 ;
 		$counter = 0;
 
@@ -330,10 +369,10 @@ class ConvertController extends Controller
 			}
 			if($old->volunteer_status>0) {
 				if($old->domain) {
-					$user->attachRole('volunteer-'.$old->domain  , '' , $old->volunteer_status) ;
+					$user->attachRole('volunteer-'.$old->domain , $old->volunteer_status) ;
 				}
 				else {
-					$user->attachRole('manager' , '' , $old->volunteer_status) ;
+					$user->attachRole('manager' , $old->volunteer_status) ;
 				}
 			}
 

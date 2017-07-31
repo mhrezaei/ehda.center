@@ -4,6 +4,9 @@
 	</div>
 	<div class="col-md-7 tools">
 
+		@if(isset($free_toolbar_view) and $free_toolbar_view!="NO")
+			@include($free_toolbar_view)
+		@endif
 		@if(isset($buttons))
 			@foreach($buttons as $button)
 				@include("manage.frame.widgets.toolbar_button" , $button)

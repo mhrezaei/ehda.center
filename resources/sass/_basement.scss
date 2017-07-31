@@ -297,6 +297,25 @@ div.mce-fullscreen {
 
 }
 
+.panel-black {
+  border-color: #2d2a26;
+
+  .panel-heading {
+    border-color: #2d2a26;
+    color: #fff;
+    background-color: #34312d;
+  }
+
+  a {
+    color: #2d2a26;
+  }
+
+  a:hover {
+    color: #000000;
+  }
+
+}
+
 .panel-orange {
   border-color: #F18432;
 

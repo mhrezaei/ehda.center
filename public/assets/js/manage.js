@@ -83,6 +83,9 @@ function rowUpdate($table_id, $model_id) {
 		var $row_selector = $table_selector + ' #tr-' + $model_id;
 		var $url = $($row_selector + ' .refresh ').html();
 		var $counter = $($row_selector + ' .-rowCounter ').html();
+
+		forms_log('loading [' + $url + '] in [' + $row_selector + ']');
+
 		$($row_selector).addClass('loading');
 		$.ajax({
 			url  : $url,
@@ -118,21 +121,29 @@ function tabReload() {
 }
 
 function divReload(div_id) {
+
+	//Preparations...
 	var $div = $("#" + div_id);
 	var reload_url = $("#" + div_id + " .refresh").html();
 
 	if (!reload_url) {
-		reload_url = $div.attr('data-src') ;
-		reload_url = reload_url.replaceAll("-id-" , $div.attr('data-id')) ;
+		reload_url = $div.attr('data-src');
+		reload_url = reload_url.replaceAll("-id-", $div.attr('data-id'));
 		reload_url = url(reload_url);
 	}
-	if(!reload_url) {
-		return ;
+	if (!reload_url) {
+		return;
 	}
 
+	//Loading Effect...
+	has_loading = $div.attr('data-loading');
 
-	$div.addClass('loading');
-	forms_log(reload_url);
+	if (has_loading != 'no') {
+		$div.addClass('loading');
+	}
+	forms_log('loading [' + reload_url + '] in [' + div_id + ']');
+
+	//Ajax...
 	$.ajax({
 		url  : reload_url,
 		cache: false
@@ -413,6 +424,8 @@ function roleAttachmentSave(user_id, role_id, role_slug) {
 	var new_status = $("#cmbStatus-" + role_id).val();
 	var $button = $("#btnRoleSave-" + role_id);
 
+//	forms_log('user_id: ' + user_id + '| role_slug: ' + role_slug + '| new_status: ' + new_status ) ;
+
 	$.ajax({
 		url     : url('manage/users/save/role/' + user_id + '/' + role_slug + '/' + new_status),
 		dataType: "json",
@@ -601,25 +614,33 @@ function permitSpread() {
 
 }
 
-function cardEditor($mood , $para='')
-{
-	$divCard = $('#divCard') ;
-	$divCard.slideUp('fast') ;
+function cardEditor($mood, $para = '') {
 
-	switch($mood) {
+	let $divCard = $('#divCard');
+	let $divForm = $("#divForm");
+
+	$divCard.hide();
+
+	switch ($mood) {
 		case 1 :
 			$('#divInquiry,#divForm').slideToggle('fast');
-			$('#frmEditor [name=code_melli]').val( $('#txtInquiry').val() ) ;
-			$('#frmEditor [name=gender]').focus() ;
+			$('#frmEditor [name=code_melli]').val($('#txtInquiry').val());
+			$('#frmEditor [name=gender]').focus();
 			break;
 
 		case 2:
-			$divCard.attr('data-id' , $para);
+			$divCard.attr('data-id', $para);
 			divReload('divCard');
 //			$('#imgCard').attr('src' , url('/card/show_card/mini/'+$para));
 //			$('#txtCard').val( $para );
 			$divCard.slideDown('fast');
 			break;
+
+		case 3: // <~~ Volunteer Editor
+			$divForm.attr('data-id', $para);
+			divReload('divForm');
+			$('#divInquiry,#divForm').slideToggle('fast');
+
 	}
 
 }
