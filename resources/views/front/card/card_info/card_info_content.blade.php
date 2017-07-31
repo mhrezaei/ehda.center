@@ -428,7 +428,7 @@
                             </div>
                             <div id="form-buttons" class="col-xs-12 text-center">
                                 @include('forms.button', [
-                                    'shape' => 'success',
+                                    'shape' => 'green',
                                     'label' => trans('forms.button.send'),
                                     'type' => 'submit',
                                 ])

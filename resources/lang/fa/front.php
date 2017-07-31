@@ -113,17 +113,17 @@ return [
     ],
 
     'organ_donation_card_section' => [
-        'singular' => 'کارت اهدای عضو',
-        'print'    => 'چاپ کارت اهدای عضو',
-        'download' => 'ذخیره کارت اهدای عضو',
-        'preview'  => 'نمایش کارت اهدای عضو',
-        'card'     => 'کارت',
-        'partial'  => [
+        'singular'                 => 'کارت اهدای عضو',
+        'print'                    => 'چاپ کارت اهدای عضو',
+        'download'                 => 'ذخیره کارت اهدای عضو',
+        'preview'                  => 'نمایش کارت اهدای عضو',
+        'card'                     => 'کارت',
+        'partial'                  => [
             'part1' => 'کارت',
             'part2' => 'اهدای',
             'part3' => 'عضو',
         ],
-        'types'    => [
+        'types'                    => [
             'mini'   => [
                 'title'       => 'کم‌حجم',
                 'description' => 'این فایل کم‌حجم است.',
@@ -140,6 +140,14 @@ return [
                 'title'       => 'قابل چاپ',
                 'description' => 'این فایل قابل چاپ است.',
             ],
+        ],
+        'register_success_message' => [
+            'sms'   => "سلام :name، \n\r
+کارت اهدای عضو شما با شماره عضویت :membershipNumber در سایت اهدا ثبت گردید.\n\r
+:site",
+            'email' => "سلام :name، \n\r
+کارت اهدای عضو شما با شماره عضویت :membershipNumber در سایت اهدا ثبت گردید.\n\r
+:site",
         ],
     ],
 

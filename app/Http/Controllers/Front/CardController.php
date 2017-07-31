@@ -6,9 +6,11 @@ use App\Models\Post;
 use App\Models\Role;
 use App\Models\State;
 use App\Models\User;
+use App\Providers\EmailServiceProvider;
 use App\Providers\FaGDServiceProvider;
 use App\Providers\SecKeyServiceProvider;
 use App\Traits\TahaControllerTrait;
+use Asanak\Sms\Facade\AsanakSms;
 use Carbon\Carbon;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
@@ -165,10 +167,13 @@ JS
 
         if ($userId) {
             User::store(['id' => $userId, 'card_no' => $userId + 5000]);
+            $user = User::findBySlug($userId, 'id');
 
             if (Role::findBySlug('card-holder')->exists) {
-                $user = User::findBySlug($userId, 'id')->attachRole('card-holder');
+                $user->attachRole('card-holder');
             }
+
+            $this->sendVerifications($user);
 
             Auth::loginUsingId($userId);
             $return = $this->jsonFeedback(null, [
@@ -310,5 +315,37 @@ JS
         }
 
         return ['canRegister' => true];
+    }
+
+    /**
+     * Send email and sms for verification after register card.
+     *
+     * @param Request $request
+     */
+    private function sendVerifications($user)
+    {
+        // Sending SMS
+        if ($user->mobile) {
+            $smsText = str_replace([
+                ':name',
+                ':membershipNumber',
+                ':site',
+            ], [
+                $user->full_name,
+                $user->card_no,
+                setting()->ask('site_url')->gain(),
+            ],
+                trans('front.organ_donation_card_section.register_success_message.sms'));
+
+            $sendingSmsResult = AsanakSms::send($user->mobile, $smsText);
+            $sendingSmsResult = json_decode($sendingSmsResult);
+        }
+
+        // Sending Mail
+        if ($user->email) {
+            $emailContent = view('front.card.verification.email', compact('user'))->render();
+
+            $sendingEmailResult = EmailServiceProvider::send($emailContent, $user['email'], trans('front.site_title'), trans('people.form.recover_password'), 'default_email');
+        }
     }
 }

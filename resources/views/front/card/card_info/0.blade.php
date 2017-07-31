@@ -13,7 +13,6 @@
 @append
 @section('content')
     <div class="container-fluid">
-
         @include('front.frame.position_info', [
             'group' => $post->header_title,
             'category' => $post->category_title,
