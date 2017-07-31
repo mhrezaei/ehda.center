@@ -12,6 +12,7 @@ use App\Models\Post;
 use App\Models\Posttype;
 use App\Providers\DummyServiceProvider;
 use App\Providers\PostsServiceProvider;
+use App\Providers\TransServiceProvider;
 use App\Providers\UploadServiceProvider;
 use App\Traits\ManageControllerTrait;
 use Carbon\Carbon;
@@ -265,6 +266,23 @@ JS;
             ];
             /************************* Set Other Values ********************** END */
 
+            /************************* Set Locale Depended Parameters ********************** START */
+            $urlParametersForForce = [];
+            foreach (TransServiceProvider::getSiteLocales() as $locale) {
+                $sisterPost = $post->in($locale);
+
+                if ($sisterPost->exists) {
+                    $localeValue = [];
+                    $localeValue['url'] = urlencode($sisterPost->title);
+                } else {
+                    $localeValue = false;
+                }
+                $urlParametersForForce[$locale] = $localeValue;
+            }
+            TransServiceProvider::forceUrlParameters($urlParametersForForce);
+
+            /************************* Set Locale Depended Parameters ********************** END */
+
             /************************* Render View ********************** START */
             return view('front.posts.general.frame.main', compact(
                     'innerHTML',
@@ -276,7 +294,8 @@ JS;
         }
     }
 
-    private function show_categories($postTypeSlug = null)
+    private
+    function show_categories($postTypeSlug = null)
     {
         /************************* Generate Data for List View ********************** START */
 
@@ -339,7 +358,8 @@ JS;
         return view('errors.m404');
     }
 
-    public function special_volunteers()
+    public
+    function special_volunteers()
     {
         $postType = Posttype::findBySlug('celebs');
 
@@ -370,7 +390,8 @@ JS;
             ) + $otherValues);
     }
 
-    public function works_send()
+    public
+    function works_send()
     {
         $postsPrefix = 'send-work-';
         UploadServiceProvider::setUserType('client');
@@ -398,7 +419,8 @@ JS;
         return view('front.test.works.main', compact('postContentHTML'));
     }
 
-    public function angels()
+    public
+    function angels()
     {
         UploadServiceProvider::setUserType('client');
         UploadServiceProvider::setSection('angels');
@@ -412,7 +434,8 @@ JS;
         return view('front.angles.main', compact('innerHTML'));
     }
 
-    public function angels_find(AngelsSearchRequest $request)
+    public
+    function angels_find(AngelsSearchRequest $request)
     {
         $foundAngels = Post::selector([
             'type'   => 'angels',

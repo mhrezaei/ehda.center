@@ -24,6 +24,8 @@ class TransServiceProvider extends ServiceProvider
         'settings',
         'validation',
     ];
+    private static $forcedUrlParameters = [];
+    private static $defaultLocales = ['fa', 'en'];
 
     /**
      * @var array Languages that should be checked for comparison
@@ -123,5 +125,56 @@ class TransServiceProvider extends ServiceProvider
         }
 
         return $diffLog;
+    }
+
+    /** Forces variables to be used while generating url of sister pages.
+     *
+     * @param array $parameters
+     */
+    public static function forceUrlParameters($parameters = [])
+    {
+        //
+        // Language should be specified in $parameters
+        // Correct Example: ['en' => ['name' => 'John']];
+        // Wrong Example: ['name' => 'John'];
+        //
+
+        $siteLocales = self::getSiteLocales();
+        foreach ($parameters as $locale => $fields) {
+            if (in_array($locale, $siteLocales) !== false) {
+                self::$forcedUrlParameters = array_merge(self::$forcedUrlParameters, [
+                    $locale => $fields
+                ]);
+            }
+        }
+    }
+
+    /**
+     * Returns forced variables to be used while generating url of sister pages.
+     *
+     * @return array
+     */
+    public static function getForcedUrlParameters($locale = '')
+    {
+        if ($locale) {
+            if (array_key_exists($locale, self::$forcedUrlParameters)) {
+                return self::$forcedUrlParameters[$locale];
+            } else {
+                return [];
+            }
+        }
+
+        return self::$forcedUrlParameters;
+    }
+
+    /**
+     * Returns current locales of site.
+     *
+     * @return array
+     */
+    public static function getSiteLocales()
+    {
+        $localesFromSettings = setting()->ask('site_locales')->gain();
+        return $localesFromSettings ?: self::$defaultLocales;
     }
 }

@@ -2278,6 +2278,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 // Celebs --start
 .celebs {
   .celebs-item {
+    $transformDegree: $rtlRatio * 20;
     $itemHeight: 240;
     $imageWidth: ($itemHeight * 4 /3);
     .celebs-item-inner {
@@ -2287,9 +2288,9 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
       overflow: hidden;
 
       .celebs-item-img {
-        $transform: skew(20deg, 0);
+        $transform: skew((-1 * $transformDegree) * 1deg, 0);
         $marginLeft: $imageWidth / 5;
-        @extend .pull-end, .border-right-2, .border-right-blue;
+        @extend .pull-end, .border-#{$startSide}-2, .border-#{$startSide}-blue;
         width: #{$imageWidth}px;
         height: 100%;
         -webkit-transform: #{$transform};
@@ -2297,7 +2298,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
         -ms-transform: #{$transform};
         -o-transform: #{$transform};
         transform: #{$transform};
-        margin-left: -#{$marginLeft}px;
+        margin-#{$endSide}: -#{$marginLeft}px;
         position: relative;
         overflow: hidden;
 
@@ -2315,8 +2316,8 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
         img {
           width: 100%;
-          transform: skew(-20deg, 0);
-          margin-right: -14%;
+          transform: skew($transformDegree * 1deg, 0);
+          margin-#{$startSide}: -14%;
           height: 100%;
           object-fit: cover;
         }

@@ -554,11 +554,22 @@ function localeLink($locale)
     $route = request()->route();
     $route->setParameter('lang', $locale);
 
+    $forcedParameters = \App\Providers\TransServiceProvider::getForcedUrlParameters($locale);
+
+
+    if ($forcedParameters === false) {
+        return url($locale);
+    }
+
+    foreach ($forcedParameters as $key => $value) {
+        $route->setParameter($key, $value);
+    }
+
     $parameters = $route->parameters();
     $uri = $route->uri();
 
     foreach ($parameters as $key => $value) {
-        $uri = str_replace('{' . $key . '}', $value, $uri);
+        $uri = preg_replace("/{{$key}\??}/", $value, $uri);
     }
 
     return url($uri);

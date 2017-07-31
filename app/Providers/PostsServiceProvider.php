@@ -102,7 +102,7 @@ class PostsServiceProvider extends ServiceProvider
             $posts = Post::selector($data)
                 ->where($data['conditions']);
 
-            if($data['random']) {
+            if ($data['random']) {
                 $posts = $posts->inRandomOrder();
             }
 
@@ -162,7 +162,7 @@ class PostsServiceProvider extends ServiceProvider
         }
 
 
-        return self::renderView($viewFolder . '.main', compact(
+        return self::generateView($viewFolder . '.main', compact(
                 'posts',
                 'viewFolder',
                 'showFilter',
@@ -221,7 +221,7 @@ class PostsServiceProvider extends ServiceProvider
 
         // render view
         $externalBlade = $data['externalBlade'];
-        return self::renderView($viewFolder . '.main', compact('post',
+        return self::generateView($viewFolder . '.main', compact('post',
                 'viewFolder',
                 'externalBlade'
             ) + $data['variables']);
@@ -458,7 +458,41 @@ class PostsServiceProvider extends ServiceProvider
         return new Post();
     }
 
-    private static function renderView($view, $data = [])
+    public static function forceFieldsInLocales($identifier, $fields, $locales)
+    {
+        $post = self::smartFindPost($identifier);
+
+        if ($post->exists) {
+            $parameters = [];
+            if (!is_array($fields)) {
+                $fields = [$fields];
+            }
+
+            if (!is_array($locales)) {
+                $locales = [$locales];
+            }
+
+            foreach ($locales as $locale) {
+                $sisterPost = $post->in($locale);
+                if ($sisterPost->exists) {
+                    $localeValue = [];
+                    foreach ($fields as $parameterKey => $field) {
+                        if (!is_string($parameters)) {
+                            $parameterKey = $field;
+                        }
+                        $localeValue[$parameterKey] = $sisterPost->$field;
+                    }
+                } else {
+                    $localeValue = false;
+                }
+                $parameters[$locale] = $localeValue;
+            }
+
+            TransServiceProvider::forceUrlParameters($parameters);
+        }
+    }
+
+    private static function generateView($view, $data = [])
     {
         if (View::exists($view)) {
             return view($view, $data);
