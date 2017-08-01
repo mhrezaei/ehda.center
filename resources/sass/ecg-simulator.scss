@@ -99,9 +99,8 @@ body {
             @extend .mt#{$gapsSize}
           }
 
-
           .monitor-ecg-preview {
-            @extend .border-1, .border-white, .full-width, .pull-start, .pb20;
+            @extend .border-1, .border-white, .full-width, .pull-start, .pb20, .pt20;
             height: 160px;
 
             .monitor-ecg-preview-inner {
@@ -110,10 +109,10 @@ body {
               background-size: cover;
               background-repeat: repeat-x;
               // temporary background image
-              background-image: url("#{$rhysImagesDir}/r1-20pulses-(04D10A).png");
+              background-image: url("#{$rhysImagesDir}/r1-40pulses-(04D10A).png");
 
               &.VTach {
-                background-image: url("#{$rhysImagesDir}/r19-20pulses-(04D10A).png");
+                background-image: url("#{$rhysImagesDir}/r19-40pulses-(04D10A).png");
               }
 
               &.dead {
@@ -194,6 +193,7 @@ body {
                 }
 
                 .tab-content {
+                  overflow-y: auto;
                   .tab-pane {
                     @extend .pl#{$sidesPaddingSize}, .pr#{$sidesPaddingSize}, .pt10, .pb10;
                   }

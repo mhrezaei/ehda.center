@@ -30,7 +30,7 @@
             <a href="{{ url('/login') }}">{{ trans('front.member_section.sign_in') }}</a>
         </li>
     @endif
-    {{--<li>--}}
-    {{--<a href="/">ورود استان&zwnj;ها</a>--}}
-    {{--</li>--}}
+    <li>
+        <a href="{{ route_locale('states.index') }}">{{ trans('front.community_branches') }}</a>
+    </li>
 </ul>

@@ -439,7 +439,7 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
 
         // States
         Route::group(['prefix' => 'states'], function () {
-            Route::get('/', 'StatesController@map');
+            Route::get('/', 'StatesController@map')->name('states.index');
         });
     });
 
