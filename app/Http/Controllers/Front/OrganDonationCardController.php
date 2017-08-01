@@ -11,7 +11,20 @@ class OrganDonationCardController extends Controller
 {
     public function index($type, $user_hash_id, $mode = null)
     {
-        $user = User::findByHashid($user_hash_id);
+        $card_type = ['mini', 'single', 'social', 'full'];
+        $card_mode = ['show', 'download', 'print'];
+
+        if (!in_array($type, $card_type))
+        {
+            $type = 'mini';
+        }
+
+        if (!in_array($mode, $card_mode))
+        {
+            $mode = 'show';
+        }
+
+        $user = User::findByHashid($user_hash_id, 'ehda_card_' . $type);
         if (!$user or !$user->is_an('card-holder'))
         {
             return view('errors.404');

@@ -50,6 +50,30 @@ return [
              'alphabet' => "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" ,
          ],
 
+        'ehda_card_mini' => [
+            'salt' => "o,ah-dfdfd-;55-ldfdf-45fgc-md-dfgkzdfdf-kvdfrtgn" ,
+            'length' => "5" ,
+            'alphabet' => "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" ,
+        ],
+
+        'ehda_card_single' => [
+            'salt' => "o,ah-dfdfhjkd-;55-kgvh-45fgc-md-iutrmnbvv-kvdfrtgn" ,
+            'length' => "5" ,
+            'alphabet' => "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" ,
+        ],
+
+        'ehda_card_social' => [
+            'salt' => "o,ah-zxcqwer-;442-kgvh-45fgc-md-iutrmnbvv-kvdfrtgn" ,
+            'length' => "5" ,
+            'alphabet' => "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" ,
+        ],
+
+        'ehda_card_full' => [
+            'salt' => "o,ah-zxcqwer-;442-kgvh-55454gvf-md-iutrmnbvv-p;lkbdfs" ,
+            'length' => "5" ,
+            'alphabet' => "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" ,
+        ],
+
         'alternative' => [
             'salt' => 'your-salt-string',
             'length' => 'your-length-integer',

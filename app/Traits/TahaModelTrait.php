@@ -397,10 +397,10 @@ trait TahaModelTrait
 
 	}
 
-    public static function findByHashid($hash)
+    public static function findByHashid($hash, $connection = 'ids')
     {
         if ($hash) {
-            $ids = hashid_decrypt($hash, 'ids');
+            $ids = hashid_decrypt($hash, $connection);
             if (count($ids)) {
                 $id = $ids[0];
                 $model = self::where('id', $id)->first();

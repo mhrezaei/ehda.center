@@ -11,7 +11,14 @@ class DetectLanguage
 {
     public function handle($request, Closure $next)
     {
-        $current_lang = $request->segment(1);
+        if ($request->segment(1))
+        {
+            $current_lang = $request->segment(1);
+        }
+        else
+        {
+            $current_lang = 'fa'; //@TODO: set default lang from db
+        }
         $auto_set_lang = getSetting('site_lang_auto_detect');
         $allowed_lang = getSetting('site_locales');
         $user_ip = $request->ip();

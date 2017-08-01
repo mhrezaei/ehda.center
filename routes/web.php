@@ -339,7 +339,7 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
     // organ donation card
     Route::get('/card/show_card/{type}/{user_hash_id}/{mode?}', 'OrganDonationCardController@index');
 
-    // landing page
+    // events custom landing page
     Route::get('/ramazan', 'LandingPageController@ramazan');
     Route::post('/ramazan', 'LandingPageController@ramazan_count');
 

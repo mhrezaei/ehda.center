@@ -193,7 +193,7 @@ trait EhdaUserTrait
 			$mode = 'show';
 		}
 
-		return url('/card/show_card/' . $type . '/' . hashid_encrypt($this->id, 'ids') . '/' . $mode);
+		return url('/card/show_card/' . $type . '/' . hashid_encrypt($this->id, 'ehda_card_' . $type) . '/' . $mode);
 
 	}
 
