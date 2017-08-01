@@ -29,7 +29,6 @@ class CreateUsersTable extends Migration
 			$table->string('name_father')->nullable();
 			$table->string('name_firm')->nullable();
 			$table->string('code_id')->nullable();
-			$table->unsignedInteger('card_id');
 			$table->tinyInteger('gender')->default(0);
 
 			// Birth Info
