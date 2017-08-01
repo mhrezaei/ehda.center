@@ -35,6 +35,9 @@ $(document).ready(function () {
             correctControlPanelHeight();
         });
 
+    $('#treatment-modalities.page').on('show', function () {
+    });
+
     $('.pass-step').click(function () {
         var page = $(this).closest('.page');
         passStep(page);
@@ -132,6 +135,9 @@ $(document).ready(function () {
                 if (!$('.second-preview').is(':visible')) {
                     $('.second-preview').show();
                 }
+
+                box.find(':input').attr('readonly', 'readonly');
+                box.find('.form-group').css('pointer-events', 'none');
             }
         }
     }, '.btn-inject');
@@ -140,6 +146,7 @@ $(document).ready(function () {
         click: function (event) {
             event.preventDefault();
             var btn = $(this);
+            var box = btn.closest('.treatment-form');
 
             var reactionIndex = btn.attr('data-reaction');
             backStep(undefined, reactionIndex);
@@ -149,6 +156,9 @@ $(document).ready(function () {
             btn.html('Apply');
 
             refreshScreen();
+
+            box.find(':input').removeAttr('readonly', 'readonly');
+            box.find('.form-group').css('pointer-events', 'auto');
         }
     }, '.btn-inject-remove');
 
@@ -494,7 +504,7 @@ function runECG(hr) {
 
         // just in case it is not already loaded
         $(image).on('load', function () {
-            var periodWidth = (image.width * ecgBox.height()) / image.height / 20;
+            var periodWidth = (image.width * ecgBox.height()) / image.height / 40;
             runECGPeriod(hr, periodWidth);
 
             window.timers.ecgMotion = setInterval(function () {
@@ -774,8 +784,34 @@ function correctControlPanelHeight() {
             parseInt(controlPanel.css('margin-top')) +
             parseInt(controlPanel.css('margin-bottom'))
         );
-    // console.log('correctControlPanelHeight')
-    // console.log(controlPanelHeight)
 
     controlPanel.height(controlPanelHeight);
+
+    // Inside tab-content of the "treatment-modalities" page
+    var treatmentsPage = controlPanel.find('#treatment-modalities.page');
+    var needToCalculateMore = false;
+    if (!treatmentsPage.is(':visible')) {
+        needToCalculateMore = true;
+    }
+    if (treatmentsPage.length) {
+        var navTabs = treatmentsPage.find('.nav');
+        if (needToCalculateMore) {
+            var previousCss = treatmentsPage.attr("style");
+            treatmentsPage
+                .css({
+                    visibility: 'hidden',
+                    display: 'block'
+                });
+
+        }
+
+        var navTabsHeight = navTabs.outerHeight();
+
+        if (needToCalculateMore) {
+            treatmentsPage.attr("style", previousCss ? previousCss : "");
+        }
+
+        var tabContentHeight = controlPanelHeight - navTabsHeight - 2;
+        treatmentsPage.find('.tab-content').height(tabContentHeight);
+    }
 }
