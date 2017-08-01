@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Api_ips;
 use App\Http\Controllers\Controller;
 use App\Models\Api_token;
 use App\Models\State;
@@ -45,13 +46,13 @@ class ApiController extends Controller
             // find client by username
             $client = User::findBySlug($data['username'], 'code_melli');
 
-            if ($client)
+            if ($client and $client->hasRole('api'))
             {
                 if (Hash::check($data['password'], $client['password']))
                 {
                     // password is true
                     // check request ip address
-                    if ($data['ip'] == $client['email'])
+                    if (self::validationIpAddress($client['id'], $data['ip']))
                     {
                         // request ip and client ip is match
                         $result['status'] = 1;
@@ -455,7 +456,7 @@ class ApiController extends Controller
             }
             else
             {
-                if ($token->user->email == $request_ip)
+                if (self::validationIpAddress($token->user->id, $request_ip) and $token->user->hasRole('api'))
                 {
                     // token is valid
                     return $token;
@@ -472,6 +473,23 @@ class ApiController extends Controller
             // wrong token
             return -6;
         }
+    }
+
+    // user ip address validation
+    private static function validationIpAddress($user_id, $request_ip)
+    {
+         $ip = Api_ips::where('user_id', $user_id)
+             ->where('slug', $request_ip)
+             ->first();
+
+         if ($ip)
+         {
+             return $ip;
+         }
+         else
+         {
+             return false;
+         }
     }
 
     // create ehda card links

@@ -197,6 +197,16 @@ trait EhdaUserTrait
 
 	}
 
+    public function api_tokens()
+    {
+        return $this->hasMany('App\Models\Api_token');
+    }
+
+    public function api_ips()
+    {
+        return $this->hasMany('App\Models\Api_ip');
+    }
+
 	public function generateCardNo()
 	{
 		return $this->id + 5000 ;
