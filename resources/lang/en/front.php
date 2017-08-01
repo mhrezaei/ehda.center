@@ -98,6 +98,7 @@ return [
     'print'                                    => 'Print',
     'share'                                    => 'Share',
     'powered_by_yasna'                         => 'Powered by Yasna Team',
+    'community_branches'                       => 'Community Branches',
 
     'volunteer_section' => [
         'singular'         => 'Organ Donation Volunteer',

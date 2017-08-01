@@ -1,13 +1,16 @@
 @extends('front.frame.frame')
 
+@php
+    $pageTitle = setting()->ask('site_title')->gain() .
+        ' | ' .
+        trans('front.profile_phrases.user_profile', ['user' => user()->full_name])
+@endphp
 @section('head')
-    <title>
-        {{ setting()->ask('site_title')->gain() }}
-        |
-        {{ trans('front.profile_phrases.user_profile', ['user' => user()->full_name]) }}
-    </title>
+    <title>{{ $pageTitle }}</title>
 @append
-
+@php $metaTags = [ 'title' => $pageTitle ] @endphp
+@include('front.frame.meta_tags')
+@include('front.frame.open_graph_meta_tags')
 
 @section('content')
     {{ null, $positionInfo = (isset($positionInfo) and is_array($positionInfo)) ? $positionInfo : [] }}

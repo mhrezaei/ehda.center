@@ -1,8 +1,16 @@
 @extends('front.frame.frame')
 
+@if(isset($pageTitle))
+    @php $pageTitle = setting()->ask('site_title')->gain() . ' | ' . $pageTitle @endphp
+@else
+    @php $pageTitle = setting()->ask('site_title')->gain()  @endphp
+@endif
 @section('head')
-    <title>{{ setting()->ask('site_title')->gain() }} | {{ $pageTitle or '' }}</title>
-@endsection
+    <title>{{ $pageTitle }}</title>
+@append
+@php $metaTags = [ 'title' => $pageTitle ] @endphp
+@include('front.frame.meta_tags')
+@include('front.frame.open_graph_meta_tags')
 
 @if(!isset($positionInfo))
     {{ null, $positionInfo = [] }}

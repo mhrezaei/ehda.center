@@ -1,6 +1,10 @@
+@php $pageTitle = setting()->ask('site_title')->gain() . ' | ' . trans('front.special_volunteers') @endphp
 @section('head')
-    <title>{{ setting()->ask('site_title')->gain() }} | {{ trans('front.special_volunteers') }}</title>
-@endsection
+    <title>{{ $pageTitle }}</title>
+@append
+@php $metaTags = [ 'title' => $pageTitle ] @endphp
+@include('front.frame.meta_tags')
+@include('front.frame.open_graph_meta_tags')
 
 <div class="row celebs">
     @if($posts->count())

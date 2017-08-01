@@ -89,7 +89,7 @@ header {
     > ul {
       > li {
         padding: 0;
-        &:first-child {
+        &:not(:last-child) {
           &:after {
             content: "";
             width: 8px;

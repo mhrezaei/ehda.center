@@ -98,6 +98,7 @@ return [
     'print'                                    => 'چاپ',
     'share'                                    => 'اشتراک',
     'powered_by_yasna'                         => 'طراحی و اجرا: گروه یسنا',
+    'community_branches'                       => 'شعب انجمن',
 
     'volunteer_section' => [
         'singular'                 => 'سفیر اهدای عضو',
