@@ -31,7 +31,9 @@
             </div>
             <div class="col-xs-12 mt10 mb10 f12">
                 <div class="row">
-                    <a type="button" href="{{ url('/register') }}"
+                    {{--<a type="button" href="{{ url('/register') }}"--}}
+                       {{--class="btn btn-block btn-blue"> {{ trans('front.not_member_register_now') }} </a>--}}
+                    <a type="button" href="{{ url_locale('organ_donation_card') }}"
                        class="btn btn-block btn-blue"> {{ trans('front.not_member_register_now') }} </a>
                 </div>
             </div>

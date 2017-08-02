@@ -5,8 +5,8 @@
     <title>
         {{ setting()->ask('site_title')->gain() }} | {{ trans('front.register') }}
     </title>
-    @include('front.frame.open_graph_meta_tags', ['description' => trans('front.register')])
 @endsection
+@include('front.frame.open_graph_meta_tags', ['description' => trans('front.register')])
 
 @section('formBox')
 
