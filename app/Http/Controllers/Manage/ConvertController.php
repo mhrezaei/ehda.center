@@ -11,6 +11,7 @@ use App\Models\PostsOld;
 use App\Models\PrintingsOld;
 use App\Models\Role;
 use App\Models\Setting;
+use App\Models\State;
 use App\Models\User;
 use App\Models\UsersOld;
 use Carbon\Carbon;
@@ -418,6 +419,31 @@ class ConvertController extends Controller
 
 	}
 
+	public function statesToDomains()
+	{
+		$states = State::where('domain_id', '0')->get() ;
+
+		foreach($states as $state) {
+			$guess = Domain::where('title' , $state->title)->first() ;
+			if($guess and $guess->id) {
+				$domain_id = $guess->id ;
+			}
+			elseif($state->province->id) {
+				$domain_id = $state->province->domain_id ;
+			}
+
+			if(isset($domain_id)) {
+				$ok = $state->update([
+					'domain_id' => $domain_id,
+				]);
+				ss($state->title) ;
+			}
+
+		}
+
+		ss('done') ;
+	}
+
 	public function tests()
 	{
 		 //login(303793) ;
@@ -435,4 +461,6 @@ class ConvertController extends Controller
 	{
 		return login(303793) ;
 	}
+
+
 }
