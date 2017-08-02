@@ -1360,6 +1360,23 @@ img%img-cover {
   }
 }
 
+.form-group {
+  &.has-error {
+    .form-buttonset {
+      .ui-button:not(.ui-state-active) {
+        border-color: #e74c3c;
+      }
+    }
+  }
+  //&.has-success {
+  //  .form-buttonset {
+  //    .ui-button:not(.ui-state-active) {
+  //      border-color: #2ecc71;
+  //    }
+  //  }
+  //}
+}
+
 // JqueryUi --end
 
 // Forms and Inputs --start
