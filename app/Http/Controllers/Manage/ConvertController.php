@@ -291,7 +291,7 @@ class ConvertController extends Controller
 			echo "<script>location.reload();</script>";
 		}
 
-		$olds    = UsersOld::where('converted', '0')->orderBy('id','desc')->take($take)->get();
+		$olds    = UsersOld::where('converted', '0')->orderBy('id')->take($take)->get();
 		$last_user_id = 0 ;
 		$counter = 0;
 

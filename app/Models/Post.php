@@ -3,14 +3,11 @@
 namespace App\Models;
 
 use App\Traits\EhdaPostTrait;
-use App\Providers\PostsServiceProvider;
 use App\Providers\UploadServiceProvider;
 use App\Traits\TahaModelTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Crypt;
-use Vinkla\Hashids\Facades\Hashids;
 
 
 class Post extends Model

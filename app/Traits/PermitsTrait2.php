@@ -905,6 +905,7 @@ trait PermitsTrait2
 	 */
 	public static function defaultRole($use_cache = true)
 	{
+		return '' ;
 		if($use_cache) {
 			return setting()->ask('default_role')->gain();
 		}
