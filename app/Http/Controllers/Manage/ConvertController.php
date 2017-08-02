@@ -142,9 +142,13 @@ class ConvertController extends Controller
 		| Normal Data ...
 		*/
 		foreach($olds as $old) {
+			$domains = "|$old->domains|" ;
+			if($domains == '|free|') {
+				$domains = '|global|' ;
+			}
 			$data = [
 				'id' => $old->id ,
-			     'slug' => $old->slug ,
+			     'slug' => Post::normalizeSlug(0, $old->branch, 'fa', $old->slug )  ,
 			     'type' => $old->branch ,
 			     'title' => $old->title ,
 			     'locale' => "fa" ,
@@ -154,7 +158,7 @@ class ConvertController extends Controller
 			     'abstract' => $old->abstract ,
 			     //'starts_at' => "" ,
 			     //'ends_at' => "" ,
-			     'domains' => $old->domains ,
+			     'domains' => $domains ,
 			     'created_at' => $old->created_at ,
 			     'updated_at' => $old->updated_at  ,
 			     'deleted_at' => $old->deleted_at  ,

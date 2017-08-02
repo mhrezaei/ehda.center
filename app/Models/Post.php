@@ -481,6 +481,8 @@ class Post extends Model
 				return url($typeImage);
 			}
 		}
+
+		return '' ;
 	}
 
 	public function getViewableFeaturedImageThumbnailAttribute()

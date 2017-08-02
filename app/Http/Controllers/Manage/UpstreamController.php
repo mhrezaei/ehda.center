@@ -75,6 +75,9 @@ class UpstreamController extends Controller
 				$models = Domain::orderBy('title')->paginate(user()->preference('max_rows_per_page')) ;
 				break ;
 
+			case 'artisan' :
+				break;
+
 			default :
 				return view('errors.404');
 		}

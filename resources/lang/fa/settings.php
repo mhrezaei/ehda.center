@@ -14,6 +14,7 @@ return [
 	'domains'     => "دامنه‌ها",
 	'domain_edit' => "ویرایش دامنه",
 	'domain_new'  => "دامنه‌ی جدید",
+	'artisan' => "آرتیزان" ,
 
 	'city'                       => "شهر",
 	'cities_of'                  => "شهرهای :province",
