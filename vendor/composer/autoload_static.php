@@ -404,6 +404,7 @@ class ComposerStaticInitc163ed33e856e3abf8986dc792906912
         'CreateCommentsTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_18_174848_create_comments_table.php',
         'CreateCouriersTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_18_181505_create_couriers_table.php',
         'CreateDomainsTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_18_141736_create_domains_table.php',
+        'CreateFileFolders' => __DIR__ . '/../..',
         'CreateFolderPostRelationTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_18_181257_create_folder_post_relation_table.php',
         'CreateFoldersTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_18_174624_create_folders_table.php',
         'CreateGoodsTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_18_181337_create_goods_table.php',

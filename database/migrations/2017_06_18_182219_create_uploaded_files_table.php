@@ -15,7 +15,7 @@ class CreateUploadedFilesTable extends Migration
     {
 
         Schema::create('files', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('id')->index();
 
             // Storage Info
             $table->string('original_name');
@@ -27,6 +27,12 @@ class CreateUploadedFilesTable extends Migration
             $table->string('extension');
             $table->bigInteger('size'); // in bytes
             $table->longText('hash_file')->nullable();
+
+            // Soft Location Info
+            $table->integer('posttype');
+            $table->integer('folder');
+            $table->integer('category');
+            $table->integer('parent');
 
             // File Status
             $table->integer('status');

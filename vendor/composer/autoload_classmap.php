@@ -17,6 +17,7 @@ return array(
     'CreateCommentsTable' => $baseDir . '/database/migrations/2017_06_18_174848_create_comments_table.php',
     'CreateCouriersTable' => $baseDir . '/database/migrations/2017_06_18_181505_create_couriers_table.php',
     'CreateDomainsTable' => $baseDir . '/database/migrations/2017_06_18_141736_create_domains_table.php',
+    'CreateFileFolders' => $baseDir . '/database/migrations/2017_08_02_170001_create_file_folders.php',
     'CreateFolderPostRelationTable' => $baseDir . '/database/migrations/2017_06_18_181257_create_folder_post_relation_table.php',
     'CreateFoldersTable' => $baseDir . '/database/migrations/2017_06_18_174624_create_folders_table.php',
     'CreateGoodsTable' => $baseDir . '/database/migrations/2017_06_18_181337_create_goods_table.php',
