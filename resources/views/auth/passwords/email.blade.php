@@ -5,8 +5,8 @@
     <title>
         {{ setting()->ask('site_title')->gain() }} | {{ trans('people.form.recover_password') }}
     </title>
-    @include('front.frame.open_graph_meta_tags', ['description' => trans('front.login')])
 @endsection
+@include('front.frame.open_graph_meta_tags', ['description' => trans('front.login')])
 
 @section('formBox')
     {!! Form::open([
