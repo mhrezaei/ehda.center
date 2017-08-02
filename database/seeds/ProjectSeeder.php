@@ -296,7 +296,7 @@ class ProjectSeeder extends Seeder
 				'title' => "آدرس سایت",
 				'category' => "database",
 				'data_type' => "text",
-				'default_value' => 'https://yasnateam.com/',
+				'default_value' => url(''),
 				'developers_only' => 1,
 				'is_resident' => "0",
 				'is_localized' => "0",
