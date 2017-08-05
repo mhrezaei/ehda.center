@@ -21,7 +21,8 @@ class CreatePostsTable extends Migration
 			$table->string('slug')->nullable()->index();
 			$table->string('type')->index();
 			$table->string('title')->index();
-			$table->string('title2');
+			$table->string('title2')->nullable();
+			$table->text('long_title')->nullable() ;
 			$table->string('locale', 2)->default('fa')->index();
 			$table->float('price', 15, 2);
 			$table->float('sale_price', 15, 2)->default(0);
@@ -32,6 +33,7 @@ class CreatePostsTable extends Migration
 			$table->boolean('is_limited')->default(0);
 			$table->unsignedInteger('copy_of')->default(0)->index();
 			$table->string('sisterhood', 30)->default('')->index();
+			$table->string('domains', '200')->nullable();
 
 			$table->longText('text')->nullable();
 			$table->longText('abstract')->nullable();
@@ -39,13 +41,17 @@ class CreatePostsTable extends Migration
 			$table->timestamp('starts_at')->nullable();
 			$table->timestamp('ends_at')->nullable();
 
-			$table->longText('meta')->nullable();
+			$table->string('featured_image')->nullable();
+			$table->unsignedInteger('featured_image_id')->nullable();
+			$table->text('attached_files')->nullable();
 
-			$table->integer('seo_score')->default(-1);
+			$table->integer('seo_score')->default(0);
 			$table->timestamp('pinned_at')->nullable()->index();
 			$table->unsignedInteger('pinned_by')->default(0);
+			$table->integer('comments_count')->default(0);
+			$table->integer('visits_count')->default(0);
 
-			$table->string('domains', '200')->nullable();
+			$table->longText('meta')->nullable();
 
 			$table->timestamps();
 			$table->softDeletes();
@@ -61,7 +67,7 @@ class CreatePostsTable extends Migration
 
 			$table->index('created_at');
 
-            $table->boolean('converted')->default(0);
+			$table->boolean('converted')->default(0);
 		});
 	}
 
