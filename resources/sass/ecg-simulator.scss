@@ -6,29 +6,7 @@
 @import "colors";
 @import "measurement_and_alignment";
 
-//@mixin scrollbars($size, $foreground-color, $background-color: mix($foreground-color, white, 50%)) {
-//  ::-webkit-scrollbar {
-//    width: $size;
-//    height: $size;
-//  }
-//
-//  ::-webkit-scrollbar-thumb {
-//    background: $foreground-color;
-//  }
-//
-//  ::-webkit-scrollbar-track {
-//    background: $background-color;
-//  }
-//
-//  // For Internet Explorer
-//  //body {
-//  //  scrollbar-face-color: $foreground-color;
-//  //  scrollbar-track-color: $background-color;
-//  //}
-//}
-
 body {
-  //@include scrollbars(.5em, red);
   @extend .bg-black, .f16;
 
   height: 100vh;
@@ -44,6 +22,7 @@ body {
 
       &.monitor {
 
+        // Vital Sings Column
         > .monitor-column-1 {
           @extend .pl0, .pr0, .full-height;
           overflow-y: auto;
@@ -395,4 +374,3 @@ body {
     }
   }
 }
-
