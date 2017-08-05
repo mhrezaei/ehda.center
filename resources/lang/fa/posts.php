@@ -162,6 +162,10 @@ return [
 	     'new_content' => "محتوای جدید" ,
 	     'create_new_post' => "ایجاد مطلب جدید" ,
 	     'for_each_number_of' => "برای هر تعداد :name" ,
+	     'thumb_sizes' => "اندازه تصاویر بندانگشتی" ,
+	     'thumb_sizes_hint' => "در هر سطر، اول طول و بعد ارتفاع عکس، وسطشان x، همه به انگلیسی" ,
+	     'gallery_thumb_size' => 'اندازه بندانگشتی آلبوم' ,
+	     'gallery_thumb_size_hint' => "اول طول و بعد ارتفاع عکس، وسطش x، همه به انگلیسی" ,
 	],
 
 	'comments' => [

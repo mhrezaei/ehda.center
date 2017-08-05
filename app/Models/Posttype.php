@@ -47,7 +47,7 @@ class Posttype extends Model
 	public static $available_templates  = ['album', 'post', 'product', 'slideshow', 'dialogue', 'faq', 'special'];
 	public static $available_meta_types = ['text', 'textarea', 'date', 'boolean', 'photo', 'file'];
 	public static $reserved_slugs       = 'root,admin';
-	public static $meta_fields          = ['features', 'template', 'feature_meta', 'optional_meta', 'visibility', 'singular_title', 'icon', 'locales', 'max_per_page', 'default_featured_image', 'featured_image_width', 'featured_image_height', 'fresh_time_duration', 'locale_titles'];
+	public static $meta_fields          = ['features', 'template', 'feature_meta', 'optional_meta', 'visibility', 'singular_title', 'icon', 'locales', 'max_per_page', 'default_featured_image', 'featured_image_width', 'featured_image_height', 'fresh_time_duration', 'locale_titles' , 'thumb_sizes' , 'gallery_thumb_size'];
 	public static $basement_meta        = "moderate_note:text ";
 	public static $downstream           = [
 		[
@@ -272,6 +272,87 @@ class Posttype extends Model
 		return $this->locales_array[0];
 	}
 
+	public function getThumbSizesArrayAttribute()
+	{
+		/*-----------------------------------------------
+		| Spread Meta ...
+		*/
+		$meta_state = $this->meta_spread ;
+		$this->spreadMeta() ;
+
+		/*-----------------------------------------------
+		| Process ...
+		*/
+		$input = strtolower($this->thumb_sizes) ;
+		$array_layer_1 = array_filter(preg_split("/\\r\\n|\\r|\\n/", $input));
+		$array_final   = [];
+
+		foreach($array_layer_1 as $item) {
+			$array_layer_2                    = array_filter(explode('x', str_replace(' ', null, $item)));
+			if(!isset($array_layer_2[0]) or !isset($array_layer_2[1]) or !is_numeric($array_layer_2[0]) or !is_numeric($array_layer_2[1])) {
+				continue ;
+			}
+			$array_final[] = $array_layer_2;
+		}
+
+		/*-----------------------------------------------
+		| Suppress Meta ...
+		*/
+		if(!$meta_state) {
+			$this->suppressMeta() ;
+		}
+
+		/*-----------------------------------------------
+		| Return ...
+		*/
+		return $array_final ;
+
+	}
+
+	public function getMinThumbWidthAttribute()
+	{
+		return min(array_pluck($this->thumb_sizes_array , 0)) ;
+	}
+	public function getMinThumbHeightAttribute()
+	{
+		return min(array_pluck($this->thumb_sizes_array , 1)) ;
+	}
+
+	public function getGalleryThumbSizeArrayAttribute()
+	{
+		/*-----------------------------------------------
+		| Spread Meta ...
+		*/
+		$meta_state = $this->meta_spread ;
+		$this->spreadMeta() ;
+
+		/*-----------------------------------------------
+		| Process ...
+		*/
+		$input = strtolower($this->gallery_thumb_size) ;
+
+		$array_final = array_filter(explode('x', str_replace(' ', null, $input)));
+		if(!isset($array_final[0]) or !isset($array_final[1]) or !is_numeric($array_final[0]) or !is_numeric($array_final[1])) {
+			$array_final[] = [0,0];
+		}
+
+		/*-----------------------------------------------
+		| Suppress Meta ...
+		*/
+		if(!$meta_state) {
+			$this->suppressMeta() ;
+		}
+
+		/*-----------------------------------------------
+		| Return ...
+		*/
+		return $array_final ;
+
+
+	}
+
+
+
 
 	/*
 	|--------------------------------------------------------------------------
@@ -363,14 +444,14 @@ class Posttype extends Model
 		}
 	}
 
-    /**
-     * Still Temporary
-     *
-     * @param string $locale
-     */
-    public function headerTitleIn($locale = 'fa')
-    {
-        return $this->header_title;
+	/**
+	 * Still Temporary
+	 *
+	 * @param string $locale
+	 */
+	public function headerTitleIn($locale = 'fa')
+	{
+		return $this->header_title;
 	}
 
 	public function singularTitleIn($locale)

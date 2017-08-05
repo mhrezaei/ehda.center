@@ -66,6 +66,24 @@
 		'value' => $model->template,
 	])
 
+	@include("manage.frame.widgets.input-textarea" , [
+		'label' => trans('posts.form.thumb_sizes'),
+		'name' => "thumb_sizes",
+		'value' => $model->thumb_sizes,
+		'class' =>	'ltr form-autoSize',
+		'hint' => trans("posts.form.thumb_sizes_hint") ,
+		'rows' => "3",
+	])
+	
+	@include("forms.input" , [
+		'label' => trans("posts.form.gallery_thumb_size"),
+		'name' => "gallery_thumb_size" ,
+		'value' => $model->gallery_thumb_size,
+		'class' => "ltr" ,
+		'hint' => trans("posts.form.gallery_thumb_size_hint") ,
+	]     )
+
+
 	@include('forms.textarea' , [
 		'id' => "txtMeta",
 		'name' =>	'feature_meta',

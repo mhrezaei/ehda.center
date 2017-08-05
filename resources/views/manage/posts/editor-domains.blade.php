@@ -83,4 +83,6 @@
 
 
 @endif
-{{-- Otherwise, a 'global' will be set in the controller's save() method --}}
+
+
+{{-- Otherwise, a 'global' will be set in the controller's hiddens of the form, at the begining --}}
