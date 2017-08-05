@@ -24,6 +24,7 @@ use App\Traits\ManageControllerTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -680,6 +681,22 @@ class UpstreamController extends Controller
 
 		return $this->jsonAjaxSaveFeedback($ok, [
 			'success_redirect' => url('/manage'),
+		]);
+
+	}
+
+	public function artisan(Request $request)
+	{
+		$return = $request->command."...<br><br>";
+		$feedback = [] ;
+
+		$return .= exec($request->command , $feedback);
+
+		$return .= json_encode ($feedback) ;
+
+
+		return $this->jsonFeedback([
+			'callback' => "$('#divArtisanResponse').html('$return')" ,
 		]);
 
 	}

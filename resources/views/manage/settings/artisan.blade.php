@@ -7,20 +7,20 @@
 		<div class="panel-footer" style="height: 50px">
 
 			{!! Form::open([
-				'url' => isset($url)? url($url) : '#' ,
+				'url' => 'manage/upstream/save/artisan' ,
 				'method' => 'post' ,
 				'class' => 'form-inline js' ,
 				'no-validation' => '1' ,
 			]) !!}
 
 				<div class="form-group" style="width: 100%">
-					<input type="text" class="form-control" placeholder="Artisan Command" style="width: 100%" >
+					<input type="text" name="command" class="form-control" placeholder="Artisan Command" style="width: 100%" >
 				</div>
 				{{--<button type="submit" class="btn btn-primary">Run Artisan Command</button>--}}
 			{!! Form::close() !!}
 
 		</div>
-		<div class="panel-heading" style="min-height: 500px">
+		<div id="divArtisanResponse" class="panel-heading p20" style="min-height: 500px ; color: yellow">
 
 		</div>
 	</div>

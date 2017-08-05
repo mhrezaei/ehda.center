@@ -303,6 +303,7 @@ Route::group([
 			Route::post('category', 'UpstreamController@saveCategory');
 			Route::post('downstream', 'UpstreamController@saveDownstream');
 			Route::post('package', 'UpstreamController@savePackage');
+			Route::post('artisan' , 'UpstreamController@artisan');
 			Route::post('login_as', 'UpstreamController@loginAs');
 		});
 	});
