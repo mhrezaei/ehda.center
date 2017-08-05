@@ -965,7 +965,7 @@ class Post extends Model
 			return '';
 		}
 
-		$slug = str_slug(str_limit($slug, 30));
+		$slug = str_slug(str_limit($slug, 50));
 
 		//General Corrections...
 		$slug = strtolower($slug);

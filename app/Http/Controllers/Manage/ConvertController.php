@@ -170,7 +170,7 @@ class ConvertController extends Controller
 				'owned_by'       => $old->created_by + 0,
 				'moderated_by'   => $old->published_by + 0,
 				'moderated_at'   => $old->published_at,
-				'featured_image' => $old->featured_image,
+				'featured_image' => str_replace('/assets', '', $old->featured_image),
 				'meta'           => "",
 			];
 
