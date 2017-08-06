@@ -1,7 +1,7 @@
 @if(user()->is_a('card-holder'))
 	<div class="w100 ph10 text-center mv10">
 		<a href="{{ url("fa/members/my_card") }}" target="_blank">
-			<img src="{{ user()->cards('social' , 'show') }}" style="max-width: 100%">
+			<img src="{{ user()->cards('social' , 'show') }}" style="max-width: 100%;max-height: 300px">
 		</a>
 	</div>
 @else

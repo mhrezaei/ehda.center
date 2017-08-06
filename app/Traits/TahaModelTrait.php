@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Schema;
 trait TahaModelTrait
 {
 	protected $saved_selector_para = [];
+	protected $meta_spread = false ;
 
 	/*
 	|--------------------------------------------------------------------------
@@ -274,6 +275,9 @@ trait TahaModelTrait
 		if(!self::hasMeta()) {
 			return $this;
 		}
+		if(!$this->meta_spread) {
+			return $this ;
+		}
 
 		/*-----------------------------------------------
 		| Browse ...
@@ -285,6 +289,7 @@ trait TahaModelTrait
 			}
 		}
 
+		$this->meta_spread = false ;
 		return $this;
 
 	}
@@ -298,6 +303,9 @@ trait TahaModelTrait
 		//Bypass...
 		if(!self::hasColumn('meta') or !$this->id) {
 			return $this;
+		}
+		if($this->meta_spread) {
+			return $this ;
 		}
 
 		//Retreive...
@@ -318,6 +326,7 @@ trait TahaModelTrait
 			$this->$field = $value;
 		}
 
+		$this->meta_spread = true ;
 		return $this;
 
 	}

@@ -3,14 +3,11 @@
 namespace App\Models;
 
 use App\Traits\EhdaPostTrait;
-use App\Providers\PostsServiceProvider;
 use App\Providers\UploadServiceProvider;
 use App\Traits\TahaModelTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Crypt;
-use Vinkla\Hashids\Facades\Hashids;
 
 
 class Post extends Model
@@ -484,6 +481,8 @@ class Post extends Model
 				return url($typeImage);
 			}
 		}
+
+		return '' ;
 	}
 
 	public function getViewableFeaturedImageThumbnailAttribute()
@@ -966,7 +965,7 @@ class Post extends Model
 			return '';
 		}
 
-		$slug = str_slug(str_limit($slug, 30));
+		$slug = str_slug(str_limit($slug, 50));
 
 		//General Corrections...
 		$slug = strtolower($slug);

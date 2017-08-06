@@ -8,6 +8,7 @@
 	['id' , $model->id , 'txtId'] ,
 	['type' , $model->type , 'txtType'],
 	['sisterhood' , $model->sisterhood] ,
+	['domains' , 'global'] ,
 ]])
 
 

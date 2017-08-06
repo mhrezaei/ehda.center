@@ -24,6 +24,7 @@ use App\Traits\ManageControllerTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -74,6 +75,9 @@ class UpstreamController extends Controller
 			case 'domains' :
 				$models = Domain::orderBy('title')->paginate(user()->preference('max_rows_per_page')) ;
 				break ;
+
+			case 'artisan' :
+				break;
 
 			default :
 				return view('errors.404');
@@ -303,13 +307,13 @@ class UpstreamController extends Controller
 
 				return view("manage.settings.roles-activeness", compact('model'));
 
-			case 'role-default' :
-				$model = Role::find($item_id);
-				if(!$model) {
-					return view('errors.m410');
-				}
-
-				return view("manage.settings.roles-default", compact('model'));
+			//case 'role-default' :
+			//	$model = Role::find($item_id);
+			//	if(!$model) {
+			//		return view('errors.m410');
+			//	}
+			//
+			//	return view("manage.settings.roles-default", compact('model'));
 
 			case 'department' :
 				if($item_id) {
@@ -403,15 +407,9 @@ class UpstreamController extends Controller
 
 	public function savePosttype(PosttypeSaveRequest $request)
 	{
-		//If Save...
-		if($request->_submit == 'save') {
-			return $this->jsonAjaxSaveFeedback(Posttype::store($request), [
-				'fake'            => $request->id ? '' : Folder::updateDefaultFolders(),
-				'success_refresh' => 1,
-			]);
-		}
-
-		//If Delete...
+		/*-----------------------------------------------
+		| If Delete ...
+		*/
 		if($request->_submit == 'delete') {
 			$model = Posttype::find($request->id);
 			if(!$model) {
@@ -422,6 +420,20 @@ class UpstreamController extends Controller
 				'success_callback' => "rowUpdate('tblPosttypes','$request->id')",
 			]);
 		}
+
+
+		/*-----------------------------------------------
+		| Data Normalization ...
+		*/
+		$data = $request->toArray() ;
+		//$data['thumb_sizes'] = Role::getStatusRuleArray($request->thumb_sizes);
+
+
+		return $this->jsonAjaxSaveFeedback(Posttype::store($request), [
+			//'fake'            => $request->id ? '' : Folder::updateDefaultFolders(),
+			'success_refresh' => 1,
+		]);
+
 
 	}
 
@@ -526,6 +538,7 @@ class UpstreamController extends Controller
 			]);
 		}
 
+		return null ;
 	}
 
 	public function saveRoleActiveness(Request $request)
@@ -555,19 +568,19 @@ class UpstreamController extends Controller
 
 	}
 
-	public function saveRoleDefault(Request $request)
-	{
-		$model = Role::find($request->id) ;
-		if(!$model or in_array($model->slug , Role::adminRoles()) or $model->isDefault()) {
-			return $this->jsonFeedback(trans('forms.general.sorry'));
-		}
-
-		$ok = Setting::set('default_role' , $model->slug) ;
-		return $this->jsonAjaxSaveFeedback($ok, [
-			'success_refresh' => 1,
-		]);
-
-	}
+	//public function saveRoleDefault(Request $request)
+	//{
+	//	$model = Role::find($request->id) ;
+	//	if(!$model or in_array($model->slug , Role::adminRoles()) or $model->isDefault()) {
+	//		return $this->jsonFeedback(trans('forms.general.sorry'));
+	//	}
+	//
+	//	$ok = Setting::set('default_role' , $model->slug) ;
+	//	return $this->jsonAjaxSaveFeedback($ok, [
+	//		'success_refresh' => 1,
+	//	]);
+	//
+	//}
 
 	public function saveRoleMass(Request $request)
 	{
@@ -677,6 +690,22 @@ class UpstreamController extends Controller
 
 		return $this->jsonAjaxSaveFeedback($ok, [
 			'success_redirect' => url('/manage'),
+		]);
+
+	}
+
+	public function artisan(Request $request)
+	{
+		$return = $request->command."...<br><br>";
+		$feedback = [] ;
+
+		$return .= exec($request->command , $feedback);
+
+		$return .= json_encode ($feedback) ;
+
+
+		return $this->jsonFeedback([
+			'callback' => "$('#divArtisanResponse').html('$return')" ,
 		]);
 
 	}

@@ -276,6 +276,7 @@ class ManageServiceProvider extends ServiceProvider
 			['packages', trans('settings.packages')],
 			['states', trans('settings.states')],
 			['domains', trans('settings.domains')],
+		     //['artisan' , trans("settings.artisan")]
 		];
 	}
 

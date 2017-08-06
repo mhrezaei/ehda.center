@@ -20,7 +20,7 @@
 </head>
 <body onload="window.print();">
 
-<img src="{{ url('/card/show_card/' . $type . '/' . hashid_encrypt($user->id, 'ids')) }}" alt="{{ trans('forms.button.card_print') }}">
+<img src="{{ url('/card/show_card/' . $type . '/' . hashid_encrypt($user->id, 'ehda_card_' . $type)) }}" alt="{{ trans('forms.button.card_print') }}">
 
 </body>
 </html>

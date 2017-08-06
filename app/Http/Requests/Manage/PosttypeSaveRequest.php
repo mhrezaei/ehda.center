@@ -50,6 +50,8 @@ class PosttypeSaveRequest extends Request
 			'meta_fields' => 'lower' ,
 			'icon' => 'lower' ,
 			'order' => "ed",
+		     'thumb_sizes' => "ed" ,
+		     'gallery_thumb_size' => "ed" ,
 		]);
 		return $purified;
 

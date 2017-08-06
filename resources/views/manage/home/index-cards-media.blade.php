@@ -9,7 +9,7 @@
 	@if(isset($ajax))
 		{{ '' , $role = model('role')::findBySlug('card-holder') }}
 		{{ '' , $total = $role->users()->count() }}
-		{{ '' , $bot_users = $role->users()->whereIn('created_by' , model('user')::telegramBots())->count() }}
+		{{ '' , $bot_users = $role->users()->whereIn('created_by' , model('user')::apiBots())->count() }}
 		{{ '' , $web_users = $total - $bot_users }}
 	@endif
 

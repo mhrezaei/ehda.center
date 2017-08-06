@@ -6,14 +6,14 @@ var editor_config = {
 	content_css: assets()+'/css/tinyMCE.min.css',
 	directionality : 'rtl',
 	language: 'fa',
-	plugins: "link,table,textcolor,image,directionality,fullscreen,codesample",
+	plugins: "link,table,textcolor,image,directionality,fullscreen,codesample,code",
 //	plugins: [
 //		"advlist autolink lists link image charmap print preview hr anchor pagebreak",
 //		"searchreplace wordcount visualblocks visualchars code fullscreen",
 //		"insertdatetime media nonbreaking save table contextmenu directionality",
 //		"emoticons template paste textcolor colorpicker textpattern"
 //	],
-	toolbar: ['insertfile undo redo | bold italic underline strikethrough | copy cut paste removeformat | link unlink inserttable | codesample image fullscreen | ',
+	toolbar: ['insertfile undo redo | bold italic underline strikethrough | copy cut paste removeformat | link unlink inserttable | codesample image fullscreen | code ',
 		    'alignleft aligncenter alignright alignjustify | bullist numlist | ltr rtl  | forecolor backcolor forecolorpicker backcolorpicker fontsizeselect'
 //		    , 'outdent indent'
 	],
@@ -33,7 +33,7 @@ var editor_config = {
 		var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
 		var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
 
-		var cmsURL = editor_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
+		var cmsURL = editor_config.path_absolute + 'manage/filemanager?field_name=' + field_name;
 		if (type == 'image') {
 			cmsURL = cmsURL + "&type=Images";
 		} else {

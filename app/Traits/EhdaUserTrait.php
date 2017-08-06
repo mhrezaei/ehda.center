@@ -216,9 +216,9 @@ trait EhdaUserTrait
 	 * @return array of all the bot-users
 	 *
 	 */
-	public static function telegramBots()
+	public static function apiBots()
 	{
-		$role = Role::findBySlug('telegram-bot') ;
+		$role = Role::findBySlug('api') ;
 		return $role->users()->get()->pluck('id') ;
 	}
 

@@ -302,17 +302,17 @@ class ProjectSeeder extends Seeder
 				'is_localized' => "0",
 				'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
 			],
-			[
-				'slug' => "default_role",
-				'title' => "نقش کاربری پیش‌فرض",
-				'category' => "template",
-				'data_type' => "text",
-				'default_value' => 'member',
-				'developers_only' => 1,
-				'is_resident' => "1",
-				'is_localized' => "0",
-				'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-			],
+			//[
+			//	'slug' => "default_role",
+			//	'title' => "نقش کاربری پیش‌فرض",
+			//	'category' => "template",
+			//	'data_type' => "text",
+			//	'default_value' => 'member',
+			//	'developers_only' => 1,
+			//	'is_resident' => "1",
+			//	'is_localized' => "0",
+			//	'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+			//],
 		]);
 
 		/*-----------------------------------------------
