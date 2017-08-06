@@ -46,7 +46,7 @@
 		'color' => "success" ,
 		'class' => "btn btn-default w70" ,
 		'size' => "12" ,
-		'link' => user()->as('admin')->can('users-card-holder.view')? "modal:manage/users/act/$model->id/card-view" : v0() ,
+		'link' => user()->as('admin')->can('users-card-holder.view')? "modal:manage/cards/view/-hash_id-" : v0() ,
 		'condition' => $model->is_a('card-holder') ,
 	]     )
 
@@ -56,7 +56,7 @@
 		'color' => "success" ,
 		'class' => "btn btn-default w70" ,
 		'size' => "12" ,
-		'link' => v0() ,
+		'link' => user()->as('admin')->can('volunteer')? "modal:manage/volunteers/view/-hash_id-" : v0(),
 		'condition' => $model->is_admin() ,
 	]     )
 

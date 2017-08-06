@@ -497,7 +497,7 @@ class UsersController extends Controller
 				$user->enableRole($role_slug);
 			}
 
-			//$user->as($role_slug)->setStatus($new_status) ;
+			$user->as($role_slug)->setStatus($new_status) ;
 		}
 
 		/*-----------------------------------------------

@@ -16,6 +16,7 @@ class Role extends Model
 	public static $reserved_slugs        = 'root,super,user,all,dev,developer,admin';
 	public static $meta_fields           = ['icon', 'fields', 'status_rule', 'locale_titles'];
 	public static $available_field_types = ['text', 'textarea', 'date', 'boolean', 'photo', 'file'];
+	public static $available_prefixes    = ['volunteer', 'responder'];
 	protected     $guarded               = ['id'];
 
 	protected $casts = [
@@ -293,7 +294,7 @@ class Role extends Model
 
 	}
 
-	public static function adminRoles( $additive = null)
+	public static function adminRoles($additive = null)
 	{
 		$admin_roles = Cache::remember("admin_roles-$additive", 100, function () use ($additive) {
 			$roles = self::where('is_admin', true)->get();
@@ -329,7 +330,7 @@ class Role extends Model
 		foreach($this->status_rule_array as $key => $string) {
 			$array[] = [$key, trans("people.criteria.$string")];
 		}
-		$array[] = ['bin', trans('people.criteria.banned') , null ,user()->as('admin')->can("users-$this->slug.bin")];
+		$array[] = ['bin', trans('people.criteria.banned'), null, user()->as('admin')->can("users-$this->slug.bin")];
 		$array[] = ['search', trans('forms.button.search')];
 
 		return $array;

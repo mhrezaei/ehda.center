@@ -185,6 +185,13 @@ class UpstreamController extends Controller
 				}
 				return view("manage.settings.posttypes-row",compact('model'));
 
+			case 'role-users' :
+				$model = Role::withTrashed()->find($item_id) ;
+				if(!$model) {
+					return view('errors.m410');
+				}
+				return view("manage.settings.roles-users",compact('model'));
+				
 
 			default:
 				return view('templates.say', ['array' => "What the hell is $request_tab?"]); //@TODO: REMOVE THIS

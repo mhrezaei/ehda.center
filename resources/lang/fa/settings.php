@@ -4,6 +4,7 @@ return [
 	'states'        => "تقسیمات کشوری",
 	'posttypes'     => "گونه‌های مطالب",
 	'roles'         => "گونه‌های کاربران",
+	'departments' => "تیم‌های پاسخ‌گویی" ,
 	'site_settings' => "تنظیمات سایت",
 
 	'downstream'      => "پیکربندی",

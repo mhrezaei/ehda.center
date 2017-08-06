@@ -96,6 +96,7 @@ Route::group([
 
 		Route::get('/create/{request_role?}/{code_melli?}', 'VolunteersController@createChild');
 		Route::get('/edit/{model_id?}', 'VolunteersController@editorChild');
+		Route::get('/view/{model_id}', 'VolunteersController@view');
 
 		Route::group(['prefix' => 'save'], function () {
 			Route::post('/', 'VolunteersController@saveChild');
@@ -299,7 +300,6 @@ Route::group([
 			Route::post('city', 'UpstreamController@saveCity');
 			Route::post('posttype', 'UpstreamController@savePosttype');
 			Route::post('posttype-titles', 'UpstreamController@savePosttypeTitles');
-			Route::post('department', 'UpstreamController@saveDepartment');
 			Route::post('category', 'UpstreamController@saveCategory');
 			Route::post('downstream', 'UpstreamController@saveDownstream');
 			Route::post('package', 'UpstreamController@savePackage');

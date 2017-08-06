@@ -13,15 +13,15 @@ trait PermitsTrait2
 	public static    $role_prefix_for_domain_admins = 'volunteer';
 	protected static $wildcards                     = ['', 'any', '*'];
 	//protected static $default_role                  = '';
-	protected static $available_permits             = ['browse', 'process', 'view', 'send', 'search', 'create', 'edit', 'publish', 'activate', 'report', 'delete', 'bin'];
-	protected static $coder                         = '~jFCQ?U0y&rvYp8<b9{Ew[V#N;7tx,M51]L(Bq@!^fa|2Z}XgD+lT4Ie>sJmP.huod:*Kkz3nHR-G_f)6iW%cAOS';
-	protected static $alpha                         = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMfNOPQRSTUVWXYZ1234567890-!@#%^&*()_+~[]|;,.{}:<>?';
-	protected        $stored_roles                  = false;
-	protected        $as                            = null;
-	protected        $as_all                        = false;
-	protected        $include_disabled              = false;
-	protected        $min_status                    = false;
-	protected        $max_status                    = false;
+	protected static $available_permits = ['browse', 'process', 'view', 'send', 'search', 'create', 'edit', 'publish', 'activate', 'report', 'delete', 'bin'];
+	protected static $coder             = '~jFCQ?U0y&rvYp8<b9{Ew[V#N;7tx,M51]L(Bq@!^fa|2Z}XgD+lT4Ie>sJmP.huod:*Kkz3nHR-G_f)6iW%cAOS';
+	protected static $alpha             = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMfNOPQRSTUVWXYZ1234567890-!@#%^&*()_+~[]|;,.{}:<>?';
+	protected        $stored_roles      = false;
+	protected        $as                = null;
+	protected        $as_all            = false;
+	protected        $include_disabled  = false;
+	protected        $min_status        = false;
+	protected        $max_status        = false;
 
 	/*
 	|--------------------------------------------------------------------------
@@ -304,7 +304,7 @@ trait PermitsTrait2
 			$string .= " $extension ";
 		}
 
-		return $this->update(['cache_roles' => self::deface($string) .rand(100000,999999)]);
+		return $this->update(['cache_roles' => self::deface($string) . rand(100000, 999999)]);
 	}
 
 	/*
@@ -684,14 +684,14 @@ trait PermitsTrait2
 	}
 
 	/**
-	 * @param string $scope: any special permission that should be checked.
-	 * @param int  $min_status
+	 * @param string $scope : any special permission that should be checked.
+	 * @param int    $min_status
 	 *
 	 * @return Model: of all the domains, the user has access to
 	 * Important: don't forget to use get() after calling this method.
 	 * Example: user()->domainsQuery()->orderBy('folan')->get()
 	 */
-	public function domainsQuery($scope = null , $min_status=8)
+	public function domainsQuery($scope = null, $min_status = 8)
 	{
 		/*-----------------------------------------------
 		| Bypass if the user in question is a manager ...
@@ -708,7 +708,7 @@ trait PermitsTrait2
 		foreach($roles as $role) {
 			if($scope) {
 				if($this->as($role)->cannot($scope)) {
-					continue ;
+					continue;
 				}
 			}
 			if(str_contains($role, self::$role_prefix_for_domain_admins . '-')) {
@@ -723,14 +723,14 @@ trait PermitsTrait2
 
 
 	/**
-	 * @param string $scope: any special permission that should be checked.
-	 * @param int  $min_status
+	 * @param string $scope : any special permission that should be checked.
+	 * @param int    $min_status
 	 *
 	 * @return array: of all the domains, the user has access to
 	 */
-	public function domainsArray($scope = null , $min_status=8)
+	public function domainsArray($scope = null, $min_status = 8)
 	{
-		return $this->domainsQuery($scope , $min_status)->get()->pluck('slug')->toArray();
+		return $this->domainsQuery($scope, $min_status)->get()->pluck('slug')->toArray();
 	}
 
 	/**
@@ -796,6 +796,9 @@ trait PermitsTrait2
 		}
 		if($request == 'superadmin') {
 			return $this->as('admin')->isSuper();
+		}
+		if($request=='admin') {
+			return $this->is_admin() ;
 		}
 
 		/*-----------------------------------------------
@@ -905,7 +908,7 @@ trait PermitsTrait2
 	 */
 	public static function defaultRole($use_cache = true)
 	{
-		return '' ;
+		return '';
 		if($use_cache) {
 			return setting()->ask('default_role')->gain();
 		}

@@ -1,7 +1,9 @@
 <?php
 namespace App\Traits;
 
+use App\Models\Activity;
 use App\Models\Domain;
+use App\Models\Printing;
 use App\Models\Role;
 use App\Models\State;
 use App\Models\User;
@@ -43,6 +45,15 @@ trait EhdaUserTrait
 		}
 	}
 
+	public function cardRegisters()
+	{
+		return Role::findBySlug('card-holder')->users()->where('created_by' , $this->id) ;
+	}
+
+	public function cardPrintings()
+	{
+		return Printing::where('created_by' , $this->id)->orWhere('queued_by' , $this->id)->orWhere('printed_by' , $this->id)->orWhere('verified_by' , $this->id)->orWhere('dispatched_by' , $this->id)->orWhere('delivered_by' , $this->id) ;
+	}
 
 
 	/*
@@ -169,6 +180,17 @@ trait EhdaUserTrait
 		return $return;
 
 	}
+
+	public function getActivitiesArrayAttribute()
+	{
+		return array_filter(explode(',' , str_replace(' ' , null , $this->activities))) ;
+	}
+
+	public function getActivityCaptionsArrayAttribute()
+	{
+		return Activity::slugToCaption($this->activities_array);
+	}
+
 
 
 

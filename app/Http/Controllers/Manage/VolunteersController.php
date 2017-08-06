@@ -418,5 +418,31 @@ class VolunteersController extends UsersController
 
 	}
 
+	public function view($model_hashid)
+	{
+		/*-----------------------------------------------
+		| Security ...
+		*/
+		//if(user()->as('admin')->cannot('users-card-holder.view')) {
+		//	return view('errors.m403');
+		//}
+
+		/*-----------------------------------------------
+		| Model ...
+		*/
+		$model = User::findByHashid($model_hashid);
+		if(!$model or !$model->id or $model->is_not_an('admin')) {
+			return view('errors.m410');
+		}
+
+		/*-----------------------------------------------
+		| View ...
+		*/
+
+		return view("manage.users.volunteer-view", compact('model'));
+
+
+	}
+
 
 }

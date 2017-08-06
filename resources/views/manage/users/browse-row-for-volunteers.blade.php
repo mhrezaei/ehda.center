@@ -13,6 +13,7 @@
 	@include("manage.frame.widgets.grid-text" , [
 		'text' => $model->full_name,
 		'size' => "14" ,
+		'link' => "modal:manage/volunteers/view/-hash_id-" ,
 //		'link-' => user()->as('admin')->can('users-card-holder.view')? "modal:manage/users/act/-id-/card-view" : '',
 	])
 
@@ -75,27 +76,7 @@
 
 	@if($request_role == 'admin')
 
-		@foreach($model->withDisabled()->rolesQuery() as $role)
-			@if($role['pivot']['deleted_at'])
-				{{ '' , $color = 'danger' }}
-				{{ '' , $icon = 'times '}}
-			@elseif($role['pivot']['status'] >= 8)
-				{{ '' , $color = 'success' }}
-				{{ '' , $icon = 'check '}}
-			@else
-				{{ '' , $color = 'default' }}
-				{{ '' , $icon = 'hourglass-half'}}
-			@endif
-			{{--{{ ss($role) }}--}}
-			@include("manage.frame.widgets.grid-badge" , [
-				'condition' => $role['is_admin'],
-				'text' => $role['title'] ,
-				'color' => $color ,
-				'icon' => $icon ,
-				'link' => $model->as($role['slug'])->canPermit()? "modal:manage/users/act/-id-/permits/".$role['slug'] : '',
-			]     )
-		@endforeach
-
+		@include("manage.users.volunteer-view-roles")
 
 	@else
 		@if( $model->as($request_role)->enabled() )
