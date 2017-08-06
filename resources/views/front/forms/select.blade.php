@@ -22,7 +22,7 @@ if (isset($disabled) and $disabled) {
 ?>
 @if(!isset($condition) or $condition)
 
-    <div class="form-group {{$div_class or ''}}">
+    <div class="form-group pull-start {{ $div_class or '' }}">
 
         @if(!isset($label))
             {{ null, $label = Lang::has("validation.attributes.$name") ? trans("validation.attributes.$name") : $name }}

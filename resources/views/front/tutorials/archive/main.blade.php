@@ -9,7 +9,18 @@
 @include('front.frame.open_graph_meta_tags')
 
 @section('content')
-    <div class="container">
-        {!! $postsListHtml !!}
+    <div class="container-fluid">
+        @include('front.frame.position_info', [
+            'group' => trans('front.tutorials.singular'),
+            'groupColor' => 'green',
+            'categoryColor' => 'green',
+        ])
+        <div class="row gallery-archive">
+            <div class="container">
+{{--                @include('front.tutorials.archive.carousel')--}}
+                @include('front.tutorials.archive.filters-row')
+                {!! $postsListHtml !!}
+            </div>
+        </div>
     </div>
 @append

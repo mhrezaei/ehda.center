@@ -103,6 +103,7 @@ return [
     'tutorials' => [
         'singular' => 'آموزش',
         'plural' => 'آموزش‎ها',
+        'all' => 'همه‌ی آموزش‎ها',
     ],
 
     'volunteer_section' => [

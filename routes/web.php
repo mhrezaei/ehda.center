@@ -445,8 +445,9 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
         });
 
         // Tutorials
-        Route::group(['prefix' => 'tutorials'], function () {
-            Route::get('/', 'TutorialsController@archive');
+        Route::group(['prefix' => 'tutorials', /* 'middleware' => 'is:developer,gallery/categories/gallery' */], function () {
+            Route::get('/', 'TutorialsController@archive')->name('tutorials.archive');
+            Route::post('get-posts', 'TutorialsController@ajaxGetPosts')->name('tutorials.get-posts.ajax');
         });
     });
 

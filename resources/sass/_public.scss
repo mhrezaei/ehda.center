@@ -61,18 +61,6 @@ $rtlRatio: 1;
 
 // Keyframes --end
 
-// Aligning --start
-@each $axis, $axisAligning in $aligning {
-  @each $aligningKey, $aligning in $axisAligning {
-    $justifyProperty: map_get($aligningProperties, $axis);
-    .align-#{$axis}-#{$aligning} {
-      @extend %display-flex;
-      #{$justifyProperty}: #{$aligning};
-    }
-  }
-}
-
-// Aligning --end
 // Body --start
 body {
   @extend .text-darkGray;
@@ -707,7 +695,7 @@ header {
     }
   }
   .media-body {
-    padding: 15px 0;
+    @extend .p0;
   }
 }
 
@@ -743,18 +731,6 @@ footer {
 }
 
 // Footer --end
-
-// Font Size --start
-@for $i from 5 to 101 {
-  .f#{$i} {
-    font-size: 1px * $i;
-    @if ($i<10) {
-      font-weight: 100;
-    }
-  }
-}
-
-// Font Size --end
 
 // Rounded Corner --start
 @for $i from 1 to 21 {
@@ -939,39 +915,6 @@ footer {
 
 // Radio and Checkbox --end
 
-%border-solid {
-  border-style: solid;
-}
-
-@for $size from 1 to 6 {
-  .border-#{$size} {
-    @extend %border-solid;
-    border-width: #{$size}px;
-  }
-}
-
-@each $directionShort, $directionLong in $directions {
-  %border-#{$directionLong}-solid {
-    border-#{$directionLong}-style: solid;
-  }
-  @for $i from 0 to 21 {
-    $value: $i * 5;
-    .m#{$directionShort}#{$value} {
-      margin-#{$directionLong}: #{$value}px;
-    }
-    .p#{$directionShort}#{$value} {
-      padding-#{$directionLong}: #{$value}px;
-    }
-  }
-
-  @for $size from 0 to 21 {
-    .border-#{$directionLong}-#{$size} {
-      @extend %border-#{$directionLong}-solid;
-      border-#{$directionLong}-width: #{$size}px;
-    }
-  }
-}
-
 .media-list {
   .media-list-item {
     @extend .media;
@@ -992,8 +935,8 @@ footer {
 
     .media-list-item-image {
       @extend .media-#{$startSide};
-      padding-#{$endSide}: 10px;
-      padding-#{$startSide}: 0px;
+      padding-#{$endSide}: 10px !important;
+      padding-#{$startSide}: 0px !important;
     }
 
     .media-list-item-image img {
@@ -1027,9 +970,6 @@ footer {
 }
 
 /* floating elements */
-%floating {
-  position: absolute;
-}
 
 @each $dShort, $dLong in $directions {
   @for $i from 0 to 11 {
@@ -1038,34 +978,6 @@ footer {
       @extend %floating;
       #{$dLong}: #{$value}px;
     }
-  }
-}
-
-@each $side, $direction in $localeDirections {
-  @for $i from 0 to 11 {
-    $value: $i * 5;
-    .floating-#{$side}-#{$value} {
-      @extend %floating;
-      #{$direction}: #{$value}px;
-    }
-  }
-
-  .text-#{$side} {
-    @extend .text-#{$direction};
-  }
-
-  .pull-#{$side} {
-    @extend .pull-#{$direction};
-  }
-
-  @each $colorName, $colorCode in $colors {
-    .border-#{$side}-#{$colorName} {
-      @extend .border-#{$direction}-#{$colorName};
-    }
-  }
-
-  .media-#{$side} {
-    @extend .media-#{$direction};
   }
 }
 
