@@ -100,6 +100,11 @@ return [
     'powered_by_yasna'                         => 'طراحی و اجرا: گروه یسنا',
     'community_branches'                       => 'شعب انجمن',
 
+    'tutorials' => [
+        'singular' => 'آموزش',
+        'plural' => 'آموزش‎ها',
+    ],
+
     'volunteer_section' => [
         'singular'                 => 'سفیر اهدای عضو',
         'plural'                   => 'سفیران اهدای عضو',
