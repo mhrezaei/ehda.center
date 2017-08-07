@@ -7,11 +7,11 @@
         @if($post->title2 or $post->abstract)
             <div class="slide-text">
                 @if($post->title2)
-                    <h3>{{ $post->title2 }}</h3>
+                    <h3>{{ ad($post->title2) }}</h3>
                 @endif
                 @if($post->abstract)
                     <span class="slide-text-description">
-                    {{ $post->abstract }}
+                    {{ ad($post->abstract) }}
                 </span>
                 @endif
             </div>

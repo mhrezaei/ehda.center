@@ -223,7 +223,7 @@ return [
     ],
 
     'messages' => [
-        'you_are_volunteer'            => 'شما سفیر هستید.',
+        'you_are_volunteer'            => 'شما هم‌اکنون سفیر اهدای عضو هستید.',
         'you_are_card_holder'          => 'شما کارت اعدای عضو دارید.',
         'unable_to_register_card'      => 'امکان ثبت کارت وجود ندارد.',
         'unable_to_register_volunteer' => 'امکان ثبت سفیر وجود ندارد.',

@@ -15,8 +15,8 @@
                 <img src="{{ $post->viewable_featured_image }}">
             </div>
             <div class="media-body">
-                <h4 class="media-heading">{{ $post->title }}</h4>
-                <p class="text-justify">{{ str_limit($post->abstract, $abstractLimit) }}</p>
+                <h4 class="media-heading">{{ ad($post->title) }}</h4>
+                <p class="text-justify">{{ str_limit(ad($post->abstract), $abstractLimit) }}</p>
                 <p class="text-gray">{{ ad(echoDate($post->published_at, 'j F y')) }}</p>
             </div>
         </a>

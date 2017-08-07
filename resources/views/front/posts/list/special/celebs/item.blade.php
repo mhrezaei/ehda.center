@@ -4,7 +4,7 @@
             <img src="{{ $post->viewable_featured_image }}">
         </div>
         <div class="celebs-item-text">
-            <h1>{{ $post->title }}</h1>
+            <h1>{{ ad($post->title) }}</h1>
             <p class="f22">
                 بازیگر، نویسنده، مترجم
             </p>

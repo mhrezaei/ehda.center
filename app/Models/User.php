@@ -569,7 +569,7 @@ class User extends Authenticatable
 	{
 		return Role::all();
 	}
-
+    
 	public function roleStatusCombo()
 	{
 		return [

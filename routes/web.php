@@ -396,12 +396,6 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
         |--------------------------------------------------------------------------
         | For the holders of cards, in 'members' folder
         */
-        // @TODO: view not work check it
-        Route::group(['prefix' => 'members', 'middleware' => 'is:card-holder'], function () {
-            Route::get('/my_card', 'MembersController@index');
-            Route::get('/my_card/edit', 'MembersController@edit_my_card');
-            Route::post('/my_card/edit_process', 'MembersController@edit_card_process');
-        });
 
         // another route copy from ehda-b1 project
         Route::get('/{identifier}', 'PostController@show_with_short_url')
