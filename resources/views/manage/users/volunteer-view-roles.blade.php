@@ -1,5 +1,12 @@
-@foreach($model->withDisabled()->rolesQuery() as $role)
+{{--
+|--------------------------------------------------------------------------
+| Admin Roles
+|--------------------------------------------------------------------------
+|
+--}}
 
+{{ '' , $support_roles = [] }}
+@foreach($model->withDisabled()->rolesQuery() as $role)
 
 	@if($role['pivot']['deleted_at'])
 		{{ '' , $color = 'danger' }}
@@ -10,6 +17,10 @@
 	@else
 		{{ '' , $color = 'default' }}
 		{{ '' , $icon = 'hourglass-half'}}
+	@endif
+
+	@if(str_contains($role['slug'] , 'support-'))
+		{{ '' , $support_roles[] = $role }}
 	@endif
 
 	@include("manage.frame.widgets.grid-badge" , [
@@ -24,11 +35,35 @@
 @endforeach
 
 
+
+
+{{--
+|--------------------------------------------------------------------------
+| Support Roles
+|--------------------------------------------------------------------------
+| Uses the $support_roles arrray, genereated in the previous loop
+--}}
+
+@foreach( $support_roles as $support_role)
+	@include("manage.frame.widgets.grid-badge" , [
+		'text' => $support_role['title'],
+		'color' => "info" ,
+		'icon' => 'ambulance' ,
+	]     )
+@endforeach
+
+
+{{--
+|--------------------------------------------------------------------------
+| Full Role Management
+|--------------------------------------------------------------------------
+|
+--}}
 @include("manage.frame.widgets.grid-badge" , [
 	'text' => trans("people.role_management"),
 	'color' => "default" ,
 	'icon' => "cog" ,
 	'link' => "modal:manage/users/act/-id-/roles/" ,
-	'condition' => $model->canPermit() ,
+	'condition' => user()->isDeveloper() , //$model->canPermit() ,
 ]     )
 

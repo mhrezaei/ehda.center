@@ -38,6 +38,7 @@ return [
 		'send_email'          => "ارسال ایمیل",
 		'according_to_domain' => "بر اساس دامنه",
 		'profile'             => "پرونده",
+		'view_profile'        => "مشاهده پرونده",
 		'delete_account'      => "حذف حساب کاربری",
 	],
 
@@ -79,7 +80,7 @@ return [
 		'cooperation_in_card_registers' => "مشارکت در ثبت نام کارت اهدای عضو",
 		'cooperation_in_card_printings' => "مشارکت در چاپ کارت اهدای عضو",
 		'n_years_old'                   => ":n ساله",
-	     'no_p' => "" ,
+		'no_p'                          => "",
 	],
 
 	'criteria' => [

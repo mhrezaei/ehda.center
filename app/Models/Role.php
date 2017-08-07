@@ -16,7 +16,7 @@ class Role extends Model
 	public static $reserved_slugs        = 'root,super,user,all,dev,developer,admin';
 	public static $meta_fields           = ['icon', 'fields', 'status_rule', 'locale_titles'];
 	public static $available_field_types = ['text', 'textarea', 'date', 'boolean', 'photo', 'file'];
-	public static $available_prefixes    = ['volunteer', 'responder'];
+	public static $support_role_prefix   = 'support';
 	protected     $guarded               = ['id'];
 
 	protected $casts = [
@@ -42,6 +42,17 @@ class Role extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
+	public function getIsSupportAttribute()
+	{
+		if(str_contains($this->slug , self::$support_role_prefix.'-')) {
+			return true ;
+		}
+		else {
+			return false ;
+		}
+	}
+
+
 	public function getStatusAttribute()
 	{
 		if($this->trashed()) {
@@ -214,6 +225,7 @@ class Role extends Model
 	public function cacheRegenerate()
 	{
 		Cache::forget("admin_roles");
+		Cache::forget("support_roles");
 	}
 
 	/*
@@ -307,6 +319,16 @@ class Role extends Model
 		});
 
 		return $admin_roles;
+	}
+
+	public static function supportRoles()
+	{
+		$support_roles = Cache::remember("support_roles" , 100 , function() {
+			$roles = self::where('slug' , 'like' , self::$support_role_prefix . '-%')->orderBy('title')->get() ;
+			return $roles ;
+		});
+
+		return $support_roles ;
 	}
 
 	public function browseTabs()

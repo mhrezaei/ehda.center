@@ -24,17 +24,20 @@
 				</a>
 			</li>
 
+
+			{{-- Users -------------------------------}}
 			@if(isset($modules['users']) )
 				{{ '' , $module_users = $modules['users'] }}
 				{{ '' , array_forget($modules , 'users') }}
 				@if( in_array( $request_role->slug , model('role')::adminRoles()) and user()->as_any()->can("users"))
-					<li role="presentation"><a href="#divPeoplePermits" aria-controls="divPeoplePermits"
-															  role="tab"
-															  data-toggle="tab">{{ trans("people.people_management") }}</a>
+					<li role="presentation">
+						<a href="#divPeoplePermits" aria-controls="divPeoplePermits" role="tab" data-toggle="tab">{{ trans("people.people_management") }}</a>
 					</li>
 				@endif
 			@endif
 
+
+			{{-- Posts -------------------------------}}
 			@if(isset($modules['posts']))
 				{{ '' , $module_posts = $modules['posts'] }}
 				{{ '' , array_forget($modules , 'posts') }}
@@ -45,6 +48,7 @@
 				@endif
 			@endif
 
+			{{-- Other Modules -------------------------------}}
 			@if(count($modules))
 				<li role="presentation"><a href="#divOtherPermits" aria-controls="divOtherPermits" role="tab"
 										   data-toggle="tab">{{ trans('manage.modules.other_modules') }}</a></li>

@@ -72,6 +72,14 @@
 			'color' => "warning" ,
 		]     )
 	@endif
+
+	@if($model->is_support)
+		@include("manage.frame.widgets.grid-badge" , [
+			'icon' => "ambulance",
+			'text' => trans("settings.support") ,
+			'color' => "info" ,
+		]     )
+	@endif
 </td>
 
 {{--

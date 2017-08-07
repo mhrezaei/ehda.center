@@ -487,18 +487,11 @@ class User extends Authenticatable
 			if(user()->as('admin')->can("users-$role_slug.edit"))
 				return true ;
 		}
-		return false ;
 
-		//if($this->is_admin()) {
-		//	$allowed_roles = user()->userRolesArray('edit' , [] , model('role')::adminRoles() ;
-		//}
-		//
-		//if(!$request_role or $request_role == 'admin') {
-		//	return user()->is_a('superadmin');
-		//}
-		//else {
-		//	return Role::checkManagePermission($request_role, 'edit');
-		//}
+		/*-----------------------------------------------
+		| Just in case :) ...
+		*/
+		return false ;
 	}
 
 	public function canDelete()
@@ -506,20 +499,33 @@ class User extends Authenticatable
 		$request_role = $this->getChain('as');
 
 		/*-----------------------------------------------
-		| Power users ...
+		| Simple Decisions ...
 		*/
 		if($this->is_a('developer')) {
 			return user()->is_a('developer');
 		}
-		elseif($this->is_admin()) {
-			//return user()->is_a('superadmin');
+		if($this->id == user()->id) {
+			return false ;
 		}
 
 		/*-----------------------------------------------
-		| Other users ... @TODO: complete this part
+		| Other users ...
 		*/
+		if($request_role) {
+			return user()->as($request_role)->can('delete');
+		}
+		else {
+			foreach($this->as('all')->rolesArray() as $role_slug) {
+				if(user()->as('admin')->can("users-$role_slug.delete")) {
+					return true;
+				}
+			}
+		}
 
-		return user()->is_a('superadmin');
+		/*-----------------------------------------------
+		| Just in case :) ...
+		*/
+		return false ;
 
 	}
 
@@ -528,20 +534,33 @@ class User extends Authenticatable
 		$request_role = $this->getChain('as');
 
 		/*-----------------------------------------------
-		| Power users ...
+		| Simple Decisions ...
 		*/
 		if($this->is_a('developer')) {
 			return user()->is_a('developer');
 		}
-		elseif($this->is_an('admin')) {
-			return user()->is_a('superadmin');
+		if($this->id == user()->id) {
+			return false ;
 		}
 
 		/*-----------------------------------------------
-		| Other users ... @TODO: complete this part
+		| Other users ...
 		*/
+		if($request_role) {
+			return user()->as($request_role)->can('bin');
+		}
+		else {
+			foreach($this->as('all')->rolesArray() as $role_slug) {
+				if(user()->as('admin')->can("users-$role_slug.bin")) {
+					return true;
+				}
+			}
+		}
 
-		return user()->is_a('superadmin');
+		/*-----------------------------------------------
+		| Just in case :) ...
+		*/
+		return false ;
 
 	}
 
@@ -571,12 +590,7 @@ class User extends Authenticatable
 		| In case of a specified role ...
 		*/
 		if($request_role) {
-			if($this->as($request_role)->disabled()) {
-				return false;
-			}
-			else {
-				return user()->as($request_role)->can('permit');
-			}
+			return user()->as($request_role)->can('permit');
 		}
 
 		/*-----------------------------------------------
@@ -585,6 +599,11 @@ class User extends Authenticatable
 		if(!$request_role) {
 			return user()->as_any()->can('users-all.permit');
 		}
+
+		/*-----------------------------------------------
+		| Just in case :) ...
+		*/
+		return false ;
 
 	}
 
