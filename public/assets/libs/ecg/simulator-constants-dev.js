@@ -15,7 +15,7 @@ window.timeouts = {
     // Allowed time to stay in "VTach" status before case die
     VTack: 50 * 1000,
     // Allowed time to stay in "Treatments" page before inject FIO2
-    needToFIO2: 1 * 1000,
+    needToFIO2: 10 * 1000,
 };
 
 // Styles using in js calculations

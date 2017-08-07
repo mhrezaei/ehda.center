@@ -1,4 +1,5 @@
-<div id="more-info" class="page">
+<div id="more-info" class="page"
+     data-showing-action="pageTimeout($('#more-info'), window.timeouts.moreInfo, ventricularTachycardia)">
     <div class="page-content">
         <h3>More Information</h3>
         <p class="text-justify case-more-information"></p>

@@ -45,10 +45,10 @@
                 <button class="btn btn-block show-case-info" data-page="#more-info">More Info
                 </button>
             </div>
-            <div class="col-md-12 col-sm-6 col-xs-12 mb10">
-                <button class="btn btn-block show-case-info" data-page="#laboratory-exams">Exams
-                </button>
-            </div>
+            {{--<div class="col-md-12 col-sm-6 col-xs-12 mb10">--}}
+                {{--<button class="btn btn-block show-case-info" data-page="#laboratory-exams">Exams--}}
+                {{--</button>--}}
+            {{--</div>--}}
         </div>
     </div>
 </div>

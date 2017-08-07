@@ -24,8 +24,8 @@ $(document).ready(function () {
     lowLag.init({'urlPrefix': siteUrl + '/assets/sound/'});
     lowLag.load(['heartSound.mp3', 'heartSound.ogg'], 'pluck1');
     lowLag.load(['beep.mp3'], 'beep');
-    lowLag.load(['charging.mp3', 'charging.waw'], 'charging');
-    lowLag.load(['electricShock.mp3', 'electricShock.waw'], 'electricShock');
+    lowLag.load(['charging.mp3', 'charging.wav'], 'charging');
+    lowLag.load(['electricShock.mp3', 'electricShock.wav'], 'electricShock');
 
     // Load cases data
     loadData();
@@ -181,15 +181,15 @@ $(document).ready(function () {
     }, '.btn-inject-remove');
 
     // Charging shocker btn
-    $('.monitor-ecg-shock-box').find('.btn-charge-shocker').click(function () {
+    $('.monitor-ecg-shock-box').find('.btn-charge-shocker').unbind('click').bind('click',function () {
         var energy = $('.shocker-energy').val();
         chargeShocker(energy);
     });
 
     // Do Shock (with charged shocker)
-    $('.monitor-ecg-shock-box').find('.btn-shock').click(function () {
+    $('.monitor-ecg-shock-box').find('.btn-shock').unbind('click').bind('click',(function () {
         doShock();
-    });
+    }));
 
     // Showing case info in treatments page
     $('.show-case-info').click(function () {
@@ -324,7 +324,7 @@ function passStartQuestionStep(page) {
                 window.tmpReaction.toPage = targetPage;
 
                 console.log(currentTime())
-                pageTimeout($('#more-info'), window.timeouts.moreInfo, ventricularTachycardia);
+                // pageTimeout($('#more-info'), window.timeouts.moreInfo, ventricularTachycardia);
                 break;
             case "2":
                 var targetPage = $('#laboratory-exams');
@@ -334,7 +334,7 @@ function passStartQuestionStep(page) {
                 window.tmpReaction.toPage = targetPage;
 
                 console.log(currentTime())
-                pageTimeout($('#laboratory-exams'), window.timeouts.exams, ventricularTachycardia);
+                // pageTimeout($('#laboratory-exams'), window.timeouts.exams, ventricularTachycardia);
                 break;
             case "3":
                 var targetPage = $('#treatment-modalities');
@@ -642,7 +642,7 @@ function doShock() {
         clearTimeout(window.timers.die);
         delete window.timers.die;
 
-        window.reactionForceData = {auto: true};
+        // window.reactionForceData = {auto: true};
         backStep();
         delete window.reactionForceData;
 

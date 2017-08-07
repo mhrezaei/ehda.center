@@ -1,4 +1,5 @@
-<div id="laboratory-exams" class="page page-fluid">
+<div id="laboratory-exams" class="page page-fluid"
+     data-showing-action="pageTimeout($('#laboratory-exams'), window.timeouts.exams, ventricularTachycardia)">
     <ul class="nav nav-tabs nav-justified">
         <li class="active">
             <a data-toggle="tab" href="#laboratory-exams-cbc">CBC</a>
