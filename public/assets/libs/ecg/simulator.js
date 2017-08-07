@@ -181,13 +181,13 @@ $(document).ready(function () {
     }, '.btn-inject-remove');
 
     // Charging shocker btn
-    $('.monitor-ecg-shock-box').find('.btn-charge-shocker').unbind('click').bind('click',function () {
+    $('.monitor-ecg-shock-box').find('.btn-charge-shocker').unbind('click').bind('click', function () {
         var energy = $('.shocker-energy').val();
         chargeShocker(energy);
     });
 
     // Do Shock (with charged shocker)
-    $('.monitor-ecg-shock-box').find('.btn-shock').unbind('click').bind('click',(function () {
+    $('.monitor-ecg-shock-box').find('.btn-shock').unbind('click').bind('click', (function () {
         doShock();
     }));
 

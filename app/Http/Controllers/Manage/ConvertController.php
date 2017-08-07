@@ -461,5 +461,74 @@ class ConvertController extends Controller
 		return login(303793);
 	}
 
+	public function images($take = 50, $loop = true)
+    {
+        $posts = Post::where('converted', '0')->take($take)->get();
+        $last_post_id = 0;
+        $counter      = 0;
+
+        $search_folder = '/خبر ایران اهدا /';
+        $search_folder2 = '/خبر ایران اهدا/';
+        $replace_folder = '/news_iran/';
+
+        $search_folder3 = '/assets';
+        $replace_folder2 = '';
+
+        $search_folder4 = '/خیر جهان/';
+        $replace_folder3 = '/news_world/';
+
+        $search_folder5 = '/رویدادها/';
+        $replace_folder4 = '/events/';
+
+        $search_folder6 = '/جشن نفس/';
+        $replace_folder5 = '/jashn_nafas/';
+
+        $search_folder7 = '/فرما/';
+        $replace_folder6 = '/angels1/';
+
+        $search_folder8 = '/فرما2/';
+        $replace_folder7 = '/angels2/';
+
+
+
+        foreach ($posts as $post)
+        {
+            $new_image = str_replace($search_folder, $replace_folder, $post->featured_image);
+            $new_image = str_replace($search_folder2, $replace_folder, $new_image);
+            $new_image = str_replace($search_folder4, $replace_folder3, $new_image);
+            $new_image = str_replace($search_folder5, $replace_folder4, $new_image);
+            $new_image = str_replace($search_folder6, $replace_folder5, $new_image);
+            $new_image = str_replace($search_folder7, $replace_folder6, $new_image);
+            $new_image = str_replace($search_folder8, $replace_folder7, $new_image);
+
+
+            $new_text = str_replace($search_folder, $replace_folder, $post->text);
+            $new_text = str_replace($search_folder2, $replace_folder, $new_text);
+            $new_text = str_replace($search_folder3, $replace_folder2, $new_text);
+            $new_text = str_replace($search_folder4, $replace_folder3, $new_text);
+            $new_text = str_replace($search_folder5, $replace_folder4, $new_text);
+            $new_text = str_replace($search_folder6, $replace_folder5, $new_text);
+            $new_text = str_replace($search_folder7, $replace_folder6, $new_text);
+            $new_text = str_replace($search_folder8, $replace_folder7, $new_text);
+
+            $post->update([
+                'text' => $new_text,
+                'featured_image' => $new_image,
+                'converted' => 1,
+            ]);
+
+            $last_post_id = $post->id;
+            $counter++;
+        }
+
+        ss("Counter: $counter");
+        ss("Last Post Created id: " . $last_post_id);
+
+        //return ;
+        if($counter > 0 and $loop) {
+            echo "<script>location.reload();</script>";
+        }
+    }
+
 
 }
