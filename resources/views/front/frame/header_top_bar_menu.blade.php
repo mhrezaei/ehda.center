@@ -9,7 +9,7 @@
     @if(user()->exists)
         <li class="has-child pull-start">
             <a href="/">{{ str_replace('::user', user()->name_first, trans('front.profile_phrases.welcome_user')) }}</a>
-            <ul class="list-unstyled bg-primary">
+            <ul class="list-unstyled bg-blue">
                 @if(user()->is_admin()) {{-- This user is a volunteer --}}
                 <li><a href="{{ url('/manage') }}">{{ trans('front.volunteer_section.section') }}</a></li>
                 @endif
@@ -19,7 +19,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ url_locale('members/my_card/edit') }}">{{ trans('front.member_section.profile_edit') }}</a>
+                    <a href="{{ route_locale('user.profile.edit') }}">{{ trans('front.member_section.profile_edit') }}</a>
                 </li>
                 @endif
                 <li><a href="{{ url('/logout') }}">{{ trans('front.member_section.sign_out') }}</a></li>

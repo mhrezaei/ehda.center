@@ -99,6 +99,13 @@ return [
     'share'                                    => 'اشتراک',
     'powered_by_yasna'                         => 'طراحی و اجرا: گروه یسنا',
     'community_branches'                       => 'شعب انجمن',
+    'email_has_been_sent_automatically'        => 'توجه : این ایمیل به صورت خودکار فرستاده شده است ، بنابراین به آن پاسخ ندهید. ',
+
+    'tutorials' => [
+        'singular' => 'آموزش',
+        'plural'   => 'آموزش‎ها',
+        'all'      => 'همه‌ی آموزش‎ها',
+    ],
 
     'volunteer_section' => [
         'singular'                 => 'سفیر اهدای عضو',
@@ -127,6 +134,7 @@ return [
         'download'                 => 'ذخیره کارت اهدای عضو',
         'preview'                  => 'نمایش کارت اهدای عضو',
         'card'                     => 'کارت',
+        'register'                 => 'ثبت نام کارت اهدای عضو',
         'partial'                  => [
             'part1' => 'کارت',
             'part2' => 'اهدای',
@@ -134,29 +142,28 @@ return [
         ],
         'types'                    => [
             'mini'   => [
-                'title'       => 'کم‌حجم',
-                'description' => 'این فایل کم‌حجم است.',
+                'title'       => 'همراه',
+                'description' => 'فایل کم‌حجم پشت و روی کارت به آسانی قابل دریافت خواهد بود. اما برای چاپ گزینه‌ی مناسبی نیست.',
             ],
             'single' => [
                 'title'       => 'فقط رو',
-                'description' => 'این فایل فقط رو است.',
+                'description' => 'فقط روی کارت با وضوح تصویری قابل قبول برای چاپ در این نسخه مهیا است.',
             ],
             'social' => [
                 'title'       => 'قابل اشتراک',
-                'description' => 'این فایل قابل اشتراک است.',
+                'description' => 'در این نسخه از کارت اهدای عضو اطلاعات محرمانه‌ی شما حذف شده و آماده‌ی هم‌رسانی در شبکه‌های اجتماعی است.',
             ],
             'full'   => [
                 'title'       => 'قابل چاپ',
-                'description' => 'این فایل قابل چاپ است.',
+                'description' => 'این نسخه از کارت اهدای عضو، با وضوح تصویری بالا، بهترین گزینه برای چاپ با چاپ‌گرهای خانگی است.',
             ],
         ],
         'register_success_message' => [
             'sms'   => "سلام :name، \n\r
 کارت اهدای عضو شما با شماره عضویت :membershipNumber در سایت اهدا ثبت گردید.\n\r
 :site",
-            'email' => "سلام :name، \n\r
-کارت اهدای عضو شما با شماره عضویت :membershipNumber در سایت اهدا ثبت گردید.\n\r
-:site",
+            'email' => "سلام :name، <br />
+کارت اهدای عضو شما با شماره عضویت :membershipNumber در سایت اهدا ثبت گردید.",
         ],
     ],
 
@@ -217,11 +224,22 @@ return [
     ],
 
     'messages' => [
-        'you_are_volunteer'            => 'شما سفیر هستید.',
-        'you_are_card_holder'          => 'شما کارت اعدای عضو دارید.',
-        'unable_to_register_card'      => 'امکان ثبت کارت وجود ندارد.',
-        'unable_to_register_volunteer' => 'امکان ثبت سفیر وجود ندارد.',
-        'login'                        => 'وارد شوید.',
+        'you_are_volunteer'                        => 'شما هم‌اکنون سفیر اهدای عضو هستید.',
+        'login_to_complete_volunteer_registration' => [
+            'before_link' => 'جهت ثبت نام کارت اهدای عضو',
+            'link_text'   => 'وارد',
+            'after_link'  => 'شوید.',
+        ],
+        'you_are_card_holder'                      => 'شما کارت اعدای عضو دارید.',
+        'card_exists_with_this_code_melli'         => 'برای این کد ملی کارت اهدای عضو صادر شده است.',
+        'please_login'                             => [
+            'before_link' => 'لطفاً',
+            'link_text'   => 'وارد',
+            'after_link'  => 'شوید.',
+        ],
+        'unable_to_register_card'                  => 'امکان ثبت کارت وجود ندارد.',
+        'unable_to_register_volunteer'             => 'امکان ثبت سفیر وجود ندارد.',
+        'login'                                    => 'وارد شوید.',
     ],
 
     'notes' => [

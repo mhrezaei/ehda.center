@@ -31,9 +31,9 @@ Route::get('manage/heyCheck', 'Front\FrontController@heyCheck');
 |
 */
 Route::group([ //@TODO: Remove when project fully erected.
-               'prefix'    => "convert",
-               //'middleware' => ['auth','is:developer'] ,
-               'namespace' => "Manage",
+    'prefix'    => "convert",
+    //'middleware' => ['auth','is:developer'] ,
+    'namespace' => "Manage",
 ], function () {
 	Route::get('/', 'ConvertController@index');
 	Route::get('/taha', 'ConvertController@createTaha');
@@ -57,9 +57,9 @@ Route::group([ //@TODO: Remove when project fully erected.
 |
 */
 Route::group([
-	'prefix'     => "manage",
-	'middleware' => ['auth', 'is:admin'],
-	'namespace'  => "Manage",
+    'prefix'     => "manage",
+    'middleware' => ['auth', 'is:admin'],
+    'namespace'  => "Manage",
 ], function () {
 	Route::get('/', 'HomeController@index');
 	Route::get('/index', 'HomeController@index');
@@ -318,20 +318,20 @@ Route::group([
 |
 */
 Route::group(['namespace' => 'Auth', 'prefix' => '{lang}', 'middleware' => ['DetectLanguage', 'Setting']], function () {
-	// reset password
-	Route::get('/password/reset', 'ForgotPasswordController@showLinkRequestForm');
-	Route::post('/password/reset', 'ForgotPasswordController@sendResetLinkEmail');
-	Route::get('/password/token/{haveCode?}', 'ForgotPasswordController@getToken');
-	Route::post('/password/token', 'ForgotPasswordController@checkToken');
-	Route::get('/password/new', 'ForgotPasswordController@newPassword');
-	Route::post('/password/new', 'ForgotPasswordController@changePassword');
+    // reset password
+    Route::get('/password/reset', 'ForgotPasswordController@showLinkRequestForm');
+    Route::post('/password/reset', 'ForgotPasswordController@sendResetLinkEmail');
+    Route::get('/password/token/{haveCode?}', 'ForgotPasswordController@getToken');
+    Route::post('/password/token', 'ForgotPasswordController@checkToken');
+    Route::get('/password/new', 'ForgotPasswordController@newPassword');
+    Route::post('/password/new', 'ForgotPasswordController@changePassword');
 
 });
 
 // uplaod url to b used in dropzone
 Route::group(['prefix' => 'file'], function () {
-	Route::post('upload', 'DropzoneController@upload_file')->name('dropzone.upload');
-	Route::post('remove', 'DropzoneController@remove_file')->name('dropzone.remove');
+    Route::post('upload', 'DropzoneController@upload_file')->name('dropzone.upload');
+    Route::post('remove', 'DropzoneController@remove_file')->name('dropzone.remove');
 });
 
 Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Setting', 'Subdomain']], function () {
@@ -363,6 +363,9 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
             Route::get('volunteers', 'TestController@volunteers');
             Route::get('faqs', 'TestController@faqs');
             Route::get('works/send', 'TestController@works_send');
+            Route::get('mail-view', 'TestController@mail_view');
+            Route::get('messages', 'TestController@messages');
+            Route::get('messages/send', 'TestController@messages_send');
         });
         Route::get('about', 'TestController@about');
 
@@ -397,12 +400,6 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
         |--------------------------------------------------------------------------
         | For the holders of cards, in 'members' folder
         */
-        // @TODO: view not work check it
-        Route::group(['prefix' => 'members', 'middleware' => 'is:card-holder'], function () {
-            Route::get('/my_card', 'MembersController@index');
-            Route::get('/my_card/edit', 'MembersController@edit_my_card');
-            Route::post('/my_card/edit_process', 'MembersController@edit_card_process');
-        });
 
         // another route copy from ehda-b1 project
         Route::get('/{identifier}', 'PostController@show_with_short_url')
@@ -443,6 +440,12 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
         // States
         Route::group(['prefix' => 'states'], function () {
             Route::get('/', 'StatesController@map')->name('states.index');
+        });
+
+        // Tutorials
+        Route::group(['prefix' => 'tutorials', /* 'middleware' => 'is:developer,gallery/categories/gallery' */], function () {
+            Route::get('/', 'TutorialsController@archive')->name('tutorials.archive');
+            Route::post('get-posts', 'TutorialsController@ajaxGetPosts')->name('tutorials.get-posts.ajax');
         });
     });
 

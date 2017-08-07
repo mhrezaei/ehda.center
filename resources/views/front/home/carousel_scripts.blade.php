@@ -1,4 +1,4 @@
-@section('endOfBody');
+@section('endOfBody')
 <script>
     $(document).ready(function () {
         $(".home-slider").owlCarousel({

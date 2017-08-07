@@ -1,7 +1,7 @@
 {{ '', $event->spreadMeta() }}
 <section class="panel event-item">
     <header>
-        <div class="title"> {{ $event->title }} </div>
+        <div class="title"> {{ ad($event->title) }} </div>
         <div class="text-gray alt mt10 f16">
             <span class="f12">
                 <i class="fa fa-clock-o"></i>

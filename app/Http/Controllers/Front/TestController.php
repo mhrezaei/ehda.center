@@ -9,6 +9,7 @@ use App\Models\Receipt;
 use App\Models\Test\Meta;
 use App\Models\File;
 use App\Models\User;
+use App\Providers\MessagesServiceProvider;
 use App\Providers\PostsServiceProvider;
 use App\Providers\UploadServiceProvider;
 use Illuminate\Http\Request;
@@ -289,4 +290,51 @@ class TestController extends Controller
         return response()->json(['success' => 'fileName.gif']);
     }
 
+    public function mail_view()
+    {
+        $user = user();
+        $text = view('front.card.verification.email', compact('user'))->render();
+        return view('templates.email.default_email', compact('text'));
+    }
+
+    public function messages()
+    {
+        $user = user();
+
+        // Sending SMS
+        if ($user->mobile) {
+            $smsText = trans('front.volunteer_section.register_success_message.sms', [
+                'name' => $user->full_name,
+                'site' => setting()->ask('site_url')->gain(),
+            ]);
+
+            MessagesServiceProvider::storeMessages([
+                'type'     => 'sms',
+                'receiver' => $user->mobile,
+                'content'  => $smsText,
+            ]);
+
+        }
+
+        // Sending Mail
+        if ($user->email) {
+            $emailContent = trans('front.volunteer_section.register_success_message.email', [
+                'name' => $user->full_name,
+                'site' => setting()->ask('site_url')->gain(),
+            ]);
+
+
+            MessagesServiceProvider::storeMessages([
+                'type'     => 'email',
+                'receiver' => $user->email,
+                'content'  => $emailContent,
+                'subject'  => trans('front.volunteer_section.register'),
+            ]);
+        }
+    }
+
+    public function messages_send()
+    {
+        MessagesServiceProvider::sendPendingMessages();
+    }
 }

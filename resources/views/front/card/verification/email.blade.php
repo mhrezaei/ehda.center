@@ -1,17 +1,13 @@
 <p style="text-align: justify">
-    {{
-     str_replace([
-                ':name',
-                ':membershipNumber',
-                ':site',
-            ], [
-                $user->full_name,
-                $user->card_no,
-                setting()->ask('site_url')->gain(),
-            ],
-                trans('front.organ_donation_card_section.register_success_message.email'))
-     }}
+    {!! trans('front.organ_donation_card_section.register_success_message.email', [
+                'name' => $user->full_name,
+                'membershipNumber' => $user->card_no,
+            ]
+    ) !!}
 </p>
+<a href="{{ setting()->ask('site_url')->gain() }}" target="_blank">
+    {{ setting()->ask('site_title')->gain() }}
+</a>
 <p style="text-align: center">
     <img src="{{ $user->cards('social') }}">
 </p>
