@@ -21,8 +21,8 @@
                  data-empty-fill="{{ $fillColor }}"></div>
         </div>
         <div class="timer-message col-xs-6 col-lg-12">
-            <strong>{{ $post->title }}</strong>
-            <span>{{ $post->abstract }}</span>
+            <strong>{{ ad($post->title) }}</strong>
+            <span>{{ ad($post->abstract) }}</span>
         </div>
     </div>
 </div>

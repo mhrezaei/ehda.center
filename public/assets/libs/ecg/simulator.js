@@ -2,41 +2,56 @@
  * Created by Yasna-PC1 on 19/07/2017.
  */
 
+// Id of case will be read from cases.json file
 window.caseId = 1;
+// Every reaction that client makes will be stored in "window.reactions"
 window.reactions = [];
+// Every timers and timeouts will be stored in "window.timers"
 window.timers = {};
+// Level of shocker's charge
 window.shockerCharge = 0;
+// Current info of case will be accessible in "window.currentData"
 window.currentData = {};
 
 $(document).ready(function () {
+    // Correct view (Fit view port size)
     correctView();
 
+    // Force not to cache files in ajax request
     $.ajaxSetup({cache: false});
 
+    // Load sounds
     lowLag.init({'urlPrefix': siteUrl + '/assets/sound/'});
     lowLag.load(['heartSound.mp3', 'heartSound.ogg'], 'pluck1');
     lowLag.load(['beep.mp3'], 'beep');
-    lowLag.load(['charging.mp3', 'charging.waw'], 'charging');
-    lowLag.load(['electricShock.mp3', 'electricShock.waw'], 'electricShock');
+    lowLag.load(['charging.mp3', 'charging.wav'], 'charging');
+    lowLag.load(['electricShock.mp3', 'electricShock.wav'], 'electricShock');
 
+    // Load cases data
     loadData();
 
+    /**
+     ***********************************
+     * Event Listeners
+     ***********************************
+     */
+
+    // Correct view in every resize window
     $(window).resize(function () {
         correctView();
     });
 
+    // If each item in right side column except "management panel" show or hide,
+    // management panel height should be fixed again.
     $('.monitor-column-2')
         .children()
         .not('.monitor-case-management-panel')
         .on('show', function () {
-            correctControlPanelHeight();
+            correctManagementPanelHeight();
         })
         .on('hide', function () {
-            correctControlPanelHeight();
+            correctManagementPanelHeight();
         });
-
-    $('#treatment-modalities.page').on('show', function () {
-    });
 
     $('.pass-step').click(function () {
         var page = $(this).closest('.page');
@@ -48,6 +63,7 @@ $(document).ready(function () {
         backStep(page);
     });
 
+    // Related to each other inputs in treatments page
     $('.treatment-form').find(':input').change(function () {
         var that = $(this);
         var related = that.attr('data-relted');
@@ -60,6 +76,7 @@ $(document).ready(function () {
         }
     });
 
+    // Applying Treatments
     $('.treatment-form').on({
         click: function (event) {
             event.preventDefault();
@@ -142,6 +159,7 @@ $(document).ready(function () {
         }
     }, '.btn-inject');
 
+    // Removing treatments
     $('.treatment-form').on({
         click: function (event) {
             event.preventDefault();
@@ -162,15 +180,18 @@ $(document).ready(function () {
         }
     }, '.btn-inject-remove');
 
-    $('.monitor-ecg-shock-box').find('.btn-charge-shocker').click(function () {
+    // Charging shocker btn
+    $('.monitor-ecg-shock-box').find('.btn-charge-shocker').unbind('click').bind('click', function () {
         var energy = $('.shocker-energy').val();
         chargeShocker(energy);
     });
 
-    $('.monitor-ecg-shock-box').find('.btn-shock').click(function () {
+    // Do Shock (with charged shocker)
+    $('.monitor-ecg-shock-box').find('.btn-shock').unbind('click').bind('click', (function () {
         doShock();
-    });
+    }));
 
+    // Showing case info in treatments page
     $('.show-case-info').click(function () {
         var btn = $(this);
         var target = btn.attr('data-page');
@@ -179,6 +200,11 @@ $(document).ready(function () {
     });
 });
 
+/**
+ * Converts dash separated string to object route to be used in eval
+ * @param {string} string
+ * @returns {string}
+ */
 function dash2brace(string) {
     var parts = string.split('-');
     var result = '';
@@ -235,6 +261,11 @@ function loading(task) {
     }
 }
 
+/**
+ * Takes action on passing in every page
+ *
+ * @param page
+ */
 function passStep(page) {
     var stepName = page.attr('data-step');
 
@@ -262,6 +293,9 @@ function passStep(page) {
     // refreshScreen();
 }
 
+/**
+ * Passing Start Page (Biography Page)
+ */
 function passStartStep() {
     $('#start').removeClass('current');
     $('#start-question').addClass('current');
@@ -270,6 +304,11 @@ function passStartStep() {
     window.tmpReaction.done = true;
 }
 
+/**
+ * Passing Start Questions Page (Three Options)
+ *
+ * @param page
+ */
 function passStartQuestionStep(page) {
     var val = $('input[type=radio][name=start-question]:checked').val();
 
@@ -285,7 +324,7 @@ function passStartQuestionStep(page) {
                 window.tmpReaction.toPage = targetPage;
 
                 console.log(currentTime())
-                pageTimeout($('#more-info'), window.timeouts.moreInfo, ventricularTachycardia);
+                // pageTimeout($('#more-info'), window.timeouts.moreInfo, ventricularTachycardia);
                 break;
             case "2":
                 var targetPage = $('#laboratory-exams');
@@ -295,7 +334,7 @@ function passStartQuestionStep(page) {
                 window.tmpReaction.toPage = targetPage;
 
                 console.log(currentTime())
-                pageTimeout($('#laboratory-exams'), window.timeouts.exams, ventricularTachycardia);
+                // pageTimeout($('#laboratory-exams'), window.timeouts.exams, ventricularTachycardia);
                 break;
             case "3":
                 var targetPage = $('#treatment-modalities');
@@ -315,6 +354,11 @@ function passStartQuestionStep(page) {
     }
 }
 
+/**
+ * Hides current visible page and shows the specified
+ *
+ * @param pageToShow
+ */
 function showPage(pageToShow) {
     var page = $('.page.current');
 
@@ -333,6 +377,12 @@ function showPage(pageToShow) {
     pageToShow.addClass('current');
 }
 
+/**
+ * Get back specified or possible step
+ * @param page
+ * @param returningStepIndex
+ * @returns {*}
+ */
 function backStep(page, returningStepIndex) {
     if (typeof returningStepIndex == 'undefined') {
         returningStepIndex = window.reactions.length - 1;
@@ -403,6 +453,12 @@ function backStep(page, returningStepIndex) {
     return returningStepIndex;
 }
 
+/**
+ * Timeout page after specific time with specified action
+ * @param page
+ * @param time
+ * @param timeoutAction
+ */
 function pageTimeout(page, time, timeoutAction) {
     var timeoutName = "timeout" + $.now();
 
@@ -415,9 +471,11 @@ function pageTimeout(page, time, timeoutAction) {
     page.attr('timeout', timeoutName);
 }
 
+/**
+ * Ventricular Tachycardia
+ */
 function ventricularTachycardia() {
-    console.log('VTach');
-    console.log(currentTime());
+    console.log(currentTime() + ' : ' + 'VTach');
     var changing = {
         HR: 210,
         SPO2: 20,
@@ -462,6 +520,9 @@ function ventricularTachycardia() {
     window.timers.die = setTimeout(kill, window.timeouts.VTack);
 }
 
+/**
+ * Refresh values in string
+ */
 function refreshScreen() {
     $('.preview-bp').html(window.currentData.SBP + '/' + window.currentData.DBP);
     $('.preview-hr').html(window.currentData.HR);
@@ -470,7 +531,7 @@ function refreshScreen() {
     $('.preview-cvp').html(window.currentData.CVP);
     $('.preview-temperature').html(window.currentData.T);
     $('.preview-uop').html(window.currentData.UOP);
-    $('.preview-hgb').html(window.currentData.HgB);
+    $('.preview-hgb').html(window.currentData.Hgb);
     $('.preview-inr').html(window.currentData.INR);
     $('.preview-bs').html(window.currentData.BS);
     $('.preview-na').html(window.currentData.Na);
@@ -492,6 +553,10 @@ function refreshScreen() {
     }
 }
 
+/**
+ * Run ecg preview animation
+ * @param hr
+ */
 function runECG(hr) {
     stopECG();
     var ecgBox = $('.monitor-ecg-preview-inner');
@@ -516,19 +581,33 @@ function runECG(hr) {
     }
 }
 
+/**
+ * Run animation of one heart rate
+ * @param hr
+ * @param periodWidth
+ */
 function runECGPeriod(hr, periodWidth) {
     $('.monitor-ecg-preview-inner').animate({
         'background-position-x': '-=' + (hr * periodWidth) + 'px'
     }, 60000, 'linear');
 }
 
+/**
+ * Stop ecg animation
+ * @param hr
+ */
 function stopECG(hr) {
     clearInterval(window.timers.ecgMotion);
     $('.monitor-ecg-preview-inner').stop();
     delete window.timers.ecgMotion;
 }
 
+/**
+ * Charge shocker with specified energy value
+ * @param energy
+ */
 function chargeShocker(energy) {
+    console.log('----------------------------------------charge start------------------------------------------');
     var chargingSpeed = 100; // Joule/Second
     var box = $('.shocker-charger-box');
     var progressBar = box.find('.progress-bar');
@@ -544,10 +623,15 @@ function chargeShocker(energy) {
         progressBar.attr('aria-valuenow', 100);
         $('.btn-charge-shocker').hide();
         $('.btn-shock').show();
+        console.log('----------------------------------------charge finished------------------------------------------');
     });
 }
 
+/**
+ * Do shock with charged energy of shocker
+ */
 function doShock() {
+    console.log('----------------------------------------doShock------------------------------------------');
     $('.monitor-ecg-preview-inner').removeClass('VTach').removeClass('dead');
 
     $('.shocker-charger-box').css('opacity', 0);
@@ -558,7 +642,7 @@ function doShock() {
         clearTimeout(window.timers.die);
         delete window.timers.die;
 
-        window.reactionForceData = {auto: true};
+        // window.reactionForceData = {auto: true};
         backStep();
         delete window.reactionForceData;
 
@@ -566,17 +650,24 @@ function doShock() {
         $('.monitor-ecg-shock-box').hide();
         $('.btn-charge-shocker').show();
         $('.btn-shock').hide();
+        window.shockerCharge = 0;
     }
 }
 
+/**
+ * Returns current time in format "yy-mm-dd"
+ * @returns {string}
+ */
 function currentTime() {
     var time = new Date();
     return time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds();
 }
 
+/**
+ * Dir case
+ */
 function kill() {
-    console.log('die');
-    console.log(currentTime());
+    console.log(currentTime() + ' : ' + 'die');
     var changing = {
         HR: 0,
         SPO2: 20,
@@ -620,6 +711,11 @@ function kill() {
     $('.monitor-case-management-panel').hide();
 }
 
+/**
+ * Get value of a json value in case of don't get pointer to that
+ * @param data
+ * @param key
+ */
 function getValueOf(data, key) {
     var data = JSON.parse(JSON.stringify(data));
     if (typeof key != 'undefined') {
@@ -628,6 +724,10 @@ function getValueOf(data, key) {
     return data;
 }
 
+/**
+ * Play heart sound with hr frequency
+ * @param hr
+ */
 function playHeartSound(hr) {
     if (hr) {
         var intervalTime = (60 * 1000) / hr;
@@ -643,6 +743,9 @@ function playHeartSound(hr) {
     }, intervalTime);
 }
 
+/**
+ * Stop current playing heart rate sound
+ */
 function stopHeartSound() {
     if (typeof window.timers.soundHR != 'undefined') {
         clearInterval(window.timers.soundHR);
@@ -650,6 +753,10 @@ function stopHeartSound() {
     }
 }
 
+/**
+ * Play sound with specified id
+ * @param id
+ */
 function playSound(id) {
     if (!window.optionsStatuses.playSound) {
         return;
@@ -686,6 +793,11 @@ function playSound(id) {
     }
 }
 
+/**
+ * Change "window.currentData"
+ * @param param1 If param2 is not specidied param1 should be array
+ * @param param2
+ */
 function setCaseData(param1, param2) {
     if ($.isPlainObject(param1)) {
         $.each(param1, function (name, value) {
@@ -700,6 +812,11 @@ function setCaseData(param1, param2) {
     }
 }
 
+/**
+ * Returns array of done treatments
+ * (Treatments are returning from this function are only treatments that are we didn't get it back)
+ * @returns {Array}
+ */
 function doneTreatments() {
     var inverted = window.reactions.getColumn('inverse');
     var result = [];
@@ -711,6 +828,9 @@ function doneTreatments() {
     return result;
 }
 
+/**
+ * Need to inject FIO2
+ */
 function needToFIO2() {
     if (!checkFIO2()) {
         setTimeout(function () {
@@ -721,6 +841,10 @@ function needToFIO2() {
     }
 }
 
+/**
+ * Check if FIO2 in is injected (and didn't got back)
+ * @returns {boolean}
+ */
 function checkFIO2() {
     var FIO2Key = '3-1';
     var done = doneTreatments();
@@ -729,10 +853,13 @@ function checkFIO2() {
     }
 }
 
+/**
+ * Correct preview to correct sizes and scroll bars
+ */
 function correctView() {
     correctBodyHeight();
     correctVitalSingsHeight();
-    correctControlPanelHeight();
+    correctManagementPanelHeight();
 }
 
 /**
@@ -749,6 +876,9 @@ function correctBodyHeight() {
     }
 }
 
+/**
+ * Find and set the best height for column-1
+ */
 function correctVitalSingsHeight() {
     var items = $('.monitor-vital-sign');
     var firstItem = items.first();
@@ -764,9 +894,12 @@ function correctVitalSingsHeight() {
     items.find('.monitor-vital-sign-value').css('font-size', fontSize + 'px');
 }
 
-function correctControlPanelHeight() {
-    var controlPanel = $('.monitor-case-management-panel');
-    var siblings = controlPanel.siblings(':visible');
+/**
+ * Find and set the best height for management panel
+ */
+function correctManagementPanelHeight() {
+    var managementPanel = $('.monitor-case-management-panel');
+    var siblings = managementPanel.siblings(':visible');
     var totalHeight = $('.monitor-column-2').height();
 
     var siblingsTotalHeight = 0;
@@ -780,15 +913,15 @@ function correctControlPanelHeight() {
     });
 
     var availableHeight = totalHeight - siblingsTotalHeight;
-    var controlPanelHeight = availableHeight - (
-            parseInt(controlPanel.css('margin-top')) +
-            parseInt(controlPanel.css('margin-bottom'))
+    var managementPanelHeight = availableHeight - (
+            parseInt(managementPanel.css('margin-top')) +
+            parseInt(managementPanel.css('margin-bottom'))
         );
 
-    controlPanel.height(controlPanelHeight);
+    managementPanel.height(managementPanelHeight);
 
     // Inside tab-content of the "treatment-modalities" page
-    var treatmentsPage = controlPanel.find('#treatment-modalities.page');
+    var treatmentsPage = managementPanel.find('#treatment-modalities.page');
     var needToCalculateMore = false;
     if (!treatmentsPage.is(':visible')) {
         needToCalculateMore = true;
@@ -811,7 +944,35 @@ function correctControlPanelHeight() {
             treatmentsPage.attr("style", previousCss ? previousCss : "");
         }
 
-        var tabContentHeight = controlPanelHeight - navTabsHeight - 2;
+        var tabContentHeight = managementPanelHeight - navTabsHeight - 2;
         treatmentsPage.find('.tab-content').height(tabContentHeight);
     }
+}
+
+function resetShocker() {
+    console.log(currentTime() + ' : ' + 'resetShocker');
+    window.shockerCharge = 0;
+
+    var shocker = $('.monitor-ecg-shock-box');
+    var box = shocker.find('.shocker-charger-box');
+    var progressBar = box.find('.progress-bar');
+    var energyInput = shocker.find('.shocker-energy');
+
+    energyInput.val(energyInput.find('option').first().val());
+
+    progressBar.css('width', 0);
+    progressBar.attr('aria-valuenow', 100);
+
+    $('.btn-charge-shocker').show();
+    $('.btn-shock').hide()
+        .attr('disabled', 'disabled');
+}
+
+function showShocker() {
+    $('.monitor-ecg-shock-box').show();
+}
+
+function turnShockerOff() {
+    $('.monitor-ecg-shock-box').hide();
+    resetShocker();
 }

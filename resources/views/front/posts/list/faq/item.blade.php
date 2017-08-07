@@ -4,7 +4,7 @@
         <h4 class="panel-title">
             <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
                href="#collapse{{ $post->id }}" aria-expanded="false" aria-controls="collapse{{ $post->id }}">
-                @pd($post->title)
+                {{ ad($post->title) }}
             </a>
         </h4>
     </div>

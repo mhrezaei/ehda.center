@@ -42,6 +42,10 @@ class UserController extends Controller
 
     public function profile()
     {
+        if (user()->is_admin()) {
+            return redirect('manage/account/profile');
+        }
+
         user()->spreadMeta();
 
         return view('front.user.profile.edit.main');
@@ -98,7 +102,7 @@ class UserController extends Controller
         }
         $request['id'] = user()->id;
 
-        if(isset($request['code_melli'])) {
+        if (isset($request['code_melli'])) {
             // If the form has been manipulated
             // Because we've set "code_melli" disabled in the form and it should't have been posted
             unset($request['code_melli']);

@@ -1,13 +1,13 @@
 <script>
     $(document).ready(function () {
         // Defining popover
-        $('.has-popover-tab').popover({
-            trigger: 'manual',
-            placement: 'top',
-            animate: true,
-            delay: 500,
-            container: 'body'
-        }).first().popover('show');
+//        $('.has-popover-tab').popover({
+//            trigger: 'manual',
+//            animate: true,
+//            delay: 500,
+////            container: '.tClass'
+////            container: false
+//        }).first().popover('show');
 
         // On change tab
         $(document).on('shown.bs.tab', '.has-popover-tab', function (e) {

@@ -1,4 +1,10 @@
-{{ null, $showSideBar = isset($showSideBar) ? $showSideBar : false }}
+@php $showSideBar = isset($showSideBar) ? $showSideBar : false @endphp
+
+<style>
+    .post-text img {
+        max-width: 80% !important;
+    }
+</style>
 
 <div class="container">
     <div class="row">

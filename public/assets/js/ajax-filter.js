@@ -212,6 +212,52 @@ function initialFilter(modify) {
                 }
             });
 
+            filterPanel.find('.filter-select').each(function (index) {
+                var box = $(this);
+                var identifier = box.attr('data-identifier');
+
+                filterableAttributes.push(identifier);
+
+                if (!modify) {
+                    box.on({
+                        change: function () {
+                            if ($(this).prop('multiple')) {
+                                var value = $(this).val();
+                            } else {
+                                var value = [$(this).val()];
+                            }
+                            filterWithSelectBox(value, identifier);
+                            modifyUrl();
+                        }
+                    }, 'select');
+                }
+
+                var items = box.find('select');
+
+                if (isDefined(currentFilterData['selectBox']) &&
+                    isDefined(currentFilterData['selectBox'][identifier])
+                ) {
+                    items.each(function () {
+                        var selectEl = $(this);
+                        if (!$.isArray(currentFilterData['selectBox'][identifier])) {
+                            currentFilterData['selectBox'][identifier] = [currentFilterData['selectBox'][identifier]];
+                        }
+
+                        selectEl.val(currentFilterData['selectBox'][identifier]);
+                    });
+                } else {
+                    items.each(function () {
+                        var selectEl = $(this);
+                        var firstOp = selectEl.children('option').first();
+                        if (firstOp.length) {
+                            selectEl.val(firstOp.val());
+                        }
+                    });
+                }
+
+                items.change();
+            });
+
             modifyUrl();
             if (modify) {
                 doFilter();
@@ -287,6 +333,18 @@ function filterWithSwitchCheckBox(checked, identifier) {
         filterData.switchKey[identifier] = checked;
     } else {
         delete filterData.switchKey[identifier];
+    }
+}
+
+function filterWithSelectBox(value, identifier) {
+    if (typeof filterData.selectBox == 'undefined') {
+        filterData.selectBox = {};
+    }
+
+    if (value.length) {
+        filterData.selectBox[identifier] = value;
+    } else {
+        delete filterData.selectBox[identifier]; // make it undefined
     }
 }
 

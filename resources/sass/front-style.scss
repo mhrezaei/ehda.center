@@ -4,10 +4,12 @@
 @import "bootstrap";
 @import "bootstrap-rtl";
 @import "jquery-ui/flat-ui-theme";
-//@import "flat-ui";
 @import "font-awesome/font-awesome";
+/* direction files */
+@import "local-variables/rtl";
 /* yt files */
 @import "colors";
+@import "measurement_and_alignment";
 @import "fonts";
 /* plugins files */
 @import "owl-carousel";
@@ -16,9 +18,6 @@
 @import "owl-transitions";
 /* other files */
 @import "sprites";
-
-$localeDirections: ("start": "right", "end": "left");
-$rtl: true !default;
 
 $color-primary: #1c3482;
 $color-green: #3ab637;
@@ -658,28 +657,6 @@ select.form-control {
 .media-start, .media-end {
   display: table-cell;
   vertical-align: top;
-}
-
-.media-start, .media > .pull-start {
-  padding-right: 10px;
-}
-
-.media-end, .media > .pull-end {
-  padding-left: 10px;
-}
-
-body.rtl {
-  .media-body {
-    font-size: 13px;
-  }
-  .media-start, .media > .pull-start {
-    padding-left: 10px;
-    padding-right: 0;
-  }
-  .media-end, .media > .pull-end {
-    padding-right: 10px;
-    padding-left: 0;
-  }
 }
 
 @import "public";

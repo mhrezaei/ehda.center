@@ -45,8 +45,8 @@ class ProjectSeeder extends Seeder
 		/*-----------------------------------------------
 		| Posttypes ...
 		*/
-		
-		
+
+
 
 		DB::table('posttypes')->insert([
 			[
@@ -83,8 +83,8 @@ class ProjectSeeder extends Seeder
 		/*-----------------------------------------------
 		| Settings ...
 		*/
-		
-		
+
+
 
 		DB::table('settings')->insert([
 			[
@@ -296,7 +296,7 @@ class ProjectSeeder extends Seeder
 				'title' => "آدرس سایت",
 				'category' => "database",
 				'data_type' => "text",
-				'default_value' => 'https://yasnateam.com/',
+				'default_value' => url(''),
 				'developers_only' => 1,
 				'is_resident' => "0",
 				'is_localized' => "0",
@@ -318,8 +318,8 @@ class ProjectSeeder extends Seeder
 		/*-----------------------------------------------
 		| Roles ...
 		*/
-		
-		
+
+
 
 		DB::table('roles')->insert([
 			[
@@ -388,7 +388,17 @@ class ProjectSeeder extends Seeder
 				'is_continuous' => true,
 			],
 		]);
-		
+
+		/*-----------------------------------------------
+		| Files Folders ...
+		*/
+		DB::table('files_folders')->insert([
+			[
+                'slug'         => "slug",
+                'persian_name' => "پست‌ها",
+                'posts'        => "Posts",
+            ],
+		]);
 
 	}
 }

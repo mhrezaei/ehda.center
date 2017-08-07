@@ -18,7 +18,6 @@
 @section('nav-tabs')
     <li @if($key == 0) class="active" @endif data-card-type="{{ $cardType }}">
         <a data-toggle="tab" href="#card-{{ $cardType }}"
-           data-content="{{ trans('front.organ_donation_card_section.types.' . $cardType . '.description') }}"
            class="has-popover-tab" data-card-type="{{ $cardType }}">
             {{ trans('front.organ_donation_card_section.types.' . $cardType . '.title') }}
         </a>
@@ -30,13 +29,16 @@
     <div id="card-{{ $cardType }}" class="tab-pane fade @if($key == 0) in active @endif"
          data-card-type="{{ $cardType }}">
         <div class="row">
-            <div class="col-xs-12 align-horizontal-center">
+            <div class="col-xs-12 text-center">
                 <a href="{{ user()->cards($cardType) }}" target="_blank">
                     <img src="{{ user()->cards($cardType) }}" class="img-responsive border-1 border-lightGray">
                     <button class="btn btn-white expand-btn">
                         <i class="fa fa-expand"></i>
                     </button>
                 </a>
+                <p class="text-justify">
+                    {{ trans('front.organ_donation_card_section.types.' . $cardType . '.description') }}
+                </p>
             </div>
         </div>
     </div>

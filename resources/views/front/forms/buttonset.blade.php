@@ -11,8 +11,7 @@ if (isset($class)) {
 {{ null , $prefix = $name or str_random(5) }}
 
 <div class="form-group {{ $container['class'] or '' }}"
-     title="{{ trans('validation.attributes_example.' . $name)}}"
-     error-value="{{ trans('validation.javascript_validation.' . $name) }}"
+     {{--title="{{ trans('validation.attributes_example.' . $name)}}" }}"--}}
         {{ (isset($container['id']) and $container['id']) ? "id=$container[id]" : '' }}>
     @if(!isset($label))
         {{ null , $label = Lang::has("validation.attributes.$name") ? trans("validation.attributes.$name") : $name}}

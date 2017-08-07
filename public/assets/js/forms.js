@@ -147,14 +147,15 @@ function forms_validate(formData, jqForm, options) {
         return true;
     }
 
-
     $('#' + $formId + ' :input').each(function () {
         if (!$(this).prop('disabled')) { // Doesn't validate and submit value of disabled input
-            forms_markError(this, "reset");
             var $val = $(this).val();
             var $name = $(this).attr('name');
             var $err = $(this).attr('error-value');
             var $err_el = $.inArray($name, $errors_el);
+            if ($err_el < 0) {
+                forms_markError(this, "reset");
+            }
 
             var $required = $(this).hasClass('form-required');
             var $number = $(this).hasClass('form-number');
@@ -169,6 +170,7 @@ function forms_validate(formData, jqForm, options) {
             var $select = $(this).hasClass('form-select');
             var $selectpicker = $(this).hasClass('form-selectpicker');
             var $checkbox = $(this).hasClass('form-checkbox');
+            var $radio = $(this).hasClass('form-radio');
 
             if ($required && $err_el < 0) {
                 if (forms_errorIfEmpty(this)) {
@@ -308,6 +310,20 @@ function forms_validate(formData, jqForm, options) {
                 }
             }
 
+            if ($radio && $err_el < 0) {
+                if ($(this).hasClass('form-required')) {
+                    if (forms_errorIfNotCheckedRadio(this)) {
+                        if ($err && $err.length) {
+                            $errors_msg.push($err);
+                        }
+                        if ($errors < 1) $(this).focus();
+                        $errors++;
+                        $errors_el.push($name);
+                        $err_el = $.inArray($name, $errors_el);
+                    }
+                }
+            }
+
             if ($select && $err_el < 0) {
                 if ($(this).hasClass('form-required')) {
                     if (forms_errorIfNotSelect(this)) {
@@ -422,15 +438,14 @@ function forms_responde(data, statusText, xhr, $form) {
         var cl = "alert-success";
         var me = data.message;
         if (!me) me = $($feedSelector + '-ok').html();
-    }
-    else {
+    } else {
         var cl = "alert-danger";
         var me = data.message;
 //            formEffect_markError(data.fields);
 //            $(data.fields).focus();
     }
-    if( data.feed_class != 'no') {
-        var cl = data.feed_class ;
+    if (data.feed_class && data.feed_class != 'no') {
+        var cl = data.feed_class;
     }
 
     $($feedSelector).addClass(cl).html(me).show();
@@ -517,6 +532,9 @@ function forms_errorIfEmpty(selector) {
                 forms_markError(selector, "success");
                 return 0;
             }
+        } else {
+            forms_markError(selector, "success");
+            return 0;
         }
     }
 }
@@ -817,6 +835,17 @@ function forms_errorIfNotDatePicker(selector) {
     }
 }
 
+function forms_errorIfNotCheckedRadio(selector) {
+    var name = $(selector).attr('name');
+    if ($('input[type=radio][name="' + name + '"]:checked').length) {
+        forms_markError(selector, "success");
+        return false;
+    } else {
+        forms_markError(selector, "error");
+        return true;
+    }
+}
+
 //======================================================================================
 
 function getLocale() {
@@ -840,12 +869,16 @@ function forms_isPersian(string) {
 }
 
 function forms_markError(selector, handle) {
+    var formGroup = $(selector).closest('.form-group')
+    console.log('formGroup');
+    console.log(formGroup);
+    console.log(handle);
     if (handle == "success")
-        $(selector).parent().parent().addClass("has-success").removeClass('has-error');
+        formGroup.addClass("has-success").removeClass('has-error');
     else if (handle == "null" || handle == "reset")
-        $(selector).parent().parent().removeClass('has-error').removeClass('has-success');
+        formGroup.removeClass('has-error').removeClass('has-success');
     else //including "error"
-        $(selector).parent().parent().addClass("has-error").removeClass('has-success');//.effect	("shake"	,{times:2},100);
+        formGroup.addClass("has-error").removeClass('has-success');//.effect	("shake"	,{times:2},100);
 }
 
 function forms_numberFormat(selector) {

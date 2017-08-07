@@ -776,7 +776,7 @@ class Post extends Model
 		/*-----------------------------------------------
 		| Process Type ...
 		*/
-		if(str_contains($switch['type'], 'feature:')) {
+		if(!is_array($switch['type']) and str_contains($switch['type'], 'feature:')) {
 			$feature        = str_replace('feature:', null, $switch['type']);
 			$switch['type'] = Posttype::withFeature($feature); //returns an array of posttypes
 		}
