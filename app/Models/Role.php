@@ -16,6 +16,7 @@ class Role extends Model
 	public static $reserved_slugs        = 'root,super,user,all,dev,developer,admin';
 	public static $meta_fields           = ['icon', 'fields', 'status_rule', 'locale_titles'];
 	public static $available_field_types = ['text', 'textarea', 'date', 'boolean', 'photo', 'file'];
+	public static $support_role_prefix   = 'support';
 	protected     $guarded               = ['id'];
 
 	protected $casts = [
@@ -41,6 +42,17 @@ class Role extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
+	public function getIsSupportAttribute()
+	{
+		if(str_contains($this->slug , self::$support_role_prefix.'-')) {
+			return true ;
+		}
+		else {
+			return false ;
+		}
+	}
+
+
 	public function getStatusAttribute()
 	{
 		if($this->trashed()) {
@@ -213,6 +225,7 @@ class Role extends Model
 	public function cacheRegenerate()
 	{
 		Cache::forget("admin_roles");
+		Cache::forget("support_roles");
 	}
 
 	/*
@@ -293,7 +306,7 @@ class Role extends Model
 
 	}
 
-	public static function adminRoles( $additive = null)
+	public static function adminRoles($additive = null)
 	{
 		$admin_roles = Cache::remember("admin_roles-$additive", 100, function () use ($additive) {
 			$roles = self::where('is_admin', true)->get();
@@ -306,6 +319,16 @@ class Role extends Model
 		});
 
 		return $admin_roles;
+	}
+
+	public static function supportRoles()
+	{
+		$support_roles = Cache::remember("support_roles" , 100 , function() {
+			$roles = self::where('slug' , 'like' , self::$support_role_prefix . '-%')->orderBy('title')->get() ;
+			return $roles ;
+		});
+
+		return $support_roles ;
 	}
 
 	public function browseTabs()
@@ -329,7 +352,7 @@ class Role extends Model
 		foreach($this->status_rule_array as $key => $string) {
 			$array[] = [$key, trans("people.criteria.$string")];
 		}
-		$array[] = ['bin', trans('people.criteria.banned') , null ,user()->as('admin')->can("users-$this->slug.bin")];
+		$array[] = ['bin', trans('people.criteria.banned'), null, user()->as('admin')->can("users-$this->slug.bin")];
 		$array[] = ['search', trans('forms.button.search')];
 
 		return $array;

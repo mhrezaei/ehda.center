@@ -26,7 +26,7 @@
 		'handle' => "counter",
 		'headings' => [
 			trans('validation.attributes.title'),
-			trans('people.people'),
+			[trans('people.people'),200],
 			trans('validation.attributes.status'),
 			trans('forms.button.action')
 		],

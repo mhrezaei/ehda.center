@@ -64,6 +64,17 @@ class User extends Authenticatable
 		return $this->hasMany('App\Models\Comment');
 	}
 
+	public function posts()
+	{
+		return Post::where('created_by' , $this->id)->orWhere('owned_by' , $this->id)->orWhere('moderated_by' , $this->id)->orWhere('published_by' , $this->id);
+	}
+
+	public function getPostsAttribute()
+	{
+		return $this->posts->get() ;
+	}
+
+
 	/*
 	|--------------------------------------------------------------------------
 	| Cache Management
@@ -317,6 +328,24 @@ class User extends Authenticatable
 	|
 	*/
 
+	public function getAgeAttribute()
+	{
+		/*-----------------------------------------------
+		| Bypass ...
+		*/
+		if(!$this->birth_date) {
+			return false ;
+		}
+
+		/*-----------------------------------------------
+		| Calculation ...
+		*/
+		return Carbon::now()->diffInYears($this->birth_date) ;
+
+
+	}
+
+
 	public function getProfileLinkAttribute()
 	{
 		return "manage/users/browse/all/search?id=$this->id&searched=1";
@@ -458,18 +487,11 @@ class User extends Authenticatable
 			if(user()->as('admin')->can("users-$role_slug.edit"))
 				return true ;
 		}
-		return false ;
 
-		//if($this->is_admin()) {
-		//	$allowed_roles = user()->userRolesArray('edit' , [] , model('role')::adminRoles() ;
-		//}
-		//
-		//if(!$request_role or $request_role == 'admin') {
-		//	return user()->is_a('superadmin');
-		//}
-		//else {
-		//	return Role::checkManagePermission($request_role, 'edit');
-		//}
+		/*-----------------------------------------------
+		| Just in case :) ...
+		*/
+		return false ;
 	}
 
 	public function canDelete()
@@ -477,20 +499,33 @@ class User extends Authenticatable
 		$request_role = $this->getChain('as');
 
 		/*-----------------------------------------------
-		| Power users ...
+		| Simple Decisions ...
 		*/
 		if($this->is_a('developer')) {
 			return user()->is_a('developer');
 		}
-		elseif($this->is_admin()) {
-			//return user()->is_a('superadmin');
+		if($this->id == user()->id) {
+			return false ;
 		}
 
 		/*-----------------------------------------------
-		| Other users ... @TODO: complete this part
+		| Other users ...
 		*/
+		if($request_role) {
+			return user()->as($request_role)->can('delete');
+		}
+		else {
+			foreach($this->as('all')->rolesArray() as $role_slug) {
+				if(user()->as('admin')->can("users-$role_slug.delete")) {
+					return true;
+				}
+			}
+		}
 
-		return user()->is_a('superadmin');
+		/*-----------------------------------------------
+		| Just in case :) ...
+		*/
+		return false ;
 
 	}
 
@@ -499,20 +534,33 @@ class User extends Authenticatable
 		$request_role = $this->getChain('as');
 
 		/*-----------------------------------------------
-		| Power users ...
+		| Simple Decisions ...
 		*/
 		if($this->is_a('developer')) {
 			return user()->is_a('developer');
 		}
-		elseif($this->is_an('admin')) {
-			return user()->is_a('superadmin');
+		if($this->id == user()->id) {
+			return false ;
 		}
 
 		/*-----------------------------------------------
-		| Other users ... @TODO: complete this part
+		| Other users ...
 		*/
+		if($request_role) {
+			return user()->as($request_role)->can('bin');
+		}
+		else {
+			foreach($this->as('all')->rolesArray() as $role_slug) {
+				if(user()->as('admin')->can("users-$role_slug.bin")) {
+					return true;
+				}
+			}
+		}
 
-		return user()->is_a('superadmin');
+		/*-----------------------------------------------
+		| Just in case :) ...
+		*/
+		return false ;
 
 	}
 
@@ -534,20 +582,15 @@ class User extends Authenticatable
 		if($this->is_a('developer')) {
 			return user()->is_a('developer');
 		}
-		if($this->as($request_role)->status()<8) {
-			return false ;
-		}
+		//if($this->as($request_role)->status()<8) {
+		//	return false ;
+		//}
 
 		/*-----------------------------------------------
 		| In case of a specified role ...
 		*/
 		if($request_role) {
-			if($this->as($request_role)->disabled()) {
-				return false;
-			}
-			else {
-				return user()->as($request_role)->can('permit');
-			}
+			return user()->as($request_role)->can('permit');
 		}
 
 		/*-----------------------------------------------
@@ -556,6 +599,11 @@ class User extends Authenticatable
 		if(!$request_role) {
 			return user()->as_any()->can('users-all.permit');
 		}
+
+		/*-----------------------------------------------
+		| Just in case :) ...
+		*/
+		return false ;
 
 	}
 

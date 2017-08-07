@@ -271,10 +271,10 @@ class UsersController extends Controller
 		| Validation ...
 		*/
 		$model = User::find($request->id);
-		if(!$model or $model->is_not_a($request->role_slug)) {
+		if(!$model or $model->withDisabled()->is_not_a($request->role_slug)) {
 			return $this->jsonFeedback(trans('validation.http.Error410'));
 		}
-		if(!$model->as($request->role_slug)->canPermit()) { //@TODO: Check for accurate result!
+		if(!$model->as($request->role_slug)->canPermit()) {
 			return $this->jsonFeedback(trans('validation.http.Error403'));
 		}
 
@@ -297,91 +297,37 @@ class UsersController extends Controller
 		}
 
 		/*-----------------------------------------------
+		| Save Status ...
+		*/
+		$ok = $this->saveRoleStatus($model , $request->role_slug , $request->status) ;
+
+		/*-----------------------------------------------
+		| Save Support Roles ...
+		*/
+		foreach(Role::supportRoles() as $support_role) {
+			$model_value = $model->is_a($support_role->slug) ;
+			$input_value = $request->toArray()[$support_role->slug] ;
+
+			if($model_value != $input_value) {
+				if($input_value) {
+					$model->attachRole($support_role->slug) ;
+				}
+				else {
+					$model->detachRole($support_role->slug) ;
+				}
+			}
+
+		}
+
+
+		/*-----------------------------------------------
 		| Save and Return  ...
 		*/
 		$model->as($request->role_slug)->setPermission($request->permissions);
 
-		return $this->jsonAjaxSaveFeedback(true);
-
-	}
-
-	public function _savePermits(Request $request)
-	{
-		$data = $request->toArray();
-
-		/*-----------------------------------------------
-		| Models & Security Check...
-		*/
-		$model_user = User::find($request->id);
-		$model_role = Role::find($request->role_id);
-		$as         = $model_role->slug; //just for the easier use
-
-		if(!$model_user or !$model_role or !$model_role) {
-			return $this->jsonFeedback(trans('validation.http.Error410'));
-		}
-		if($model_user->is_not_a($model_role->slug) or !$model_user->as($model_role->slug)->canPermit()) {
-			return $this->jsonFeedback(trans('validation.http.Error410'));
-		}
-
-		/*-----------------------------------------------
-		| Browse available modules and permissions...
-		*/
-		$modules       = $model_role->modules_array;
-		$result_string = "";
-
-		//Users Modules...
-		if($permissions = array_pull($modules, 'users')) {
-			foreach(Role::where('slug', '!=', 'admin')->get() as $role) {
-				foreach($permissions as $permission) {
-					$field_name = "role~users-$role->slug~$permission";
-					$permit     = "users-$role->slug.$permission";
-
-					if($data[ $field_name ] and user()->as($as)->can($permit)) {
-						$result_string .= " $permit ";
-					}
-				}
-			}
-		}
-
-		//posts...
-		if($permissions = array_pull($modules, 'posts')) {
-			foreach(Posttype::all() as $posttype) {
-				foreach($permissions as $permission) {
-					$field_name = "role~posts-$posttype->slug~$permission";
-					$permit     = "posts-$posttype->slug.$permission";
-
-					if($data[ $field_name ] and user()->as($as)->can($permit)) {
-						$result_string .= " $permit ";
-					}
-				}
-			}
-		}
-
-		//other modules...
-		foreach($modules as $module => $permissions) {
-			foreach($permissions as $permission) {
-				$field_name = "role~$module~$permission";
-				$permit     = "$module.$permission";
-
-				if($data[ $field_name ] and user()->as($as)->can($permit)) {
-					$result_string .= " $permit ";
-				}
-			}
-		}
-
-		/*-----------------------------------------------
-		| Superadmin ...
-		*/
-		if($as == 'admin' and $data['level'] == 'super' and user()->isSuper()) {
-			$result_string .= " users-admin ";
-		}
-
-		/*-----------------------------------------------
-		| Save and Feedback ...
-		*/
-
-		return $this->jsonAjaxSaveFeedback($model_user->setPermits($result_string, $model_role->id));
-
+		return $this->jsonAjaxSaveFeedback(true, [
+			'success_callback' => "rowUpdate('tblUsers','$model->id')",
+		]);
 
 	}
 
@@ -483,28 +429,52 @@ class UsersController extends Controller
 		/*-----------------------------------------------
 		| Save ...
 		*/
-		if($new_status == 'detach') {
-			$user->detachRole($role_slug);
-		}
-		elseif($new_status == 'ban') {
-			$user->disableRole($role_slug);
-		}
-		else {
-			if($user->withDisabled()->hasnotRole($role_slug)) {
-				$user->attachRole($role_slug, $new_status);
-			}
-			elseif($user->as($role_slug)->disabled()) {
-				$user->enableRole($role_slug);
-			}
-
-			//$user->as($role_slug)->setStatus($new_status) ;
-		}
+		$ok = $this->saveRoleStatus($user , $role_slug , $new_status) ;
+		//if($new_status == 'detach') {
+		//	$user->detachRole($role_slug);
+		//}
+		//elseif($new_status == 'ban') {
+		//	$user->disableRole($role_slug);
+		//}
+		//else {
+		//	if($user->withDisabled()->hasnotRole($role_slug)) {
+		//		$user->attachRole($role_slug, $new_status);
+		//	}
+		//	elseif($user->as($role_slug)->disabled()) {
+		//		$user->enableRole($role_slug);
+		//	}
+		//
+		//	$user->as($role_slug)->setStatus($new_status) ;
+		//}
 
 		/*-----------------------------------------------
 		| Feedback...
 		*/
 
 		return $this->jsonAjaxSaveFeedback(true); //<~~ Row is automatically refreshed upon receiving of the done feedback!
+
+	}
+
+	private function saveRoleStatus($user , $role_slug, $new_status)
+	{
+		if($new_status == 'detach') {
+			$ok = $user->detachRole($role_slug);
+		}
+		elseif($new_status == 'ban') {
+			$ok = $user->disableRole($role_slug);
+		}
+		else {
+			if($user->withDisabled()->hasnotRole($role_slug)) {
+				$ok = $user->attachRole($role_slug, $new_status);
+			}
+			elseif($user->as($role_slug)->disabled()) {
+				$ok = $user->enableRole($role_slug);
+			}
+
+			$ok = $user->as($role_slug)->setStatus($new_status) ;
+		}
+
+		return $ok ;
 
 	}
 

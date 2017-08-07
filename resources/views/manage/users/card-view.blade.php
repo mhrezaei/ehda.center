@@ -79,66 +79,7 @@
 		|--------------------------------------------------------------------------
 		|
 		--}}
-		<tr><td colspan="2"><hr></td></tr>
-
-		<tr>
-			<td class="head">
-				{{ trans('validation.attributes.code_melli') }}
-			</td>
-			<td class="body">
-				{{ pd($model->code_melli) }}
-				@if($model->code_id)
-					<span class="mh5 f10 text-gray">
-						({{ trans("validation.attributes.code_id").': '.pd($model->code_id) }})
-					</span>
-				@endif
-			</td>
-		</tr>
-
-		<tr>
-			<td class="head">
-				{{ trans('validation.attributes.birth_date') }}
-			</td>
-			<td class="body">
-				{{ $model->birth_date_on_card }}
-				<span>
-					{{ $model->birth_city_name }}
-				</span>
-			</td>
-		</tr>
-
-		<tr>
-			<td class="head">
-				{{ trans('validation.attributes.education') }}
-			</td>
-			<td class="body">
-				{{ trans("people.edu_level_full." . intval($model->edu_level))}}
-				<span>
-					{{ pd($model->edu_field) }}
-				</span>
-				<span>
-					{{ $model->edu_city? $model->edu_city_name : '' }}
-				</span>
-			</td>
-		</tr>
-
-		<tr style="vertical-align: top">
-			<td class="head">
-				{{ trans('validation.attributes.home_city') }}
-			</td>
-			<td class="body">
-				{{ $model->home_city_name }}
-				{{ pd ($model->home_address) }}
-				<div class="{{$model->home_postal_code? '' : 'noDisplay'}}">
-					{{ trans('validation.attributes.postal_code') }}:&nbsp;
-					{{ pd($model->home_postal_code) }}
-				</div>
-				<div class="{{$model->home_tel? '' : 'noDisplay'}}">
-					{{ trans('validation.attributes.tel') }}:&nbsp;
-					{{ pd($model->home_tel) }}
-				</div>
-			</td>
-		</tr>
+		@include("manage.users.card-view-personal")
 
 		{{--
 		|--------------------------------------------------------------------------
@@ -201,13 +142,11 @@
 --}}
 
 <div class='modal-footer {{ $model->withDisabled()->hasRole('card-holder')? '' : 'noDisplay' }}'>
-	@include("forms.button" , [
-		'condition' => $model->canEdit() ,
-		'label' => trans("forms.button.edit"),
-		'shape' => "default" ,
-		'link' => url("manage/cards/edit/$model->hash_id") ,
-		'class' => "btn-lg w35" ,
-	]     )
+	@if($model->canEdit())
+		<a class="btn btn-default btn-lg w35" href="{{ url("manage/cards/edit/$model->hash_id") }}">
+			{{ trans("forms.button.edit") }}
+		</a>
+	@endif
 
 	@include("forms.button" , [
 		'label' => trans("forms.button.card_print"),

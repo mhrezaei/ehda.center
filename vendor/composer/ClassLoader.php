@@ -53,6 +53,7 @@ class ClassLoader
 
     private $useIncludePath = false;
     private $classMap = array();
+
     private $classMapAuthoritative = false;
     private $missingClasses = array();
     private $apcuPrefix;
@@ -338,7 +339,7 @@ class ClassLoader
         if (isset($this->classMap[$class])) {
             return $this->classMap[$class];
         }
-        if ($this->classMapAuthoritative || isset($this->missingClasses[$class])) {
+        if ($this->classMapAuthoritative) {
             return false;
         }
         if (null !== $this->apcuPrefix) {
@@ -351,17 +352,21 @@ class ClassLoader
         $file = $this->findFileWithExtension($class, '.php');
 
         // Search for Hack files if we are running on HHVM
-        if (false === $file && defined('HHVM_VERSION')) {
+        if ($file === null && defined('HHVM_VERSION')) {
             $file = $this->findFileWithExtension($class, '.hh');
         }
 
+//<<<<<<< manage
+//        if ($file === null) {
+//=======
         if (null !== $this->apcuPrefix) {
             apcu_add($this->apcuPrefix.$class, $file);
         }
 
         if (false === $file) {
+//>>>>>>> master
             // Remember that this class does not exist.
-            $this->missingClasses[$class] = true;
+            return $this->classMap[$class] = false;
         }
 
         return $file;
@@ -429,8 +434,6 @@ class ClassLoader
         if ($this->useIncludePath && $file = stream_resolve_include_path($logicalPathPsr0)) {
             return $file;
         }
-
-        return false;
     }
 }
 

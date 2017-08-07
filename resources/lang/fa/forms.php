@@ -47,6 +47,8 @@ return [
 		'add_to'        => "افزودن به",
 		'search'        => 'جست‌وجو',
 		'find'          => "بیاب!", //@TODO: New
+		'count'         => "بشمار!",
+		'count_again'   => "باز بشمار!",
 
 		'search_for'           => 'جست‌وجو به دنبال',
 		'search_for_something' => 'جست‌وجو به دنبال «::something»',
@@ -108,13 +110,14 @@ return [
 		'submit'         => "ثبت",
 		'nobody'         => "هیچ‌کس",
 		'sorry'          => "شرمنده",
+		'without'        => "بدون",
 
 		//@TODO: New, up to the end of array...
 		'no'             => "شماره",
 		'so_far'         => "تا این لحظه",
 		'buddies'        => "نفر",
-	     'unknown' => "نامشخص" ,
-	     'ego' => "من" ,
+		'unknown'        => "نامشخص",
+		'ego'            => "من",
 	],
 
 
@@ -131,11 +134,11 @@ return [
 		'2' => 'خانم',
 		'3' => 'سایر',
 	],
-	
-	    "marital" => [
-        'single'  => 'مجرد',
-        'married' => 'متاهل',
-    ],
+
+	"marital" => [
+		'single'  => 'مجرد',
+		'married' => 'متاهل',
+	],
 
 
 	"alphabet" => [

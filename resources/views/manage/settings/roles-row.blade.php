@@ -11,8 +11,13 @@
 	@include("manage.frame.widgets.grid-text" , [
 		'text' => $model->title,
 		'link' => "modal:manage/upstream/edit/role/-id-",
-		'icon' => $model->icon,
+		'icon' => $model->icon? $model->icon : 'user',
 	])
+
+	<div class="text-gray mv5">
+		[{{ $model->slug }}] [{{ $model->id }}]
+	</div>
+
 </td>
 
 {{--
@@ -22,16 +27,17 @@
 |
 --}}
 
-<td>
+<td id="tdCount-{{$model->id}}" data-src="manage/upstream/role-users/{{$model->id}}">
 	@include("manage.frame.widgets.grid-text" , [
-		'condition' => $count = $model->users()->count() ,
-		'text' => number_format($count) .' '.trans('people.person'),
+		'text' => trans("people.people") ,
 		'link' => $model->trashed() ? '' : "url:$model->users_browse_link" ,
 	]     )
+
 	@include("manage.frame.widgets.grid-text" , [
-		'condition' => !$count,
-		'text' => trans('forms.general.nobody') ,
-		'link' => $model->trashed() ? '' : "url:$model->users_browse_link" ,
+		'text' => trans("forms.button.count"),
+		'link' => "divReload('tdCount-$model->id')" ,
+		'size' => "10" ,
+		'color' => "darkgray" ,
 	]     )
 </td>
 
@@ -66,6 +72,14 @@
 			'color' => "warning" ,
 		]     )
 	@endif
+
+	@if($model->is_support)
+		@include("manage.frame.widgets.grid-badge" , [
+			'icon' => "ambulance",
+			'text' => trans("settings.support") ,
+			'color' => "info" ,
+		]     )
+	@endif
 </td>
 
 {{--
@@ -81,7 +95,7 @@
 		['pencil' , trans('forms.button.edit') , "modal:manage/upstream/edit/role/-id-" ],
 		['taxi' , trans('posts.types.locale_titles') , 'modal:manage/upstream/edit/role-titles/-id-' ],
 //		['hand-pointer-o' , trans('people.choose_as_default_role') , 'modal:manage/upstream/edit/role-default/-id-'],
-		['trash-o' , trans('forms.button.soft_delete') , 'modal:manage/upstream/edit/role-activeness/-id-' , !$model->trashed() and !$model->isDefault()  , $model::adminRoles()] ,
+		['trash-o' , trans('forms.button.soft_delete') , 'modal:manage/upstream/edit/role-activeness/-id-' , !$model->trashed() /*and !$model->isDefault()*/  , $model::adminRoles()] ,
 		['recycle' , trans('forms.button.undelete') , 'modal:manage/upstream/edit/role-activeness/-id-' , $model->trashed()],
 	]
 ])
