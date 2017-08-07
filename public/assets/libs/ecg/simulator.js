@@ -162,12 +162,12 @@ $(document).ready(function () {
         }
     }, '.btn-inject-remove');
 
-    $('.monitor-ecg-shock-box').find('.btn-charge-shocker').click(function () {
+    $('.monitor-ecg-shock-box').find('.btn-charge-shocker').unbind('click').bind('click',function () {
         var energy = $('.shocker-energy').val();
         chargeShocker(energy);
     });
 
-    $('.monitor-ecg-shock-box').find('.btn-shock').click(function () {
+    $('.monitor-ecg-shock-box').find('.btn-shock').unbind('click').bind('click',(function () {
         doShock();
     });
 
