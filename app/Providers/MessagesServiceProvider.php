@@ -40,9 +40,9 @@ class MessagesServiceProvider extends ServiceProvider
         Message::store($data);
     }
 
-    public static function sendPendingMessages()
+    public static function sendPendingMessages($limit = 20)
     {
-        $pendingMessages = self::getPendingMessages();
+        $pendingMessages = self::getPendingMessages($limit);
 
         $pendingMessages->each(function ($message) {
             $message->spreadMeta();
@@ -54,9 +54,11 @@ class MessagesServiceProvider extends ServiceProvider
         });
     }
 
-    private static function getPendingMessages()
+    private static function getPendingMessages($limit)
     {
-        return Message::all();
+        return Message::orderBy('id', 'desc')
+            ->limit($limit)
+            ->get();
     }
 
     /**
