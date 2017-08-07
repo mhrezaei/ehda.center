@@ -11,11 +11,11 @@ window.timeouts = {
     // Allowed time to view "More Info" page before VTach
     moreInfo: 3 * 1000,
     // Allowed time to view "Exams" page before VTach
-    exams: 30 * 1000,
+    exams: 3 * 1000,
     // Allowed time to stay in "VTach" status before case die
-    VTack: 3 * 1000,
+    VTack: 50 * 1000,
     // Allowed time to stay in "Treatments" page before inject FIO2
-    needToFIO2: 300 * 1000,
+    needToFIO2: 1 * 1000,
 };
 
 // Styles using in js calculations

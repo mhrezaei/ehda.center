@@ -119,7 +119,7 @@
                 ],
                 'otherAttributes' => [
                     'title' => trans('validation.attributes_example.birth_date'),
-                ]
+                ],
             ])
         </div>
         <div class="col-xs-12">

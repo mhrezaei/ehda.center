@@ -99,6 +99,7 @@ return [
     'share'                                    => 'Share',
     'powered_by_yasna'                         => 'Powered by Yasna Team',
     'community_branches'                       => 'Community Branches',
+    'email_has_been_sent_automatically'        => 'Note: This email has been sent automatically. So don\'t reply to it.',
 
     'volunteer_section' => [
         'singular'         => 'Organ Donation Volunteer',
@@ -114,17 +115,17 @@ return [
     ],
 
     'organ_donation_card_section' => [
-        'singular' => 'Organ Donation Card',
-        'print'    => 'Print Organ Donation Card',
-        'download' => 'Save Organ Donation Card',
-        'preview'  => 'Preview Organ Donation Card',
-        'card'     => 'Card',
-        'partial'  => [
+        'singular'                 => 'Organ Donation Card',
+        'print'                    => 'Print Organ Donation Card',
+        'download'                 => 'Save Organ Donation Card',
+        'preview'                  => 'Preview Organ Donation Card',
+        'card'                     => 'Card',
+        'partial'                  => [
             'part1' => 'Organ',
             'part2' => 'Donation',
             'part3' => 'Card',
         ],
-        'types'    => [
+        'types'                    => [
             'mini'   => [
                 'title'       => 'Mini',
                 'description' => 'Small Size File',
@@ -141,6 +142,13 @@ return [
                 'title'       => 'Print',
                 'description' => 'Ready for Print',
             ],
+        ],
+        'register_success_message' => [
+            'sms'   => "Hello :name، \n\r
+Your Oragn Donation Card has been registered with :membershipNumber membership number.\n\r
+:site",
+            'email' => "Hello :name، <br />
+Your Oragn Donation Card has been registered with :membershipNumber membership number.<br />",
         ],
     ],
 

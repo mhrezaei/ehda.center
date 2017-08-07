@@ -63,7 +63,7 @@ class CardController extends Controller
         return $this->jsonFeedback(null, [
             'ok'           => 1,
             'message'      => trans('forms.feed.wait'),
-            'feed_timeout' => 1000,
+            'feed_timeout' => 100000,
             'callback'     => <<<JS
                 upToStep(2);
 JS
@@ -130,10 +130,12 @@ JS
         session()->put('register_card', $submittedIDs);
 
         return $this->jsonFeedback(trans('forms.feed.register_check_data_step_second'), [
-            'ok'       => 1,
-            'callback' => <<<JS
+            'ok'           => 1,
+            'callback'     => <<<JS
                 upToStep(3);
 JS
+            ,
+            'feed_timeout' => 100000,
         ]);
 
     }
@@ -180,7 +182,7 @@ JS
                 'redirect'     => route_locale('user.dashboard'),
                 'ok'           => 1,
                 'message'      => trans('forms.feed.register_success'),
-                'redirectTime' => 2000,
+                'redirectTime' => 10000,
             ]);
         } else {
             $return = $this->jsonFeedback(null, [
@@ -286,29 +288,53 @@ JS
         if ($user->exists) { // A user with the given "code_melli" exists.
             $loginLing = '<a href="' . route('login') . '">' . trans('front.messages.login') . '</a>';
             if ($user->is_admin()) { // This user is a volunteer
-                $message = trans('front.messages.you_are_volunteer') . $loginLing;
+                $message = trans('front.messages.you_are_volunteer') .
+                    '<br />' . trans('front.messages.login_to_complete_volunteer_registration.before_link') .
+                    ' ' . view('manage.frame.widgets.link', [
+                        'anchor' => [
+                            'text'       => trans('front.messages.login_to_complete_volunteer_registration.link_text'),
+                            'attributes' => [
+                                'href'  => route('login'),
+                                'class' => 'link-green',
+                            ]
+                        ]
+                    ])->render() .
+                    ' ' . trans('front.messages.login_to_complete_volunteer_registration.after_link');
                 return [
                     'canRegister' => false,
                     'response'    => $this->jsonFeedback(null, [
-                        'ok'      => true, // TODO: better be info
+                        'ok'      => 1, // TODO: better be info
                         'message' => $message,
+//                        'feed_class' => 'blue',
                     ]),
                 ];
             } else if ($user->withDisabled()->is_admin()) { // This user id a blocked volunteer
                 return [
                     'canRegister' => false,
                     'response'    => $this->jsonFeedback(null, [
-                        'ok'      => true,
+                        'ok'      => 0,
                         'message' => trans('front.messages.unable_to_register_card'),
                     ]),
                 ];
             } else if ($user->is_an('card-holder')) { // This user has card
-                $message = trans('front.messages.you_are_card_holder') . $loginLing;
+                $message = trans('front.messages.card_exists_with_this_code_melli') .
+                    '<br />' . trans('front.messages.please_login.before_link') .
+                    ' ' . view('manage.frame.widgets.link', [
+                        'anchor' => [
+                            'text'       => trans('front.messages.please_login.link_text'),
+                            'attributes' => [
+                                'href'  => route('login'),
+                                'class' => 'link-green',
+                            ]
+                        ]
+                    ])->render() .
+                    ' ' . trans('front.messages.please_login.after_link');
                 return [
                     'canRegister' => false,
                     'response'    => $this->jsonFeedback(null, [
-                        'ok'      => true, // TODO: better be info
+                        'ok'      => 1, // TODO: better be info
                         'message' => $message,
+//                        'feed_class' => 'blue',
                     ]),
                 ];
             }
@@ -345,7 +371,13 @@ JS
         if ($user->email) {
             $emailContent = view('front.card.verification.email', compact('user'))->render();
 
-            $sendingEmailResult = EmailServiceProvider::send($emailContent, $user['email'], trans('front.site_title'), trans('people.form.recover_password'), 'default_email');
+            $sendingEmailResult = EmailServiceProvider::send(
+                $emailContent,
+                $user['email'],
+                setting()->ask('site_title')->gain(),
+                trans('people.form.recover_password'),
+                'default_email'
+            );
         }
     }
 }

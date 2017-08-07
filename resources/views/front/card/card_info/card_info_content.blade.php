@@ -34,7 +34,9 @@
         function goToStep(stepNumber) {
 
             // Hide "feeds"
-            $('#register_form').find('.form-feed').hide()
+            setTimeout(function () {
+                $('#register_form').find('.form-feed').hide();
+            }, 8000);
 
             // Changing the flag for discovering step of registration
             $('#step-number').val(stepNumber);
@@ -49,9 +51,11 @@
                     $('#code_melli').attr('readonly', 'readonly');
                     break;
                 case 3:
-                    // Showing related buttons
-                    $('#form-buttons').hide();
-                    $('#last-step-buttons').show();
+                    setTimeout(function () {
+                        // Showing related buttons
+                        $('#form-buttons').hide();
+                        $('#last-step-buttons').show();
+                    }, 8000);
                     break;
             }
         }
@@ -85,9 +89,11 @@
 
                     break;
                 case 3:
-                    // Making all inputs in form readonly
-                    $('#register_form').find(':input').attr('readonly', 'readonly');
-                    $('#register_form').find('.form-group').css('pointer-events', 'none');
+                    setTimeout(function () {
+                        // Making all inputs in form readonly
+                        $('#register_form').find(':input').attr('readonly', 'readonly');
+                        $('#register_form').find('.form-group').css('pointer-events', 'none');
+                    }, 8000);
                     break;
             }
         }
@@ -117,7 +123,6 @@
                     break;
                 case 2:
                     // Making all inputs in form writable
-                    console.log('here');
                     $('#register_form').find(':input').removeAttr('readonly');
                     $('#register_form').find('.form-group').css('pointer-events', 'auto');
 

@@ -438,14 +438,13 @@ function forms_responde(data, statusText, xhr, $form) {
         var cl = "alert-success";
         var me = data.message;
         if (!me) me = $($feedSelector + '-ok').html();
-    }
-    else {
+    } else {
         var cl = "alert-danger";
         var me = data.message;
 //            formEffect_markError(data.fields);
 //            $(data.fields).focus();
     }
-    if (data.feed_class != 'no') {
+    if (data.feed_class && data.feed_class != 'no') {
         var cl = data.feed_class;
     }
 
@@ -533,6 +532,9 @@ function forms_errorIfEmpty(selector) {
                 forms_markError(selector, "success");
                 return 0;
             }
+        } else {
+            forms_markError(selector, "success");
+            return 0;
         }
     }
 }
@@ -868,6 +870,9 @@ function forms_isPersian(string) {
 
 function forms_markError(selector, handle) {
     var formGroup = $(selector).closest('.form-group')
+    console.log('formGroup');
+    console.log(formGroup);
+    console.log(handle);
     if (handle == "success")
         formGroup.addClass("has-success").removeClass('has-error');
     else if (handle == "null" || handle == "reset")

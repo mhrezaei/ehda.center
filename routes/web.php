@@ -362,6 +362,7 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
             Route::get('volunteers', 'TestController@volunteers');
             Route::get('faqs', 'TestController@faqs');
             Route::get('works/send', 'TestController@works_send');
+            Route::get('mail-view', 'TestController@mail_view');
         });
         Route::get('about', 'TestController@about');
 

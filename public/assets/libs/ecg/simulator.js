@@ -475,8 +475,7 @@ function pageTimeout(page, time, timeoutAction) {
  * Ventricular Tachycardia
  */
 function ventricularTachycardia() {
-    console.log('VTach');
-    console.log(currentTime());
+    console.log(currentTime() + ' : ' + 'VTach');
     var changing = {
         HR: 210,
         SPO2: 20,
@@ -532,7 +531,7 @@ function refreshScreen() {
     $('.preview-cvp').html(window.currentData.CVP);
     $('.preview-temperature').html(window.currentData.T);
     $('.preview-uop').html(window.currentData.UOP);
-    $('.preview-hgb').html(window.currentData.HgB);
+    $('.preview-hgb').html(window.currentData.Hgb);
     $('.preview-inr').html(window.currentData.INR);
     $('.preview-bs').html(window.currentData.BS);
     $('.preview-na').html(window.currentData.Na);
@@ -608,6 +607,7 @@ function stopECG(hr) {
  * @param energy
  */
 function chargeShocker(energy) {
+    console.log('----------------------------------------charge start------------------------------------------');
     var chargingSpeed = 100; // Joule/Second
     var box = $('.shocker-charger-box');
     var progressBar = box.find('.progress-bar');
@@ -623,6 +623,7 @@ function chargeShocker(energy) {
         progressBar.attr('aria-valuenow', 100);
         $('.btn-charge-shocker').hide();
         $('.btn-shock').show();
+        console.log('----------------------------------------charge finished------------------------------------------');
     });
 }
 
@@ -630,6 +631,7 @@ function chargeShocker(energy) {
  * Do shock with charged energy of shocker
  */
 function doShock() {
+    console.log('----------------------------------------doShock------------------------------------------');
     $('.monitor-ecg-preview-inner').removeClass('VTach').removeClass('dead');
 
     $('.shocker-charger-box').css('opacity', 0);
@@ -648,6 +650,7 @@ function doShock() {
         $('.monitor-ecg-shock-box').hide();
         $('.btn-charge-shocker').show();
         $('.btn-shock').hide();
+        window.shockerCharge = 0;
     }
 }
 
@@ -664,8 +667,7 @@ function currentTime() {
  * Dir case
  */
 function kill() {
-    console.log('die');
-    console.log(currentTime());
+    console.log(currentTime() + ' : ' + 'die');
     var changing = {
         HR: 0,
         SPO2: 20,
@@ -945,4 +947,32 @@ function correctManagementPanelHeight() {
         var tabContentHeight = managementPanelHeight - navTabsHeight - 2;
         treatmentsPage.find('.tab-content').height(tabContentHeight);
     }
+}
+
+function resetShocker() {
+    console.log(currentTime() + ' : ' + 'resetShocker');
+    window.shockerCharge = 0;
+
+    var shocker = $('.monitor-ecg-shock-box');
+    var box = shocker.find('.shocker-charger-box');
+    var progressBar = box.find('.progress-bar');
+    var energyInput = shocker.find('.shocker-energy');
+
+    energyInput.val(energyInput.find('option').first().val());
+
+    progressBar.css('width', 0);
+    progressBar.attr('aria-valuenow', 100);
+
+    $('.btn-charge-shocker').show();
+    $('.btn-shock').hide()
+        .attr('disabled', 'disabled');
+}
+
+function showShocker() {
+    $('.monitor-ecg-shock-box').show();
+}
+
+function turnShockerOff() {
+    $('.monitor-ecg-shock-box').hide();
+    resetShocker();
 }

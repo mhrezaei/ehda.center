@@ -5,7 +5,7 @@
                 Urine Output: <span class="preview-uop"></span> cc/hour
             </div>
             <div class="col-md-3 col-sm-6 col-xs-12">
-                HgB: <span class="preview-hgb"></span>
+                Hgb: <span class="preview-hgb"></span>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-12">
                 INR: <span class="preview-inr"></span>

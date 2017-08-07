@@ -289,4 +289,10 @@ class TestController extends Controller
         return response()->json(['success' => 'fileName.gif']);
     }
 
+    public function mail_view(){
+        $user = user();
+        $text = view('front.card.verification.email', compact('user'))->render();
+        return view('templates.email.default_email', compact('text'));
+    }
+
 }
