@@ -8,6 +8,7 @@ use App\Models\State;
 use App\Models\User;
 use App\Providers\EmailServiceProvider;
 use App\Providers\FaGDServiceProvider;
+use App\Providers\MessagesServiceProvider;
 use App\Providers\SecKeyServiceProvider;
 use App\Traits\TahaControllerTrait;
 use Asanak\Sms\Facade\AsanakSms;
@@ -363,21 +364,25 @@ JS
             ],
                 trans('front.organ_donation_card_section.register_success_message.sms'));
 
-            $sendingSmsResult = AsanakSms::send($user->mobile, $smsText);
-            $sendingSmsResult = json_decode($sendingSmsResult);
+            MessagesServiceProvider::storeMessages([
+                'type'     => 'sms',
+                'receiver' => $user->mobile,
+                'content'  => $smsText,
+            ]);
+
         }
 
         // Sending Mail
         if ($user->email) {
             $emailContent = view('front.card.verification.email', compact('user'))->render();
 
-            $sendingEmailResult = EmailServiceProvider::send(
-                $emailContent,
-                $user['email'],
-                setting()->ask('site_title')->gain(),
-                trans('people.form.recover_password'),
-                'default_email'
-            );
+
+            MessagesServiceProvider::storeMessages([
+                'type'     => 'email',
+                'receiver' => $user->email,
+                'content'  => $emailContent,
+                'subject'  => trans('front.organ_donation_card_section.register'),
+            ]);
         }
     }
 }
