@@ -57,7 +57,7 @@ class VolunteersController extends UsersController
 			'grid_row'          => "browse-row-for-volunteers",
 			'free_toolbar_view' => "manage.users.browse-free-toolbar-for-volunteers",
 			'grid_array'        => [
-				trans('validation.attributes.name_first'),
+				[trans('validation.attributes.name_first'),200],
 				trans("validation.attributes.occupation"),
 				trans("validation.attributes.status"),
 				trans('forms.button.action'),
@@ -415,6 +415,32 @@ class VolunteersController extends UsersController
 		*/
 
 		return $this->jsonAjaxSaveFeedback($saved, ['success_refresh' => true,]);
+
+	}
+
+	public function view($model_hashid)
+	{
+		/*-----------------------------------------------
+		| Security ...
+		*/
+		//if(user()->as('admin')->cannot('users-card-holder.view')) {
+		//	return view('errors.m403');
+		//}
+
+		/*-----------------------------------------------
+		| Model ...
+		*/
+		$model = User::findByHashid($model_hashid);
+		if(!$model or !$model->id or $model->is_not_an('admin')) {
+			return view('errors.m410');
+		}
+
+		/*-----------------------------------------------
+		| View ...
+		*/
+
+		return view("manage.users.volunteer-view", compact('model'));
+
 
 	}
 

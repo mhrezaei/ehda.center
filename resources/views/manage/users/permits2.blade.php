@@ -1,6 +1,7 @@
 @include('templates.modal.start' , [
 	'form_url' => url('manage/users/save/permits'),
-	'modal_title' => trans('people.commands.permit').' '.$model->full_name.' '.trans('people.form.as_a' , ['role_title' => $request_role->title ,]),
+//	'modal_title' => trans('people.commands.permit').' '.$model->full_name.' '.trans('people.form.as_a' , ['role_title' => $request_role->title ,]),
+	'modal_title' => trans('people.commands.permit'),
 ])
 <div class='modal-body'>
 	@include('forms.hiddens' , ['fields' => [
@@ -17,17 +18,26 @@
 		|
 		--}}
 		<ul class="nav nav-tabs" role="tablist">
+			<li role="presentation" class="active">
+				<a href="#divHelloPermits" aria-controls="divHelloPermits" role="tab" data-toggle="tab">
+					<i class="fa fa-user f16"></i>
+				</a>
+			</li>
+
+
+			{{-- Users -------------------------------}}
 			@if(isset($modules['users']) )
 				{{ '' , $module_users = $modules['users'] }}
 				{{ '' , array_forget($modules , 'users') }}
 				@if( in_array( $request_role->slug , model('role')::adminRoles()) and user()->as_any()->can("users"))
-					<li role="presentation" class="active"><a href="#divPeoplePermits" aria-controls="divPeoplePermits"
-															  role="tab"
-															  data-toggle="tab">{{ trans("people.people_management") }}</a>
+					<li role="presentation">
+						<a href="#divPeoplePermits" aria-controls="divPeoplePermits" role="tab" data-toggle="tab">{{ trans("people.people_management") }}</a>
 					</li>
 				@endif
 			@endif
 
+
+			{{-- Posts -------------------------------}}
 			@if(isset($modules['posts']))
 				{{ '' , $module_posts = $modules['posts'] }}
 				{{ '' , array_forget($modules , 'posts') }}
@@ -38,6 +48,7 @@
 				@endif
 			@endif
 
+			{{-- Other Modules -------------------------------}}
 			@if(count($modules))
 				<li role="presentation"><a href="#divOtherPermits" aria-controls="divOtherPermits" role="tab"
 										   data-toggle="tab">{{ trans('manage.modules.other_modules') }}</a></li>
@@ -51,7 +62,10 @@
 		|
 		--}}
 		<div class="tab-content">
-			<div role="tabpanel" class="tab-pane active" id="divPeoplePermits">
+			<div role="tabpanel" class="tab-pane active p20" id="divHelloPermits">
+				@include("manage.users.permits2-hello")
+			</div>
+			<div role="tabpanel" class="tab-pane" id="divPeoplePermits">
 				@foreach($roles as $role)
 					@include("manage.users.permits2-module" , [
 						'title' => $role->plural_title,

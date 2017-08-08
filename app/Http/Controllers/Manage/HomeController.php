@@ -144,7 +144,7 @@ class HomeController extends Controller
 		*/
 		return $this->jsonFeedback([
 			'message' => $success_message ,
-		     'feed_class' => "" ,
+		     'feed_class' => " " ,
 		]);
 
 	}

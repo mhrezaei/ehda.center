@@ -4,6 +4,8 @@ return [
 	'states'        => "تقسیمات کشوری",
 	'posttypes'     => "گونه‌های مطالب",
 	'roles'         => "گونه‌های کاربران",
+	'supports'      => "تیم‌های پشتیبانی",
+	'support'       => "پشتیبانی",
 	'site_settings' => "تنظیمات سایت",
 
 	'downstream'      => "پیکربندی",
@@ -14,7 +16,7 @@ return [
 	'domains'     => "دامنه‌ها",
 	'domain_edit' => "ویرایش دامنه",
 	'domain_new'  => "دامنه‌ی جدید",
-	'artisan' => "آرتیزان" ,
+	'artisan'     => "آرتیزان",
 
 	'city'                       => "شهر",
 	'cities_of'                  => "شهرهای :province",
@@ -42,7 +44,7 @@ return [
 	],
 
 	'account' => [
-		'title'                                       => "تنظیمات حساب",
+		'title' => "تنظیمات حساب",
 
 		'profile_save'                                => 'ثبت درخواست ذخیره‌ی تغییرات',
 		'profile_revert'                              => 'انصراف از تغییرات',
