@@ -108,17 +108,27 @@
                                                                    target="_blank">
                                                                     {{ trans('front.home') }}
                                                                 </a>
-                                                                &nbsp; |&nbsp;&nbsp;
-                                                                <a href="{{ url_locale('about') }}"
-                                                                   style="color:#999;text-decoration:none;font-family:Tahoma;font-size:8pt"
-                                                                   target="_blank">
-                                                                    {{ trans('front.about') }}
-                                                                </a>
+                                                                {{--&nbsp; |&nbsp;&nbsp;--}}
+                                                                {{--<a href="{{ url_locale('about') }}"--}}
+                                                                   {{--style="color:#999;text-decoration:none;font-family:Tahoma;font-size:8pt"--}}
+                                                                   {{--target="_blank">--}}
+                                                                    {{--{{ trans('front.about') }}--}}
+                                                                {{--</a>--}}
                                                                 &nbsp; |&nbsp;
                                                                 <a href="{{ url_locale('contact') }}"
                                                                    style="color:#999;text-decoration:none;font-family:Tahoma;font-size:8pt"
                                                                    target="_blank">
                                                                     {{ trans('front.contact_us') }}
+                                                                </a>
+                                                                <a href="{{ route_locale('volunteer.register.step.1.get') }}"
+                                                                   style="color:#999;text-decoration:none;font-family:Tahoma;font-size:8pt"
+                                                                   target="_blank">
+                                                                    {{ trans('front.volunteer_section.singular') }}
+                                                                </a>
+                                                                <a href="{{ route('register_card') }}"
+                                                                   style="color:#999;text-decoration:none;font-family:Tahoma;font-size:8pt"
+                                                                   target="_blank">
+                                                                    {{ trans('front.organ_donation_card_section.singular') }}
                                                                 </a>
                                                             </center>
                                                         </td>
