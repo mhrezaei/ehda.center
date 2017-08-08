@@ -233,7 +233,7 @@ return [
         "postal_code"         => "(۱۰ رقم بدون خط تیره)",
         "home_postal"         => "(۱۰ رقم بدون خط تیره)",
         "work_postal"         => "(۱۰ رقم بدون خط تیره)",
-        "time"                => 'ساعت و دقیقه، در قالب مرسوم دقیقه:ساعت. مثل ۲۰:۴۲',
+        "time" =
 
         'your_comment'          => 'نظر شما',
         'max_per_page'          => "در هر صفحه، چند پست باید جا شود؟ تعداد را اینجا بنویسید. عدد صفر این قابلیت را غیر فعال می‌کند.",
@@ -520,18 +520,18 @@ return [
         'submission_work_owner_mobile' => 'تلفن همراه صاحب اثر',
         'submission_work_owner_email'  => 'ایمیل صاحب اثر',
 
-        'name'            => 'نام',
-        'image_uploader'  => 'فایل(های) تصویری',
-        'video_uploader'  => 'فایل(های) ویدیویی',
-        'audio_uploader'  => 'فایل(های) صوتی',
-        'text_uploader'   => 'فایل(های) متنی',
-        'text_content'    => 'محتوای فایل متنی',
-        'submitter_name'  => 'نام ارسال کننده',
-        'submitter_phone' => 'شماره تلفن ارسال کننده',
+		'name'            => 'نام',
+		'image_uploader'  => 'فایل(های) تصویری',
+		'video_uploader'  => 'فایل(های) ویدیویی',
+		'audio_uploader'  => 'فایل(های) صوتی',
+		'text_uploader'   => 'فایل(های) متنی',
+		'text_content'    => 'محتوای فایل متنی',
+		'submitter_name'  => 'نام ارسال کننده',
+		'submitter_phone' => 'شماره تلفن ارسال کننده',
 
-        'from_event_id' => "رویداد",
+		'from_event_id' => "رویداد",
 
-        'has_medal'  => 'مدال افتخار دارد.',
+    'has_medal'  => 'مدال افتخار دارد.',
 
         //@TODO: New up to the end of this array..
         'domains'    => "دامنه",
@@ -555,5 +555,5 @@ return [
         'no_underline' => "بدون آندرلاین",
         'icon_hint'    => "یکی از آیکون‌های font-awesome را بدون کاراکتر fa اینجا بنویسید",
     ],
-
+  
 ];
