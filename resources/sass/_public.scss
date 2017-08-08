@@ -116,7 +116,6 @@ header {
         &:link,
         &:visited {
           @extend .text-blue, .bg-white, .border-1, .border-white, .rounded-corners-5, .f12;
-          border: none;
           outline: none;
           padding: 0 5px;
           line-height: 10px;
@@ -2470,7 +2469,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   &:after {
     @extend .border-right-5, .border-right-red;
     position: absolute;
-    z-index: 800;
+    //z-index: 800;
     top: 0;
     right: 0;
 
