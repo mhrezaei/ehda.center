@@ -257,6 +257,45 @@
 ])
 
 
+{{--
+|--------------------------------------------------------------------------
+| Activities
+|--------------------------------------------------------------------------
+|
+--}}
+@include("forms.sep")
+@include("forms.group-start" , [
+	'label' => trans("validation.attributes.activities") ,
+])
+
+
+
+@foreach(model('activity')::sortedAll() as $activity)
+
+	@include("forms.check" , [
+		'name' => '_activity-'.$activity->slug,
+		'value' => in_array($activity->slug , $model->activities_array) ,
+		'label' => $activity->title ,
+	]     )
+
+
+@endforeach
+
+
+
+@include("forms.group-end")
+
+
+
+
+{{--
+|--------------------------------------------------------------------------
+| Password
+|--------------------------------------------------------------------------
+|
+--}}
+
+
 @include('forms.sep')
 
 
@@ -280,6 +319,21 @@
 
 
 @include('forms.group-end')
+
+
+
+
+
+
+
+
+{{--
+|--------------------------------------------------------------------------
+| Buttons
+|--------------------------------------------------------------------------
+|
+--}}
+
 
 @include('forms.sep')
 

@@ -535,7 +535,7 @@ return [
 		'source'     => "منبع",
 		'role_slug'  => "نقش کاربری",
 		'activity'   => "فعالیت",
-		'activities' => "فعالیت‌ها",
+		'activities' => "حوزه‌های فعالیت",
 	],
 
 	"http" => [

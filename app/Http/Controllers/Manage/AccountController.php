@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Manage;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Manage\AccountProfileRequest;
 use App\Http\Requests\Manage\ChangeSelfPasswordRequest;
+use App\Models\Activity;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\State;
@@ -168,6 +169,9 @@ class AccountController extends Controller
 		else {
 			$raw_data['work_province'] = 0;
 		}
+
+		$raw_data['activities'] = Activity::requestToString($raw_data) ;
+
 
 		/*
 		|--------------------------------------------------------------------------

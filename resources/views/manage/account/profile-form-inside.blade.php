@@ -276,3 +276,44 @@
 		'hint_class' => 'help-flag' ,
 	])
 @endif
+
+
+{{--
+|--------------------------------------------------------------------------
+| Activities
+|--------------------------------------------------------------------------
+|
+--}}
+@include("forms.sep")
+@if($show_unchanged or isset($model->changes->activities))
+
+	@include("forms.group-start" , [
+		'label' => trans("validation.attributes.activities") ,
+	])
+		@foreach(model('activity')::sortedAll() as $activity)
+			{{ '' , $real_value = in_array($activity->slug , $model->activities_array) }}
+			{{ '' , $changed_value = in_array($activity->slug , $model->changed_activities_array) }}
+
+			@include("forms.check" , [
+				'name' => '_activity-'.$activity->slug,
+				'value' => isset($model->changes->activities)? $changed_value : $real_value,
+				'label' => $activity->title ,
+			]     )
+
+			@if($real_value != $changed_value and isset($model->changes->activities))
+				<div class="f10 text-danger mv5 mh20">
+					@if($real_value)
+						{{ trans("people.form.exist_in_profile") }}
+					@else
+						{{ trans("people.form.dont_exist_in_profile") }}
+					@endif
+				</div>
+			@endif
+
+
+		@endforeach
+
+	@include("forms.group-end")
+	@include("forms.sep")
+
+@endif

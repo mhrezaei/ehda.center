@@ -6,6 +6,7 @@ use App\Http\Requests\Manage\CardInquiryRequest;
 use App\Http\Requests\Manage\SearchRequest;
 use App\Http\Requests\Manage\VolunteerInquiryRequest;
 use App\Http\Requests\Manage\VolunteerSaveRequest;
+use App\Models\Activity;
 use App\Providers\YasnaServiceProvider;
 use Illuminate\Http\Request;
 use App\Models\Role;
@@ -383,6 +384,12 @@ class VolunteersController extends UsersController
 			$data['password']              = Hash::make($data['mobile']);
 			$data['password_force_change'] = 1;
 		}
+
+		/*-----------------------------------------------
+		| Processing Activities ...
+		*/
+		$data['activities'] = Activity::requestToString($data) ;
+
 
 		/*-----------------------------------------------
 		| Processing Domain ...
