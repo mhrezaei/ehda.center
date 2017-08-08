@@ -1,11 +1,11 @@
 {
   "1": {
     "caseInfo": {
-      "information": "You were informed about a 55 years old gentleman felt a severe headache and dropped on the ground while he was eating lunch. He was transformed to the hospital by ambulance and was immediately admitted in ICU. The day after, he was declared brain dead and OPU was informed.",
+      "information": "You were informed about a 55 years old gentleman felt a severe headache and dropped on the ground while he was eating lunch. He was transferred to the hospital by ambulance and was immediately admitted in ICU. The day after, he was declared brain dead and OPU was informed.",
       "height": 170,
       "weight": 70,
       "urineOutput": 20,
-      "moreInformation": "He has had a story of well-controlled hypertension, no diabetes, some exertional chest pain in heavy exercise. He has a cardiac arrest on the way in the Ambulance that was reserverd after 10 minutes of cardiac massage and 200J of DC shock. His blood pressure was stable at the addmission and urine output was 40cc/h but after 8 hours, he started to have 400cc/h of urine output and a drop in blood pressure. Now his BP and his urine output are both low."
+      "moreInformation": "He has had a story of well-controlled hypertension, no diabetes, some exertional chest pain in heavy exercise. He has a cardiac arrest on the way in the Ambulance that was reversed after 10 minutes of cardiac massage and 200J of DC shock. His blood pressure was stable at the addmission and urine output was 40cc/h but after 8 hours, he started to have 400cc/h of urine output and a drop in blood pressure. Now his BP and his urine output are both low."
     },
     "defaultData": {
       "SBP": 60,

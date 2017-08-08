@@ -396,7 +396,7 @@ class VolunteersController extends Controller
             $return = $this->jsonFeedback(null, [
                 'ok'       => 1,
                 'message'  => trans('front.volunteer_section.register_success'),
-                'callback' => 'afterRegisterVolunteer()',
+                'callback' => 'afterRegisterVolunteer(); $.ajax("' . route_locale('messages.send') . '");',
             ]);
         } else {
             $return = $this->jsonFeedback(null, [

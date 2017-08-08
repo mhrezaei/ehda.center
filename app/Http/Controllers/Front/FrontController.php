@@ -210,4 +210,10 @@ class FrontController extends Controller
 
         return view('front.cart.main', compact('cart', 'mostExpensive'));
     }
+
+    public function contact()
+    {
+        $contactFormHTML = PostsServiceProvider::showPost('contact-us', ['showError' => false]);
+        return view('front.test.about.main', compact('contactFormHTML'));
+    }
 }

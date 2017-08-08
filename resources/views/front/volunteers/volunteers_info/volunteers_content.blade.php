@@ -118,7 +118,9 @@
                                 @if(user()->is_admin())
                                     <div class="row">
                                         <div class="col-xs-12">
-                                            {{ trans('front.messages.you_are_volunteer') }}
+                                            <div class="alert alert-info">
+                                                {{ trans('front.messages.you_are_volunteer') }}
+                                            </div>
                                         </div>
                                         <div class="col-xs-12">
                                             <a href="{{ url('manage') }}"
@@ -128,13 +130,17 @@
                                 @elseif (user()->withDisabled()->is_admin())
                                     <div class="row">
                                         <div class="col-xs-12">
-                                            {{ trans('front.messages.unable_to_register_volunteer') }}
+                                            <div class="alert alert-danger">
+                                                {{ trans('front.messages.unable_to_register_volunteer') }}
+                                            </div>
                                         </div>
                                     </div>
                                 @elseif (user()->is('card_holder'))
                                     <div class="row">
                                         <div class="col-xs-12">
-                                            {{ trans('front.messages.you_are_card_holder') }}
+                                            <div class="alert alert-info">
+                                                {{ trans('front.messages.you_are_card_holder') }}
+                                            </div>
                                         </div>
                                         <div class="col-xs-12">
                                             <a href="{{ route_locale('volunteer.register.step.final.get') }}"

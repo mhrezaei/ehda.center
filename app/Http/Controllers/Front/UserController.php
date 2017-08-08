@@ -42,6 +42,7 @@ class UserController extends Controller
 
     public function profile()
     {
+        // If user is volunteer should proceed to edit profile from admin panel (not here)
         if (user()->is_admin()) {
             return redirect('manage/account/profile');
         }
@@ -96,6 +97,11 @@ class UserController extends Controller
 
     public function update(ProfileSaveRequest $request)
     {
+        // If user is volunteer should proceed to edit profile from admin panel (not here)
+        if (user()->is_admin()) {
+            return redirect('manage/account/profile');
+        }
+
         $request = $request->all();
         if ($request['new_password']) {
             $request['password'] = Hash::make($request['new_password']);
