@@ -452,7 +452,7 @@
                                 'blank_value' => '0' ,
                                 'required' => 1,
                                 'options' =>
-                                    collect(\Illuminate\Support\Facades\Lang::get('people.familization'))
+                                    collect(trans('people.familiarization'))
                                     ->map(function ($item, $key) {
                                         return ['id' => $key, 'title' => $item];
                                     }),
@@ -562,7 +562,7 @@
         }
 
         /**
-         * Thing to do after finish registeration volunteer
+         * Thing to do after finish registration volunteer
          */
         function afterRegisterVolunteer() {
             $('#volunteer_final_step').find(':input').prop('disabled', true);

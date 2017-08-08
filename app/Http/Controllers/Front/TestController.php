@@ -299,7 +299,7 @@ class TestController extends Controller
 
     public function messages()
     {
-        $user = user();
+        $user = user('4');
 
         // Sending SMS
         if ($user->mobile) {
@@ -313,7 +313,6 @@ class TestController extends Controller
                 'receiver' => $user->mobile,
                 'content'  => $smsText,
             ]);
-
         }
 
         // Sending Mail

@@ -36,7 +36,7 @@
             // Hide "feeds"
             setTimeout(function () {
                 $('#register_form').find('.form-feed').hide();
-            }, 8000);
+            }, 15000);
 
             // Changing the flag for discovering step of registration
             $('#step-number').val(stepNumber);
@@ -51,11 +51,9 @@
                     $('#code_melli').attr('readonly', 'readonly');
                     break;
                 case 3:
-                    setTimeout(function () {
-                        // Showing related buttons
-                        $('#form-buttons').hide();
-                        $('#last-step-buttons').show();
-                    }, 8000);
+                    // Showing related buttons
+                    $('#form-buttons').hide();
+                    $('#last-step-buttons').show();
                     break;
             }
         }
@@ -89,11 +87,9 @@
 
                     break;
                 case 3:
-                    setTimeout(function () {
-                        // Making all inputs in form readonly
-                        $('#register_form').find(':input').attr('readonly', 'readonly');
-                        $('#register_form').find('.form-group').css('pointer-events', 'none');
-                    }, 8000);
+                    // Making all inputs in form readonly
+                    $('#register_form').find(':input').attr('readonly', 'readonly');
+                    $('#register_form').find('.form-group').css('pointer-events', 'none');
                     break;
             }
         }

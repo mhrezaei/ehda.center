@@ -870,9 +870,6 @@ function forms_isPersian(string) {
 
 function forms_markError(selector, handle) {
     var formGroup = $(selector).closest('.form-group')
-    console.log('formGroup');
-    console.log(formGroup);
-    console.log(handle);
     if (handle == "success")
         formGroup.addClass("has-success").removeClass('has-error');
     else if (handle == "null" || handle == "reset")

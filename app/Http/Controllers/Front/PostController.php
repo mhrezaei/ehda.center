@@ -216,6 +216,16 @@ JS;
         return $this->abort('403');
     }
 
+    public function show_with_exact_id($lang, $identifier)
+    {
+        $post = Post::findBySlug($identifier, 'id');
+        if($post->exists) {
+            return redirect($post->short_url);
+        }
+
+        return redirect()->home();
+    }
+
     public function faqs()
     {
         $faqsHTML = PostsServiceProvider::showList(['type' => 'faq']);
