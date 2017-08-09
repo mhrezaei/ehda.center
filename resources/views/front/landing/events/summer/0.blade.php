@@ -362,7 +362,7 @@
 {!! Html::script ('assets/landing/events/jquery_002.js') !!}
 {!! Html::script ('assets/landing/events/TimeCircles.js') !!}
 {!! Html::script ('assets/landing/events/parsley.js') !!}
-{!! Html::script ('assets/landing/events/custom.js') !!}
+{!! Html::script ('assets/landing/events/file-manager.js') !!}
 
 <div class="backstretch" style="left: 0px; top: 0px; overflow: hidden; margin: 0px; padding: 0px; height: 947px; width: 1903px; z-index: -999999; position: fixed;">
     <img style="position: absolute; margin: 0px; padding: 0px; border: medium none; width: 1903px; height: 1268.35px; max-height: none; max-width: none; z-index: -999999; left: 0px; top: -160.675px;" src="{{ url('assets/photos/posts/landing/ramazan.jpg') }}">

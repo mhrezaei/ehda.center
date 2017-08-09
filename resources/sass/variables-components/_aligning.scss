@@ -1,0 +1,6 @@
+/* aligning */
+$alignCenter: ("c": "center");
+$verticalAligning: map_merge($verticalDirections, $alignCenter);
+$horizontalAligning: map_merge($horizontalDirections, $alignCenter);
+$aligning: ("vertical": $verticalAligning, "horizontal": $horizontalAligning);
+$aligningProperties: ("vertical": 'align-items', "horizontal": 'justify-content');

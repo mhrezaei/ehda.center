@@ -61,253 +61,253 @@ Route::group([
     'middleware' => ['auth', 'is:admin'],
     'namespace'  => "Manage",
 ], function () {
-	Route::get('/', 'HomeController@index');
-	Route::get('/index', 'HomeController@index');
-	Route::get('/widget/{widget}', 'HomeController@widget');
+    Route::get('/', 'HomeController@index');
+    Route::get('/index', 'HomeController@index');
+    Route::get('/widget/{widget}', 'HomeController@widget');
 
-	Route::group(['prefix' => 'act'], function () {
-		Route::get('search-people', 'HomeController@searchPeople');
-	});
+    Route::group(['prefix' => 'act'], function () {
+        Route::get('search-people', 'HomeController@searchPeople');
+    });
 
-	/*-----------------------------------------------
-	| Account ...
-	*/
-	Route::group(['prefix' => "account"], function () {
-		Route::get('/{request_tab?}', 'AccountController@index');
-		Route::get('/act/{action}', 'AccountController@action');
-
-
-		Route::group(['prefix' => 'save'], function () {
-			Route::post('/password', 'AccountController@savePassword');
-			Route::post('/profile', 'AccountController@saveProfile');
-			Route::post('/card-register', 'AccountController@saveCard');
-		});
-	});
-
-	/*-----------------------------------------------
-	| Volunteers ...
-	*/
-	Route::group(['prefix' => 'volunteers', 'middleware' => "can:users-volunteer",], function () {
-		Route::get('/', 'VolunteersController@browseChild');
-		Route::get('/browse/update/{model_id}/{request_role?}', 'VolunteersController@update');
-		//Route::get('/browse/search/{keyword?}', 'VolunteersController@searchChild');
-		Route::get('/browse/{domain_slug}/search/{keyword?}', 'VolunteersController@searchChild');
-		Route::get('/browse/{request_role?}/{request_tab?}/{volunteer?}/{post?}', 'VolunteersController@browseChild');
-		Route::get('/search', 'VolunteersController@search');
-
-		Route::get('/create/{request_role?}/{code_melli?}', 'VolunteersController@createChild');
-		Route::get('/edit/{model_id?}', 'VolunteersController@editorChild');
-		Route::get('/view/{model_id}', 'VolunteersController@view');
-
-		Route::group(['prefix' => 'save'], function () {
-			Route::post('/', 'VolunteersController@saveChild');
-			Route::post('/inquiry', 'VolunteersController@inquiry');
-			Route::post('/new-role', 'VolunteersController@saveNewRole');
-		});
-
-	});
-
-	/*-----------------------------------------------
-	| Cards ...
-	*/
-	Route::group(['prefix' => 'cards', 'middleware' => "can:users-card-holder"], function () {
-		Route::get('/', 'CardsController@browseChild');
-		Route::get('/browse', 'CardsController@browseChild');
-		Route::get('/browse/update/{model_id}', 'CardsController@update');
-		//Route::get('/stats', 'CardsController@stats'); //TODO
-		Route::get('/browse/search/{keyword?}', 'CardsController@searchChild');
-		Route::get('/browse/{request_tab}/{volunteer?}/{post?}', 'CardsController@browseChild');
-		Route::get('/search', 'CardsController@search');
-
-		Route::get('/view/{model_id}', 'CardsController@view');
-
-		Route::get('/printings/act/{action}', 'CardsController@printingAction');
-
-		//Route::get('/printings/modal/{printing_id}/{modal_action}', 'CardsController@modalActions');
-		Route::get('/printings/download_excel/{event_id}', 'CardsController@printingExcelDownload');
-		Route::get('/printings/{request_tab?}/{event_id?}/{user_id?}/{volunteer_id?}', 'CardsController@printingBrowse');
-
-		Route::get('/create/{code_melli?}', 'CardsController@createChild');
-		Route::get('/edit/{model_id}', 'CardsController@editorChild');
-
-		Route::group(['prefix' => 'save'], function () {
-			//Route::post('/', 'CardsController@saveChild');
-			Route::post('/volunteers', 'CardsController@saveForVolunteers');
-			Route::post('/inquiry', 'CardsController@inquiry');
-
-			Route::post('/add_to_print', 'CardsController@addToPrintings');
-			Route::post('/add_to_print_mass', 'CardsController@addToPrintingsMass');
-			//Route::post('/delete', 'CardsController@delete');
-			//Route::post('/bulk_delete', 'CardsController@bulk_delete');
-			//Route::post('/sms', 'CardsController@sms');
-			//Route::post('/email', 'CardsController@email');
-			Route::post('/bulk_email', 'CardsController@bulk_email');
-			Route::post('/print', 'CardsController@single_print');
-			Route::post('/bulk_print', 'CardsController@bulk_print');
-
-			Route::post('printings/', 'CardsController@printingActionSave');
-		});
-	});
+    /*-----------------------------------------------
+    | Account ...
+    */
+    Route::group(['prefix' => "account"], function () {
+        Route::get('/{request_tab?}', 'AccountController@index');
+        Route::get('/act/{action}', 'AccountController@action');
 
 
-	/*-----------------------------------------------
-	| Users ...
-	*/
-	Route::group(['prefix' => "users", 'middleware' => "can:users",], function () {
-		Route::get('/update/{item_id}/{request_role}', 'UsersController@update');
-		Route::get('browse/{role}/search/{keyword?}', 'UsersController@search');
-		Route::get('browse/{role}/{request_tab?}', 'UsersController@browse');
-		Route::get('create/{role}', 'UsersController@create');
-		Route::get('/act/{model_id}/{action}/{option?}', 'UsersController@singleAction');
+        Route::group(['prefix' => 'save'], function () {
+            Route::post('/password', 'AccountController@savePassword');
+            Route::post('/profile', 'AccountController@saveProfile');
+            Route::post('/card-register', 'AccountController@saveCard');
+        });
+    });
 
-		Route::group(['prefix' => 'save'], function () {
-			Route::post('/', 'UsersController@save');
-			Route::post('/smsMass', 'UsersController@smsMass');
-			Route::post('/statusMass', 'UsersController@saveStatusMass');
-			Route::post('/status', 'UsersController@saveStatus');
-			Route::post('/password', 'UsersController@savePassword');
-			Route::post('/permits', 'UsersController@savePermits');
+    /*-----------------------------------------------
+    | Volunteers ...
+    */
+    Route::group(['prefix' => 'volunteers', 'middleware' => "can:users-volunteer",], function () {
+        Route::get('/', 'VolunteersController@browseChild');
+        Route::get('/browse/update/{model_id}/{request_role?}', 'VolunteersController@update');
+        //Route::get('/browse/search/{keyword?}', 'VolunteersController@searchChild');
+        Route::get('/browse/{domain_slug}/search/{keyword?}', 'VolunteersController@searchChild');
+        Route::get('/browse/{request_role?}/{request_tab?}/{volunteer?}/{post?}', 'VolunteersController@browseChild');
+        Route::get('/search', 'VolunteersController@search');
 
-			Route::post('/delete', 'UsersController@delete');
-			Route::post('/undelete', 'UsersController@undelete');
-			Route::post('/destroy', 'UsersController@destroy');
+        Route::get('/create/{request_role?}/{code_melli?}', 'VolunteersController@createChild');
+        Route::get('/edit/{model_id?}', 'VolunteersController@editorChild');
+        Route::get('/view/{model_id}', 'VolunteersController@view');
 
-			Route::get('/role/{user_id}/{role_slug}/{new_status}', 'UsersController@saveRole');
-		});
-	});
+        Route::group(['prefix' => 'save'], function () {
+            Route::post('/', 'VolunteersController@saveChild');
+            Route::post('/inquiry', 'VolunteersController@inquiry');
+            Route::post('/new-role', 'VolunteersController@saveNewRole');
+        });
 
-	/*-----------------------------------------------
-	| Comments ...
-	*/
-	Route::group(['prefix' => 'comments', 'middleware' => 'can:comments'], function () {
-		Route::get('/update/{item_id}', 'CommentsController@update');
-		Route::get('/act/{model_id}/{action}', 'CommentsController@singleAction');
-		Route::get('{request_tab?}/{switches?}', 'CommentsController@browse');
-		Route::group(['prefix' => 'save'], function () {
-			Route::post('/', 'CommentsController@save');
-			Route::post('/process', 'CommentsController@process');
-			Route::post('/delete', 'CommentsController@delete');
-			Route::post('/deleteMass', 'CommentsController@deleteMass');
-			Route::post('/undelete', 'CommentsController@undelete');
-			Route::post('/undeleteMass', 'CommentsController@undeleteMass');
-			Route::post('/destroy', 'CommentsController@destroy');
-			Route::post('/destroyMass', 'CommentsController@destroyMass');
-			Route::post('/statusMass', 'CommentsController@statusMass');
-		});
+    });
 
-	});
+    /*-----------------------------------------------
+    | Cards ...
+    */
+    Route::group(['prefix' => 'cards', 'middleware' => "can:users-card-holder"], function () {
+        Route::get('/', 'CardsController@browseChild');
+        Route::get('/browse', 'CardsController@browseChild');
+        Route::get('/browse/update/{model_id}', 'CardsController@update');
+        //Route::get('/stats', 'CardsController@stats'); //TODO
+        Route::get('/browse/search/{keyword?}', 'CardsController@searchChild');
+        Route::get('/browse/{request_tab}/{volunteer?}/{post?}', 'CardsController@browseChild');
+        Route::get('/search', 'CardsController@search');
 
+        Route::get('/view/{model_id}', 'CardsController@view');
 
-	/*-----------------------------------------------
-	| Posts ...
-	*/
-	Route::group(['prefix' => 'posts'], function () {
-		Route::get('/update/{item_id}', 'PostsController@update');
-		Route::get('/tab_update/{posttype}/{request_tab?}/{switches?}', 'PostsController@tabUpdate');
+        Route::get('/printings/act/{action}', 'CardsController@printingAction');
 
-		Route::get('/act/{model_id}/{action}/{option?}', 'PostsController@singleAction');
-		Route::get('/check_slug/{id}/{type}/{locale}/{slug?}/p', 'PostsController@checkSlug');
+        //Route::get('/printings/modal/{printing_id}/{modal_action}', 'CardsController@modalActions');
+        Route::get('/printings/download_excel/{event_id}', 'CardsController@printingExcelDownload');
+        Route::get('/printings/{request_tab?}/{event_id?}/{user_id?}/{volunteer_id?}', 'CardsController@printingBrowse');
 
-		Route::get('/{posttype}', 'PostsController@browse');
-		Route::get('/{posttype}/create/{locale?}/{sisterhood?}', 'PostsController@create');
-		Route::get('{posttype}/edit/{post_id}', 'PostsController@editor');
-		//		Route::get('{posttype}/searched' , 'PostsController@searchResult');
-		Route::get('{posttype}/{locale}/search', 'PostsController@search');
-		Route::get('/{posttype}/{request_tab?}/{switches?}', 'PostsController@browse');
+        Route::get('/create/{code_melli?}', 'CardsController@createChild');
+        Route::get('/edit/{model_id}', 'CardsController@editorChild');
 
-		Route::group(['prefix' => 'save'], function () {
-			Route::post('/', 'PostsController@save');
-			Route::post('/delete', 'PostsController@delete');
-			Route::post('/undelete', 'PostsController@undelete');
-			Route::post('/destroy', 'PostsController@destroy');
-			Route::post('/clone', 'PostsController@makeClone');
-			Route::post('/deleteMass', 'PostsController@deleteMass');
-			Route::post('/undeleteMass', 'PostsController@undeleteMass');
-			Route::post('/destroyMass', 'PostsController@destroyMass');
-			Route::post('/owner', 'PostsController@changeOwner');
-			Route::post('/good', 'PostsController@saveGood');
-		});
+        Route::group(['prefix' => 'save'], function () {
+            //Route::post('/', 'CardsController@saveChild');
+            Route::post('/volunteers', 'CardsController@saveForVolunteers');
+            Route::post('/inquiry', 'CardsController@inquiry');
 
-	});
+            Route::post('/add_to_print', 'CardsController@addToPrintings');
+            Route::post('/add_to_print_mass', 'CardsController@addToPrintingsMass');
+            //Route::post('/delete', 'CardsController@delete');
+            //Route::post('/bulk_delete', 'CardsController@bulk_delete');
+            //Route::post('/sms', 'CardsController@sms');
+            //Route::post('/email', 'CardsController@email');
+            Route::post('/bulk_email', 'CardsController@bulk_email');
+            Route::post('/print', 'CardsController@single_print');
+            Route::post('/bulk_print', 'CardsController@bulk_print');
 
-	/*-----------------------------------------------
-	| Club ...
-	*/
-	Route::group(['prefix' => "club",], function () {
-		Route::group(['prefix' => 'save'], function () {
-			Route::post('/draw_prepare', 'ClubController@drawPrepare');
-			Route::post('/draw_select', 'ClubController@drawSelect');
-			Route::get('/draw_delete/{key}', 'ClubController@drawDelete');
-		});
-	});
+            Route::post('printings/', 'CardsController@printingActionSave');
+        });
+    });
 
 
-	/*-----------------------------------------------
-	| Settings ...
-	*/
-	Route::group(['prefix' => 'settings', 'middleware' => 'can:super'], function () {
-		Route::get('/', 'SettingsController@index');
-		Route::get('/tab/{request_tab?}', 'SettingsController@index');
-		Route::get('/search', 'SettingsController@search');
-		Route::get('/update/{model_id}', 'SettingsController@update');
-		Route::get('/act/{model_id}/{action}/{option?}', 'SettingsController@singleAction');
+    /*-----------------------------------------------
+    | Users ...
+    */
+    Route::group(['prefix' => "users", 'middleware' => "can:users",], function () {
+        Route::get('/update/{item_id}/{request_role}', 'UsersController@update');
+        Route::get('browse/{role}/search/{keyword?}', 'UsersController@search');
+        Route::get('browse/{role}/{request_tab?}', 'UsersController@browse');
+        Route::get('create/{role}', 'UsersController@create');
+        Route::get('/act/{model_id}/{action}/{option?}', 'UsersController@singleAction');
 
-		Route::group(['prefix' => 'save'], function () {
-			Route::post('/', 'SettingsController@save');
-			Route::post('/posttype', 'SettingsController@savePosttypeDownstream');
-			Route::post('/pack', 'SettingsController@savePack');
-		});
-	});
+        Route::group(['prefix' => 'save'], function () {
+            Route::post('/', 'UsersController@save');
+            Route::post('/smsMass', 'UsersController@smsMass');
+            Route::post('/statusMass', 'UsersController@saveStatusMass');
+            Route::post('/status', 'UsersController@saveStatus');
+            Route::post('/password', 'UsersController@savePassword');
+            Route::post('/permits', 'UsersController@savePermits');
 
-	/*-----------------------------------------------
-	| Categories ...
-	*/
-	Route::group(['prefix' => 'categories', 'middleware' => 'can:super'], function () {
-		Route::get('/', 'CategoriesController@index');
-		Route::get('/update/{id}', 'CategoriesController@update');
-		Route::get('/browse/{type}/{locale}', 'CategoriesController@index');
-		Route::get('/create/folder/{type}/{locale}', 'CategoriesController@createFolder');
-		Route::get('/create/{folder_id}/', 'CategoriesController@createCategory');
-		Route::get('/edit/folder/{folder_id}', 'CategoriesController@editFolder');
-		Route::get('/edit/{category_id}', 'CategoriesController@editCategory');
-		Route::group(['prefix' => 'save'], function () {
-			Route::post('', 'CategoriesController@saveCategory');
-			Route::post('folder', 'CategoriesController@saveFolder');
-		});
-	});
+            Route::post('/delete', 'UsersController@delete');
+            Route::post('/undelete', 'UsersController@undelete');
+            Route::post('/destroy', 'UsersController@destroy');
+
+            Route::get('/role/{user_id}/{role_slug}/{new_status}', 'UsersController@saveRole');
+        });
+    });
+
+    /*-----------------------------------------------
+    | Comments ...
+    */
+    Route::group(['prefix' => 'comments', 'middleware' => 'can:comments'], function () {
+        Route::get('/update/{item_id}', 'CommentsController@update');
+        Route::get('/act/{model_id}/{action}', 'CommentsController@singleAction');
+        Route::get('{request_tab?}/{switches?}', 'CommentsController@browse');
+        Route::group(['prefix' => 'save'], function () {
+            Route::post('/', 'CommentsController@save');
+            Route::post('/process', 'CommentsController@process');
+            Route::post('/delete', 'CommentsController@delete');
+            Route::post('/deleteMass', 'CommentsController@deleteMass');
+            Route::post('/undelete', 'CommentsController@undelete');
+            Route::post('/undeleteMass', 'CommentsController@undeleteMass');
+            Route::post('/destroy', 'CommentsController@destroy');
+            Route::post('/destroyMass', 'CommentsController@destroyMass');
+            Route::post('/statusMass', 'CommentsController@statusMass');
+        });
+
+    });
 
 
-	/*-----------------------------------------------
-	| Upstream ...
-	*/
-	Route::group(['prefix' => 'upstream', 'middleware' => 'is:developer'], function () {
-		Route::group(['prefix' => 'trans'], function () {
-			Route::get('diff', 'TransController@diff');
-		});
+    /*-----------------------------------------------
+    | Posts ...
+    */
+    Route::group(['prefix' => 'posts'], function () {
+        Route::get('/update/{item_id}', 'PostsController@update');
+        Route::get('/tab_update/{posttype}/{request_tab?}/{switches?}', 'PostsController@tabUpdate');
 
-		Route::get('/{request_tab?}', 'UpstreamController@index');
-		Route::get('/{request_tab}/search/', 'UpstreamController@search');
-		Route::get('/edit/{request_tab?}/{item_id?}/{parent_id?}', 'UpstreamController@editor');
-		Route::get('/{request_tab}/{item_id}/{parent_id?}', 'UpstreamController@item');
+        Route::get('/act/{model_id}/{action}/{option?}', 'PostsController@singleAction');
+        Route::get('/check_slug/{id}/{type}/{locale}/{slug?}/p', 'PostsController@checkSlug');
 
-		Route::group(['prefix' => 'save'], function () {
-			Route::post('role', 'UpstreamController@saveRole');
-			Route::post('role-titles', 'UpstreamController@saveRoleTitles');
-			Route::post('role-mass', 'UpstreamController@saveRoleMass');
-			Route::post('role-activeness', 'UpstreamController@saveRoleActiveness');
-			//Route::post('role-default', 'UpstreamController@saveRoleDefault');
-			Route::post('state', 'UpstreamController@saveProvince');
-			Route::post('domain', 'UpstreamController@saveDomain');
-			Route::post('city', 'UpstreamController@saveCity');
-			Route::post('posttype', 'UpstreamController@savePosttype');
-			Route::post('posttype-titles', 'UpstreamController@savePosttypeTitles');
-			Route::post('category', 'UpstreamController@saveCategory');
-			Route::post('downstream', 'UpstreamController@saveDownstream');
-			Route::post('package', 'UpstreamController@savePackage');
-			Route::post('artisan' , 'UpstreamController@artisan');
-			Route::post('login_as', 'UpstreamController@loginAs');
-		});
-	});
+        Route::get('/{posttype}', 'PostsController@browse');
+        Route::get('/{posttype}/create/{locale?}/{sisterhood?}', 'PostsController@create');
+        Route::get('{posttype}/edit/{post_id}', 'PostsController@editor');
+        //		Route::get('{posttype}/searched' , 'PostsController@searchResult');
+        Route::get('{posttype}/{locale}/search', 'PostsController@search');
+        Route::get('/{posttype}/{request_tab?}/{switches?}', 'PostsController@browse');
+
+        Route::group(['prefix' => 'save'], function () {
+            Route::post('/', 'PostsController@save');
+            Route::post('/delete', 'PostsController@delete');
+            Route::post('/undelete', 'PostsController@undelete');
+            Route::post('/destroy', 'PostsController@destroy');
+            Route::post('/clone', 'PostsController@makeClone');
+            Route::post('/deleteMass', 'PostsController@deleteMass');
+            Route::post('/undeleteMass', 'PostsController@undeleteMass');
+            Route::post('/destroyMass', 'PostsController@destroyMass');
+            Route::post('/owner', 'PostsController@changeOwner');
+            Route::post('/good', 'PostsController@saveGood');
+        });
+
+    });
+
+    /*-----------------------------------------------
+    | Club ...
+    */
+    Route::group(['prefix' => "club",], function () {
+        Route::group(['prefix' => 'save'], function () {
+            Route::post('/draw_prepare', 'ClubController@drawPrepare');
+            Route::post('/draw_select', 'ClubController@drawSelect');
+            Route::get('/draw_delete/{key}', 'ClubController@drawDelete');
+        });
+    });
+
+
+    /*-----------------------------------------------
+    | Settings ...
+    */
+    Route::group(['prefix' => 'settings', 'middleware' => 'can:super'], function () {
+        Route::get('/', 'SettingsController@index');
+        Route::get('/tab/{request_tab?}', 'SettingsController@index');
+        Route::get('/search', 'SettingsController@search');
+        Route::get('/update/{model_id}', 'SettingsController@update');
+        Route::get('/act/{model_id}/{action}/{option?}', 'SettingsController@singleAction');
+
+        Route::group(['prefix' => 'save'], function () {
+            Route::post('/', 'SettingsController@save');
+            Route::post('/posttype', 'SettingsController@savePosttypeDownstream');
+            Route::post('/pack', 'SettingsController@savePack');
+        });
+    });
+
+    /*-----------------------------------------------
+    | Categories ...
+    */
+    Route::group(['prefix' => 'categories', 'middleware' => 'can:super'], function () {
+        Route::get('/', 'CategoriesController@index');
+        Route::get('/update/{id}', 'CategoriesController@update');
+        Route::get('/browse/{type}/{locale}', 'CategoriesController@index');
+        Route::get('/create/folder/{type}/{locale}', 'CategoriesController@createFolder');
+        Route::get('/create/{folder_id}/', 'CategoriesController@createCategory');
+        Route::get('/edit/folder/{folder_id}', 'CategoriesController@editFolder');
+        Route::get('/edit/{category_id}', 'CategoriesController@editCategory');
+        Route::group(['prefix' => 'save'], function () {
+            Route::post('', 'CategoriesController@saveCategory');
+            Route::post('folder', 'CategoriesController@saveFolder');
+        });
+    });
+
+
+    /*-----------------------------------------------
+    | Upstream ...
+    */
+    Route::group(['prefix' => 'upstream', 'middleware' => 'is:developer'], function () {
+        Route::group(['prefix' => 'trans'], function () {
+            Route::get('diff', 'TransController@diff');
+        });
+
+        Route::get('/{request_tab?}', 'UpstreamController@index');
+        Route::get('/{request_tab}/search/', 'UpstreamController@search');
+        Route::get('/edit/{request_tab?}/{item_id?}/{parent_id?}', 'UpstreamController@editor');
+        Route::get('/{request_tab}/{item_id}/{parent_id?}', 'UpstreamController@item');
+
+        Route::group(['prefix' => 'save'], function () {
+            Route::post('role', 'UpstreamController@saveRole');
+            Route::post('role-titles', 'UpstreamController@saveRoleTitles');
+            Route::post('role-mass', 'UpstreamController@saveRoleMass');
+            Route::post('role-activeness', 'UpstreamController@saveRoleActiveness');
+            //Route::post('role-default', 'UpstreamController@saveRoleDefault');
+            Route::post('state', 'UpstreamController@saveProvince');
+            Route::post('domain', 'UpstreamController@saveDomain');
+            Route::post('city', 'UpstreamController@saveCity');
+            Route::post('posttype', 'UpstreamController@savePosttype');
+            Route::post('posttype-titles', 'UpstreamController@savePosttypeTitles');
+            Route::post('category', 'UpstreamController@saveCategory');
+            Route::post('downstream', 'UpstreamController@saveDownstream');
+            Route::post('package', 'UpstreamController@savePackage');
+            Route::post('artisan', 'UpstreamController@artisan');
+            Route::post('login_as', 'UpstreamController@loginAs');
+        });
+    });
 });
 
 
@@ -334,6 +334,14 @@ Route::group(['prefix' => 'file'], function () {
     Route::post('remove', 'DropzoneController@remove_file')->name('dropzone.remove');
 });
 
+
+// File Manager
+Route::group(['prefix' => 'file-manager'], function () {
+    Route::get('/', 'FileManagerController@index')
+        ->name('fileManager.index');
+});
+
+
 Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Setting', 'Subdomain']], function () {
 
     // if not set lang prefix
@@ -352,8 +360,8 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
     Route::group(['prefix' => '{lang}'], function () {
         Route::get('/', 'FrontController@index')->name('site');
 
-//        // tests
-//        Route::group(['prefix' => 'test'], function () {
+        // tests
+        Route::group(['prefix' => 'test'], function () {
 //            Route::get('/', 'TestController@index');
 //            Route::get('states', 'TestController@states');
 //            Route::get('gallery/archive', 'TestController@gallery_archive');
@@ -366,7 +374,8 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
 //            Route::get('mail-view', 'TestController@mail_view');
 //            Route::get('messages', 'TestController@messages');
 //            Route::get('messages/send', 'TestController@messages_send');
-//        });
+            Route::get('file-manager', 'TestController@fileManager');
+        });
 
         // Contact Us Page
         Route::get('contact', 'FrontController@contact');

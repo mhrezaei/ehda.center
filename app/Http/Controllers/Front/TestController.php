@@ -336,4 +336,9 @@ class TestController extends Controller
     {
         MessagesServiceProvider::sendPendingMessages();
     }
+
+    public function fileManager()
+    {
+        return view('front.test.file-manager.main');
+    }
 }
