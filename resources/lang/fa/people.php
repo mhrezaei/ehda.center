@@ -40,10 +40,10 @@ return [
 		'profile'             => "پرونده",
 		'view_profile'        => "مشاهده پرونده",
 		'delete_account'      => "حذف حساب کاربری",
-	     'changes_review' => "بررسی تغییرات" ,
-	     'changes_request' => "درخواست ویرایش" ,
-	     'changes_confirm' => "ذخیره‌ی تغییرات" ,
-	     'changes_reject' => "رد تغییرات" ,
+		'changes_review'      => "بررسی تغییرات",
+		'changes_request'     => "درخواست ویرایش",
+		'changes_confirm'     => "ذخیره‌ی تغییرات",
+		'changes_reject'      => "رد تغییرات",
 	],
 
 	'admins' => [
@@ -87,6 +87,8 @@ return [
 		'no_p'                          => "",
 		'exist_in_profile'              => "در پرونده هست",
 		'dont_exist_in_profile'         => "در پرونده نیست",
+		'you_are_not_active_yet_1'      => "حساب کاربری شما هنوز به طور کامل فعال نشده و نیازمند تأیید است.",
+		'you_are_not_active_yet_2'      => "تا آن زمان می‌توانید اطلاعات پروندی خود را تکمیل نمایید.",
 	],
 
 	'criteria' => [
@@ -97,6 +99,7 @@ return [
 		'bin'                         => "حذف‌شده",
 		'waiting_for_data_completion' => "در انتظار تکمیل مدارک", //@TODO
 		'under_examination'           => "در انتظار آزمون", //@TODO
+		'changes_request'             => "درخواست ویرایش",
 	],
 
 	'criteria_icon' => [

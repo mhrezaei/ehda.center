@@ -721,6 +721,17 @@ trait PermitsTrait2
 
 		return $domains;
 	}
+	/**
+	 * @param string $scope : any special permission that should be checked.
+	 * @param int    $min_status
+	 *
+	 * @return array: of all the domains, the user has access to
+	 */
+	public function domainsArray($scope = null, $min_status = 8)
+	{
+		return $this->domainsQuery($scope, $min_status)->get()->pluck('slug')->toArray();
+	}
+
 
 	/**
 	 * @param string $scope : any special permission that should be checked.
@@ -742,17 +753,6 @@ trait PermitsTrait2
 		return $result_array ;
 	}
 
-
-	/**
-	 * @param string $scope : any special permission that should be checked.
-	 * @param int    $min_status
-	 *
-	 * @return array: of all the domains, the user has access to
-	 */
-	public function domainsArray($scope = null, $min_status = 8)
-	{
-		return $this->domainsQuery($scope, $min_status)->get()->pluck('slug')->toArray();
-	}
 
 	/**
 	 * @return array: of all the available roles.

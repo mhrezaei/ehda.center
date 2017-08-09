@@ -1,5 +1,5 @@
 <a class="navbar-brand" href="{{ url ('/') }}">
-	{{ setting('site_title')->defaultValue()->gain() }}
+	{{ setting('site_title')->gain() }}
 </a>
 <span class="navbar-brand">/</span>
 <a class="navbar-brand navbar-brand-sub" href="{{ url ('/manage') }}">

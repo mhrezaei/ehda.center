@@ -6,6 +6,7 @@ use App\Traits\TahaModelTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Lang;
 
@@ -41,6 +42,10 @@ class Setting extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
+	/**
+	 * @deprecated
+	 * @return string
+	 */
 	public function getSessionKeyAttribute()
 	{
 		return "setting-" . $this->slug;
@@ -110,7 +115,8 @@ class Setting extends Model
 		}
 
 		//Clear residency...
-		session()->forget($model->session_key);
+		Cache::forget("setting-$slug") ;
+		//session()->forget($model->session_key);
 
 		//Save...
 		return $model->update();
@@ -136,6 +142,7 @@ class Setting extends Model
 		}
 
 		//Save...
+		Cache::forget("setting-$this->slug") ;
 		return $this->save();
 
 	}
@@ -210,16 +217,20 @@ class Setting extends Model
 		}
 		//Look in session...
 		else {
-			$record = session()->get($this->session_key, "NO");
-			if($this->request_fresh_reveal or $record == "NO") {
-				$record = self::findBySlug($this->slug);
-				if(!$record) {
-					return self::$default_when_not_found;
-				}
-				if($record->is_resident) {
-					session()->put($this->session_key, $record);
-				}
-			}
+			$record = Cache::remember("setting-$this->slug" , 100 , function() {
+				return self::findBySlug($this->slug) ;
+			});
+
+			//$record = session()->get($this->session_key, "NO");
+			//if($this->request_fresh_reveal or $record == "NO") {
+			//	$record = self::findBySlug($this->slug);
+			//	if(!$record) {
+			//		return self::$default_when_not_found;
+			//	}
+			//	if($record->is_resident) {
+			//		session()->put($this->session_key, $record);
+			//	}
+			//}
 		}
 
 		//default...
@@ -278,10 +289,13 @@ class Setting extends Model
 		return $this;
 	}
 
+	/**
+	 * @deprecated
+	 * @return $this
+	 */
 	public function noCache()
 	{
-		$this->request_fresh_reveal = true;
-
+		//$this->request_fresh_reveal = true;
 		return $this;
 	}
 
