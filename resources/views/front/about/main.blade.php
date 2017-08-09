@@ -23,7 +23,7 @@
                     @include('front.test.about.contact_form')
                 </div>
             </div>
-            @include('front.about.map')
+            @include('front.test.about.map')
         </div>
     </div>
 @endsection

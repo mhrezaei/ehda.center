@@ -100,7 +100,8 @@ class PostsServiceProvider extends ServiceProvider
 
             // select posts
             $posts = Post::selector($data)
-                ->where($data['conditions']);
+                ->where($data['conditions'])
+                ->orderBy($data['sort_by'], $data['sort']);
 
             if ($data['random']) {
                 $posts = $posts->inRandomOrder();

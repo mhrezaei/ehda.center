@@ -45,7 +45,6 @@ class MessagesServiceProvider extends ServiceProvider
         $pendingMessages = self::getPendingMessages($limit);
 
         $pendingMessages->each(function ($message) {
-            $message->spreadMeta();
 
             $messageType = $message->type;
 

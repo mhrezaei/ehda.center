@@ -184,6 +184,7 @@ JS
                 'ok'           => 1,
                 'message'      => trans('forms.feed.register_success'),
                 'redirectTime' => 10000,
+                'callback'     => '$.ajax("' .route_locale('messages.send'). '")',
             ]);
         } else {
             $return = $this->jsonFeedback(null, [
