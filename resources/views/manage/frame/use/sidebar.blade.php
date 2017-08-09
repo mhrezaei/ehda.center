@@ -30,7 +30,7 @@
 	'icon' => "child" ,
 	'sub_menus' => [
 		['volunteers/create' , trans("ehda.volunteers.create") , 'plus-circle' , count(user()->userRolesArray('create' , [] , model('role')::adminRoles()))],
-		['volunteers/browse/all' , trans("ehda.volunteers.actives") , 'bars' , count(user()->userRolesArray('browse' , [] , model('role')::adminRoles()))],
+		['volunteers/browse/all' , trans("ehda.volunteers.plural") , 'bars' , count(user()->userRolesArray('browse' , [] , model('role')::adminRoles()))],
 	] ,
 ]     )
 
