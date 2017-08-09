@@ -100,6 +100,7 @@ return [
     'powered_by_yasna'                         => 'طراحی و اجرا: گروه یسنا',
     'community_branches'                       => 'شعب انجمن',
     'email_has_been_sent_automatically'        => 'توجه : این ایمیل به صورت خودکار فرستاده شده است ، بنابراین به آن پاسخ ندهید. ',
+    'unnamed'                                  => 'بی‌نام',
 
     'tutorials' => [
         'singular' => 'آموزش',

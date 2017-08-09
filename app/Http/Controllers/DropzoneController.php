@@ -18,6 +18,7 @@ class DropzoneController extends Controller
         $file = $request->file;
         $typeString = $request->_uploadIdentifier;
         $sessionName = $request->_groupName;
+        $externalFields = \GuzzleHttp\json_decode($request->externalFields, true) ?: [];
 
         $typeStringParts = explode('.', $typeString);
         $sectionName = implode('.', array_slice($typeStringParts, 0, count($typeStringParts) - 1));
@@ -54,7 +55,7 @@ class DropzoneController extends Controller
                 UploadServiceProvider::getSectionRule($sectionName, 'uploadDir'),
                 $folderName,
             ]);
-            $uploadResult = UploadServiceProvider::uploadFile($file, $uploadDir);
+            $uploadResult = UploadServiceProvider::uploadFile($file, $uploadDir, $externalFields);
             $dbRow = UploadedFileModel::findBySlug($uploadResult, 'id');
 
             if ($dbRow->exists()) {

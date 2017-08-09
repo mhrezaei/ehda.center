@@ -80,6 +80,22 @@ input[type=search], input[type=text] {
 
           .folder {
             margin-bottom: 3px;
+
+            > .breadcrumb-folders {
+              display: none;
+            }
+
+            &.active {
+              > .breadcrumb-folders {
+                display: list-item;;
+              }
+            }
+
+            &.current {
+              > a {
+                text-decoration: underline;
+              }
+            }
           }
         }
       }

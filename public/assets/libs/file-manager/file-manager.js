@@ -4,6 +4,7 @@ String.prototype.replaceAll = function (search, replacement) {
 };
 
 jQuery(function($){
+    selectFolder($(".breadcrumb-folders .folder").first())
 
 	// On Load Variables
 	var $window = $(window),
@@ -17,19 +18,8 @@ jQuery(function($){
 	/*---Breadcrumb Function----*/
 	$(".breadcrumb-folders li a").click(function (e) {
 	    e.preventDefault();
-
-	    //Reseting Folder Icons
-	    $(".breadcrumb-folders .folder").removeClass("active");
-	    $(".folder .folder-icon").removeClass("fa-folder-open").addClass('fa-folder');
-
-	    //Finds Activated Folders And Changes Icons
-	    $(this).parents('.folder').addClass('active');
-	    $('.breadcrumb-folders .active').each(function(i){
-
-	      $(this).find('span.folder-icon').first().removeClass('fa-folder').addClass("fa-folder-open");
-	      
-	    });
-      
+        var folder = $(this).closest('.folder');
+        selectFolder(folder)
 	});
 	/*---- End Breadcrumb Function----*/
 
@@ -208,4 +198,26 @@ function forms_digit_fa(enDigit) {
 
 function pd(enDigit) {
     return forms_digit_fa(enDigit);
+}
+
+function selectFolder(folder) {
+    //Finds Activated Folders And Changes Icons
+    var parents = getFolderParents(folder);
+
+    //Reseting Folder Icons
+    $(".breadcrumb-folders .folder").removeClass("active");
+    $(".folder .folder-icon").removeClass("fa-folder-open").addClass('fa-folder');
+    $(".breadcrumb-folders li").removeClass('current');
+
+    folder.addClass('current');
+    parents.addClass('active');
+
+    $('.breadcrumb-folders .active').each(function(i){
+        $(this).find('span.folder-icon').first().removeClass('fa-folder').addClass("fa-folder-open");
+    });
+}
+
+function getFolderParents(folder) {
+    var link = folder.children('a');
+    return link.parents('.folder');
 }

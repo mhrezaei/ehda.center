@@ -29,9 +29,9 @@ class CreateUploadedFilesTable extends Migration
             $table->longText('hash_file')->nullable();
 
             // Soft Location Info
-            $table->integer('posttype');
-            $table->integer('folder');
-            $table->integer('category');
+            $table->integer('posttype')->nullable();
+            $table->integer('folder')->nullable();
+            $table->integer('category')->nullable();
             $table->integer('parent');
 
             // File Status
@@ -51,10 +51,10 @@ class CreateUploadedFilesTable extends Migration
             $table->index('created_at');
 
             // Functors of Any Event Happening on an Uploaded File
-            $table->unsignedInteger('created_by')->default(0)->index() ;
-            $table->unsignedInteger('updated_by')->default(0) ;
-            $table->unsignedInteger('deleted_by')->default(0) ;
-            $table->unsignedInteger('published_by')->default(0) ;
+            $table->unsignedInteger('created_by')->default(0)->index();
+            $table->unsignedInteger('updated_by')->default(0);
+            $table->unsignedInteger('deleted_by')->default(0);
+            $table->unsignedInteger('published_by')->default(0);
             $table->unsignedInteger('owned_by')->default(0)->index();
             $table->unsignedInteger('moderated_by')->default(0)->index();
 

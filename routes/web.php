@@ -336,7 +336,7 @@ Route::group(['prefix' => 'file'], function () {
 
 
 // File Manager
-Route::group(['prefix' => 'file-manager'], function () {
+Route::group(['prefix' => 'file-manager', 'middleware' => ['auth', 'is:admin']], function () {
     Route::get('/', 'FileManagerController@index')
         ->name('fileManager.index');
 });

@@ -236,7 +236,7 @@ class UploadServiceProvider extends ServiceProvider
      *
      * @return File;
      */
-    public static function uploadFile($file, $uploadDir)
+    public static function uploadFile($file, $uploadDir, $externalFields = [])
     {
         $newName = self::generateFileName() . '.' . $file->getClientOriginalExtension();
         $finalUploadDir = implode(DIRECTORY_SEPARATOR, [
@@ -246,10 +246,11 @@ class UploadServiceProvider extends ServiceProvider
         ]);
 
         // Save uploaded file to db
-        $id = UploadedFileModel::saveFile($file, [
+        $saveData = array_merge([
             'physical_name' => $newName,
             'directory'     => $finalUploadDir,
-        ]);
+        ], $externalFields);
+        $id = UploadedFileModel::saveFile($file, $saveData);
 
         // Move uploaded file to target directory
         $file->move($finalUploadDir, $newName);
@@ -392,7 +393,7 @@ class UploadServiceProvider extends ServiceProvider
      *
      * @return array
      */
-    private static function translateFileTypeString($fileTypeString)
+    public static function translateFileTypeString($fileTypeString)
     {
         $fileTypeParts = array_reverse(explodeNotEmpty('.', $fileTypeString));
         if (!isset($fileTypeParts[1])) {
@@ -414,7 +415,7 @@ class UploadServiceProvider extends ServiceProvider
      *
      * @return array
      */
-    private static function translateSectionString($sectionString)
+    public static function translateSectionString($sectionString)
     {
         $sectionParts = array_reverse(explodeNotEmpty('.', $sectionString));
         if (!isset($sectionParts[0])) {

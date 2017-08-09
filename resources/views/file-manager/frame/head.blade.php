@@ -6,4 +6,6 @@
     <title>File Maneger</title>
 
     {!! Html::style('assets/css/file-manager.min.css') !!}
+
+    @yield('head')
 </head>
