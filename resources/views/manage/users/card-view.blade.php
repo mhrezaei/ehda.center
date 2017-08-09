@@ -27,6 +27,7 @@
 					'icon' => "child" ,
 					'color' => "info" ,
 					'condition' => $model->is_admin() ,
+					'link' => user()->as('admin')->can("user-volunteer")? "modal:manage/volunteers/view/$model->hash_id" : "" ,
 				]     )
 				@include("manage.frame.widgets.grid-badge" , [
 					'text' => trans('people.newsletter_member'),

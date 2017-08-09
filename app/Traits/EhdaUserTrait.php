@@ -186,6 +186,16 @@ trait EhdaUserTrait
 		return array_filter(explode(',' , str_replace(' ' , null , $this->activities))) ;
 	}
 
+	public function getChangedActivitiesArrayAttribute()
+	{
+		if(isset($this->changes->activities)) {
+			return array_filter(explode(',', str_replace(' ', null, $this->changes->activities)));
+		}
+		else {
+			return [] ; //$this->activities_array ;
+		}
+	}
+
 	public function getActivityCaptionsArrayAttribute()
 	{
 		return Activity::slugToCaption($this->activities_array);

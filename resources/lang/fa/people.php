@@ -40,6 +40,10 @@ return [
 		'profile'             => "پرونده",
 		'view_profile'        => "مشاهده پرونده",
 		'delete_account'      => "حذف حساب کاربری",
+	     'changes_review' => "بررسی تغییرات" ,
+	     'changes_request' => "درخواست ویرایش" ,
+	     'changes_confirm' => "ذخیره‌ی تغییرات" ,
+	     'changes_reject' => "رد تغییرات" ,
 	],
 
 	'admins' => [
@@ -81,6 +85,8 @@ return [
 		'cooperation_in_card_printings' => "مشارکت در چاپ کارت اهدای عضو",
 		'n_years_old'                   => ":n ساله",
 		'no_p'                          => "",
+		'exist_in_profile'              => "در پرونده هست",
+		'dont_exist_in_profile'         => "در پرونده نیست",
 	],
 
 	'criteria' => [

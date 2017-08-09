@@ -74,8 +74,16 @@
 --}}
 <td>
 
-	@if($request_role == 'admin')
+	@if($model->canEdit() and $model->unverified_flag>0)
+		@include("manage.frame.widgets.grid-badge" , [
+			'text' => trans("people.commands.changes_request"),
+			'color' => "orange" ,
+			'icon' => "copy" ,
+			'link' => 'modal:manage/users/act/-id-/volunteer-changes-review' ,
+		]     )
+	@endif
 
+	@if($request_role == 'admin')
 		@include("manage.users.volunteer-view-roles")
 
 	@else
@@ -104,6 +112,7 @@
 		@endif
 	@endif
 
+
 </td>
 
 {{--
@@ -115,6 +124,9 @@
 
 @include("manage.frame.widgets.grid-actionCol" , [ 'actions' => [
 	['pencil' , trans('forms.button.edit') , "url:manage/volunteers/edit/-hash_id-" , $model->canEdit()],
+
+	['copy' , trans('people.commands.changes_review') , 'modal:manage/users/act/-id-/volunteer-changes-review' , $model->canEdit() and $model->unverified_flag>0 ],
+
 	['key' , trans('people.commands.change_password') , "modal:manage/users/act/-id-/password" , !$model->trashed() and $model->canEdit() ] ,
 	['gavel', trans('forms.button.change_status'), "modal:manage/users/act/-id-/user-status/".$request_role , $request_role != 'admin' and $model->canEdit()],
 

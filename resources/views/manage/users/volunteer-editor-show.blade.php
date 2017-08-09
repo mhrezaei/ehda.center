@@ -7,15 +7,16 @@
 
 
 <div class="row w90">
-	<div class="col-md-5 text-center">
+	<div class="col-md-5 text-center mv10">
 		<h2>
 			{{ $model->full_name }}
 		</h2>
 
 		<a href="{{v0()}}" class="btn btn-default btn-lg mh10 w80" onclick="$('#divNewRole').slideDown('fast')">{{ trans("ehda.volunteers.add_role") }}</a>
-		@if($model->canEdit())
-			<a href="{{ url("manage/volunteers/edit/$model->hash_id") }}" class="btn btn-default btn-lg mh10 mv5 w80">{{ trans("forms.button.edit_info") }}</a>
-		@endif
+		<a href="{{v0()}}" class="btn btn-default btn-lg mh10 w80" onclick="masterModal('{{ url("manage/volunteers/view/$model->hash_id") }}')">{{ trans("people.commands.view_profile") }}</a>
+		{{--@if($model->canEdit())--}}
+			{{--<a href="{{ url("manage/volunteers/edit/$model->hash_id") }}" class="btn btn-default btn-lg mh10 mv5 w80">{{ trans("people.commands.profile") }}</a>--}}
+		{{--@endif--}}
 
 	</div>
 
@@ -40,8 +41,8 @@
 						'size' => "16" ,
 						'icon' => trans("people.criteria_icon.$status") ,
 						'color' =>  $color,
-						'condition' => $role_model->slug != 'card-holder' ,
-						'link' => $model->as($role_model->slug)->canEdit()? "modal:manage/users/act/-id-/user-status/$role_model->slug" : '' ,
+						'condition' => $role_model->is_admin  ,
+						'link' => $model->as($role_model->slug)->canPermit()? "modal:manage/users/act/-id-/permits/$role_model->slug" : '' ,
 					]     )
 			</div>
 
@@ -65,7 +66,7 @@
 |
 --}}
 {{ '' , $array = user()->userRolesArray('create' , array_add( $model->withDisabled()->rolesArray()  , 'n' , 'card-holder') )}}
-{{ '' , $combo = model('role')::whereIn('slug' , $array)->orderBy('title')->get() }}
+{{ '' , $combo = model('role')::where('is_admin',1)->whereIn('slug' , $array)->orderBy('title')->get() }}
 
 <div id="divNewRole" class="noDisplay panel panel-primary w80">
 

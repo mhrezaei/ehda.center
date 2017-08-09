@@ -103,6 +103,7 @@ Route::group([
 			Route::post('/', 'VolunteersController@saveChild');
 			Route::post('/inquiry', 'VolunteersController@inquiry');
 			Route::post('/new-role', 'VolunteersController@saveNewRole');
+			Route::post('/changes', 'VolunteersController@moderateChanges');
 		});
 
 	});
@@ -131,7 +132,7 @@ Route::group([
 		Route::get('/edit/{model_id}', 'CardsController@editorChild');
 
 		Route::group(['prefix' => 'save'], function () {
-			//Route::post('/', 'CardsController@saveChild');
+			Route::post('/', 'CardsController@saveChild');
 			Route::post('/volunteers', 'CardsController@saveForVolunteers');
 			Route::post('/inquiry', 'CardsController@inquiry');
 

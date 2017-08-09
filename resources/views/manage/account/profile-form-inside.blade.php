@@ -148,7 +148,6 @@
 	])
 @endif
 
-
 @if($show_unchanged or isset($model->changes->home_city))
 	@include('forms.select' , [
 		'name' => 'home_city' ,
@@ -275,4 +274,46 @@
 		'hint' => isset($model->changes->alloc_time)? trans('settings.account.in_profile' , ['v'=>pd($model->alloc_time) ]) : '' ,
 		'hint_class' => 'help-flag' ,
 	])
+@endif
+
+
+{{--
+|--------------------------------------------------------------------------
+| Activities
+|--------------------------------------------------------------------------
+|
+--}}
+@include("forms.sep")
+@if($show_unchanged or isset($model->changes->activities))
+
+	@include("forms.group-start" , [
+		'label' => trans("validation.attributes.activities") ,
+	])
+		@foreach(model('activity')::sortedAll() as $activity)
+			{{ '' , $real_value = in_array($activity->slug , $model->activities_array) }}
+			{{ '' , $changed_value = in_array($activity->slug , $model->changed_activities_array) }}
+
+			@if($real_value != $changed_value or $show_unchanged)
+
+				@include("forms.check" , [
+					'name' => '_activity-'.$activity->slug,
+					'value' => isset($model->changes->activities)? $changed_value : $real_value,
+					'label' => $activity->title ,
+				]     )
+
+				@if($real_value != $changed_value and isset($model->changes->activities))
+					<div class="f10 text-danger mv5 mh20">
+						@if($real_value)
+							{{ trans("people.form.exist_in_profile") }}
+						@else
+							{{ trans("people.form.dont_exist_in_profile") }}
+						@endif
+					</div>
+				@endif
+			@endif
+
+		@endforeach
+
+	@include("forms.group-end")
+
 @endif

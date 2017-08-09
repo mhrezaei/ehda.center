@@ -10,7 +10,7 @@
 	|--------------------------------------------------------------------------
 	|
 	--}}
-	@if(!$model->min(8)->is_admin())
+	@if(!$model->spreadMeta()->min(8)->is_admin())
 		@include("forms.note" , [
 			'text' => trans('settings.account.profile_completions_note_for_new_volunteers'),
 			'shape' => "info" ,
