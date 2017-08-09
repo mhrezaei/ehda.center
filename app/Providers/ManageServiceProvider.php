@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\Posttype;
 use App\Models\Printing;
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 
 class ManageServiceProvider extends ServiceProvider
@@ -255,6 +256,23 @@ class ManageServiceProvider extends ServiceProvider
 				     'print' ,
 				];
 			}
+		}
+
+		/*-----------------------------------------------
+		| Change Requests ...
+		*/
+		$count = User::selector([
+			"status" => "changes_request",
+		     'domain' => user()->domainsArray('edit') ,
+		])->count();
+		$total += $count ;
+
+		if($count) {
+			$array[] = [
+				"manage/volunteers/browse/all/changes_request" ,
+				trans("people.commands.changes_request") . pd(" ( $count )"),
+				'copy' ,
+			];
 		}
 
 

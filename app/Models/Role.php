@@ -192,13 +192,20 @@ class Role extends Model
 
 	public function statusRule($key, $in_full = false)
 	{
-		if(!$this->has_status_rules) {
+		if($this->slug == 'admin') {
+			$record = Role::where('is_admin' , 1)->first() ;
+		}
+		else {
+			$record = $this ;
+		}
+
+		if(!$record->has_status_rules) {
 			return $key;
 		}
 		if(is_numeric($key)) {
-			$this->spreadMeta();
-			if(isset($this->status_rule[ $key ])) {
-				$string = $this->status_rule[ $key ];
+			$record->spreadMeta();
+			if(isset($record->status_rule[ $key ])) {
+				$string = $record->status_rule[ $key ];
 			}
 			else {
 				$string = "!";
@@ -331,7 +338,7 @@ class Role extends Model
 		return $support_roles ;
 	}
 
-	public function browseTabs()
+	public function browseTabs( $tabs_before_bin = [])
 	{
 		/*-----------------------------------------------
 		| When all roles are being browsed ...
@@ -352,6 +359,11 @@ class Role extends Model
 		foreach($this->status_rule_array as $key => $string) {
 			$array[] = [$key, trans("people.criteria.$string")];
 		}
+
+		foreach($tabs_before_bin as $tab) {
+			$array[] = $tab ;
+		}
+
 		$array[] = ['bin', trans('people.criteria.banned'), null, user()->as('admin')->can("users-$this->slug.bin")];
 		$array[] = ['search', trans('forms.button.search')];
 

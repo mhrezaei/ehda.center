@@ -27,7 +27,7 @@ class User extends Authenticatable
 		'address',
 		'reset_token',
 		'reset_token_expire',
-	     'edit_reject_notice' ,
+		'edit_reject_notice',
 		//'key',
 		//'default_role_deleted_at',
 	];
@@ -182,6 +182,11 @@ class User extends Authenticatable
 		}
 		elseif($switch['status'] == 'all') {
 			$switch['status'] = false;
+		}
+		elseif($switch['status'] == 'changes_request') {
+			$switch['status'] = false;
+			$switch['roleString'] = str_replace( ".changes_request" , null , $switch['roleString']) ;
+			$table->where('unverified_flag', 1);
 		}
 
 		/*-----------------------------------------------

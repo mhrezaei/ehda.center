@@ -40,10 +40,10 @@ return [
 		'profile'             => "پرونده",
 		'view_profile'        => "مشاهده پرونده",
 		'delete_account'      => "حذف حساب کاربری",
-	     'changes_review' => "بررسی تغییرات" ,
-	     'changes_request' => "درخواست ویرایش" ,
-	     'changes_confirm' => "ذخیره‌ی تغییرات" ,
-	     'changes_reject' => "رد تغییرات" ,
+		'changes_review'      => "بررسی تغییرات",
+		'changes_request'     => "درخواست ویرایش",
+		'changes_confirm'     => "ذخیره‌ی تغییرات",
+		'changes_reject'      => "رد تغییرات",
 	],
 
 	'admins' => [
@@ -97,6 +97,7 @@ return [
 		'bin'                         => "حذف‌شده",
 		'waiting_for_data_completion' => "در انتظار تکمیل مدارک", //@TODO
 		'under_examination'           => "در انتظار آزمون", //@TODO
+		'changes_request'             => "درخواست ویرایش",
 	],
 
 	'criteria_icon' => [
