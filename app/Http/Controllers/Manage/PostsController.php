@@ -427,6 +427,14 @@ class PostsController extends Controller
 		}
 
 		/*-----------------------------------------------
+		| featured_image ...
+		*/
+		$data['featured_image'] = str_replace(url('') , null , $data['featured_image']) ;
+		return $this->jsonFeedback($data['featured_image']);
+
+
+
+		/*-----------------------------------------------
 		| Price ...
 		*/
 
@@ -442,6 +450,8 @@ class PostsController extends Controller
 		//	}
 		//	$data['sale_expires_at'] = makeDateTimeString($data['sale_expires_date'], $data['sale_expires_hour'], $data['sale_expires_minute']);
 		//}
+
+		
 		unset($data['sale_expires_date']);
 		unset($data['sale_expires_hour']);
 		unset($data['sale_expires_minute']);
@@ -679,7 +689,7 @@ class PostsController extends Controller
 		return $this->jsonAjaxSaveFeedback($saved, [
 			'success_redirect' => $redirect_url,
 			'success_refresh'  => $refresh_page,
-			'success_callback' => "divReload('divPublishPanel')",
+			'success_callback' => $refresh_page? '' : "divReload('divPublishPanel')",
 		]);
 
 	}
