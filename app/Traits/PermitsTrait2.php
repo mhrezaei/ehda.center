@@ -2,6 +2,7 @@
 namespace App\Traits;
 
 use App\Models\Domain;
+use App\Models\Posttype;
 use App\Models\Role;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
@@ -721,6 +722,26 @@ trait PermitsTrait2
 		return $domains;
 	}
 
+	/**
+	 * @param string $scope : any special permission that should be checked.
+	 * @param string $base_role
+	 *
+	 * @return array: of all the posttypes the user has access to.
+	 */
+	public function posttypesArray($scope = '*' , $base_role='admin')
+	{
+		$posttypes = Posttype::orderBy('order')->orderBy('title')->get();
+		$result_array = null ;
+		foreach($posttypes as $posttype) {
+			if($this->as($base_role)->can("posts-".$posttype->slug.".".$scope)) {
+				$result_array[] = $posttype->slug ;
+			}
+
+		}
+
+		return $result_array ;
+	}
+
 
 	/**
 	 * @param string $scope : any special permission that should be checked.
@@ -787,7 +808,6 @@ trait PermitsTrait2
 		else {
 			$request = $this->as;
 		}
-
 		/*-----------------------------------------------
 		| Shortcuts ...
 		*/
@@ -1008,10 +1028,6 @@ trait PermitsTrait2
 		if(is_object($requested_role)) {
 			$requested_role = $requested_role->slug;
 		}
-		//if(is_array($requested_role)) {
-		//	$requested_role = $requested_role['slug'] ;
-		//}
-
 		if($requested_role == 'all') {
 			$this->as     = false;
 			$this->as_all = true;
