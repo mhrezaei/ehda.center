@@ -73,7 +73,7 @@ class VolunteersController extends UsersController
 			'free_toolbar_view' => "manage.users.browse-free-toolbar-for-volunteers",
 			'grid_array'        => [
 				[trans('validation.attributes.name_first'), 200],
-				trans("validation.attributes.occupation"),
+				[trans("validation.attributes.occupation") , 200],
 				trans("validation.attributes.status"),
 				trans('forms.button.action'),
 			],

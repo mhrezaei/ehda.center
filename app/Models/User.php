@@ -151,6 +151,8 @@ class User extends Authenticatable
 
 		$table = self::where('id', '>', '0');
 
+		//dd($switch);
+
 		/*-----------------------------------------------
 		| Simple Things ...
 		*/
