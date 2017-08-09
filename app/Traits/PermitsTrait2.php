@@ -787,7 +787,6 @@ trait PermitsTrait2
 		else {
 			$request = $this->as;
 		}
-
 		/*-----------------------------------------------
 		| Shortcuts ...
 		*/
@@ -1008,10 +1007,6 @@ trait PermitsTrait2
 		if(is_object($requested_role)) {
 			$requested_role = $requested_role->slug;
 		}
-		//if(is_array($requested_role)) {
-		//	$requested_role = $requested_role['slug'] ;
-		//}
-
 		if($requested_role == 'all') {
 			$this->as     = false;
 			$this->as_all = true;

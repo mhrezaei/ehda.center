@@ -103,6 +103,7 @@ Route::group([
 			Route::post('/', 'VolunteersController@saveChild');
 			Route::post('/inquiry', 'VolunteersController@inquiry');
 			Route::post('/new-role', 'VolunteersController@saveNewRole');
+			Route::post('/changes', 'VolunteersController@moderateChanges');
 		});
 
 	});

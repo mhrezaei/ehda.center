@@ -148,7 +148,6 @@
 	])
 @endif
 
-
 @if($show_unchanged or isset($model->changes->home_city))
 	@include('forms.select' , [
 		'name' => 'home_city' ,
@@ -294,26 +293,27 @@
 			{{ '' , $real_value = in_array($activity->slug , $model->activities_array) }}
 			{{ '' , $changed_value = in_array($activity->slug , $model->changed_activities_array) }}
 
-			@include("forms.check" , [
-				'name' => '_activity-'.$activity->slug,
-				'value' => isset($model->changes->activities)? $changed_value : $real_value,
-				'label' => $activity->title ,
-			]     )
+			@if($real_value != $changed_value or $show_unchanged)
 
-			@if($real_value != $changed_value and isset($model->changes->activities))
-				<div class="f10 text-danger mv5 mh20">
-					@if($real_value)
-						{{ trans("people.form.exist_in_profile") }}
-					@else
-						{{ trans("people.form.dont_exist_in_profile") }}
-					@endif
-				</div>
+				@include("forms.check" , [
+					'name' => '_activity-'.$activity->slug,
+					'value' => isset($model->changes->activities)? $changed_value : $real_value,
+					'label' => $activity->title ,
+				]     )
+
+				@if($real_value != $changed_value and isset($model->changes->activities))
+					<div class="f10 text-danger mv5 mh20">
+						@if($real_value)
+							{{ trans("people.form.exist_in_profile") }}
+						@else
+							{{ trans("people.form.dont_exist_in_profile") }}
+						@endif
+					</div>
+				@endif
 			@endif
-
 
 		@endforeach
 
 	@include("forms.group-end")
-	@include("forms.sep")
 
 @endif

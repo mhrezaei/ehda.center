@@ -40,6 +40,10 @@ return [
 		'profile'             => "پرونده",
 		'view_profile'        => "مشاهده پرونده",
 		'delete_account'      => "حذف حساب کاربری",
+	     'changes_review' => "بررسی تغییرات" ,
+	     'changes_request' => "درخواست ویرایش" ,
+	     'changes_confirm' => "ذخیره‌ی تغییرات" ,
+	     'changes_reject' => "رد تغییرات" ,
 	],
 
 	'admins' => [

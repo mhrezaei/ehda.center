@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Manage;
 use App\Http\Requests\Manage\CardInquiryRequest;
 use App\Http\Requests\Manage\SearchRequest;
 use App\Http\Requests\Manage\VolunteerInquiryRequest;
+use App\Http\Requests\Manage\VolunteerModerateChangesRequest;
 use App\Http\Requests\Manage\VolunteerSaveRequest;
 use App\Models\Activity;
 use App\Providers\YasnaServiceProvider;
@@ -58,7 +59,7 @@ class VolunteersController extends UsersController
 			'grid_row'          => "browse-row-for-volunteers",
 			'free_toolbar_view' => "manage.users.browse-free-toolbar-for-volunteers",
 			'grid_array'        => [
-				[trans('validation.attributes.name_first'),200],
+				[trans('validation.attributes.name_first'), 200],
 				trans("validation.attributes.occupation"),
 				trans("validation.attributes.status"),
 				trans('forms.button.action'),
@@ -137,6 +138,7 @@ class VolunteersController extends UsersController
 				if(!$request_tab) {
 					$request_tab = 'all';
 				}
+
 				return $this->browse($this->role_slug, $request_tab, $this->browseSwitchesChild());
 			}
 		}
@@ -388,7 +390,7 @@ class VolunteersController extends UsersController
 		/*-----------------------------------------------
 		| Processing Activities ...
 		*/
-		$data['activities'] = Activity::requestToString($data) ;
+		$data['activities'] = Activity::requestToString($data);
 
 
 		/*-----------------------------------------------
@@ -447,6 +449,66 @@ class VolunteersController extends UsersController
 		*/
 
 		return view("manage.users.volunteer-view", compact('model'));
+
+
+	}
+
+	public function moderateChanges(VolunteerModerateChangesRequest $request)
+	{
+		$ok = false;
+
+		/*-----------------------------------------------
+		| Model ...
+		*/
+		$model = User::find($request->id);
+		if(!$model or !$model->id or $model->is_not_an('admin')) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+
+		/*-----------------------------------------------
+		| Security ...
+		*/
+		if(!$model->canEdit()) {
+			return $this->jsonFeedback(trans('validation.http.Error503'));
+		}
+
+		/*-----------------------------------------------
+		| If Reject ...
+		*/
+		if($request->_submit == 'reject') {
+			$ok = User::store([
+				'id' => $request->id ,
+				'unverified_flag'    => -1,
+				'edit_reject_notice' => $request->reject_reason,
+			]);
+
+			//$model->unverified_flag = -1 ;
+			//$ok = $model->updateMeta([
+			//	'edit_reject_notice' => $request->reject_reason ,
+			//], true) ;
+
+		}
+
+		/*-----------------------------------------------
+		| Normal Save ...
+		*/
+		if($request->_submit == 'save') {
+			$data                       = $request->toArray();
+			$data['unverified_flag']    = 0;
+			$data['unverified_changes'] = null;
+			$data['edit_reject_notice'] = null;
+			$data['activities']         = Activity::requestToString($data);
+
+			$ok = User::store($data, ['reject_reason']);
+		}
+
+		/*-----------------------------------------------
+		| Return ...
+		*/
+
+		return $this->jsonAjaxSaveFeedback($ok, [
+			'success_callback' => "rowUpdate('tblUsers','$request->id')",
+		]);
 
 
 	}

@@ -35,7 +35,6 @@ class AccountController extends Controller
 			case 'profile' :
 				$page[1]                      = ['profile', trans("people.commands.profile")];
 				$model                        = user();
-				$model->spreadMeta()->changes = json_decode($model->unverified_changes);
 				$states                       = State::combo();
 				break;
 
