@@ -536,6 +536,7 @@ return [
 		'role_slug'  => "نقش کاربری",
 		'activity'   => "فعالیت",
 		'activities' => "حوزه‌های فعالیت",
+	     'can_register_card' => "امکان ثبت نام کارت اهدای عضو" ,
 	],
 
 	"http" => [
