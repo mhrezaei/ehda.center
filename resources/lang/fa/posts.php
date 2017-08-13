@@ -167,6 +167,7 @@ return [
 	     'gallery_thumb_size' => 'اندازه بندانگشتی آلبوم' ,
 	     'gallery_thumb_size_hint' => "اول طول و بعد ارتفاع عکس، وسطش x، همه به انگلیسی" ,
 	     'info' => "اطلاعات" ,
+	     'rss_title' => "فید" ,
 	],
 
 	'comments' => [

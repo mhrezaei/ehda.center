@@ -202,6 +202,7 @@ return [
         App\Providers\SecKeyServiceProvider::class,
         App\Providers\EhdaServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        Spatie\Feed\FeedServiceProvider::class,
     ],
 
     /*

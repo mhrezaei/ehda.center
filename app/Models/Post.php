@@ -4,16 +4,19 @@ namespace App\Models;
 
 use App\Traits\EhdaPostTrait;
 use App\Providers\UploadServiceProvider;
+use App\Traits\PostFeedTrait;
 use App\Traits\TahaModelTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Feed\FeedItem;
 
 
-class Post extends Model
+class Post extends Model implements FeedItem
 {
 	use TahaModelTrait, SoftDeletes;
-	use EhdaPostTrait;
+	use EhdaPostTrait ;
+	use PostFeedTrait ;
 
 	public static    $reserved_slugs  = "none,without";
 	public static    $meta_fields     = ['dynamic'];

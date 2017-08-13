@@ -19,6 +19,7 @@
 */
 
 Auth::routes();
+Route::feeds();
 Route::get('home', 'Auth\LoginController@redirectAfterLogin');
 Route::get('logout', 'Auth\LoginController@logout');
 Route::get('manage/heyCheck', 'Front\FrontController@heyCheck');

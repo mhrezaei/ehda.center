@@ -4623,5 +4623,72 @@
             "import",
             "laravel"
         ]
+    },
+    {
+        "name": "spatie/laravel-feed",
+        "version": "1.4.1",
+        "version_normalized": "1.4.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/spatie/laravel-feed.git",
+            "reference": "9038ffbf3a9d025de76d74787aa3fd82339f8a78"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/spatie/laravel-feed/zipball/9038ffbf3a9d025de76d74787aa3fd82339f8a78",
+            "reference": "9038ffbf3a9d025de76d74787aa3fd82339f8a78",
+            "shasum": ""
+        },
+        "require": {
+            "illuminate/support": "~5.1.0|~5.2.0|~5.3.0|~5.4.0",
+            "nesbot/carbon": "^1.0",
+            "php": "^7.0"
+        },
+        "require-dev": {
+            "orchestra/testbench": "~3.3.0|~3.4.0",
+            "phpunit/phpunit": "^5.7",
+            "spatie/phpunit-snapshot-assertions": "^0.4.1"
+        },
+        "time": "2017-08-07 12:08:31",
+        "type": "library",
+        "extra": {
+            "laravel": {
+                "providers": [
+                    "Spatie\\Feed\\FeedServiceProvider"
+                ]
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Spatie\\Feed\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Freek Van der Herten",
+                "email": "freek@spatie.be",
+                "homepage": "https://spatie.be",
+                "role": "Developer"
+            },
+            {
+                "name": "Jolita Grazyte",
+                "email": "jolita@spatie.be",
+                "homepage": "https://spatie.be",
+                "role": "Developer"
+            }
+        ],
+        "description": "Generates rss feed",
+        "homepage": "https://github.com/spatie/laravel-feed",
+        "keywords": [
+            "laravel",
+            "laravel-feed",
+            "rss",
+            "spatie"
+        ]
     }
 ]
