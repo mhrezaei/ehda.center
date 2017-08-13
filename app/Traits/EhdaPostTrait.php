@@ -18,16 +18,6 @@ trait EhdaPostTrait
 		return $this->hasMany('App\Models\Printing' , 'event_id') ;
 	}
 
-	public function cards()
-	{
-		return User::where('from_event_id' , $this->id) ;
-	}
-
-	public function getCardsAttribute()
-	{
-		return $this->cards()->get();
-	}
-
 
 	/*
 	|--------------------------------------------------------------------------

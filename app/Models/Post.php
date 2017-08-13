@@ -195,6 +195,27 @@ class Post extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
+	public function registers()
+	{
+		return User::where('from_event_id' , $this->id) ;
+	}
+
+	public function getRegistersAttribute()
+	{
+		return $this->registers()->get();
+	}
+
+
+	public function getSafeTitleAttribute()
+	{
+		if($this->has('long_title')) {
+			$this->title = $this->long_title ;
+		}
+
+		return str_limit($this->title , 200) ;
+	}
+
+
 	public function getRequiredRolesArrayAttribute()
 	{
 		$domains_array = $this->domains_array ;

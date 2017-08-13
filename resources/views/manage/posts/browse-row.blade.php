@@ -34,7 +34,8 @@
 <td>
 	@include("manage.frame.widgets.grid-text" , [
 		'text' => $model->title,
-		'link' => $model->canEdit()? url("manage/posts/$model->type/edit/$model->hash_id") : '',
+//		'link' => $model->canEdit()? url("manage/posts/$model->type/edit/$model->hash_id") : '',
+		'link' => "modal:manage/posts/act/$model->id/info" ,
 		'size' => "14" ,
 //		'link' => $model->canEdit()? "modal:manage/posts/act/-id-/quick_edit" : '',
 	])
@@ -50,44 +51,7 @@
 		'icon' => "clock-o",
 	])
 
-	@include("manage.frame.widgets.grid-badges" , [$badges = [
-		[
-			'text' => trans('posts.form.copy'),
-			'color' => "orange",
-			'icon' => "pencil",
-			'link' => "urlN:".$model->parent->browse_link ,
-			'condition' => $model->isCopy(),
-		],
-		[
-			'text' => trans("forms.status_text.$model->status"),
-			'color' => trans("forms.status_color.$model->status"),
-			'icon' => trans("forms.status_icon.$model->status"),
-		],
-		[
-			'text' => trans('posts.form.rejected'),
-			'color' => "danger",
-			'icon' => "undo",
-			'condition' => $model->isRejected(),
-		],
-		[
-			'text' => trans('posts.form.is_not_available'),
-			'color' => "danger",
-			'icon' => "exclamation-triangle",
-			'condition' => !$model->trashed() and $model->has('price') and !$model->is_available,
-		],
-		[
-			'condition' => $domain_name = $model->domain_name ,
-			'text' => $domain_name ,
-			'icon' => "code-fork" ,
-			'color' => "info" ,
-		],
-		[
-			'text' => trans("forms.lang.$model->locale"),
-			'condition' => $model->has('locales'),
-			'link' => "modal:manage/posts/act/-id-/locales/" ,
-			'icon' => "globe",
-		]
-	]])
+	@include("manage.posts.badges")
 
 	@include("manage.frame.widgets.grid-date" , [
 		'text' => trans('forms.general.created_at').': ',
@@ -196,7 +160,7 @@
 		{{--]     )--}}
 
 		@include("manage.frame.widgets.grid-tiny" , [
-			'condition' => $model->has('event') and $total_cards = $model->cards()->count(),
+			'condition' => $model->has('event') and $total_cards = $model->registers()->count(),
 			'icon' => "credit-card" ,
 			'text' => pd(number_format($total_cards)) . ' ' . trans("ehda.donation_card") ,
 			'color' => "success" ,
@@ -220,7 +184,7 @@
 --}}
 @include("manage.frame.widgets.grid-actionCol" , [ "actions" => [
 	['eye' , trans('posts.form.view_in_site') , "urlN:$model->site_link" , $model->isPublished() and $model->has('preview')],
-	['eye-slash', trans('posts.form.preview') , "urlN:$model->preview_link" , $model->has('preview')],
+	['eye-slash', trans('posts.form.preview') , "urlN:$model->preview_link" , !$model->isPublished() and $model->has('preview')],
 	['-' , $model->has('preview')],
 
 	['pencil' , trans('forms.button.edit') , "url:manage/posts/$model->type/edit/-hash_id-" , $model->canEdit()],
