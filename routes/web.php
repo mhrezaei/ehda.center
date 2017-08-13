@@ -362,7 +362,7 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
 
         // tests
         Route::group(['prefix' => 'test'], function () {
-//            Route::get('/', 'TestController@index');
+            Route::get('/', 'TestController@index');
 //            Route::get('states', 'TestController@states');
 //            Route::get('gallery/archive', 'TestController@gallery_archive');
 //            Route::get('gallery/single', 'TestController@gallery_single');

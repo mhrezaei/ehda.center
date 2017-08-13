@@ -528,6 +528,7 @@ return [
         'text_content'    => 'محتوای فایل متنی',
         'submitter_name'  => 'نام ارسال کننده',
         'submitter_phone' => 'شماره تلفن ارسال کننده',
+        'upload_configs'  => 'پیکربندی آپلود',
 
         'from_event_id' => "رویداد",
 

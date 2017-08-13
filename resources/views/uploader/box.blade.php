@@ -37,7 +37,7 @@
     @include('front.forms.hidden', [
         'id' => '',
         'name' => '_uploadIdentifier',
-        'value' => $uploadIdentifier,
+        'value' => encrypt($uploadIdentifier),
     ])
     @include('front.forms.hidden', [
         'id' => '',

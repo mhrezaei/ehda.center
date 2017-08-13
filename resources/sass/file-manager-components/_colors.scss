@@ -1,0 +1,32 @@
+/* colors */
+$darkColors: (
+        "black": #3e3e3e,
+        "almostBlack": #070707,
+        "green": #88AC2E,
+        "lightGreen": #A6CE39,
+        "darkGreen": #688719,
+        "red": #e80000,
+        "lightRed": #FFAFAF,
+        "darkRed": #B2123A,
+        "purple": #9013FE,
+        "teal": #23999d,
+        "blue": #3397b9,
+        "lightBlue": #44c8f5,
+        "darkBlue": #1683A7,
+        "brown": #4F3111,
+        "violet": #4F5B93,
+        "orange": #F18432,
+        "pink": #A400AC,
+        "orangeRed": #A400AC,
+        "gray": #808080,
+        "darkGray": #58595B,
+        "gold": #FFD700,
+        "silver": #C0C0C0,
+);
+
+$lightColors: (
+        "white": #ffffff,
+        "lightGray": #eeeeee,
+);
+
+$colors: map_merge($darkColors, $lightColors);

@@ -7,7 +7,7 @@
     ] }}
 
 @if(!isset($id) or !$id)
-    {{ null, $id = str_random(8) }}
+    @php $id = 'dropzoneUploader_' . str_random(8) @endphp
 @endif
 
 @if(isset($dataAttributes) and is_array($dataAttributes) and count($dataAttributes))
@@ -27,9 +27,9 @@
     @endif
     >
     <div class="dz-message" data-dz-message>
-        <i class="fa fa-cloud-upload f70 text-white"></i>
+        <i class="fa fa-cloud-upload upload-icon f70 text-white"></i>
         <br/>
-        @if($boxIconName = UploadServiceProvider::getTypeRule($fileType, 'icon'))
+        @if(isset($uploadConfig['icon']) and ($boxIconName = $uploadConfig['icon']))
             <i class="fa fa-{{ $boxIconName }}"></i> &nbsp;
         @endif
         <span>{{ trans("front.file_types.$fileType.dropzone_text") }}</span>
@@ -37,7 +37,7 @@
     @include('front.forms.hidden', [
         'id' => '',
         'name' => '_uploadIdentifier',
-        'value' => $uploadIdentifier,
+        'value' => encrypt(implode(',', $uploadIdentifiers)),
     ])
     @include('front.forms.hidden', [
         'id' => '',
@@ -51,7 +51,7 @@
     <script>
         $(document).ready(function () {
             @if(!isset($varName) or !$varName)
-                {{ null, $varName = camel_case($id . '-dropzone') }}
+                @php $varName = camel_case($id . '-dropzone') @endphp
             @endif
 
             var {{ $varName }} = new Dropzone("#{{ $id }}", {

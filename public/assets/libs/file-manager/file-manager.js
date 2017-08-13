@@ -156,8 +156,6 @@ jQuery(function($){
 
 }); //End Of Ready!
 
-
-
 function forms_pd($string) {
     if (!$string){
     	$string = "0";
@@ -177,7 +175,6 @@ function forms_pd($string) {
 
     return $string;
 }
-
 
 function forms_digit_fa(enDigit) {
     return forms_pd(enDigit);

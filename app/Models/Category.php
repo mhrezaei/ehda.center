@@ -37,10 +37,10 @@ class Category extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
-	public function getHashIdAttribute()
-	{
-		return Hashids::encode($this->id);
-	}
+//	public function getHashIdAttribute()
+//	{
+//		return Hashids::encode($this->id);
+//	}
 
 	public function getDirectUrlAttribute()
 	{

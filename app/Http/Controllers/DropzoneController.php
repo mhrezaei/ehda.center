@@ -3,7 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Front\CommentRequest;
+use App\Http\Requests\Front\DropzoneUploadRequest;
+use App\Models\Category;
+use App\Models\Folder;
+use App\Models\Posttype;
 use App\Providers\UploadServiceProvider;
+use App\Traits\ManageControllerTrait;
+use App\Traits\TahaControllerTrait;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -13,18 +19,98 @@ use App\Models\File as UploadedFileModel;
 
 class DropzoneController extends Controller
 {
-    public function upload_file(Request $request)
+    use ManageControllerTrait;
+
+    public function upload_file(DropzoneUploadRequest $request)
     {
+        $externalFields = json_decode($request->externalFields, true) ?: [];
+
+        /******************** Validating Values of 'category', 'folder' and 'posttype' ***************** START */
+        if (isset($externalFields['category']) and $externalFields['category']) {
+            $category = Category::findByHashid($externalFields['category']);
+            if ($category->exists) {
+                $folder = $category->folder;
+                $posttype = $folder->posttype;
+
+                $externalFields['category'] = $category->id;
+                $externalFields['folder'] = $folder->id;
+                $externalFields['posttype'] = $posttype->id;
+            } else {
+                $externalFields['category'] = null;
+                $externalFields['folder'] = null;
+                $externalFields['posttype'] = null;
+            }
+        } else if (isset($externalFields['folder']) and $externalFields['folder']) {
+            $folder = Folder::findByHashid($externalFields['folder']);
+            if ($folder->exists) {
+                $posttype = $folder->posttype;
+
+                $externalFields['category'] = null;
+                $externalFields['folder'] = $folder->id;
+                $externalFields['posttype'] = $posttype->id;
+            } else {
+                $externalFields['category'] = null;
+                $externalFields['folder'] = null;
+                $externalFields['posttype'] = null;
+            }
+        } else if (isset($externalFields['posttype']) and $externalFields['posttype']) {
+            $posttype = Posttype::findByHashid($externalFields['posttype']);
+            if ($posttype->exists) {
+                $externalFields['category'] = null;
+                $externalFields['folder'] = null;
+                $externalFields['posttype'] = $posttype->id;
+            } else {
+                $externalFields['category'] = null;
+                $externalFields['folder'] = null;
+                $externalFields['posttype'] = null;
+            }
+        }
+        /******************** Validating Values of 'category', 'folder' and 'posttype' ***************** END */
+
+        if (isset($externalFields['posttype']) and $externalFields['posttype']) {
+            $postTypeConfigPointer = UploadServiceProvider::getPostTypeConfigPrefix() . $posttype->slug;
+            $modifiedIdentifiers = str_replace(
+                '__posttype__',
+                $postTypeConfigPointer,
+                $request->_uploadIdentifier
+            );
+            $request->merge(['_uploadIdentifier' => encrypt($modifiedIdentifiers)]);
+        }
+
+        $uploadIdentifiers = explodeNotEmpty(',', $request->_uploadIdentifier);
+
+        if (count($uploadIdentifiers) == 0) {
+            return $this->abort('403', true);
+        }
+
         $file = $request->file;
-        $typeString = $request->_uploadIdentifier;
+        $fileExtension = $file->guessExtension();
+
+        if (count($uploadIdentifiers) > 1) {
+            if (($validationResponse = UploadServiceProvider::validateFile($request)) !== true) {
+                return response()->json($validationResponse->toArray(), 422);
+            }
+            foreach ($uploadIdentifiers as $uploadIdentifier) {
+                $acceptedExtensions = UploadServiceProvider::getTypeRule($uploadIdentifier, 'acceptedExtensions');
+                if (in_array($fileExtension, $acceptedExtensions) !== false) {
+                    $typeString = $uploadIdentifier;
+                    break;
+                }
+            }
+
+            $request->merge(['_uploadIdentifier', $typeString]);
+        } else {
+            $typeString = $request->_uploadIdentifier;
+        }
+
         $sessionName = $request->_groupName;
-        $externalFields = \GuzzleHttp\json_decode($request->externalFields, true) ?: [];
 
         $typeStringParts = explode('.', $typeString);
         $sectionName = implode('.', array_slice($typeStringParts, 0, count($typeStringParts) - 1));
         $folderName = array_last($typeStringParts);
 
-        if (UploadServiceProvider::validateFile($request)) {
+
+        if (UploadServiceProvider::validateFile($request) == true) {
             $itemIndex = str_random(4);
             if (session()->has($sessionName)) {
                 $currentUploaded = session()->get($sessionName);

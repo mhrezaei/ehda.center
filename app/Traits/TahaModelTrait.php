@@ -118,7 +118,7 @@ trait TahaModelTrait
     {
         return hashid_encrypt($this->id, 'ids');
     }
-    
+
 	public function getIddAttribute()
 	{
 		return Crypt::encrypt($this->id);

@@ -1,48 +1,48 @@
+@php $freshConfigs = UploadServiceProvider::getDefaultJsConfigs() @endphp
+
 @section('head')
     {!! Html::style('assets/css/dropzone.min.css') !!}
+    <style>
+        .dz-hidden-input { /* this is in body */
+            direction: ltr !important;
+        }
+    </style>
 @append
+
 @section('end-of-body')
     {!! Html::script('assets/libs/dropzone/dropzone.js') !!}
     <script>
-        // if we miss this command, every elements with "dropzone" class will be automatically change to dropzone
-        Dropzone.autoDiscover = false;
-
-        // setting default options for all dropzone uploaders in this page
-        Dropzone.prototype.defaultOptions.url = "{{ route('dropzone.upload') }}";
-        Dropzone.prototype.defaultOptions.addRemoveLinks = true;
-        Dropzone.prototype.defaultOptions.dictRemoveFile = "";
-        Dropzone.prototype.defaultOptions.dictCancelUpload = "";
-        Dropzone.prototype.defaultOptions.dictFileTooBig = "{{ trans('front.upload.errors.size') }}";
-        Dropzone.prototype.defaultOptions.dictInvalidFileType = "{{ trans('front.upload.errors.type') }}";
-        Dropzone.prototype.defaultOptions.dictResponseError = "{{ trans('front.upload.errors.server') }}";
-        Dropzone.prototype.defaultOptions.dictMaxFilesExceeded = "{{ trans('front.upload.errors.limit') }}";
-
-        {{ null, $freshConfigs = UploadServiceProvider::getDefaultJsConfigs() }}
-
+        // Setting Dynamic Variables
+        var csrfToken = "{{ csrf_token() }}";
+        var dropzoneRoutes = {
+            upload: "{{ route('dropzone.upload') }}",
+            remove: "{{ route('dropzone.remove') }}",
+        };
+        var messages = {
+            errors: {
+                size: "{{ trans('front.upload.errors.size') }}",
+                type: "{{ trans('front.upload.errors.type') }}",
+                server: "{{ trans('front.upload.errors.server') }}",
+                limit: "{{ trans('front.upload.errors.limit') }}",
+            },
+            statuses: {
+                uploading: "{{ trans('front.upload.statuses.uploading') }}",
+                failed: "{{ trans('front.upload.statuses.failed') }}",
+                success: "{{ trans('front.upload.statuses.success') }}",
+            }
+        };
+    </script>
+    {!! Html::script('assets/libs/dropzone/dropzone-additives.min.js') !!}
+    <script>
         Dropzone.prototype.defaultOptions.init = function () {
-            this.on('sending', function (file, xhr, formData) {
-                var externalFields = {};
-                formData.append('_token', "{{ csrf_token() }}");
-                var currentFolder = $(".breadcrumb-folders li.current");
-                if(currentFolder.length && (typeof getFolderParents != undefined) && $.isFunction(getFolderParents)){
-                    var parents = getFolderParents(currentFolder);
-                    parents.each(function () {
-                        externalFields[$(this).attr('data-instance')] = $(this).attr('data-key');
-                    });
-                }
-                formData.append('externalFields', JSON.stringify(externalFields));
-
-                var inElementData = $(this.element).find(':input').serializeArray();
-                $.each(inElementData, function (index, node) {
-                    formData.append(node.name, node.value);
-                })
+            var dropzoneObj = this;
+            $.each(dropzoneOptions.init, function (key, value) {
+                dropzoneObj.on(key, value);
             });
-
-
 
             @if(array_key_exists('events', $freshConfigs))
                 @foreach($freshConfigs['events'] as $eventName => $eventValue)
-                    this.on("{{ $eventName }}", {{ $eventValue }});
+                    dropzoneObj.on("{{ $eventName }}", {{ $eventValue }});
                 @endforeach
 
                 @unset($freshConfigs['events'])
@@ -52,41 +52,5 @@
         @foreach($freshConfigs as $configKey => $configValue)
             Dropzone.prototype.defaultOptions.{{ $configKey }} = "{{ $configValue }}";
         @endforeach
-
-        function updateTarget(dropzoneInstance, target) {
-            if (dropzoneInstance.getUploadingFiles().length === 0 && dropzoneInstance.getQueuedFiles().length === 0) {
-                var accepted = dropzoneInstance.getAcceptedFiles();
-                var dataArr = [];
-                var targetEl = $('#' + target);
-                $.each(accepted, function (index, file) {
-                    var rsJson = $.parseJSON(file.xhr.response);
-                    dataArr.push(rsJson.file);
-                });
-                if (dataArr.length) {
-                    targetEl.val(JSON.stringify(dataArr));
-                } else {
-                    targetEl.val('');
-                }
-            }
-        }
-
-        function removeFromServer(file, dropzoneElement) {
-            if (file.xhr) {
-                var rs = $.parseJSON(file.xhr.response);
-                var data = rs;
-                data._token = "{{ csrf_token() }}";
-
-                var additionalData = dropzoneElement.find(':input').serializeArray();
-                $.each(additionalData, function (index, item) {
-                    data[item.name] = item.value;
-                });
-                $.ajax({
-                    url: "{{ route('dropzone.remove') }}",
-                    type: 'POST',
-                    data: data,
-                })
-            }
-        }
-
     </script>
 @append

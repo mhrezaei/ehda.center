@@ -2,6 +2,7 @@
 @import "file-manager-components/jquery-ui.min.css";
 @import "file-manager-components/variables";
 @import "file-manager-components/fonts";
+@import "local-variables/rtl";
 
 .full-width {
   width: 100%;
@@ -311,59 +312,6 @@ input[type=search], input[type=text] {
           }
         }
 
-        .media-uploader-status {
-          position: relative;
-          margin: 0 auto;
-          padding-bottom: 10px;
-          max-width: 400px;
-          display: none;
-
-          h2 {
-            font-size: 13px;
-            color: #666;
-            margin: 24px 0 8px;
-          }
-
-          button {
-            border: 0;
-            background: none;
-            position: absolute;
-            top: -15px;
-            left: -10px;
-            padding: 10px;
-            color: #666;
-            font-size: 16px;
-
-            &:hover {
-              color: #cc0000;
-            }
-          }
-
-          .media-progress {
-            position: relative;
-            height: 10px;
-            width: 100%;
-            margin: 10px auto;
-            -webkit-border-radius: 10px;
-            border-radius: 10px;
-            background: #ddd;
-            background: rgba(0, 0, 0, .1);
-
-            div {
-              height: 10px;
-              min-width: 20px;
-              width: 0;
-              background: #0073aa;
-              -webkit-border-radius: 10px;
-              border-radius: 10px;
-              -webkit-transition: width .3s;
-              transition: width .3s;
-            }
-
-          }
-
-        }
-
         .file-details {
           position: relative;
           overflow: auto;
@@ -491,12 +439,18 @@ input[type=search], input[type=text] {
       padding-top: 50px;
 
       .uploader-container {
+        $uploaderBoxVerticalPadding: 10px;
+        $uploaderBoxHorizontalPadding: 10px;
+        $uploaderBoxBorderWidth: 5px;
+        $uploaderBozMinHeight: 200px;
+
         margin: auto;
-        padding: 100px 10%;
+        padding: $uploaderBoxVerticalPadding $uploaderBoxHorizontalPadding;
         border-radius: 20px;
         width: 70%;
-        border: 5px dashed #ccc;
+        border: $uploaderBoxBorderWidth dashed #ccc;
         text-align: center;
+        min-height: $uploaderBozMinHeight;
 
         h1 {
           font-size: 20px;
@@ -506,6 +460,105 @@ input[type=search], input[type=text] {
           font-size: 14px;
         }
 
+        .dz-message {
+          $dzMessageVerticalMarginSize: 2em;
+          $dzMessageHorizontalPaddingSize: 0;
+          margin: $dzMessageVerticalMarginSize $dzMessageHorizontalPaddingSize;
+          min-height: calc(
+                  #{$uploaderBozMinHeight}
+                  - #{(2 * $dzMessageVerticalMarginSize)}
+                  - #{(2 * ($uploaderBoxVerticalPadding + $uploaderBoxBorderWidth))}
+          );
+          padding: 1em;
+
+          .upload-icon {
+            font-size: 3em;
+          }
+        }
+
+        .dz-preview.dz-error {
+          .dz-image {
+            border: 2px solid map_get($colors, 'red');
+          }
+        }
+
+      }
+
+      .media-uploader-status {
+        position: relative;
+        margin: 0 auto;
+        padding-bottom: 10px;
+        max-width: 400px;
+
+        h2 {
+          font-size: 13px;
+          color: #666;
+          margin: 24px 0 8px;
+        }
+
+        button {
+          border: 0;
+          background: none;
+          position: absolute;
+          top: -15px;
+          left: -10px;
+          padding: 10px;
+          color: #666;
+          font-size: 16px;
+
+          &:hover {
+            color: #cc0000;
+          }
+        }
+
+        .media-progress {
+          position: relative;
+          height: 10px;
+          width: 100%;
+          margin: 10px auto;
+          -webkit-border-radius: 10px;
+          border-radius: 10px;
+          background: #ddd;
+          background: rgba(0, 0, 0, .1);
+
+          div {
+            height: 10px;
+            width: 0;
+            background: #0073aa;
+            -webkit-border-radius: 10px;
+            border-radius: 10px;
+            -webkit-transition: width .3s;
+            transition: width .3s;
+          }
+
+        }
+
+        .upload-errors {
+          background-color: map_get($colors, 'lightRed');
+          color: map_get($colors, 'darkRed');
+          padding: 5px 10px;
+          margin-top: 5px;
+          border-radius: 10px;
+
+          > ul {
+            padding-#{$startSide}: 10px;
+          }
+        }
+
+        &.error {
+          &,
+          .media-uploader-status-text {
+            color: map_get($colors, 'red');
+          }
+
+          .media-progress {
+            div {
+              background: map_get($colors, 'red');
+            }
+
+          }
+
+        }
       }
     }
   }

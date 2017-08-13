@@ -107,7 +107,7 @@ class FileManagerServiceProvider extends ServiceProvider
     {
         $output = [];
         $output['instance'] = $instance;
-        $output['key'] = $point->id;
+        $output['key'] = $point->hashid;
 
         switch ($instance) {
             case 'posttype':
@@ -126,29 +126,46 @@ class FileManagerServiceProvider extends ServiceProvider
     /**
      * Return a View Containing DropZone Uploader Element and Related JavaScript Codes
      *
-     * @param string $fileTypeString
-     * @param array  $data
+     * @param string|array $fileTypeString
+     * @param array        $data
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public static function dropzoneUploader($fileTypeString, $data = [])
+    public static function dropzoneUploader($fileTypes, $data = [])
     {
-        if (UploadServiceProvider::isActive($fileTypeString)) {
-
-            // preloader view will be added to view only in generating first uploader
-            if (!self::$preloaderShown) {
-                $preloaderView = view('file-manager.frame.uploader.preloader');
-                self::$preloaderShown = true;
-            }
-
-            $fileTypeStringParts = UploadServiceProvider::translateFileTypeString($fileTypeString);
-            $fileType = last($fileTypeStringParts);
-            $uploadIdentifier = implode('.', $fileTypeStringParts);
-            return view('file-manager.frame.uploader.box', compact(
-                    'fileType',
-                    'preloaderView',
-                    'uploadIdentifier'
-                ) + $data);
+        if (is_string($fileTypes)) {
+            $fileTypes = [$fileTypes];
         }
+
+        $uploadConfig = UploadServiceProvider::getCompleteRules($fileTypes);
+
+        // preloader view will be added to view only in generating first uploader
+        if (!self::$preloaderShown) {
+            $preloaderView = view('file-manager.frame.uploader.preloader');
+            self::$preloaderShown = true;
+        }
+
+        foreach ($fileTypes as $fileTypeString) {
+            if (UploadServiceProvider::isActive($fileTypeString)) {
+
+                $fileTypeStringParts = UploadServiceProvider::translateFileTypeString($fileTypeString);
+
+                if (isset($fileType)) {
+                    if ($fileType != last($fileTypeStringParts)) {
+                        $fileType = 'file';
+                    }
+                } else {
+                    $fileType = last($fileTypeStringParts);
+                }
+                $uploadIdentifiers[] = implode('.', $fileTypeStringParts);
+            }
+        }
+
+        return view('file-manager.frame.uploader.box', compact(
+                'fileType',
+                'preloaderView',
+                'uploadIdentifiers',
+                'uploadConfig'
+            ) + $data);
     }
 }

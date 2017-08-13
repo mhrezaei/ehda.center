@@ -1,4 +1,4 @@
-<div class="page attachments-browser" id="gallery">
+<div class="page attachments-browser" id="gallery" style="display: none;">
     <div class="media-toolbar">
         <div class="toolbar-right">
             <select id="media-filters" class="attachment-filters">

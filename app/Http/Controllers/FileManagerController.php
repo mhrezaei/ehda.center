@@ -24,10 +24,16 @@ class FileManagerController extends Controller
     {
         $postTypes = Posttype::orderBy('order')->orderBy('title')->get();
 
+
         $postTypes->each(function ($postType, $key) use ($postTypes) {
-            // If current user can do any of "create", "edit" or "publish" we will keep posttype,
+            $postType->spreadMeta();
+            // If current user can do any of "create", "edit" or "publish"
+            // and postType has "upload_configs" meta
+            // we will keep posttype,
             // else we will forget it.
-            if (!$postType->can('create') and !$postType->can('edit') and !$postType->can('publish')) {
+            if ((!$postType->can('create') and !$postType->can('edit') and !$postType->can('publish')) or
+                (!$postType->upload_configs)
+            ) {
                 $postTypes->forget($key);
             }
         });

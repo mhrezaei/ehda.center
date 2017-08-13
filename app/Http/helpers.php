@@ -475,7 +475,7 @@ function hashid_encrypt($id, $connection = 'main')
 
 function hashid_decrypt($hash, $connection = 'main')
 {
-	return Hashids::connection($connection)->decode($hash);
+    return Hashids::connection($connection)->decode($hash);
 }
 
 function hashid_decrypt0($hash, $connection = 'main')
