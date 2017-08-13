@@ -406,13 +406,13 @@ class CardsController extends UsersController
 		| Events Menu ...
 		*/
 		$all_events   = Post::getAllEvents();
+		$event_title = trans('ehda.printings.all_events') ;
 		$events_array = [
 			[
-				$event_id == '0' ? 'check' : '',
-				trans('people.printings.all_events'),
+				$event_id == 0 ? 'check' : '',
+				$event_title,
 				url("manage/cards/printings/$request_tab/all"),
 			],
-			['-'],
 		];
 
 		foreach($all_events as $event) {
@@ -497,6 +497,7 @@ class CardsController extends UsersController
 				'event_id' => $request->browse_event_id,
 				'criteria' => "pending",
 			]);
+
 		}
 		else {
 			$table = Printing::whereIn('id', explode(',', $request->ids));
@@ -720,6 +721,48 @@ class CardsController extends UsersController
 
 		return view("manage.users.card-view", compact('model'));
 
+
+	}
+
+	public function eventStats($post_hashid)
+	{
+		/*-----------------------------------------------
+		| Model ...
+		*/
+		$model = Post::findByHashid($post_hashid) ;
+		if(!$model or !$model->id) {
+			return view('errors.m410');
+		}
+
+
+		$total_count     = $model->cards()->count();
+		$first_card      = $model->cards()->orderBy('created_at')->first();
+		$last_card       = $model->cards()->orderBy('created_at', 'desc')->first();
+		$first_print     = $model->printings()->orderBy('created_at')->first();
+		$last_print      = $model->printings()->orderBy('created_at', 'desc')->first();
+		$daily_registers = [];
+
+		/*-----------------------------------------------
+		| Model ...
+		*/
+		//if($total_count>0) {
+		$today    = min($first_card->created_at->startOfDay(), $first_print->created_at->startOfDay());
+		$tomorrow = min($first_card->created_at->startOfDay(), $first_print->created_at->startOfDay())->addDay();
+
+		while ($today < max($last_card->created_at, $last_print->created_at)) {
+			$count1            = $model->cards()->where('created_at', '>=', $today)->where('created_at', '<', $tomorrow)->count();
+			$count2            = $model->printings()->where('created_at', '>=', $today)->where('created_at', '<', $tomorrow)->count();
+			$daily_registers[] = [$today->toDateTimeString(), $count1, $count2];
+
+			$today->addDay();
+			$tomorrow->addDay();
+		}
+		//}
+
+		/*-----------------------------------------------
+		| View ...
+		*/
+		return view('manage.users.cards-event-stats', compact('model', 'total_count', 'daily_registers'));
 
 	}
 

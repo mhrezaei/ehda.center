@@ -100,7 +100,7 @@ class Printing extends Model
 		if($switch['user_id']) {
 			$table->where('user_id', $switch['user_id']);
 		}
-		if($switch['event_id']) {
+		if($switch['event_id'] and $switch['event_id'] > 0) {
 			$table->where('event_id', $switch['event_id']);
 		}
 		if($switch['created_by']) {
