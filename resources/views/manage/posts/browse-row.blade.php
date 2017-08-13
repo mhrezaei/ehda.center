@@ -164,29 +164,44 @@
 --}}
 @if($model->has('feedback'))
 	<td>
-		@include("manage.frame.widgets.grid-text" , [
-			'condition' => $model->has('event') and $model->total_receipts_count,
-			'text' => trans('cart.receipts_count_amount' , [
-				'count' => number_format($model->total_receipts_count),
-				'amount' => number_format($model->total_receipts_amount/10),
-			])
-		])
+		{{--@include("manage.frame.widgets.grid-text" , [--}}
+			{{--'condition' => $model->has('event') and $model->total_receipts_count,--}}
+			{{--'text' => trans('cart.receipts_count_amount' , [--}}
+				{{--'count' => pd(number_format($model->total_receipts_count)),--}}
+				{{--'amount' => number_format($model->total_receipts_amount/10),--}}
+			{{--])--}}
+		{{--])--}}
 
-		@include("manage.frame.widgets.grid-text" , [
-			'condition' => $model->has('event') and \Carbon\Carbon::now() > $model->ends_at and !count($model->winners_array),
-			'text' => trans('cart.draw'),
-			'icon' => "gift",
-			'link' => "modal:manage/posts/act/-id-/draw",
-			'class' => "btn btn-default btn-lg",
-		])
+		{{--@include("manage.frame.widgets.grid-text" , [--}}
+			{{--'condition' => $model->has('event') and \Carbon\Carbon::now() > $model->ends_at and !count($model->winners_array),--}}
+			{{--'text' => trans('cart.draw'),--}}
+			{{--'icon' => "gift",--}}
+			{{--'link' => "modal:manage/posts/act/-id-/draw",--}}
+			{{--'class' => "btn btn-default btn-lg",--}}
+		{{--])--}}
+
+		{{--@include("manage.frame.widgets.grid-tiny" , [--}}
+			{{--'condition' => $total_winners = count($model->winners_array),--}}
+			{{--'text' => pd($total_winners).' '.trans('cart.drawing_winner'),--}}
+			{{--'icon' => "smile-o",--}}
+			{{--'color' => "primary",--}}
+			{{--'link' => "modal:manage/posts/act/-id-/draw-winners" ,--}}
+		{{--])--}}
+
+		{{--@include("manage.frame.widgets.grid-tiny" , [--}}
+			{{--'condition' => $model->has('event'),--}}
+			{{--'text' => pd(number_format($model->printings->count())).' '. trans("ehda.printings.request") ,--}}
+			{{--'icon' => "print" ,--}}
+			{{--'link' => "url:manage/cards/printings/pending/-id-" ,--}}
+		{{--]     )--}}
 
 		@include("manage.frame.widgets.grid-tiny" , [
-			'condition' => $total_winners = count($model->winners_array),
-			'text' => pd($total_winners).' '.trans('cart.drawing_winner'),
-			'icon' => "smile-o",
-			'color' => "primary",
-			'link' => "modal:manage/posts/act/-id-/draw-winners" ,
-		])
+			'condition' => $model->has('event') and $total_cards = $model->cards()->count(),
+			'icon' => "credit-card" ,
+			'text' => pd(number_format($total_cards)) . ' ' . trans("ehda.donation_card") ,
+			'color' => "success" ,
+			'link' => "modal:manage/cards/event-stats/-hash_id-" ,
+		]     )
 		
 		@include("manage.frame.widgets.grid-tiny" , [
 			'condition' => $model->has('comment'),

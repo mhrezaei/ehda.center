@@ -44,7 +44,7 @@
 			[trans('validation.attributes.featured_image') , '200' , $posttype->hasFeature('featured_image')],
 			trans('validation.attributes.properties'),
 			[trans('validation.attributes.price'),'', $posttype->has('price') ],
-			[trans('posts.features.feedback') , '100' , $posttype->has('feedback') ],
+			[trans('posts.features.feedback') , '200' , $posttype->has('feedback') ],
 			trans('forms.button.action')
 		],
 	])
