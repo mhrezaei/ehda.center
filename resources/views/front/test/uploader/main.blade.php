@@ -2,22 +2,19 @@
 
 @section('body')
     <div class="container">
-        {{--<div class="row">--}}
-            {{--<div class="col-xs-12">--}}
-{{--                {{ \App\Providers\UploadServiceProvider::getFileUrl(133) }}--}}
-                {{--{{ \App\Providers\UploadServiceProvider::getFileView('edYNO') }}--}}
-            {{--</div>--}}
-        {{--</div>--}}
-        {{--{!! \App\Providers\FileManagerServiceProvider::dropzoneUploader('video') !!}--}}
+        <input type="hidden" id="upload-result"/>
         <script>
-            function test() {
-                alert('yyyyyyyyyyyyyysss');
+            function test(file) {
+                console.log(file)
+                alert('yeeeeeeeeeeeees')
             }
         </script>
+        {{--{!! \App\Providers\FileManagerServiceProvider::dropzoneUploader('video') !!}--}}
         @php
             $uploaderData = [
-                'callbackOnQueueComplete' => 'test',
-            ];
+                'target' => 'upload-result',
+                'callbackOnAllUploadsComplete' => 'test',
+            ]
         @endphp
         {!! \App\Providers\FileManagerServiceProvider::posttypeUploader('word-news', $uploaderData) !!}
     </div>

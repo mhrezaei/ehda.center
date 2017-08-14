@@ -107,7 +107,6 @@ class UploadServiceProvider extends ServiceProvider
     public static function dropzoneUploader($fileTypeString, $data = [])
     {
         if (self::isActive($fileTypeString)) {
-
             // preloader view will be added to view only in generating first uploader
             if (!self::$preloaderShown) {
                 $preloaderView = view('uploader.preloader');

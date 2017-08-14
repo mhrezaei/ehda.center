@@ -112,10 +112,10 @@
                 });
             @endif
 
-            @if(isset($callbackOnQueueComplete) and $callbackOnQueueComplete)
-                {{ $varName }}. on("queuecomplete", function () {
-                    {{ $callbackOnQueueComplete }}();
-                });
+            @if(isset($callbackOnAllUploadsComplete) and $callbackOnAllUploadsComplete)
+            {{ $varName }}. on("queuecomplete", function () {
+                {{ $callbackOnAllUploadsComplete }}();
+            });
             @endif
 
             @if(isset($target) and $target)
