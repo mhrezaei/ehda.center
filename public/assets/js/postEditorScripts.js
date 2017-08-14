@@ -5,9 +5,8 @@
  |
  */
 
-function postsInit()
-{
-	postDomainToggle() ;
+function postsInit() {
+	postDomainToggle();
 }
 
 /*
@@ -17,62 +16,58 @@ function postsInit()
  |
  */
 
-function postToggleCategories(count)
-{
-	if(count>0) {
+function postToggleCategories(count) {
+	if (count > 0) {
 		$("#divCategories").slideDown();
 	}
 }
-function postTogglePrice()
-{
-	$('#btnSale,#divSale').slideToggle('fast' , function() {
-		if($("#divSale").is(':visible')) {
+function postTogglePrice() {
+	$('#btnSale,#divSale').slideToggle('fast', function () {
+		if ($("#divSale").is(':visible')) {
 			$("#txtSalePrice").focus();
 		}
 		else {
 			$(".salePrice").val('');
 		}
-	}) ;
+	});
 }
-function postCalcSale(called_from)
-{
-	var $price = $("#txtPrice") ;
+function postCalcSale(called_from) {
+	var $price = $("#txtPrice");
 	var $percent = $("#txtSalePercent");
 	var $sale = $("#txtSalePrice");
 
-	var price_val = parseInt(ed($price.val().replaceAll(',',''))) ;
-	var sale_val = parseInt(ed($sale.val()).replaceAll(',','')) ;
-	var percent_val = parseInt(ed($percent.val()).replaceAll(',',''));
+	var price_val = parseInt(ed($price.val().replaceAll(',', '')));
+	var sale_val = parseInt(ed($sale.val()).replaceAll(',', ''));
+	var percent_val = parseInt(ed($percent.val()).replaceAll(',', ''));
 
-	if(called_from == 'price') {
-		called_from = 'sale' ;
+	if (called_from == 'price') {
+		called_from = 'sale';
 	}
-	if(called_from == 'sale') {
-		if(!price_val || price_val == 0 || !sale_val || sale_val == 0 || sale_val>price_val) {
+	if (called_from == 'sale') {
+		if (!price_val || price_val == 0 || !sale_val || sale_val == 0 || sale_val > price_val) {
 			$percent.val('');
 		}
 		else {
 			var result = Math.round((price_val - sale_val) * 100 / price_val);
-			$percent.val( pd(result.toString()) );
+			$percent.val(pd(result.toString()));
 		}
 	}
-	if(called_from == 'percent') {
-		if(!price_val || price_val == 0 || !percent_val || percent_val == 0 || percent_val > 100) {
+	if (called_from == 'percent') {
+		if (!price_val || price_val == 0 || !percent_val || percent_val == 0 || percent_val > 100) {
 			$sale.val('');
 		}
 		else {
-			var result = Math.round( (100 - percent_val) * price_val / 100 ) ;
-			$sale.val( pd(addCommas(result.toString())));
+			var result = Math.round((100 - percent_val) * price_val / 100);
+			$sale.val(pd(addCommas(result.toString())));
 		}
 	}
 }
 
-function postToggleTitle2()
-{
-	var $txtTitle2 = $('#txtTitle2') ;
+function postToggleTitle2() {
+	var $txtTitle2 = $('#txtTitle2');
 
 	$('#lblTitle2,#txtTitle2-container').toggle();
-	if($txtTitle2.is(':visible')) {
+	if ($txtTitle2.is(':visible')) {
 		$txtTitle2.focus();
 	}
 	else {
@@ -80,19 +75,18 @@ function postToggleTitle2()
 	}
 }
 
-function postToggleSchedule( $mood )
-{
-	var $schedule = $("#divSchedule") ;
-	var $link = $("#lnkSchedule") ;
-	var $date = $("#txtPublishDate") ;
+function postToggleSchedule($mood) {
+	var $schedule = $("#divSchedule");
+	var $link = $("#lnkSchedule");
+	var $date = $("#txtPublishDate");
 	var $flag = $("#txtScheduleFlag");
 
-	if(!$mood) {
-		forms_log("mood="+$mood);
-		if($($schedule).is(':visible'))
-			$mood = 'hide' ;
+	if (!$mood) {
+		forms_log("mood=" + $mood);
+		if ($($schedule).is(':visible'))
+			$mood = 'hide';
 		else
-			$mood = 'show' ;
+			$mood = 'show';
 	}
 
 	switch ($mood) {
@@ -100,7 +94,7 @@ function postToggleSchedule( $mood )
 			$schedule.slideDown('fast');
 			$flag.val('1');
 			$link.hide();
-			$date.focus() ;
+			$date.focus();
 			break;
 
 		case 'hide' :
@@ -114,34 +108,33 @@ function postToggleSchedule( $mood )
 
 	}
 
-	return $mood ;
+	return $mood;
 
 }
 
-function postsAction($command , $model_id)
-{
-	forms_log('action: '+$command);
-	switch($command) {
+function postsAction($command, $model_id) {
+	forms_log('action: ' + $command);
+	switch ($command) {
 		case 'adjust_publish_time' :
-			postToggleSchedule('show') ;
+			postToggleSchedule('show');
 			break;
 
 		case 'refer_back' :
-			modalForm("modalPostReject" , '1');
+			modalForm("modalPostReject", '1');
 			break;
 
 		case 'submit_reject': //called from #modalPostReject
-			$(".modal").modal("hide") ;
-			$("#txtModerateNote").val( $("#txtModerateNote2").val() );
+			$(".modal").modal("hide");
+			$("#txtModerateNote").val($("#txtModerateNote2").val());
 			$('#btnReject').click();
 			break;
 
 		case 'delete':
-			modalForm("modalPostDeleteWarning" , '1') ;
+			modalForm("modalPostDeleteWarning", '1');
 			break;
 
 		case 'unpublish':
-			modalForm("modalPostUnpublishWarning" , '1') ;
+			modalForm("modalPostUnpublishWarning", '1');
 			break;
 
 		case 'send_for_approval' :
@@ -152,98 +145,104 @@ function postsAction($command , $model_id)
 			$divFeedback = $("#divSlugFeedback");
 			$divFeedback.html('...').addClass('loading');
 
-				forms_log('['+ $("#txtSlug").val() +']');
+			forms_log('[' + $("#txtSlug").val() + ']');
 			$.ajax({
-				url: url("manage/posts/check_slug/" + $("#txtId").val() + "/" + $("#txtType").val() + "/" + $("#txtLocale").val()+'' + '/' + $("#txtSlug").val() + ' /' + 'p'),
+				url  : url("manage/posts/check_slug/" + $("#txtId").val() + "/" + $("#txtType").val() + "/" + $("#txtLocale").val() + '' + '/' + $("#txtSlug").val() + ' /' + 'p'),
 				cache: false
 			})
-			.done(function (html) {
-				$($divFeedback).html(html);
-				$($divFeedback).removeClass('loading') ;
-			});
+				.done(function (html) {
+					$($divFeedback).html(html);
+					$($divFeedback).removeClass('loading');
+				});
 
 			break;
 
 		case 'refer_to' :
-			masterModal(url('manage/posts/act/'+$model_id+'/owner/1'));
+			masterModal(url('manage/posts/act/' + $model_id + '/owner/1'));
 			break;
 
 	}
 }
 
-function featuredImage(event)
-{
-	switch(event) {
+function featuredImage(event) {
+	switch (event) {
 		case 'inserted' :
-			$('#divFeaturedImage').slideDown() ;
+			$('#divFeaturedImage').slideDown();
 			$('#btnFeaturedImage').addClass('btn-default').removeClass('btn-primary');
 			break;
 
 		case 'deleted' :
-			$('#divFeaturedImage').slideUp('fast') ;
+			$('#divFeaturedImage').slideUp('fast');
 			$('#txtFeaturedImage').val('');
-			$('#imgFeaturedImage').attr('src','');
+			$('#imgFeaturedImage').attr('src', '');
 			$('#btnFeaturedImage').addClass('btn-primary').removeClass('btn-default');
 			break;
 
 	}
 }
 
-function postPhotoAdded()
-{
-	var $src = url($('#txtAddPhoto').val()) ;
+function postPhotoAdded() {
+	var $src = url($('#txtAddPhoto').val());
 	var $new_div = $('#divNewPhoto').html();
-	var $counter_label = $('#spnPhotoCount') ;
-	var $counter_input = $('#txtLastKey') ;
-	var $new_key =   parseInt($counter_input.val()) + 1;
-	var $new_selector = '#divPhoto-'+$new_key.toString() ;
+	var $counter_label = $('#spnPhotoCount');
+	var $counter_input = $('#txtLastKey');
+	var $new_key = parseInt($counter_input.val()) + 1;
+	var $new_selector = '#divPhoto-' + $new_key.toString();
 	var $new_counter = parseInt(forms_digit_en($counter_label.html())) + 1;
 
 	$counter_input.val($new_key);
 	$counter_label.html(forms_digit_fa($new_counter.toString()));
 
-	$new_div = $new_div.replace('NEW' , $new_key) ;
-	$new_div = $new_div.replace('NEW' , $new_key) ;
-	$new_div = $new_div.replace('NEW' , $new_key) ;
-	$new_div = $new_div.replace('NEW' , $new_key) ;
+	$new_div = $new_div.replace('NEW', $new_key);
+	$new_div = $new_div.replace('NEW', $new_key);
+	$new_div = $new_div.replace('NEW', $new_key);
+	$new_div = $new_div.replace('NEW', $new_key);
 
 	$('#divPhotos').append($new_div);
-	$($new_selector + ' input.-src').val($src) ;
-	$($new_selector + ' input.-label').focus() ;
-	$($new_selector + ' img').attr('src', $src) ;
-	$($new_selector).slideDown() ;
+	$($new_selector + ' input.-src').val($src);
+	$($new_selector + ' input.-label').focus();
+	$($new_selector + ' img').attr('src', $src);
+	$($new_selector).slideDown();
 
 }
 
-function postPhotoRemoved($selector)
-{
+function postPhotoRemoved($selector) {
 
-	$selector.parent().parent().slideUp().html('') ;
+	$selector.parent().parent().slideUp().html('');
 
-	var $counter_label = $('#spnPhotoCount') ;
-	var $new_counter = parseInt(forms_digit_en($counter_label.html())) -1;
+	var $counter_label = $('#spnPhotoCount');
+	var $new_counter = parseInt(forms_digit_en($counter_label.html())) - 1;
 	$counter_label.html(forms_digit_fa($new_counter.toString()));
 
 }
 
-function postFormChange()
-{
-	var $flag = $('#txtChangeWarning') ;
-	if($flag.val() == '1') {
-		modalForm('modalSuggestCopy',1);
+function postFormChange() {
+	var $flag = $('#txtChangeWarning');
+	if ($flag.val() == '1') {
+		modalForm('modalSuggestCopy', 1);
 		$flag.val('0');
 	}
 	$('#txtChangeDetected').val('1');
 }
 
-function postDomainToggle()
-{
-	combo_value = $("#cmbDomain").val() ;
-	$checkbox = $("#chkReflectInGlobal") ;
-	if(combo_value == 'global') {
-		$checkbox.hide() ;
+function postDomainToggle() {
+	combo_value = $("#cmbDomain").val();
+	$checkbox = $("#chkReflectInGlobal");
+	if (combo_value == 'global') {
+		$checkbox.hide();
 	}
 	else {
-		$checkbox.slideDown('fast') ;
+		$checkbox.slideDown('fast');
 	}
+}
+
+function filemanagerUploadFinish(uploaded_files) {
+
+	result = "";
+	$.each(uploaded_files, function (index, item) {
+		result += $.parseJSON(item.xhr.response).file + "-" ;
+	});
+
+	forms_log(result) ;
+	divReload('divNewFiles' , result) ;
 }

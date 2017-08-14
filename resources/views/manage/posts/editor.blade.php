@@ -2,6 +2,7 @@
 
 @section('html_header')
 	{!! Html::script('assets/js/postEditorScripts.js') !!}
+	{!! Html::style('assets/css/postEditorStyles.min.css') !!}
 @endsection
 
 @section('section')

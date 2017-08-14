@@ -114,7 +114,7 @@
 
             @if(isset($callbackOnQueueComplete) and $callbackOnQueueComplete)
             {{ $varName }}. on("queuecomplete", function () {
-                {{ $callbackOnQueueComplete }}();
+                {{ $callbackOnQueueComplete }}(this.getAcceptedFiles());
             });
             @endif
 

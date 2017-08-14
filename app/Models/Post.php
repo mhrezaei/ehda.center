@@ -443,6 +443,19 @@ class Post extends Model implements FeedItem
 		}
 	}
 
+	public function getFilesAttribute()
+	{
+		$array = $this->spreadMeta()->post_files;
+		if(!$array) {
+			return [];
+		}
+		else {
+			return $array;
+		}
+
+	}
+
+
 	public function getParentAttribute()
 	{
 		if($this->cached_parent) {
