@@ -27,6 +27,16 @@ class FileManagerServiceProvider extends ServiceProvider
     private static $versionsPostfixes = [
         'original' => 'original',
     ]; // Postfixes that should be added at the end of names of any version of any file
+    private static $dropzoneUploaderDefaultSwitches = [
+        'id'                           => null, // The "id" attribute of uploader box element
+        'varName'                      => null, // Identifier of Dropzone object element
+        'dataAttributes'               => [], // Data attributes of uploader box element
+        'target'                       => null, // The "id" of target element which uploaded files will be stored in
+        'callbackOnEachUploadComplete' => '', // Name of function that will be called after uploading of each file complete (get "file" as parameter)
+        'callbackOnEachUploadSuccess'  => '', // Name of function that will be called after uploading of each file success (get "file" as parameter)
+        'callbackOnEachUploadError'    => '', // Name of function that will be called after uploading of each file failed (get "file" as parameter)
+        'callbackOnQueueComplete'      => '', // Name of function that will be called after uploading of all files in a queue complete
+    ];
 
     /**
      * Bootstrap the application services.
@@ -127,12 +137,14 @@ class FileManagerServiceProvider extends ServiceProvider
      * Return a View Containing DropZone Uploader Element and Related JavaScript Codes
      *
      * @param string|array $fileTypeString
-     * @param array        $data
+     * @param array        $switches
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public static function dropzoneUploader($fileTypes, $data = [])
+    public static function dropzoneUploader($fileTypes, $switches = [])
     {
+        $switches = array_normalize($switches, self::$dropzoneUploaderDefaultSwitches);
+
         if (is_string($fileTypes)) {
             $fileTypes = [$fileTypes];
         }
@@ -166,10 +178,18 @@ class FileManagerServiceProvider extends ServiceProvider
                 'preloaderView',
                 'uploadIdentifiers',
                 'uploadConfig'
-            ) + $data);
+            ) + $switches);
     }
 
-    public static function posttypeUploader($posttype)
+    /**
+     * Returns blade of uploader for specified posttype
+     *
+     * @param string|integer|Posttype $posttype
+     * @param array                   $switches
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|null
+     */
+    public static function posttypeUploader($posttype, $switches = [])
     {
         $fileTypes = ['video', 'image', 'audio', 'text'];
         $posttypePrefix = UploadServiceProvider::getPostTypeConfigPrefix();
@@ -182,7 +202,7 @@ class FileManagerServiceProvider extends ServiceProvider
                 $fileTypes[$key] = 'manager.' . $posttypePrefix . $posttypeSlug . '.' . $fileType;
             }
 
-            return self::dropzoneUploader($fileTypes);
+            return self::dropzoneUploader($fileTypes, $switches);
         }
 
         return null;

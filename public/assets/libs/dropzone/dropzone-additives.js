@@ -89,8 +89,10 @@ function updateTarget(dropzoneInstance, target) {
         var dataArr = [];
         var targetEl = $('#' + target);
         $.each(accepted, function (index, file) {
-            var rsJson = $.parseJSON(file.xhr.response);
-            dataArr.push(rsJson.file);
+            if (file.status == "success") {
+                var rsJson = $.parseJSON(file.xhr.response);
+                dataArr.push(rsJson.file);
+            }
         });
         if (dataArr.length) {
             targetEl.val(JSON.stringify(dataArr));
