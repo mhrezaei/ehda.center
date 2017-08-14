@@ -181,6 +181,14 @@ class FileManagerServiceProvider extends ServiceProvider
             ) + $switches);
     }
 
+    /**
+     * Returns blade of uploader for specified posttype
+     *
+     * @param string|integer|Posttype $posttype
+     * @param array                   $switches
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|null
+     */
     public static function posttypeUploader($posttype, $switches = [])
     {
         $fileTypes = ['video', 'image', 'audio', 'text'];
