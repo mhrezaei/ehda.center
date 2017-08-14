@@ -32,7 +32,6 @@
                     {{ $attributeName }}="{{ $attributeValue }}"
                 @endforeach
             @endif
-            multiple
             {{$extra or ''}}
     >
         @if(isset($blank_value) and $blank_value!='NO')
