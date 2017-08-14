@@ -159,13 +159,14 @@
 			{{--'link' => "url:manage/cards/printings/pending/-id-" ,--}}
 		{{--]     )--}}
 
-		@include("manage.frame.widgets.grid-tiny" , [
-			'condition' => $model->has('event') and $total_cards = $model->registers()->count(),
-			'icon' => "credit-card" ,
-			'text' => pd(number_format($total_cards)) . ' ' . trans("ehda.donation_card") ,
-			'color' => "success" ,
-			'link' => "modal:manage/cards/event-stats/-hash_id-" ,
-		]     )
+		@if($model->has('event') and $total_cards = $model->registers()->count())
+			@include("manage.frame.widgets.grid-tiny" , [
+				'icon' => "credit-card" ,
+				'text' => pd(number_format($total_cards)) . ' ' . trans("ehda.donation_card") ,
+				'color' => "success" ,
+				'link' => "modal:manage/cards/event-stats/-hash_id-" ,
+			]     )
+		@endif
 		
 		@include("manage.frame.widgets.grid-tiny" , [
 			'condition' => $model->has('comment'),

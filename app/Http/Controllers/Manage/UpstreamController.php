@@ -11,8 +11,10 @@ use App\Http\Requests\Manage\PosttypeTitlesSaveRequest;
 use App\Http\Requests\Manage\ProvinceSaveRequest;
 use App\Http\Requests\Manage\RoleSaveRequest;
 use App\Http\Requests\Manage\RoleTitlesSaveRequest;
+use App\Models\Comment;
 use App\Models\Domain;
 use App\Models\Folder;
+use App\Models\Good;
 use App\Models\Post;
 use App\Models\Unit;
 use App\Models\Posttype;
@@ -73,8 +75,8 @@ class UpstreamController extends Controller
 				break;
 
 			case 'domains' :
-				$models = Domain::orderBy('title')->paginate(user()->preference('max_rows_per_page')) ;
-				break ;
+				$models = Domain::orderBy('title')->paginate(user()->preference('max_rows_per_page'));
+				break;
 
 			case 'artisan' :
 				break;
@@ -157,15 +159,15 @@ class UpstreamController extends Controller
 				break;
 
 			case 'domains' :
-				$domain = Domain::find($item_id) ;
+				$domain = Domain::find($item_id);
 				if(!$domain) {
 					return view('errors.410');
 				}
-				$models = $domain->states()->orderBy('title')->paginate(user()->preference('max_rows_per_page'));
+				$models     = $domain->states()->orderBy('title')->paginate(user()->preference('max_rows_per_page'));
 				$page[2][1] = trans('settings.cities_of', ['province' => $domain->title]);
 
 				return view('manage.settings.states-cities', compact('page', 'models', 'domain'));
-				break ;
+				break;
 
 
 			case 'downstream' :
@@ -183,15 +185,17 @@ class UpstreamController extends Controller
 				if(!$model) {
 					return view('errors.m410');
 				}
-				return view("manage.settings.posttypes-row",compact('model'));
+
+				return view("manage.settings.posttypes-row", compact('model'));
 
 			case 'role-users' :
-				$model = Role::withTrashed()->find($item_id) ;
+				$model = Role::withTrashed()->find($item_id);
 				if(!$model) {
 					return view('errors.m410');
 				}
-				return view("manage.settings.roles-users",compact('model'));
-				
+
+				return view("manage.settings.roles-users", compact('model'));
+
 
 			default:
 				return view('templates.say', ['array' => "What the hell is $request_tab?"]); //@TODO: REMOVE THIS
@@ -246,7 +250,7 @@ class UpstreamController extends Controller
 					}
 				}
 				else {
-					$model            = new Domain();
+					$model = new Domain();
 				}
 
 				return view('manage.settings.domains-edit', compact('model'));
@@ -295,7 +299,8 @@ class UpstreamController extends Controller
 				return view("manage.settings.roles-edit", compact('model'));
 
 			case 'admin-roles' :
-				$model = Role::findBySlug('manager') ;
+				$model = Role::findBySlug('manager');
+
 				return view("manage.settings.roles-edit-mass", compact('model'));
 
 			case 'role-titles' :
@@ -415,29 +420,34 @@ class UpstreamController extends Controller
 	public function savePosttype(PosttypeSaveRequest $request)
 	{
 		/*-----------------------------------------------
-		| If Delete ...
+		| Model Dection ...
 		*/
-		if($request->_submit == 'delete') {
+		if($request->id) {
 			$model = Posttype::find($request->id);
 			if(!$model) {
 				return $this->jsonFeedback();
 			}
+		}
 
+		/*-----------------------------------------------
+		| If Delete ...
+		*/
+		if($request->_submit == 'delete') {
 			return $this->jsonAjaxSaveFeedback(Posttype::destroy($request->id), [
 				'success_callback' => "rowUpdate('tblPosttypes','$request->id')",
 			]);
 		}
 
-
 		/*-----------------------------------------------
-		| Data Normalization ...
+		| If Edit ...
 		*/
-		$data = $request->toArray() ;
-		//$data['thumb_sizes'] = Role::getStatusRuleArray($request->thumb_sizes);
+		$ok = Posttype::store($request);
 
+		if($ok and isset($model)) {
+			Posttype::updateSlug($model->slug, $request->slug);
+		}
 
-		return $this->jsonAjaxSaveFeedback(Posttype::store($request), [
-			//'fake'            => $request->id ? '' : Folder::updateDefaultFolders(),
+		return $this->jsonAjaxSaveFeedback($ok, [
 			'success_refresh' => 1,
 		]);
 
@@ -492,6 +502,7 @@ class UpstreamController extends Controller
 		//If Delete...
 		if($request->_submit == 'delete') {
 			$model = State::find($request->id);
+
 			return $this->jsonAjaxSaveFeedback(Domain::destroy($request->id), [
 				'success_refresh' => 1,
 			]);
@@ -545,14 +556,14 @@ class UpstreamController extends Controller
 			]);
 		}
 
-		return null ;
+		return null;
 	}
 
 	public function saveRoleActiveness(Request $request)
 	{
 		switch ($request->toArray()['_submit']) {
 			case 'delete' :
-				$model = Role::find($request->id) ;
+				$model = Role::find($request->id);
 				if(!$model or $model->slug == 'admin' or $model->isDefault()) {
 					return $this->jsonFeedback(trans('forms.general.sorry'));
 				}
@@ -600,12 +611,12 @@ class UpstreamController extends Controller
 		/*-----------------------------------------------
 		| Save ...
 		*/
-		$roles = Role::where('is_admin' , 1)->get() ;
+		$roles = Role::where('is_admin', 1)->get();
 		foreach($roles as $role) {
-			$role->modules = $data['modules'] ;
-			$role->updateMeta( [
-				'status_rule' => $data['status_rule'] ,
-			] , true );
+			$role->modules = $data['modules'];
+			$role->updateMeta([
+				'status_rule' => $data['status_rule'],
+			], true);
 		}
 
 		/*-----------------------------------------------
@@ -628,7 +639,7 @@ class UpstreamController extends Controller
 		$data['status_rule'] = Role::getStatusRuleArray($request->status_rule);
 
 		if($data['slug'] == 'admin') {
-			$data['is_admin'] = true ;
+			$data['is_admin'] = true;
 		}
 
 		/*-----------------------------------------------
@@ -667,7 +678,7 @@ class UpstreamController extends Controller
 			if($locale == 'fa') {
 				continue;
 			}
-			$data['locale_titles']["title-$locale"]          = $data["_title_in_$locale"];
+			$data['locale_titles']["title-$locale"]        = $data["_title_in_$locale"];
 			$data['locale_titles']["plural_title-$locale"] = $data["_plural_title_in_$locale"];
 		}
 
@@ -703,16 +714,16 @@ class UpstreamController extends Controller
 
 	public function artisan(Request $request)
 	{
-		$return = $request->command."...<br><br>";
-		$feedback = [] ;
+		$return   = $request->command . "...<br><br>";
+		$feedback = [];
 
-		$return .= exec($request->command , $feedback);
+		$return .= exec($request->command, $feedback);
 
-		$return .= json_encode ($feedback) ;
+		$return .= json_encode($feedback);
 
 
 		return $this->jsonFeedback([
-			'callback' => "$('#divArtisanResponse').html('$return')" ,
+			'callback' => "$('#divArtisanResponse').html('$return')",
 		]);
 
 	}
