@@ -23,6 +23,8 @@ return [
 		'users'         => "کاربران مجموعه",
 		'carts'         => "سبدهای خرید",
 		'receipts'      => "رسیدهای خرید",
+		'files'         => "مدیرفایل",
+		'comments'      => "دیدگاه‌ها",
 	],
 
 	'permissions' => [

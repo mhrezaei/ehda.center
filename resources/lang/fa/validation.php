@@ -185,7 +185,6 @@ return [
         "work_address"        => "خ زمانی، خ آجری، پ ۹۰",
         "work_tel"            => "۰۲۶۳۲۲۵۵۲۱۳",
         "job"                 => "مثال: کارمند",
-        "familization"        => "مثال: سایت",
         "familiarization"     => "مثال: سایت",
         "motivation"          => "مثال: انجام کارهای خیرخواهانه",
         "alloc_time"          => "مثال: ۵روز",
@@ -226,7 +225,6 @@ return [
         "work_address"        => "(حروف فارسی)",
         "work_tel"            => "(۱۱ رقم بدون خط تیره)",
         "job"                 => "(حروف فارسی)",
-        "familization"        => "",
         "familiarization"     => "",
         "motivation"          => "(حروف فارسی)",
         "alloc_time"          => "(تعداد روز، فقط عدد)",
@@ -326,7 +324,6 @@ return [
         "work_postal"  => "کد پستی محل کار",
 
         "job"             => "شغل",
-        "familization"    => "نحوه‌ی آشنایی",
         "familiarization" => "نحوه‌ی آشنایی",
         "motivation"      => "انگیزه‌ی همکاری",
         "alloc_time"      => "فرصت همکاری",
@@ -532,14 +529,15 @@ return [
 
         'from_event_id' => "رویداد",
 
-        'has_medal'  => 'مدال افتخار دارد.',
+        'has_medal'         => 'مدال افتخار دارد.',
 
         //@TODO: New up to the end of this array..
-        'domains'    => "دامنه",
-        'source'     => "منبع",
-        'role_slug'  => "نقش کاربری",
-        'activity'   => "فعالیت",
-        'activities' => "فعالیت‌ها",
+        'domains'           => "دامنه",
+        'source'            => "منبع",
+        'role_slug'         => "نقش کاربری",
+        'activity'          => "فعالیت",
+        'activities'        => "حوزه‌های فعالیت",
+        'can_register_card' => "امکان ثبت نام کارت اهدای عضو",
     ],
 
     "http" => [

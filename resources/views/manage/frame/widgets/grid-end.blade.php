@@ -11,11 +11,11 @@
 			</table>
 		</div>
 		<div class="grid_count">
-			@if($models->count())
-				@pd(trans('manage.grid_count' , [
-					'rows' => $models->count() ,
-					'total' => $models->total()
-				]))
+			@if($models->count() and method_exists($models , 'total') )
+				{{ trans("manage.grid_count" , [
+					'rows' => pd($models->count()) ,
+					'total' => pd($models->total()) ,
+				]) }}
 			@endif
 		</div>
 	</div>

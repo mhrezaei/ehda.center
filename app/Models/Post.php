@@ -4,16 +4,19 @@ namespace App\Models;
 
 use App\Traits\EhdaPostTrait;
 use App\Providers\UploadServiceProvider;
+use App\Traits\PostFeedTrait;
 use App\Traits\TahaModelTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Feed\FeedItem;
 
 
-class Post extends Model
+class Post extends Model implements FeedItem
 {
 	use TahaModelTrait, SoftDeletes;
-	use EhdaPostTrait;
+	use EhdaPostTrait ;
+	use PostFeedTrait ;
 
 	public static    $reserved_slugs  = "none,without";
 	public static    $meta_fields     = ['dynamic'];
@@ -195,6 +198,27 @@ class Post extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
+	public function registers()
+	{
+		return User::where('from_event_id' , $this->id) ;
+	}
+
+	public function getRegistersAttribute()
+	{
+		return $this->registers()->get();
+	}
+
+
+	public function getSafeTitleAttribute()
+	{
+		if($this->has('long_title')) {
+			$this->title = $this->long_title ;
+		}
+
+		return str_limit($this->title , 200) ;
+	}
+
+
 	public function getRequiredRolesArrayAttribute()
 	{
 		$domains_array = $this->domains_array ;

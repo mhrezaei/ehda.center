@@ -27,10 +27,11 @@ class User extends Authenticatable
 		'address',
 		'reset_token',
 		'reset_token_expire',
+		'edit_reject_notice',
 		//'key',
 		//'default_role_deleted_at',
 	];
-	public static $search_fields   = ['name_first', 'name_last', 'name_firm', 'code_melli', 'email', 'mobile','card_no'];
+	public static $search_fields   = ['name_first', 'name_last', 'name_firm', 'code_melli', 'email', 'mobile', 'card_no'];
 	public static $required_fields = ['name_first', 'name_last', 'code_melli', 'mobile', 'home_tel', 'birth_date', 'gender', 'marital'];
 	protected     $guarded         = ['status'];
 	protected     $hidden          = ['password', 'remember_token'];
@@ -66,12 +67,12 @@ class User extends Authenticatable
 
 	public function posts()
 	{
-		return Post::where('created_by' , $this->id)->orWhere('owned_by' , $this->id)->orWhere('moderated_by' , $this->id)->orWhere('published_by' , $this->id);
+		return Post::where('created_by', $this->id)->orWhere('owned_by', $this->id)->orWhere('moderated_by', $this->id)->orWhere('published_by', $this->id);
 	}
 
 	public function getPostsAttribute()
 	{
-		return $this->posts->get() ;
+		return $this->posts->get();
 	}
 
 
@@ -135,7 +136,7 @@ class User extends Authenticatable
 			'email'      => false,
 			'code_melli' => false,
 			'mobile'     => false,
-			'roleString' => false , // <~~ Supports Arrays, with this pattern: [roleSlug.status] for active roles and [roleSlug-status] for disabled roles.
+			'roleString' => false, // <~~ Supports Arrays, with this pattern: [roleSlug.status] for active roles and [roleSlug-status] for disabled roles.
 			'role'       => false, // <~~ Supports Arrays
 			'status'     => false, // <~~ best works where only one role is given.
 			'min_status' => false, // <~~ best works where only one role is given.
@@ -149,6 +150,8 @@ class User extends Authenticatable
 		]);
 
 		$table = self::where('id', '>', '0');
+
+		//dd($switch);
 
 		/*-----------------------------------------------
 		| Simple Things ...
@@ -170,28 +173,33 @@ class User extends Authenticatable
 		| Special commands inside status ...
 		*/
 		if($switch['status'] == 'bin') {
-			if($switch['role'] == 'all' or str_contains($switch['roleString'] , 'all.')) {
-				$switch['bin'] = true;
-				$switch['status'] = false ;
+			if($switch['role'] == 'all' or str_contains($switch['roleString'], 'all.')) {
+				$switch['bin']    = true;
+				$switch['status'] = false;
 			}
 			else {
 				$switch['banned'] = true;
-				$switch['status'] = false ;
+				$switch['status'] = false;
 			}
 		}
 		elseif($switch['status'] == 'all') {
-			$switch['status'] = false ;
+			$switch['status'] = false;
+		}
+		elseif($switch['status'] == 'changes_request') {
+			$switch['status'] = false;
+			$switch['roleString'] = str_replace( ".changes_request" , null , $switch['roleString']) ;
+			$table->where('unverified_flag', 1);
 		}
 
 		/*-----------------------------------------------
 		| RoleStatus ...
 		*/
-		if($switch['roleString'] !== false and !str_contains($switch['roleString'] , 'all.')) {
+		if($switch['roleString'] !== false and !str_contains($switch['roleString'], 'all.')) {
 
 			if(!is_array($switch['roleString'])) {
 				if(str_contains($switch['roleString'], 'admin')) {
 					$additive             = str_replace('admin', null, $switch['roleString']);
-					$switch['roleString'] = user()->userRolesArray('browse' , [] , Role::adminRoles() ) ;
+					$switch['roleString'] = user()->userRolesArray('browse', [], Role::adminRoles());
 					foreach($switch['roleString'] as $key => $value) {
 						$switch['roleString'][ $key ] .= $additive;
 					}
@@ -205,15 +213,15 @@ class User extends Authenticatable
 				}
 			}
 
-			$switch['roleString'] = (array) $switch['roleString'] ;
+			$switch['roleString'] = (array)$switch['roleString'];
 
-			$table->where( function($query) use ($switch) {
-				$query->where('id' , '0') ;
+			$table->where(function ($query) use ($switch) {
+				$query->where('id', '0');
 
 				foreach($switch['roleString'] as $string) {
-					$string = str_replace('.all' , null , $string);
-					$string = self::deface($string) ;
-					$query->orWhere('cache_roles' , 'like' , "%$string%");
+					$string = str_replace('.all', null, $string);
+					$string = self::deface($string);
+					$query->orWhere('cache_roles', 'like', "%$string%");
 				}
 
 			});
@@ -225,17 +233,17 @@ class User extends Authenticatable
 		| Role ...
 		*/
 		if($switch['role'] and $switch['role'] != 'all') {
-			if($switch['role']=='admin') {
-				$switch['role'] = Role::adminRoles() ;
+			if($switch['role'] == 'admin') {
+				$switch['role'] = Role::adminRoles();
 			}
-			elseif($switch['role']=='auto') {
-				$switch['role'] = user()->userRolesArray() ;
+			elseif($switch['role'] == 'auto') {
+				$switch['role'] = user()->userRolesArray();
 			}
 			elseif($switch['role'] == 'no') {
 				$table->has('roles', '=', 0);
 			}
 			elseif(!is_array($switch['role'])) {
-				$switch['role'] = (array) $switch['role'];
+				$switch['role'] = (array)$switch['role'];
 			}
 
 			if(is_array($switch['role']) and count($switch['role'])) {
@@ -243,19 +251,19 @@ class User extends Authenticatable
 					$query->whereIn('roles.slug', $switch['role']);
 
 					// Considering status...
-					if($switch['status'] !== false ) {
+					if($switch['status'] !== false) {
 						$query->where('role_user.status', intval($switch['status']));
 					}
-					if($switch['min_status'] !== false ) {
-						$query->where('role_user.status', '>=' , intval($switch['min_status']));
+					if($switch['min_status'] !== false) {
+						$query->where('role_user.status', '>=', intval($switch['min_status']));
 					}
-					if($switch['max_status'] !== false ) {
-						$query->where('role_user.status', '<=' , intval($switch['max_status']));
+					if($switch['max_status'] !== false) {
+						$query->where('role_user.status', '<=', intval($switch['max_status']));
 					}
 
 					// Considering Permissions...
 					if($switch['permits'] !== false) {
-						$switch['permits'] = (array) $switch['permits'] ;
+						$switch['permits'] = (array)$switch['permits'];
 
 						foreach($switch['permits'] as $request) {
 							$request = str_replace(self::$wildcards, '', $request);
@@ -334,13 +342,14 @@ class User extends Authenticatable
 		| Bypass ...
 		*/
 		if(!$this->birth_date) {
-			return false ;
+			return false;
 		}
 
 		/*-----------------------------------------------
 		| Calculation ...
 		*/
-		return Carbon::now()->diffInYears($this->birth_date) ;
+
+		return Carbon::now()->diffInYears($this->birth_date);
 
 
 	}
@@ -382,14 +391,14 @@ class User extends Authenticatable
 			return trans('people.deleted_user');
 		}
 	}
-	
+
 	public function getMaritalNameAttribute()
 	{
-		switch($this->marital) {
+		switch ($this->marital) {
 			case 1 :
-				return trans('forms.general.married') ;
+				return trans('forms.general.married');
 			case 2 :
-				return trans('forms.general.single') ;
+				return trans('forms.general.single');
 			default:
 				return trans("forms.general.unknown");
 
@@ -398,21 +407,19 @@ class User extends Authenticatable
 
 	public function getEduLevelAttribute($original_value)
 	{
-		return $original_value + 0 ;
+		return $original_value + 0;
 	}
 
 
 	public function getEduLevelNameAttribute()
 	{
-		return trans("people.edu_level_full.$this->edu_level") ;
+		return trans("people.edu_level_full.$this->edu_level");
 	}
 
 	public function getEduLevelShortAttribute()
 	{
-		return trans("people.edu_level_short.$this->edu_level") ;
+		return trans("people.edu_level_short.$this->edu_level");
 	}
-
-
 
 
 	public function _getStatusAttribute()
@@ -445,6 +452,40 @@ class User extends Authenticatable
 		return Receipt::where('user_id', $this->id)->sum('purchased_amount');
 	}
 
+	public function getChangesAttribute()
+	{
+		/*-----------------------------------------------
+		| Cached ...
+		*/
+		if(isset($this->stored_changes) and $this->stored_chages) {
+			return $this->stored_changes;
+		}
+
+		/*-----------------------------------------------
+		| Meta ...
+		*/
+		$current_meta_status = $this->meta_spread;
+		$this->spreadMeta();
+
+		/*-----------------------------------------------
+		| Calculation ...
+		*/
+		$return = $this->stored_changes = json_decode($this->unverified_changes);
+
+		/*-----------------------------------------------
+		| Meta ...
+		*/
+		if(!$current_meta_status) {
+			$this->suppressMeta();
+		}
+
+		/*-----------------------------------------------
+		| Return ...
+		*/
+
+		return $return;
+	}
+
 
 	/*
 	|--------------------------------------------------------------------------
@@ -474,7 +515,7 @@ class User extends Authenticatable
 			return user()->is_a('developer');
 		}
 		if($this->id == user()->id) {
-			return false ;
+			return false;
 		}
 		//elseif($this->is_an('admin')) {
 		//	return user()->is_a('superadmin');
@@ -484,14 +525,16 @@ class User extends Authenticatable
 		| Other Users ...
 		*/
 		foreach($this->as('all')->rolesArray() as $role_slug) {
-			if(user()->as('admin')->can("users-$role_slug.edit"))
-				return true ;
+			if(user()->as('admin')->can("users-$role_slug.edit")) {
+				return true;
+			}
 		}
 
 		/*-----------------------------------------------
 		| Just in case :) ...
 		*/
-		return false ;
+
+		return false;
 	}
 
 	public function canDelete()
@@ -505,7 +548,7 @@ class User extends Authenticatable
 			return user()->is_a('developer');
 		}
 		if($this->id == user()->id) {
-			return false ;
+			return false;
 		}
 
 		/*-----------------------------------------------
@@ -525,7 +568,8 @@ class User extends Authenticatable
 		/*-----------------------------------------------
 		| Just in case :) ...
 		*/
-		return false ;
+
+		return false;
 
 	}
 
@@ -540,7 +584,7 @@ class User extends Authenticatable
 			return user()->is_a('developer');
 		}
 		if($this->id == user()->id) {
-			return false ;
+			return false;
 		}
 
 		/*-----------------------------------------------
@@ -560,7 +604,8 @@ class User extends Authenticatable
 		/*-----------------------------------------------
 		| Just in case :) ...
 		*/
-		return false ;
+
+		return false;
 
 	}
 
@@ -603,7 +648,8 @@ class User extends Authenticatable
 		/*-----------------------------------------------
 		| Just in case :) ...
 		*/
-		return false ;
+
+		return false;
 
 	}
 
@@ -617,7 +663,7 @@ class User extends Authenticatable
 	{
 		return Role::all();
 	}
-    
+
 	public function roleStatusCombo()
 	{
 		return [

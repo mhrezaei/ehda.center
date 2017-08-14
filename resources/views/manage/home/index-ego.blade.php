@@ -15,6 +15,10 @@
 
 			<div class="pv10">
 
+
+
+				{{-- Roles -------------------------------}}
+
 				@foreach(user()->withDisabled()->rolesQuery() as $role)
 					@if($role['pivot']['deleted_at'])
 						{{ '' , $color = 'danger' }}
@@ -35,6 +39,18 @@
 					]     )
 
 				@endforeach
+
+
+
+
+
+
+				{{-- View Profile -------------------------------}}
+				{{--@if(user()->min(8)->is_admin())--}}
+					{{--<div>--}}
+						{{--<button class="btn btn-default btn-lg" style="width: 300px" onclick="masterModal('{{ url("manage/volunteers/view/".user()->hash_id) }}')">{{ trans("people.commands.view_profile") }}</button>--}}
+					{{--</div>--}}
+				{{--@endif--}}
 
 			</div>
 		</div>

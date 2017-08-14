@@ -38,4 +38,43 @@ class Activity extends Model
 		}
 	}
 
+	public static function sortedAll()
+	{
+		return self::orderBy('title')->get() ;
+	}
+
+	public static function requestToString($request, $prefix = '_activity-')
+	{
+		/*-----------------------------------------------
+		| Array Conversion ...
+		*/
+		if(is_array($request)) {
+			$data = $request;
+		}
+		else {
+			$data = $request->toArray();
+		}
+
+
+
+		/*-----------------------------------------------
+		| Loop ...
+		*/
+		$result = null ;
+		foreach($data as $key => $value) {
+			if(str_contains($key , $prefix)) {
+				if($value) {
+					$result .= str_replace($prefix , null , $key) ."," ;
+				}
+			}
+		}
+
+		/*-----------------------------------------------
+		| Return ...
+		*/
+		return $result ;
+
+
+	}
+
 }

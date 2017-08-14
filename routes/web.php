@@ -19,6 +19,7 @@
 */
 
 Auth::routes();
+Route::feeds();
 Route::get('home', 'Auth\LoginController@redirectAfterLogin');
 Route::get('logout', 'Auth\LoginController@logout');
 Route::get('manage/heyCheck', 'Front\FrontController@heyCheck');
@@ -103,6 +104,7 @@ Route::group([
             Route::post('/', 'VolunteersController@saveChild');
             Route::post('/inquiry', 'VolunteersController@inquiry');
             Route::post('/new-role', 'VolunteersController@saveNewRole');
+            Route::post('/changes', 'VolunteersController@moderateChanges');
         });
 
     });
@@ -119,6 +121,7 @@ Route::group([
         Route::get('/browse/{request_tab}/{volunteer?}/{post?}', 'CardsController@browseChild');
         Route::get('/search', 'CardsController@search');
 
+        Route::get('event-stats/{post_id}', 'CardsController@eventStats');
         Route::get('/view/{model_id}', 'CardsController@view');
 
         Route::get('/printings/act/{action}', 'CardsController@printingAction');
@@ -131,7 +134,7 @@ Route::group([
         Route::get('/edit/{model_id}', 'CardsController@editorChild');
 
         Route::group(['prefix' => 'save'], function () {
-            //Route::post('/', 'CardsController@saveChild');
+            Route::post('/', 'CardsController@saveChild');
             Route::post('/volunteers', 'CardsController@saveForVolunteers');
             Route::post('/inquiry', 'CardsController@inquiry');
 

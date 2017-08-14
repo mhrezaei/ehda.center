@@ -231,7 +231,7 @@ class UsersController extends Controller
 			'status' => $request_tab,
 		];
 
-		$models = User::selector($selector_switches)->orderBy('created_at', 'desc')->paginate(user()->preference('max_rows_per_page'));
+		$models = User::selector($selector_switches)->orderBy('created_at', 'desc')->simplePaginate(20 /*user()->preference('max_rows_per_page')*/);
 		$db     = $this->Model;
 
 		/*-----------------------------------------------

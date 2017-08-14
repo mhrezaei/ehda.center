@@ -1,8 +1,31 @@
 <?php
 namespace App\Traits;
 
+use App\Models\User;
+
+
 trait EhdaPostTrait
 {
+
+	/*
+	|--------------------------------------------------------------------------
+	| Relations
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public function printings()
+	{
+		return $this->hasMany('App\Models\Printing' , 'event_id') ;
+	}
+
+
+	/*
+	|--------------------------------------------------------------------------
+	| Assessors and Mutators
+	|--------------------------------------------------------------------------
+	|
+	*/
+
 
 	public static function getAllEvents($domain = 'auto')
 	{
@@ -24,5 +47,6 @@ trait EhdaPostTrait
 		return $events ;
 
 	}
+
 
 }

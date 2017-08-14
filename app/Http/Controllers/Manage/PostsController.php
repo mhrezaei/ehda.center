@@ -167,7 +167,7 @@ class PostsController extends Controller
 			'locale'   => $locale,
 			'criteria' => $request_tab,
 			'id'       => $switches['id'],
-			'domain'   => $posttype->hasnot('locales')? null : 'auto' ,
+			'domain'   => $posttype->hasnot('locales') ? null : 'auto',
 		];
 
 		if(in_array($request_tab, ['pending', 'bin']) and user()->as('admin')->cant("post-$type.publish")) {
@@ -184,6 +184,7 @@ class PostsController extends Controller
 		/*-----------------------------------------------
 		| View ...
 		*/
+
 		//return 'T' ;
 
 		return view($this->view_folder . ".browse", compact('page', 'models', 'db', 'locale', 'posttype'));
@@ -427,6 +428,12 @@ class PostsController extends Controller
 		}
 
 		/*-----------------------------------------------
+		| featured_image ...
+		*/
+		$data['featured_image'] = str_replace(url(''), null, $data['featured_image']);
+
+
+		/*-----------------------------------------------
 		| Price ...
 		*/
 
@@ -442,6 +449,8 @@ class PostsController extends Controller
 		//	}
 		//	$data['sale_expires_at'] = makeDateTimeString($data['sale_expires_date'], $data['sale_expires_hour'], $data['sale_expires_minute']);
 		//}
+
+
 		unset($data['sale_expires_date']);
 		unset($data['sale_expires_hour']);
 		unset($data['sale_expires_minute']);
@@ -506,6 +515,7 @@ class PostsController extends Controller
 					$data['id']              = $original->id;
 					$data['moderated_By']    = user()->id;
 					$data['moderated_at']    = Carbon::now()->toDateTimeString();
+					$data['slug']            = $original->slug;
 					$redirect_url            = url("manage/posts/" . $data['type'] . "/edit/" . $original->hash_id);
 					break;
 
@@ -669,7 +679,7 @@ class PostsController extends Controller
 		|
 		*/
 		if($redirect_url) {
-			$redirect_url = str_replace('-ID-', hashid_encrypt($saved , 'ids') , $redirect_url);
+			$redirect_url = str_replace('-ID-', hashid_encrypt($saved, 'ids'), $redirect_url);
 			$refresh_page = false;
 		}
 		else {
@@ -679,7 +689,7 @@ class PostsController extends Controller
 		return $this->jsonAjaxSaveFeedback($saved, [
 			'success_redirect' => $redirect_url,
 			'success_refresh'  => $refresh_page,
-			'success_callback' => "divReload('divPublishPanel')",
+			'success_callback' => ($refresh_page or $redirect_url) ? '' : "divReload('divPublishPanel')",
 		]);
 
 	}
