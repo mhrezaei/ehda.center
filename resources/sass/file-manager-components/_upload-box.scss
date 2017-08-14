@@ -1,0 +1,122 @@
+.uploader-container {
+  $uploaderBoxVerticalPadding: 10px;
+  $uploaderBoxHorizontalPadding: 10px;
+  $uploaderBoxBorderWidth: 5px;
+  $uploaderBozMinHeight: 200px;
+
+  margin: auto;
+  padding: $uploaderBoxVerticalPadding $uploaderBoxHorizontalPadding;
+  border-radius: 20px;
+  width: 70%;
+  border: $uploaderBoxBorderWidth dashed #ccc !important;
+  text-align: center;
+  min-height: $uploaderBozMinHeight;
+
+  h1 {
+    font-size: 20px;
+  }
+
+  p {
+    font-size: 14px;
+  }
+
+  .dz-message {
+    $dzMessageVerticalMarginSize: 2em;
+    $dzMessageHorizontalPaddingSize: 0;
+    margin: $dzMessageVerticalMarginSize $dzMessageHorizontalPaddingSize;
+    min-height: calc(
+            #{$uploaderBozMinHeight}
+            - #{(2 * $dzMessageVerticalMarginSize)}
+            - #{(2 * ($uploaderBoxVerticalPadding + $uploaderBoxBorderWidth))}
+    );
+    padding: 1em;
+
+    .upload-icon {
+      font-size: 3em;
+    }
+  }
+
+  .dz-preview.dz-error {
+    .dz-image {
+      border: 2px solid #e80000;
+    }
+  }
+
+}
+
+.media-uploader-status {
+  position: relative;
+  margin: 0 auto;
+  padding-bottom: 10px;
+  max-width: 400px;
+
+  h2 {
+    font-size: 13px;
+    color: #666;
+    margin: 24px 0 8px;
+  }
+
+  button {
+    border: 0;
+    background: none;
+    position: absolute;
+    top: -15px;
+    left: -10px;
+    padding: 10px;
+    color: #666;
+    font-size: 16px;
+
+    &:hover {
+      color: #cc0000;
+    }
+  }
+
+  .media-progress {
+    position: relative;
+    height: 10px;
+    width: 100%;
+    margin: 10px auto;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: #ddd;
+    background: rgba(0, 0, 0, .1);
+
+    div {
+      height: 10px;
+      width: 0;
+      background: #0073aa;
+      -webkit-border-radius: 10px;
+      border-radius: 10px;
+      -webkit-transition: width .3s;
+      transition: width .3s;
+    }
+
+  }
+
+  .upload-errors {
+    background-color: #FFAFAF;
+    color: #B2123A;
+    padding: 5px 10px;
+    margin-top: 5px;
+    border-radius: 10px;
+
+    > ul {
+      padding-right: 10px;
+    }
+  }
+
+  &.error {
+    &,
+    .media-uploader-status-text {
+      color: #e80000;
+    }
+
+    .media-progress {
+      div {
+        background: #e80000;
+      }
+
+    }
+
+  }
+}

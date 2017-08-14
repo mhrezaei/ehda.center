@@ -524,4 +524,20 @@ class Posttype extends Model
         return $available_settings;
     }
 
+    /**
+     * Checks if files could be uploaded for this posttype
+     *
+     * @return mixed
+     */
+    public function canUploadFile()
+    {
+        $this->spreadMeta();
+
+        if ($this->upload_configs and (is_array(json_decode($this->upload_configs, true)))) {
+            return true;
+        }
+
+        return false;
+    }
+
 }

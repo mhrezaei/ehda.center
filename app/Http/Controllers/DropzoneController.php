@@ -110,7 +110,7 @@ class DropzoneController extends Controller
         $folderName = array_last($typeStringParts);
 
 
-        if (UploadServiceProvider::validateFile($request) == true) {
+        if (($validationResponse = UploadServiceProvider::validateFile($request)) === true) {
             $itemIndex = str_random(4);
             if (session()->has($sessionName)) {
                 $currentUploaded = session()->get($sessionName);
@@ -166,6 +166,8 @@ class DropzoneController extends Controller
                     UploadServiceProvider::removeFile($dbRow);
                 }
             }
+        } else {
+            return response()->json($validationResponse->toArray(), 422);
         }
 
         return response()->make('', 400);

@@ -32,7 +32,7 @@ class FileManagerController extends Controller
             // we will keep posttype,
             // else we will forget it.
             if ((!$postType->can('create') and !$postType->can('edit') and !$postType->can('publish')) or
-                (!$postType->upload_configs)
+                (!$postType->canUploadFile())
             ) {
                 $postTypes->forget($key);
             }

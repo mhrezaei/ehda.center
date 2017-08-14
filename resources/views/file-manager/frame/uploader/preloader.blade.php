@@ -1,6 +1,6 @@
 @php $freshConfigs = UploadServiceProvider::getDefaultJsConfigs() @endphp
 
-@section('head')
+@section('html_header')
     {!! Html::style('assets/css/dropzone.min.css') !!}
     <style>
         .dz-hidden-input { /* this is in body */

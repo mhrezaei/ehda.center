@@ -459,6 +459,35 @@ class PostsServiceProvider extends ServiceProvider
         return new Post();
     }
 
+    /**
+     * Find posttype with multiple types of identifiers
+     *
+     * @param         $identifier
+     * @param boolean $checkDirectId If false, posttype will not be searched with id of db table
+     *
+     * @return \App\Models\Posttype
+     */
+    public static function smartFindPosttype($identifier, $checkDirectId = false)
+    {
+        if ($identifier instanceof Posttype) {
+            $posttype = $identifier;
+        } else if (is_numeric($identifier) and $checkDirectId) {
+            $posttype = Posttype::find($identifier);
+        } else if (count($dehashed = hashid_decrypt($identifier, 'ids')) and
+            is_numeric($id = $dehashed[0])
+        ) {
+            $posttype = Posttype::find($id);
+        } else {
+            $posttype = Posttype::findBySlug($identifier);
+        }
+
+        if ($posttype->exists) {
+            return $posttype;
+        }
+
+        return new Posttype();
+    }
+
     public static function forceFieldsInLocales($identifier, $fields, $locales)
     {
         $post = self::smartFindPost($identifier);

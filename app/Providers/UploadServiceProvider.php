@@ -203,7 +203,7 @@ class UploadServiceProvider extends ServiceProvider
         $validator = Validator::make($request->all(), [
             'file' => [
                 'mimes:' . implode(',', $acceptedExtensions),
-                'max:' . ($validationRules['maxFileSize'] * 1024)
+//                'max:' . ($validationRules['maxFileSize'] * 1024)
             ]
         ]);
 

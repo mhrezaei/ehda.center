@@ -7,5 +7,5 @@
 
     {!! Html::style('assets/css/file-manager.min.css') !!}
 
-    @yield('head')
+    @yield('html_header')
 </head>

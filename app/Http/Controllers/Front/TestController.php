@@ -269,4 +269,9 @@ class TestController extends Controller
     {
         return view('front.test.file-manager.main');
     }
+
+    public function uploader()
+    {
+        return view('front.test.uploader.main');
+    }
 }

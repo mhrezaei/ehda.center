@@ -375,6 +375,7 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
 //            Route::get('messages', 'TestController@messages');
 //            Route::get('messages/send', 'TestController@messages_send');
             Route::get('file-manager', 'TestController@fileManager');
+            Route::get('uploader', 'TestController@uploader');
         });
 
         // Contact Us Page

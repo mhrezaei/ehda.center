@@ -168,4 +168,23 @@ class FileManagerServiceProvider extends ServiceProvider
                 'uploadConfig'
             ) + $data);
     }
+
+    public static function posttypeUploader($posttype)
+    {
+        $fileTypes = ['video', 'image', 'audio', 'text'];
+        $posttypePrefix = UploadServiceProvider::getPostTypeConfigPrefix();
+
+        $posttype = PostsServiceProvider::smartFindPosttype($posttype);
+        if ($posttype->exists and $posttype->canUploadFile()) {
+            $posttypeSlug = $posttype->slug;
+
+            foreach ($fileTypes as $key => $fileType) {
+                $fileTypes[$key] = 'manager.' . $posttypePrefix . $posttypeSlug . '.' . $fileType;
+            }
+
+            return self::dropzoneUploader($fileTypes);
+        }
+
+        return null;
+    }
 }
