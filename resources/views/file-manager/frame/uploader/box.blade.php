@@ -20,12 +20,12 @@
 
 <div class="row">
     <div class="dropzone mb15 optional-input uploader-container" id="{{ $id }}"
-         @if(isset($dataAttributes) and is_array($dataAttributes) and count($dataAttributes))
-            @foreach($dataAttributes as $fieldTitle => $filedValue)
-                data-{{ $fieldTitle }}="{{ $filedValue }}"
-            @endforeach
-         @endif
-         @if(isset($target) and $target)
+        @if(isset($dataAttributes) and is_array($dataAttributes) and count($dataAttributes))
+           @foreach($dataAttributes as $fieldTitle => $filedValue)
+               data-{{ $fieldTitle }}="{{ $filedValue }}"
+           @endforeach
+        @endif
+        @if(isset($target) and $target)
             data-target="{{ $target }}"
         @endif
     >
@@ -75,17 +75,15 @@
     {{--</div>--}}
     {{--</div>--}}
 </div>
-
 {{-- start -- scripts for uploader --}}
 @section('end-of-body')
     <script>
         $(document).ready(function () {
-                    @if(!isset($varName) or !$varName)
-                    @php $varName = camel_case($id . '-dropzone') @endphp
-                    @endif
+            @if(!isset($varName) or !$varName)
+                @php $varName = camel_case($id . '-dropzone') @endphp
+            @endif
 
-            var {{ $varName }} =
-            new Dropzone("#{{ $id }}", {
+            var {{ $varName }} = new Dropzone("#{{ $id }}", {
                 {{--maxFileSize: {{ UploadServiceProvider::getTypeRule($fileType, "maxFileSize") }},--}}
                 {{--maxFiles: {{ UploadServiceProvider::getTypeRule($fileType, "maxFiles") }},--}}
                 {{--acceptedFiles: "{{ implode(',', UploadServiceProvider::getTypeRule($fileType, "acceptedFiles")) }}",--}}
@@ -96,24 +94,45 @@
                 removeFromServer(file, $(this.element));
             });
 
+            @if(isset($callbackOnEachUploadComplete) and $callbackOnEachUploadComplete)
+                {{ $varName }}. on("complete", function (file) {
+                    {{ $callbackOnEachUploadComplete }}(file);
+                });
+            @endif
+
+            @if(isset($callbackOnEachUploadSuccess) and $callbackOnEachUploadSuccess)
+                {{ $varName }}. on("success", function (file) {
+                    {{ $callbackOnEachUploadSuccess }}(file);
+                });
+            @endif
+
+            @if(isset($callbackOnEachUploadError) and $callbackOnEachUploadError)
+                {{ $varName }}. on("error", function (file) {
+                    {{ $callbackOnEachUploadError }}(file);
+                });
+            @endif
+
+            @if(isset($callbackOnQueueComplete) and $callbackOnQueueComplete)
+                {{ $varName }}. on("queuecomplete", function () {
+                    {{ $callbackOnQueueComplete }}();
+                });
+            @endif
+
             @if(isset($target) and $target)
-            {{ $varName }}.
-            on("success", function (file) {
-                updateTarget(this, "{{ $target }}");
-            });
-            // TODO: We should try to don't remove file item from view if it doesn't remove from the server.
-            {{ $varName }}.
-            on("removedfile", function (file) {
-                updateTarget(this, "{{ $target }}");
-            });
+                {{ $varName }}. on("success", function (file) {
+                    updateTarget(this, "{{ $target }}");
+                });
+                // TODO: We should try to don't remove file item from view if it doesn't remove from the server.
+                {{ $varName }}. on("removedfile", function (file) {
+                    updateTarget(this, "{{ $target }}");
+                });
             @endif
 
 
             @if(isset($events) and $events and is_array($events))
-            @foreach($events as $eventName => $eventValue)
-            {{ $varName }}.
-            on("{{ $eventName }}", {!! $eventValue !!});
-            @endforeach
+                @foreach($events as $eventName => $eventValue)
+                {{ $varName }}. on("{{ $eventName }}", {!! $eventValue !!});
+                @endforeach
             @endif
 
             // Clear predefined data in hidden inputs after refresh
