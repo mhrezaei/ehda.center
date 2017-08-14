@@ -692,4 +692,58 @@ class UploadServiceProvider extends ServiceProvider
     {
         return self::$postTypeConfigPrefix;
     }
+
+    public static function getFileView($file)
+    {
+        $file = self::smartFindFile($file);
+        if ($file->exists) {
+            $file = self::getFileObject($file);
+            dd($file, __FILE__ . " - " . __LINE__);
+        }
+
+        return null;
+    }
+
+    public static function getFileUrl($file)
+    {
+        $file = self::smartFindFile($file, true);
+        die('<a href="' . url($file->pathname) . '">file</a>');
+        dd($file->pathname, __FILE__ . " - " . __LINE__);
+    }
+
+    public static function getFileObject($file)
+    {
+        $file = self::smartFindFile($file, true);
+        if ($file->exists and FilesFacades::exists($file->pathname)) {
+            return new File($file->pathname);
+        }
+
+        return null;
+    }
+
+    /**
+     * Find file with multiple types of identifiers
+     *
+     * @param         $identifier
+     * @param boolean $checkDirectId If false, file will not be searched with id of db table
+     *
+     * @return UploadedFileModel
+     */
+    public static function smartFindFile($identifier, $checkDirectId = false)
+    {
+        if ($identifier instanceof UploadedFileModel) {
+            $file = $identifier;
+        } else if (is_numeric($identifier) and $checkDirectId) {
+            $file = UploadedFileModel::find($identifier);
+        } else if (count($dehashed = hashid_decrypt($identifier, 'ids')) and
+            is_numeric($id = $dehashed[0])
+        ) {
+            $file = UploadedFileModel::find($id);
+        } else {
+            $file = new UploadedFileModel();
+
+        }
+
+        return $file;
+    }
 }

@@ -75,7 +75,6 @@
     {{--</div>--}}
     {{--</div>--}}
 </div>
-
 {{-- start -- scripts for uploader --}}
 @section('end-of-body')
     <script>
@@ -113,10 +112,10 @@
                 });
             @endif
 
-            @if(isset($callbackOnAllUploadsComplete) and $callbackOnAllUploadsComplete)
-                {{ $varName }}. on("queuecomplete", function () {
-                    {{ $callbackOnAllUploadsComplete }}();
-                });
+            @if(isset($callbackOnQueueComplete) and $callbackOnQueueComplete)
+            {{ $varName }}. on("queuecomplete", function () {
+                {{ $callbackOnQueueComplete }}();
+            });
             @endif
 
             @if(isset($target) and $target)
