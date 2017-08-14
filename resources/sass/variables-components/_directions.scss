@@ -1,0 +1,4 @@
+/* directions */
+$verticalDirections: ("t": "top", "b": "bottom");
+$horizontalDirections: ("r": "right", "l": "left");
+$directions: map_merge($verticalDirections, $horizontalDirections);

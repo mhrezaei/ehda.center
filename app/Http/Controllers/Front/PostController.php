@@ -304,8 +304,7 @@ JS;
         }
     }
 
-    private
-    function show_categories($postTypeSlug = null)
+    private function show_categories($postTypeSlug = null)
     {
         /************************* Generate Data for List View ********************** START */
 
@@ -368,8 +367,7 @@ JS;
         return view('errors.m404');
     }
 
-    public
-    function special_volunteers()
+    public function special_volunteers()
     {
         $postType = Posttype::findBySlug('celebs');
 
@@ -400,8 +398,7 @@ JS;
             ) + $otherValues);
     }
 
-    public
-    function works_send()
+    public function works_send()
     {
         $postsPrefix = 'send-work-';
         UploadServiceProvider::setUserType('client');
@@ -429,8 +426,7 @@ JS;
         return view('front.test.works.main', compact('postContentHTML'));
     }
 
-    public
-    function angels()
+    public function angels()
     {
         UploadServiceProvider::setUserType('client');
         UploadServiceProvider::setSection('angels');
@@ -444,8 +440,7 @@ JS;
         return view('front.angles.main', compact('innerHTML'));
     }
 
-    public
-    function angels_find(AngelsSearchRequest $request)
+    public function angels_find(AngelsSearchRequest $request)
     {
         $foundAngels = Post::selector([
             'type'   => 'angels',

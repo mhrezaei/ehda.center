@@ -83,6 +83,15 @@
 		'hint' => trans("posts.form.gallery_thumb_size_hint") ,
 	]     )
 
+	@include('forms.textarea' , [
+		'name' =>	'upload_configs',
+		'class' =>	'ltr form-autoSize',
+		'rows' => "5",
+		'value' =>	$model->upload_configs ,
+		'placeholder' => "" ,
+		'hint' =>	trans('posts.types.upload_configs_hint'),
+	])
+
 
 	@include('forms.textarea' , [
 		'id' => "txtMeta",

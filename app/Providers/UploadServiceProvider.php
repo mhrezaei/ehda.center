@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Http\Controllers\DropzoneController;
+use App\Models\Posttype;
 use function GuzzleHttp\Promise\is_settled;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Config;
@@ -34,6 +35,7 @@ class UploadServiceProvider extends ServiceProvider
     private static $versionsPostfixes = [
         'original' => 'original',
     ]; // Postfixes that should be added at the end of names of any version of any file
+    private static $postTypeConfigPrefix = 'posttype__';
 
     /**
      * Bootstrap the application services.
@@ -185,20 +187,24 @@ class UploadServiceProvider extends ServiceProvider
      *
      * @return bool
      */
-    public static function validateFile($request)
+    public static function validateFile($request, $returnErrors = true)
     {
         $file = $request->file;
         $typeString = $request->_uploadIdentifier;
         $sessionName = $request->_groupName;
 
-        $acceptedExtensions = self::getTypeRule($typeString, 'acceptedExtensions');
+        $validationRules = self::getCompleteRules($request->_uploadIdentifier);
+        $acceptedExtensions = $validationRules['acceptedExtensions'];
+
         if (!$acceptedExtensions or !is_array($acceptedExtensions) or !count($acceptedExtensions)) {
             $acceptedExtensions = [];
         }
 
         $validator = Validator::make($request->all(), [
-            'file' => 'mimes:' . implode(',', $acceptedExtensions) .
-                '|max:' . (self::getTypeRule($typeString, 'maxFileSize') * 1024)
+            'file' => [
+                'mimes:' . implode(',', $acceptedExtensions),
+//                'max:' . ($validationRules['maxFileSize'] * 1024)
+            ]
         ]);
 
         if (!$validator->fails() and
@@ -207,21 +213,27 @@ class UploadServiceProvider extends ServiceProvider
             return true;
         }
 
+        if ($returnErrors) {
+            return $validator->errors();
+        }
+
         return false;
     }
 
     /**
      * Checks if files number for an uploader reached the limit
      *
-     * @param string $sessionName
-     * @param string $typeString
+     * @param string|array $sessionName
+     * @param string       $typeString
      */
-    public static function validateFileNumbers($sessionName, $typeString)
+    public static function validateFileNumbers($sessionName, $fileType)
     {
+        $maxFiles = self::getCompleteRules($fileType)['maxFiles'];
         if (!session()->has($sessionName) or
-            count(array_filter(session()->get($sessionName), function ($item) {
-                return $item['done'];
-            })) < self::getTypeRule($typeString, 'maxFiles')
+            ($maxFiles === null) or
+            (count(array_filter(session()->get($sessionName), function ($item) {
+                    return $item['done'];
+                })) < $maxFiles)
         ) {
             return true;
         }
@@ -236,7 +248,7 @@ class UploadServiceProvider extends ServiceProvider
      *
      * @return File;
      */
-    public static function uploadFile($file, $uploadDir)
+    public static function uploadFile($file, $uploadDir, $externalFields = [])
     {
         $newName = self::generateFileName() . '.' . $file->getClientOriginalExtension();
         $finalUploadDir = implode(DIRECTORY_SEPARATOR, [
@@ -246,10 +258,11 @@ class UploadServiceProvider extends ServiceProvider
         ]);
 
         // Save uploaded file to db
-        $id = UploadedFileModel::saveFile($file, [
+        $saveData = array_merge([
             'physical_name' => $newName,
             'directory'     => $finalUploadDir,
-        ]);
+        ], $externalFields);
+        $id = UploadedFileModel::saveFile($file, $saveData);
 
         // Move uploaded file to target directory
         $file->move($finalUploadDir, $newName);
@@ -392,7 +405,7 @@ class UploadServiceProvider extends ServiceProvider
      *
      * @return array
      */
-    private static function translateFileTypeString($fileTypeString)
+    public static function translateFileTypeString($fileTypeString)
     {
         $fileTypeParts = array_reverse(explodeNotEmpty('.', $fileTypeString));
         if (!isset($fileTypeParts[1])) {
@@ -414,7 +427,7 @@ class UploadServiceProvider extends ServiceProvider
      *
      * @return array
      */
-    private static function translateSectionString($sectionString)
+    public static function translateSectionString($sectionString)
     {
         $sectionParts = array_reverse(explodeNotEmpty('.', $sectionString));
         if (!isset($sectionParts[0])) {
@@ -427,6 +440,58 @@ class UploadServiceProvider extends ServiceProvider
         $sectionParts = array_reverse($sectionParts);
 
         return $sectionParts;
+    }
+
+    public static function getCompleteRules($identifiers)
+    {
+        if (is_string($identifiers)) {
+            $identifiers = explodeNotEmpty(',', $identifiers);
+        }
+
+        $rules = [];
+        foreach ($identifiers as $identifier) {
+            $thisRules = self::followUpConfig(self::generateConfigPath($identifier));
+
+            // Merge "acceptedExtensions"
+            if (isset($rules['acceptedExtensions'])) {
+                $rules['acceptedExtensions'] = array_merge($rules['acceptedExtensions'],
+                    $thisRules['acceptedExtensions']);
+            } else {
+                $rules['acceptedExtensions'] = $thisRules['acceptedExtensions'];
+            }
+
+            // Merge "acceptedFiles"
+            if (isset($rules['acceptedFiles'])) {
+                $rules['acceptedFiles'] = array_merge($rules['acceptedFiles'], $thisRules['acceptedFiles']);
+            } else {
+                $rules['acceptedFiles'] = $thisRules['acceptedFiles'];
+            }
+
+            // Merge "maxFileSize"
+            if (isset($rules['maxFileSize'])) {
+                $rules['maxFileSize'] = max($rules['maxFileSize'], $thisRules['maxFileSize']);
+            } else {
+                $rules['maxFileSize'] = $thisRules['maxFileSize'];
+            }
+
+            // Merge "maxFiles"
+            if (isset($rules['maxFiles'])) {
+                $rules['maxFiles'] = max($rules['maxFiles'], $thisRules['maxFiles']);
+            } else {
+                $rules['maxFiles'] = $thisRules['maxFiles'];
+            }
+
+            // Merge "icon"
+            if (isset($rules['icon'])) {
+                if ($rules['icon'] != $thisRules['icon']) {
+                    $rules['icon'] = 'file';
+                }
+            } else {
+                $rules['icon'] = $thisRules['icon'];
+            }
+        }
+
+        return $rules;
     }
 
     /**
@@ -447,7 +512,9 @@ class UploadServiceProvider extends ServiceProvider
             array_splice($parts, 2, 0, 'fileTypes');
         }
 
-        return 'upload.' . implode('.', $parts);
+        self::fetchConfigFromDb($parts);
+
+        return self::configPartsToPath($parts);
     }
 
     /**
@@ -586,5 +653,44 @@ class UploadServiceProvider extends ServiceProvider
                 ];
             }
         }
+    }
+
+    /**
+     * If a config doesn't exists and it is possible to be read from db, it will be fetched from db.
+     *
+     * @param array $parts
+     */
+    private static function fetchConfigFromDb($parts)
+    {
+        if (!Config::has(self::configPartsToPath($parts))) {
+            if (starts_with($parts[1], self::$postTypeConfigPrefix)) {
+                $postTypeSlug = str_replace(self::$postTypeConfigPrefix, '', $parts[1]);
+                $postType = Posttype::findBySlug($postTypeSlug);
+                $postType->spreadMeta();
+                $configsJson = $postType->upload_configs;
+                $configs = json_decode($configsJson, true);
+                if ($configs and is_array($configs)) {
+                    $configPath = self::configPartsToPath(array_slice($parts, 0, 2));
+                    \config([$configPath => $configs]);
+                }
+            }
+        }
+    }
+
+    /**
+     * Generates config path from parts array
+     *
+     * @param array $parts
+     *
+     * @return string
+     */
+    private static function configPartsToPath($parts)
+    {
+        return 'upload.' . implode('.', $parts);
+    }
+
+    public static function getPostTypeConfigPrefix()
+    {
+        return self::$postTypeConfigPrefix;
     }
 }

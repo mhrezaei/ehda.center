@@ -57,6 +57,9 @@ class File extends Model
                 'extension'     => $file->getClientOriginalExtension(),
                 'size'          => $file->getSize(),
                 'status'        => self::getStatusValue('temp'),
+                'posttype'      => null,
+                'category'      => null,
+                'folder'        => null,
             ]);
 
             return self::store($data);

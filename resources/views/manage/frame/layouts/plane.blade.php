@@ -88,5 +88,6 @@
 </head>
 <body>
 @yield('body')
+@yield('end-of-body')
 </body>
 </html>

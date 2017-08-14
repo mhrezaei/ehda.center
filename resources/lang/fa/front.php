@@ -100,6 +100,7 @@ return [
     'powered_by_yasna'                         => 'طراحی و اجرا: گروه یسنا',
     'community_branches'                       => 'شعب انجمن',
     'email_has_been_sent_automatically'        => 'توجه : این ایمیل به صورت خودکار فرستاده شده است ، بنابراین به آن پاسخ ندهید. ',
+    'unnamed'                                  => 'بی‌نام',
 
     'tutorials' => [
         'singular' => 'آموزش',
@@ -191,6 +192,10 @@ return [
     ],
 
     'file_types' => [
+        'file'  => [
+            'title'         => 'فایل',
+            'dropzone_text' => 'فایل خود را اینجا رها کنید'
+        ],
         'image' => [
             'title'         => 'تصویری',
             'dropzone_text' => 'تصویر خود را اینجا رها کنید'
@@ -210,12 +215,17 @@ return [
     ],
 
     'upload' => [
-        'errors' => [
+        'errors'   => [
             'size'   => 'حجم فایل بسیاز زیاد است.',
             'type'   => 'نوع فایل قابل قبول نیست.',
             'server' => 'فرایند آپلود فایل در سرور با ارور {{statusCode}} متوقف شد.',
             'limit'  => 'نمی‌توانید فایل دیگری آپلود کنید.',
         ],
+        'statuses' => [
+            'uploading' => 'در حال بارگزاری',
+            'failed'    => 'ناموفق',
+            'success'   => 'موفق',
+        ]
     ],
 
     'footer' => [
