@@ -700,7 +700,7 @@ class UploadServiceProvider extends ServiceProvider
         return self::$postTypeConfigPrefix;
     }
 
-    public static function getFileView($file, $version = 'original', $switches)
+    public static function getFileView($file, $version = 'original', $switches = [])
     {
         $switches = array_normalize($switches, [
             'style'           => [],

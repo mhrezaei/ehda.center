@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\File;
 use App\Models\Posttype;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -39,6 +40,32 @@ class FileManagerController extends Controller
         });
 
         return $postTypes;
+    }
+
+    public function getList(Request $request)
+    {
+        $files = File::orderBy('id');
+        switch ($request->instance) {
+            case 'posttype':
+                $files->where(['posttype' => $request->key])
+                    ->whereNull('folder')
+                    ->whereNull('category');
+                break;
+            case 'folder':
+                $files->where(['folder' => $request->key])
+                    ->whereNotNull('posttype')
+                    ->whereNull('category');
+                break;
+            case 'category':
+                $files->where(['category' => $request->key])
+                    ->whereNotNull('posttype')
+                    ->whereNotNull('folder');
+                break;
+        }
+
+        $files = $files->get();
+
+        return view('file-manager.media-frame-content-gallery-images-list', compact('files'));
     }
 
 }
