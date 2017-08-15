@@ -119,3 +119,9 @@ function removeFromServer(file, dropzoneElement) {
         })
     }
 }
+
+function refreshDropzone(dropzoneObj) {
+    dropzoneObj.removeAllFiles();
+    var varName = $(dropzoneObj.element).attr('data-var-name');
+    $('.files-uploading-status[data-var-name="' + varName + '"]').html('');
+}
