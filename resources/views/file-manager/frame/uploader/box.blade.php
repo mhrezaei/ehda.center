@@ -89,8 +89,7 @@
                 {{--acceptedFiles: "{{ implode(',', UploadServiceProvider::getTypeRule($fileType, "acceptedFiles")) }}",--}}
             });
 
-            {{ $varName }}.
-            on("removedfile", function (file) {
+            {{ $varName }}.on("removedfile", function (file) {
                 removeFromServer(file, $(this.element));
             });
 

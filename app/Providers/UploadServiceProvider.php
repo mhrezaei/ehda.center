@@ -630,7 +630,7 @@ class UploadServiceProvider extends ServiceProvider
      *
      * @return array
      */
-    private static function generateRelatedFiles($file, $fileName, $directory)
+    public static function generateRelatedFiles($file, $fileName, $directory)
     {
         $mimeType = $file->getMimeType();
         $fileType = substr($mimeType, 0, strpos($mimeType, '/'));
@@ -693,12 +693,17 @@ class UploadServiceProvider extends ServiceProvider
         return self::$postTypeConfigPrefix;
     }
 
-    public static function getFileView($file)
+    public static function getFileView($file, $size = 'original')
     {
-        $file = self::smartFindFile($file);
-        if ($file->exists) {
-            $file = self::getFileObject($file);
-            dd($file, __FILE__ . " - " . __LINE__);
+        $file = self::smartFindFile($file, true);
+        $file->spreadMeta();
+        dd($file, __FILE__ . " - " . __LINE__);
+        $fileObj = self::getFileObject($file->pathname);
+        if ($fileObj) {
+            if (self::isImage($fileObj)) {
+                return view('front.frame.widgets.image-file-preview', ['image' => $file]);
+            } else {
+            }
         }
 
         return null;
@@ -711,14 +716,24 @@ class UploadServiceProvider extends ServiceProvider
         dd($file->pathname, __FILE__ . " - " . __LINE__);
     }
 
-    public static function getFileObject($file)
+    public static function getFileObject($pathname)
     {
-        $file = self::smartFindFile($file, true);
-        if ($file->exists and FilesFacades::exists($file->pathname)) {
-            return new File($file->pathname);
+        if (FilesFacades::exists($pathname)) {
+            return new File($pathname);
         }
 
         return null;
+    }
+
+    public static function isImage($file)
+    {
+        $validator = Validator::make([
+            'file' => $file
+        ], [
+            'file' => 'image'
+        ]);
+
+        return !$validator->fails();
     }
 
     /**

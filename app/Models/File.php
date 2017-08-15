@@ -52,7 +52,7 @@ class File extends Model
                 'physical_name' => UploadServiceProvider::generateFileName() .
                     '.'
                     . $file->getClientOriginalExtension(),
-                'directory'     => UploadServiceProvider::getSectionRule('default', 'uploadDir'),
+                'directory'     => 'uploads',
                 'mime_type'     => $file->getClientMimeType(),
                 'extension'     => $file->getClientOriginalExtension(),
                 'size'          => $file->getSize(),
@@ -61,6 +61,12 @@ class File extends Model
                 'category'      => null,
                 'folder'        => null,
             ]);
+
+            $data['related_files'] = UploadServiceProvider::generateRelatedFiles(
+                $file,
+                $data['physical_name'],
+                $data['directory']
+            );
 
             return self::store($data);
         }
