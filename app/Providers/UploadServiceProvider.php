@@ -317,6 +317,7 @@ class UploadServiceProvider extends ServiceProvider
                     foreach ($filesHashids as $key => $fileHashid) {
                         $fileRow = UploadedFileModel::findByHashid($fileHashid);
                         if ($fileRow->exists() and FilesFacades::exists($fileRow->pathname)) {
+                            $fileRow->spreadMeta();
                             $newDir = str_replace(self::$temporaryFolderName . DIRECTORY_SEPARATOR, '', $fileRow->directory);
 
                             $fileRow->setStatus('used');
@@ -325,10 +326,16 @@ class UploadServiceProvider extends ServiceProvider
                             $file->move($newDir);
                             $fileRow->directory = $newDir;
 
+                            foreach ($fileRow->related_files as $relatedFileName) {
+                                $relatedFilePathname = implode(DIRECTORY_SEPARATOR, [$newDir, $relatedFileName]);
+                                $relatedFile = new File($relatedFilePathname);
+                                $relatedFile->move($newDir);
+                            }
+
                             $movedFile = new File($newDir . DIRECTORY_SEPARATOR . $file->getFilename());
 
-                            $fileRow = $fileRow->toArray();
-                            $fileRow['related_files'] = self::generateRelatedFiles($movedFile, $movedFile->getFilename(), $newDir);
+//                            $fileRow = $fileRow->toArray();
+//                            $fileRow['related_files'] = self::generateRelatedFiles($movedFile, $movedFile->getFilename(), $newDir);
 
 //                            $fileRow->spreadMeta();
 //                            $relatedFiles = $fileRow->related_files;
@@ -693,16 +700,42 @@ class UploadServiceProvider extends ServiceProvider
         return self::$postTypeConfigPrefix;
     }
 
-    public static function getFileView($file, $size = 'original')
+    public static function getFileView($file, $version = 'original', $switches)
     {
+        $switches = array_normalize($switches, [
+            'style'           => [],
+            'width'           => null,
+            'height'          => null,
+            'class'           => [],
+            'otherAttributes' => [],
+            'dataAttributes'  => [],
+            'extra'           => '',
+        ]);
+
         $file = self::smartFindFile($file, true);
         $file->spreadMeta();
-        dd($file, __FILE__ . " - " . __LINE__);
         $fileObj = self::getFileObject($file->pathname);
         if ($fileObj) {
             if (self::isImage($fileObj)) {
-                return view('front.frame.widgets.image-file-preview', ['image' => $file]);
+                $relatedFilesPathnames = $file->related_files_pathname;
+
+                if (array_key_exists($version, $relatedFilesPathnames)) {
+                    $pathname = $relatedFilesPathnames[$version];
+                } else {
+                    $pathname = $file->pathname;
+                }
+
+                $imgUrl = url($pathname);
+
+                return view('front.frame.widgets.img-element', array_merge(compact('imgUrl'), $switches));
             } else {
+                $fileType = substr($file->mime_type, 0, strpos($file->mime_type, '/'));
+                if (is_array($switches['class'])) {
+                    $switches['class'] = array_merge([$fileType], $switches['class']);
+                } else {
+                    $switches['class'] = [$fileType, $switches['class']];
+                }
+                return view('front.frame.widgets.icon-image-element', $switches);
             }
         }
 

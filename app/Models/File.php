@@ -62,11 +62,14 @@ class File extends Model
                 'folder'        => null,
             ]);
 
-            $data['related_files'] = UploadServiceProvider::generateRelatedFiles(
+            $relatedFiles = UploadServiceProvider::generateRelatedFiles(
                 $file,
                 $data['physical_name'],
                 $data['directory']
             );
+            if ($relatedFiles) {
+                $data['related_files'] = $relatedFiles;
+            }
 
             return self::store($data);
         }
@@ -114,7 +117,6 @@ class File extends Model
         return ($this->status == self::getStatusValue($statusName)) ? true : false;
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | Assessors
@@ -159,6 +161,39 @@ class File extends Model
         }
 
         return $relatedFiles;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Helpers
+    |--------------------------------------------------------------------------
+    */
+
+    public function getRelatedFile($relatedFileKey)
+    {
+        $relatedFiles = $this->related_files;
+        if (array_key_exists($relatedFileKey, $relatedFiles)) {
+            return $relatedFiles[$relatedFileKey];
+        }
+
+        return null;
+    }
+
+    public function getRelatedFilePathname($relatedFileIdentifier)
+    {
+        $relatedFiles = $this->related_files;
+        if (array_key_exists($relatedFileIdentifier, $relatedFiles)) {
+            $relatedFileName = $relatedFiles[$relatedFileIdentifier];
+        } else if (($relatedFileKey = in_array($relatedFileIdentifier, $relatedFiles)) !== false) {
+            $relatedFileName = $relatedFileIdentifier;
+        } else {
+            return null;
+        }
+
+        return implode(DIRECTORY_SEPARATOR, [
+            $this->directory,
+            $relatedFileName,
+        ]);
     }
 
 }
