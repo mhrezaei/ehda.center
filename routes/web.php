@@ -221,14 +221,15 @@ Route::group([
         Route::group(['prefix' => 'save'], function () {
             Route::post('/', 'PostsController@save');
             Route::post('/delete', 'PostsController@delete');
-            Route::post('/undelete', 'PostsController@undelete');
-            Route::post('/destroy', 'PostsController@destroy');
-            Route::post('/clone', 'PostsController@makeClone');
-            Route::post('/deleteMass', 'PostsController@deleteMass');
-            Route::post('/undeleteMass', 'PostsController@undeleteMass');
-            Route::post('/destroyMass', 'PostsController@destroyMass');
-            Route::post('/owner', 'PostsController@changeOwner');
-            Route::post('/good', 'PostsController@saveGood');
+	        Route::post('/undelete', 'PostsController@undelete');
+	        Route::post('/destroy', 'PostsController@destroy');
+	        Route::post('/clone', 'PostsController@makeClone');
+	        Route::post('/deleteMass', 'PostsController@deleteMass');
+	        Route::post('/undeleteMass', 'PostsController@undeleteMass');
+	        Route::post('/destroyMass', 'PostsController@destroyMass');
+	        Route::post('/owner', 'PostsController@changeOwner');
+	        Route::post('/good', 'PostsController@saveGood');
+	        Route::post('/pin', 'PostsController@savePin');
         });
 
     });

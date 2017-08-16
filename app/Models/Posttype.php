@@ -16,6 +16,7 @@ class Posttype extends Model
 		'long_title'        => ['text-height', 'success', ['long_title:text']],
 		'title2'            => ['subscript', 'success', ['title2:text']],
 		'abstract'          => ['compress', 'success', ['abstract:text']],
+		'pin'               => ['thumb-tack', 'info' , []],
 		'featured_image'    => ['file-image-o', 'info', ['featured_image:photo']],
 		'download'          => ['download', 'info', ['download_file:file']],
 		'rss'               => ['rss', 'info', []],
@@ -557,29 +558,34 @@ class Posttype extends Model
 		| Bypass ...
 		*/
 		if($old_slug == $new_slug) {
-			return true ;
+			return true;
 		}
 
 		/*-----------------------------------------------
 		| Action ...
 		*/
-		$posts_updated = Post::where('type' , $old_slug)->update([
-			'type' => $new_slug ,
-		]);
-		$types_updated = Comment::where('type' , $old_slug)->update([
-			'type' => $new_slug ,
-		]);
-		$goods_updated = Good::where('type' , $old_slug)->update([
-			'type' => $new_slug ,
-		]);
-		$packs_updated = Pack::where('type' , $old_slug)->update([
-			'type' => $new_slug ,
-		]);
+		$posts_updated = Post::where('type', $old_slug)->update([
+			'type' => $new_slug,
+		])
+		;
+		$types_updated = Comment::where('type', $old_slug)->update([
+			'type' => $new_slug,
+		])
+		;
+		$goods_updated = Good::where('type', $old_slug)->update([
+			'type' => $new_slug,
+		])
+		;
+		$packs_updated = Pack::where('type', $old_slug)->update([
+			'type' => $new_slug,
+		])
+		;
 
 		/*-----------------------------------------------
 		| Return ...
 		*/
-		return $posts_updated and $types_updated and $goods_updated and $packs_updated ;
+
+		return $posts_updated and $types_updated and $goods_updated and $packs_updated;
 
 
 	}

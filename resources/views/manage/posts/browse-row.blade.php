@@ -193,6 +193,7 @@
 	['user-o' , trans('posts.form.post_owner') , "modal:manage/posts/act/-id-/owner/1" , $model->canPublish()],
 	['clone' , trans('posts.form.clone') , "modal:manage/posts/act/-id-/clone" , $model->can('create')],
 	['globe' , trans('posts.features.locales') , "modal:manage/posts/act/-id-/locales/" , $model->has('locales')],
+	['thumb-tack' , $model->pinned?  trans("posts.pin.remove_command") : trans('posts.pin.put_command'), "modal:manage/posts/act/-id-/pin" , $model->has('pin') and $model->can('publish')] ,
 	['-' , $model->can('create') or $model->canEdit()],
 
 	['trash-o' , trans('forms.button.soft_delete') , "modal:manage/posts/act/-id-/delete" , $model->canDelete() and !$model->trashed()] ,

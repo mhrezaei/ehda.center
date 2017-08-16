@@ -4,6 +4,7 @@
 
 		<div class="col-md-3 text-center">
 			<img src="{{ url($file->pathname) }}" style="margin-top:15px;max-height:100px;max-width: 100px">
+			{{-- @TODO: This must be replaced with a prepared preview provided by FileManagerServiceProvider --}}
 		</div>
 
 

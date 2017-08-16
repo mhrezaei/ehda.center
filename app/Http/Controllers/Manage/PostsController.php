@@ -175,7 +175,7 @@ class PostsController extends Controller
 		}
 
 
-		$models = Post::selector($selector_switches)->orderBy('created_at', 'desc')->paginate(user()->preference('max_rows_per_page'));
+		$models = Post::selector($selector_switches)->orderBy('pinned_at','desc')->orderBy('created_at', 'desc')->paginate(user()->preference('max_rows_per_page'));
 
 		//		$models->appends(['sort' => 'votes'])->links() ;
 		$db = $this->Model;
@@ -1198,6 +1198,64 @@ class PostsController extends Controller
 		return $this->jsonAjaxSaveFeedback($ok, [
 			'success_callback' => "divReload('divEditorGoods')",
 		]);
+	}
+
+	public function savePin(Request $request)
+	{
+		/*
+		|--------------------------------------------------------------------------
+		| Model Retreive
+		|--------------------------------------------------------------------------
+		|
+		*/
+
+		$model = Post::find($request->id) ;
+		if(!$model or !$model->id and $model->has('pin')) {
+			return $this->jsonFeedback(trans('validation.http.Error404'));
+		}
+		if(!$model->canPublish()) {
+			return $this->jsonFeedback(trans('validation.http.Error503'));
+		}
+
+
+		/*
+		|--------------------------------------------------------------------------
+		| Action
+		|--------------------------------------------------------------------------
+		|
+		*/
+		if($request->_submit == 'put') {
+			Post::where('type' , $model->type)->withTrashed()->update([
+				'pinned_at' => null ,
+				'pinned_by' => "0" ,
+			]);
+			$ok = $model->update([
+				'pinned_at' => Carbon::now()->toDateTimeString() ,
+			     'pinned_by' => user()->id ,
+			]) ;
+		}
+		elseif($request->_submit == 'remove') {
+			$ok = $model->update([
+				'pinned_at' => null ,
+			     'pinned_by' => "0" ,
+			]);
+		}
+		else {
+			$ok = false ;
+		}
+
+		/*
+		|--------------------------------------------------------------------------
+		| Feedback
+		|--------------------------------------------------------------------------
+		|
+		*/
+		return $this->jsonAjaxSaveFeedback($ok, [
+			'success_refresh' => "1" ,
+			//'success_callback' => "rowUpdate('tblPosts' , '$request->id')",
+		]);
+
+
 	}
 
 
