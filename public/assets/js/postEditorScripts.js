@@ -206,7 +206,14 @@ function postPhotoAdded() {
 
 }
 
-function postPhotoRemoved($selector) {
+function postPhotoRemoved(key, hashid) {
+	let div_id = "divPhoto-" + key;
+
+	$('#' + div_id).attr('data-src', 'manage/posts/act/0/editor-album2-remove/' + hashid).slideUp('fast');
+	divReload(div_id);
+
+}
+function _postPhotoRemoved($selector) {
 
 	$selector.parent().parent().slideUp().html('');
 
@@ -214,6 +221,23 @@ function postPhotoRemoved($selector) {
 	var $new_counter = parseInt(forms_digit_en($counter_label.html())) - 1;
 	$counter_label.html(forms_digit_fa($new_counter.toString()));
 
+}
+
+function postFileCounterUpdate(update) {
+	let $selector = $('#spnFileCount');
+	let current_value = parseInt( forms_digit_en($selector.html()) );
+
+	forms_log(current_value);
+
+	if (update == '-') {
+		$selector.html(forms_digit_fa(Math.max(0, current_value - 1).toString() ));
+	}
+	else if (update == '+') {
+		$selector.html(forms_digit_fa( (current_value + 1).toString() ));
+	}
+	else {
+		$selector.html(forms_digit_fa(update));
+	}
 }
 
 function postFormChange() {
@@ -238,11 +262,17 @@ function postDomainToggle() {
 
 function filemanagerUploadFinish(uploaded_files) {
 
-	result = "";
+	let $last_key_input = $("#txtLastKey");
+	let result = $last_key_input.val() + "-";
+	let counter = 0;
+
 	$.each(uploaded_files, function (index, item) {
-		result += $.parseJSON(item.xhr.response).file + "-" ;
+		result += $.parseJSON(item.xhr.response).file + "-";
+		counter++;
 	});
 
-	forms_log(result) ;
-	divReload('divNewFiles' , result) ;
+	$last_key_input.val(parseInt($last_key_input.val()) + counter);
+
+	divReload('divNewFiles', result);
+	refreshDropzone(dropzone_object);
 }

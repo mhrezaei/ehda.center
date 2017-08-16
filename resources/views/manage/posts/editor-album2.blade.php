@@ -24,9 +24,9 @@
 
 
 				@foreach($model->files as $key => $file)
-					@include('manage.posts.editor-album-one' , [
+					@include('manage.posts.editor-album2-one' , [
 						'key' => $key ,
-						'src' => model('file', $file['src'])->pathname ,
+						'src' => $file['src'] ,
 						'label' => $file['label'] ,
 						'link' => isset($file['link'])? $file['link'] : '',
 					])
@@ -37,24 +37,30 @@
 
 			{{--
 			|--------------------------------------------------------------------------
-			| New Files and Dropzone
+			| New Files
 			|--------------------------------------------------------------------------
 			|
 			--}}
-			<div id="divNewFiles" class="m10 text-center" data-src="manage/posts/act/{{$model->hashid}}/editor-album2-new/" >
-				@include("manage.posts.editor-album2-new")
+			<div id="divNewFiles" class="m10 text-center" data-src="manage/posts/act/0/editor-album2-new/" data-type="append" >
+				@include("manage.posts.editor-album2-newMass")
 			</div>
+
+			{{--
+			|--------------------------------------------------------------------------
+			| Drop Zone
+			|--------------------------------------------------------------------------
+			|
+			--}}
+			<div id="divDropzone" class="noDisplay-">
+				{!!  FileManager::posttypeUploader($model->posttype , [
+					'callbackOnQueueComplete' => "filemanagerUploadFinish" ,
+					'varName' => "dropzone_object" ,
+				])  !!}
+			</div>
+
 
 		</div>
 
 	</div>
 
-
-
-
-
-
-
 @endif
-
-{{--{{ \App\Providers\UploadServiceProvider::removeFile('gOoY3') }}--}}

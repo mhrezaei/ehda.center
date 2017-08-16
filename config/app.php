@@ -269,6 +269,7 @@ return [
         'EhdaServiceProvider' => App\Providers\EhdaServiceProvider::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'FileManager' => \App\Providers\FileManagerServiceProvider::class ,
+        'Upload' => \App\Providers\UploadServiceProvider::class ,
         //          'Setting' => \App\Providers\SettingServiceProvider::class,
     ],
 
