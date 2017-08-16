@@ -717,7 +717,7 @@ class UploadServiceProvider extends ServiceProvider
         $fileObj = self::getFileObject($file->pathname);
         if ($fileObj) {
             if (self::isImage($fileObj)) {
-                $relatedFilesPathnames = $file->related_files_pathname;
+                $relatedFilesPathnames = $file->related_files_pathname ?: [];
 
                 if (array_key_exists($version, $relatedFilesPathnames)) {
                     $pathname = $relatedFilesPathnames[$version];
@@ -730,12 +730,27 @@ class UploadServiceProvider extends ServiceProvider
                 return view('front.frame.widgets.img-element', array_merge(compact('imgUrl'), $switches));
             } else {
                 $fileType = substr($file->mime_type, 0, strpos($file->mime_type, '/'));
-                if (is_array($switches['class'])) {
-                    $switches['class'] = array_merge([$fileType], $switches['class']);
-                } else {
-                    $switches['class'] = [$fileType, $switches['class']];
+                switch ($fileType) {
+                    case "video":
+                        $imageName = 'file-video-o.svg';
+                        break;
+                    case "audio":
+                        $imageName = 'file-audio-o.svg';
+                        break;
+                    case "text":
+                    case "application":
+                    case "docs":
+                        $imageName = 'file-text-o.svg';
+                        break;
+                    default:
+                        $imageName = 'file-o.svg';
+                        break;
                 }
-                return view('front.frame.widgets.icon-image-element', $switches);
+
+                $imgUrl = url('assets/images/template/' . $imageName);
+                return view('front.frame.widgets.img-element', array_merge(compact('imgUrl'), $switches));
+//                return view('front.frame.widgets.icon-image-element'
+//                    , array_merge(compact('fileType'), $switches));
             }
         }
 

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\File;
+use App\Models\Folder;
+use App\Models\Post;
 use App\Models\Posttype;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -47,17 +50,29 @@ class FileManagerController extends Controller
         $files = File::orderBy('id');
         switch ($request->instance) {
             case 'posttype':
-                $files->where(['posttype' => $request->key])
+                $postType = Posttype::findByHashid($request->key);
+                if(!$postType->exists) {
+                    return null;
+                }
+                $files->where(['posttype' => $postType->id])
                     ->whereNull('folder')
                     ->whereNull('category');
                 break;
             case 'folder':
-                $files->where(['folder' => $request->key])
+                $folder = Folder::findByHashid($request->key);
+                if(!$folder->exists) {
+                    return null;
+                }
+                $files->where(['folder' => $folder->id])
                     ->whereNotNull('posttype')
                     ->whereNull('category');
                 break;
             case 'category':
-                $files->where(['category' => $request->key])
+                $category = Category::findByHashid($request->key);
+                if(!$category->exists) {
+                    return null;
+                }
+                $files->where(['category' => $category->id])
                     ->whereNotNull('posttype')
                     ->whereNotNull('folder');
                 break;
