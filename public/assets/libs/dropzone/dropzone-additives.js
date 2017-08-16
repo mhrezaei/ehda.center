@@ -15,12 +15,19 @@ Dropzone.prototype.defaultOptions.dictInvalidFileType = messages.errors.type;
 Dropzone.prototype.defaultOptions.dictResponseError = messages.errors.server;
 Dropzone.prototype.defaultOptions.dictMaxFilesExceeded = messages.errors.size;
 
+// Temporary Elements
+let fileInfoElTmp = $('<div class="media-uploader-status"> <div class="col-xs-9"> <div class="media-uploader-status-info"> <h2 class="media-uploader-status-text"> </h2> <button type="button" class="fa fa-times-circle delete-upload-info"></button> <div class="media-progress"> <div class="media-progress-value"></div> </div> <div class="upload-detail"> <span class="upload-detail-separator"></span> <span class="upload-filename"></span> </div> </div> </div> <div class="col-xs-3"> <div class="attachment media-uploader-status-image"> <img> </div> </div></div>');
+
 // dropzone Options
 var dropzoneOptions = {
     init: {
         sending: function (file, xhr, formData) {
             // Append csrf token
             formData.append('_token', csrfToken);
+
+            // Hide element in dropzone
+            $(file.previewElement).hide();
+            $(file.previewElement).closest('.uploader-container').find('.dz-message').show();
 
             // Append external fields (if needed)
             var externalFields = {};
@@ -39,14 +46,22 @@ var dropzoneOptions = {
                 formData.append(node.name, node.value);
             });
 
-            // Show File Progress Info
-            var fileInfoEl = $('<div class="media-uploader-status"></div>');
 
-            fileInfoEl.append('<button type="button" class="fa fa-times-circle upload-dismiss"></button>');
-            fileInfoEl.append('<h2 class="media-uploader-status-text">' + messages.statuses.uploading + '</h2>');
-            fileInfoEl.append('<div class="media-progress"><div class="media-progress-value"></div></div>');
-            fileInfoEl.append('<div class="upload-detail"><div class="upload-filename"></div></div>');
+
+            // Show File Progress Info
+            var fileInfoEl = fileInfoElTmp.clone();
+            console.log(fileInfoEl)
+
+            fileInfoEl.find('.media-uploader-status-text').html(messages.statuses.uploading);
             fileInfoEl.find('.upload-filename').html(file.name);
+            var fileInfoImg = fileInfoEl.find('.media-uploader-status-image').children('img');
+            fileInfoImg.attr('src', dropzoneRoutes.images + '/template/file-o.svg');
+
+            var image = new Image();
+            image.onload = function(e) {
+                fileInfoImg.attr('src', image.src)
+            };
+            image.src = URL.createObjectURL(file);
 
             $('.files-uploading-status').append(fileInfoEl);
             file.uploadResultElement = fileInfoEl;
@@ -59,7 +74,7 @@ var dropzoneOptions = {
         error: function (file, response, xhr) {
             $(file.previewElement).find('.dz-error-message').remove();
             if (xhr.status == 422) {
-                var uploadResultElement = file.uploadResultElement;
+                var uploadResultElement = file.uploadResultElement.find('.media-uploader-status-info');
                 var errorsContainer = $('<div class="upload-errors"></div>');
                 var ul = $('<ul></ul>');
                 if (response.file) {
@@ -81,7 +96,6 @@ var dropzoneOptions = {
         },
     }
 };
-
 
 function updateTarget(dropzoneInstance, target) {
     if (dropzoneInstance.getUploadingFiles().length === 0 && dropzoneInstance.getQueuedFiles().length === 0) {
@@ -129,3 +143,14 @@ function removeFromServer(file, dropzoneElement) {
 function refreshDropzone(dropzoneObj) {
     dropzoneObj.removeAllFiles();
 }
+
+$(document).ready(function () {
+    $(document).on({
+        click: function () {
+            let row = $(this).closest('.media-uploader-status');
+            if(row.length) {
+                row.remove();
+            }
+        }
+    }, '.delete-upload-info')
+});

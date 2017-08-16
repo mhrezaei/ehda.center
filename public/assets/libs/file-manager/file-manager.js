@@ -3,162 +3,161 @@ String.prototype.replaceAll = function (search, replacement) {
     return target.replace(new RegExp(search, 'g'), replacement);
 };
 
-jQuery(function($){
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
+jQuery(function ($) {
     selectFolder($(".breadcrumb-folders .folder").first())
 
-	// On Load Variables
-	var $window = $(window),
+    // On Load Variables
+    var $window = $(window),
 
-		//Details Shown Inside Sidebar (Hidden On Page Load)
-		detailSidebar = $('.media-sidebar'),
-		footer = $('.media-footer'),
-		tabs = $('.media-router .media-menu-item');
+        //Details Shown Inside Sidebar (Hidden On Page Load)
+        detailSidebar = $('.media-sidebar'),
+        footer = $('.media-footer'),
+        tabs = $('.media-router .media-menu-item');
 
 
-	/*---Breadcrumb Function----*/
-	$(".breadcrumb-folders li a").click(function (e) {
-	    e.preventDefault();
+    /*---Breadcrumb Function----*/
+    $(".breadcrumb-folders li a").click(function (e) {
+        e.preventDefault();
         var folder = $(this).closest('.folder');
         selectFolder(folder)
-	});
-	/*---- End Breadcrumb Function----*/
+    });
+    /*---- End Breadcrumb Function----*/
 
 
+    /*---- Handeling Sidebar And Folder Browser-----*/
+    $window.on('resize load', function () {
 
-	/*---- Handeling Sidebar And Folder Browser-----*/
-	$window.on('resize load',function(){
+        var windowWidth = $window.width();
 
-		var windowWidth = $window.width();
-		
-		/*---- Folder Browser Opening Function-----*/	
-		if(windowWidth <= 900){
-			//Closing Browser If Open
-			$('.media-folder-menu').hide();
+        /*---- Folder Browser Opening Function-----*/
+        if (windowWidth <= 900) {
+            //Closing Browser If Open
+            $('.media-folder-menu').hide();
 
-			//Setting Browser Opening Icon Function
-			$('.media-frame-title .menu-icon').on('click', function(){
-				$('.media-folder-menu').show();
-			});
+            //Setting Browser Opening Icon Function
+            $('.media-frame-title .menu-icon').on('click', function () {
+                $('.media-folder-menu').show();
+            });
 
-			//Setting Browser Closing Icon Function
-			$('.media-folder-menu .close-sidebar').on('click', function(){
-				$('.media-folder-menu').hide();
-			});
-		}else{
+            //Setting Browser Closing Icon Function
+            $('.media-folder-menu .close-sidebar').on('click', function () {
+                $('.media-folder-menu').hide();
+            });
+        } else {
 
-			//Always Show Browser On Bigger Screens
-			$('.media-folder-menu').show();
-		}
-		/*---- End Folder Browser Opening Function-----*/
+            //Always Show Browser On Bigger Screens
+            $('.media-folder-menu').show();
+        }
+        /*---- End Folder Browser Opening Function-----*/
 
-		/*---- Siderbar Opening Function -----*/	
-		if(windowWidth <= 768){
-			
-			//Closing Sidebar If Open
-			$('.media-sidebar').hide();
+        /*---- Siderbar Opening Function -----*/
+        if (windowWidth <= 768) {
 
-			//Setting Sidebar Closing Icon Function
-			$('.media-sidebar .close-sidebar').on('click', function(){
-				$('.media-sidebar').hide();
-			});
-		}else{
+            //Closing Sidebar If Open
+            $('.media-sidebar').hide();
 
-			//Always Show Sidebar On Bigger Screens
-			$('.media-sidebar').show();
-		}
-		/*---- Siderbar Opening Function -----*/
+            //Setting Sidebar Closing Icon Function
+            $('.media-sidebar .close-sidebar').on('click', function () {
+                $('.media-sidebar').hide();
+            });
+        } else {
 
-	});
-			
+            //Always Show Sidebar On Bigger Screens
+            $('.media-sidebar').show();
+        }
+        /*---- Siderbar Opening Function -----*/
+
+    });
 
 
-	/*----Selecting Thumbnails------*/
-	$('#thumbnail').selectable({
-		selecting: function(event, ui) {
+    /*----Selecting Thumbnails------*/
+    $('#thumbnail').selectable({
+        selecting: function (event, ui) {
 
-					//ul Containing The Whole Thumbnails
-				var ul = $(this),
-					//Current li Selected
-					currentEl = $(ui.selecting),
-					imgSrc = currentEl.find('img').attr('src'),
-					imgName = imgSrc.replace('img/','');
+            //ul Containing The Whole Thumbnails
+            var ul = $(this),
+                //Current li Selected
+                currentEl = $(ui.selecting),
+                imgSrc = currentEl.find('img').attr('src'),
+                imgName = imgSrc.replace('img/', '');
 
-				//Showing Sidebar If Hidden
-				if(!detailSidebar.is(':visible')){
-					detailSidebar.show();
-				}
-				
-				//Showing Details Inside Sidebar
-				detailSidebar.find('.file-details').show();
+            //Showing Sidebar If Hidden
+            if (!detailSidebar.is(':visible')) {
+                detailSidebar.show();
+            }
 
-				//Inserting Image Data To Sidebar (Should Be Done "Dynamically"!)
-				detailSidebar.find('.thumbnail-image img').attr('src',imgSrc);
-				detailSidebar.find('.details .filename').empty().text(imgName);
+            //Showing Details Inside Sidebar
+            detailSidebar.find('.file-details').show();
 
-				//Reseting Active Class To Currently Selected Element
-				ul.find('.active').removeClass('active');
-				currentEl.addClass('active');
-		},
-		stop: function(event,ui ){
-				//All Selected "li"s
-			var selected = $('li.ui-selected').clone().removeClass('active ui-selected'),
-				selectedCount = selected.length,
-				PersianCount = pd(selectedCount);
+            //Inserting Image Data To Sidebar (Should Be Done "Dynamically"!)
+            detailSidebar.find('.thumbnail-image img').attr('src', imgSrc);
+            detailSidebar.find('.details .filename').empty().text(imgName);
 
-			//Adding Selected Items Into Footer Preview
-			footer.find('.attachments-preview').empty().append(selected);
-			footer.find('.count').empty().text("گزینش شده: "+ PersianCount);
+            //Reseting Active Class To Currently Selected Element
+            ul.find('.active').removeClass('active');
+            currentEl.addClass('active');
+        },
+        stop: function (event, ui) {
+            //All Selected "li"s
+            var selected = $('li.ui-selected').clone().removeClass('active ui-selected'),
+                selectedCount = selected.length,
+                PersianCount = pd(selectedCount);
 
-			//Setting Selected Elements As Button Value
-			$('#add-btn').val(selected);	
+            //Adding Selected Items Into Footer Preview
+            footer.find('.attachments-preview').empty().append(selected);
+            footer.find('.count').empty().text("گزینش شده: " + PersianCount);
 
-		}
-	});
-	/*----End Selecting Thumbnails----*/
+            //Setting Selected Elements As Button Value
+            $('#add-btn').val(selected);
 
-
+        }
+    });
+    /*----End Selecting Thumbnails----*/
 
 
-	/*-----Clear List And Reseting -----*/
-	$('#clear-list').on('click', function(){
+    /*-----Clear List And Reseting -----*/
+    $('#clear-list').on('click', function () {
 
-		//Removing Selected Elements Stylings
-		$('li.ui-selected').removeClass('active ui-selected');
+        //Removing Selected Elements Stylings
+        $('li.ui-selected').removeClass('active ui-selected');
 
-		//Hide Details In Sidebar
-		detailSidebar.find('.file-details').hide();
+        //Hide Details In Sidebar
+        detailSidebar.find('.file-details').hide();
 
-		//Empty Footer Preview
-		footer.find('.attachments-preview').empty('active ui-selected');
-		footer.find('.count').empty().text("گزینش شده: "+ pd("0"));
+        //Empty Footer Preview
+        footer.find('.attachments-preview').empty('active ui-selected');
+        footer.find('.count').empty().text("گزینش شده: " + pd("0"));
 
-		//Unset Button Value
-		$('#add-btn').val("");
-	});
-	/*-----End Clear List And Reseting -----*/
-
-
+        //Unset Button Value
+        $('#add-btn').val("");
+    });
+    /*-----End Clear List And Reseting -----*/
 
 
-	/*-----Tab Changing Function -----*/
-	tabs.on('click', function(e){
-		e.preventDefault();
-		tabs.removeClass('active');
-		var pageId = $(this).addClass('active').data('page');
-		$('.page').hide();
-		$('#'+ pageId).show();
+    /*-----Tab Changing Function -----*/
+    tabs.on('click', function (e) {
+        e.preventDefault();
+        tabs.removeClass('active');
+        var pageId = $(this).addClass('active').data('page');
+        $('.page').hide();
+        $('#' + pageId).show();
 
 
-	});
-	/*-----End Tab Changing Functions-----*/
+    });
+    /*-----End Tab Changing Functions-----*/
 
-	
 
 }); //End Of Ready!
 
 function forms_pd($string) {
-    if (!$string){
-    	$string = "0";
+    if (!$string) {
+        $string = "0";
     }
     $string = $string.toString();
 
@@ -209,12 +208,36 @@ function selectFolder(folder) {
     folder.addClass('current');
     parents.addClass('active');
 
-    $('.breadcrumb-folders .active').each(function(i){
+    $('.breadcrumb-folders .active').each(function (i) {
         $(this).find('span.folder-icon').first().removeClass('fa-folder').addClass("fa-folder-open");
     });
+
+    var listRequest = new FormData();
+    listRequest.append('key', folder.attr('data-key'));
+    listRequest.append('instance', folder.attr('data-instance'));
+    listRequest.append('_token', csrfToken);
+    $.ajax({
+        url: urls.getList,
+        type: 'POST',
+        data: {
+            key: folder.attr('data-key'),
+            instance: folder.attr('data-instance'),
+        },
+        success: function (response) {
+            $('#thumbnail').replaceWith($(response));
+        }
+    });
+}
+
+function refreshGallery() {
+    selectFolder($(".breadcrumb-folders .folder.current"));
 }
 
 function getFolderParents(folder) {
     var link = folder.children('a');
     return link.parents('.folder');
+}
+
+function eachUploadCompleter() {
+    refreshGallery();
 }

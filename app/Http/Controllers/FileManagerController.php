@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\File;
+use App\Models\Folder;
+use App\Models\Post;
 use App\Models\Posttype;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -39,6 +43,44 @@ class FileManagerController extends Controller
         });
 
         return $postTypes;
+    }
+
+    public function getList(Request $request)
+    {
+        $files = File::orderBy('id');
+        switch ($request->instance) {
+            case 'posttype':
+                $postType = Posttype::findByHashid($request->key);
+                if(!$postType->exists) {
+                    return null;
+                }
+                $files->where(['posttype' => $postType->id])
+                    ->whereNull('folder')
+                    ->whereNull('category');
+                break;
+            case 'folder':
+                $folder = Folder::findByHashid($request->key);
+                if(!$folder->exists) {
+                    return null;
+                }
+                $files->where(['folder' => $folder->id])
+                    ->whereNotNull('posttype')
+                    ->whereNull('category');
+                break;
+            case 'category':
+                $category = Category::findByHashid($request->key);
+                if(!$category->exists) {
+                    return null;
+                }
+                $files->where(['category' => $category->id])
+                    ->whereNotNull('posttype')
+                    ->whereNotNull('folder');
+                break;
+        }
+
+        $files = $files->get();
+
+        return view('file-manager.media-frame-content-gallery-images-list', compact('files'));
     }
 
 }
