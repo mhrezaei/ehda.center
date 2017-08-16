@@ -15,6 +15,7 @@
         // Setting Dynamic Variables
         var csrfToken = "{{ csrf_token() }}";
         var dropzoneRoutes = {
+            images: "{{ url('assets/images') }}",
             upload: "{{ route('dropzone.upload') }}",
             remove: "{{ route('dropzone.remove') }}",
         };
@@ -43,9 +44,9 @@
             @if(array_key_exists('events', $freshConfigs))
                 @foreach($freshConfigs['events'] as $eventName => $eventValue)
                     dropzoneObj.on("{{ $eventName }}", {{ $eventValue }});
-                @endforeach
+            @endforeach
 
-                @unset($freshConfigs['events'])
+            @unset($freshConfigs['events'])
             @endif
         };
 

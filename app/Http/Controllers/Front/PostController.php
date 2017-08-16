@@ -62,7 +62,7 @@ class PostController extends Controller
 
     public function submit_comment(CommentRequest $request)
     {
-        UploadServiceProvider::moveUploadedFiles($request);
+        UploadServiceProvider::moveUploadedFilesWithRequest($request);
 
         $post = Post::find($request->post_id);
         if (!$post) {

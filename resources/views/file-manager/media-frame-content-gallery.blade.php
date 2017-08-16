@@ -1,4 +1,4 @@
-<div class="page attachments-browser" id="gallery" style="display: none;">
+<div class="page attachments-browser" id="gallery">
     <div class="media-toolbar">
         <div class="toolbar-right">
             <select id="media-filters" class="attachment-filters">
@@ -27,7 +27,7 @@
         <div class="close-sidebar">
             <span class="fa fa-chevron-left"></span>
         </div>
-        <div class="media-uploader-status">
+        <div class="media-uploader-status" style="display: none">
             <h2>در حال بارگذاری...</h2>
             <button type="button" class="fa fa-times-circle upload-dismiss"></button>
             <div class="media-progress">
