@@ -343,19 +343,18 @@ class UploadServiceProvider extends ServiceProvider
                     $fileRow->spreadMeta();
                     $newDir = str_replace(self::$temporaryFolderName . DIRECTORY_SEPARATOR, '', $fileRow->directory);
 
-                    $fileRow->setStatus('used');
-
                     $file = new File($fileRow->pathname);
-                    $file->move($newDir);
-                    $fileRow->directory = $newDir;
-
-                    foreach ($fileRow->related_files as $relatedFileName) {
-                        $relatedFilePathname = implode(DIRECTORY_SEPARATOR, [$newDir, $relatedFileName]);
+                    foreach ($fileRow->related_files as $key =>  $relatedFileName) {
+                        $relatedFilePathname = $fileRow->getRelatedFilePathname($key);
                         $relatedFile = new File($relatedFilePathname);
                         $relatedFile->move($newDir);
                     }
 
-                    $movedFile = new File($newDir . DIRECTORY_SEPARATOR . $file->getFilename());
+                    $fileRow->setStatus('used');
+                    $file->move($newDir);
+                    $fileRow->directory = $newDir;
+
+//                    $movedFile = new File($newDir . DIRECTORY_SEPARATOR . $file->getFilename());
 
 //                            $fileRow = $fileRow->toArray();
 //                            $fileRow['related_files'] = self::generateRelatedFiles($movedFile, $movedFile->getFilename(), $newDir);
