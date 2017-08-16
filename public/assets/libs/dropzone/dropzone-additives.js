@@ -102,6 +102,12 @@ function updateTarget(dropzoneInstance, target) {
     }
 }
 
+function removeFile(file, dropzoneElement) {
+    var uploadResultElement = file.uploadResultElement;
+    uploadResultElement.remove();
+    // removeFromServer(file, dropzoneElement);
+}
+
 function removeFromServer(file, dropzoneElement) {
     if (file.xhr) {
         var rs = $.parseJSON(file.xhr.response);
@@ -122,6 +128,4 @@ function removeFromServer(file, dropzoneElement) {
 
 function refreshDropzone(dropzoneObj) {
     dropzoneObj.removeAllFiles();
-    var varName = $(dropzoneObj.element).attr('data-var-name');
-    $('.files-uploading-status[data-var-name="' + varName + '"]').html('');
 }
