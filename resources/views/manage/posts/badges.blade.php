@@ -1,5 +1,14 @@
 @include("manage.frame.widgets.grid-badges" , [$badges = [
 	[
+		'text' => trans("posts.pin.pinned") ,
+		'color' => "purple text-white" ,
+		'icon' => "thumb-tack" ,
+		'link' => $model->canPublish() ? "modal:manage/posts/act/-id-/pin" : '',
+		'condition' => $model->has('pin') and $model->pinned,
+	],
+
+
+	[
 		'text' => trans('posts.form.copy'),
 		'color' => "orange",
 		'icon' => "pencil",

@@ -120,14 +120,14 @@ function tabReload() {
 		});
 }
 
-function divReload(div_id) {
+function divReload(div_id, additive = '') {
 
 	//Preparations...
 	var $div = $("#" + div_id);
 	var reload_url = $("#" + div_id + " .refresh").html();
 
 	if (!reload_url) {
-		reload_url = $div.attr('data-src');
+		reload_url = $div.attr('data-src') + additive;
 		reload_url = reload_url.replaceAll("-id-", $div.attr('data-id'));
 		reload_url = url(reload_url);
 	}
@@ -148,9 +148,16 @@ function divReload(div_id) {
 		url  : reload_url,
 		cache: false
 	}).done(function (html) {
-		$div.html(html);
-		$div.removeClass('loading');
-	});
+			if ($div.attr('data-type') == 'append') {
+				$div.append(html);
+			}
+			else {
+				$div.html(html);
+			}
+			$div.removeClass('loading');
+		}
+	)
+	;
 }
 
 function masterModal($url, $size) {

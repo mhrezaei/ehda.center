@@ -5,4 +5,5 @@
 {{--@include("manage.posts.editor-price") --}}
 @include("manage.posts.editor-goods")
 @include("manage.posts.editor-meta")
-@include("manage.posts.editor-album")
+{{--@include("manage.posts.editor-album")--}}
+@include("manage.posts.editor-album2")

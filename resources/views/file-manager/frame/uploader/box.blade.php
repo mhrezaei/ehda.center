@@ -12,6 +12,10 @@
     @php $id = 'dropzoneUploader_' . str_random(8) @endphp
 @endif
 
+@if(!isset($varName) or !$varName)
+    @php $varName = camel_case($id . '-dropzone') @endphp
+@endif
+
 @if(isset($dataAttributes) and is_array($dataAttributes) and count($dataAttributes))
     @foreach($dataAttributes as $fieldTitle => $filedValue)
         @php $formData["data-$fieldTitle"] = $filedValue @endphp
@@ -19,7 +23,7 @@
 @endif
 
 <div class="row">
-    <div class="dropzone mb15 optional-input uploader-container" id="{{ $id }}"
+    <div class="dropzone mb15 optional-input uploader-container" id="{{ $id }}" data-var-name="{{ $varName }}"
         @if(isset($dataAttributes) and is_array($dataAttributes) and count($dataAttributes))
            @foreach($dataAttributes as $fieldTitle => $filedValue)
                data-{{ $fieldTitle }}="{{ $filedValue }}"
@@ -58,7 +62,7 @@
 
 <div class="row">
     <div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12 col-xs-offset-0">
-        <div class="row files-uploading-status">
+        <div class="row files-uploading-status" data-var-name="{{ $varName }}">
             {{--<div class="media-uploader-status">--}}
                 {{--<div class="col-xs-9">--}}
                     {{--<div class="media-uploader-status-info">--}}
@@ -96,19 +100,16 @@
 {{-- start -- scripts for uploader --}}
 @section('end-of-body')
     <script>
+        var {{ $varName }};
         $(document).ready(function () {
-            @if(!isset($varName) or !$varName)
-                @php $varName = camel_case($id . '-dropzone') @endphp
-            @endif
-
-            var {{ $varName }} = new Dropzone("#{{ $id }}", {
+            {{ $varName }} = new Dropzone("#{{ $id }}", {
                 {{--maxFileSize: {{ UploadServiceProvider::getTypeRule($fileType, "maxFileSize") }},--}}
                 {{--maxFiles: {{ UploadServiceProvider::getTypeRule($fileType, "maxFiles") }},--}}
                 {{--acceptedFiles: "{{ implode(',', UploadServiceProvider::getTypeRule($fileType, "acceptedFiles")) }}",--}}
             });
 
             {{ $varName }}.on("removedfile", function (file) {
-                removeFromServer(file, $(this.element));
+                removeFile(file, $(this.element));
             });
 
             @if(isset($callbackOnEachUploadComplete) and $callbackOnEachUploadComplete)
@@ -131,7 +132,7 @@
 
             @if(isset($callbackOnQueueComplete) and $callbackOnQueueComplete)
             {{ $varName }}. on("queuecomplete", function () {
-                {{ $callbackOnQueueComplete }}();
+                {{ $callbackOnQueueComplete }}(this.getAcceptedFiles());
             });
             @endif
 
@@ -159,4 +160,4 @@
         });
     </script>
 @append
-{{-- end -- scripts for uploader --}}
+{{-- end —- scripts for uploader --}}
