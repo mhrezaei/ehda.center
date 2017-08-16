@@ -11,6 +11,7 @@ use App\Models\Post;
 use App\Models\Posttype;
 use App\Models\Receipt;
 use App\Models\User;
+use App\Providers\UploadServiceProvider;
 use App\Traits\ManageControllerTrait;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
@@ -662,6 +663,12 @@ class PostsController extends Controller
 			if($model->has('category')) {
 				$saved_model->saveCategories($data);
 			}
+
+			/*-----------------------------------------------
+			| Move uploaded photos from temp ...
+			*/
+			UploadServiceProvider::moveUploadedFiles($saved_model->attachment_hashids_array) ;
+
 
 			/*-----------------------------------------------
 			| Post History ...
