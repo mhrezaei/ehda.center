@@ -982,8 +982,7 @@ class Post extends Model implements FeedItem
 		$selected_folders    = [];
 		foreach($data as $key => $value) {
 			if(str_contains($key, 'category') and $value) {
-				$category_id = Category::realId(str_replace('category-', null, $key));
-				$category    = Category::find($category_id);
+				$category = Category::findByHashid(str_replace('category-', null, $key)) ;
 				if($category) {
 					array_push($selected_categories, $category->id);
 					array_push($selected_folders, $category->folder_id);
