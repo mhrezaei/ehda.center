@@ -16,17 +16,28 @@
 
         </div>
     </div>
+
+    <button type="button" id="btnFeaturedImage" data-input="txtFeaturedImage" data-preview="divFeaturedImage"
+            data-callback="featuredImage('inserted')" class="btn btn-primary">
+        {{ trans('forms.button.browse_image') }}
+    </button>
+    <input id="txtFeaturedImage" type="text" name="featured_image" value="{{ '' }}">
+
+    <div id="divFeaturedImage"></div>
+
 @append
 
 @section('html_header')
-    <style>
-    </style>
+    {!! Html::style('assets/css/postEditorStyles.min.css') !!}
+@append
 
+@section('end-of-body')
+    {!! Html::script ('assets/libs/file-manager/file-manager-modal.min.js') !!}
     <script>
         $(document).ready(function () {
-            $(".file-manager-modal").find('.file-manager-iframe').attr('src', '{{ route('fileManager.index') }}');
-
-            $(".file-manager-modal").modal();
+            $("#btnFeaturedImage").fileManagerModal('Files', {
+                prefix: "{{ route('fileManager.index') }}",
+            });
         });
     </script>
 @append

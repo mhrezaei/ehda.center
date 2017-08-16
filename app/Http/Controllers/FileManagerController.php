@@ -7,6 +7,7 @@ use App\Models\File;
 use App\Models\Folder;
 use App\Models\Post;
 use App\Models\Posttype;
+use App\Providers\UploadServiceProvider;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -47,11 +48,11 @@ class FileManagerController extends Controller
 
     public function getList(Request $request)
     {
-        $files = File::orderBy('id');
+        $files = File::orderBy('created_at', 'DESC');
         switch ($request->instance) {
             case 'posttype':
                 $postType = Posttype::findByHashid($request->key);
-                if(!$postType->exists) {
+                if (!$postType->exists) {
                     return null;
                 }
                 $files->where(['posttype' => $postType->id])
@@ -60,7 +61,7 @@ class FileManagerController extends Controller
                 break;
             case 'folder':
                 $folder = Folder::findByHashid($request->key);
-                if(!$folder->exists) {
+                if (!$folder->exists) {
                     return null;
                 }
                 $files->where(['folder' => $folder->id])
@@ -69,7 +70,7 @@ class FileManagerController extends Controller
                 break;
             case 'category':
                 $category = Category::findByHashid($request->key);
-                if(!$category->exists) {
+                if (!$category->exists) {
                     return null;
                 }
                 $files->where(['category' => $category->id])
@@ -83,4 +84,8 @@ class FileManagerController extends Controller
         return view('file-manager.media-frame-content-gallery-images-list', compact('files'));
     }
 
+    public function getPreview(Request $request)
+    {
+        return UploadServiceProvider::getFileView($request->file, 'thumbnail');
+    }
 }

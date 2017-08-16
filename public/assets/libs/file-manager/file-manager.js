@@ -153,6 +153,13 @@ jQuery(function ($) {
     /*-----End Tab Changing Functions-----*/
 
 
+    $(document).on({
+        click: function () {
+            showFile($(this).data('file'));
+            useFile($(this).data('file'));
+        }
+    }, '.thumbnail');
+
 }); //End Of Ready!
 
 function forms_pd($string) {
@@ -241,3 +248,117 @@ function getFolderParents(folder) {
 function eachUploadCompleter() {
     refreshGallery();
 }
+
+function getFileUrl(file) {
+    return $("[data-file=\"" + file + "\"]").data('url');
+}
+
+function showFile(file) {
+    var preview = getUrlParam('field_preview');
+    if (preview) {
+        $.ajax({
+            url: route_preview,
+            type: 'post',
+            data: {
+                file: file,
+            },
+            success: function (response) {
+                parent.document.getElementById(preview).innerHTML = response;
+            }
+        });
+    }
+}
+
+function getUrlParam(paramName) {
+    var reParam = new RegExp('(?:[\?&]|&)' + paramName + '=([^&]+)', 'i');
+    var match = window.location.search.match(reParam);
+    return ( match && match.length > 1 ) ? match[1] : null;
+}
+
+function useFile(file) {
+
+    function useTinymce3(url) {
+        var win = tinyMCEPopup.getWindowArg("window");
+        win.document.getElementById(tinyMCEPopup.getWindowArg("input")).value = url;
+        if (typeof(win.ImageDialog) != "undefined") {
+            // Update image dimensions
+            if (win.ImageDialog.getImageData) {
+                win.ImageDialog.getImageData();
+            }
+
+            // Preview if necessary
+            if (win.ImageDialog.showPreviewImage) {
+                win.ImageDialog.showPreviewImage(url);
+            }
+        }
+        tinyMCEPopup.close();
+    }
+
+    function useTinymce4AndColorbox(url, field_name) {
+        parent.document.getElementById(field_name).value = url;
+
+        if (typeof parent.tinyMCE !== "undefined") {
+            parent.tinyMCE.activeEditor.windowManager.close();
+        }
+        if (typeof parent.$.fn.colorbox !== "undefined") {
+            parent.$.fn.colorbox.close();
+        }
+    }
+
+    function useCkeditor3(url) {
+        if (window.opener) {
+            // Popup
+            window.opener.CKEDITOR.tools.callFunction(getUrlParam('CKEditorFuncNum'), url);
+        } else {
+            // Modal (in iframe)
+            parent.CKEDITOR.tools.callFunction(getUrlParam('CKEditorFuncNum'), url);
+            parent.CKEDITOR.tools.callFunction(getUrlParam('CKEditorCleanUpFuncNum'));
+        }
+    }
+
+    function useFckeditor2(url) {
+        var p = url;
+        var w = data['Properties']['Width'];
+        var h = data['Properties']['Height'];
+        window.opener.SetUrl(p, w, h);
+    }
+
+    function useModal(url) {
+        parent.document.getElementById(field_name).value = url;
+
+        parent.window.closeFileManagerModal()
+    }
+
+    var url = getFileUrl(file);
+    var field_name = getUrlParam('field_name');
+    var is_ckeditor = getUrlParam('CKEditor');
+    var is_modal = getUrlParam('modal');
+    var is_fcke = typeof data != 'undefined' && data['Properties']['Width'] != '';
+    var file_path = url.replace(route_prefix, '');
+    var modal = url.replace(route_prefix, '');
+
+
+    if (window.opener || window.tinyMCEPopup || field_name || getUrlParam('CKEditorCleanUpFuncNum') || is_ckeditor) {
+        if (is_modal && field_name) {
+            useModal(url, field_name);
+        } else if (window.tinyMCEPopup) { // use TinyMCE > 3.0 integration method
+            useTinymce3(url);
+        } else if (field_name) {   // tinymce 4 and colorbox
+            useTinymce4AndColorbox(url, field_name);
+        } else if (is_ckeditor) {   // use CKEditor 3.0 + integration method
+            useCkeditor3(url);
+        } else if (is_fcke) {      // use FCKEditor 2.0 integration method
+            useFckeditor2(url);
+        } else {                   // standalone button or other situations
+            window.opener.SetUrl(url, file_path);
+        }
+
+        if (window.opener) {
+            window.close();
+        }
+    } else {
+        // No WYSIWYG editor found, use custom method.
+        window.opener.SetUrl(url, file_path);
+    }
+}
+//end useFile

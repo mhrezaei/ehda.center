@@ -1,10 +1,10 @@
 <ul class="thumbnail-container row" id="thumbnail">
     @if(isset($files))
         @foreach($files as $file)
-            <li class=" col-xs-6 col-sm-6 col-md-4 col-lg-3 " data-id="{{ $file->id }}">
-                <div class="thumbnail attachment">
+            <li class=" col-xs-6 col-sm-6 col-md-4 col-lg-3 ">
+                <div class="thumbnail attachment" data-url="{{ url($file->pathname) }}" data-file="{{ $file->hashid }}">
                     {{--<img src="img/insurance-gambling-300x144.jpg" alt="">--}}
-                    {!! \App\Providers\UploadServiceProvider::getFileView($file) !!}
+                    {!! \App\Providers\UploadServiceProvider::getFileView($file, 'thumbnail') !!}
                 </div>
             </li>
         @endforeach
