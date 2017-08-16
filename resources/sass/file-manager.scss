@@ -1,5 +1,5 @@
 @import "bootstrap";
-@import "file-manager-components/jquery-ui.min.css";
+@import "file-manager-components/jquery-ui";
 @import "file-manager-components/variables";
 @import "file-manager-components/fonts";
 @import "local-variables/rtl";
@@ -250,29 +250,6 @@ input[type=search], input[type=text] {
         direction: ltr;
 
         li {
-          .attachment {
-            height: 150px;
-            overflow: hidden;
-            text-align: center;
-            padding: 0;
-            position: relative;
-            -webkit-box-shadow: inset 0 0 15px rgba(0, 0, 0, .1), inset 0 0 0 1px rgba(0, 0, 0, .05);
-            box-shadow: inset 0 0 15px rgba(0, 0, 0, .1), inset 0 0 0 1px rgba(0, 0, 0, .05);
-            background: #eee;
-            cursor: pointer;
-            border: 4px solid #fff;
-
-            img {
-              max-width: unset;
-              max-height: 100%;
-              object-fit: cover;
-              position: absolute;
-              top: 50%;
-              left: 50%;
-              transform: translate(-50%, -50%);
-            }
-          }
-
           &.active {
             .attachment {
               border: 4px solid #006799 !important;
@@ -322,7 +299,7 @@ input[type=search], input[type=text] {
             font-size: 12px;
             font-weight: 600;
             color: #666;
-            margin: 24px 0 8px;
+            margin: 0;
           }
 
           .attachment-info {
@@ -575,6 +552,29 @@ input[type=search], input[type=text] {
       margin-top: 11px;
       padding: 4px;
       color: #444;
+    }
+  }
+
+  .attachment {
+    height: 150px;
+    overflow: hidden;
+    text-align: center;
+    padding: 0;
+    position: relative;
+    -webkit-box-shadow: inset 0 0 15px rgba(0, 0, 0, .1), inset 0 0 0 1px rgba(0, 0, 0, .05);
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, .1), inset 0 0 0 1px rgba(0, 0, 0, .05);
+    background: #eee;
+    cursor: pointer;
+    border: 4px solid #fff;
+
+    img {
+      max-width: unset;
+      max-height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
   }
 

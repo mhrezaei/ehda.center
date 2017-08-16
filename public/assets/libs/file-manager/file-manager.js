@@ -227,10 +227,17 @@ function selectFolder(folder) {
             $('#thumbnail').replaceWith($(response));
         }
     });
-    console.log(listRequest);
+}
+
+function refreshGallery() {
+    selectFolder($(".breadcrumb-folders .folder.current"));
 }
 
 function getFolderParents(folder) {
     var link = folder.children('a');
     return link.parents('.folder');
+}
+
+function eachUploadCompleter() {
+    refreshGallery();
 }

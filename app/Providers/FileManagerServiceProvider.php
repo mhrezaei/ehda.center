@@ -32,6 +32,7 @@ class FileManagerServiceProvider extends ServiceProvider
         'varName'                      => null, // Identifier of Dropzone object element
         'dataAttributes'               => [], // Data attributes of uploader box element
         'target'                       => null, // The "id" of target element which uploaded files will be stored in
+        'directUpload'                 => false, // If true, files will not be uploaded in temporary folder
         'callbackOnEachUploadComplete' => '', // Name of function that will be called after uploading of each file complete (get "file" as parameter)
         'callbackOnEachUploadSuccess'  => '', // Name of function that will be called after uploading of each file success (get "file" as parameter)
         'callbackOnEachUploadError'    => '', // Name of function that will be called after uploading of each file failed (get "file" as parameter)

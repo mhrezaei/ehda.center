@@ -141,6 +141,11 @@ class DropzoneController extends Controller
                 UploadServiceProvider::getSectionRule($sectionName, 'uploadDir'),
                 $folderName,
             ]);
+            
+            if ($request->_directUpload) {
+                UploadServiceProvider::setTemporaryFolderName('');
+            }
+
             $uploadResult = UploadServiceProvider::uploadFile($file, $uploadDir, $externalFields);
             $dbRow = UploadedFileModel::findBySlug($uploadResult, 'id');
 

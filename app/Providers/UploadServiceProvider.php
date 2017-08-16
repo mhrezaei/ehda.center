@@ -250,17 +250,19 @@ class UploadServiceProvider extends ServiceProvider
     public static function uploadFile($file, $uploadDir, $externalFields = [])
     {
         $newName = self::generateFileName() . '.' . $file->getClientOriginalExtension();
-        $finalUploadDir = implode(DIRECTORY_SEPARATOR, [
-            self::$rootUploadDir,
-            self::$temporaryFolderName,
-            $uploadDir
-        ]);
+        $finalUploadDirParts = [self::$rootUploadDir];
+        if (self::$temporaryFolderName) {
+            $finalUploadDirParts[] = self::$temporaryFolderName;
+        }
+        $finalUploadDirParts[] = $uploadDir;
+        $finalUploadDir = implode(DIRECTORY_SEPARATOR, $finalUploadDirParts);
 
         // Save uploaded file to db
         $saveData = array_merge([
             'physical_name' => $newName,
             'directory'     => $finalUploadDir,
         ], $externalFields);
+        FilesFacades::makeDirectory($finalUploadDir, 0775, true, true);
         $id = UploadedFileModel::saveFile($file, $saveData);
 
         // Move uploaded file to target directory
@@ -273,18 +275,17 @@ class UploadServiceProvider extends ServiceProvider
      * Remove File Physically
      *
      * @param string|UploadedFileModel $file
+     * @param boolean                  $onlyTemp If true, file will be removed only in temp status
      *
      * @return bool
      */
-    public static function removeFile($file)
+    public static function removeFile($file, $onlyTemp = true)
     {
         if (!$file instanceof UploadedFileModel) {
             $file = UploadedFileModel::findByHashid($file);
         }
 
-        if ($file->exists and
-            FilesFacades::exists($file->pathname) and
-            $file->hasStatus('temp')
+        if ($file->exists and (!$onlyTemp or $file->hasStatus('temp'))
         ) {
             $pathname = $file->pathname;
 
@@ -299,8 +300,15 @@ class UploadServiceProvider extends ServiceProvider
 
             $file->delete();
 
-            return FilesFacades::delete($pathname);
+            if (FilesFacades::exists($file->pathname)) {
+                FilesFacades::delete($pathname);
+            }
+
+            return true;
+        } else {
+            return false;
         }
+
     }
 
     /**
@@ -308,31 +316,46 @@ class UploadServiceProvider extends ServiceProvider
      *
      * @param \App\Http\Requests\Front\CommentRequest $request
      */
-    public static function moveUploadedFiles(&$request)
+    public static function moveUploadedFilesWithRequest(&$request)
     {
         foreach ($request->all() as $index => $value) {
             if (ends_with($index, '_files')) {
                 $filesHashids = json_decode($value, true);
-                if ($filesHashids and is_array($filesHashids)) {
-                    foreach ($filesHashids as $key => $fileHashid) {
-                        $fileRow = UploadedFileModel::findByHashid($fileHashid);
-                        if ($fileRow->exists() and FilesFacades::exists($fileRow->pathname)) {
-                            $fileRow->spreadMeta();
-                            $newDir = str_replace(self::$temporaryFolderName . DIRECTORY_SEPARATOR, '', $fileRow->directory);
+                $filesHashids = self::moveUploadedFiles($filesHashids);
+                $request->merge([$index => json_encode($filesHashids)]);
+            }
+        }
+    }
 
-                            $fileRow->setStatus('used');
+    /**
+     * Move uploaded files from temporary folder
+     *
+     * @param array $filesHashids
+     *
+     * @return array|null
+     */
+    public static function moveUploadedFiles($filesHashids)
+    {
+        if ($filesHashids and is_array($filesHashids)) {
+            foreach ($filesHashids as $key => $fileHashid) {
+                $fileRow = UploadedFileModel::findByHashid($fileHashid);
+                if ($fileRow->exists and FilesFacades::exists($fileRow->pathname)) {
+                    $fileRow->spreadMeta();
+                    $newDir = str_replace(self::$temporaryFolderName . DIRECTORY_SEPARATOR, '', $fileRow->directory);
 
-                            $file = new File($fileRow->pathname);
-                            $file->move($newDir);
-                            $fileRow->directory = $newDir;
+                    $fileRow->setStatus('used');
 
-                            foreach ($fileRow->related_files as $relatedFileName) {
-                                $relatedFilePathname = implode(DIRECTORY_SEPARATOR, [$newDir, $relatedFileName]);
-                                $relatedFile = new File($relatedFilePathname);
-                                $relatedFile->move($newDir);
-                            }
+                    $file = new File($fileRow->pathname);
+                    $file->move($newDir);
+                    $fileRow->directory = $newDir;
 
-                            $movedFile = new File($newDir . DIRECTORY_SEPARATOR . $file->getFilename());
+                    foreach ($fileRow->related_files as $relatedFileName) {
+                        $relatedFilePathname = implode(DIRECTORY_SEPARATOR, [$newDir, $relatedFileName]);
+                        $relatedFile = new File($relatedFilePathname);
+                        $relatedFile->move($newDir);
+                    }
+
+                    $movedFile = new File($newDir . DIRECTORY_SEPARATOR . $file->getFilename());
 
 //                            $fileRow = $fileRow->toArray();
 //                            $fileRow['related_files'] = self::generateRelatedFiles($movedFile, $movedFile->getFilename(), $newDir);
@@ -352,15 +375,15 @@ class UploadServiceProvider extends ServiceProvider
 //                            }
 
 
-                            UploadedFileModel::store($fileRow);
-                        } else {
-                            unset($filesHashids[$key]);
-                        }
-                    }
+                    UploadedFileModel::store($fileRow);
+                } else {
+                    unset($filesHashids[$key]);
                 }
-                $request->merge([$index => json_encode($filesHashids)]);
             }
+            return $filesHashids;
         }
+
+        return null;
     }
 
     /**
@@ -727,7 +750,6 @@ class UploadServiceProvider extends ServiceProvider
 
                 $imgUrl = url($pathname);
 
-                return view('front.frame.widgets.img-element', array_merge(compact('imgUrl'), $switches));
             } else {
                 $fileType = substr($file->mime_type, 0, strpos($file->mime_type, '/'));
                 switch ($fileType) {
@@ -748,13 +770,14 @@ class UploadServiceProvider extends ServiceProvider
                 }
 
                 $imgUrl = url('assets/images/template/' . $imageName);
-                return view('front.frame.widgets.img-element', array_merge(compact('imgUrl'), $switches));
 //                return view('front.frame.widgets.icon-image-element'
 //                    , array_merge(compact('fileType'), $switches));
             }
+        } else {
+            $imgUrl = url('assets/images/template/chain-broken.svg');;
         }
 
-        return null;
+        return view('front.frame.widgets.img-element', array_merge(compact('imgUrl'), $switches));
     }
 
     public static function getFileUrl($file)
@@ -808,5 +831,15 @@ class UploadServiceProvider extends ServiceProvider
         }
 
         return $file;
+    }
+
+    /**
+     * Sets $temporaryFolderName
+     *
+     * @param string $folder
+     */
+    public static function setTemporaryFolderName($folder)
+    {
+        self::$temporaryFolderName = $folder;
     }
 }

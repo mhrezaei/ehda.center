@@ -6,7 +6,17 @@
     {{--</p>--}}
     {{--</div>--}}
     <div class="col-xs-12">
-            @php $uploaderFilePaths = ['manager.__posttype__.image', 'manager.__posttype__.video'] @endphp
-            {!! \App\Providers\FileManagerServiceProvider::dropzoneUploader($uploaderFilePaths) !!}
+        @php
+            $uploaderFilePaths = [
+                'manager.__posttype__.image',
+                'manager.__posttype__.video',
+                'manager.__posttype__.audio',
+                'manager.__posttype__.text',
+            ]
+        @endphp
+        {!! \App\Providers\FileManagerServiceProvider::dropzoneUploader($uploaderFilePaths, [
+            'directUpload' => true,
+            'callbackOnEachUploadComplete' => 'eachUploadCompleter',
+        ]) !!}
     </div>
 </div>

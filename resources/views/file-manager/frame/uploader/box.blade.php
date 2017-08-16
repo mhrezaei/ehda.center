@@ -47,33 +47,51 @@
             'name' => '_groupName',
             'value' => time() . str_random(8),
         ])
+        @include('front.forms.hidden', [
+            'id' => '',
+            'name' => '_directUpload',
+            'value' => $directUpload,
+        ])
     </div>
 
 </div>
 
-<div class="row files-uploading-status">
-    {{--<div class="media-uploader-status">--}}
-    {{--<h2>در حال بارگذاری...</h2>--}}
-    {{--<button type="button" class="fa fa-times-circle upload-dismiss"></button>--}}
-    {{--<div class="media-progress">--}}
-    {{--<div></div>--}}
-    {{--</div>--}}
-    {{--<div class="upload-detail">--}}
-    {{--<span class="upload-count">--}}
-    {{--<span class="upload-index">1</span>--}}
-    {{--/--}}
-    {{--<span class="upload-total">1</span>--}}
-    {{--</span>--}}
-    {{--<span class="upload-detail-separator">_</span>--}}
-    {{--<span class="upload-filename">blabla.jpg</span>--}}
-    {{--</div>--}}
-    {{--<div class="upload-errors">--}}
-    {{--<ul>--}}
-    {{--<li>Error 1</li>--}}
-    {{--<li>Error 2</li>--}}
-    {{--</ul>--}}
-    {{--</div>--}}
-    {{--</div>--}}
+<div class="row">
+    <div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12 col-xs-offset-0">
+        <div class="row files-uploading-status">
+            {{--<div class="media-uploader-status">--}}
+                {{--<div class="col-xs-9">--}}
+                    {{--<div class="media-uploader-status-info">--}}
+                        {{--<h2>در حال بارگذاری...</h2>--}}
+                        {{--<button type="button" class="fa fa-times-circle upload-dismiss"></button>--}}
+                        {{--<div class="media-progress">--}}
+                            {{--<div></div>--}}
+                        {{--</div>--}}
+                        {{--<div class="upload-detail">--}}
+                        {{--<span class="upload-count">--}}
+                            {{--<span class="upload-index">1</span>--}}
+                            {{--/--}}
+                            {{--<span class="upload-total">1</span>--}}
+                        {{--</span>--}}
+                            {{--<span class="upload-detail-separator">_</span>--}}
+                            {{--<span class="upload-filename">blabla.jpg</span>--}}
+                        {{--</div>--}}
+                        {{--<div class="upload-errors">--}}
+                            {{--<ul>--}}
+                                {{--<li>Error 1</li>--}}
+                                {{--<li>Error 2</li>--}}
+                            {{--</ul>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                {{--<div class="col-xs-3">--}}
+                    {{--<div class="attachment media-uploader-status-image">--}}
+                        {{--<img src="http://searchengineland.com/figz/wp-content/seloads/2015/12/google-amp-fast-speed-travel-ss-1920.jpg">--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+            {{--</div>--}}
+        </div>
+    </div>
 </div>
 {{-- start -- scripts for uploader --}}
 @section('end-of-body')
