@@ -102,6 +102,12 @@ function updateTarget(dropzoneInstance, target) {
     }
 }
 
+function removeFile(file, dropzoneElement) {
+    var uploadResultElement = file.uploadResultElement;
+    uploadResultElement.remove();
+    // removeFromServer(file, dropzoneElement);
+}
+
 function removeFromServer(file, dropzoneElement) {
     if (file.xhr) {
         var rs = $.parseJSON(file.xhr.response);
@@ -118,4 +124,8 @@ function removeFromServer(file, dropzoneElement) {
             data: data,
         })
     }
+}
+
+function refreshDropzone(dropzoneObj) {
+    dropzoneObj.removeAllFiles();
 }

@@ -159,13 +159,14 @@
 			{{--'link' => "url:manage/cards/printings/pending/-id-" ,--}}
 		{{--]     )--}}
 
-		@include("manage.frame.widgets.grid-tiny" , [
-			'condition' => $model->has('event') and $total_cards = $model->registers()->count(),
-			'icon' => "credit-card" ,
-			'text' => pd(number_format($total_cards)) . ' ' . trans("ehda.donation_card") ,
-			'color' => "success" ,
-			'link' => "modal:manage/cards/event-stats/-hash_id-" ,
-		]     )
+		@if($model->has('event') and $total_cards = $model->registers()->count())
+			@include("manage.frame.widgets.grid-tiny" , [
+				'icon' => "credit-card" ,
+				'text' => pd(number_format($total_cards)) . ' ' . trans("ehda.donation_card") ,
+				'color' => "success" ,
+				'link' => "modal:manage/cards/event-stats/-hash_id-" ,
+			]     )
+		@endif
 		
 		@include("manage.frame.widgets.grid-tiny" , [
 			'condition' => $model->has('comment'),
@@ -192,6 +193,7 @@
 	['user-o' , trans('posts.form.post_owner') , "modal:manage/posts/act/-id-/owner/1" , $model->canPublish()],
 	['clone' , trans('posts.form.clone') , "modal:manage/posts/act/-id-/clone" , $model->can('create')],
 	['globe' , trans('posts.features.locales') , "modal:manage/posts/act/-id-/locales/" , $model->has('locales')],
+	['thumb-tack' , $model->pinned?  trans("posts.pin.remove_command") : trans('posts.pin.put_command'), "modal:manage/posts/act/-id-/pin" , $model->has('pin') and $model->can('publish')] ,
 	['-' , $model->can('create') or $model->canEdit()],
 
 	['trash-o' , trans('forms.button.soft_delete') , "modal:manage/posts/act/-id-/delete" , $model->canDelete() and !$model->trashed()] ,

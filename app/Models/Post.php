@@ -432,6 +432,12 @@ class Post extends Model implements FeedItem
 		return $list;
 	}
 
+	public function getPinnedAttribute()
+	{
+		return boolval($this->pinned_at) ;
+	}
+
+
 	public function getPhotosAttribute()
 	{
 		$array = $this->spreadMeta()->post_photos;
@@ -442,6 +448,19 @@ class Post extends Model implements FeedItem
 			return $array;
 		}
 	}
+
+	public function getFilesAttribute()
+	{
+		$array = $this->spreadMeta()->post_files;
+		if(!$array) {
+			return [];
+		}
+		else {
+			return $array;
+		}
+
+	}
+
 
 	public function getParentAttribute()
 	{

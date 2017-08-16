@@ -59,6 +59,7 @@ class Category extends Model
 	*/
 	public static function realId($hash_id)
 	{
+		return hashid($hash_id);
 		return Hashids::decode($hash_id)[0];
 	}
 
