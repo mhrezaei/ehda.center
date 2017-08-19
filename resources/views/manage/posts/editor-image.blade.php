@@ -4,16 +4,38 @@
 			{{ trans('validation.attributes.featured_image') }}
 		</div>
 
+		<div class="modal fade file-manager-modal" id="file-manager-modal" role="dialog">
+
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<button class="btn-close" data-dismiss="modal">
+						<span class="fa fa-times"></span>
+					</button>
+					<div class="modal-body">
+						<iframe class="file-manager-iframe" frameborder="0"></iframe>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
 		<div class="m10 text-center" style="">
-			<button type="button" id="btnFeaturedImage" data-input="txtFeaturedImage" data-preview="imgFeaturedImage" data-callback="featuredImage('inserted')" class="btn btn-{{ $model->featured_image? 'default' : 'primary' }}">
+			<button type="button" id="btnFeaturedImage" data-input="txtFeaturedImage" data-preview="divFeaturedImage"
+					data-callback="featuredImage('inserted')"
+					class="btn btn-{{ $model->featured_image? 'default' : 'primary' }}">
 				{{ trans('forms.button.browse_image') }}
 			</button>
-			<input id="txtFeaturedImage" type="hidden" name="featured_image" value="{{ $model->featured_image? url($model->featured_image) : '' }}">
+			<input id="txtFeaturedImage" type="hidden-" name="featured_image"
+				   value="{{ $model->featured_image? url($model->featured_image) : '' }}">
 			<div id="divFeaturedImage" class="{{ $model->featured_image? '' : 'noDisplay' }}">
-				<div class="text-center">
-					<img id="imgFeaturedImage" src="{{ $model->featured_image? url($model->featured_image) : '' }}" style="margin-top:15px;max-height:100px;max-width: 100%">
-				</div>
-				<button type="button" id="btnDeleteFeaturedImage" class="btn btn-link btn-xs" onclick="featuredImage('deleted')">
+				<div id="divFeaturedImage" style="max-width: 100%"></div>
+
+				{{--<div class="text-center">--}}
+					{{--<img id="imgFeaturedImage" src="{{ $model->featured_image? url($model->featured_image) : '' }}"--}}
+						 {{--style="margin-top:15px;max-height:100px;max-width: 100%">--}}
+				{{--</div>--}}
+				<button type="button" id="btnDeleteFeaturedImage" class="btn btn-link btn-xs"
+						onclick="featuredImage('deleted')">
 				<span class="text-danger clickable">
 					{{ trans('forms.button.flush_image') }}
 				</span>
@@ -22,7 +44,9 @@
 		</div>
 
 		<script>
-		  $('#btnFeaturedImage').filemanager('image');
+			  $("#btnFeaturedImage").fileManagerModal('Files', {
+				  prefix: "{{ route('fileManager.index') }}",
+			  });
 		</script>
 
 	</div>
