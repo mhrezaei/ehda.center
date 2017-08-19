@@ -178,7 +178,7 @@ return [
         Spatie\Feed\FeedServiceProvider::class,
         Morilog\Jalali\JalaliServiceProvider::class,
         Unisharp\Laravelfilemanager\LaravelFilemanagerServiceProvider::class,
-        Intervention\Image\ImageServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class, 
 
         /*
          * Application Service Providers...
