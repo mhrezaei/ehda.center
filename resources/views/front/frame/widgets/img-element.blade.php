@@ -12,6 +12,6 @@
     }
 @endphp
 
-<img src="{{ $imgUrl }}" @if($style) style="{{ $style }}" @endif
-    @if($class) class="{{ $class }}" @endif
-    />
+<img src="{{ $imgUrl }}" style="max-width: 100%;{{ $style }}"
+     @if($class) class="{{ $class }}" @endif
+/>
