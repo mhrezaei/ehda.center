@@ -17,8 +17,9 @@
         </div>
     </div>
 
-    <button type="button" id="btnFeaturedImage" data-input="txtFeaturedImage" data-preview="divFeaturedImage"
-            data-callback="featuredImage('inserted')" class="btn btn-primary">
+    <button type="button" id="btnFeaturedImage" data-file-manager-input="txtFeaturedImage"
+            data-file-manager-preview="divFeaturedImage" data-file-manager-callback="alert('fsdlfjdlskj')"
+            class="btn btn-primary">
         {{ trans('forms.button.browse_image') }}
     </button>
     <input id="txtFeaturedImage" type="text" name="featured_image" value="{{ '' }}">
@@ -37,7 +38,7 @@
         $(document).ready(function () {
             $("#btnFeaturedImage").fileManagerModal('Files', {
                 prefix: "{{ route('fileManager.index') }}",
-            });
+            }).click();
         });
     </script>
 @append
