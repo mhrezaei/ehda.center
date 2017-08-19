@@ -51,6 +51,8 @@ Route::group([ //@TODO: Remove when project fully erected.
     Route::get('/tests2', 'ConvertController@tests2');
 });
 
+Route::get('/hadi/test', 'HomeController@hadi');
+
 /*
 |--------------------------------------------------------------------------
 | Manage Side
