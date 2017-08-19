@@ -461,6 +461,19 @@ class Post extends Model implements FeedItem
 
 	}
 
+	public function getAttachmentHashidsArrayAttribute()
+	{
+		$array = $this->spreadMeta()->files ;
+		$result = [] ;
+
+		foreach($array as $item) {
+			$result[] = $item['src'] ;
+		}
+
+		return $result ;
+	}
+
+
 
 	public function getParentAttribute()
 	{

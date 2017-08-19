@@ -6,5 +6,5 @@
 | $option is passed via the automatic ManageControllerTrait method, and contains the hashid of newly inserted file.
 --}}
 
-{{ '' , isset($option)? Upload::removeFile($option) : '' }}
+{{ '' , isset($option)? Upload::removeFile($option , false) : '' }}
 <script>postFileCounterUpdate('-')</script>
