@@ -16,10 +16,12 @@ $input_id = "txt-$name";
 	<div class="row">
 		@if(!$disabled)
 			<div class="col-md-3">
-				<button id="{{ "btn-$name" }}" type="button" data-input="{{ $input_id }}"
-						data-callback="downstreamPhotoSelected('#{{ $input_id }}')" class="btn btn-default btn-sm">
+
+				<button id="{{ "btn-$name" }}" type="button" data-file-manager-input="{{ $input_id }}"
+						data-file-manager-callback="downstreamPhotoSelected('#{{ $input_id }}')" class="btn btn-default btn-sm">
 					{{ trans('forms.button.browse_image') }}
 				</button>
+
 			</div>
 		@endif
 		<div class="col-md-{{$disabled?'12':'9'}}">

@@ -11,9 +11,11 @@
 				{{ trans('forms.button.browse_image') }}
 			</button>
 			<input id="txtFeaturedImage" type="hidden" name="featured_image"
-				   value="{{ $model->featured_image? url($model->featured_image) : '' }}">
+				   value="{{ $model->featured_image? $model->featured_image : '' }}">
 			<div id="divFeaturedImage" class="{{ $model->featured_image? '' : 'noDisplay' }}">
-				<div id="divFeaturedImageInside" class="w90 m10" style="border-radius: 10px"></div>
+				<div id="divFeaturedImageInside" class="w90 m10" style="border-radius: 10px">
+					<img src="{{ $model->featured_image? url($model->featured_image) : '' }}" style="max-width: 100%">
+				</div>
 
 				{{--<div class="text-center">--}}
 					{{--<img id="imgFeaturedImage" src="{{ $model->featured_image? url($model->featured_image) : '' }}"--}}
