@@ -10,7 +10,7 @@ $.ajaxSetup({
 });
 
 jQuery(function ($) {
-    window.fileManagerModalOptions = getValueOf(parent.window.fileManagerModalOptions);
+    window.fileManagerModalOptions = getValueOf(parent.window.fileManagerModalOptions ? parent.window.fileManagerModalOptions : {});
 
     selectFolder($(".breadcrumb-folders .folder").first())
 
