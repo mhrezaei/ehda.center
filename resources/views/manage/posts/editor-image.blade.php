@@ -4,31 +4,16 @@
 			{{ trans('validation.attributes.featured_image') }}
 		</div>
 
-		<div class="modal fade file-manager-modal" id="file-manager-modal" role="dialog">
-
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<button class="btn-close" data-dismiss="modal">
-						<span class="fa fa-times"></span>
-					</button>
-					<div class="modal-body">
-						<iframe class="file-manager-iframe" frameborder="0"></iframe>
-					</div>
-				</div>
-
-			</div>
-		</div>
-
 		<div class="m10 text-center" style="">
-			<button type="button" id="btnFeaturedImage" data-input="txtFeaturedImage" data-preview="divFeaturedImage"
+			<button type="button" id="btnFeaturedImage" data-input="txtFeaturedImage" data-preview="divFeaturedImageInside"
 					data-callback="featuredImage('inserted')"
 					class="btn btn-{{ $model->featured_image? 'default' : 'primary' }}">
 				{{ trans('forms.button.browse_image') }}
 			</button>
-			<input id="txtFeaturedImage" type="hidden-" name="featured_image"
+			<input id="txtFeaturedImage" type="hidden" name="featured_image"
 				   value="{{ $model->featured_image? url($model->featured_image) : '' }}">
 			<div id="divFeaturedImage" class="{{ $model->featured_image? '' : 'noDisplay' }}">
-				<div id="divFeaturedImage" style="max-width: 100%"></div>
+				<div id="divFeaturedImageInside" class="w90 m10" style="border-radius: 10px"></div>
 
 				{{--<div class="text-center">--}}
 					{{--<img id="imgFeaturedImage" src="{{ $model->featured_image? url($model->featured_image) : '' }}"--}}

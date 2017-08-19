@@ -73,9 +73,11 @@
 	{!! HTML::script ('/vendor/laravel-filemanager/js/lfm.js') !!}
 
 	{{-- Custom --}}
+	{!! Html::script ('assets/libs/file-manager/file-manager-modal.min.js') !!}
 	{!! Html::style('assets/css/manage.min.css') !!}
 	{!! HTML::script ('assets/js/forms.js') !!}
 	{!! HTML::script ('assets/js/manage.js') !!}
+
 
 	@yield('html_header')
 
@@ -89,5 +91,31 @@
 <body>
 @yield('body')
 @yield('end-of-body')
+
+<div class="modal fade file-manager-modal" id="file-manager-modal" role="dialog">
+
+	{{--
+	|--------------------------------------------------------------------------
+	| File Manager Modal
+	|--------------------------------------------------------------------------
+	|
+	--}}
+
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<button class="btn-close" data-dismiss="modal">
+				<span class="fa fa-times"></span>
+			</button>
+			<div class="modal-body">
+				<iframe class="file-manager-iframe" frameborder="0"></iframe>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+
+
+
 </body>
 </html>
