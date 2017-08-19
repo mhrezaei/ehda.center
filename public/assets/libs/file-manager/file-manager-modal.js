@@ -3,6 +3,20 @@
  */
 (function ($) {
 
+    /**
+     * Sets event listener on a button to opern file-manager-modal
+     * - This function reads some options from data attributes.
+     * - These data attributes should start with "file-manager"
+     * - Available Options:
+     * -- "input": ID attribute of target element that will hold the result.
+     * -- "preview": ID attribute of element that will holds preview of selected file.
+     * -- "callback": Some JS Codes that will be run after choosing file.
+     * -- "output-type": Specifies how to return result. (url, pathname...)
+     *
+     * @param {string} type
+     * @param {object} options
+     * @returns {jQuery}
+     */
     $.fn.fileManagerModal = function (type, options) {
         type = type || 'image';
 
