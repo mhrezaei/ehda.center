@@ -51,6 +51,7 @@ Route::group([ //@TODO: Remove when project fully erected.
     Route::get('/tests2', 'ConvertController@tests2');
 });
 
+// test download file route //@TODO: Remove below link after file download completed
 Route::get('/hadi/test', 'HomeController@hadi');
 
 /*
