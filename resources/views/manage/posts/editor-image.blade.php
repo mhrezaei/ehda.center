@@ -5,8 +5,8 @@
 		</div>
 
 		<div class="m10 text-center" style="">
-			<button type="button" id="btnFeaturedImage" data-input="txtFeaturedImage" data-preview="divFeaturedImageInside"
-					data-callback="featuredImage('inserted')"
+			<button type="button" id="btnFeaturedImage" data-file-manager-input="txtFeaturedImage" data-file-manager-preview="divFeaturedImageInside"
+					data-file-manager-callback="featuredImage('inserted')"
 					class="btn btn-{{ $model->featured_image? 'default' : 'primary' }}">
 				{{ trans('forms.button.browse_image') }}
 			</button>
