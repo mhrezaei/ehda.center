@@ -10,6 +10,8 @@ $.ajaxSetup({
 });
 
 jQuery(function ($) {
+    window.fileManagerModalOptions = getValueOf(parent.window.fileManagerModalOptions);
+
     selectFolder($(".breadcrumb-folders .folder").first())
 
     // On Load Variables
@@ -155,7 +157,6 @@ jQuery(function ($) {
 
     $(document).on({
         click: function () {
-            showFile($(this).data('file'));
             useFile($(this).data('file'));
         }
     }, '.thumbnail');
@@ -253,8 +254,12 @@ function getFileUrl(file) {
     return $("[data-file=\"" + file + "\"]").data('url');
 }
 
+function getFilePathname(file) {
+    return $("[data-file=\"" + file + "\"]").data('pathname');
+}
+
 function showFile(file) {
-    var preview = getUrlParam('field_preview');
+    var preview = window.fileManagerModalOptions.preview;
     if (preview) {
         $.ajax({
             url: route_preview,
@@ -323,24 +328,55 @@ function useFile(file) {
         window.opener.SetUrl(p, w, h);
     }
 
-    function useModal(url) {
-        parent.document.getElementById(field_name).value = url;
+    function useModal(result) {
+        let parentWindow = $(parent.document);
 
+        // Set value in target element
+        let targetInput = parentWindow.find('#' + window.fileManagerModalOptions.input);
+        if (targetInput.length) {
+            targetInput.val(result);
+        }
+
+        // Show file
+        showFile(file);
+
+        // Run callback
+        let callBackValue = window.fileManagerModalOptions.callback;
+        if (callBackValue) {
+            parent.window.eval(callBackValue);
+        }
+
+        // Close modal
         parent.window.closeFileManagerModal()
     }
 
     var url = getFileUrl(file);
+    var pathname = getFilePathname(file);
     var field_name = getUrlParam('field_name');
     var is_ckeditor = getUrlParam('CKEditor');
-    var is_modal = getUrlParam('modal');
+    var is_modal = window.fileManagerModalOptions.modal;
     var is_fcke = typeof data != 'undefined' && data['Properties']['Width'] != '';
     var file_path = url.replace(route_prefix, '');
     var modal = url.replace(route_prefix, '');
 
 
-    if (window.opener || window.tinyMCEPopup || field_name || getUrlParam('CKEditorCleanUpFuncNum') || is_ckeditor) {
-        if (is_modal && field_name) {
-            useModal(url, field_name);
+    if (
+        window.opener ||
+        window.tinyMCEPopup ||
+        field_name ||
+        getUrlParam('CKEditorCleanUpFuncNum') ||
+        is_ckeditor ||
+        is_modal
+    ) {
+        if (is_modal) {
+            switch (window.fileManagerModalOptions.outputType) {
+                case 'url':
+                    useModal(url, field_name);
+                    break;
+                default:
+                    useModal(pathname, field_name);
+                    break
+            }
         } else if (window.tinyMCEPopup) { // use TinyMCE > 3.0 integration method
             useTinymce3(url);
         } else if (field_name) {   // tinymce 4 and colorbox
