@@ -254,6 +254,10 @@ function getFileUrl(file) {
     return $("[data-file=\"" + file + "\"]").data('url');
 }
 
+function getFilePathname(file) {
+    return $("[data-file=\"" + file + "\"]").data('pathname');
+}
+
 function showFile(file) {
     var preview = window.fileManagerModalOptions.preview;
     if (preview) {
@@ -324,13 +328,13 @@ function useFile(file) {
         window.opener.SetUrl(p, w, h);
     }
 
-    function useModal(url) {
+    function useModal(result) {
         let parentWindow = $(parent.document);
 
         // Set value in target element
         let targetInput = parentWindow.find('#' + window.fileManagerModalOptions.input);
         if (targetInput.length) {
-            targetInput.val(url);
+            targetInput.val(result);
         }
 
         // Show file
@@ -347,6 +351,7 @@ function useFile(file) {
     }
 
     var url = getFileUrl(file);
+    var pathname = getFilePathname(file);
     var field_name = getUrlParam('field_name');
     var is_ckeditor = getUrlParam('CKEditor');
     var is_modal = window.fileManagerModalOptions.modal;
@@ -364,7 +369,14 @@ function useFile(file) {
         is_modal
     ) {
         if (is_modal) {
-            useModal(url, field_name);
+            switch (window.fileManagerModalOptions.outputType) {
+                case 'url':
+                    useModal(url, field_name);
+                    break;
+                default:
+                    useModal(pathname, field_name);
+                    break
+            }
         } else if (window.tinyMCEPopup) { // use TinyMCE > 3.0 integration method
             useTinymce3(url);
         } else if (field_name) {   // tinymce 4 and colorbox
