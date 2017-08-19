@@ -93,7 +93,18 @@ class UploadServiceProvider extends ServiceProvider
      */
     public static function getSectionRule($section, $configName)
     {
-        return self::followUpConfig(self::generateConfigPath($section, true) . ".$configName");
+        $result = self::followUpConfig(self::generateConfigPath($section, true) . ".$configName");
+
+        /**
+         * Modify result if needed
+         */
+        switch ($configName) {
+            case 'uploadDir':
+                $result = self::rectifyDirectory($result);
+                break;
+        }
+
+        return $result;
     }
 
     /**
@@ -773,7 +784,7 @@ class UploadServiceProvider extends ServiceProvider
 //                    , array_merge(compact('fileType'), $switches));
             }
         } else {
-            $imgUrl = url('assets/images/template/chain-broken.svg');;
+            $imgUrl = url('assets/images/template/chain-broken.svg');
         }
 
         return view('front.frame.widgets.img-element', array_merge(compact('imgUrl'), $switches));
@@ -840,5 +851,17 @@ class UploadServiceProvider extends ServiceProvider
     public static function setTemporaryFolderName($folder)
     {
         self::$temporaryFolderName = $folder;
+    }
+
+    /**
+     * Rectifies directory name string relating on operating system
+     *
+     * @param string $directory
+     *
+     * @return mixed
+     */
+    public static function rectifyDirectory($directory)
+    {
+        return preg_replace("/\/|\\\\/", DIRECTORY_SEPARATOR, $directory);
     }
 }
