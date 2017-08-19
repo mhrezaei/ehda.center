@@ -1133,31 +1133,56 @@ class Post extends Model implements FeedItem
 		return $posts;
 	}
 
+    /**
+     * Returns true if we can receive comments on this post
+     *
+     * @return bool
+     */
+    public function canReceiveComments()
+    {
+        $this->spreadMeta();
+        if (
+            ((user()->exists or $this->allow_anonymous_comment) and
+                (!$this->disable_receiving_comments)) or
+            setting()->ask('allow_anonymous_comment')->gain()
+        ) {
+            return true;
+        }
 
-	public function canReceiveComments()
-	{
-		$this->spreadMeta();
-		if (
-			((user()->exists or $this->allow_anonymous_comment) and
-				(!$this->disable_receiving_comments)) or
-			setting()->ask('allow_anonymous_comment')->gain()
-		) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+        return false;
+    }
 
-	public function canShowComments()
-	{
-		$this->spreadMeta();
-		if(!$this->disable_showing_comments) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
+    /**
+     * Returns true if we can show comments of this post
+     *
+     * @return bool
+     */
+    public function canShowComments()
+    {
+        $this->spreadMeta();
+        if (!$this->disable_showing_comments) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns true if we can show download box for this post
+     *
+     * @return bool
+     */
+    public function canDownloadFile()
+    {
+        $type = $this->type;
+        $postFiles = $this->meta('post_files');
+
+        if (starts_with($type, 'educational') and $postFiles and is_array($postFiles) and count($postFiles)) {
+            return true;
+        }
+
+        return false;
+    }
 
 	public function isIt($switch)
 	{

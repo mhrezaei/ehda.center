@@ -8,11 +8,14 @@ use App\Models\Folder;
 use App\Models\Post;
 use App\Models\Posttype;
 use App\Providers\UploadServiceProvider;
+use App\Traits\ManageControllerTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class FileManagerController extends Controller
 {
+    use ManageControllerTrait;
+
     public function index()
     {
         $postTypes = $this->getAccessiblePosttypes();
@@ -87,5 +90,21 @@ class FileManagerController extends Controller
     public function getPreview(Request $request)
     {
         return UploadServiceProvider::getFileView($request->file, 'thumbnail');
+    }
+
+    public function download($hadhid, $fileName = '')
+    {
+        $file = File::findByHashid($hadhid);
+        if (!$file->exists) {
+            return $this->abort('404');
+        }
+
+        $fileName = $fileName ?: $file->original_name;
+
+        $headers = array(
+            'Content-Type: ' . $file->mime_type,
+        );
+
+        return response()->download($file->pathname, $fileName, $headers);
     }
 }

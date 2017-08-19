@@ -428,7 +428,7 @@ class ComposerStaticInitc163ed33e856e3abf8986dc792906912
         'App\\Http\\Controllers\\Front\\StatesController' => __DIR__ . '/../..' . '/app/Http/Controllers/Front/StatesController.php',
         'App\\Http\\Controllers\\Front\\TeammatesController' => __DIR__ . '/../..' . '/app/Http/Controllers/Front/TeammatesController.php',
         'App\\Http\\Controllers\\Front\\TestController' => __DIR__ . '/../..' . '/app/Http/Controllers/Front/TestController.php',
-        'App\\Http\\Controllers\\Front\\TutorialsController' => __DIR__ . '/../..' . '/app/Http/Controllers/Front/TutorialsController.php',
+        'App\\Http\\Controllers\\Front\\TutorialsController' => __DIR__ . '/../..',
         'App\\Http\\Controllers\\Front\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/Front/UserController.php',
         'App\\Http\\Controllers\\Front\\VolunteersController' => __DIR__ . '/../..' . '/app/Http/Controllers/Front/VolunteersController.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
