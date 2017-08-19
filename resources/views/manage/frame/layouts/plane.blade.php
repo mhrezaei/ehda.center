@@ -77,6 +77,7 @@
 	{!! Html::style('assets/css/manage.min.css') !!}
 	{!! HTML::script ('assets/js/forms.js') !!}
 	{!! HTML::script ('assets/js/manage.js') !!}
+	{!! HTML::script ('assets/js/tools.min.js') !!}
 
 
 	@yield('html_header')
