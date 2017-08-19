@@ -3,15 +3,12 @@ $darkColors: (
         "black": #3e3e3e,
         "almostBlack": #070707,
         "green": #88AC2E,
-        "lightGreen": #A6CE39,
         "darkGreen": #688719,
         "red": #e80000,
-        "lightRed": #FF2A2A,
         "darkRed": #B2123A,
         "purple": #9013FE,
         "teal": #23999d,
         "blue": #3397b9,
-        "lightBlue": #44c8f5,
         "darkBlue": #1683A7,
         "brown": #4F3111,
         "violet": #4F5B93,
@@ -25,6 +22,9 @@ $darkColors: (
 );
 
 $lightColors: (
+        "lightGreen": #A6CE39,
+        "lightRed": #FF2A2A,
+        "lightBlue": #44c8f5,
         "white": #ffffff,
         "lightGray": #eeeeee,
 );

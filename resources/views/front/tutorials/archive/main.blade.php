@@ -1,6 +1,6 @@
 @extends('front.frame.frame')
 
-@php $pageTitle = setting()->ask('site_title')->gain() . ' | ' . trans('front.tutorials.plural') @endphp
+@php $pageTitle = setting()->ask('site_title')->gain() . ' | ' . $postType->titleIn(getLocale()) @endphp
 @section('head')
     <title>{{ $pageTitle }}</title>
 @append
@@ -17,7 +17,7 @@
         ])
         <div class="row gallery-archive">
             <div class="container">
-{{--                @include('front.tutorials.archive.carousel')--}}
+                @include('front.tutorials.archive.carousel')
                 @include('front.tutorials.archive.filters-row')
                 {!! $postsListHtml !!}
             </div>

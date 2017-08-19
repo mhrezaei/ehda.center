@@ -341,6 +341,10 @@ Route::group(['prefix' => 'file'], function () {
     Route::post('remove', 'DropzoneController@remove_file')->name('dropzone.remove');
 });
 
+// File
+Route::group(['prefix' => 'file'], function () {
+    Route::get('{hadhid}/{fileName?}', 'FileManagerController@download')->name('file.download');
+});
 
 // File Manager
 Route::group(['prefix' => 'file-manager', 'middleware' => ['auth', 'is:admin']], function () {
@@ -457,9 +461,9 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
         });
 
         // Tutorials
-        Route::group(['prefix' => 'tutorials', /* 'middleware' => 'is:developer,gallery/categories/gallery' */], function () {
-            Route::get('/', 'TutorialsController@archive')->name('tutorials.archive');
-            Route::post('get-posts', 'TutorialsController@ajaxGetPosts')->name('tutorials.get-posts.ajax');
+        Route::group(['prefix' => 'education'], function () {
+            Route::get('/{educationType}', 'EducationController@archive')->name('education.archive');
+            Route::post('get-posts', 'TutorialsController@ajaxGetPosts')->name('education.get-posts.ajax');
         });
 
         // Massages

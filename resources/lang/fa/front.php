@@ -101,6 +101,7 @@ return [
     'community_branches'                       => 'شعب انجمن',
     'email_has_been_sent_automatically'        => 'توجه : این ایمیل به صورت خودکار فرستاده شده است ، بنابراین به آن پاسخ ندهید. ',
     'unnamed'                                  => 'بی‌نام',
+    'download_links'                           => 'لینک‌های دانلود',
 
     'tutorials' => [
         'singular' => 'آموزش',
@@ -270,13 +271,17 @@ return [
         ],
         'sub_menus' => [
             "learn" => [
-                'academic'                          => 'علمی',
+                'general_educations'                => 'آموزش‌های عمومی',
                 'brain_death'                       => 'مرگ مغزی',
                 'organ_donation'                    => 'اهدای عضو',
                 'allocation'                        => 'تخصیص اعضا',
                 'organ_transplant'                  => 'پیوند اعضا',
                 'organ_transplant_history'          => 'تاریخچه پیوند',
                 'statistics'                        => 'آمار',
+                'professional_educations'           => 'آموزش‌های تخصصی',
+                'educations_courses'                => 'دوره‌ها',
+                'educations_video'                  => 'فیلم‌ها',
+                'educations_text'                   => 'متن‌ها',
                 'cultural'                          => 'فرهنگی',
                 'organ_donation_in_religion'        => 'اهدای عضو در دین',
                 'organ_donation_in_another_country' => 'اهدای عضو در کشور های دیگر',

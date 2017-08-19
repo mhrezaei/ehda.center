@@ -355,10 +355,12 @@ class UploadServiceProvider extends ServiceProvider
                     $newDir = str_replace(self::$temporaryFolderName . DIRECTORY_SEPARATOR, '', $fileRow->directory);
 
                     $file = new File($fileRow->pathname);
-                    foreach ($fileRow->related_files as $key =>  $relatedFileName) {
-                        $relatedFilePathname = $fileRow->getRelatedFilePathname($key);
-                        $relatedFile = new File($relatedFilePathname);
-                        $relatedFile->move($newDir);
+                    if ($fileRow->related_files) {
+                        foreach ($fileRow->related_files as $key => $relatedFileName) {
+                            $relatedFilePathname = $fileRow->getRelatedFilePathname($key);
+                            $relatedFile = new File($relatedFilePathname);
+                            $relatedFile->move($newDir);
+                        }
                     }
 
                     $fileRow->setStatus('used');

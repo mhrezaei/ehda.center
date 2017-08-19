@@ -138,7 +138,7 @@ class MenuServiceProvider extends ServiceProvider
                         'link'  => url_locale('faq')
                     ],
                     [
-                        'title'    => trans('front.main-menu.sub_menus.learn.academic'),
+                        'title'    => trans('front.main-menu.sub_menus.learn.general_educations'),
                         'children' => [
                             [
                                 'title' => trans('front.main-menu.sub_menus.learn.brain_death'),
@@ -180,6 +180,29 @@ class MenuServiceProvider extends ServiceProvider
                                 'link'  => route_locale('post.single', [
                                     'identifier' => 'statistics',
                                     'url'        => urlencode(trans('front.main-menu.sub_menus.learn.statistics')),
+                                ]),
+                            ],
+                        ],
+                    ],
+                    [
+                        'title'    => trans('front.main-menu.sub_menus.learn.professional_educations'),
+                        'children' => [
+                            [
+                                'title' => trans('front.main-menu.sub_menus.learn.educations_courses'),
+                                'link'  => route_locale('education.archive', [
+                                    'educationType' => 'courses'
+                                ]),
+                            ],
+                            [
+                                'title' => trans('front.main-menu.sub_menus.learn.educations_video'),
+                                'link'  => route_locale('education.archive', [
+                                    'educationType' => 'video'
+                                ]),
+                            ],
+                            [
+                                'title' => trans('front.main-menu.sub_menus.learn.educations_text'),
+                                'link'  => route_locale('education.archive', [
+                                    'educationType' => 'text'
                                 ]),
                             ],
                         ],
