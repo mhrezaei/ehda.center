@@ -203,7 +203,7 @@ class PostsServiceProvider extends ServiceProvider
 
         $post = self::smartFindPost($identifier);
 
-        if (!$post->exists) {
+        if (!$post->exists or !$post->id) {
             if ($data['showError']) {
                 return view('errors.m410');
             } else {

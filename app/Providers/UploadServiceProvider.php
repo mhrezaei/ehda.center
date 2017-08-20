@@ -436,7 +436,15 @@ class UploadServiceProvider extends ServiceProvider
 
     public static function getThumb($fileUrl, $thumbFolder = 'thumbs')
     {
-        return str_replace_last('/', "/$thumbFolder/", $fileUrl);
+        if (strpos($fileUrl, '_original') !== false) {
+            return str_replace('_original', '_thumb', $fileUrl);
+        }
+        else
+        {
+            $file = explode('.', $fileUrl);
+            return $file[0] . '_thumb.' . $file[1];
+        }
+//        return str_replace_last('/', "/$thumbFolder/", $fileUrl);
     }
 
     /**

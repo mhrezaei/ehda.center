@@ -246,7 +246,7 @@ JS;
         $post = PostsServiceProvider::smartFindPost($hashid);
         /************************* Find Post ********************** END */
 
-        if ($post->exists) { // If the specified $hashid relates on an existed post
+        if ($post->exists and $post->id) { // If the specified $hashid relates on an existed post
             $post->spreadMeta();
 
             /************************* Generate Html for Post View Part ********************** START */

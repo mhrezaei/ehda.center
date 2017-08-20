@@ -1,6 +1,5 @@
 {{ null, $post->spreadMeta() }}
 
-
 <div class="row">
     <div class="col-xs-12">
         @if($post->abstract)
@@ -13,8 +12,9 @@
     </div>
     <div class="col-xs-12">
         <div class="flex_wrapper" id="gallery">
-            @if($post['post_photos'] and is_array($post['post_photos']))
-                @foreach($post['post_photos'] as $key => $item)
+            {{--@TODO: this file need to edit gallery files should load with service provider--}}
+            @if($post->files and is_array($post->files))
+                @foreach($post->files as $key => $item)
                     @include($viewFolder . '.item')
                 @endforeach
             @endif
