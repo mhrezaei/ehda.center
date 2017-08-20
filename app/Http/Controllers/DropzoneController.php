@@ -98,19 +98,20 @@ class DropzoneController extends Controller
                 }
             }
 
-            $request->merge(['_uploadIdentifier', $typeString]);
+            $request->merge(['_uploadIdentifier' => encrypt($typeString)]);
         } else {
             $typeString = $request->_uploadIdentifier;
         }
 
         $sessionName = $request->_groupName;
 
-        $typeStringParts = explode('.', $typeString);
-        $sectionName = implode('.', array_slice($typeStringParts, 0, count($typeStringParts) - 1));
-        $folderName = array_last($typeStringParts);
-
-
         if (($validationResponse = UploadServiceProvider::validateFile($request)) === true) {
+            $typeStringParts = explode('.', $typeString);
+            $sectionName = implode('.', array_slice($typeStringParts, 0, count($typeStringParts) - 1));
+            $folderName = array_last($typeStringParts);
+            UploadServiceProvider::setUserType($typeStringParts[0]);
+            UploadServiceProvider::setSection($typeStringParts[1]);
+
             $itemIndex = str_random(4);
             if (session()->has($sessionName)) {
                 $currentUploaded = session()->get($sessionName);
@@ -132,7 +133,7 @@ class DropzoneController extends Controller
                         'name'   => $file->getClientOriginalName(),
                         'number' => 1,
                         'done'   => false,
-                    ]
+                    ],
                 ]);
             }
             session()->save();
@@ -141,7 +142,7 @@ class DropzoneController extends Controller
                 UploadServiceProvider::getSectionRule($sectionName, 'uploadDir'),
                 $folderName,
             ]);
-            
+
             if ($request->_directUpload) {
                 UploadServiceProvider::setTemporaryFolderName('');
             }
