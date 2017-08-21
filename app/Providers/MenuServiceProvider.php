@@ -134,10 +134,6 @@ class MenuServiceProvider extends ServiceProvider
                         ],
                     ],
                     [
-                        'title' => trans('front.main-menu.sub_menus.learn.faq'),
-                        'link'  => url_locale('faq')
-                    ],
-                    [
                         'title'    => trans('front.main-menu.sub_menus.learn.general_educations'),
                         'children' => [
                             [
@@ -181,6 +177,10 @@ class MenuServiceProvider extends ServiceProvider
                                     'identifier' => 'statistics',
                                     'url'        => urlencode(trans('front.main-menu.sub_menus.learn.statistics')),
                                 ]),
+                            ],
+                            [
+                                'title' => trans('front.main-menu.sub_menus.learn.faq'),
+                                'link'  => url_locale('faq')
                             ],
                         ],
                     ],
