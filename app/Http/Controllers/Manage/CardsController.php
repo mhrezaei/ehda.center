@@ -537,7 +537,8 @@ class CardsController extends UsersController
 					'dispatched_by' => 0,
 					'delivered_by'  => 0,
 				];
-				$callback = "$('#btnDownloadExcel').change()";
+				session()->put('excelDownload',true);
+				//$callback = "$('#btnDownloadExcel').change()";
 				break;
 			case 'confirm-quality' :
 				$data = [

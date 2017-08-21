@@ -9,7 +9,7 @@
 
 	@include("manage.frame.widgets.toolbar" , [
 		'free_toolbar_view' =>  "manage.printings.browse-free-toolbar",
-//		'subtitle_view' => "manage.printings.browse-subtitle" ,
+		'subtitle_view' => "manage.printings.browse-subtitle" ,
 		'buttons' => [
 			[
 				'target' => "modal:manage/cards/printings/act/revert-to-pending" ,
