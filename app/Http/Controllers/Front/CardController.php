@@ -64,7 +64,6 @@ class CardController extends Controller
         return $this->jsonFeedback(null, [
             'ok'           => 1,
             'message'      => trans('forms.feed.wait'),
-            'feed_timeout' => 100000,
             'callback'     => <<<JS
                 upToStep(2);
 JS
@@ -136,7 +135,6 @@ JS
                 upToStep(3);
 JS
             ,
-            'feed_timeout' => 100000,
         ]);
 
     }
@@ -183,7 +181,7 @@ JS
                 'redirect'     => route_locale('user.dashboard'),
                 'ok'           => 1,
                 'message'      => trans('forms.feed.register_success'),
-                'redirectTime' => 10000,
+                'redirectTime' => 2000,
                 'callback'     => '$.ajax("' .route_locale('messages.send'). '")',
             ]);
         } else {

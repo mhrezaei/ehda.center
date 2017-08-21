@@ -34,9 +34,9 @@
         function goToStep(stepNumber) {
 
             // Hide "feeds"
-            setTimeout(function () {
-                $('#register_form').find('.form-feed').hide();
-            }, 15000);
+//            setTimeout(function () {
+//                $('#register_form').find('.form-feed').hide();
+//            }, 15000);
 
             // Changing the flag for discovering step of registration
             $('#step-number').val(stepNumber);
@@ -90,6 +90,10 @@
                     // Making all inputs in form readonly
                     $('#register_form').find(':input').attr('readonly', 'readonly');
                     $('#register_form').find('.form-group').css('pointer-events', 'none');
+
+                    // Hide all buttons
+                    $('#form-buttons').hide();
+                    $('#last-step-buttons').hide();
                     break;
             }
         }
