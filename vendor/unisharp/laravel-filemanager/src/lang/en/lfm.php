@@ -6,6 +6,9 @@ return [
     'nav-upload'        => 'Upload',
     'nav-thumbnails'    => 'Thumbnails',
     'nav-list'          => 'List',
+    'nav-sort'          => 'Sort',
+    'nav-sort-alphabetic'=> 'Sort By Alphabets',
+    'nav-sort-time'     => 'Sort By Time',
 
     'menu-rename'       => 'Rename',
     'menu-delete'       => 'Delete',
@@ -46,7 +49,7 @@ return [
     'error-folder-alnum'=> 'Only alphanumeric folder names are allowed!',
     'error-folder-not-found'=> 'Folder  not found! (:folder)',
     'error-mime'        => 'Unexpected MimeType: ',
-	'error-size'		=> 'Over limit size:',
+    'error-size'        => 'Over limit size:',
     'error-instance'    => 'The uploaded file should be an instance of UploadedFile',
     'error-invalid'     => 'Invalid upload request',
     'error-other'       => 'An error has occured: ',
@@ -56,6 +59,7 @@ return [
     'btn-uploading'     => 'Uploading...',
     'btn-close'         => 'Close',
     'btn-crop'          => 'Crop',
+    'btn-copy-crop'     => 'Copy & Crop',
     'btn-cancel'        => 'Cancel',
     'btn-resize'        => 'Resize',
 

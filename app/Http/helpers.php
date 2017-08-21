@@ -208,12 +208,12 @@ function array_maker($string, $first_delimiter = '-', $second_delimiter = '=')
 
 }
 
-function array_random($array)
-{
-	$key = rand(0, sizeof($array) - 1);
-
-	return $array[ $key ];
-}
+//function array_random($array)
+//{
+//	$key = rand(0, sizeof($array) - 1);
+//
+//	return $array[ $key ];
+//}
 
 function array_has_required($required, $array)
 {

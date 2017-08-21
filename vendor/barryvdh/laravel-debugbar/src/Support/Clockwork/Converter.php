@@ -21,7 +21,7 @@ class Converter {
             'headers' => [],
             'cookies' => [],
             'emailsData' => [],
-            'loadData' => [],
+            'getData' => [],
             'log' => [],
             'postData' => [],
             'sessionData' => [],
