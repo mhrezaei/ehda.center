@@ -50,4 +50,14 @@ class LoginController extends Controller
             return redirect(url_locale('user/dashboard'));
         }
     }
+
+    /**
+     * Get the login username to be used by the controller.
+     *
+     * @return string
+     */
+    public function username()
+    {
+        return 'code_melli';
+    }
 }

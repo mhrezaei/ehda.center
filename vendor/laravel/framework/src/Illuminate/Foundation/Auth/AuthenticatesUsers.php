@@ -142,7 +142,7 @@ trait AuthenticatesUsers
      */
     public function username()
     {
-        return 'code_melli';
+        return 'email';
     }
 
     /**
