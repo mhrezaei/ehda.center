@@ -242,7 +242,7 @@ return [
             'link_text'   => 'وارد',
             'after_link'  => 'شوید.',
         ],
-        'you_are_card_holder'                      => 'شما کارت اهدای عضو دارید.',
+        'you_are_card_holder'                      => 'شما کارت اهدای عضو دارید. لطفا از پروفایل خود جهت ثبت نام به عنوان سفیر اهدای عضو اقدام کنید.',
         'card_exists_with_this_code_melli'         => 'برای این کد ملی کارت اهدای عضو صادر شده است.',
         'please_login'                             => [
             'before_link' => 'لطفاً',

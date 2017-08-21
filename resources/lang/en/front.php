@@ -210,7 +210,7 @@ Your Oragn Donation Card has been registered with :membershipNumber membership n
 
     'messages' => [
         'you_are_volunteer'            => 'You are volunteer.',
-        'you_are_card_holder'          => 'You have organ donation card.',
+        'you_are_card_holder'          => 'You have organ donation card. Please try to register as Organ Donation Volunteer from your profile.',
         'unable_to_register_card'      => 'Unable to Register Card',
         'unable_to_register_volunteer' => 'Unable to Register Volunteer',
         'login'                        => 'Login.',
