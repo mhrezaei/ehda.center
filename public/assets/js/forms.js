@@ -1202,4 +1202,3 @@ function forms_log($thing) {
         });
     };
 })(jQuery);
-
