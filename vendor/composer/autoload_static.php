@@ -14,9 +14,9 @@ class ComposerStaticInitc163ed33e856e3abf8986dc792906912
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
         '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
+        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         'bd9634f2d41831496de0d3dfe4c94881' => __DIR__ . '/..' . '/symfony/polyfill-php56/bootstrap.php',
         'e7223560d890eab89cda23685e711e2c' => __DIR__ . '/..' . '/psy/psysh/src/Psy/functions.php',
-        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         'f0906e6318348a765ffb6eb24e0d0938' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
         '58571171fd5812e6e447dce228f52f4d' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/helpers.php',
         'e4e590a9b5afe940db71ee1662c02677' => __DIR__ . '/..' . '/morilog/jalali/src/helpers.php',
@@ -134,6 +134,7 @@ class ComposerStaticInitc163ed33e856e3abf8986dc792906912
             'Asanak\\Sms\\' => 11,
             'App\\' => 4,
             'Anhskohbo\\NoCaptcha\\' => 20,
+            'AlbertCht\\InvisibleReCaptcha\\' => 29,
         ),
     );
 
@@ -348,6 +349,10 @@ class ComposerStaticInitc163ed33e856e3abf8986dc792906912
         array (
             0 => __DIR__ . '/..' . '/anhskohbo/no-captcha/src',
         ),
+        'AlbertCht\\InvisibleReCaptcha\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/albertcht/invisible-recaptcha/src',
+        ),
     );
 
     public static $prefixesPsr0 = array (
@@ -398,6 +403,9 @@ class ComposerStaticInitc163ed33e856e3abf8986dc792906912
     );
 
     public static $classMap = array (
+        'AlbertCht\\InvisibleReCaptcha\\Facades\\InvisibleReCaptcha' => __DIR__ . '/..' . '/albertcht/invisible-recaptcha/src/Facades/InvisibleReCaptcha.php',
+        'AlbertCht\\InvisibleReCaptcha\\InvisibleReCaptcha' => __DIR__ . '/..' . '/albertcht/invisible-recaptcha/src/InvisibleReCaptcha.php',
+        'AlbertCht\\InvisibleReCaptcha\\InvisibleReCaptchaServiceProvider' => __DIR__ . '/..' . '/albertcht/invisible-recaptcha/src/InvisibleReCaptchaServiceProvider.php',
         'Anhskohbo\\NoCaptcha\\Facades\\NoCaptcha' => __DIR__ . '/..' . '/anhskohbo/no-captcha/src/Facades/NoCaptcha.php',
         'Anhskohbo\\NoCaptcha\\NoCaptcha' => __DIR__ . '/..' . '/anhskohbo/no-captcha/src/NoCaptcha.php',
         'Anhskohbo\\NoCaptcha\\NoCaptchaServiceProvider' => __DIR__ . '/..' . '/anhskohbo/no-captcha/src/NoCaptchaServiceProvider.php',
@@ -411,9 +419,11 @@ class ComposerStaticInitc163ed33e856e3abf8986dc792906912
         'App\\Http\\Controllers\\Auth\\ResetPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ResetPasswordController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\DropzoneController' => __DIR__ . '/../..' . '/app/Http/Controllers/DropzoneController.php',
+        'App\\Http\\Controllers\\FileManagerController' => __DIR__ . '/../..' . '/app/Http/Controllers/FileManagerController.php',
         'App\\Http\\Controllers\\Front\\CardController' => __DIR__ . '/../..' . '/app/Http/Controllers/Front/CardController.php',
         'App\\Http\\Controllers\\Front\\DrawingCodeController' => __DIR__ . '/../..' . '/app/Http/Controllers/Front/DrawingCodeController.php',
         'App\\Http\\Controllers\\Front\\ECGController' => __DIR__ . '/../..' . '/app/Http/Controllers/Front/ECGController.php',
+        'App\\Http\\Controllers\\Front\\EducationController' => __DIR__ . '/../..' . '/app/Http/Controllers/Front/EducationController.php',
         'App\\Http\\Controllers\\Front\\EventsController' => __DIR__ . '/../..' . '/app/Http/Controllers/Front/EventsController.php',
         'App\\Http\\Controllers\\Front\\FaqsController' => __DIR__ . '/../..' . '/app/Http/Controllers/Front/FaqsController.php',
         'App\\Http\\Controllers\\Front\\FrontController' => __DIR__ . '/../..' . '/app/Http/Controllers/Front/FrontController.php',
@@ -428,7 +438,6 @@ class ComposerStaticInitc163ed33e856e3abf8986dc792906912
         'App\\Http\\Controllers\\Front\\StatesController' => __DIR__ . '/../..' . '/app/Http/Controllers/Front/StatesController.php',
         'App\\Http\\Controllers\\Front\\TeammatesController' => __DIR__ . '/../..' . '/app/Http/Controllers/Front/TeammatesController.php',
         'App\\Http\\Controllers\\Front\\TestController' => __DIR__ . '/../..' . '/app/Http/Controllers/Front/TestController.php',
-        'App\\Http\\Controllers\\Front\\TutorialsController' => __DIR__ . '/../..',
         'App\\Http\\Controllers\\Front\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/Front/UserController.php',
         'App\\Http\\Controllers\\Front\\VolunteersController' => __DIR__ . '/../..' . '/app/Http/Controllers/Front/VolunteersController.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
@@ -470,6 +479,7 @@ class ComposerStaticInitc163ed33e856e3abf8986dc792906912
         'App\\Http\\Requests\\DrawingCodeRequest' => __DIR__ . '/../..' . '/app/Http/Requests/DrawingCodeRequest.php',
         'App\\Http\\Requests\\Front\\AngelsSearchRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Front/AngelsSearchRequest.php',
         'App\\Http\\Requests\\Front\\CommentRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Front/CommentRequest.php',
+        'App\\Http\\Requests\\Front\\DropzoneUploadRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Front/DropzoneUploadRequest.php',
         'App\\Http\\Requests\\Front\\NewPasswordRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Front/NewPasswordRequest.php',
         'App\\Http\\Requests\\Front\\PasswordTokenRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Front/PasswordTokenRequest.php',
         'App\\Http\\Requests\\Front\\ProfileSaveRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Front/ProfileSaveRequest.php',
@@ -547,6 +557,7 @@ class ComposerStaticInitc163ed33e856e3abf8986dc792906912
         'App\\Providers\\EmailServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EmailServiceProvider.php',
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
         'App\\Providers\\FaGDServiceProvider' => __DIR__ . '/../..' . '/app/Providers/FaGDServiceProvider.php',
+        'App\\Providers\\FileManagerServiceProvider' => __DIR__ . '/../..' . '/app/Providers/FileManagerServiceProvider.php',
         'App\\Providers\\FrontServiceProvider' => __DIR__ . '/../..' . '/app/Providers/FrontServiceProvider.php',
         'App\\Providers\\ManageServiceProvider' => __DIR__ . '/../..' . '/app/Providers/ManageServiceProvider.php',
         'App\\Providers\\MenuServiceProvider' => __DIR__ . '/../..' . '/app/Providers/MenuServiceProvider.php',
