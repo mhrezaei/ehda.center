@@ -62,9 +62,9 @@ class CardController extends Controller
         session()->put('register_card', $currentSession);
 
         return $this->jsonFeedback(null, [
-            'ok'           => 1,
-            'message'      => trans('forms.feed.wait'),
-            'callback'     => <<<JS
+            'ok'       => 1,
+            'message'  => trans('forms.feed.wait'),
+            'callback' => <<<JS
                 upToStep(2);
 JS
         ]);
@@ -130,8 +130,8 @@ JS
         session()->put('register_card', $submittedIDs);
 
         return $this->jsonFeedback(trans('forms.feed.register_check_data_step_second'), [
-            'ok'           => 1,
-            'callback'     => <<<JS
+            'ok'       => 1,
+            'callback' => <<<JS
                 upToStep(3);
 JS
             ,
@@ -182,7 +182,7 @@ JS
                 'ok'           => 1,
                 'message'      => trans('forms.feed.register_success'),
                 'redirectTime' => 2000,
-                'callback'     => '$.ajax("' .route_locale('messages.send'). '")',
+                'callback'     => '$.ajax("' . route_locale('messages.send') . '")',
             ]);
         } else {
             $return = $this->jsonFeedback(null, [
@@ -352,16 +352,11 @@ JS
     {
         // Sending SMS
         if ($user->mobile) {
-            $smsText = str_replace([
-                ':name',
-                ':membershipNumber',
-                ':site',
-            ], [
-                $user->full_name,
-                $user->card_no,
-                setting()->ask('site_url')->gain(),
-            ],
-                trans('front.organ_donation_card_section.register_success_message.sms'));
+            $smsText = trans('front.organ_donation_card_section.register_success_message.sms', [
+                'name'             => $user->full_name,
+                'membershipNumber' => $user->card_no,
+                'site'             => setting()->ask('site_url')->gain(),
+            ]);
 
             MessagesServiceProvider::storeMessages([
                 'type'     => 'sms',

@@ -227,37 +227,12 @@ class TestController extends Controller
 
     public function messages()
     {
+
         $user = user('4');
 
-        // Sending SMS
-        if ($user->mobile) {
-            $smsText = trans('front.volunteer_section.register_success_message.sms', [
-                'name' => $user->full_name,
-                'site' => setting()->ask('site_url')->gain(),
-            ]);
-
-            MessagesServiceProvider::storeMessages([
-                'type'     => 'sms',
-                'receiver' => $user->mobile,
-                'content'  => $smsText,
-            ]);
-        }
-
-        // Sending Mail
-        if ($user->email) {
-            $emailContent = trans('front.volunteer_section.register_success_message.email', [
-                'name' => $user->full_name,
-                'site' => setting()->ask('site_url')->gain(),
-            ]);
-
-
-            MessagesServiceProvider::storeMessages([
-                'type'     => 'email',
-                'receiver' => $user->email,
-                'content'  => $emailContent,
-                'subject'  => trans('front.volunteer_section.register'),
-            ]);
-        }
+        $data['text'] = view('front.card.verification.email', compact('user'));
+        return view('templates.email.default_email', $data);
+        return view('front.card.verification.email', compact('user'));
     }
 
     public function messages_send()

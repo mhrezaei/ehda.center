@@ -165,8 +165,10 @@ return [
             'sms'   => "سلام :name، \n\r
 کارت اهدای عضو شما با شماره عضویت :membershipNumber در سایت اهدا ثبت گردید.\n\r
 :site",
-            'email' => "سلام :name، <br />
-کارت اهدای عضو شما با شماره عضویت :membershipNumber در سایت اهدا ثبت گردید.",
+            'email' => [
+                'line1' => 'سلام :name، ',
+                'line2' => '    کارت اهدای عضو شما با شماره عضویت :membershipNumber در سایت اهدا ثبت گردید.',
+            ],
         ],
     ],
 
@@ -255,7 +257,11 @@ return [
     ],
 
     'notes' => [
-        'moments_are_important_to_save_life' => 'برای نجات <span class="text-green">زندگی</span> لحظه&zwnj;ها مهم است!',
+        'moments_are_important_to_save_life' => [
+            'part1' => 'برای نجات',
+            'part2' => 'زندگی',
+            'part3' => 'لحظه&zwnj;ها مهم است!',
+        ],
         'one_brain_dead_can_save_8_lives'    => 'هر فرد مرگ مغزی می&zwnj;تواند جان ۸ نفر را نجات دهد.',
         'organ_donation'                     => 'اهدای عضو',
         'life_donation'                      => 'اهدای زندگی',
@@ -302,6 +308,7 @@ return [
                 'donations'                         => 'کمک های مالی',
                 'volunteers'                        => 'سفیران',
                 'organ_donation_volunteers'         => 'سفیران اهدای عضو',
+                'angels'                            => 'فرشتگان ماندگار',
                 'special_volunteers'                => 'سفیران ویژه',
                 'participation_in_the_notification' => 'مشارکت در اطلاع رسانی',
                 'supporters'                        => 'حامیان',

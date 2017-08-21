@@ -1,6 +1,11 @@
 <p style="text-align: justify">
-    {!! trans('front.organ_donation_card_section.register_success_message.email', [
+    {!! trans('front.organ_donation_card_section.register_success_message.email.line1', [
                 'name' => $user->full_name,
+                'membershipNumber' => $user->card_no,
+            ]
+    ) !!}
+    <br />
+    {!! trans('front.organ_donation_card_section.register_success_message.email.line2', [
                 'membershipNumber' => $user->card_no,
             ]
     ) !!}

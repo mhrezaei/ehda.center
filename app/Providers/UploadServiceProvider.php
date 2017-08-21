@@ -111,7 +111,7 @@ class UploadServiceProvider extends ServiceProvider
      * Return a View Containing DropZone Uploader Element and Related JavaScript Codes
      *
      * @param string $fileTypeString
-     * @param array $data
+     * @param array  $data
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -127,10 +127,11 @@ class UploadServiceProvider extends ServiceProvider
             $fileTypeStringParts = self::translateFileTypeString($fileTypeString);
             $fileType = last($fileTypeStringParts);
             $uploadIdentifier = implode('.', $fileTypeStringParts);
+            $uploadIdentifiers = [$uploadIdentifier];
             return view('uploader.box', compact(
                     'fileType',
                     'preloaderView',
-                    'uploadIdentifier'
+                    'uploadIdentifiers'
                 ) + $data);
         }
     }
@@ -162,8 +163,8 @@ class UploadServiceProvider extends ServiceProvider
     /**
      * Set Some Configs to Be Set to All Uploader Elements
      *
-     * @param array|string $first If this is string it will be assumed as config key
-     * @param null|mixed $second If $first is string this will be assumed as config value
+     * @param array|string $first  If this is string it will be assumed as config key
+     * @param null|mixed   $second If $first is string this will be assumed as config value
      */
     public static function setDefaultJsConfigs($first, $second = null)
     {
@@ -234,7 +235,7 @@ class UploadServiceProvider extends ServiceProvider
      * Checks if files number for an uploader reached the limit
      *
      * @param string|array $sessionName
-     * @param string $typeString
+     * @param string       $typeString
      */
     public static function validateFileNumbers($sessionName, $fileType)
     {
@@ -254,7 +255,7 @@ class UploadServiceProvider extends ServiceProvider
      * Upload File to Specified Directory
      *
      * @param UploadedFile $file
-     * @param string $uploadDir Directory for Destination File
+     * @param string       $uploadDir Directory for Destination File
      *
      * @return File;
      */
@@ -286,7 +287,7 @@ class UploadServiceProvider extends ServiceProvider
      * Remove File Physically
      *
      * @param string|UploadedFileModel $file
-     * @param boolean $onlyTemp If true, file will be removed only in temp status
+     * @param boolean                  $onlyTemp If true, file will be removed only in temp status
      *
      * @return bool
      */
@@ -401,7 +402,7 @@ class UploadServiceProvider extends ServiceProvider
     /**
      * Generates a random name
      *
-     * @param string $version The Postfix tha Will Be Added at the End of the File Name
+     * @param string $version  The Postfix tha Will Be Added at the End of the File Name
      * @param string $baseName Basic Part of the File Name (If empty basic part will be generated randomly)
      *
      * @return string
@@ -438,9 +439,7 @@ class UploadServiceProvider extends ServiceProvider
     {
         if (strpos($fileUrl, '_original') !== false) {
             return str_replace('_original', '_thumb', $fileUrl);
-        }
-        else
-        {
+        } else {
             $file = explode('.', $fileUrl);
             return $file[0] . '_thumb.' . $file[1];
         }
@@ -547,7 +546,7 @@ class UploadServiceProvider extends ServiceProvider
      * Generate Config Path String
      *
      * @param string $configPath
-     * @param bool $section <ul><li>TRUE: Path is For a Section</li><li>FALSE: Path is For a File Type</li></ul>
+     * @param bool   $section <ul><li>TRUE: Path is For a Section</li><li>FALSE: Path is For a File Type</li></ul>
      *
      * @return string This function will return a dot separated string to use in accessing a config
      */
@@ -570,7 +569,7 @@ class UploadServiceProvider extends ServiceProvider
      * Follow up a config and search specified or default available value
      *
      * @param string $configPath Config Path (Dot Separated)
-     * @param int $checked Number of Checked Levels
+     * @param int    $checked    Number of Checked Levels
      *
      * @return mixed Found Config
      * @throws null if config not found
@@ -587,7 +586,7 @@ class UploadServiceProvider extends ServiceProvider
      * Searches for closest existed path
      *
      * @param string $configPath
-     * @param int $step Searching Step (Starts from 0)
+     * @param int    $step Searching Step (Starts from 0)
      *
      * @return string
      */
@@ -640,8 +639,8 @@ class UploadServiceProvider extends ServiceProvider
 
     /**
      * @param \Intervention\Image\Image $image
-     * @param integer $width
-     * @param integer $height
+     * @param integer                   $width
+     * @param integer                   $height
      *
      * @return \Intervention\Image\Image
      */
@@ -675,8 +674,8 @@ class UploadServiceProvider extends ServiceProvider
 
     /**
      * @param UploadedFile $file
-     * @param string $fileName
-     * @param string $filePath
+     * @param string       $fileName
+     * @param string       $filePath
      *
      * @return array
      */

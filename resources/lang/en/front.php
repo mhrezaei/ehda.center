@@ -147,8 +147,10 @@ return [
             'sms'   => "Hello :name، \n\r
 Your Oragn Donation Card has been registered with :membershipNumber membership number.\n\r
 :site",
-            'email' => "Hello :name، <br />
-Your Oragn Donation Card has been registered with :membershipNumber membership number.<br />",
+            'email' => [
+                'line1' => 'Hello :name,',
+                'line2' => 'Your Oragn Donation Card has been registered with :membershipNumber membership number.',
+            ],
         ],
     ],
 
@@ -217,7 +219,11 @@ Your Oragn Donation Card has been registered with :membershipNumber membership n
     ],
 
     'notes' => [
-        'moments_are_important_to_save_life' => 'Every moment is important to save <span class="text-green">life</span>.',
+        'moments_are_important_to_save_life' => [
+            'part1' => 'Every moment is important to save',
+            'part2' => 'life',
+            'part2' => '',
+        ],
         'one_brain_dead_can_save_8_lives'    => 'One brain dead can save 8 lives.',
         'organ_donation'                     => 'Organ Donation',
         'life_donation'                      => 'Life Donation',
@@ -261,6 +267,7 @@ Your Oragn Donation Card has been registered with :membershipNumber membership n
                 'donations'                         => 'Funding',
                 'volunteers'                        => 'Volunteers',
                 'organ_donation_volunteers'         => 'Organ Donation Volunteers',
+                'angels'                            => 'Angels',
                 'special_volunteers'                => 'Celebrities',
                 'participation_in_the_notification' => 'Awareness Rising',
                 'supporters'                        => 'Supporters',

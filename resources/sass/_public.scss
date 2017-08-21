@@ -2319,7 +2319,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     //position: relative;
 
     & > *:not(.stars-bg):not(.new-angel-form-container) {
-      z-index: 1;
+      z-index: 3;
     }
   }
 
@@ -2762,3 +2762,18 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 // Alerts --end
+
+// Owl Card Slider --start
+.owl-card-theme {
+  .owl-item {
+    .slide-text {
+      @if $rtl {
+        direction: rtl;
+      } @else {
+        direction: ltr;
+      }
+    }
+  }
+}
+
+// Owl Card Slider --end

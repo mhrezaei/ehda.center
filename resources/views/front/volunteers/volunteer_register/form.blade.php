@@ -156,7 +156,7 @@
                     <div class="col-lg-4 col-sm-6 col-xs-12">
                         <div class="row">
                             @include('forms._select-marital', [
-                                'class' => 'form-select',
+                                'class' => 'form-select form-required',
                                 'required' => 1,
                                 'value' => $currentValues['marital'],
                             ])
