@@ -237,7 +237,7 @@ JS;
         } else {
             $getNewFaq = false;
         }
-        return view('front.test.faqs.main', compact('faqsHTML', 'getNewFaq', 'newFaqForm'));
+        return view('front.faqs.main', compact('faqsHTML', 'getNewFaq', 'newFaqForm'));
     }
 
     private function show($hashid)

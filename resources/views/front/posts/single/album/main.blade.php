@@ -23,7 +23,7 @@
 </div>
 
 @section('endOfBody')
-    @include('front.gallery.single.scripts')
+    @include($viewFolder . '.scripts')
 
     <script type="text/javascript">
         $(document).ready(function () {
