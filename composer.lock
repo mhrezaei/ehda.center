@@ -4,9 +4,68 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "310eda981fb5ece36a0897c82a3734f8",
-    "content-hash": "1a7b9f39e14cf5763fd859fab82daa4f",
+    "hash": "209a2480403ddcda05e814af129163c4",
+    "content-hash": "f13100dabf43c3b27c4bcba6a260d0e4",
     "packages": [
+        {
+            "name": "albertcht/invisible-recaptcha",
+            "version": "v1.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/albertcht/invisible-recaptcha.git",
+                "reference": "c17e2328c675bb0fb3a30f177271bec33af785ad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/albertcht/invisible-recaptcha/zipball/c17e2328c675bb0fb3a30f177271bec33af785ad",
+                "reference": "c17e2328c675bb0fb3a30f177271bec33af785ad",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.2",
+                "illuminate/support": "5.0.*|5.1.*|5.2.*|5.3.*|5.4.*|5.5.*",
+                "php": "^5.6.4 || ^7.0"
+            },
+            "require-dev": {
+                "illuminate/view": "5.0.*|5.1.*|5.2.*|5.3.*|5.4.*|5.5.*",
+                "phpunit/phpunit": "^6.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "AlbertCht\\InvisibleReCaptcha\\InvisibleReCaptchaServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "AlbertCht\\InvisibleReCaptcha\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Albert Chen",
+                    "email": "albert.cht@gmail.com"
+                }
+            ],
+            "description": "Invisible reCAPTCHA For Laravel.",
+            "keywords": [
+                "captcha",
+                "invisible",
+                "invisible-recaptcha",
+                "laravel",
+                "laravel5",
+                "no-captcha",
+                "php",
+                "recaptcha"
+            ],
+            "time": "2017-07-03 13:17:08"
+        },
         {
             "name": "anhskohbo/no-captcha",
             "version": "2.3.0",

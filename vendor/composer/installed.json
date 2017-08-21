@@ -4690,5 +4690,66 @@
             "rss",
             "spatie"
         ]
+    },
+    {
+        "name": "albertcht/invisible-recaptcha",
+        "version": "v1.6",
+        "version_normalized": "1.6.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/albertcht/invisible-recaptcha.git",
+            "reference": "c17e2328c675bb0fb3a30f177271bec33af785ad"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/albertcht/invisible-recaptcha/zipball/c17e2328c675bb0fb3a30f177271bec33af785ad",
+            "reference": "c17e2328c675bb0fb3a30f177271bec33af785ad",
+            "shasum": ""
+        },
+        "require": {
+            "guzzlehttp/guzzle": "^6.2",
+            "illuminate/support": "5.0.*|5.1.*|5.2.*|5.3.*|5.4.*|5.5.*",
+            "php": "^5.6.4 || ^7.0"
+        },
+        "require-dev": {
+            "illuminate/view": "5.0.*|5.1.*|5.2.*|5.3.*|5.4.*|5.5.*",
+            "phpunit/phpunit": "^6.1"
+        },
+        "time": "2017-07-03 13:17:08",
+        "type": "library",
+        "extra": {
+            "laravel": {
+                "providers": [
+                    "AlbertCht\\InvisibleReCaptcha\\InvisibleReCaptchaServiceProvider"
+                ]
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "AlbertCht\\InvisibleReCaptcha\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Albert Chen",
+                "email": "albert.cht@gmail.com"
+            }
+        ],
+        "description": "Invisible reCAPTCHA For Laravel.",
+        "keywords": [
+            "captcha",
+            "invisible",
+            "invisible-recaptcha",
+            "laravel",
+            "laravel5",
+            "no-captcha",
+            "php",
+            "recaptcha"
+        ]
     }
 ]
