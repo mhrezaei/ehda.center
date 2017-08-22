@@ -3,7 +3,7 @@
     <div class="player-list-item-inner">
         {{--<img src="{{ url($videoThumb['src']) }}">--}}
         {!! \App\Providers\UploadServiceProvider::getFileView($videoThumb['src'], 'thumbnail') !!}
-        <div class="player-list-item-text">
+        <div class="player-list-item-text align-vertical-center align-horizontal-center">
             <p>
                 {{ $videoThumb['label'] }}
                 <br/>

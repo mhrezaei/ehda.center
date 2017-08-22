@@ -263,10 +263,9 @@ JS;
             $postType = $post->posttype;
             $categories = $post->categories;
             $positionInfo = [
-                'group'       => $post->header_title ?: $postType->header_title,
-                'category'    => $post->category_title ?: $postType->title,
-                'title'       => $post->title,
-                'description' => $categories->first() ? $categories->first()->title : '',
+                'group'    => $post->header_title ?: $postType->header_title,
+                'category' => $post->category_title ?: $postType->title,
+                'title'    => $categories->first() ? $categories->first()->title : '',
             ];
 
             /************************* Generate Position Info ********************** END */

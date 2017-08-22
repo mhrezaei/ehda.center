@@ -2,6 +2,7 @@
 
 <div class="row">
     <div class="col-xs-12">
+        <h3>{{ $post->title }}</h3>
         @if($post->abstract)
             <div class="col-xs-12">
                 <p>

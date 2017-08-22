@@ -521,7 +521,7 @@ class Post extends Model implements FeedItem
 	}
 	public function getShortUrlAttribute()
 	{
-		return url_locale('-' . $this->hash_id);
+		return url_locale(config('prefix.routes.post.short') . $this->hash_id);
 	}
 
 
