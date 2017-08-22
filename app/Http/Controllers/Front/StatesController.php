@@ -11,7 +11,7 @@ class StatesController extends Controller
 {
     public function map()
     {
-        $states = State::where('parent_id', 0)->get();
+        $states = Domain::all();
 
         return view('front.iranmap.main', compact('states'));
     }

@@ -5,8 +5,9 @@
                 @foreach($states as $state)
             {
                 title: '{{ $state->title }}',
-                active: {{ $state->domain->slug ? 'true' : 'false' }},
-                link: "{{ addSubDomain(url(''), $state->domain->slug) }}"
+                slug: '{{ $state->slug }}',
+                active: {{ $state->alias ? 'true' : 'false' }},
+                link: "{{ addSubDomain(url(''), $state->slug) }}"
             },
             @endforeach
         ];
@@ -17,7 +18,7 @@
         $(function () {
             $('.iran-map .province path').attr('disabled', 'disabled');
             $.each(states, function (index, state) {
-                var target = $('.iran-map .province path[data-persian-name="' + state.title + '"]');
+                var target = $('.iran-map .province path[data-name="' + state.slug + '"]');
                 if (target.length) {
                     if (state.active) {
                         target.removeAttr('disabled');
@@ -70,13 +71,14 @@
         });
 
         function selectProvince(slug) {
-            var provinceName = $('.states-list li.' + slug + ' a').html();
-            var path = $('.iran-map .province path[data-name=' + slug + ']');
-            $('.states-list a.active').removeClass('active');
-            $('.states-list li.' + slug + ' a').addClass('active');
-            if (provinceName) {
-                $('.choose-state h3').html(provinceName).attr('data-state', slug);
-                $('.choose-state h3').removeClass('disabled');
+//            var provinceName = $('.states-list li.' + slug + ' a').html();
+            let path = $('.iran-map .province path[data-name=' + slug + ']');
+//            $('.states-list a.active').removeClass('active');
+//            $('.states-list li.' + slug + ' a').addClass('active');
+            if (path.length) {
+                let provinceName = path.attr('data-persian-name');
+                $('.state-name').html(provinceName).attr('data-state', slug);
+//                $('.state-name').removeClass('disabled');
             }
             path.parents('svg').find('.hover').removeClass('hover');
             path.addClass('hover');
@@ -85,21 +87,31 @@
 
         function clearSelectedProvince() {
             $('.states-list li a.active').removeClass('active');
-            $('.choose-state h3').html(labels.selectState).attr('data-state', '');
-            $('.choose-state h3').removeClass('disabled');
+            $('.state-name').html(labels.selectState).attr('data-state', '');
+            $('.state-name').removeClass('disabled');
         }
 
         function changeProvinceLink(url) {
-            var clearUrl = url.replace(/(^\w+:|^)\/\//, '');
-            var linkElement = $('.state-website');
-            linkElement.attr('href', url);
-            linkElement.html(clearUrl);
+            let clearUrl = url.replace(/(^\w+:|^)\/\//, '');
+            let linkElements = $('.state-website');
+            linkElements.each(function (i) {
+                if (!$(this).hasClass('btn')) {
+                    $(this).html(clearUrl);
+                }
+                $(this).attr('href', url);
+                $(this).css('opacity', 1);
+            });
         }
 
         function clearProvinceLink() {
-            var linkElement = $('.state-website');
-            linkElement.removeAttr('href');
-            linkElement.html('');
+            let linkElements = $('.state-website');
+            linkElements.each(function (i) {
+                if (!$(this).hasClass('btn')) {
+                    $(this).html('');
+                }
+                $(this).removeAttr('href');
+                $(this).css('opacity', 0);
+            });
         }
     </script>
 @append
