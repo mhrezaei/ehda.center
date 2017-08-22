@@ -69,7 +69,6 @@ var dropzoneOptions = {
         },
 
         uploadprogress: function (file, progress, bytesSent) {
-            console.log(currentTime());
             if (progress < 100) {
                 file.uploadResultElement.find('.media-progress-value').width(progress + '%');
             }
@@ -101,10 +100,8 @@ var dropzoneOptions = {
         },
 
         success: function (file, response) {
-            console.log(currentTime());
             var uploadResultElement = file.uploadResultElement;
             uploadResultElement.find('.media-uploader-status-text').html(messages.statuses.success);
-            console.log(currentTime());
         },
     }
 };

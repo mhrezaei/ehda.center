@@ -22,6 +22,9 @@
         </div>
     </div>
 </div>
+<div class="col-xs-12 pt20">
+    @include('front.posts.single.post.post_footer', ['viewFolder' => 'front.posts.single.post'])
+</div>
 
 @section('endOfBody')
     @include($viewFolder . '.scripts')

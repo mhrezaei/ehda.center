@@ -7,12 +7,11 @@
         <div class="row">
             @include($viewFolder . '.player')
         </div>
-        <p>{!! $post->abstract !!}</p>
+        <p class="text-justify">{!! $post->abstract !!}</p>
     </div>
 </div>
-<div class="col-xs-12 border-top-2 border-top-gray pt20">
+<div class="col-xs-12 pt20">
     @include('front.posts.single.post.post_footer', ['viewFolder' => 'front.posts.single.post'])
-</div>
 </div>
 
 @include($viewFolder . '.scripts')
