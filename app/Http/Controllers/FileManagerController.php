@@ -89,7 +89,11 @@ class FileManagerController extends Controller
 
     public function getPreview(Request $request)
     {
-        return UploadServiceProvider::getFileView($request->file, 'thumbnail');
+        return UploadServiceProvider::getFileView($request->file, 'thumbnail', [
+            'style' => [
+                'max-width' => '100%',
+            ]
+        ]);
     }
 
     public function download($hadhid, $fileName = '')

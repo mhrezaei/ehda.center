@@ -525,6 +525,8 @@ return [
 		'from_event_id' => "Event",
 
 		'has_medal' => 'Has medal.',
+
+        'aparat_hash_code' => 'Video Code in Aparat',
 	],
 
 	"http" => [

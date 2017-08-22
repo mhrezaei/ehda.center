@@ -197,10 +197,10 @@ Your Oragn Donation Card has been registered with :membershipNumber membership n
 
     'upload' => [
         'errors' => [
-            'size'   => 'File is too big ({{filesize}}MiB). Max filesize: {{maxFilesize}}MiB.',
-            'type'   => 'You can\'t upload files of this type.',
-            'server' => 'Server responded with {{statusCode}} code.',
-            'limit'  => 'You can not upload any more files.',
+            'size'       => 'File is too big ({{filesize}}MiB). Max filesize: {{maxFilesize}}MiB.',
+            'type'       => 'You can\'t upload files of this type.',
+            'server'     => 'Server responded with {{statusCode}} code.',
+            'limit'      => 'You can not upload any more files.',
         ],
     ],
 

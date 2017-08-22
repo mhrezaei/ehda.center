@@ -351,6 +351,9 @@ class UploadServiceProvider extends ServiceProvider
         if ($filesHashids and is_array($filesHashids)) {
             foreach ($filesHashids as $key => $fileHashid) {
                 $fileRow = UploadedFileModel::findByHashid($fileHashid);
+                if ($fileRow->status == 'used') {
+                    continue;
+                }
                 if ($fileRow->exists and FilesFacades::exists($fileRow->pathname)) {
                     $fileRow->spreadMeta();
                     $newDir = str_replace(self::$temporaryFolderName . DIRECTORY_SEPARATOR, '', $fileRow->directory);
@@ -724,8 +727,7 @@ class UploadServiceProvider extends ServiceProvider
      *
      * @param array $parts
      */
-    private
-    static function fetchConfigFromDb($parts)
+    private static function fetchConfigFromDb($parts)
     {
         if (!Config::has(self::configPartsToPath($parts))) {
             if (starts_with($parts[1], self::$postTypeConfigPrefix)) {
@@ -749,20 +751,17 @@ class UploadServiceProvider extends ServiceProvider
      *
      * @return string
      */
-    private
-    static function configPartsToPath($parts)
+    private static function configPartsToPath($parts)
     {
         return 'upload.' . implode('.', $parts);
     }
 
-    public
-    static function getPostTypeConfigPrefix()
+    public static function getPostTypeConfigPrefix()
     {
         return self::$postTypeConfigPrefix;
     }
 
-    public
-    static function getFileView($file, $version = 'original', $switches = [])
+    public static function getFileView($file, $version = 'original', $switches = [])
     {
         $switches = array_normalize($switches, [
             'style'           => [],
@@ -819,16 +818,16 @@ class UploadServiceProvider extends ServiceProvider
         return view('front.frame.widgets.img-element', array_merge(compact('imgUrl'), $switches));
     }
 
-    public
-    static function getFileUrl($file)
+    public static function getFileUrl($file)
     {
         $file = self::smartFindFile($file, true);
-        die('<a href="' . url($file->pathname) . '">file</a>');
-        dd($file->pathname, __FILE__ . " - " . __LINE__);
+        if ($file->exists) {
+            return url($file->pathname);
+        }
+        return null;
     }
 
-    public
-    static function getFileObject($pathname)
+    public static function getFileObject($pathname)
     {
         if (FilesFacades::exists($pathname)) {
             return new File($pathname);
@@ -837,8 +836,7 @@ class UploadServiceProvider extends ServiceProvider
         return null;
     }
 
-    public
-    static function isImage($file)
+    public static function isImage($file)
     {
         $validator = Validator::make([
             'file' => $file,
@@ -857,8 +855,7 @@ class UploadServiceProvider extends ServiceProvider
      *
      * @return UploadedFileModel
      */
-    public
-    static function smartFindFile($identifier, $checkDirectId = false)
+    public static function smartFindFile($identifier, $checkDirectId = false)
     {
         if ($identifier instanceof UploadedFileModel) {
             $file = $identifier;
@@ -881,8 +878,7 @@ class UploadServiceProvider extends ServiceProvider
      *
      * @param string $folder
      */
-    public
-    static function setTemporaryFolderName($folder)
+    public static function setTemporaryFolderName($folder)
     {
         self::$temporaryFolderName = $folder;
     }
@@ -894,14 +890,12 @@ class UploadServiceProvider extends ServiceProvider
      *
      * @return mixed
      */
-    public
-    static function rectifyDirectory($directory)
+    public static function rectifyDirectory($directory)
     {
         return preg_replace("/\/|\\\\/", DIRECTORY_SEPARATOR, $directory);
     }
 
-    private
-    static function createRelatedImage($sourceFile, $pathname, $width, $height)
+    private static function createRelatedImage($sourceFile, $pathname, $width, $height)
     {
         $newFile = Image::make($sourceFile->getPathname());
         $newFile = self::safeResizeImage($newFile, $width, $height);

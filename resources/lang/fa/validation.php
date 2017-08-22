@@ -539,6 +539,8 @@ return [
         'activity'          => "فعالیت",
         'activities'        => "حوزه‌های فعالیت",
         'can_register_card' => "امکان ثبت نام کارت اهدای عضو",
+
+        'aparat_hash_code' => 'کد فیلم در آپارات',
     ],
 
     "http" => [

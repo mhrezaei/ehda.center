@@ -1,9 +1,8 @@
-@if($image = model('file', $item['src']) and $image->id > 0)
 <div class="flex-item">
-    <a @if($image) href="{{ url($image->directory . DIRECTORY_SEPARATOR . $image->physical_name) }}" @endif class="inner">
-        <img src="{{ url($image->directory . DIRECTORY_SEPARATOR . $image->related_files['thumbnail']) }}" alt="{{ $item['label'] }}">
+    @php $url = \App\Providers\UploadServiceProvider::getFileUrl($item['src']) @endphp
+    <a @if($url) href="{{ $url }}" @endif class="inner">
+        {!! \App\Providers\UploadServiceProvider::getFileView($item['src'], 'thumbnail') !!}
     </a>
 </div>
-@endif
 
 {{--@TODO: this file need to edit gallery files should load with service provider--}}
