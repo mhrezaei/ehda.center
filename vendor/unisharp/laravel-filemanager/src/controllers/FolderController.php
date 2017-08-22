@@ -1,15 +1,16 @@
-<?php namespace Unisharp\Laravelfilemanager\controllers;
+<?php
+
+namespace Unisharp\Laravelfilemanager\controllers;
 
 use Illuminate\Support\Facades\File;
 
 /**
- * Class FolderController
- * @package Unisharp\Laravelfilemanager\controllers
+ * Class FolderController.
  */
 class FolderController extends LfmController
 {
     /**
-     * Get list of folders as json to populate treeview
+     * Get list of folders as json to populate treeview.
      *
      * @return mixed
      */
@@ -22,18 +23,23 @@ class FolderController extends LfmController
             $folder_types['user'] = 'root';
         }
 
-        if ((parent::allowMultiUser() && parent::enabledShareFolder()) || !parent::allowMultiUser()) {
+        if (parent::allowShareFolder()) {
             $folder_types['share'] = 'shares';
         }
 
         foreach ($folder_types as $folder_type => $lang_key) {
             $root_folder_path = parent::getRootFolderPath($folder_type);
 
-            array_push($root_folders, (object)[
+            $children = parent::getDirectories($root_folder_path);
+            usort($children, function ($a, $b) {
+                return strcmp($a->name, $b->name);
+            });
+
+            array_push($root_folders, (object) [
                 'name' => trans('laravel-filemanager::lfm.title-' . $lang_key),
                 'path' => parent::getInternalPath($root_folder_path),
-                'children' => parent::getDirectories($root_folder_path),
-                'has_next' => !($lang_key == end($folder_types))
+                'children' => $children,
+                'has_next' => ! ($lang_key == end($folder_types)),
             ]);
         }
 
@@ -41,27 +47,27 @@ class FolderController extends LfmController
             ->with(compact('root_folders'));
     }
 
-
     /**
-     * Add a new folder
+     * Add a new folder.
      *
      * @return mixed
      */
     public function getAddfolder()
     {
-        $folder_name = $this->translateFromUtf8(trim(request('name')));
+        $folder_name = parent::translateFromUtf8(trim(request('name')));
 
         $path = parent::getCurrentPath($folder_name);
 
         if (empty($folder_name)) {
-            return $this->error('folder-name');
+            return parent::error('folder-name');
         } elseif (File::exists($path)) {
-            return $this->error('folder-exist');
+            return parent::error('folder-exist');
         } elseif (config('lfm.alphanumeric_directory') && preg_match('/[^\w-]/i', $folder_name)) {
-            return $this->error('folder-alnum');
+            return parent::error('folder-alnum');
         } else {
-            $this->createFolderByPath($path);
-            return $this->success_response;
+            parent::createFolderByPath($path);
+
+            return parent::$success_response;
         }
     }
 }

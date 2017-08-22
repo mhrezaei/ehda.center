@@ -3,7 +3,7 @@
 return [
     'routes' => [
         'post' => [
-            'short' => '-',
+            'short' => 'P',
         ],
     ],
 ];

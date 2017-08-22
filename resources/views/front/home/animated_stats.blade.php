@@ -1,5 +1,9 @@
 <h3 class="text-center">
-    {!! trans('front.notes.moments_are_important_to_save_life') !!}
+    {!! trans('front.notes.moments_are_important_to_save_life.part1') !!}
+    <span class="text-green">
+        {!! trans('front.notes.moments_are_important_to_save_life.part2') !!}
+    </span>
+    {!! trans('front.notes.moments_are_important_to_save_life.part3') !!}
 </h3>
 <div class="animated-people text-center">
     <span>

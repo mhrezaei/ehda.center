@@ -384,14 +384,14 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
 //            Route::get('faqs', 'TestController@faqs');
 //            Route::get('works/send', 'TestController@works_send');
 //            Route::get('mail-view', 'TestController@mail_view');
-//            Route::get('messages', 'TestController@messages');
+            Route::get('messages', 'TestController@messages');
 //            Route::get('messages/send', 'TestController@messages_send');
             Route::get('file-manager', 'TestController@fileManager');
             Route::get('uploader', 'TestController@uploader');
         });
 
         // Contact Us Page
-        Route::get('contact', 'FrontController@contact');
+        Route::get('contact', 'FrontController@contact')->name('contact');
 
         // Sending Client Works
         Route::get('works/send', 'PostController@works_send')->name('users.works.send');

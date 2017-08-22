@@ -431,7 +431,9 @@ class PostsController extends Controller
 		/*-----------------------------------------------
 		| featured_image ...
 		*/
-		$data['featured_image'] = str_replace(url(''), null, $data['featured_image']);
+		if(isset($data['featured_image'])) {
+			$data['featured_image'] = str_replace(url(''), null, $data['featured_image']);
+		}
 
 
 		/*-----------------------------------------------

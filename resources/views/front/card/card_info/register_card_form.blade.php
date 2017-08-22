@@ -1,10 +1,11 @@
 {!! Form::open([
-                                'url'	=> route_locale('register_card.post') ,
-                                'method'=> 'post',
-                                'class' => 'clearfix ehda-card-form js',
-                                'name' => 'register_form',
-                                'id' => 'register_form',
-                            ]) !!}
+    'url'	=> route_locale('register_card.post') ,
+    'method'=> 'post',
+    'class' => 'clearfix ehda-card-form js',
+    'name' => 'register_form',
+    'id' => 'register_form',
+    'novalidate' => 'novalidate',
+]) !!}
 
 @include('forms.hidden', [
     'id' => 'step-number',
@@ -279,7 +280,7 @@
 </div>
 <div id="form-buttons" class="col-xs-12 text-center">
     @include('forms.button', [
-        'shape' => 'green',
+        'shape' => 'success',
         'label' => trans('forms.button.send'),
         'type' => 'submit',
     ])

@@ -8,7 +8,7 @@ if (!isset($class)) {
 }
 
 if (!isset($blank_value)) {
-    $blank_value = '0';
+    $blank_value = '';
 }
 
 $acceptableValues = [1, 2]; // single and married are acceptable

@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class LoginController extends Controller
 {
@@ -50,4 +53,32 @@ class LoginController extends Controller
             return redirect(url_locale('user/dashboard'));
         }
     }
+
+    /**
+     * Get the login username to be used by the controller.
+     *
+     * @return string
+     */
+    public function username()
+    {
+        return 'code_melli';
+    }
+
+	public function logout(Request $request)
+	{
+		$logged_user = session()->pull('logged_developer');
+		if($logged_user) {
+			$logged_user = decrypt($logged_user) ;
+			Auth::loginUsingId($logged_user) ;
+			return redirect('/manage');
+		}
+
+		$this->guard()->logout();
+
+		$request->session()->flush();
+
+		$request->session()->regenerate();
+
+		return redirect('/');
+	}
 }

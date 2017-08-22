@@ -60,7 +60,7 @@ class ClockworkCollector extends DataCollector implements DataCollectorInterface
         $response = $this->response;
 
         $data = [
-            'loadData' => $request->query->all(),
+            'getData' => $request->query->all(),
             'postData' => $request->request->all(),
             'headers' => $request->headers->all(),
             'cookies' => $request->cookies->all(),

@@ -3,7 +3,7 @@
         <div class="col-xs-11 align-vertical-center">
             <div class="col-xs-6">
                 <a href="{{ route_locale('user.profile.edit') }}"
-                   class="btn btn-blue btn-block">
+                   class="btn btn-primary btn-block">
                     {{ trans('front.member_section.profile_edit') }}
                 </a>
             </div>

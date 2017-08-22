@@ -111,7 +111,7 @@ class UploadServiceProvider extends ServiceProvider
      * Return a View Containing DropZone Uploader Element and Related JavaScript Codes
      *
      * @param string $fileTypeString
-     * @param array $data
+     * @param array  $data
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -127,10 +127,11 @@ class UploadServiceProvider extends ServiceProvider
             $fileTypeStringParts = self::translateFileTypeString($fileTypeString);
             $fileType = last($fileTypeStringParts);
             $uploadIdentifier = implode('.', $fileTypeStringParts);
+            $uploadIdentifiers = [$uploadIdentifier];
             return view('uploader.box', compact(
                     'fileType',
                     'preloaderView',
-                    'uploadIdentifier'
+                    'uploadIdentifiers'
                 ) + $data);
         }
     }
@@ -162,8 +163,8 @@ class UploadServiceProvider extends ServiceProvider
     /**
      * Set Some Configs to Be Set to All Uploader Elements
      *
-     * @param array|string $first If this is string it will be assumed as config key
-     * @param null|mixed $second If $first is string this will be assumed as config value
+     * @param array|string $first  If this is string it will be assumed as config key
+     * @param null|mixed   $second If $first is string this will be assumed as config value
      */
     public static function setDefaultJsConfigs($first, $second = null)
     {
@@ -234,7 +235,7 @@ class UploadServiceProvider extends ServiceProvider
      * Checks if files number for an uploader reached the limit
      *
      * @param string|array $sessionName
-     * @param string $typeString
+     * @param string       $typeString
      */
     public static function validateFileNumbers($sessionName, $fileType)
     {
@@ -254,7 +255,7 @@ class UploadServiceProvider extends ServiceProvider
      * Upload File to Specified Directory
      *
      * @param UploadedFile $file
-     * @param string $uploadDir Directory for Destination File
+     * @param string       $uploadDir Directory for Destination File
      *
      * @return File;
      */
@@ -286,7 +287,7 @@ class UploadServiceProvider extends ServiceProvider
      * Remove File Physically
      *
      * @param string|UploadedFileModel $file
-     * @param boolean $onlyTemp If true, file will be removed only in temp status
+     * @param boolean                  $onlyTemp If true, file will be removed only in temp status
      *
      * @return bool
      */
@@ -350,6 +351,9 @@ class UploadServiceProvider extends ServiceProvider
         if ($filesHashids and is_array($filesHashids)) {
             foreach ($filesHashids as $key => $fileHashid) {
                 $fileRow = UploadedFileModel::findByHashid($fileHashid);
+                if ($fileRow->status == 'used') {
+                    continue;
+                }
                 if ($fileRow->exists and FilesFacades::exists($fileRow->pathname)) {
                     $fileRow->spreadMeta();
                     $newDir = str_replace(self::$temporaryFolderName . DIRECTORY_SEPARATOR, '', $fileRow->directory);
@@ -401,7 +405,7 @@ class UploadServiceProvider extends ServiceProvider
     /**
      * Generates a random name
      *
-     * @param string $version The Postfix tha Will Be Added at the End of the File Name
+     * @param string $version  The Postfix tha Will Be Added at the End of the File Name
      * @param string $baseName Basic Part of the File Name (If empty basic part will be generated randomly)
      *
      * @return string
@@ -438,9 +442,7 @@ class UploadServiceProvider extends ServiceProvider
     {
         if (strpos($fileUrl, '_original') !== false) {
             return str_replace('_original', '_thumb', $fileUrl);
-        }
-        else
-        {
+        } else {
             $file = explode('.', $fileUrl);
             return $file[0] . '_thumb.' . $file[1];
         }
@@ -547,7 +549,7 @@ class UploadServiceProvider extends ServiceProvider
      * Generate Config Path String
      *
      * @param string $configPath
-     * @param bool $section <ul><li>TRUE: Path is For a Section</li><li>FALSE: Path is For a File Type</li></ul>
+     * @param bool   $section <ul><li>TRUE: Path is For a Section</li><li>FALSE: Path is For a File Type</li></ul>
      *
      * @return string This function will return a dot separated string to use in accessing a config
      */
@@ -570,7 +572,7 @@ class UploadServiceProvider extends ServiceProvider
      * Follow up a config and search specified or default available value
      *
      * @param string $configPath Config Path (Dot Separated)
-     * @param int $checked Number of Checked Levels
+     * @param int    $checked    Number of Checked Levels
      *
      * @return mixed Found Config
      * @throws null if config not found
@@ -587,7 +589,7 @@ class UploadServiceProvider extends ServiceProvider
      * Searches for closest existed path
      *
      * @param string $configPath
-     * @param int $step Searching Step (Starts from 0)
+     * @param int    $step Searching Step (Starts from 0)
      *
      * @return string
      */
@@ -640,8 +642,8 @@ class UploadServiceProvider extends ServiceProvider
 
     /**
      * @param \Intervention\Image\Image $image
-     * @param integer $width
-     * @param integer $height
+     * @param integer                   $width
+     * @param integer                   $height
      *
      * @return \Intervention\Image\Image
      */
@@ -675,8 +677,8 @@ class UploadServiceProvider extends ServiceProvider
 
     /**
      * @param UploadedFile $file
-     * @param string $fileName
-     * @param string $filePath
+     * @param string       $fileName
+     * @param string       $filePath
      *
      * @return array
      */
@@ -725,8 +727,7 @@ class UploadServiceProvider extends ServiceProvider
      *
      * @param array $parts
      */
-    private
-    static function fetchConfigFromDb($parts)
+    private static function fetchConfigFromDb($parts)
     {
         if (!Config::has(self::configPartsToPath($parts))) {
             if (starts_with($parts[1], self::$postTypeConfigPrefix)) {
@@ -750,20 +751,17 @@ class UploadServiceProvider extends ServiceProvider
      *
      * @return string
      */
-    private
-    static function configPartsToPath($parts)
+    private static function configPartsToPath($parts)
     {
         return 'upload.' . implode('.', $parts);
     }
 
-    public
-    static function getPostTypeConfigPrefix()
+    public static function getPostTypeConfigPrefix()
     {
         return self::$postTypeConfigPrefix;
     }
 
-    public
-    static function getFileView($file, $version = 'original', $switches = [])
+    public static function getFileView($file, $version = 'original', $switches = [])
     {
         $switches = array_normalize($switches, [
             'style'           => [],
@@ -820,16 +818,16 @@ class UploadServiceProvider extends ServiceProvider
         return view('front.frame.widgets.img-element', array_merge(compact('imgUrl'), $switches));
     }
 
-    public
-    static function getFileUrl($file)
+    public static function getFileUrl($file)
     {
         $file = self::smartFindFile($file, true);
-        die('<a href="' . url($file->pathname) . '">file</a>');
-        dd($file->pathname, __FILE__ . " - " . __LINE__);
+        if ($file->exists) {
+            return url($file->pathname);
+        }
+        return null;
     }
 
-    public
-    static function getFileObject($pathname)
+    public static function getFileObject($pathname)
     {
         if (FilesFacades::exists($pathname)) {
             return new File($pathname);
@@ -838,8 +836,7 @@ class UploadServiceProvider extends ServiceProvider
         return null;
     }
 
-    public
-    static function isImage($file)
+    public static function isImage($file)
     {
         $validator = Validator::make([
             'file' => $file,
@@ -858,8 +855,7 @@ class UploadServiceProvider extends ServiceProvider
      *
      * @return UploadedFileModel
      */
-    public
-    static function smartFindFile($identifier, $checkDirectId = false)
+    public static function smartFindFile($identifier, $checkDirectId = false)
     {
         if ($identifier instanceof UploadedFileModel) {
             $file = $identifier;
@@ -882,8 +878,7 @@ class UploadServiceProvider extends ServiceProvider
      *
      * @param string $folder
      */
-    public
-    static function setTemporaryFolderName($folder)
+    public static function setTemporaryFolderName($folder)
     {
         self::$temporaryFolderName = $folder;
     }
@@ -895,14 +890,12 @@ class UploadServiceProvider extends ServiceProvider
      *
      * @return mixed
      */
-    public
-    static function rectifyDirectory($directory)
+    public static function rectifyDirectory($directory)
     {
         return preg_replace("/\/|\\\\/", DIRECTORY_SEPARATOR, $directory);
     }
 
-    private
-    static function createRelatedImage($sourceFile, $pathname, $width, $height)
+    private static function createRelatedImage($sourceFile, $pathname, $width, $height)
     {
         $newFile = Image::make($sourceFile->getPathname());
         $newFile = self::safeResizeImage($newFile, $width, $height);

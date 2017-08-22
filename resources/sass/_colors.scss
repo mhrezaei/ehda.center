@@ -46,15 +46,12 @@ $firsLightColor: nth($lightColors, 1);
     @extend .bg-#{$colorName};
     @extend .text-#{nth($firsLightColor, 1)};
   }
-  .btn-#{$colorName},
-  .btn-#{$colorName}:focus,
-  .btn-#{$colorName}:hover {
-    @extend .bg-#{$colorName};
-    @extend .text-#{nth($firsLightColor, 1)};
-  }
-  .btn-#{$colorName}:focus,
-  .btn-#{$colorName}:hover {
-    background-color: darken($colorCode, 5%);
+  .btn-#{$colorName} {
+    @extend .bg-#{$colorName}, .border-#{$colorName}, .text-#{nth($firsLightColor, 1)};
+    &:focus, &:hover, &:active, &.active {
+      @extend .border-#{$colorName}, .text-#{nth($firsLightColor, 1)};
+      background-color: lighten($colorCode, 5%);
+    }
   }
 }
 
@@ -63,12 +60,11 @@ $firsLightColor: nth($lightColors, 1);
     @extend .bg-#{$colorName};
     @extend .text-#{nth($firstDarkColor, 1)};
   }
-  .btn-#{$colorName},
-  .btn-#{$colorName}:hover {
-    @extend .bg-#{$colorName};
-    @extend .text-#{nth($firstDarkColor, 1)};
-  }
-  .btn-#{$colorName}:hover {
-    background-color: darken($colorCode, 5%);
+  .btn-#{$colorName} {
+    @extend .bg-#{$colorName}, .border-#{$colorName}, .text-#{nth($firstDarkColor, 1)};
+    &:focus, &:hover, &:active, &.active {
+      @extend .border-#{$colorName}, .text-#{nth($firstDarkColor, 1)};
+      background-color: darken($colorCode, 5%);
+    }
   }
 }

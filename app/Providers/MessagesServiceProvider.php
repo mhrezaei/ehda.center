@@ -65,8 +65,12 @@ class MessagesServiceProvider extends ServiceProvider
      */
     private static function sendSms($message)
     {
-        $sendingSmsResult = AsanakSms::send($message->receiver, $message->content);
-        $message->delete();
+        try {
+            $sendingSmsResult = AsanakSms::send($message->receiver, $message->content);
+            $message->delete();
+        } catch (\Exception $e) {
+            // If failed sending sms
+        }
     }
 
     /**
@@ -74,19 +78,23 @@ class MessagesServiceProvider extends ServiceProvider
      */
     private static function sendEmail($message)
     {
-        foreach (self::$defaults['email'] as $key => $default) {
-            if (!$message->$key) {
-                $message->$key = $default;
+        try {
+            foreach (self::$defaults['email'] as $key => $default) {
+                if (!$message->$key) {
+                    $message->$key = $default;
+                }
             }
-        }
 
-        $sendingEmailResult = EmailServiceProvider::send(
-            $message->content,
-            $message->receiver,
-            setting()->ask('site_title')->gain(),
-            $message->subject,
-            $message->template
-        );
-        $message->delete();
+            $sendingEmailResult = EmailServiceProvider::send(
+                $message->content,
+                $message->receiver,
+                setting()->ask('site_title')->gain(),
+                $message->subject,
+                $message->template
+            );
+            $message->delete();
+        } catch (\Exception $e) {
+            // If failed sending email
+        }
     }
 }

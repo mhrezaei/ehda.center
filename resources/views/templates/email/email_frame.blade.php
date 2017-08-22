@@ -125,7 +125,7 @@
                                                                    target="_blank">
                                                                     {{ trans('front.volunteer_section.singular') }}
                                                                 </a>
-                                                                <a href="{{ route('register_card') }}"
+                                                                <a href="{{ route_locale('register_card') }}"
                                                                    style="color:#999;text-decoration:none;font-family:Tahoma;font-size:8pt"
                                                                    target="_blank">
                                                                     {{ trans('front.organ_donation_card_section.singular') }}

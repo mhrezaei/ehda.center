@@ -18,6 +18,11 @@ function getLocale()
 	return \Illuminate\Support\Facades\App::getLocale();
 }
 
+/**
+ * @param int $id
+ *
+ * @return \Illuminate\Contracts\Auth\Authenticatable|\App\Models\User|null
+ */
 function user($id=0)
 {
 	if($id) {
@@ -208,12 +213,12 @@ function array_maker($string, $first_delimiter = '-', $second_delimiter = '=')
 
 }
 
-function array_random($array)
-{
-	$key = rand(0, sizeof($array) - 1);
-
-	return $array[ $key ];
-}
+//function array_random($array)
+//{
+//	$key = rand(0, sizeof($array) - 1);
+//
+//	return $array[ $key ];
+//}
 
 function array_has_required($required, $array)
 {

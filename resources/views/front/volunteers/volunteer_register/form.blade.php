@@ -17,6 +17,7 @@
                         'class' => 'clearfix ehda-card-form js',
                         'name' => 'register_form',
                         'id' => 'volunteer_final_step',
+                        'novalidate' => 'novalidate',
                     ]) !!}
 
                     <div class="col-xs-12">
@@ -152,10 +153,10 @@
                             ])
                         </div>
                     </div>
-                    <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="col-lg-4 col-sm-6 col-xs-12">
                         <div class="row">
                             @include('forms._select-marital', [
-                                'class' => 'form-select',
+                                'class' => 'form-select form-required',
                                 'required' => 1,
                                 'value' => $currentValues['marital'],
                             ])
@@ -168,13 +169,12 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="col-lg-4 col-sm-6 col-xs-12">
                         <div class="row">
                             @include('front.forms.select-picker', [
                                 'name' => 'edu_level',
                                 'value' => $currentValues['edu_level'],
                                 'class' => 'form-select form-required',
-                                'blank_value' => '0' ,
                                 'required' => 1,
                                 'options' =>
                                     collect(\Illuminate\Support\Facades\Lang::get('people.edu_level_full'))
@@ -442,11 +442,11 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="col-lg-4 col-sm-6 col-xs-12">
                         <div class="row">
                             @include('front.forms.select-picker', [
                                 'name' => 'familiarization',
-                                'label' => trans('validation.attributes.familization'),
+                                'label' => trans('validation.attributes.familiarization'),
                                 'value' => $currentValues['familiarization'],
                                 'class' => 'form-required',
                                 'blank_value' => '0' ,

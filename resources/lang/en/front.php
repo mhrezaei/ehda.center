@@ -147,8 +147,10 @@ return [
             'sms'   => "Hello :name، \n\r
 Your Oragn Donation Card has been registered with :membershipNumber membership number.\n\r
 :site",
-            'email' => "Hello :name، <br />
-Your Oragn Donation Card has been registered with :membershipNumber membership number.<br />",
+            'email' => [
+                'line1' => 'Hello :name,',
+                'line2' => 'Your Oragn Donation Card has been registered with :membershipNumber membership number.',
+            ],
         ],
     ],
 
@@ -195,10 +197,10 @@ Your Oragn Donation Card has been registered with :membershipNumber membership n
 
     'upload' => [
         'errors' => [
-            'size'   => 'File is too big ({{filesize}}MiB). Max filesize: {{maxFilesize}}MiB.',
-            'type'   => 'You can\'t upload files of this type.',
-            'server' => 'Server responded with {{statusCode}} code.',
-            'limit'  => 'You can not upload any more files.',
+            'size'       => 'File is too big ({{filesize}}MiB). Max filesize: {{maxFilesize}}MiB.',
+            'type'       => 'You can\'t upload files of this type.',
+            'server'     => 'Server responded with {{statusCode}} code.',
+            'limit'      => 'You can not upload any more files.',
         ],
     ],
 
@@ -210,14 +212,18 @@ Your Oragn Donation Card has been registered with :membershipNumber membership n
 
     'messages' => [
         'you_are_volunteer'            => 'You are volunteer.',
-        'you_are_card_holder'          => 'You have organ donation card.',
+        'you_are_card_holder'          => 'You have organ donation card. Please try to register as Organ Donation Volunteer from your profile.',
         'unable_to_register_card'      => 'Unable to Register Card',
         'unable_to_register_volunteer' => 'Unable to Register Volunteer',
         'login'                        => 'Login.',
     ],
 
     'notes' => [
-        'moments_are_important_to_save_life' => 'Every moment is important to save <span class="text-green">life</span>.',
+        'moments_are_important_to_save_life' => [
+            'part1' => 'Every moment is important to save',
+            'part2' => 'life',
+            'part2' => '',
+        ],
         'one_brain_dead_can_save_8_lives'    => 'One brain dead can save 8 lives.',
         'organ_donation'                     => 'Organ Donation',
         'life_donation'                      => 'Life Donation',
@@ -261,6 +267,7 @@ Your Oragn Donation Card has been registered with :membershipNumber membership n
                 'donations'                         => 'Funding',
                 'volunteers'                        => 'Volunteers',
                 'organ_donation_volunteers'         => 'Organ Donation Volunteers',
+                'angels'                            => 'Angels',
                 'special_volunteers'                => 'Celebrities',
                 'participation_in_the_notification' => 'Awareness Rising',
                 'supporters'                        => 'Supporters',

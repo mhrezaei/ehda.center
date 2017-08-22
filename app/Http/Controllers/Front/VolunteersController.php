@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Front;
 use App\Models\Activity;
 use App\models\Meta;
 use App\Models\Post;
+use App\Models\Role;
 use App\Models\State;
 use App\Models\User;
 use App\Providers\AppServiceProvider;
@@ -378,6 +379,18 @@ class VolunteersController extends Controller
         $homeState = State::find($request->home_city);
         $workState = State::find($request->work_city);
         $domain = $homeState->domain->slug;
+
+        $volunteerRole = 'volunteer-' . $domain;
+        if (!Role::findBySlug($volunteerRole)->exists) {
+            // If there is not roles that matches with domain, we can set default volunteer role from settings
+            $volunteerRole = setting()->ask('default_volunteer_role')->gain();
+            if (!$volunteerRole or !Role::findBySlug($volunteerRole)->exists) {
+                // If there is not roles matches with default volunteer role in setting, we can not register volunteer
+                return $this->jsonFeedback(trans('validation.http.Error500'), ['ok' => 0]);
+            }
+        }
+
+
         $modifyingData = [
             'home_province' => $homeState,
             'work_province' => $workState,
@@ -390,7 +403,7 @@ class VolunteersController extends Controller
 
         if ($userId) {
             $user = User::findBySlug($userId, 'id');
-            $user->attachRole('volunteer_' . $domain, 1); // 1 status points to inactive volunteer
+            $user->attachRole($volunteerRole, 1); // 1 status points to inactive volunteer
             $this->sendVerifications($user);
 
             $return = $this->jsonFeedback(null, [

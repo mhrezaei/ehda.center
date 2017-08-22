@@ -1,26 +1,25 @@
-<?php namespace Unisharp\Laravelfilemanager\controllers;
+<?php
+
+namespace Unisharp\Laravelfilemanager\controllers;
 
 use Unisharp\Laravelfilemanager\traits\LfmHelpers;
 
 /**
- * Class LfmController
- * @package Unisharp\Laravelfilemanager\controllers
+ * Class LfmController.
  */
 class LfmController extends Controller
 {
     use LfmHelpers;
 
-    protected $success_response = 'OK';
+    protected static $success_response = 'OK';
 
     public function __construct()
     {
-        if (!$this->isProcessingImages() && !$this->isProcessingFiles()) {
-            throw new \Exception('unexpected type parameter');
-        }
+        $this->applyIniOverrides();
     }
 
     /**
-     * Show the filemanager
+     * Show the filemanager.
      *
      * @return mixed
      */
@@ -41,7 +40,7 @@ class LfmController extends Controller
         $mine_config = 'lfm.valid_' . $type_key . '_mimetypes';
         $config_error = null;
 
-        if (!is_array(config($mine_config))) {
+        if (! is_array(config($mine_config))) {
             array_push($arr_errors, 'Config : ' . $mine_config . ' is not a valid array.');
         }
 

@@ -49,6 +49,7 @@ function showStar(circleIndex, name, imgSrc, donation_date) {
     //     userCard.find('.angel-time').text(donation_date);
     // }
     $('.stars').prepend(userCard);
+    console.log(userCard)
     $('.user-card').fadeIn();
     var cardWidth = 140;
     var cardHeight = 160;
@@ -77,9 +78,9 @@ function random_angles(angels) {
     var circle = $('.circle' + circleIndex);
     circle.addClass('active');
     showStar(circleIndex, angel.name, angel.picture_url, angel.donation_date);
-    angles_slide = setTimeout(function () {
-        random_angles(angels);
-    }, 3000);
+    // angles_slide = setTimeout(function () {
+    //     random_angles(angels);
+    // }, 3000);
 }
 
 function stopPlayingAngels() {

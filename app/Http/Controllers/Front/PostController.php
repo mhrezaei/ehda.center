@@ -219,7 +219,7 @@ JS;
     public function show_with_exact_id($lang, $identifier)
     {
         $post = Post::findBySlug($identifier, 'id');
-        if($post->exists) {
+        if ($post->exists) {
             return redirect($post->short_url);
         }
 
@@ -237,7 +237,7 @@ JS;
         } else {
             $getNewFaq = false;
         }
-        return view('front.test.faqs.main', compact('faqsHTML', 'getNewFaq', 'newFaqForm'));
+        return view('front.faqs.main', compact('faqsHTML', 'getNewFaq', 'newFaqForm'));
     }
 
     private function show($hashid)

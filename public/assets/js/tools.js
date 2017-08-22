@@ -134,3 +134,12 @@ function getValueOf(data, key) {
     }
     return data;
 }
+
+/**
+ * Returns current time in format "yy-mm-dd"
+ * @returns {string}
+ */
+function currentTime() {
+    let time = new Date();
+    return time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds();
+}

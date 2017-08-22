@@ -1,5 +1,5 @@
 /**
- * Created by Yasna-PC1 on 12/08/2017.
+ * Created by EmiTis on 12/08/2017.
  */
 
 // if we miss this command, every elements with "dropzone" class will be automatically change to dropzone
@@ -17,6 +17,9 @@ Dropzone.prototype.defaultOptions.dictMaxFilesExceeded = messages.errors.size;
 
 // Temporary Elements
 let fileInfoElTmp = $('<div class="media-uploader-status"> <div class="col-xs-9"> <div class="media-uploader-status-info"> <h2 class="media-uploader-status-text"> </h2> <button type="button" class="fa fa-times-circle delete-upload-info"></button> <div class="media-progress"> <div class="media-progress-value"></div> </div> <div class="upload-detail"> <span class="upload-detail-separator"></span> <span class="upload-filename"></span> </div> </div> </div> <div class="col-xs-3"> <div class="attachment media-uploader-status-image"> <img> </div> </div></div>');
+
+// Temporary Variables
+let maxQueueLength = 40;
 
 // dropzone Options
 var dropzoneOptions = {
@@ -47,10 +50,8 @@ var dropzoneOptions = {
             });
 
 
-
             // Show File Progress Info
             var fileInfoEl = fileInfoElTmp.clone();
-            console.log(fileInfoEl)
 
             fileInfoEl.find('.media-uploader-status-text').html(messages.statuses.uploading);
             fileInfoEl.find('.upload-filename').html(file.name);
@@ -58,7 +59,7 @@ var dropzoneOptions = {
             fileInfoImg.attr('src', dropzoneRoutes.images + '/template/file-o.svg');
 
             var image = new Image();
-            image.onload = function(e) {
+            image.onload = function (e) {
                 fileInfoImg.attr('src', image.src)
             };
             image.src = URL.createObjectURL(file);
@@ -68,15 +69,22 @@ var dropzoneOptions = {
         },
 
         uploadprogress: function (file, progress, bytesSent) {
-            file.uploadResultElement.find('.media-progress-value').width(progress + '%');
+            if (progress < 100) {
+                file.uploadResultElement.find('.media-progress-value').width(progress + '%');
+            }
+        },
+
+        complete: function (file) {
+            file.uploadResultElement.find('.media-progress-value').width('100%');
         },
 
         error: function (file, response, xhr) {
             $(file.previewElement).find('.dz-error-message').remove();
+            let uploadResultElement = file.uploadResultElement.find('.media-uploader-status-info');
+
             if (xhr.status == 422) {
-                var uploadResultElement = file.uploadResultElement.find('.media-uploader-status-info');
-                var errorsContainer = $('<div class="upload-errors"></div>');
-                var ul = $('<ul></ul>');
+                let errorsContainer = $('<div class="upload-errors"></div>');
+                let ul = $('<ul></ul>');
                 if (response.file) {
                     $.each(response.file, function (index, error) {
                         ul.append($('<li></li>').html(pd(error)));
@@ -85,9 +93,10 @@ var dropzoneOptions = {
                 errorsContainer.append(ul);
                 uploadResultElement.append(errorsContainer);
 
-                uploadResultElement.addClass('error');
-                uploadResultElement.find('.media-uploader-status-text').html(messages.statuses.failed);
             }
+
+            uploadResultElement.addClass('error');
+            uploadResultElement.find('.media-uploader-status-text').html(messages.statuses.failed);
         },
 
         success: function (file, response) {
@@ -118,7 +127,9 @@ function updateTarget(dropzoneInstance, target) {
 
 function removeFile(file, dropzoneElement) {
     var uploadResultElement = file.uploadResultElement;
-    uploadResultElement.remove();
+    if (uploadResultElement && uploadResultElement.length) {
+        uploadResultElement.remove();
+    }
     // removeFromServer(file, dropzoneElement);
 }
 
@@ -148,7 +159,7 @@ $(document).ready(function () {
     $(document).on({
         click: function () {
             let row = $(this).closest('.media-uploader-status');
-            if(row.length) {
+            if (row.length) {
                 row.remove();
             }
         }

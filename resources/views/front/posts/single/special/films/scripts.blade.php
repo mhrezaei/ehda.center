@@ -1,6 +1,6 @@
 @section('endOfBody')
     <script type="text/JavaScript" id="video-script"
-            src="https://www.aparat.com/embed/{{ $post->post_photos[0]['link'] }}?data[rnddiv]=player-div&data[responsive]=yes">
+            src="https://www.aparat.com/embed/{{ $post->files[0]['link'] }}?data[rnddiv]=player-div&data[responsive]=yes">
     </script>
 
     <script>

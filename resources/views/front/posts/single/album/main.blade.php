@@ -2,6 +2,7 @@
 
 <div class="row">
     <div class="col-xs-12">
+        <h3>{{ $post->title }}</h3>
         @if($post->abstract)
             <div class="col-xs-12">
                 <p>
@@ -21,9 +22,12 @@
         </div>
     </div>
 </div>
+<div class="col-xs-12 pt20">
+    @include('front.posts.single.post.post_footer', ['viewFolder' => 'front.posts.single.post'])
+</div>
 
 @section('endOfBody')
-    @include('front.gallery.single.scripts')
+    @include($viewFolder . '.scripts')
 
     <script type="text/javascript">
         $(document).ready(function () {

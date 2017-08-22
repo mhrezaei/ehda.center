@@ -9,6 +9,7 @@ use App\Traits\TahaModelTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Feed\FeedItem;
 
 
@@ -521,7 +522,7 @@ class Post extends Model implements FeedItem
 	}
 	public function getShortUrlAttribute()
 	{
-		return url_locale('-' . $this->hash_id);
+		return url_locale(config('prefix.routes.post.short') . $this->hash_id);
 	}
 
 
@@ -1176,8 +1177,9 @@ class Post extends Model implements FeedItem
     {
         $type = $this->type;
         $postFiles = $this->meta('post_files');
+        $isEducational = starts_with($type, 'educational') and $postFiles and is_array($postFiles) and count($postFiles);
 
-        if (starts_with($type, 'educational') and $postFiles and is_array($postFiles) and count($postFiles)) {
+        if ($isEducational and !\auth()->guest() and user()->as('student')->can('*')) {
             return true;
         }
 
