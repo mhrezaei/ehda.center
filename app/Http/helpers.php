@@ -18,6 +18,11 @@ function getLocale()
 	return \Illuminate\Support\Facades\App::getLocale();
 }
 
+/**
+ * @param int $id
+ *
+ * @return \Illuminate\Contracts\Auth\Authenticatable|\App\Models\User|null
+ */
 function user($id=0)
 {
 	if($id) {
