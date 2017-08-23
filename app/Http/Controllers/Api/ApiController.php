@@ -363,7 +363,7 @@ class ApiController extends Controller
         {
             // province successfully listed
             $result['status'] = 4;
-            $province = State::get_provinces()->select('id', 'title')->get();
+            $province = State::getProvinces()->select('id', 'title')->get();
             $result['province'] = $province;
         }
 
@@ -390,7 +390,7 @@ class ApiController extends Controller
         {
             // cities successfully listed
             $result['status'] = 5;
-            $cities = State::get_cities($request->province)->select('id', 'title')->get();
+            $cities = State::getCities($request->province)->select('id', 'title')->get();
             $result['cities'] = $cities;
         }
 
