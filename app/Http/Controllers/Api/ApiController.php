@@ -273,9 +273,10 @@ class ApiController extends Controller
         {
             // data
             $input = $request->toArray();
-            unset($input['token']);
+
             //$input['card_status'] = 8;
             $input['password'] = Hash::make($input['tel_mobile']);
+            $input['mobile'] = $input['tel_mobile'];
             $input['home_province'] = State::find($input['home_city']);
             $input['domain'] = $input['home_province']->domain->slug ; // @TODO: ask from taha
             $input['home_province'] = $input['home_province']->province()->id;
@@ -296,6 +297,9 @@ class ApiController extends Controller
                 $input['birth_date'] = Carbon::createFromTimestamp($input['birth_date'])->toDateString();
             }
 
+            // unset additional data
+            unset($input['token']);
+            unset($input['tel_mobile']);
 
             $user = User::findBySlug($request->code_melli, 'code_melli');
             if (! $user)
