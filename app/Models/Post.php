@@ -1183,7 +1183,14 @@ class Post extends Model implements FeedItem
         $postFiles = $this->meta('post_files');
         $isEducational = starts_with($type, 'educational') and $postFiles and is_array($postFiles) and count($postFiles);
 
-        if ($isEducational and !\auth()->guest() and user()->as('student')->can('*')) {
+        if (
+            $isEducational and
+            !\auth()->guest() and
+            (
+                user()->is_a('student') or
+                user()->is_a('developer')
+            )
+        ) {
             return true;
         }
 

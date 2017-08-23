@@ -683,3 +683,24 @@ function unparse_url($parsed_url, $ommit = array())
 
     return $p['scheme'] . $p['user'] . $p['pass'] . $p['host'] . $p['port'] . $p['path'] . $p['query'] . $p['fragment'];
 }
+
+/**
+ * Convert bytes to other units
+ *
+ * @param int $bytes
+ * @param int $precision
+ *
+ * @return string
+ */
+function formatBytes($bytes, $precision = 2)
+{
+    $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+
+    $bytes = max($bytes, 0);
+    $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+    $pow = min($pow, count($units) - 1);
+
+    $bytes /= pow(1024, $pow);
+
+    return round($bytes, $precision) . ' ' . $units[$pow];
+}

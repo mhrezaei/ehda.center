@@ -2778,3 +2778,46 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 // Owl Card Slider --end
+
+// Post Template --start
+.sub-title, .post-title {
+  line-height: 1.7;
+}
+
+.article {
+  margin-bottom: 30px;
+  .comments {
+    margin-bottom: 20px;
+    border-top: 1px solid #ccc;
+  }
+  .post-cover {
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+    padding: 0;
+  }
+  img {
+    max-width: 100%;
+    padding: 10px;
+  }
+  .tags, .share, .comments {
+    margin-top: 10px;
+  }
+  .tags {
+    a {
+      margin-bottom: 5px;
+    }
+  }
+
+  .download-box {
+    .download-box-watermark {
+      @extend .floating-top-0, .floating-left-15, .p15, .full-height, .align-vertical-center;
+      font-size: 10em;
+      line-height: 1;
+      opacity: .3;
+      overflow-y: hidden;
+    }
+  }
+}
+
+// Post Template --end

@@ -445,11 +445,13 @@ class UploadServiceProvider extends ServiceProvider
         $fileName = pathinfo($url)['basename'];
         $newVersion = self::changeFileNameVersion($fileName, $version);
 
-        $newUrl = str_replace($fileName, $newVersion, $url);
-        $newPath = str_replace(url('/') . '/', '', $newUrl);
+        if ($newVersion) {
+            $newUrl = str_replace($fileName, $newVersion, $url);
+            $newPath = str_replace(url('/') . '/', '', $newUrl);
 
-        if (self::getFileObject($newPath)) {
-            return $newUrl;
+            if (self::getFileObject($newPath)) {
+                return $newUrl;
+            }
         }
 
         return $url;
