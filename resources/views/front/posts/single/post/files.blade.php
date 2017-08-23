@@ -8,8 +8,8 @@
 
     @if($canDownload or $noAccessText)
         <div class="row">
-            <div class="col-xs-12 mt20 well bg-lightGray text-blue">
-                <h5 class="text-blue">{{ trans('front.download_links') }}</h5>
+            <div class="col-xs-12 mt20 well download-box bg-lightGray text-blue">
+                <h4 class="text-blue">{{ trans('front.download_links') }}</h4>
                 @if($post->canDownloadFile())
                     <p>
                         @php $downloadingFiles = $post->post_files @endphp
@@ -25,7 +25,16 @@
                                         $url = route('file.download', [$downloadingFile['src'], $downloadingFile['label']]);
                                     @endphp
                                     @if($key) <br/> @endif
-                                    <a target="_blank" href="{{ $url }}">{{ $linkTitle }}</a>
+                                        <div style="display: inline-block">
+                                            <a target="_blank" href="{{ $url }}">
+                                            <span class="fa fa-download"></span>
+                                            {{ $linkTitle }}
+                                            </a>
+                                        </div>
+                                        <div style="display: inline-block;">
+                                            &nbsp;-&nbsp;
+                                            {{ formatBytes($fileObj->size) }}
+                                        </div>
                                 @endif
                             @endforeach
                         @endif
@@ -33,6 +42,9 @@
                 @else
                     <div class="alert alert-danger">{{ $noAccessText }}</div>
                 @endif
+                <div class="download-box-watermark">
+                    <span class="fa fa-download"></span>
+                </div>
             </div>
         </div>
     @endif

@@ -600,37 +600,6 @@ span.container {
   }
 }
 
-/*pages*/
-.sub-title, .post-title {
-  line-height: 1.7;
-}
-
-.article {
-  margin-bottom: 30px;
-  .comments {
-    margin-bottom: 20px;
-    border-top: 1px solid #ccc;
-  }
-  .post-cover {
-    width: 100%;
-    height: auto;
-    margin-bottom: 20px;
-    padding: 0;
-  }
-  img {
-    max-width: 100%;
-    padding: 10px;
-  }
-  .tags, .share, .comments {
-    margin-top: 10px;
-  }
-  .tags {
-    a {
-      margin-bottom: 5px;
-    }
-  }
-}
-
 /*Form*/
 select.form-control {
   padding-top: 0;
