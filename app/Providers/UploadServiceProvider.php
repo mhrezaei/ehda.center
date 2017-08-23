@@ -774,44 +774,51 @@ class UploadServiceProvider extends ServiceProvider
         ]);
 
         $file = self::smartFindFile($file, true);
-        $file->spreadMeta();
-        $fileObj = self::getFileObject($file->pathname);
-        if ($fileObj) {
-            if (self::isImage($fileObj)) {
-                $relatedFilesPathnames = $file->related_files_pathname ?: [];
+        if ($file->exists) {
+            $file->spreadMeta();
+            $fileObj = self::getFileObject($file->pathname);
+            if ($fileObj) {
+                if (self::isImage($fileObj)) {
+                    $relatedFilesPathnames = $file->related_files_pathname ?: [];
 
-                if (array_key_exists($version, $relatedFilesPathnames)) {
-                    $pathname = $relatedFilesPathnames[$version];
+                    if (
+                        array_key_exists($version, $relatedFilesPathnames) and // version exists in db
+                        self::getFileObject($relatedFilesPathnames[$version]) // version exists in storage
+                    ) {
+                        $pathname = $relatedFilesPathnames[$version];
+                    } else {
+                        $pathname = $file->pathname;
+                    }
+
+                    $imgUrl = url($pathname);
+
                 } else {
-                    $pathname = $file->pathname;
-                }
+                    $fileType = substr($file->mime_type, 0, strpos($file->mime_type, '/'));
+                    switch ($fileType) {
+                        case "video":
+                            $imageName = 'file-video-o.svg';
+                            break;
+                        case "audio":
+                            $imageName = 'file-audio-o.svg';
+                            break;
+                        case "text":
+                        case "application":
+                        case "docs":
+                            $imageName = 'file-text-o.svg';
+                            break;
+                        default:
+                            $imageName = 'file-o.svg';
+                            break;
+                    }
 
-                $imgUrl = url($pathname);
-
-            } else {
-                $fileType = substr($file->mime_type, 0, strpos($file->mime_type, '/'));
-                switch ($fileType) {
-                    case "video":
-                        $imageName = 'file-video-o.svg';
-                        break;
-                    case "audio":
-                        $imageName = 'file-audio-o.svg';
-                        break;
-                    case "text":
-                    case "application":
-                    case "docs":
-                        $imageName = 'file-text-o.svg';
-                        break;
-                    default:
-                        $imageName = 'file-o.svg';
-                        break;
-                }
-
-                $imgUrl = url('assets/images/template/' . $imageName);
+                    $imgUrl = url('assets/images/template/' . $imageName);
 //                return view('front.frame.widgets.icon-image-element'
 //                    , array_merge(compact('fileType'), $switches));
+                }
             }
-        } else {
+        }
+
+        if (!isset($imgUrl)) {
             $imgUrl = url('assets/images/template/chain-broken.svg');
         }
 
