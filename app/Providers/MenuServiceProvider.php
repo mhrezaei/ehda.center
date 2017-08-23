@@ -253,10 +253,6 @@ class MenuServiceProvider extends ServiceProvider
                                 'title' => trans('front.main-menu.sub_menus.will.organ_donation_volunteers'),
                                 'link'  => route_locale('volunteer.register.step.1.get'),
                             ],
-                            [
-                                'title' => trans('front.main-menu.sub_menus.will.angels'),
-                                'link'  => route_locale('angels.list'),
-                            ],
                         ]
                     ],
                     [
@@ -378,6 +374,10 @@ class MenuServiceProvider extends ServiceProvider
                                 'link'  => route_locale('gallery.categories', [
                                     'postType' => 'films',
                                 ])
+                            ],
+                            [
+                                'title' => trans('front.angels.plural'),
+                                'link' => route_locale('angels.list')
                             ],
 //                            [
 //                                'title' => trans('front.main-menu.sub_menus.achieve.photo_donors'),
