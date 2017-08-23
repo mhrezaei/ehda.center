@@ -1,7 +1,7 @@
 @php $showSideBar = isset($showSideBar) ? $showSideBar : false @endphp
 
 <style>
-    .post-text img {
+    .article  img {
         max-width: 80% !important;
     }
 </style>

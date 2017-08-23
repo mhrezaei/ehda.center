@@ -10,10 +10,9 @@
 
 @section('content')
     <div class="container-fluid">
-        @include('front.frame.position_info', [
-            'group' => trans('front.states_entrance'),
+        @include('front.frame.position_info', array_merge([
             'groupColor' => 'green'
-        ])
+        ], $positionInfo))
         <div class="container">
             <div class="row">
                 @include('front.iranmap.state-info')
