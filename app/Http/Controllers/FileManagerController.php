@@ -96,14 +96,21 @@ class FileManagerController extends Controller
         ]);
     }
 
-    public function download($hadhid, $fileName = '')
+    public function download($hadhid, $fileName = null)
     {
         $file = File::findByHashid($hadhid);
         if (!$file->exists) {
             return $this->abort('404');
         }
 
-        $fileName = $fileName ?: $file->original_name;
+        if ($fileName)
+        {
+            $fileName = $fileName . '.' . $file->extension;
+        }
+        else
+        {
+            $fileName = $file->original_name;
+        }
 
         $headers = array(
             'Content-Type: ' . $file->mime_type,
