@@ -1,6 +1,13 @@
 <div class="col-xs-12">
     <h3 class="post-title">{{ ad($post->title) }}</h3>
-    <img class="post-cover" src=" {{ $post->viewable_featured_image }}" alt="">
+    @php
+        $featuredImageUrl = \App\Providers\UploadServiceProvider::changeFileUrlVersion($post->viewable_featured_image, 'single');
+    @endphp
+    <div class="row">
+        <div class="col-xs-12 text-center">
+            <img class="post-cover" src=" {{ $featuredImageUrl }}" alt="">
+        </div>
+    </div>
     <div class="row">
         <div class="col-xs-12 post-text">
             {!! $post->text !!}

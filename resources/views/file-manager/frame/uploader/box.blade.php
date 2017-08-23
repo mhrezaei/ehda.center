@@ -42,20 +42,25 @@
             <span>{{ trans("front.file_types.$fileType.dropzone_text") }}</span>
         </div>
         @include('front.forms.hidden', [
-            'id' => '',
+            'id' => '_uploadIdentifier',
             'name' => '_uploadIdentifier',
             'value' => encrypt(implode(',', $uploadIdentifiers)),
         ])
         @include('front.forms.hidden', [
-            'id' => '',
+            'id' => '_groupName',
             'name' => '_groupName',
             'value' => time() . str_random(8),
         ])
         @include('front.forms.hidden', [
-            'id' => '',
+            'id' => '_directUpload',
             'name' => '_directUpload',
             'value' => $directUpload,
         ])
+        {{--@include('front.forms.hidden', [--}}
+            {{--'id' => 'externalFields',--}}
+            {{--'name' => 'externalFields',--}}
+            {{--'value' => (isset($externalFields) and $externalFields) ? json_encode($externalFields) : '',--}}
+        {{--])--}}
     </div>
 
 </div>

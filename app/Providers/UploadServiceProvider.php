@@ -436,6 +436,23 @@ class UploadServiceProvider extends ServiceProvider
             $fileNameParts[2] = $newVersion;
             return implode(self::$fileNameSeparator, $fileNameParts) . '.' . $ext;
         }
+
+        return null;
+    }
+
+    public static function changeFileUrlVersion($url, $version)
+    {
+        $fileName = pathinfo($url)['basename'];
+        $newVersion = self::changeFileNameVersion($fileName, $version);
+
+        $newUrl = str_replace($fileName, $newVersion, $url);
+        $newPath = str_replace(url('/') . '/', '', $newUrl);
+
+        if (self::getFileObject($newPath)) {
+            return $newUrl;
+        }
+
+        return $url;
     }
 
     public static function getThumb($fileUrl, $thumbFolder = 'thumbs')
