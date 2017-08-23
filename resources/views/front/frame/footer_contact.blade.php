@@ -31,7 +31,7 @@
     <br>
     {{ null, $location = setting()->ask('location')->gain() }}
     @if($location and is_array($location) and (count($location) == 2))
-        <a href="{{ url('about#map') }}" class="link-white">{{ trans('front.view_on_map') }}</a>
+        <a href="{{ route_locale('contact') }}#map" class="link-white">{{ trans('front.view_on_map') }}</a>
         <br>
     @endif
     {{ null, $tels = setting()->ask('telephone')->gain() }}

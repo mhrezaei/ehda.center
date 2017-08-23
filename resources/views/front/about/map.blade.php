@@ -1,12 +1,12 @@
-{{ null, $location = setting()->ask('location')->gain() }}
+@php $location = setting()->ask('location')->gain() @endphp
 @if($location and is_array($location) and (count($location) == 2))
     <div class="row mb30">
         <div id="map" class="col-xs-12" style="height: 400px"></div>
     </div>
 @section('endOfBody')
-    {{ null, $title = setting()->ask('site_title')->gain() }}
+    @php $title = setting()->ask('site_title')->gain() @endphp
     <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDrN-fzR0qjq_9VE7HyKdFHEfMAlkHR8Z4&callback=initMap"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDETfTV6JbtJ2i8l67mMB071qyHt7UODM&callback=initMap"
             type="text/javascript"></script>
     <script type="text/javascript">
         // Multiple Markers
@@ -28,10 +28,7 @@
         ];
     </script>
     <script type="text/javascript">
-        $(document).ready(function () {
-            initialize();
-        });
-        function initialize() {
+        function initMap() {
             var map;
             var bounds = new google.maps.LatLngBounds();
             var mapOptions = {
@@ -128,5 +125,5 @@
 
         }
     </script>
-@endsection
+@append
 @endif
