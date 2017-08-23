@@ -361,8 +361,9 @@ class CardsController extends UsersController
 		/*-----------------------------------------------
 		| Send to Print ...
 		*/
+
 		if($saved and $data['_submit'] == 'print') {
-			$saved = Printing::addTo(Post::find($request->event_id), $saved_user);
+			$saved = Printing::addTo(Post::find($request->from_event_id), $saved_user);
 		}
 
 		/*-----------------------------------------------
@@ -620,6 +621,7 @@ class CardsController extends UsersController
 				'code_melli'  => pd($user->code_melli),
 				'birth_date'  => $user->birth_date_on_card,
 				'card_no'     => pd($user->card_no),
+			     'registered_at' => $user->register_date_on_card ,
 			]);
 		}
 

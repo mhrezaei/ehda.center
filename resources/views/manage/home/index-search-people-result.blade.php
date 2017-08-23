@@ -71,7 +71,7 @@
 
 
 	@include("manage.frame.widgets.grid-text" , [
-		'text' => trans("people.commands.login_as"),
+		'text' => trans("people.commands.login_as") ,
 		'icon' => "sign-in" ,
 		'class' => "btn btn-info w70" ,
 		'size' => "12" ,
@@ -79,8 +79,11 @@
 		'condition' => user()->isDeveloper() and !$model->trashed() ,
 	]     )
 
-
-
+	@if(user()->isDeveloper())
+		<div class="f10 ltr">
+			id: {{$model->id}}
+		</div>
+	@endif
 
 @endif
 
