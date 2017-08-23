@@ -332,7 +332,6 @@ class CardsController extends UsersController
 		*/
 		if(!$request->id or (isset($model) and $model->is_not_a('card-holder'))) {
 			$data['card_registered_at'] = Carbon::now()->toDateTimeString();
-			$data['card_no']            = User::generateCardNo();
 		}
 
 
@@ -352,6 +351,9 @@ class CardsController extends UsersController
 		if($saved) {
 			$saved_user = User::find($saved);
 			if($saved_user and $saved_user->id and $saved_user->is_not_a('card-holder')) {
+				$saved_user->update([
+					'card_no' => $saved_user->generateCardNo() ,
+				]);
 				$saved_user->attachRole('card-holder');
 			}
 		}
