@@ -14,7 +14,8 @@
 				   value="{{ $model->featured_image? $model->featured_image : '' }}">
 			<div id="divFeaturedImage" class="{{ $model->featured_image? '' : 'noDisplay' }}">
 				<div id="divFeaturedImageInside" class="w90 m10" style="border-radius: 10px">
-					<img src="{{ $model->featured_image? url($model->featured_image) : '' }}" style="max-width: 100%">
+{{--					<img src=" {{ $model->featured_image?  url($model->featured_image) : '' }}" style="max-width: 100%">--}}
+					<img src=" {{ $model->featured_image? url(Upload::changeFileUrlVersion($model->featured_image, 'thumbnail')) : '' }}" style="max-width: 100%">
 				</div>
 
 				{{--<div class="text-center">--}}
