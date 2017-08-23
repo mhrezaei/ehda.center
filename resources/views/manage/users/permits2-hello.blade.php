@@ -65,20 +65,23 @@
 |--------------------------------------------------------------------------
 |
 --}}
-@include("forms.sep")
+{{ '' , $support_roles = $request_role::supportRoles() }}
+@if($support_roles->count())
+	@include("forms.sep")
 
-@include("forms.group-start" , [
-	'label' => trans("settings.supports") ,
-])
+	@include("forms.group-start" , [
+		'label' => trans("settings.supports") ,
+	])
 
-	@foreach($request_role::supportRoles() as $support_role)
+		@foreach($support_roles as $support_role)
 
-		@include("forms.check" , [
-			'name' => $support_role->slug,
-			'value' => $model->is_a($support_role->slug) ,
-			'label' => $support_role->title ,
-		]     )
+			@include("forms.check" , [
+				'name' => $support_role->slug,
+				'value' => $model->is_a($support_role->slug) ,
+				'label' => $support_role->title ,
+			]     )
 
-	@endforeach
+		@endforeach
 
-@include("forms.group-end")
+	@include("forms.group-end")
+@endif
