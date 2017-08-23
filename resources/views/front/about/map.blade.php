@@ -6,7 +6,7 @@
 @section('endOfBody')
     @php $title = setting()->ask('site_title')->gain() @endphp
     <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDETfTV6JbtJ2i8l67mMB071qyHt7UODM&callback=initMap"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDrN-fzR0qjq_9VE7HyKdFHEfMAlkHR8Z4&callback=initMap"
             type="text/javascript"></script>
     <script type="text/javascript">
         // Multiple Markers
