@@ -598,6 +598,9 @@ function formatPhone($data)
  */
 function localeLink($locale)
 {
+    if(request()->url() == url('/')) {
+        return url($locale);
+    }
     $route = request()->route();
     $route->setParameter('lang', $locale);
 
