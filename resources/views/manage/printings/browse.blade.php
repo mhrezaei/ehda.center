@@ -39,6 +39,13 @@
 				'icon' => "print" ,
 				'caption' => trans("manage.permissions.print-direct") ,
 			],
+			[
+				'target' => "modal:manage/cards/printings/act/cancel" ,
+				'type' => "danger" ,
+				'condition' => ($request_tab == 'pending') ,
+				'icon' => "times" ,
+				'caption' => trans("ehda.printings.cancel") ,
+			],
 
 		] ,
 //		'search_' =>[

@@ -390,7 +390,7 @@ class CardsController extends UsersController
 			return view('errors.403');
 		}
 		if($request_tab == 'under_direct_printing' or $request_tab == 'under_excel_printing') {
-			$permit = str_replace("under_" , null , str_replace("_printing" , null , $request_tab )) ;
+			$permit = str_replace("under_", null, str_replace("_printing", null, $request_tab));
 			if(user()->as('admin')->cannot("users-card-holder.print-" . $permit)) {
 				return view('errors.403');
 			}
@@ -406,7 +406,7 @@ class CardsController extends UsersController
 		| Events Menu ...
 		*/
 		$all_events   = Post::getAllEvents();
-		$event_title = trans('ehda.printings.all_events') ;
+		$event_title  = trans('ehda.printings.all_events');
 		$events_array = [
 			[
 				$event_id == 0 ? 'check' : '',
@@ -475,7 +475,7 @@ class CardsController extends UsersController
 		/*-----------------------------------------------
 		| Available Actions ...
 		*/
-		if(!in_array($action, ['add-to-direct', 'add-to-excel', 'confirm-quality', 'revert-to-pending'])) {
+		if(!in_array($action, ['add-to-direct', 'add-to-excel', 'confirm-quality', 'revert-to-pending' , 'cancel'])) {
 			return $this->jsonFeedback(trans('validation.http.Error410'));
 		}
 
@@ -509,6 +509,12 @@ class CardsController extends UsersController
 		$now      = Carbon::now()->toDateTimeString();
 		$admin_id = user()->id;
 		switch ($action) {
+			case 'cancel' :
+				$data = [
+					'deleted_at' => $now ,
+				     'deleted_by' => $admin_id ,
+				] ;
+				break;
 			case 'add-to-direct' :
 				$data = [
 					'printed_at'    => null,
@@ -525,7 +531,7 @@ class CardsController extends UsersController
 				$this->printingActionSave_direct($table);
 				break;
 			case 'add-to-excel' :
-				$data     = [
+				$data = [
 					'printed_at'    => $now,
 					'queued_at'     => $now,
 					'verified_at'   => null,
@@ -537,14 +543,16 @@ class CardsController extends UsersController
 					'dispatched_by' => 0,
 					'delivered_by'  => 0,
 				];
-				session()->put('excelDownload',true);
+				session()->put('excelDownload', true);
 				//$callback = "$('#btnDownloadExcel').change()";
 				break;
 			case 'confirm-quality' :
 				$data = [
+					'printed_at'    => $now,
 					'verified_at'   => $now,
 					'dispatched_at' => $now,
 					'delivered_at'  => $now,
+					'printed_by'    => $admin_id,
 					'verified_by'   => $admin_id,
 					'dispatched_by' => $admin_id,
 					'delivered_by'  => $admin_id,
@@ -730,7 +738,7 @@ class CardsController extends UsersController
 		/*-----------------------------------------------
 		| Model ...
 		*/
-		$model = Post::findByHashid($post_hashid) ;
+		$model = Post::findByHashid($post_hashid);
 		if(!$model or !$model->id) {
 			return view('errors.m410');
 		}
@@ -763,6 +771,7 @@ class CardsController extends UsersController
 		/*-----------------------------------------------
 		| View ...
 		*/
+
 		return view('manage.users.cards-event-stats', compact('model', 'total_count', 'daily_registers'));
 
 	}
