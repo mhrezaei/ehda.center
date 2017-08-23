@@ -46,14 +46,7 @@ class TestController extends Controller
 
     public function index()
     {
-        $i = UploadServiceProvider::isActive('manager.{{posttype}}.video');
-        dd($i, __FILE__ . " - " . __LINE__);
-        $i = UploadServiceProvider::isActive('manager.posttype__word-news.video');
-        $i2 = UploadServiceProvider::isActive('manager.posttype__word-news.audio');
-        dd($i, $i2, __FILE__ . " - " . __LINE__);
-        $c = \config('upload.manager.postype-word-news');
-        dd($c, __FILE__ . " - " . __LINE__);
-        echo json_encode($c);
+        return '<a href="' . url('login') . '?redirect=referer">flsjldk</a>';
     }
 
     public function states()

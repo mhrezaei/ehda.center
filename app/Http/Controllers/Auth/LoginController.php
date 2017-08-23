@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Session\Store;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 
 class LoginController extends Controller
@@ -21,7 +23,9 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers {
+        showLoginForm as protected traitShowLoginForm;
+    }
 
     /**
      * Where to redirect users after login.
@@ -37,21 +41,20 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => ['logout' , 'redirectAfterLogin']]);
+        $this->middleware('guest', ['except' => ['logout', 'redirectAfterLogin']]);
     }
 
     public function redirectAfterLogin()
     {
         //@TODO: Complete this based on the user roles
 
-        if (user()->is_an('admin'))
-        {
-            return redirect('/manage');
+        if (user()->is_an('admin')) {
+            $defaultUrl = '/manage';
+        } else {
+            $defaultUrl = 'user/dashboard';
         }
-        else
-        {
-            return redirect(url_locale('user/dashboard'));
-        }
+
+        return redirect()->intended($defaultUrl);
     }
 
     /**
@@ -64,21 +67,47 @@ class LoginController extends Controller
         return 'code_melli';
     }
 
-	public function logout(Request $request)
-	{
-		$logged_user = session()->pull('logged_developer');
-		if($logged_user) {
-			$logged_user = decrypt($logged_user) ;
-			Auth::loginUsingId($logged_user) ;
-			return redirect('/manage');
-		}
+    public function logout(Request $request)
+    {
+        $logged_user = session()->pull('logged_developer');
+        if ($logged_user) {
+            $logged_user = decrypt($logged_user);
+            Auth::loginUsingId($logged_user);
+            return redirect('/manage');
+        }
 
-		$this->guard()->logout();
+        $this->guard()->logout();
 
-		$request->session()->flush();
+        $request->session()->flush();
 
-		$request->session()->regenerate();
+        $request->session()->regenerate();
 
-		return redirect('/');
-	}
+        return redirect('/');
+    }
+
+    public function showLoginForm()
+    {
+        $query = \request()->query();
+
+        if (array_key_exists('redirect', $query)) {
+            switch (strtolower($query['redirect'])) {
+                case 'referer':
+                    session(['url.intended' => url()->previous()]);
+                    break;
+                default:
+                    if (!Validator::make([
+                        'url' => $query['redirect']
+                    ], [
+                        'url' => 'required|url',
+                    ])->fails()
+                    ) {
+                        session(['url.intended' => $query['redirect']]);
+                    }
+                    break;
+            }
+            session()->save();
+        }
+
+        return $this->traitShowLoginForm();
+    }
 }
