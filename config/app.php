@@ -39,9 +39,6 @@ return [
     */
 
     'debug' => env('APP_DEBUG', false),
-    //'debug' => value(function(){
-	//    Illuminate\Support\Facades\Auth::user()    ;
-    //}) ,
 
     /*
     |--------------------------------------------------------------------------
@@ -67,7 +64,7 @@ return [
     |
     */
 
-    'timezone' => 'Iran',
+    'timezone' => 'Asia/Tehran',
 
     /*
     |--------------------------------------------------------------------------

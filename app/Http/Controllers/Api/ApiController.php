@@ -25,7 +25,7 @@ class ApiController extends Controller
 
     public function index()
     {
-        return redirect(url('/showPost/api-documentation'));
+        return redirect(url('/fa/show-post/api-documentation'));
     }
 
     public function get_token(Requests\Api\GetTokenRequest $request)
