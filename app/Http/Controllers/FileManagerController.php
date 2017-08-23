@@ -99,16 +99,15 @@ class FileManagerController extends Controller
     public function download($hadhid, $fileName = null)
     {
         $file = File::findByHashid($hadhid);
-        if (!$file->exists) {
+        if (!$file->exists or !UploadServiceProvider::getFileObject($file->pathname)) {
             return $this->abort('404');
         }
 
-        if ($fileName)
-        {
-            $fileName = $fileName . '.' . $file->extension;
-        }
-        else
-        {
+        if ($fileName) {
+            if (!ends_with($fileName, '.' . $file->extension)) {
+                $fileName = $fileName . '.' . $file->extension;
+            }
+        } else {
             $fileName = $file->original_name;
         }
 
