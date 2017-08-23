@@ -1,5 +1,6 @@
 @php
     $canDownload = $post->canDownloadFile();
+    // @todo: pass from controller
     $noAccessPost = \App\Providers\PostsServiceProvider::smartFindPost('education-no-access-file');
     $noAccessText = $noAccessPost->exists ? $noAccessPost->title : '';
 @endphp
