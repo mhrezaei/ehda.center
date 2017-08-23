@@ -621,6 +621,7 @@ class CardsController extends UsersController
 				'code_melli'  => pd($user->code_melli),
 				'birth_date'  => $user->birth_date_on_card,
 				'card_no'     => pd($user->card_no),
+			     'registered_at' => $user->register_date_on_card ,
 			]);
 		}
 
