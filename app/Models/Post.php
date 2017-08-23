@@ -365,9 +365,13 @@ class Post extends Model implements FeedItem
 
 	}
 
+	/**
+	 * @deprecated
+	 * @return mixed
+	 */
 	public function getSiteLinkAttribute()
 	{
-		return $this->locale . '/page/' . $this->id;
+		return $this->direct_url ;
 	}
 
 	public function getPreviewLinkAttribute()

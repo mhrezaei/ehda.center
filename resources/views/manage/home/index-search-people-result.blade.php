@@ -61,13 +61,25 @@
 	]     )
 
 	@include("manage.frame.widgets.grid-text" , [
+		'text' => trans("people.role_management"),
+		'icon' => "cog" ,
+		'class' => "btn btn-default w70" ,
+		'size' => "12" ,
+		'link' => "modal:manage/users/act/-id-/roles/" ,
+		'condition' => user()->isDeveloper() , //$model->canPermit() ,
+	]     )
+
+
+	@include("manage.frame.widgets.grid-text" , [
 		'text' => trans("people.commands.login_as"),
 		'icon' => "sign-in" ,
-		'class' => "btn btn-default w70" ,
+		'class' => "btn btn-info w70" ,
 		'size' => "12" ,
 		'link' => 'modal:manage/users/act/-id-/login_as' ,
 		'condition' => user()->isDeveloper() and !$model->trashed() ,
 	]     )
+
+
 
 
 @endif
