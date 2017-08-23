@@ -42,9 +42,9 @@
                 @else
                     <div class="alert alert-danger">{{ $noAccessText }}</div>
                 @endif
-                <div class="download-box-watermark">
-                    <span class="fa fa-download"></span>
-                </div>
+                {{--<div class="download-box-watermark">--}}
+                    {{--<span class="fa fa-download"></span>--}}
+                {{--</div>--}}
             </div>
         </div>
     @endif
