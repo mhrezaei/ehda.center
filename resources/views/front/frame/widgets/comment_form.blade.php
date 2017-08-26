@@ -94,7 +94,6 @@
                                 'name' => $fieldName,
                                 'class' => $inputClass,
                                 'placeholder' => trans('validation.attributes.first_and_last_name'),
-                                'label' => trans('validation.attributes.first_and_last_name'),
                             ] + $inputData)
                         </div>
                     </div>
@@ -151,7 +150,7 @@
                         </div>
                     </div>
 
-                @elseif($fieldName == 'city')
+                @elseif($fieldName == 'text')
                     <div class="col-xs-{{ $inputSize }}">
                         <div class="row">
                             @include('front.forms.textarea', [
