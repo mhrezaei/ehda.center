@@ -85,6 +85,8 @@
                     // Showing cancel button to get back to step 1
                     $('#cancel-button').show();
 
+                    // Hide "feeds"
+                    $('#register_form').find('.form-feed').hide();
                     break;
                 case 3:
                     // Making all inputs in form readonly
@@ -93,12 +95,15 @@
 
                     // Hide all buttons
                     $('#form-buttons').hide();
-                    $('#last-step-buttons').hide();
+//                    $('#last-step-buttons').hide();
                     break;
             }
         }
 
         function downToStep(stepNumber) {
+            // Hide "feeds"
+            $('#register_form').find('.form-feed').hide();
+
             switch (stepNumber) {
                 case 1:
                     // Hide additional fields (the fields related to step 2)
@@ -108,7 +113,8 @@
                     $('#code_melli').removeAttr('readonly');
 
                     // Reset values of additional inputs in
-                    $('#additional-fields').find(':input').each(function () {
+                    $('#additional-fields :input, #name_first, #name_last, #code_melli').each(function () {
+                        $(this).closest('.form-group').removeClass('has-success');
                         if ($(this).is(':radio')) {
                             $(this).prop('checked', false);
                         } else {

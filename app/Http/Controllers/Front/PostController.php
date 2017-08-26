@@ -290,7 +290,6 @@ JS;
                 $urlParametersForForce[$locale] = $localeValue;
             }
             TransServiceProvider::forceUrlParameters($urlParametersForForce);
-
             /************************* Set Locale Depended Parameters ********************** END */
 
             /************************* Render View ********************** START */
@@ -465,5 +464,24 @@ JS;
             return response()->json($resultAngels);
         }
 
+    }
+
+    public function postVeryShortLink($identifier)
+    {
+        $prefix = config('prefix.routes.post.short');
+
+        if (starts_with($identifier, $prefix)) {
+            $hashid = substr($identifier, strlen($prefix));
+            $post = Post::findByHashid($hashid);
+            if ($post->exists) {
+                return redirect()->route('post.single', [
+                    'lang'       => $post->locale,
+                    'identifier' => $hashid,
+                    'url' => urlencode($post->title),
+                ]);
+            }
+        }
+
+        return $this->abort('403');
     }
 }

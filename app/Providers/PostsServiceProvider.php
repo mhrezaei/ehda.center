@@ -19,7 +19,13 @@ use Morilog\Jalali\Facades\jDateTime;
 
 class PostsServiceProvider extends ServiceProvider
 {
-    private static $searchTemplate = 'post';
+    protected static $searchTemplate = 'post';
+    protected static $defaultData = [
+        'collectPosts' => [],
+        'showList'     => [],
+        'showPost'     => [],
+    ];
+
 
     private $runningMethod;
 
@@ -30,6 +36,48 @@ class PostsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        self::$defaultData['collectPosts'] = [
+            'id'               => "",
+            'slug'             => "",
+            'role'             => "",
+            'criteria'         => "published",
+            'locale'           => getLocale(),
+            'owner'            => 0,
+            'type'             => "feature:searchable",
+            'category'         => "",
+            'keyword'          => "",
+            'search'           => "",
+            'from'             => "",
+            'to'               => "",
+            'folder'           => "",
+            'domain'           => getUsableDomains(),
+            'max_per_page'     => 12, // If this is set as "-1" pagination will be applied
+            'limit'            => false, // If this is set as "false" list will not be limited
+            'random'           => false,
+            'sort'             => 'DESC',
+            'sort_by'          => 'published_at',
+            'conditions'       => [], // additional conditions to be used in "where" clause
+            'paginate_current' => '',
+        ];
+
+        self::$defaultData['showList'] = array_merge(self::$defaultData['collectPosts'], [
+            'paginate_hash' => '', // the fragment that should be added to links in pagination
+            'show_filter'   => true,
+            'ajax_request'  => false,
+            'paginate_url'  => '',
+            'is_base_page'  => false,
+            'showError'     => true,
+            'variables'     => [],
+        ]);
+
+        self::$defaultData['showPost'] = [
+            'lang'          => getLocale(),
+            'externalBlade' => '',
+            'preview'       => false,
+            'showError'     => true,
+            'variables'     => [],
+        ];
+
         //
     }
 
@@ -44,6 +92,55 @@ class PostsServiceProvider extends ServiceProvider
     }
 
     /**
+     * Collects posts
+     *
+     * @param array $data
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Support\Collection
+     */
+    public static function collectPosts($data = [])
+    {
+        $methodName = __FUNCTION__;
+        // normalize data
+        $data = array_normalize($data, self::$defaultData[$methodName]);
+
+        // Set current pagination page if needed
+        if ($data['paginate_current']) {
+            Paginator::currentPageResolver(function () use ($data) {
+                return $data['paginate_current'];
+            });
+        }
+
+        // Select posts
+        $posts = Post::selector($data)
+            ->where($data['conditions']);
+
+        // Randomize list if needed
+        if ($data['random']) {
+            $posts = $posts->inRandomOrder();
+        } else {
+            $posts = $posts->orderBy($data['sort_by'], $data['sort']);
+        }
+
+        // Paginate lists if needed
+        if (($data['max_per_page'] == -1)) {
+            // Limit number of posts if needed
+            if ($data['limit']) {
+                $posts = $posts->limit($data['limit']);
+            }
+
+            return $posts->get();
+        } else {
+            // Limit number of posts if needed
+            if ($data['limit']) {
+                return $posts->paginate($data['limit']);
+            } else {
+                return $posts->paginate($data['max_per_page']);
+            }
+        }
+    }
+
+    /**
      * Returns a view including list view of post with specified filters and conditions
      *
      * @param array $data Filters and Conditions
@@ -52,66 +149,16 @@ class PostsServiceProvider extends ServiceProvider
      */
     public static function showList($data = [])
     {
-        $defaultData = [
-            'showList' => [
-                'slug'             => "",
-                'role'             => "",
-                'criteria'         => "published",
-                'locale'           => getLocale(),
-                'domain'           => getUsableDomains(),
-                'owner'            => 0,
-                'type'             => "feature:searchable",
-                'category'         => "",
-                'folder'           => "",
-                'keyword'          => "",
-                'search'           => "",
-                'from'             => "",
-                'to'               => "",
-                'max_per_page'     => 12, // If this is set as "-1" pagination will be applied
-                'random'           => false,
-                'sort'             => 'DESC',
-                'sort_by'          => 'published_at',
-                'show_filter'      => true,
-                'ajax_request'     => false,
-                'conditions'       => [], // additional conditions to be used in "where" clause
-                'paginate_hash'    => '', // the fragment that should be added to links in pagination
-                'paginate_url'     => '',
-                'paginate_current' => '',
-                'is_base_page'     => false,
-                'showError'        => true,
-                'variables'        => [],
-            ]
-        ];
-
-        $methodName = 'showList';
+        $methodName = __FUNCTION__;
         // normalize data
-        $data = array_normalize($data, $defaultData[$methodName]);
+        $data = array_normalize($data, self::$defaultData[$methodName]);
 
         $showFilter = $data['show_filter'];
         $ajaxRequest = $data['ajax_request'];
         $isBasePage = $data['is_base_page'];
 
         if (!$data['is_base_page']) {
-            if ($data['paginate_current']) {
-                Paginator::currentPageResolver(function () use ($data) {
-                    return $data['paginate_current'];
-                });
-            }
-
-            // select posts
-            $posts = Post::selector($data)
-                ->where($data['conditions'])
-                ->orderBy($data['sort_by'], $data['sort']);
-
-            if ($data['random']) {
-                $posts = $posts->inRandomOrder();
-            }
-
-            if ($data['max_per_page'] == -1) {
-                $posts = $posts->get();
-            } else {
-                $posts = $posts->paginate($data['max_per_page']);
-            }
+            $posts = self::collectPosts($data);
 
             if (!$posts->count()) {
                 if ($data['showError']) {
@@ -146,7 +193,7 @@ class PostsServiceProvider extends ServiceProvider
 
         // specify template
         $postType = Posttype::findBySlug($data['type']);
-        if ($defaultData[$methodName]['type'] != $data['type']) {
+        if (self::$defaultData[$methodName]['type'] != $data['type']) {
             $viewData['postType'] = $postType;
             $template = $postType
                 ->spreadMeta()
@@ -192,17 +239,14 @@ class PostsServiceProvider extends ServiceProvider
      */
     public static function showPost($identifier, $data = [])
     {
+        $methodName = __FUNCTION__;
         // normalize data
-        $data = array_normalize($data, [
-            'lang'          => getLocale(),
-            'externalBlade' => '',
-            'preview'       => false,
-            'showError'     => true,
-            'variables'     => [],
-        ]);
+        $data = array_normalize($data, self::$defaultData[$methodName]);
 
+        // Find posts
         $post = self::smartFindPost($identifier);
 
+        // Make action if post doesn't exist
         if (!$post->exists or !$post->id) {
             if ($data['showError']) {
                 return view('errors.m410');
@@ -211,9 +255,17 @@ class PostsServiceProvider extends ServiceProvider
             }
         }
 
+        // Find posttype
         $postType = $post->posttype()->spreadMeta();
-        $template = $postType->template;
 
+        // Find related alert and messages
+        $messagesPosts['noAccessFiles'] = self::smartFindPost($postType->slug . '-no-access-files');
+        if (!$messagesPosts['noAccessFiles']->exists) {
+            $messagesPosts['noAccessFiles'] = self::smartFindPost('no-access-files');
+        }
+
+        // Find template of post
+        $template = $postType->template;
         if ($template == 'special') {
             $viewFolder = "front.posts.single.$template.$postType->slug";
         } else {
@@ -224,6 +276,7 @@ class PostsServiceProvider extends ServiceProvider
         $externalBlade = $data['externalBlade'];
         return self::generateView($viewFolder . '.main', compact('post',
                 'viewFolder',
+                'messagesPosts',
                 'externalBlade'
             ) + $data['variables']);
     }
