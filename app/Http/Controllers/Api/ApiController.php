@@ -194,8 +194,8 @@ class ApiController extends Controller
                 {
                     if ($user->is_an('card-holder'))
                     {
-                        if ($user->mobile == $request->tel_mobile
-                            and $user->birth_date == Carbon::createFromTimestamp($request->birth_date)->toDateString()
+                        if ($user->mobile == $data['tel_mobile']
+                            and $user->birth_date->toDateString() == Carbon::createFromTimestamp($data['birth_date'])->toDateString()
                         )
                         {
                             // validation success and card attach
