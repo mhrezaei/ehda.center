@@ -38,10 +38,10 @@ class EducationController extends Controller
             ],
         ]);
 
-        $slideShow = Post::selector([
+        $slideShow = PostsServiceProvider::collectPosts([
             'type'     => 'slideshows',
             'category' => 'education-slideshow',
-        ])->get();
+        ]);
 
         $compactedData = compact('postsListHtml', 'slideShow', 'postType');
         $otherData = [];

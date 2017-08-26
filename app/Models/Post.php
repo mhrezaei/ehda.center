@@ -524,9 +524,13 @@ class Post extends Model implements FeedItem
 				break;
 		}
 	}
+
 	public function getShortUrlAttribute()
 	{
-		return url_locale(config('prefix.routes.post.short') . $this->hash_id);
+		return route('post.single.very-short', [
+		    'identifier' => config('prefix.routes.post.short') . $this->hash_id,
+        ]);
+//		return url_locale(config('prefix.routes.post.short') . $this->hash_id);
 	}
 
 

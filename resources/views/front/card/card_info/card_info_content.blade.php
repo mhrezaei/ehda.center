@@ -32,9 +32,6 @@
          * @param {int} stepNumber
          */
         function goToStep(stepNumber) {
-            console.log('goToStep');
-            console.log(stepNumber);
-            console.log('--------------------------');
 
             // Hide "feeds"
 //            setTimeout(function () {
@@ -66,9 +63,6 @@
          * @param {int} stepNumber
          */
         function upToStep(stepNumber) {
-            console.log('upToStep');
-            console.log(stepNumber);
-            console.log('--------------------------');
             goToStep(stepNumber);
 
             switch (stepNumber) {
@@ -120,6 +114,7 @@
 
                     // Reset values of additional inputs in
                     $('#additional-fields :input, #name_first, #name_last, #code_melli').each(function () {
+                        $(this).closest('.form-group').removeClass('has-success');
                         if ($(this).is(':radio')) {
                             $(this).prop('checked', false);
                         } else {

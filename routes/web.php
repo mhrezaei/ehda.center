@@ -359,6 +359,11 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
     // if not set lang prefix
     Route::get('/', 'FrontController@index')->name('home');
 
+    // If identifier is string and starts with value of config('prefix.routes.post.short')
+    Route::get('{identifier}', 'PostController@postVeryShortLink')
+        ->name('post.single.very-short')
+        ->where('identifier', '^' . config('prefix.routes.post.short') . '(\w|)+$');
+
     // organ donation card
     Route::get('/card/show_card/{type}/{user_hash_id}/{mode?}', 'OrganDonationCardController@index');
 
@@ -414,6 +419,7 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
 
         // If identifier is string and starts with value of config('prefix.routes.post.short')
         Route::get('{identifier}', 'PostController@show_with_short_url')
+            ->name('post.single.short')
             ->where('identifier', '^' . config('prefix.routes.post.short') . '(\w|)+$');
         // If identifier is numeric (left from old version)
         Route::get('{postId}', 'PostController@show_with_exact_id')

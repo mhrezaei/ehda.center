@@ -1,12 +1,5 @@
 @if($post->has('download'))
-    @php
-        $canDownload = $post->canDownloadFile();
-        // @todo: pass from controller
-        $noAccessPost = \App\Providers\PostsServiceProvider::smartFindPost('education-no-access-file');
-        $noAccessText = $noAccessPost->exists ? $noAccessPost->title : '';
-    @endphp
-
-    @if($canDownload or $noAccessText)
+    @if($post->canDownloadFile() or $messagesPosts['noAccessFiles']->exists)
         <div class="row">
             <div class="col-xs-12 mt20 well download-box bg-lightGray text-blue">
                 <h4 class="text-blue">{{ trans('front.download_links') }}</h4>
@@ -40,7 +33,9 @@
                         @endif
                     </p>
                 @else
-                    <div class="alert alert-danger">{{ $noAccessText }}</div>
+                    <div class="alert alert-danger">
+                        {!! $messagesPosts['noAccessFiles']->text !!}
+                    </div>
                 @endif
                 {{--<div class="download-box-watermark">--}}
                     {{--<span class="fa fa-download"></span>--}}

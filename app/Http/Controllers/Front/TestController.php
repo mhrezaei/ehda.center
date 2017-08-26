@@ -46,7 +46,11 @@ class TestController extends Controller
 
     public function index()
     {
-        return '<a href="' . url('login') . '?redirect=referer">flsjldk</a>';
+        $events = PostsServiceProvider::collectPosts([
+            'type'     => 'event',
+            'domain'   => getUsableDomains(),
+            'limit'    => 5,
+        ]);
     }
 
     public function states()

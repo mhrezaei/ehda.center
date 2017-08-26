@@ -25,11 +25,11 @@ class FrontController extends Controller
     public function index()
     {
         /************************* Preparing Data for Main SlideShow ********************** START */
-        $mainSlideShow = Post::selector([
+        $mainSlideShow = PostsServiceProvider::collectPosts([
             'type'     => 'slideshows',
             'category' => 'main-slideshow',
             'domain'   => getUsableDomains(),
-        ])->get();
+        ]);
         /************************* Preparing Data for Main SlideShow ********************** END */
 
         /************************* Preparing Data for Top Paragraph ********************** START */
@@ -37,11 +37,11 @@ class FrontController extends Controller
         /************************* Preparing Data for Top Paragraph ********************** END */
 
         /************************* Preparing Data for Event SlideShow ********************** START */
-        $eventsSlideShow = Post::selector([
+        $eventsSlideShow = PostsServiceProvider::collectPosts([
             'type'     => 'slideshows',
             'category' => 'event-slideshow',
             'domain'   => getUsableDomains(),
-        ])->get();
+        ]);
         /************************* Preparing Data for Event SlideShow ********************** END */
 
         /************************* Preparing Html for Deadlines ********************** START */
@@ -58,28 +58,28 @@ class FrontController extends Controller
         /************************* Preparing Data for Equation Post ********************** END */
 
         /************************* Preparing Data for Bottom Section of Home Page ********************** START */
-        $hotNews = Post::selector([
+        $hotNews = PostsServiceProvider::collectPosts([
             'type'     => 'iran-news',
             'category' => 'hot-news',
             'domain'   => getUsableDomains(),
-        ])->orderBy('published_at', 'desc')
-            ->limit(5)
-            ->get();
+            'limit'    => 5,
+        ]);
 
-        $events = Post::selector([
-            'type'   => 'event',
-            'domain' => getUsableDomains(),
-        ])->orderBy('published_at', 'desc')
-            ->limit(5)
-            ->get();
-
-        $transplantNews = Post::selector([
-            'type'     => 'iran-news',
-            'category' => 'iran-opu-transplant',
+        $events = PostsServiceProvider::collectPosts([
+            'type'     => 'event',
             'domain'   => getUsableDomains(),
-        ])->orderBy('published_at', 'desc')
-            ->limit(5)
-            ->get();
+            'limit'    => 5,
+        ]);
+
+        $transplantNews = PostsServiceProvider::collectPosts([
+            'type'     => 'iran-news',
+            'category' => [
+                'iran-opu-transplant',
+                'internal-ngo',
+            ],
+            'domain'   => getUsableDomains(),
+            'limit'    => 5,
+        ]);
         /************************* Preparing Data for Bottom Section of Home Page ********************** END */
 
         return view('front.home.main', compact(
