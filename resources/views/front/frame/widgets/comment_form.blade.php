@@ -113,7 +113,7 @@
                         <div class="row">
                             @include('front.forms.input', [
                                 'name' => $fieldName,
-                                'class' => $inputClass . $additiveClass,
+                                'class' => $inputClass . ' ' . $additiveClass,
                                 'placeholder' => trans('validation.attributes.' . $fieldName),
                             ] + $inputData)
                         </div>
@@ -219,6 +219,7 @@
     <script>
         function customResetForm() {
             $('#commentForm').find(':input:visible').val('').change();
+            $('#commentForm').find('.form-group').removeClass('has-success');
 
             $.each(Dropzone.instances, function (index, obj) {
                 obj.removeAllFiles();
