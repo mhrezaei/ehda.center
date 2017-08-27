@@ -49,6 +49,7 @@ return [
 	'students' => [
 		'single' => "کارورز" ,
 	     'plural' => "کارورزان" ,
+	     'name_added' => ":name اضافه شد." ,
 	],
 
 	'volunteers' => [

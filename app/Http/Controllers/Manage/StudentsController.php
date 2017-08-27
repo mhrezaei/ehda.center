@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Manage;
 use App\Http\Requests\Manage\CardInquiryRequest;
 use App\Http\Requests\Manage\CardSaveRequest;
 use App\Http\Requests\Manage\SearchRequest;
+use App\Http\Requests\Manage\StudentCreateRequest;
 use App\Models\Post;
 use App\Models\Printer;
 use App\Models\Printing;
@@ -66,7 +67,7 @@ class StudentsController extends UsersController
 			],
 			'toolbar_buttons'   => [
 				[
-					'target'    => "modal:manage/cards/create",
+					'target'    => "modal:manage/students/create",
 					'type'      => 'success',
 					'condition' => user()->as('admin')->can('users-student.create'),
 					'icon'      => 'plus-circle',
@@ -109,10 +110,26 @@ class StudentsController extends UsersController
 		return $this->search($this->role_slug, $request, $this->browseSwitchesChild());
 	}
 
-	/*
-	|--------------------------------------------------------------------------
-	| Printings
-	|--------------------------------------------------------------------------
-	|
-	*/
+	public function createChild()
+	{
+		return view('manage.users.create-student') ;
+	}
+
+	public function saveChild( StudentCreateRequest $request)
+	{
+		$user = userFinder($request->code_melli);
+
+		if(!$user or !$user->id or !$user->exists) {
+			return $this->jsonFeedback(trans('people.code_melli_not_found'));
+		}
+
+		$ok = $user->attachRole('student') ;
+
+		return $this->jsonAjaxSaveFeedback( $ok , [
+				'success_refresh' => "1",
+		          'success_message' => trans("ehda.students.name_added" , [
+		          	'name' => $user->full_name ,
+		          ]) ,
+		]);
+	}
 }

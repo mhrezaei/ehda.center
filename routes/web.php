@@ -117,6 +117,11 @@ Route::group([
 		Route::get('/browse/update/{model_id}/{request_role?}', 'StudentsController@update');
 		Route::get('/browse', 'StudentsController@browseChild');
 		Route::get('/browse/search/{keyword?}', 'StudentsController@searchChild');
+		Route::get('/create/', 'StudentsController@createChild');
+
+		Route::group(['prefix' => 'save'], function () {
+			Route::post('/', 'StudentsController@saveChild');
+		});
 	});
 
 
