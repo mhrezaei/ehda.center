@@ -2,9 +2,12 @@
 
 @php $staticPost->spreadMeta() @endphp
 
+@php $pageTitle = setting()->ask('site_title')->gain() . ' | ' . trans('front.send_works') @endphp
 @section('head')
-    <title>{{ setting()->ask('site_title')->gain() }} | {{ trans('front.send_works') }}</title>
+    <title>{{ $pageTitle }}</title>
 @append
+@include('front.frame.meta_tags')
+@include('front.frame.open_graph_meta_tags')
 
 @section('content')
     <style>

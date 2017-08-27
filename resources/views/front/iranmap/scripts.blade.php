@@ -7,7 +7,7 @@
                 title: '{{ $state->title }}',
                 slug: '{{ $state->slug }}',
                 active: {{ $state->alias ? 'true' : 'false' }},
-                link: "{{ addSubDomain(url(''), $state->slug) }}"
+                link: "{{ addSubDomain(url(''), $state->alias) }}"
             },
             @endforeach
         ];

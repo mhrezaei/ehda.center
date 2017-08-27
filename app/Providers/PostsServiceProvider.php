@@ -133,10 +133,13 @@ class PostsServiceProvider extends ServiceProvider
      */
     public static function showList($data = [])
     {
+        // Check received to be listable
+        $data['type'] = self::filterPosttypesByFeature($data['type']);
         $methodName = __FUNCTION__;
         $defaultValues = self::getDefaultValues($methodName);
         // normalize data
         $data = array_normalize($data, $defaultValues);
+
 
         $showFilter = $data['show_filter'];
         $ajaxRequest = $data['ajax_request'];
@@ -638,6 +641,28 @@ class PostsServiceProvider extends ServiceProvider
         }
 
         return self::$defaultData;
+    }
+
+    public static function filterPosttypesByFeature($posttypes, $feature = 'listable')
+    {
+        if (is_array($posttypes)) {
+            foreach ($posttypes as $key => $posttype) {
+                if (is_null(self::filterPosttypesByFeature($posttype, $feature))) {
+                    unset($posttypes[$key]);
+                }
+            }
+            if(empty($posttypes)) {
+                return self::getDefaultValues('selectPosts')['type'];
+            }
+            return $posttypes;
+        } else {
+            $obj = self::smartFindPosttype($posttypes);
+            if ($obj->exists and !$obj->has($feature)) {
+                return null;
+            } else {
+                return $posttypes;
+            }
+        }
     }
 }
 
