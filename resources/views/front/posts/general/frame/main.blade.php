@@ -8,7 +8,7 @@
 @section('head')
     <title>{{ $pageTitle }}</title>
 @append
-@php $metaTags = [ 'title' => $pageTitle ] @endphp
+@php $metaTags['title'] = $pageTitle @endphp
 @include('front.frame.meta_tags')
 @include('front.frame.open_graph_meta_tags')
 

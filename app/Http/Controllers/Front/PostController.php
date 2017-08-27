@@ -273,6 +273,9 @@ JS;
             /************************* Set Other Values ********************** START */
             $otherValues = [
                 'pageTitle' => $post->title,
+                'metaTags'  => [
+                    'image' => $post->viewable_featured_image_thumbnail,
+                ]
             ];
             /************************* Set Other Values ********************** END */
 
@@ -421,8 +424,12 @@ JS;
         }
 
         $sendingArea = view('front.test.works.sending_area.main', compact('posts'));
-        $postContentHTML = PostsServiceProvider::showPost('send-works-text', ['externalBlade' => $sendingArea]);
-        return view('front.test.works.main', compact('postContentHTML'));
+        $staticPost = PostsServiceProvider::smartFindPost('send-works-text');
+        if ($staticPost->exists) {
+//        $postContentHTML = PostsServiceProvider::showPost('send-works-text', ['externalBlade' => $sendingArea]);
+            return view('front.test.works.main', compact('sendingArea', 'staticPost'));
+        }
+        return $this->abort(404);
     }
 
     public function angels()
@@ -474,14 +481,10 @@ JS;
             $hashid = substr($identifier, strlen($prefix));
             $post = Post::findByHashid($hashid);
             if ($post->exists) {
-                return redirect()->route('post.single', [
-                    'lang'       => $post->locale,
-                    'identifier' => $hashid,
-                    'url' => urlencode($post->title),
-                ]);
+                return redirect($post->direct_url);
             }
         }
 
-        return $this->abort('403');
+        return redirect('/');
     }
 }

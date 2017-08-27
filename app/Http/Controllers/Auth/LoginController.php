@@ -51,7 +51,7 @@ class LoginController extends Controller
         if (user()->is_an('admin')) {
             $defaultUrl = '/manage';
         } else {
-            $defaultUrl = 'user/dashboard';
+            $defaultUrl = getLocale() . '/user/dashboard';
         }
 
         return redirect()->intended($defaultUrl);

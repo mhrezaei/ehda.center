@@ -11,7 +11,10 @@
         'color' => $color
     ])
 @endif
-<a href="#" class="floating-top-25 floating-end-15 {{ $showMoreColorClass }}">{{ trans('front.more') }}</a>
+@if(isset($moreLink) and $moreLink)
+    <a href="{{ $moreLink }}"
+       class="floating-top-25 floating-end-15 {{ $showMoreColorClass }}">{{ trans('front.more') }}</a>
+@endif
 <div class="media-list">
     @foreach($posts as $post)
         @include('front.home.posts_list_view_item')

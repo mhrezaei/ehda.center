@@ -1,4 +1,3 @@
-{{--{{ dd($post->relateds(4)) }}--}}
 @if($post->type != 'statics')
     @php $relatedPosts = $post->similars(4) @endphp
 

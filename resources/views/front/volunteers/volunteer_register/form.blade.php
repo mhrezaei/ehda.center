@@ -514,9 +514,32 @@
                     </div>
                     <div id="form-buttons" class="col-xs-12 text-center">
                         @include('forms.button', [
+                            'id' => 'btn-submit',
                             'shape' => 'success',
                             'label' => trans('forms.button.send'),
                             'type' => 'submit',
+                        ])
+                        @include('manage.frame.widgets.link', [
+                            'anchor' => [
+                                'text' => trans('front.home'),
+                                'attributes' => [
+                                    'id' => 'home-link',
+                                    'class' => 'btn btn-info',
+                                    'href' => route_locale('home'),
+                                    'style' => 'display: none;',
+                                ],
+                            ]
+                        ])
+                        @include('manage.frame.widgets.link', [
+                            'anchor' => [
+                                'text' => trans('front.profile_phrases.profile'),
+                                'attributes' => [
+                                    'id' => 'profile-link',
+                                    'class' => 'btn btn-info',
+                                    'href' => route_locale('user.dashboard'),
+                                    'style' => 'display: none;',
+                                ],
+                            ]
                         ])
                     </div>
 
@@ -564,8 +587,14 @@
         /**
          * Thing to do after finish registration volunteer
          */
-        function afterRegisterVolunteer() {
+        function afterRegisterVolunteer(isLogin) {
             $('#volunteer_final_step').find(':input').prop('disabled', true);
+            $('#btn-submit').hide();
+            if(typeof isLogin != 'undefined' && isLogin) {
+                $('#profile-link').show();
+            } else {
+                $('#home-link').show();
+            }
         }
     </script>
 @append
