@@ -128,7 +128,7 @@
                             obj.removeAllFiles();
                         });
                         $('form#commentForm').find('input[type=hidden].optional-input, :input:visible')
-                            .val('');
+                            .val('').closest('.form-group').removeClass('has-success');
                     }
 
                     $(document).ready(function () {
@@ -238,6 +238,7 @@
                             'placeholder' => trans('validation.attributes.first_and_last_name'),
                             'label' => trans('validation.attributes.submission_work_owner_name'),
                             'required' => true,
+                            'class' => 'form-persian',
                         ])
                     </div>
                 </div>
@@ -246,6 +247,7 @@
                     <div class="row">
                         @include('front.forms.input', [
                             'name' => 'mobile',
+                            'class' => 'form-mobile',
                             'placeholder' => trans('validation.attributes.mobile'),
                             'label' => trans('validation.attributes.submission_work_owner_mobile'),
                             'required' => true,
@@ -257,6 +259,7 @@
                     <div class="row">
                         @include('front.forms.input', [
                             'name' => 'email',
+                            'class' => 'form-email',
                             'placeholder' => trans('validation.attributes.email'),
                             'label' => trans('validation.attributes.submission_work_owner_email'),
                             'required' => true,

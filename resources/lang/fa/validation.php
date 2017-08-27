@@ -542,6 +542,11 @@ return [
         'can_register_card' => "امکان ثبت نام کارت اهدای عضو",
 
         'aparat_hash_code' => 'کد فیلم در آپارات',
+
+        'audio_files' => 'فایل‌های صوتی',
+        'image_files' => 'فایل‌های تصویری',
+        'video_files' => 'فایل‌های ویدیویی',
+        'text_files'  => 'فایل‌های متنی',
     ],
 
     "http" => [
