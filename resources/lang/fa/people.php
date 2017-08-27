@@ -16,8 +16,6 @@ return [
 	'choose_as_default_role' => "انتخاب به عنوان نقش پیش‌فرض",
 	'is_admin'               => "به عنوان مدیر",
 
-	//@TODO: New from here up to the end of this array...
-
 	'newsletter_member'        => "عضو خبرنامه",
 	'membership'               => "عضویت",
 	'all_admin_roles'          => "همه‌ی مدیریتی‌ها با هم",
@@ -33,7 +31,6 @@ return [
 		'login_as'            => "لاگین به جای ایشان",
 		'create_new_user'     => "افزودن :role_title جدید",
 		'all_users'           => "همه کاربران",
-		//@TODO: New from here up to the end of this array...
 		'send_sms'            => "ارسال پیامک",
 		'send_email'          => "ارسال ایمیل",
 		'according_to_domain' => "بر اساس دامنه",
