@@ -75,9 +75,7 @@
 @include("manage.frame.widgets.grid-actionCol" , [ 'actions' => [
 	['key' , trans('people.commands.change_password') , "modal:manage/users/act/-id-/password" , !$model->trashed() and $model->canEdit() ] ,
 
-//	['trash', trans('forms.button.delete') , 'modal:manage/users/act/-id-/delete' , !$model->trashed() and $model->canDelete()],
-//	['undo', trans(//'forms.button.undelete') , 'modal:manage/users/act/-id-/undelete' , $model->trashed() and $model->canBin()],
-//	['times' , trans('forms.button.hard_delete') , 'modal:manage/users/act/-id-/destroy' , $model->trashed() and $model->canBin()],
+	['times', trans('ehda.students.delete') , 'modal:manage/users/act/-id-/student-delete' , user()->as('admin')->can('users-student.delete')],
 
 	['user' , trans('people.commands.login_as') , 'modal:manage/users/act/-id-/login_as' , user()->isDeveloper() and !$model->trashed() ] ,
 ]])

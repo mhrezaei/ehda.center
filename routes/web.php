@@ -120,7 +120,8 @@ Route::group([
 		Route::get('/create/', 'StudentsController@createChild');
 
 		Route::group(['prefix' => 'save'], function () {
-			Route::post('/', 'StudentsController@saveChild');
+			Route::post('/', 'StudentsController@attachRole');
+			Route::post('/delete', 'StudentsController@detachRole');
 		});
 	});
 

@@ -2,23 +2,12 @@
 
 namespace App\Http\Controllers\Manage;
 
-use App\Http\Requests\Manage\CardInquiryRequest;
-use App\Http\Requests\Manage\CardSaveRequest;
 use App\Http\Requests\Manage\SearchRequest;
 use App\Http\Requests\Manage\StudentCreateRequest;
-use App\Models\Post;
-use App\Models\Printer;
-use App\Models\Printing;
 use App\Models\Role;
-use App\Models\State;
 use App\Models\User;
-use App\Providers\YasnaServiceProvider;
 use App\Traits\ManageControllerTrait;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Maatwebsite\Excel\Facades\Excel;
 
 
 class StudentsController extends UsersController
@@ -115,7 +104,7 @@ class StudentsController extends UsersController
 		return view('manage.users.create-student') ;
 	}
 
-	public function saveChild( StudentCreateRequest $request)
+	public function attachRole( StudentCreateRequest $request)
 	{
 		$user = userFinder($request->code_melli);
 
@@ -130,6 +119,20 @@ class StudentsController extends UsersController
 		          'success_message' => trans("ehda.students.name_added" , [
 		          	'name' => $user->full_name ,
 		          ]) ,
+		]);
+	}
+
+	public function detachRole(Request $request)
+	{
+		$user = User::find($request->id) ;
+		if(!$user or $user->is_not_a('student')) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+
+		$ok = $user->detachRole('student') ;
+
+		return $this->jsonAjaxSaveFeedback( $ok , [
+			'success_callback' => "rowHide('tblUsers' , '$request->id')",
 		]);
 	}
 }
