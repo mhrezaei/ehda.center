@@ -235,6 +235,9 @@
             right: 0;
             bottom: 0;
         }
+        .navbar-brand{
+            padding: 0px !important;
+        }
     </style>
 
 </head>
@@ -257,7 +260,7 @@
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 <a class="navbar-brand dark-logo" href="https://ehda.center" style="">
-                    <img src="https://ehda.center/uploads/posts/gallery/image/1503245522_M4PSsReOLsElg7A7X8TP95luaFEE92_original.png" title="انجمن اهدای عضو ایرانیان" style="max-width: 60%;">
+                    <img src="https://ehda.center/uploads/posts/gallery/image/1503245522_M4PSsReOLsElg7A7X8TP95luaFEE92_original.png" title="انجمن اهدای عضو ایرانیان" style="max-width: 25%;">
                 </a>
             </div>
             {{--<a class="" href="https://ehda.center" style="float: left; direction: ltr;">--}}
