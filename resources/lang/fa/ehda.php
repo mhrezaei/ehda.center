@@ -46,6 +46,11 @@ return [
 		'cancel'                   => "انصراف از چاپ",
 	],
 
+	'students' => [
+		'single' => "کارورز" ,
+	     'plural' => "کارورزان" ,
+	],
+
 	'volunteers' => [
 		'single'            => "سفیر اهدای عضو",
 		'plural'            => "سفیران اهدای عضو",

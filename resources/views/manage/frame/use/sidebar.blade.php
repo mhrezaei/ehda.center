@@ -34,6 +34,15 @@
 	] ,
 ]     )
 
+@include("manage.frame.widgets.sidebar-link" , [
+	'caption' => trans("ehda.students.plural"),
+	'permission' => "users-student" ,
+	'link' => "students" ,
+	'icon' => "graduation-cap" ,
+	'sub_menus' => [
+		['students' , trans("people.commands.all_users") , 'bars']
+	] ,
+]     )
 
 {{--
 |--------------------------------------------------------------------------
@@ -81,7 +90,7 @@
 
 @include("manage.frame.widgets.sidebar-link" , [
 	'icon' => "cogs",
-	'link' => "jafarz",
+	'link' => "jafar",
 	'sub_menus' => Manage::sidebarSettingsMenu() ,
 	'caption' => trans('settings.site_settings'),
 ])

@@ -109,6 +109,17 @@ Route::group([
 
     });
 
+	/*-----------------------------------------------
+	| Students
+	*/
+	Route::group(['prefix' => 'students', 'middleware' => "can:users-student",], function () {
+		Route::get('/', 'StudentsController@browseChild');
+		Route::get('/browse/update/{model_id}/{request_role?}', 'StudentsController@update');
+		Route::get('/browse', 'StudentsController@browseChild');
+		Route::get('/browse/search/{keyword?}', 'StudentsController@searchChild');
+	});
+
+
     /*-----------------------------------------------
     | Cards ...
     */
