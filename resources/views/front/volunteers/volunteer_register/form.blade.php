@@ -494,6 +494,52 @@
                         </div>
                     </div>
 
+                    @if(auth()->guest())
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <h5 class="form-heading">{{ trans('front.login_info') }}</h5>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-sm-6 col-xs-12">
+                            <div class="row">
+                                @include('front.forms.input', [
+                                    'name' => 'password',
+                                    'class' => 'form-password form-required',
+                                    'type' => 'password',
+                                    'dataAttributes' => [
+                                        'toggle' => 'tooltip',
+                                        'placement' => 'top',
+                                    ],
+                                    'otherAttributes' => [
+                                        'title' => trans('validation.attributes_example.password'),
+                                        'minlength' => 8,
+                                        'maxlength' => 64,
+                                    ]
+                                ])
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-sm-6 col-xs-12">
+                            <div class="row">
+                                @include('front.forms.input', [
+                                    'name' => 'password2',
+                                    'class' => 'form-required',
+                                    'type' => 'password',
+                                    'dataAttributes' => [
+                                        'toggle' => 'tooltip',
+                                        'placement' => 'top',
+                                    ],
+                                    'otherAttributes' => [
+                                        'title' => trans('validation.attributes_example.password2'),
+                                        'minlength' => 8,
+                                        'maxlength' => 64,
+                                    ]
+                                ])
+                            </div>
+                        </div>
+                    @endif
+
 
                     <div class="col-xs-12">
                         <div class="form-group">
