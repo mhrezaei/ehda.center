@@ -316,7 +316,7 @@ class ValidationServiceProvider extends ServiceProvider
 
     private static function validatePhoneNo($attribute, $value, $parameters, $validator)
     {
-        $mood = $parameters[0];
+	    $mood = isset($parameters[0]) ? $parameters[0] : '';
 
         if (strlen($value) != 11)
             return false;
