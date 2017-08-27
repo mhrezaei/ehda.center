@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
 class VolunteersController extends Controller
@@ -371,6 +372,7 @@ class VolunteersController extends Controller
             return redirect(url_locale());
         }
 
+
         return view('front.volunteers.volunteer_register.main', compact('post', 'currentValues'));
     }
 
@@ -396,10 +398,11 @@ class VolunteersController extends Controller
             'work_province' => $workState,
             'domain'        => $domain,
             'activities'    => implode(',', $request->activity),
+            'password'      => Hash::make($request->password),
         ];
         $request->merge($modifyingData);
 
-        $userId = User::store($request, ['activity']);
+        $userId = User::store($request, ['activity', 'password2']);
 
         if ($userId) {
             $user = User::findBySlug($userId, 'id');

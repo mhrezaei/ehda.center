@@ -58,7 +58,7 @@ class CardRegisterRequest extends Request
                     'home_tel'    => 'required|phone:fixed',
                     'home_city'   => 'required|numeric|min:1',
                     'email'       => 'email',
-                    'password'    => 'required|same:password2|min:8|max:50|',
+                    'password'    => 'required|same:password2|min:8|max:50',
 //            'chRegisterAll' => 'required_without_all:chRegisterHeart,chRegisterLung,chRegisterLiver,chRegisterKidney,chRegisterPancreas,chRegisterTissues'
 
                 ];

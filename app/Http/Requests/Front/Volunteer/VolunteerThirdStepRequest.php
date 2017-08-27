@@ -33,7 +33,7 @@ class VolunteerThirdStepRequest extends Request
     public function rules()
     {
         $input = $this->all();
-        return [
+        $rules = [
             'name_first'  => 'required|persian:60',
             'name_last'   => 'required|persian:60',
             'gender'      => 'required|numeric|min:1|max:3',
@@ -75,6 +75,12 @@ class VolunteerThirdStepRequest extends Request
 
             'activity' => 'array',
         ];
+
+        if(auth()->guest()) {
+            $rules['password'] = 'required|same:password2|min:8|max:50';
+        }
+
+        return $rules;
     }
 
     public function all()
