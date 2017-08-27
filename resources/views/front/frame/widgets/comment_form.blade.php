@@ -5,7 +5,8 @@
     {{--    2. add its block to form with using its size--}}
     {{--    3. add its input with useing $inputData of the input--}}
 
-    {{ null, $availableFields = [
+    @php
+        $availableFields = [
             'name',
             'email',
             'mobile',
@@ -16,22 +17,16 @@
             'submitter_name',
             'submitter_phone',
             'image',
-        ] }}
-
-    {{ null,
+        ];
         $fields = (!isset($fields) or !is_array($fields))
-            ? CommentServiceProvider::translateFields($post->fields)
-            : $fields
-        }}
-
-    {{ null,
+                ? CommentServiceProvider::translateFields($post->fields)
+                : $fields;
         $rules = (!isset($rules) or !is_array($rules))
-            ? CommentServiceProvider::translateRules($post->rules)
-            : $rules
-        }}
-
-    {{ null, $inputSize = array_flip($availableFields) }}
-    {{ null, $inputSize = array_fill_keys($availableFields, 12) }}
+                ? CommentServiceProvider::translateRules($post->rules)
+                : $rules;
+        $inputSize = array_flip($availableFields);
+        $inputSize = array_fill_keys($availableFields, 12);
+    @endphp
 
     {!! Form::open([
         'url' => route_locale('comment.submit'),
@@ -44,6 +39,7 @@
     <div class="row">
         @include('front.forms.hidden',[
             'name' => 'post_id',
+            'id' => 'post_id',
             'value' => $post->hashid,
         ])
 

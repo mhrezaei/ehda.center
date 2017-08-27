@@ -3,6 +3,7 @@
 @append
 @section('endOfBody')
     {!! Html::script('assets/libs/dropzone/dropzone.js') !!}
+    {!! Html::script('assets/js/tools.min.js') !!}
     <script>
         // if we miss this command, every elements with "dropzone" class will be automatically change to dropzone
         Dropzone.autoDiscover = false;
@@ -17,7 +18,7 @@
         Dropzone.prototype.defaultOptions.dictResponseError = "{{ trans('front.upload.errors.server') }}";
         Dropzone.prototype.defaultOptions.dictMaxFilesExceeded = "{{ trans('front.upload.errors.limit') }}";
 
-        {{ null, $freshConfigs = UploadServiceProvider::getDefaultJsConfigs() }}
+        @php $freshConfigs = UploadServiceProvider::getDefaultJsConfigs() @endphp
 
         Dropzone.prototype.defaultOptions.init = function () {
             this.on('sending', function (file, xhr, formData) {
@@ -29,7 +30,12 @@
                 })
             });
 
-
+            this.on('error', function (file, response, xhr) {
+                if (isDefined(xhr) && xhr.status == 422 && response.file) {
+                    let errorText = response.file.join('<br />');
+                    $(file.previewElement).find('.dz-error-message span').html(errorText)
+                }
+            });
 
             @if(array_key_exists('events', $freshConfigs))
                 @foreach($freshConfigs['events'] as $eventName => $eventValue)
