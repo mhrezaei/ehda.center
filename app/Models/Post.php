@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Providers\PostsServiceProvider;
 use App\Traits\EhdaPostTrait;
 use App\Providers\UploadServiceProvider;
 use App\Traits\PostFeedTrait;
@@ -516,11 +517,16 @@ class Post extends Model implements FeedItem
 			//                return url_locale('teammates' . DIRECTORY_SEPARATOR . 'tm-' . ($this->hash_id));
 			//                break;
 			default:
-				return url_locale(implode(DIRECTORY_SEPARATOR, [
-					'show-post',
-					($this->hash_id),
-					urlencode($this->title),
-				]));
+                return route('post.single', [
+                    'lang' => $this->locale,
+                    'identifier' => $this->hashid,
+                    'url' => str_replace('+', '-', urlencode($this->title)),
+                ]);
+//				return url_locale(implode(DIRECTORY_SEPARATOR, [
+//					'show-post',
+//					($this->hash_id),
+//					urlencode($this->title),
+//				]));
 				break;
 		}
 	}
@@ -1114,32 +1120,41 @@ class Post extends Model implements FeedItem
 
 	public function similars($number = null)
 	{
-		$posts = Post::where([
-			['id', '<>', $this->id],        // not self post
-			'type' => $this->type,          // similar post type
-		]);
+	    $this->spreadMeta();
+//		$posts = Post::where([
+//			['id', '<>', $this->id],        // not self post
+//			'type' => $this->type,          // similar post type
+//		]);
+        $selectArray = [
+            'type' => $this->type, // similar post type
+            'conditions' => [
+                ['id', '<>', $this->id],        // not self post
+            ],
+        ];
 
 		// similar categories
 		$categories = $this->categories;
 		if ($categories->count()) {
-			$posts->whereHas('categories', function ($query) use ($categories) {
-				$query->whereIn('categories.id', $categories->pluck('id')->toArray());
-			});
+		    $selectArray['category'] = $categories->pluck('slug')->toArray();
+//			$posts->whereHas('categories', function ($query) use ($categories) {
+//				$query->whereIn('categories.id', $categories->pluck('id')->toArray());
+//			});
 		}
 
 		// check availability for "products"
 		if ($this->has('price')) {
-			$posts->where(['is_available' => true]);
+		    $selectArray[] = ['is_available' => true];
 		}
 
 		if ($number and is_int($number)) {
 			// sort
-			$posts->orderBy('published_at', 'DESC');
+//			$posts->orderBy('published_at', 'DESC');
+            $selectArray['limit'] = $number;
 
-			return $posts->limit($number)->get();
+			return PostsServiceProvider::collectPosts($selectArray);
 		}
 
-		return $posts;
+		return PostsServiceProvider::selectPosts($selectArray);
 	}
 
     /**

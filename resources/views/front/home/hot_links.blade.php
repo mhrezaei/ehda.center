@@ -2,7 +2,11 @@
     <div class="row mt15 mb20">
         <div class="col-xs-12 col-md-4">
             @if($hotNews and $hotNews->count())
-                <a href="#" class="floating-top-25 floating-end-15 link-darkGray">{{ trans('front.more') }}</a>
+                <a href="{{ route_locale('post.archive', [
+                    'postType' => 'iran-news',
+                    'category' => 'special-news',
+                ]) }}"
+                   class="floating-top-25 floating-end-15 link-green">{{ trans('front.more') }}</a>
                 @include('front.frame.underlined_heading', [
                     'text' => trans('front.special_news'),
                     'color' => 'green',
@@ -16,6 +20,9 @@
                     'title' => trans('front.events'),
                     'color' => 'darkGray',
                     'posts' => $events,
+                    'moreLink' => route_locale('post.archive', [
+                        'postType' => 'event',
+                    ]),
                 ])
             @endif
         </div>
@@ -25,6 +32,9 @@
                     'title' => trans('front.ehda_news'),
                     'color' => 'blue',
                     'posts' => $transplantNews,
+                    'moreLink' => route_locale('post.archive', [
+                        'postType' => 'iran-news',
+                    ]),
                 ])
             @endif
         </div>

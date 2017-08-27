@@ -60,7 +60,7 @@ class FrontController extends Controller
         /************************* Preparing Data for Bottom Section of Home Page ********************** START */
         $hotNews = PostsServiceProvider::collectPosts([
             'type'     => 'iran-news',
-            'category' => 'hot-news',
+            'category' => 'special-news',
             'domain'   => getUsableDomains(),
             'limit'    => 5,
         ]);

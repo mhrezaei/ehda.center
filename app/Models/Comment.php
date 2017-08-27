@@ -14,10 +14,10 @@ class Comment extends Model
 
     public static $meta_fields = [
         'text',
-        'image_uploader',
-        'audio_uploader',
-        'video_uploader',
-        'text_uploader',
+        'image_files',
+        'audio_files',
+        'video_files',
+        'text_files',
         'text_content',
         'description',
         'name',

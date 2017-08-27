@@ -80,14 +80,14 @@
     {{--</div>--}}
 </div>
 {{-- start -- scripts for uploader --}}
-@section('end-of-body')
+@section('endOfBody')
     <script>
         var {{ $varName }};
         $(document).ready(function () {
             {{ $varName }} = new Dropzone("#{{ $id }}", {
-                {{--maxFileSize: {{ UploadServiceProvider::getTypeRule($fileType, "maxFileSize") }},--}}
-                {{--maxFiles: {{ UploadServiceProvider::getTypeRule($fileType, "maxFiles") }},--}}
-                {{--acceptedFiles: "{{ implode(',', UploadServiceProvider::getTypeRule($fileType, "acceptedFiles")) }}",--}}
+                maxFileSize: {{ UploadServiceProvider::getTypeRule($fileType, "maxFileSize") }},
+                maxFiles: {{ UploadServiceProvider::getTypeRule($fileType, "maxFiles") }},
+                acceptedFiles: "{{ implode(',', UploadServiceProvider::getTypeRule($fileType, "acceptedFiles")) }}",
             });
 
             {{ $varName }}.on("removedfile", function (file) {

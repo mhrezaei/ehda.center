@@ -4,47 +4,62 @@
         <div class="col-xs-12 col-sm-6 col-md-3">
             <div class="row">
 
-                {{ null, $selectOptions = [] }}
+                @php $selectOptions = [] @endphp
                 @foreach($posts as $post)
-                    {{ null, $post->spreadMeta() }}
+                    @php
+                        $postId = $post->hashid;
+                        $post->spreadMeta();
+                    @endphp
 
                     {{-- generating array for options of select element that will be used for selecting file type--}}
-                    {{ null, $selectOptions[] = ['id' => $post->id, 'title' => trans("front.file_types.$post->fileType.title")] }}
+                    @php
+                        $selectOptions[] = [
+                            'id' => $postId,
+                            'title' => trans("front.file_types.$post->fileType.title")
+                        ];
+                    @endphp
                     @if($post->fields)
-                        {{ null, $fields[$post->id] = explodeNotEmpty(',' , $post->fields) }}
-                        {{ null, $postRules = \App\Providers\CommentServiceProvider::translateRules($post->rules) }}
-                        @foreach($fields[$post->id] as $fieldIndex => $fieldValue)
-                            @unset($fields[$post->id][$fieldIndex])
-                            {{ null, $fieldValue = trim($fieldValue) }}
+                        @php
+                            $fields[$postId] = explodeNotEmpty(',' , $post->fields);
+                            $postRules = \App\Providers\CommentServiceProvider::translateRules($post->rules);
+                        @endphp
+
+                        @foreach($fields[$postId] as $fieldIndex => $fieldValue)
+                            @unset($fields[$postId][$fieldIndex])
+                            @php $fieldValue = trim($fieldValue) @endphp
 
                             @if(str_contains($fieldValue, '-label'))
-                                {{ null, $fieldValue = str_replace('-label', '', $fieldValue) }}
-                                {{ null, $tmpField['label'] = true }}
+                                @php
+                                    $fieldValue = str_replace('-label', '', $fieldValue);
+                                    $tmpField['label'] = true
+                                @endphp
                             @else
-                                {{ null, $tmpField['label'] = false }}
+                                @php $tmpField['label'] = false @endphp
                             @endif
 
                             @if(str_contains($fieldValue, ':'))
-                                {{ null, $fieldValueParts = explodeNotEmpty(':', $fieldValue) }}
-                                {{ null, $fieldValue = $fieldValueParts[0] }}
-                                {{ null, $tmpField['size'] = $fieldValueParts[1] }}
+                                @php
+                                    $fieldValueParts = explodeNotEmpty(':', $fieldValue);
+                                    $fieldValue = $fieldValueParts[0];
+                                    $tmpField['size'] = $fieldValueParts[1]
+                                @endphp
                             @else
-                                {{ null, $tmpField['size'] = '' }}
+                                @php $tmpField['size'] = '' @endphp
                             @endif
 
                             @if(array_key_exists($fieldValue, $postRules) and (in_array('required', $postRules[$fieldValue])))
-                                {{ null, $tmpField['required'] = true }}
+                                @php $tmpField['required'] = true @endphp
                             @else
-                                {{ null, $tmpField['required'] = false }}
+                                @php $tmpField['required'] = false @endphp
                             @endif
 
-                            {{ null, $fields[$post->id][$fieldValue] = $tmpField }}
+                            @php $fields[$postId][$fieldValue] = $tmpField @endphp
                         @endforeach
                     @endif
                 @endforeach
 
                 {{-- generate an indexed array of file types --}}
-                {{ null, $fileTypes = $posts->pluck('fileType')->toArray() }}
+                @php $fileTypes = $posts->pluck('fileType')->toArray() @endphp
 
                 @include('front.forms.select', [
                     'id' => 'file-type',

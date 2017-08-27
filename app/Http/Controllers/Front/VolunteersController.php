@@ -406,10 +406,14 @@ class VolunteersController extends Controller
             $user->attachRole($volunteerRole, 1); // 1 status points to inactive volunteer
             $this->sendVerifications($user);
 
+            $isLogin = \auth()->guest() ? 'false' : 'true';
+            $callback = 'afterRegisterVolunteer(' . $isLogin . '); ' .
+                '$.ajax("' . route_locale('messages.send') . '")';
+
             $return = $this->jsonFeedback(null, [
                 'ok'       => 1,
                 'message'  => trans('front.volunteer_section.register_success'),
-                'callback' => 'afterRegisterVolunteer(); $.ajax("' . route_locale('messages.send') . '");',
+                'callback' => $callback,
             ]);
         } else {
             $return = $this->jsonFeedback(null, [

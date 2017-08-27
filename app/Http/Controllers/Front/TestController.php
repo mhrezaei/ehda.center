@@ -51,6 +51,7 @@ class TestController extends Controller
             'domain'   => getUsableDomains(),
             'limit'    => 5,
         ]);
+        dd($events, __FILE__ . " - " . __LINE__);
     }
 
     public function states()

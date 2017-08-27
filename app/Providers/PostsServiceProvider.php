@@ -21,6 +21,7 @@ class PostsServiceProvider extends ServiceProvider
 {
     protected static $searchTemplate = 'post';
     protected static $defaultData = [
+        'selectPosts'  => [],
         'collectPosts' => [],
         'showList'     => [],
         'showPost'     => [],
@@ -36,48 +37,6 @@ class PostsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        self::$defaultData['collectPosts'] = [
-            'id'               => "",
-            'slug'             => "",
-            'role'             => "",
-            'criteria'         => "published",
-            'locale'           => getLocale(),
-            'owner'            => 0,
-            'type'             => "feature:searchable",
-            'category'         => "",
-            'keyword'          => "",
-            'search'           => "",
-            'from'             => "",
-            'to'               => "",
-            'folder'           => "",
-            'domain'           => getUsableDomains(),
-            'max_per_page'     => 12, // If this is set as "-1" pagination will be applied
-            'limit'            => false, // If this is set as "false" list will not be limited
-            'random'           => false,
-            'sort'             => 'DESC',
-            'sort_by'          => 'published_at',
-            'conditions'       => [], // additional conditions to be used in "where" clause
-            'paginate_current' => '',
-        ];
-
-        self::$defaultData['showList'] = array_merge(self::$defaultData['collectPosts'], [
-            'paginate_hash' => '', // the fragment that should be added to links in pagination
-            'show_filter'   => true,
-            'ajax_request'  => false,
-            'paginate_url'  => '',
-            'is_base_page'  => false,
-            'showError'     => true,
-            'variables'     => [],
-        ]);
-
-        self::$defaultData['showPost'] = [
-            'lang'          => getLocale(),
-            'externalBlade' => '',
-            'preview'       => false,
-            'showError'     => true,
-            'variables'     => [],
-        ];
-
         //
     }
 
@@ -91,25 +50,12 @@ class PostsServiceProvider extends ServiceProvider
         //
     }
 
-    /**
-     * Collects posts
-     *
-     * @param array $data
-     *
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Support\Collection
-     */
-    public static function collectPosts($data = [])
+    public static function selectPosts($data = [])
     {
         $methodName = __FUNCTION__;
+        $defaultValues = self::getDefaultValues($methodName);
         // normalize data
-        $data = array_normalize($data, self::$defaultData[$methodName]);
-
-        // Set current pagination page if needed
-        if ($data['paginate_current']) {
-            Paginator::currentPageResolver(function () use ($data) {
-                return $data['paginate_current'];
-            });
-        }
+        $data = array_normalize($data, $defaultValues);
 
         // Select posts
         $posts = Post::selector($data)
@@ -122,13 +68,51 @@ class PostsServiceProvider extends ServiceProvider
             $posts = $posts->orderBy($data['sort_by'], $data['sort']);
         }
 
+        // Limit number of posts if needed
+        if ($data['limit']) {
+            $posts = $posts->limit($data['limit']);
+        }
+
+        return $posts;
+
+//        // Paginate lists if needed
+//        if (($data['max_per_page'] == -1)) {
+//            return $posts->get();
+//        } else {
+//            // Limit number of posts if needed
+//            if ($data['limit']) {
+//                return $posts->paginate($data['limit']);
+//            } else {
+//                return $posts->paginate($data['max_per_page']);
+//            }
+//        }
+    }
+
+    /**
+     * Collects posts
+     *
+     * @param array $data
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Support\Collection
+     */
+    public static function collectPosts($data = [])
+    {
+        $methodName = __FUNCTION__;
+        $defaultValues = self::getDefaultValues($methodName);
+        // normalize data
+        $data = array_normalize($data, $defaultValues);
+
+        // Set current pagination page if needed
+        if ($data['paginate_current']) {
+            Paginator::currentPageResolver(function () use ($data) {
+                return $data['paginate_current'];
+            });
+        }
+
+        $posts = self::selectPosts($data);
+
         // Paginate lists if needed
         if (($data['max_per_page'] == -1)) {
-            // Limit number of posts if needed
-            if ($data['limit']) {
-                $posts = $posts->limit($data['limit']);
-            }
-
             return $posts->get();
         } else {
             // Limit number of posts if needed
@@ -150,8 +134,9 @@ class PostsServiceProvider extends ServiceProvider
     public static function showList($data = [])
     {
         $methodName = __FUNCTION__;
+        $defaultValues = self::getDefaultValues($methodName);
         // normalize data
-        $data = array_normalize($data, self::$defaultData[$methodName]);
+        $data = array_normalize($data, $defaultValues);
 
         $showFilter = $data['show_filter'];
         $ajaxRequest = $data['ajax_request'];
@@ -240,8 +225,9 @@ class PostsServiceProvider extends ServiceProvider
     public static function showPost($identifier, $data = [])
     {
         $methodName = __FUNCTION__;
+        $defaultValues = self::getDefaultValues($methodName);
         // normalize data
-        $data = array_normalize($data, self::$defaultData[$methodName]);
+        $data = array_normalize($data, $defaultValues);
 
         // Find posts
         $post = self::smartFindPost($identifier);
@@ -582,6 +568,76 @@ class PostsServiceProvider extends ServiceProvider
         }
 
         return view('errors.m404');
+    }
+
+    protected static function getDefaultValues($method = null)
+    {
+        if (empty(self::$defaultData['selectPosts'])) {
+            self::$defaultData['selectPosts'] = [
+                'id'         => "",
+                'slug'       => "",
+                'role'       => "",
+                'criteria'   => "published",
+                'locale'     => getLocale(),
+                'owner'      => 0,
+                'type'       => "feature:searchable",
+                'category'   => "",
+                'keyword'    => "",
+                'search'     => "",
+                'from'       => "",
+                'to'         => "",
+                'folder'     => "",
+                'domain'     => getUsableDomains(),
+                'limit'      => false, // If this is set as "false" list will not be limited
+                'random'     => false,
+                'sort'       => 'DESC',
+                'sort_by'    => 'published_at',
+                'conditions' => [], // additional conditions to be used in "where" clause
+            ];
+        }
+        if ($method == 'selectPosts') {
+            return self::$defaultData[$method];
+        }
+
+        if (empty(self::$defaultData['collectPosts'])) {
+            self::$defaultData['collectPosts'] = array_merge(self::$defaultData['selectPosts'], [
+                'max_per_page'     => 12, // If this is set as "-1" pagination will be applied
+                'paginate_current' => '',
+            ]);
+        }
+        if ($method == 'collectPosts') {
+            return self::$defaultData[$method];
+        }
+
+        if (empty(self::$defaultData['showList'])) {
+            self::$defaultData['showList'] = array_merge(self::$defaultData['collectPosts'], [
+                'paginate_hash' => '', // the fragment that should be added to links in pagination
+                'show_filter'   => true,
+                'ajax_request'  => false,
+                'paginate_url'  => '',
+                'is_base_page'  => false,
+                'showError'     => true,
+                'variables'     => [],
+            ]);
+        }
+        if ($method == 'showList') {
+            return self::$defaultData[$method];
+        }
+
+        if (empty(self::$defaultData['showPost'])) {
+            self::$defaultData['showPost'] = [
+                'lang'          => getLocale(),
+                'externalBlade' => '',
+                'preview'       => false,
+                'showError'     => true,
+                'variables'     => [],
+            ];
+        }
+        if ($method == 'showPost') {
+            return self::$defaultData[$method];
+        }
+
+        return self::$defaultData;
     }
 }
 
