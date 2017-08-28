@@ -9,6 +9,7 @@ use App\Models\Receipt;
 use App\Models\Test\Meta;
 use App\Models\File;
 use App\Models\User;
+use App\Providers\AjaxFilterServiceProvider;
 use App\Providers\MessagesServiceProvider;
 use App\Providers\PostsServiceProvider;
 use App\Providers\UploadServiceProvider;
@@ -46,12 +47,9 @@ class TestController extends Controller
 
     public function index()
     {
-        $events = PostsServiceProvider::collectPosts([
-            'type'     => 'event',
-            'domain'   => getUsableDomains(),
-            'limit'    => 5,
-        ]);
-        dd($events, __FILE__ . " - " . __LINE__);
+        $hash = '!type_30?selectBox!';
+        $result = AjaxFilterServiceProvider::translateHash($hash);
+        dd($result, __FILE__ . " - " . __LINE__);
     }
 
     public function states()

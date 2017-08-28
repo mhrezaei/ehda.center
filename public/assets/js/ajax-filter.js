@@ -2,7 +2,9 @@
  * Created by EmiTis Yousefi on 30/04/2017.
  */
 
-var ajaxDelay = 1; // in seconds
+if (typeof ajaxDelay == 'undefined') {
+    let ajaxDelay = 1; // in seconds
+}
 var ajaxTimer = new Timer();
 var runningXhr = null;
 var filterableAttributes = [];

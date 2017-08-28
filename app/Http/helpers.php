@@ -705,5 +705,5 @@ function formatBytes($bytes, $precision = 2)
 
     $bytes /= pow(1024, $pow);
 
-    return round($bytes, $precision) . ' ' . $units[$pow];
+    return ad(round($bytes, $precision)) . ' ' . trans('front.byte_units.' . $units[$pow]);
 }

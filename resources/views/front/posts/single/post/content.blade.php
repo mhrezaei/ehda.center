@@ -13,6 +13,7 @@
             {!! $post->text !!}
         </div>
     </div>
+    @include($viewFolder . '.aparat-player')
     @include($viewFolder . '.files')
     <small>{{ trans('validation.attributes.publish') }}: {{ ad(echoDate($post->published_at, 'H:i / j F Y')) }}</small>
 </div>

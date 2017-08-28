@@ -466,7 +466,7 @@ class UploadServiceProvider extends ServiceProvider
 //            return $file[0] . '_thumb.' . $file[1];
 //        }
         $thumbUrl = self::changeFileUrlVersion($fileUrl, 'thumb');
-        if($thumbUrl) {
+        if ($thumbUrl) {
             return $thumbUrl;
         }
 
@@ -895,7 +895,7 @@ class UploadServiceProvider extends ServiceProvider
         } else if (count($dehashed = hashid_decrypt($identifier, 'ids')) and
             is_numeric($id = $dehashed[0])
         ) {
-            $file = UploadedFileModel::find($id);
+            $file = UploadedFileModel::find($id) ?: new UploadedFileModel();
         } else {
             $file = new UploadedFileModel();
 

@@ -19,7 +19,7 @@
             <div class="container">
                 @include('front.tutorials.archive.carousel')
                 @include('front.tutorials.archive.filters-row')
-                {!! $postsListHtml !!}
+                @include('front.tutorials.archive.list-view')
             </div>
         </div>
     </div>
