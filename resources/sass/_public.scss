@@ -2498,12 +2498,13 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
   .new-angel-form-container {
     position: relative;
+    overflow-y: hidden;
     .new-angel-form-container-inner {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      background-color: #fff;
-      z-index: 0;
+      //position: absolute;
+      //bottom: 0;
+      //left: 0;
+      //background-color: #fff;
+      //z-index: 0;
     }
   }
 }

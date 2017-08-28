@@ -1,13 +1,14 @@
 @section('endOfBody')
     @foreach($posts as $post)
-        {{ null, $post->spreadMeta() }}
-        {{ null, $jsAngles[] = [
-                'id' => $post->id,
-                'name' => $post->title,
-                'picture_url' => $post->viewable_featured_image,
-                'donation_date' => ad(echoDate($post->donation_date, 'j F Y')),
-            ]
-        }}
+        @php
+            $post->spreadMeta();
+            $jsAngles[] = [
+                    'id' => $post->id,
+                    'name' => $post->title,
+                    'picture_url' => $post->viewable_featured_image,
+                    'donation_date' => ad(echoDate($post->donation_date, 'j F Y')),
+                ]
+        @endphp
     @endforeach
 
 
