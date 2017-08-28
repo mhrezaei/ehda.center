@@ -58,7 +58,7 @@ return [
         "notify"                        => 'Notify User via Email and SMS',
         "will-be-notified"              => 'User will be notified by Email and SMS.',
         "default_password"              => 'Mobile number will be set as password and user should change it in first login.',
-        'password_set_to_mobile'        => 'Mobile number has been set as password.',
+        'password_set_to_mobile'        => 'Mobile number will be set as password.',
         "hard_delete_notice"            => 'Deleting is unrecoverable.',
         'delete_notice_when_has_role'   => "All roles of this user will be inaccessible.",
         "password_hint"                 => 'At Least 8 Characters and Case Sensitive',
@@ -84,7 +84,6 @@ return [
         'exist_in_profile'              => "Exists in profile",
         'dont_exist_in_profile'         => "Doesn't exist in profile",
         'you_are_not_active_yet_1'      => "Your account has not been activated completely and needs to be confirmed.",
-        'you_are_not_active_yet_2'      => "تا آن زمان می‌توانید اطلاعات پروندی خود را تکمیل نمایید.",
         'you_are_not_active_yet_2'      => "You can complete your profile until then.",
     ],
 

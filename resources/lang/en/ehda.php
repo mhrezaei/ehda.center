@@ -46,6 +46,14 @@ return [
         'cancel'                   => "Cancel Printing",
     ],
 
+    'students' => [
+        'single'      => "Student",
+        'plural'      => "Students",
+        'name_added'  => ":name has been added.",
+        'delete'      => "Delete Student",
+        'delete_info' => "This person will be removed from students list, but his/her account and other roles will be remained.",
+    ],
+
     'volunteers' => [
         'single'            => "Organ Donation Volunteer",
         'plural'            => "Organ Donation Volunteers",
