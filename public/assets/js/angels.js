@@ -21,7 +21,14 @@ function showNewAngelForm() {
         // animate stars box to top
     }
 
-    $('body, html').animate({scrollTop: Math.max(bottomOfStars - mainMenuHeight, 0)}, 500);
+    $('body, html').animate(
+        {scrollTop: Math.max(bottomOfStars - mainMenuHeight, 0)},
+        500,
+        "linear",
+        function () {
+            $('.new-angel-form-container').height('auto')
+        }
+    );
 }
 
 function hideNewAngelForm() {

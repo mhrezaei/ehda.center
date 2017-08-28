@@ -12,7 +12,7 @@
     <div class="media">
         <a class="link-black" href="{{ $post->direct_url }}">
             <div class="media-start">
-                <img src="{{ $post->viewable_featured_image }}">
+                <img src="{{ $post->viewable_featured_image_thumbnail }}">
             </div>
             <div class="media-body">
                 <h4 class="media-heading">{{ ad($post->title) }}</h4>

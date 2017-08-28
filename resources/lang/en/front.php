@@ -100,17 +100,33 @@ return [
     'powered_by_yasna'                         => 'Powered by Yasna Team',
     'community_branches'                       => 'Community Branches',
     'email_has_been_sent_automatically'        => 'Note: This email has been sent automatically. So don\'t reply to it.',
+    'unnamed'                                  => 'Unnamed',
+    'download_links'                           => 'Download Links',
+
+    'tutorials' => [
+        'singular' => 'Tutorial',
+        'plural'   => 'Tutorials',
+        'all'      => 'All Tutorials',
+    ],
 
     'volunteer_section' => [
-        'singular'         => 'Organ Donation Volunteer',
-        'plural'           => 'Organ Donation Volunteers',
-        'section'          => 'Organ Donation Volunteers Section',
-        'go_section'       => 'Go to Organ Donation Volunteers Section',
-        'register'         => 'Register Volunteer',
-        'register_success' => 'Volunteer registered successfully.',
-        'special'          => [
+        'singular'                 => 'Organ Donation Volunteer',
+        'plural'                   => 'Organ Donation Volunteers',
+        'section'                  => 'Organ Donation Volunteers Section',
+        'go_section'               => 'Go to Organ Donation Volunteers Section',
+        'register'                 => 'Register Volunteer',
+        'register_success'         => 'Volunteer registered successfully.',
+        'special'                  => [
             'singular' => 'Celebrity',
             'plural'   => 'Celebrities',
+        ],
+        'register_success_message' => [
+            'sms'   => "Hello :name، \n\r
+Volunteer has registered successfully. You'll be called soon for briefing.\n\r
+:site",
+            'email' => "Hello :name، \n\r
+Volunteer has registered successfully. You'll be called soon for briefing.\n\r
+:site",
         ],
     ],
 
@@ -120,6 +136,8 @@ return [
         'download'                 => 'Save Organ Donation Card',
         'preview'                  => 'Preview Organ Donation Card',
         'card'                     => 'Card',
+        'register'                 => 'Register Organ Donation Card',
+        'user_card'                => 'Organ Donation Card of :user',
         'partial'                  => [
             'part1' => 'Organ',
             'part2' => 'Donation',
@@ -177,31 +195,40 @@ Your Oragn Donation Card has been registered with :membershipNumber membership n
     ],
 
     'file_types' => [
+        'file'  => [
+            'title'         => 'File',
+            'dropzone_text' => 'Drop your file here.'
+        ],
         'image' => [
             'title'         => 'Image',
-            'dropzone_text' => 'Drop your images here.'
+            'dropzone_text' => 'Drop your image here.'
         ],
         'text'  => [
             'title'         => 'Text',
-            'dropzone_text' => 'Drop your text files here.'
+            'dropzone_text' => 'Drop your text file here.'
         ],
         'video' => [
             'title'         => 'Video',
-            'dropzone_text' => 'Drop your video files here.'
+            'dropzone_text' => 'Drop your video file here.'
         ],
         'audio' => [
             'title'         => 'Audio',
-            'dropzone_text' => 'Drop your audio files here.'
+            'dropzone_text' => 'Drop your audio file here.'
         ],
     ],
 
     'upload' => [
-        'errors' => [
-            'size'       => 'File is too big ({{filesize}}MiB). Max filesize: {{maxFilesize}}MiB.',
-            'type'       => 'You can\'t upload files of this type.',
-            'server'     => 'Server responded with {{statusCode}} code.',
-            'limit'      => 'You can not upload any more files.',
+        'errors'   => [
+            'size'   => 'File is too big ({{filesize}}MiB). Max filesize: {{maxFilesize}}MiB.',
+            'type'   => 'You can\'t upload files of this type.',
+            'server' => 'Server responded with {{statusCode}} code.',
+            'limit'  => 'You can not upload any more files.',
         ],
+        'statuses' => [
+            'uploading' => 'Uploading',
+            'failed'    => 'Failed',
+            'success'   => 'Success',
+        ]
     ],
 
     'footer' => [
@@ -211,18 +238,29 @@ Your Oragn Donation Card has been registered with :membershipNumber membership n
     ],
 
     'messages' => [
-        'you_are_volunteer'            => 'You are volunteer.',
-        'you_are_card_holder'          => 'You have organ donation card. Please try to register as Organ Donation Volunteer from your profile.',
-        'unable_to_register_card'      => 'Unable to Register Card',
-        'unable_to_register_volunteer' => 'Unable to Register Volunteer',
-        'login'                        => 'Login.',
+        'you_are_volunteer'                        => 'You are volunteer.',
+        'login_to_complete_volunteer_registration' => [
+            'before_link' => '',
+            'link_text'   => 'Login',
+            'after_link'  => 'to register as organ donation volunteer.',
+        ],
+        'you_are_card_holder'                      => 'You have organ donation card. Please try to register as Organ Donation Volunteer from your profile.',
+        'card_exists_with_this_code_melli'         => 'There is an Organ Donation Card for this code melli.',
+        'please_login'                             => [
+            'before_link' => 'Please',
+            'link_text'   => 'Login',
+            'after_link'  => '.',
+        ],
+        'unable_to_register_card'                  => 'Unable to Register Card',
+        'unable_to_register_volunteer'             => 'Unable to Register Volunteer',
+        'login'                                    => 'Login.',
     ],
 
     'notes' => [
         'moments_are_important_to_save_life' => [
             'part1' => 'Every moment is important to save',
             'part2' => 'life',
-            'part2' => '',
+            'part3' => '',
         ],
         'one_brain_dead_can_save_8_lives'    => 'One brain dead can save 8 lives.',
         'organ_donation'                     => 'Organ Donation',
@@ -240,13 +278,17 @@ Your Oragn Donation Card has been registered with :membershipNumber membership n
 
         'sub_menus' => [
             "learn" => [
-                'academic'                          => 'Scientific',
+                'general_educations'                => 'General Educations',
                 'brain_death'                       => 'Brain Death',
                 'organ_donation'                    => 'Organ Donation',
                 'allocation'                        => 'Organ Allocation',
                 'organ_transplant'                  => 'Organ Transplant',
                 'organ_transplant_history'          => 'Organ Transplant History',
                 'statistics'                        => 'Statistics',
+                'professional_educations'           => 'Professional Educations',
+                'educations_courses'                => 'Courses',
+                'educations_video'                  => 'Videos',
+                'educations_text'                   => 'Texts',
                 'cultural'                          => 'Cultural',
                 'organ_donation_in_religion'        => 'Organ Donation and Religion',
                 'organ_donation_in_another_country' => 'Organ Donation in Other Countries',

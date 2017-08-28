@@ -57,7 +57,18 @@ if (!isset($placeholder)) {
                         class="form-control {{$class or ''}}"
                         placeholder="{{$placeholder}}"
                         rows="{{$rows or 5}}"
+                        error-value="{{ isset($error_value) ? $error_value : trans('validation.javascript_validation.' . $name)  }}"
                         {{$extra or ''}}
+                        @if(isset($dataAttributes) and is_array($dataAttributes))
+                            @foreach($dataAttributes as $attributeName => $attributeValue)
+                                data-{{ $attributeName }}="{{ $attributeValue }}"
+                            @endforeach
+                        @endif
+                        @if(isset($otherAttributes) and is_array($dataAttributes))
+                            @foreach($otherAttributes as $attributeName => $attributeValue)
+                                {{ $attributeName }}="{{ $attributeValue }}"
+                            @endforeach
+                        @endif
                 >{{$value or ''}}</textarea>
                 @if($in_form)
                     <span class="help-block">

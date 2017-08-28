@@ -162,6 +162,7 @@ return [
         "city"            => "شهر را به درستی وارد نمایید.",
         "submitter_name"  => "نام ارسال‌کننده را به درستی وارد نمایید.",
         "submitter_phone" => "شماره تلفن ارسال‌کننده را به درستی وارد نمایید.",
+        "text"            => "متن را به درستی وارد نمایید.",
     ],
 
     'attributes_example' => [
@@ -538,7 +539,6 @@ return [
 
         'has_medal'         => 'مدال افتخار دارد.',
 
-        //@TODO: New up to the end of this array..
         'domains'           => "دامنه",
         'source'            => "منبع",
         'role_slug'         => "نقش کاربری",

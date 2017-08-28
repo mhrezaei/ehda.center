@@ -1,10 +1,11 @@
 <?php
 return [
     'upstream'      => "Upstream Settings",
-    'account'       => "Account Settings",
     'states'        => "States",
     'posttypes'     => "Post Types",
     'roles'         => "User Roles",
+    'supports'      => "Support Teams",
+    'support'       => "Support",
     'site_settings' => "Site Settings",
 
     'downstream'      => "Configure",
@@ -15,6 +16,7 @@ return [
     'domains'     => "Domains",
     'domain_edit' => "Edit Domain",
     'domain_new'  => "New Domain",
+    'artisan'     => "Artisan",
 
     'city'                       => "City",
     'cities_of'                  => "Cities of :province",
@@ -39,6 +41,18 @@ return [
         'database' => 'Database',
         'accounts' => "Accounts",
         'upstream' => "Upstream",
+    ],
+
+    'account' => [
+        'title'                                       => "تنظیمات حساب",
+        'profile_save'                                => 'ثبت درخواست ذخیره‌ی تغییرات',
+        'profile_revert'                              => 'انصراف از تغییرات',
+        'profile_save_note'                           => 'درخواست تغییرات ارسال شد و پس از تأیید در پرونده ثبت خواهند شد. تا زمان بررسی، ویرایش مجدد امکان‌پذیر است.',
+        'profile_pending_note'                        => 'تغییرات در انتظار تأیید هستند. ویرایش‌های بعدی، درخواست را به‌روز خواهند کرد.',
+        'profile_reject_note'                         => 'درخواست تغییرات تأیید نشد! می‌توانید درخواست خود را ویرایش و مجدداً ارسال نمایید.',
+        'profile_revert_note'                         => 'تغییرات پاک شدند.',
+        'profile_completions_note_for_new_volunteers' => "درخواست شما برای سفیری اهدای عضو، در دست بررسی است. برای این کار به اطلاعات کامل شما نیاز داریم.",
+        'in_profile'                                  => 'در پرونده: :v',
     ],
 
 ];
