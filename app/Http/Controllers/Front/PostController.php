@@ -240,6 +240,125 @@ JS;
         return view('front.faqs.main', compact('faqsHTML', 'getNewFaq', 'newFaqForm'));
     }
 
+    public function special_volunteers()
+    {
+        $postType = Posttype::findBySlug('celebs');
+
+        /************************* Generate Html for List View ********************** START */
+        $innerHTML = PostsServiceProvider::showList([
+            'type'         => 'celebs',
+            'max_per_page' => -1,
+        ]);
+        /************************* Generate Html for List View ********************** END */
+
+        /************************* Generate Position Info ********************** START */
+        $positionInfo = [
+            'group'    => $postType->headerTitleIn(getLocale()),
+            'category' => $postType->titleIn(getLocale()),
+        ];
+        /************************* Generate Position Info ********************** END */
+
+        /************************* Set Other Values ********************** START */
+        $otherValues = [
+            'pageTitle' => trans('front.special_volunteers'),
+        ];
+        /************************* Set Other Values ********************** END */
+
+        /************************* Render View ********************** START */
+        return view('front.posts.general.frame.main', compact(
+                'innerHTML',
+                'positionInfo'
+            ) + $otherValues);
+    }
+
+    public function works_send()
+    {
+        $postsPrefix = 'send-work-';
+        UploadServiceProvider::setUserType('client');
+        UploadServiceProvider::setSection('work');
+
+
+        // get related posts
+        $posts = Post::selector(['type' => 'commenting'])
+            ->where('slug', 'like', "$postsPrefix%")
+            ->get();
+
+
+        // remove posts that are related to inactive file types (in config/upload.php)
+        foreach ($posts as $key => $post) {
+            $fileType = str_replace($postsPrefix, '', $post->slug);
+            if (UploadServiceProvider::isActive($fileType)) {
+                $post->fileType = $fileType;
+            } else {
+                $posts->forget($key);
+            }
+        }
+
+        $sendingArea = view('front.test.works.sending_area.main', compact('posts'));
+        $staticPost = PostsServiceProvider::smartFindPost('send-works-text');
+        if ($staticPost->exists) {
+//        $postContentHTML = PostsServiceProvider::showPost('send-works-text', ['externalBlade' => $sendingArea]);
+            return view('front.test.works.main', compact('sendingArea', 'staticPost'));
+        }
+        return $this->abort(404);
+    }
+
+    public function angels()
+    {
+        UploadServiceProvider::setUserType('client');
+        UploadServiceProvider::setSection('angels');
+
+        $innerHTML = PostsServiceProvider::showList([
+            'type'         => 'angels',
+            'random'       => true,
+            'max_per_page' => 19,
+        ]);
+
+        return view('front.angles.main', compact('innerHTML'));
+    }
+
+    public function angels_find(AngelsSearchRequest $request)
+    {
+        $foundAngels = Post::selector([
+            'type'   => 'angels',
+            'domain' => getUsableDomains(),
+        ])->where('title', 'LIKE', "%{$request->angel_name}%")
+            ->limit(100)// limit data in query
+            ->get();
+
+        if ($foundAngels->count()) {
+            foreach ($foundAngels as $angel) {
+                $angel->spreadMeta();
+
+                $resultAngels[] = [
+                    'id'            => $angel->id,
+                    'name'          => $angel->title,
+                    'label'         => $angel->title . ($angel->city ? '، ' . $angel->city : ''),
+                    'picture_url'   => $angel->viewable_featured_image,
+                    'donation_date' => ad(echoDate($angel->donation_date, 'j F Y')),
+                ];
+            }
+
+            return response()->json($resultAngels);
+        }
+
+    }
+
+    public function postVeryShortLink($identifier)
+    {
+        $prefix = config('prefix.routes.post.short');
+
+        if (starts_with($identifier, $prefix)) {
+            $hashid = substr($identifier, strlen($prefix));
+            $post = Post::findByHashid($hashid);
+            if ($post->exists) {
+                return redirect($post->direct_url);
+            }
+        }
+
+        return redirect('/');
+    }
+
     private function show($hashid)
     {
         /************************* Find Post ********************** START */
@@ -367,124 +486,5 @@ JS;
         }
 
         return view('errors.m404');
-    }
-
-    public function special_volunteers()
-    {
-        $postType = Posttype::findBySlug('celebs');
-
-        /************************* Generate Html for List View ********************** START */
-        $innerHTML = PostsServiceProvider::showList([
-            'type'         => 'celebs',
-            'max_per_page' => -1,
-        ]);
-        /************************* Generate Html for List View ********************** END */
-
-        /************************* Generate Position Info ********************** START */
-        $positionInfo = [
-            'group'    => $postType->headerTitleIn(getLocale()),
-            'category' => $postType->titleIn(getLocale()),
-        ];
-        /************************* Generate Position Info ********************** END */
-
-        /************************* Set Other Values ********************** START */
-        $otherValues = [
-            'pageTitle' => trans('front.special_volunteers'),
-        ];
-        /************************* Set Other Values ********************** END */
-
-        /************************* Render View ********************** START */
-        return view('front.posts.general.frame.main', compact(
-                'innerHTML',
-                'positionInfo'
-            ) + $otherValues);
-    }
-
-    public function works_send()
-    {
-        $postsPrefix = 'send-work-';
-        UploadServiceProvider::setUserType('client');
-        UploadServiceProvider::setSection('work');
-
-
-        // get related posts
-        $posts = Post::selector(['type' => 'commenting'])
-            ->where('slug', 'like', "$postsPrefix%")
-            ->get();
-
-
-        // remove posts that are related to inactive file types (in config/upload.php)
-        foreach ($posts as $key => $post) {
-            $fileType = str_replace($postsPrefix, '', $post->slug);
-            if (UploadServiceProvider::isActive($fileType)) {
-                $post->fileType = $fileType;
-            } else {
-                $posts->forget($key);
-            }
-        }
-
-        $sendingArea = view('front.test.works.sending_area.main', compact('posts'));
-        $staticPost = PostsServiceProvider::smartFindPost('send-works-text');
-        if ($staticPost->exists) {
-//        $postContentHTML = PostsServiceProvider::showPost('send-works-text', ['externalBlade' => $sendingArea]);
-            return view('front.test.works.main', compact('sendingArea', 'staticPost'));
-        }
-        return $this->abort(404);
-    }
-
-    public function angels()
-    {
-        UploadServiceProvider::setUserType('client');
-        UploadServiceProvider::setSection('angels');
-
-        $innerHTML = PostsServiceProvider::showList([
-            'type'         => 'angels',
-            'random'       => true,
-            'max_per_page' => 19,
-        ]);
-
-        return view('front.angles.main', compact('innerHTML'));
-    }
-
-    public function angels_find(AngelsSearchRequest $request)
-    {
-        $foundAngels = Post::selector([
-            'type'   => 'angels',
-            'domain' => getUsableDomains(),
-        ])->where('title', 'LIKE', "%{$request->angel_name}%")
-            ->limit(100)// limit data in query
-            ->get();
-
-        if ($foundAngels->count()) {
-            foreach ($foundAngels as $angel) {
-                $angel->spreadMeta();
-
-                $resultAngels[] = [
-                    'id'            => $angel->id,
-                    'name'          => $angel->title,
-                    'label'         => $angel->title . ($angel->city ? '، ' . $angel->city : ''),
-                    'picture_url'   => $angel->viewable_featured_image,
-                    'donation_date' => ad(echoDate($angel->donation_date, 'j F Y')),
-                ];
-            }
-
-            return response()->json($resultAngels);
-        }
-
-    }
-
-    public function postVeryShortLink($identifier)
-    {
-        $prefix = config('prefix.routes.post.short');
-
-        if (starts_with($identifier, $prefix)) {
-            $hashid = substr($identifier, strlen($prefix));
-            $post = Post::findByHashid($hashid);
-            if ($post->exists) {
-                return redirect($post->direct_url);
-            }
-        }
-
-        return redirect('/');
     }
 }

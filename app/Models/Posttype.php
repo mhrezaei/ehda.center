@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Providers\PostsServiceProvider;
 use App\Traits\TahaModelTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -200,11 +201,28 @@ class Posttype extends Model
         return Pack::where('type', $this->slug);
     }
 
+    /**
+     * Returns eloquent of this post's categories
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     public function categories()
     {
         $foldersIds = $this->folders->pluck('id')->toArray();
 
         return Category::whereIn('folder_id', $foldersIds);
+    }
+
+    public function activeCategories()
+    {
+        $categories = $this->categories;
+        return PostsServiceProvider::filterActiveCategories($categories);
+    }
+
+    public function activeCategoriesIn($locale)
+    {
+        $categories = $this->categoriesIn($locale);
+        return PostsServiceProvider::filterActiveCategories($categories);
     }
 
     /**

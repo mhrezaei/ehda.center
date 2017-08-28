@@ -564,6 +564,37 @@ class PostsServiceProvider extends ServiceProvider
         }
     }
 
+    public static function filterPosttypesByFeature($posttypes, $feature = 'listable')
+    {
+        if (is_array($posttypes)) {
+            foreach ($posttypes as $key => $posttype) {
+                if (is_null(self::filterPosttypesByFeature($posttype, $feature))) {
+                    unset($posttypes[$key]);
+                }
+            }
+            if (empty($posttypes)) {
+                return self::getDefaultValues('selectPosts')['type'];
+            }
+            return $posttypes;
+        } else {
+            $obj = self::smartFindPosttype($posttypes);
+            if ($obj->exists and !$obj->has($feature)) {
+                return null;
+            } else {
+                return $posttypes;
+            }
+        }
+    }
+
+    public static function filterActiveCategories($categories) {
+        foreach ($categories as $key => $category) {
+            if(!$category->posts()->count()) {
+                $categories->forget($key);
+            }
+        }
+        return $categories;
+    }
+
     private static function generateView($view, $data = [])
     {
         if (View::exists($view)) {
@@ -641,28 +672,6 @@ class PostsServiceProvider extends ServiceProvider
         }
 
         return self::$defaultData;
-    }
-
-    public static function filterPosttypesByFeature($posttypes, $feature = 'listable')
-    {
-        if (is_array($posttypes)) {
-            foreach ($posttypes as $key => $posttype) {
-                if (is_null(self::filterPosttypesByFeature($posttype, $feature))) {
-                    unset($posttypes[$key]);
-                }
-            }
-            if(empty($posttypes)) {
-                return self::getDefaultValues('selectPosts')['type'];
-            }
-            return $posttypes;
-        } else {
-            $obj = self::smartFindPosttype($posttypes);
-            if ($obj->exists and !$obj->has($feature)) {
-                return null;
-            } else {
-                return $posttypes;
-            }
-        }
     }
 }
 

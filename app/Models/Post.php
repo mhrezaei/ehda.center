@@ -1200,7 +1200,7 @@ class Post extends Model implements FeedItem
     {
         $type = $this->type;
         $postFiles = $this->meta('post_files');
-        $isEducational = starts_with($type, 'educational') and $postFiles and is_array($postFiles) and count($postFiles);
+        $isEducational = (starts_with($type, 'educational'));
 
         if (
             $isEducational and

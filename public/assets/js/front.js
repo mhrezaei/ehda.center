@@ -53,17 +53,19 @@ $.fn.updateContent = function (callback) {
 $.fn.scrollToView = function (extra, duration) {
     var item = $(this);
 
-    if (!$.isNumeric(duration)) {
-        duration = 1000;
-    }
+    if (item.length) {
+        if (!$.isNumeric(duration)) {
+            duration = 1000;
+        }
 
-    if (!$.isNumeric(extra)) {
-        extra = 0;
-    }
+        if (!$.isNumeric(extra)) {
+            extra = 0;
+        }
 
-    $('html, body').animate({
-        scrollTop: item.offset().top + extra
-    }, duration);
+        $('html, body').animate({
+            scrollTop: item.offset().top + extra
+        }, duration);
+    }
 };
 
 /**

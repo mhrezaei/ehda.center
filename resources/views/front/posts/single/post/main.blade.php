@@ -1,4 +1,9 @@
-@php $showSideBar = isset($showSideBar) ? $showSideBar : false @endphp
+@php
+    $aparatLinkPrefix = 'http://www.aparat.com/v/';
+
+    $showSideBar = isset($showSideBar) ? $showSideBar : false;
+    $downloadingFiles = $post->post_files;
+@endphp
 
 <style>
     .post-text img,

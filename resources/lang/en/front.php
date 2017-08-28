@@ -217,6 +217,14 @@ Your Oragn Donation Card has been registered with :membershipNumber membership n
         ],
     ],
 
+    'byte_units' => [
+        'B'  => 'B',
+        'KB' => 'KB',
+        'MB' => 'MB',
+        'GB' => 'GB',
+        'TB' => 'TB',
+    ],
+
     'upload' => [
         'errors'   => [
             'size'   => 'File is too big ({{filesize}}MiB). Max filesize: {{maxFilesize}}MiB.',

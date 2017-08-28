@@ -483,7 +483,7 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
         // Tutorials
         Route::group(['prefix' => 'education'], function () {
             Route::get('/{educationType}', 'EducationController@archive')->name('education.archive');
-            Route::post('get-posts', 'TutorialsController@ajaxGetPosts')->name('education.get-posts.ajax');
+            Route::post('get-posts', 'EducationController@ajaxGetPosts')->name('education.get-posts.ajax');
         });
 
         // Massages
