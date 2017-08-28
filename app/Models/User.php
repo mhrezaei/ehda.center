@@ -635,7 +635,7 @@ class User extends Authenticatable
 		| In case of a specified role ...
 		*/
 		if($request_role) {
-			return user()->as($request_role)->can('permit');
+			return user()->as('admin')->can("users-$request_role.permit");
 		}
 
 		/*-----------------------------------------------

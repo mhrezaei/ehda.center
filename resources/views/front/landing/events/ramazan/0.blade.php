@@ -9,7 +9,7 @@
 
     <meta property="og:title" content="انجمن اهدای عضو ایرانیان - کمپین ۱۰۰ هزار کارت اهدای عضو" />
     <meta property="og:url" content="https://telegram.me/Ehdayeozv_bot" />
-    <meta property="og:image" content="https://ehda.center/assets/photos/posts/landing/logo-sq.jpg" />
+    <meta property="og:image" content="https://ehda.center/uploads/posts/gallery/image/1503245565_WjUjs1TOPnBiXyybrEF3v21xD8Q0tw_original.png" />
     <meta property="og:description" content="ثبت حماسه ای دیگر از نوعدوستی ایرانیان درماه مبارک رمضان - هر ایرانی یک سفیر اهدای عضو" />
 
     <title>انجمن اهدای عضو ایرانیان - کمپین ۱۰۰ هزار کارت اهدای عضو</title>
@@ -228,11 +228,14 @@
                 transform: scale(1)
             }
         }
+        .navbar-brand{
+            padding: 0px !important;
+        }
     </style>
 
 </head>
 
-<body class="image-background fp-viewing-1stPage" bg-image="{{ url('assets/photos/posts/landing/ramazan.jpg') }}" style="overflow: visible; height: initial;">
+<body class="image-background fp-viewing-1stPage" bg-image="{{ url('photos/posts/landing/ramazan.jpg') }}" style="overflow: visible; height: initial;">
 
 <!-- Preloader -->
 <div id="preloader" style="display: none;">
@@ -250,7 +253,7 @@
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 <a class="navbar-brand dark-logo" href="https://ehda.center" style="">
-                    <img src="https://ehda.center/assets/site/images/header-logo.png" title="انجمن اهدای عضو ایرانیان" style="max-width: 60%;">
+                    <img src="https://ehda.center/uploads/posts/gallery/image/1503245522_M4PSsReOLsElg7A7X8TP95luaFEE92_original.png" title="انجمن اهدای عضو ایرانیان" style="max-width: 25%;">
                 </a>
             </div>
             {{--<a class="" href="https://ehda.center" style="float: left; direction: ltr;">--}}
@@ -358,7 +361,7 @@
 {!! Html::script ('assets/landing/events/file-manager.js') !!}
 
 <div class="backstretch" style="left: 0px; top: 0px; overflow: hidden; margin: 0px; padding: 0px; height: 947px; width: 1903px; z-index: -999999; position: fixed;">
-    <img style="position: absolute; margin: 0px; padding: 0px; border: medium none; width: 1903px; height: 1268.35px; max-height: none; max-width: none; z-index: -999999; left: 0px; top: -160.675px;" src="{{ url('assets/photos/posts/landing/ramazan.jpg') }}">
+    <img style="position: absolute; margin: 0px; padding: 0px; border: medium none; width: 1903px; height: 1268.35px; max-height: none; max-width: none; z-index: -999999; left: 0px; top: -160.675px;" src="{{ url('photos/posts/landing/ramazan.jpg') }}">
 </div>
 {!! Form::open() !!}
 
