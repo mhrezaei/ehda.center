@@ -1,12 +1,13 @@
 <?php
 return [
     'types' => [
-        'meta_hint'          => 'Type meta in "key:type" format and separate theme with comma (,). If "type" isn\'t specified then it will be assumed as "text". Accepted meta:',
-        'delete_alert_posts' => 'Do you even think about :count posts that belong to this category?',
-        'delete_alert'       => 'It will be deleted softly, but there is no way for to recover it in the program.',
-        'locales_hint'       => "Separate languages with comma (,). If you don't specify anything, only persian will be activated.",
-        'order_hint'         => 'If you specify "0", it will be displayed in setting menu instead if right side menu.',
-        'locale_titles'      => "Title in Other Languages",
+        'meta_hint'           => 'Type meta in "key:type" format and separate theme with comma (,). If "type" isn\'t specified then it will be assumed as "text". Accepted meta:',
+        'delete_alert_posts'  => 'Do you even think about :count posts that belong to this category?',
+        'delete_alert'        => 'It will be deleted softly, but there is no way for to recover it in the program.',
+        'locales_hint'        => "Separate languages with comma (,). If you don't specify anything, only persian will be activated.",
+        'order_hint'          => 'If you specify "0", it will be displayed in setting menu instead if right side menu.',
+        'locale_titles'       => "Title in Other Languages",
+        'upload_configs_hint' => "Upload Configs in JSON Format. If empty, upload will be turned of for this post type.",
     ],
 
     'features' => [
@@ -14,6 +15,7 @@ return [
         'full_history'      => "Full History",
         'meaning'           => "Features",
         'locales'           => "Other Languages",
+        'pin'               => "Pin",
         'slug'              => "Set Slug",
         'download'          => "Download",
         'abstract'          => "Abstract",
@@ -155,6 +157,17 @@ return [
         'copy_suggestion_when_cannot_publish' => "This post is approved and you can change it otherwise you make a copy.",
         'copy_suggestion_when_can_publish'    => "This post is published. It's better to make a copy to make sweeping changes.",
         'copy_suggestion_deny'                => 'Always you can to the same with "Save Draft" button.',
+        'reflect_in_global'                   => "Reflect in Global Domain",
+        'reflect_in_global_short'             => "Reflect in Global",
+        'new_content'                         => "New Content",
+        'create_new_post'                     => "Create New Post",
+        'for_each_number_of'                  => "For Each Number of :name",
+        'thumb_sizes'                         => "Thumbnail Size",
+        'thumb_sizes_hint'                    => "With and Height of Image with x in between in each line. All in english.",
+        'gallery_thumb_size'                  => 'Gallery Thumbnail Size',
+        'gallery_thumb_size_hint'             => "With and Height of Image with x in between in each line. All in english.",
+        'info'                                => "Information",
+        'rss_title'                           => "RSS Feed",
     ],
 
     'comments' => [
@@ -179,6 +192,14 @@ return [
         'remove'            => 'Remove This Photo',
     ],
 
+    'files' => [
+        'title'             => "Attached Files",
+        'add_file'          => "Add New File",
+        'label_placeholder' => 'File Label - Optional',
+        'link_placeholder'  => 'Source Ling - Optional',
+        'remove'            => 'Remove This File',
+    ],
+
     'filters' => [
         'filters'       => 'Filters',
         'no_category'   => 'No Category',
@@ -197,6 +218,15 @@ return [
         'activate'          => "Activate",
         'deactivate'        => "Deactivate",
         'deactivate_notice' => "Deactivation will make this package inaccessible.",
+    ],
+
+    'pin' => [
+        'put_command'    => "Set Pin",
+        'remove_command' => "Remove Pin",
+        'description'    => "Post pinned. It will be shown in top of other posts.",
+        'put_alert'      => "Current pin will be removed.",
+        'remove_alert'   => "No pin will remain.",
+        'pinned'         => "Pinned",
     ],
 
 ];

@@ -539,7 +539,6 @@ return [
 
         'has_medal'         => 'مدال افتخار دارد.',
 
-        //@TODO: New up to the end of this array..
         'domains'           => "دامنه",
         'source'            => "منبع",
         'role_slug'         => "نقش کاربری",
