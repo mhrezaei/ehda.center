@@ -47,9 +47,10 @@ class TestController extends Controller
 
     public function index()
     {
-        $hash = '!type_30?selectBox!';
-        $result = AjaxFilterServiceProvider::translateHash($hash);
-        dd($result, __FILE__ . " - " . __LINE__);
+        $link = 'http://www.aparat.com/v/cy1jP';
+        $link = 'www.aparat.com/v/cy1jP';
+        $link = 'aparat.com/v/cy1jP';
+        dd(getAparatId($link), __FILE__ . " - " . __LINE__);
     }
 
     public function states()
