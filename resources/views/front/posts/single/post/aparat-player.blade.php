@@ -1,11 +1,11 @@
 @if($downloadingFiles and is_array($downloadingFiles))
     @php
-        $videos = array_filter($downloadingFiles, function ($item) use ($aparatLinkPrefix) {
-            return starts_with(strtolower($item['link']), $aparatLinkPrefix);
-        });
-        $videos = array_values($videos);
-        array_walk($videos, function (&$item) {
-            $item['link'] = str_after($item['link'], 'v/');
+        $videos = [];
+        array_walk($downloadingFiles, function ($item) use (&$videos) {
+            $item['link'] = getAparatId($item['link']);
+            if (!is_null($item['link'])) {
+                $videos[] = $item;
+            }
         });
     @endphp
 
