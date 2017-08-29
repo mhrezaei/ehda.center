@@ -2,11 +2,14 @@
 
 namespace App\Providers;
 
+use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Support\ServiceProvider;
 
 class CommentServiceProvider extends ServiceProvider
 {
+    protected static $commentingPostType = 'commenting';
+
     /**
      * @var array
      */
@@ -176,5 +179,32 @@ class CommentServiceProvider extends ServiceProvider
     public static function getDefaultCommentRules()
     {
         return self::$defaultRules;
+    }
+
+    public static function getPostTypeComments($postType, $data = [])
+    {
+        $type = PostsServiceProvider::smartFindPosttype($postType);
+        if ($type->exists) {
+            $data = array_normalize($data, [
+                'locale' => getLocale(),
+            ]);
+            $data['type'] = self::$commentingPostType;
+            $data['max_per_page'] = -1;
+
+            $commentingPosts = PostsServiceProvider::collectPosts($data);
+            if ($commentingPosts and $commentingPosts->count()) {
+                $relatedCommentingIds = [];
+                foreach ($commentingPosts as $commentingPost) {
+                    if ($commentingPost->meta('target_post_type') == $type->slug) {
+                        $relatedCommentingIds[] = $commentingPost->id;
+                    }
+                }
+                if (count($relatedCommentingIds)) {
+                    return Comment::whereIn('post_id', $relatedCommentingIds)->get();
+                }
+            }
+        }
+
+        return false;
     }
 }
