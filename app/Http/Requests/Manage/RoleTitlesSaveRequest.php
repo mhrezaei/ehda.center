@@ -31,7 +31,7 @@ class RoleTitlesSaveRequest extends Request
 		$input = $this->all();
 		$id = $input['id'] ;
 		return [
-			'title' => 'required|unique:posttypes,title,'.$id,
+			'title' => 'required|unique:roles,title,'.$id,
 			'plural_title' => 'required',
 		];
 

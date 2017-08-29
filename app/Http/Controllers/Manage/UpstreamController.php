@@ -662,7 +662,7 @@ class UpstreamController extends Controller
 		/*-----------------------------------------------
 		| Model Reveal ...
 		*/
-		$model = Posttype::find($request->id);
+		$model = Role::withTrashed()->find($request->id);
 		if(!$model) {
 			return $this->jsonFeedback(trans('validation.http.Error410'));
 		}
@@ -674,7 +674,7 @@ class UpstreamController extends Controller
 		$data['locale_titles'] = [];
 
 
-		foreach($model->locales_array as $locale) {
+		foreach(setting('site_locales')->gain() as $locale) {
 			if($locale == 'fa') {
 				continue;
 			}
