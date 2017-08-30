@@ -15,10 +15,12 @@
 	@if($field=='code_melli')
 		<div class="w100 text-center">
 			@if(user()->as('admin')->can('users-card-holder.create'))
-				<a href="{{ url("manage/cards/create/$keyword") }}" class="btn btn-default w70">{{ trans("ehda.cards.create") }}</a>
+				<a href="{{ url("manage/cards/create/$keyword") }}"
+				   class="btn btn-default w70">{{ trans("ehda.cards.create") }}</a>
 			@endif
 			@if( user()->userRolesArray('create' , [] , model('role')::adminRoles()) )
-				<a href="{{ url("manage/volunteers/create/admin/$keyword") }}" class="btn btn-default w70">{{ trans("ehda.volunteers.create") }}</a>
+				<a href="{{ url("manage/volunteers/create/admin/$keyword") }}"
+				   class="btn btn-default w70">{{ trans("ehda.volunteers.create") }}</a>
 			@endif
 		</div>
 	@endif
@@ -40,15 +42,24 @@
 		'size' => "14" ,
 	]     )
 
-	@include("manage.frame.widgets.grid-text" , [
-		'text' => trans("ehda.donation_card"),
-		'icon' => "credit-card" ,
-		'color' => "success" ,
-		'class' => "btn btn-default w70" ,
-		'size' => "12" ,
-		'link' => user()->as('admin')->can('users-card-holder.view')? "modal:manage/cards/view/-hash_id-" : v0() ,
-		'condition' => $model->is_a('card-holder') ,
-	]     )
+	@if($model->is_a('card-holder'))
+		@include("manage.frame.widgets.grid-text" , [
+			'text' => trans("ehda.donation_card"),
+			'icon' => "credit-card" ,
+			'color' => "success" ,
+			'class' => "btn btn-default w70" ,
+			'size' => "12" ,
+			'link' => user()->as('admin')->can('users-card-holder.view')? "modal:manage/cards/view/-hash_id-" : v0() ,
+		]     )
+	@elseif(user()->can('users-card-holder.create'))
+		@include("manage.frame.widgets.grid-text" , [
+			'text' => trans("ehda.cards.register_full"),
+			'icon' => "credit-card" ,
+			'class' => "btn btn-default w70" ,
+			'size' => "12" ,
+			'link' => "url:manage/cards/create/$model->code_melli" ,
+		]     )
+	@endif
 
 	@include("manage.frame.widgets.grid-text" , [
 		'text' => trans("ehda.volunteers.single"),
