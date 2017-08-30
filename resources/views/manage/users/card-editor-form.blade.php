@@ -1,7 +1,7 @@
 @include('forms.opener' , [
 	'id' => 'frmEditor',
 	'url' => 'manage/cards/save',
-	'title' => $model->id? trans('ehda.cards.edit').' '.$model->full_name : trans('ehda.cards.create') ,
+	'title' => $model->is_a('card-holder')? trans('ehda.cards.edit').' '.$model->full_name : trans('ehda.cards.create') ,
 	'class' => 'js' ,
 	'no_validation' => 1 ,
 ])

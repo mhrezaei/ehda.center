@@ -175,14 +175,25 @@ class CardsController extends UsersController
 		/*-----------------------------------------------
 		| If a Code Melli is Given ...
 		*/
-		if(!YasnaServiceProvider::isCodeMelli($given_code_melli) or userFinder($given_code_melli)->id) {
+		if(!YasnaServiceProvider::isCodeMelli($given_code_melli)) {
 			$given_code_melli = false;
+		}
+		else {
+			$found_model = userFinder($given_code_melli);
+			if($found_model->id and $found_model->is_not_a('card-holder')) {
+				$model = $found_model;
+			}
+			else {
+				$given_code_melli = false;
+			}
 		}
 
 		/*-----------------------------------------------
 		| Model ...
 		*/
-		$model  = new User();
+		if(!isset($model)) {
+			$model = new User();
+		}
 		$states = State::combo();
 
 		$model->newsletter = 1;
@@ -246,7 +257,7 @@ class CardsController extends UsersController
 			return $this->jsonFeedback(1, [
 				'ok'           => 1,
 				'message'      => trans('ehda.cards.inquiry_is_volunteer'),
-				'redirect'     => url("manage/cards/create/$user->id"),
+				'redirect'     => url("manage/cards/create/$user->code_melli"),
 				'redirectTime' => 1,
 			]);
 		}
@@ -254,8 +265,8 @@ class CardsController extends UsersController
 		if($user->max(6)->is_an('admin')) {
 			return $this->jsonFeedback(1, [
 				'ok'       => 1,
-				'message'  => trans('inquiry_will_be_volunteer'),
-				'redirect' => Auth::user()->can('cards.edit') ? url("manage/cards/$user->id/edit") : '',
+				'message'  => trans('ehda.cards.inquiry_is_volunteer'),
+				'redirect' => Auth::user()->can('cards.create') ? url("manage/cards/create/$user->code_melli") : '',
 			]);
 
 		}
@@ -352,7 +363,7 @@ class CardsController extends UsersController
 			$saved_user = User::find($saved);
 			if($saved_user and $saved_user->id and $saved_user->is_not_a('card-holder')) {
 				$saved_user->update([
-					'card_no' => $saved_user->generateCardNo() ,
+					'card_no' => $saved_user->generateCardNo(),
 				]);
 				$saved_user->attachRole('card-holder');
 			}
@@ -478,7 +489,7 @@ class CardsController extends UsersController
 		/*-----------------------------------------------
 		| Available Actions ...
 		*/
-		if(!in_array($action, ['add-to-direct', 'add-to-excel', 'confirm-quality', 'revert-to-pending' , 'cancel'])) {
+		if(!in_array($action, ['add-to-direct', 'add-to-excel', 'confirm-quality', 'revert-to-pending', 'cancel'])) {
 			return $this->jsonFeedback(trans('validation.http.Error410'));
 		}
 
@@ -514,9 +525,9 @@ class CardsController extends UsersController
 		switch ($action) {
 			case 'cancel' :
 				$data = [
-					'deleted_at' => $now ,
-				     'deleted_by' => $admin_id ,
-				] ;
+					'deleted_at' => $now,
+					'deleted_by' => $admin_id,
+				];
 				break;
 			case 'add-to-direct' :
 				$data = [
@@ -614,14 +625,14 @@ class CardsController extends UsersController
 			}
 
 			Printer::create([
-				'user_id'     => $user->id,
-				'printing_id' => $row->id,
-				'name_full'   => $user->full_name,
-				'name_father' => $user->name_father,
-				'code_melli'  => pd($user->code_melli),
-				'birth_date'  => $user->birth_date_on_card,
-				'card_no'     => pd($user->card_no),
-			     'registered_at' => $user->register_date_on_card ,
+				'user_id'       => $user->id,
+				'printing_id'   => $row->id,
+				'name_full'     => $user->full_name,
+				'name_father'   => $user->name_father,
+				'code_melli'    => pd($user->code_melli),
+				'birth_date'    => $user->birth_date_on_card,
+				'card_no'       => pd($user->card_no),
+				'registered_at' => $user->register_date_on_card,
 			]);
 		}
 
