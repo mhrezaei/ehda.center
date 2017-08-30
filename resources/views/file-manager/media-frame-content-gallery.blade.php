@@ -19,6 +19,7 @@
             </select>
         </div>
         <div class="toolbar-left">
+            <button type="button" onclick="refreshGallery()"><i class="fa fa-refresh"></i></button>
             <input typle="search" placeholder="جستجو در رسانه ها" class="search"></input>
         </div>
     </div>

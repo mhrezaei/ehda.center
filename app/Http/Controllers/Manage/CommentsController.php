@@ -6,7 +6,10 @@ use App\Http\Requests\Manage\CommentMassStatusRequest;
 use App\Http\Requests\Manage\CommentProcessRequest;
 use App\Http\Requests\Manage\CommentSaveRequest;
 use App\Models\Comment;
+use App\Models\Post;
 use App\Models\Posttype;
+use App\Providers\CommentServiceProvider;
+use App\Providers\PostsServiceProvider;
 use App\Traits\ManageControllerTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -315,6 +318,35 @@ class CommentsController extends Controller
 			]) ,
 		]);
 
+	}
+
+    public function convertToPost($comment)
+    {
+        $comment = CommentServiceProvider::smartFindComment($comment);
+
+        if ($comment->exists) {
+            $comment->spreadMeta();
+            $post = $comment->post;
+            if($post->exists and $post->spreadMeta()->target_post_type) {
+                $fields = CommentServiceProvider::translateFields($post->fields);
+
+                $newPostData = [
+                    'type' => $post->target_post_type,
+                    'source_comment' => $comment->id,
+                ];
+
+                foreach (array_keys($fields) as $fieldName) {
+                    $newPostData[$fieldName] = $comment->$fieldName;
+                }
+
+                $id = Post::store($newPostData);
+                dd(PostsServiceProvider::smartFindPost($id, true), __FILE__ . " - " . __LINE__);
+            }
+
+            return $this->abort('404');
+        }
+
+        return $this->abort('403');
 	}
 }
 

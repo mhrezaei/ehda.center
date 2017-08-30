@@ -9,8 +9,8 @@
 @if($row->id)
 
 	@include("manage.frame.widgets.grid-text" , [
-		'icon' => $row->is_by_admin? 'user-circle-o' : 'user',
-		'text' => ($row->user? $row->user->full_name : trans('people.deleted_user')) ,
+		'icon' => $row->is_by_admin ? 'user-circle-o' : 'user',
+		'text' => $row->sender_name ,
 		'link' => $row->user? "urlN:manage/users/browse/all/search?id=".$row->user_id."&searched=1" : null,
 	]     )
 

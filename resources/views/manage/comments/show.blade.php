@@ -1,3 +1,8 @@
+@php
+	$model->spreadMeta();
+	$relatedPost = $model->post->spreadMeta();
+@endphp
+
 {{--
 |--------------------------------------------------------------------------
 | Modal Title

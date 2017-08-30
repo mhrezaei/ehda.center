@@ -207,4 +207,21 @@ class CommentServiceProvider extends ServiceProvider
 
         return false;
     }
+
+    public static function smartFindComment($identifier, $checkDirectId = false)
+    {
+        if ($identifier instanceof Comment) {
+            $comment = $identifier;
+        } else if (is_numeric($identifier) and $checkDirectId) {
+            $comment = Comment::find($identifier);
+        } else if (count($dehashed = hashid_decrypt($identifier, 'ids')) and
+            is_numeric($id = $dehashed[0])
+        ) {
+            $comment = Comment::find($id);
+        } else {
+            $comment = new Comment();
+        }
+
+        return $comment;
+    }
 }

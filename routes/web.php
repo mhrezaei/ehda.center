@@ -214,7 +214,11 @@ Route::group([
             Route::post('/destroyMass', 'CommentsController@destroyMass');
             Route::post('/statusMass', 'CommentsController@statusMass');
         });
+    });
 
+    Route::group(['prefix' => 'commenting'], function () {
+        Route::get('convert-to-post/{model_id}', 'CommentsController@convertToPost')
+            ->name('manage.comments.convert-to-post');
     });
 
 

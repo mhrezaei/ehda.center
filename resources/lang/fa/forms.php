@@ -73,7 +73,6 @@ return [
         'change_status'        => "تغییر وضعیت",
         'download_excel_file'  => "دانلود فایل اکسل",
         'create_in'            => "افزودن به :thing",
-
     ],
 
     "general" => [
