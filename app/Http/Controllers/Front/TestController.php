@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Folder;
 use App\Models\Post;
 use App\Models\Receipt;
+use App\Models\State;
 use App\Models\Test\Meta;
 use App\Models\File;
 use App\Models\User;
@@ -245,5 +246,19 @@ class TestController extends Controller
     public function uploader()
     {
         return view('front.test.uploader.main');
+    }
+
+    public function hadi()
+    {
+        // count organ donation card per state
+        $states = State::where('parent_id', 0)->get();
+        $all_users = User::count();
+
+        foreach($states as $state)
+        {
+            $users = User::where('home_province', $state->id)->count();
+            $users = round(($users / $all_users) * 100, 2);
+            echo $state->title . ' - ' . $users . ' درصد <br>';
+        }
     }
 }
