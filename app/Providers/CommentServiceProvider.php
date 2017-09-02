@@ -82,6 +82,7 @@ class CommentServiceProvider extends ServiceProvider
                     $tmpField['size'] = '';
                 }
                 $fields[$fieldValue] = $tmpField;
+                unset($tmpField);
             }
             return $fields;
         }
@@ -104,7 +105,7 @@ class CommentServiceProvider extends ServiceProvider
          * translation rules
          * 1. separate fields rules with comma (,)
          * 2. start each field description with its "name" (ex: "subject,first_name")
-         * 3. after name of the field, put ":" and enter rules in the pipeline separated format
+         * 3. after name of the field, put "=>" and enter rules in the pipeline separated format
          * 4. each rule should be one of laravel standard rules
          * 5. put no "next-line" in rules string
          */
@@ -136,6 +137,48 @@ class CommentServiceProvider extends ServiceProvider
             }
 
             return $rules;
+        }
+
+        return [];
+    }
+
+    /**
+     * Translate standard "conversions" value of a "commenting" post
+     *
+     * @param string|null $conversionsString
+     * @param bool        $detailed
+     *
+     * @return array
+     */
+    public static function translateConversions($conversionsString, $detailed = true)
+    {
+        /**
+         * translation rules
+         * 1. separate fields with comma (,)
+         * 2. start each field description with its "name" (ex: "subject,first_name")
+         * 3. after name of the field, put "=>" and enter the name to be converted to
+         */
+
+        if ($conversionsString and is_string($conversionsString)) {
+            $conversionsString = str_replace("\n", '', $conversionsString);
+            $fields = explodeNotEmpty(',', $conversionsString);
+
+            foreach ($fields as $index => $description) {
+                $description = trim($description);
+                unset($fields[$index]);
+
+                $parts = explodeNotEmpty('=>', $description);
+
+                if ($parts and is_array($parts) and (count($parts) == 2)) {
+                    $sourceFields = trim($parts[0]);
+                    $targetFields = $parts[1];
+                    if ($targetFields) {
+                        $fields[$sourceFields] = $targetFields;
+                    }
+                }
+            }
+
+            return $fields;
         }
 
         return [];
@@ -208,6 +251,12 @@ class CommentServiceProvider extends ServiceProvider
         return false;
     }
 
+    /**
+     * @param Comment|int $identifier
+     * @param bool        $checkDirectId
+     *
+     * @return \App\Models\Comment|mixed|static
+     */
     public static function smartFindComment($identifier, $checkDirectId = false)
     {
         if ($identifier instanceof Comment) {

@@ -25,7 +25,6 @@ class Comment extends Model
         'donation_date',
         'submitter_name',
         'submitter_phone',
-        'image_files',
     ];
     protected $guarded = ['id'];
     protected $casts = [
@@ -136,7 +135,7 @@ class Comment extends Model
     public function getSenderNameAttribute()
     {
         $this->spreadMeta();
-        if($this->user) {
+        if ($this->user) {
             return $this->user->full_name;
         } else if (!is_null($this->submitter_name)) {
             return $this->submitter_name;
@@ -151,7 +150,7 @@ class Comment extends Model
     {
         $this->spreadMeta();
         $city = State::findBySlug($this->city, 'id');
-        if($city->exists and !$city->isProvince()) {
+        if ($city->exists and !$city->isProvince()) {
             return $city->province->title . ' - ' . $city->title;
         }
         return '';

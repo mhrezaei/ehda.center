@@ -545,6 +545,7 @@ return [
         'activities'        => "حوزه‌های فعالیت",
         'can_register_card' => "امکان ثبت نام کارت اهدای عضو",
         'unanswerable'      => "غیرقابل پاسخ‌دادن",
+        'conversions'       => "تبدیلات",
 
         'aparat_hash_code' => 'کد فیلم در آپارات',
 

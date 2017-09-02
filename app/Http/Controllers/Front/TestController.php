@@ -47,10 +47,8 @@ class TestController extends Controller
 
     public function index()
     {
-        $link = 'http://www.aparat.com/v/cy1jP';
-        $link = 'www.aparat.com/v/cy1jP';
-        $link = 'aparat.com/v/cy1jP';
-        dd(getAparatId($link), __FILE__ . " - " . __LINE__);
+        $post = Post::findByHashid('3bD69');
+        dd($post->spreadMeta('post_files'), __FILE__ . " - " . __LINE__);
     }
 
     public function states()

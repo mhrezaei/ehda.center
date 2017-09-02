@@ -8,6 +8,7 @@
     @php
         $availableFields = [
             'name',
+            'name_title',
             'email',
             'mobile',
             'subject',
@@ -90,6 +91,20 @@
                                 'name' => $fieldName,
                                 'class' => $inputClass,
                                 'placeholder' => trans('validation.attributes.first_and_last_name'),
+                            ] + $inputData)
+                        </div>
+                    </div>
+
+                @elseif($fieldName == 'name_title')
+                    {{-- We've added this part fo preview a field as name and store it as title --}}
+                    @php $fieldName = 'title' @endphp
+                    <div class="col-xs-{{ $inputSize }}">
+                        <div class="row">
+                            @include('front.forms.input', [
+                                'name' => $fieldName,
+                                'class' => $inputClass,
+                                'placeholder' => trans('validation.attributes.first_and_last_name'),
+                                'label' => trans('validation.attributes.first_and_last_name'),
                             ] + $inputData)
                         </div>
                     </div>

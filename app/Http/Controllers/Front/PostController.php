@@ -69,10 +69,11 @@ class PostController extends Controller
             return $this->abort(410, true);
         }
 
-        $request = $request->all();
-        $request['ip'] = request()->ip();
-        $request['user_id'] = user()->id;
-        $request['type'] = $post->type;
+        $data = $request->all();
+        $data['ip'] = request()->ip();
+        $data['user_id'] = user()->id;
+        $data['type'] = $post->type;
+        $data['locale'] = getLocale();
 
         $callbackFn = <<<JS
         if((typeof customResetForm !== "undefined") && $.isFunction(customResetForm)) {
@@ -82,7 +83,7 @@ class PostController extends Controller
 JS;
 
 
-        return $this->jsonAjaxSaveFeedback(Comment::store($request), [
+        return $this->jsonAjaxSaveFeedback(Comment::store($data), [
             'success_callback'     => $callbackFn,
             'success_feed_timeout' => 3000,
         ]);
