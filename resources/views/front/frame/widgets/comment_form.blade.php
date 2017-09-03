@@ -15,6 +15,7 @@
             'text',
             'donation_date',
             'city',
+            'donor_name',
             'submitter_name',
             'submitter_phone',
             'image',
@@ -81,6 +82,25 @@
                         $inputSize = 12
                     @endphp
                 @endif
+                @if(!auth()->guest())
+                    @php
+                        switch ($fieldName) {
+                            case 'email':
+                                $inputData['value'] = user()->email;
+                                break;
+
+                            case 'name':
+                            case 'submitter_name':
+                                $inputData['value'] = user()->full_name;
+                                break;
+
+                            case 'mobile':
+                            case 'submitter_phone':
+                                $inputData['value'] = user()->mobile;
+                                break;
+                        }
+                    @endphp
+                @endif
 
 
                 {{-- Generating view of field --}}
@@ -113,6 +133,7 @@
                     'email',
                     'mobile',
                     'subject',
+                    'donor_name',
                     'submitter_name',
                     'submitter_phone',
                 ]))
@@ -145,6 +166,7 @@
                                 'options' => [
                                     'maxDate' => 0,
                                     'changeYear' => true,
+                                    'changeMonth' => true,
                                     'yearRange' => '-100,0',
                                 ]
                             ] + $inputData)

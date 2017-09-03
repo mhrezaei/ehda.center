@@ -68,6 +68,7 @@ class PostController extends Controller
         if (!$post) {
             return $this->abort(410, true);
         }
+        $post->spreadMeta();
 
         $data = $request->all();
         $data['ip'] = request()->ip();
@@ -75,18 +76,22 @@ class PostController extends Controller
         $data['type'] = $post->type;
         $data['locale'] = getLocale();
 
-        $callbackFn = <<<JS
+        $feedBackData = ['success_feed_timeout' => 3000];
+
+        $feedBackData['success_callback'] = <<<JS
         if((typeof customResetForm !== "undefined") && $.isFunction(customResetForm)) {
             customResetForm();
         }
         
 JS;
 
+        if ($message = $post->getAttribute('comment_submission_message_' . getLocale())) {
+            $feedBackData['success_message'] = $message;
+        } else if ($message = $post->getAttribute('comment_submission_message')) {
+            $feedBackData['success_message'] = $message;
+        }
 
-        return $this->jsonAjaxSaveFeedback(Comment::store($data), [
-            'success_callback'     => $callbackFn,
-            'success_feed_timeout' => 3000,
-        ]);
+        return $this->jsonAjaxSaveFeedback(Comment::store($data), $feedBackData);
     }
 
     public function search(Request $request)

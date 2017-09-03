@@ -44,7 +44,10 @@
 ])
 
 @include('forms.button' , [
-    'condition' => ($targetPosttype = PostsServiceProvider::smartFindPosttype($relatedPost->target_post_type))->exists,
+    'condition' => (
+        ($targetPosttype = PostsServiceProvider::smartFindPosttype($relatedPost->target_post_type))->exists and
+        ($parent->status === 'pending')
+    ),
 	'label' => trans('forms.button.create_in', ['thing' => $targetPosttype->titleIn(getLocale())]),
 	'shape' => 'primary',
 	'link' => route('manage.comments.convert-to-post', ['model_id' => $parent->hashid]),

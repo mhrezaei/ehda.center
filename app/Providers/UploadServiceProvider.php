@@ -849,6 +849,54 @@ class UploadServiceProvider extends ServiceProvider
         return view('front.frame.widgets.img-element', array_merge(compact('imgUrl'), $switches));
     }
 
+    public static function getFileAnchor($file, $version = 'original', $switches = [])
+    {
+        $switches = array_normalize($switches, [
+            'style'           => [],
+            'width'           => null,
+            'height'          => null,
+            'class'           => [],
+            'otherAttributes' => [],
+            'dataAttributes'  => [],
+            'extra'           => '',
+        ]);
+
+        $file = self::smartFindFile($file, true);
+        if ($file->exists) {
+            $file->spreadMeta();
+            $fileObj = self::getFileObject($file->pathname);
+            if ($fileObj) {
+                $relatedFilesPathnames = $file->related_files_pathname ?: [];
+                $originalNameWithoutExtension = str_replace(
+                    '.' . $file->extension,
+                    '',
+                    $file->original_name
+                );
+
+                if (
+                    array_key_exists($version, $relatedFilesPathnames) and // version exists in db
+                    self::getFileObject($relatedFilesPathnames[$version]) // version exists in storage
+                ) {
+                    $pathname = $relatedFilesPathnames[$version];
+                    $fileNameWithoutExtension = $originalNameWithoutExtension . '_' . $version;
+                } else {
+                    $pathname = $file->pathname;
+                    $fileNameWithoutExtension = $originalNameWithoutExtension;
+                }
+
+                $fileUrl = url($pathname);
+                $fileName = $originalNameWithoutExtension . '.' . $file->extension;
+
+                return view(
+                    'front.frame.widgets.a-element',
+                    array_merge(compact('fileUrl', 'fileName'), $switches)
+                );
+            }
+        }
+
+        return null;
+    }
+
     public static function getFileUrl($file)
     {
         $file = self::smartFindFile($file, true);

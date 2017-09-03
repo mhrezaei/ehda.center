@@ -392,7 +392,7 @@ class CommentsController extends Controller
                     unset($filesArray);
                 }
 
-                if($targetPosttype->has('domains')) {
+                if ($targetPosttype->has('domains')) {
                     $newPostData['domains'] = '|' . implode('|', getUsableDomains()) . '|';
                 } else {
                     $newPostData['domains'] = '|global|';
@@ -404,7 +404,10 @@ class CommentsController extends Controller
 
                 $id = Post::store($newPostData);
                 $newPost = Post::findBySlug($id, 'id');
-                return redirect("manage/posts/" . $newPost->type . "/edit/" . $newPost->hashid);
+                if ($newPost->exists) {
+                    $comment->saveStatus('published');
+                    return redirect("manage/posts/" . $newPost->type . "/edit/" . $newPost->hashid);
+                }
             }
 
             return $this->abort('404');

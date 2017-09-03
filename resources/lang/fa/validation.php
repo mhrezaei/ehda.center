@@ -159,6 +159,7 @@ return [
         'min'                  => 'طول عبارت مناسب نیست.',
 
         "donation_date"   => "تاریخ اهدای عضو را به درستی وارد نمایید.",
+        "donor_name"      => "نام اهداکننده را به درستی وارد کنید.",
         "city"            => "شهر را به درستی وارد نمایید.",
         "submitter_name"  => "نام ارسال‌کننده را به درستی وارد نمایید.",
         "submitter_phone" => "شماره تلفن ارسال‌کننده را به درستی وارد نمایید.",
@@ -325,6 +326,7 @@ return [
         "postal_code"         => "کد پستی ",
         "icon"                => "نمایه",
         "donation_date"       => "تاریخ اهدای عضو",
+        "donor_name"          => "نام اهداکننده",
 
         "work_city"    => "محل کار",
         "work_address" => "نشانی محل کار",
@@ -538,14 +540,15 @@ return [
         'has_medal'        => 'مدال افتخار دارد.',
         'target_post_type' => 'گونه‌ی مطلب مقصد',
 
-        'domains'           => "دامنه",
-        'source'            => "منبع",
-        'role_slug'         => "نقش کاربری",
-        'activity'          => "فعالیت",
-        'activities'        => "حوزه‌های فعالیت",
-        'can_register_card' => "امکان ثبت نام کارت اهدای عضو",
-        'unanswerable'      => "غیرقابل پاسخ‌دادن",
-        'conversions'       => "تبدیلات",
+        'domains'                    => "دامنه",
+        'source'                     => "منبع",
+        'role_slug'                  => "نقش کاربری",
+        'activity'                   => "فعالیت",
+        'activities'                 => "حوزه‌های فعالیت",
+        'can_register_card'          => "امکان ثبت نام کارت اهدای عضو",
+        'unanswerable'               => "غیرقابل پاسخ‌دادن",
+        'conversions'                => "تبدیلات",
+        'comment_submission_message' => "پیام ثبت کامنت",
 
         'aparat_hash_code' => 'کد فیلم در آپارات',
 

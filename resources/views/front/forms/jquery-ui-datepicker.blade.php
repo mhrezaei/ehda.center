@@ -1,4 +1,9 @@
-<?php
+@php
+$defaultOptions = [
+    'showMonthAfterYear' => true,
+    'language' => getLocale(),
+];
+
 if (!isset($name))
     $name = '';
 if (!isset($extra))
@@ -30,9 +35,8 @@ if (!isset($in_form))
 if (!isset($options)) {
     $options = [];
 }
-if (!isset($options['language'])) {
-    $options['language'] = getLocale();
-}
+$options = array_merge($defaultOptions, $options);
+
 if ($options['language'] != 'fa') {
     $options['regional'] = '';
 }
@@ -41,7 +45,7 @@ foreach ($options as $optionName => $optionValue) {
     $dataAttributes['datepicker-' . kebab_case($optionName)] = $optionValue;
 }
 
-?>
+@endphp
 @if(!isset($condition) or $condition)
     @if($in_form)
         <div class="form-group {{ (isset($container['class']) ? $container['class'] : '') }}"

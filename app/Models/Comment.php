@@ -23,6 +23,7 @@ class Comment extends Model
         'name',
         'city',
         'donation_date',
+        'donor_name',
         'submitter_name',
         'submitter_phone',
     ];
