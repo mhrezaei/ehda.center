@@ -37,7 +37,7 @@ class File extends Model
     |--------------------------------------------------------------------------
     */
 
-    /**]
+    /**
      *
      * Saves an uploaded file in DB
      *
@@ -78,13 +78,24 @@ class File extends Model
 
     /*
     |--------------------------------------------------------------------------
-    | Static Data
+    | Relations
     |--------------------------------------------------------------------------
+    |
     */
 
-    public static function getStatusValue($statusName)
+    public function category()
     {
-        return array_search($statusName, self::$statusesNames);
+        return $this->belongsTo('App\Models\Category', 'category');
+    }
+
+    public function folder()
+    {
+        return $this->belongsTo('App\Models\Folder', 'folder');
+    }
+
+    public function posttype()
+    {
+        return $this->belongsTo('App\Models\Posttype', 'posttype');
     }
 
 
@@ -94,28 +105,6 @@ class File extends Model
     |--------------------------------------------------------------------------
     */
 
-    /** Sets the status of file with status name
-     *
-     * @param string $statusName
-     *
-     * @return self
-     */
-    public function setStatus($statusName)
-    {
-        $this->status = self::getStatusValue($statusName);
-        return $this;
-    }
-
-    /** Compares the status of file with value of given status name
-     *
-     * @param string $statusName
-     *
-     * @return bool
-     */
-    public function hasStatus($statusName)
-    {
-        return ($this->status == self::getStatusValue($statusName)) ? true : false;
-    }
 
     /*
     |--------------------------------------------------------------------------
@@ -163,12 +152,71 @@ class File extends Model
         return $relatedFiles;
     }
 
+
+    public function getCategoryEloquentAttribute()
+    {
+        return $this->category()->first();
+    }
+
+    public function getFolderEloquentAttribute()
+    {
+        $category = $this->category_eloquent;
+        if ($category and $category->exists) {
+            return $category->folder;
+        } else {
+            return $this->folder()->first();
+        }
+    }
+
+    public function getPosttypeEloquentAttribute()
+    {
+        $folder = $this->folder_eloquent;
+        if ($folder and $folder->exists) {
+            return $folder->posttype;
+        } else {
+            return $this->posttype()->first();
+        }
+    }
+
+
     /*
     |--------------------------------------------------------------------------
     | Helpers
     |--------------------------------------------------------------------------
     */
 
+    /**
+     * Sets the status of file with status name
+     *
+     * @param string $statusName
+     *
+     * @return self
+     */
+    public function setStatus($statusName)
+    {
+        $this->status = self::getStatusValue($statusName);
+        return $this;
+    }
+
+    /**
+     * Compares the status of file with value of given status name
+     *
+     * @param string $statusName
+     *
+     * @return bool
+     */
+    public function hasStatus($statusName)
+    {
+        return ($this->status == self::getStatusValue($statusName)) ? true : false;
+    }
+
+    /**
+     * Returns name of a related file with specified key
+     *
+     * @param string $relatedFileKey Key of related file to be returned
+     *
+     * @return string|null
+     */
     public function getRelatedFile($relatedFileKey)
     {
         $relatedFiles = $this->related_files;
@@ -179,6 +227,13 @@ class File extends Model
         return null;
     }
 
+    /**
+     * Returns pathname of a related file with specified key
+     *
+     * @param string $relatedFileIdentifier Key/Name of related file to be returned
+     *
+     * @return null|string
+     */
     public function getRelatedFilePathname($relatedFileIdentifier)
     {
         $relatedFiles = $this->related_files;
@@ -194,6 +249,71 @@ class File extends Model
             $this->directory,
             $relatedFileName,
         ]);
+    }
+
+    /**
+     * @param string                $task
+     * @param null|\App\Models\User $user
+     *
+     * @return boolean
+     */
+    public function can($task)
+    {
+        $postType = $this->posttype_eloquent;
+
+
+        $isCreator = $this->creator->id == user()->id;
+
+        switch ($task) {
+            case 'preview':
+                if (
+                    // Current user has permission to edit files in file-manager
+                    user()->as('admin')->can('file-manager.edit') or
+                    // Current user has permission to delete files in file-manager
+                    user()->as('admin')->can('file-manager.delete') or
+                    // Current user has permission to create files in file-manager and owned this file
+                    (user()->as('admin')->can('file-manager.create') and $isCreator) or
+                    (
+                        // This file is uploaded for a posttype, folder or category
+                        $postType and
+                        $postType->exists and
+                        (
+                            // Current user has permission to edit in this file's posttype
+                            $postType->can('edit') or
+                            // Current user has permission to publish in this file's posttype
+                            $postType->can('publish') or
+                            // Current user has permission to create and owned this file in this file's posttype
+                            ($postType->can('create') and $isCreator)
+                        )
+                    )
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+                break;
+        }
+
+        return true;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Static Data
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Returns numeric value of specified $statusName
+     *
+     * @param string $statusName
+     *
+     * @return integer|string
+     */
+    public
+    static function getStatusValue($statusName)
+    {
+        return array_search($statusName, self::$statusesNames);
     }
 
 }

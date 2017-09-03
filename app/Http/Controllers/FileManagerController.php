@@ -20,6 +20,11 @@ class FileManagerController extends Controller
     {
         $postTypes = $this->getAccessiblePosttypes();
 
+        // If current user hasn't permission to any posttype
+        if(!$postTypes->count()) {
+            return $this->abort('403');
+        }
+
         return view('file-manager.main', compact('postTypes'));
     }
 
@@ -32,14 +37,15 @@ class FileManagerController extends Controller
     {
         $postTypes = Posttype::orderBy('order')->orderBy('title')->get();
 
-
         $postTypes->each(function ($postType, $key) use ($postTypes) {
             $postType->spreadMeta();
             // If current user can do any of "create", "edit" or "publish"
             // and postType has "upload_configs" meta
             // we will keep posttype,
             // else we will forget it.
-            if ((!$postType->can('create') and !$postType->can('edit') and !$postType->can('publish')) or
+            if (
+                user()->can('file-manager.*') or
+                (!$postType->can('create') and !$postType->can('edit') and !$postType->can('publish')) or
                 (!$postType->canUploadFile())
             ) {
                 $postTypes->forget($key);
@@ -64,6 +70,7 @@ class FileManagerController extends Controller
                 break;
             case 'folder':
                 $folder = Folder::findByHashid($request->key);
+                $postType = $folder->posttype;
                 if (!$folder->exists) {
                     return null;
                 }
@@ -73,6 +80,7 @@ class FileManagerController extends Controller
                 break;
             case 'category':
                 $category = Category::findByHashid($request->key);
+                $postType = $category->folder->posttype;
                 if (!$category->exists) {
                     return null;
                 }
@@ -80,11 +88,16 @@ class FileManagerController extends Controller
                     ->whereNotNull('posttype')
                     ->whereNotNull('folder');
                 break;
+            default:
+                return null;
         }
 
         $files = $files->get();
 
-        return view('file-manager.media-frame-content-gallery-images-list', compact('files'));
+        return view(
+            'file-manager.media-frame-content-gallery-images-list',
+            compact('files', 'postType')
+        );
     }
 
     public function getPreview(Request $request)

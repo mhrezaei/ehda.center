@@ -47,8 +47,8 @@ class TestController extends Controller
 
     public function index()
     {
-        $post = Post::findByHashid('OYbPj');
-        dd($post->spreadMeta(), __FILE__ . " - " . __LINE__);
+        $file = UploadServiceProvider::smartFindFile('Z2WX3');
+        dd($file->id, __FILE__ . " - " . __LINE__);
     }
 
     public function states()
