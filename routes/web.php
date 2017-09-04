@@ -370,13 +370,19 @@ Route::group(['prefix' => 'file-manager', 'middleware' => ['auth', 'is:admin']],
         ->name('fileManager.preview');
 });
 
+// Payment Bank
+Route::group(['prefix' => 'payment', 'namespace' => 'Payment'], function (){
+    Route::get('/bank-process/{tracking_number}', 'PaymentController@bank_process')->name('bank-process');
+});
+
 
 Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Setting', 'Subdomain']], function () {
 
     // if not set lang prefix
     Route::get('/', 'FrontController@index')->name('home');
 
-    Route::get('/hadi', 'TestController@payment');
+    Route::get('/hadi', 'TestController@test');
+    Route::get('/hadi2', 'TestController@test2');
 
     // If identifier is string and starts with value of config('prefix.routes.post.short')
     Route::get('{identifier}', 'PostController@postVeryShortLink')
