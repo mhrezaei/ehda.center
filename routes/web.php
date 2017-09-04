@@ -376,6 +376,8 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
     // if not set lang prefix
     Route::get('/', 'FrontController@index')->name('home');
 
+    Route::get('/hadi', 'TestController@payment');
+
     // If identifier is string and starts with value of config('prefix.routes.post.short')
     Route::get('{identifier}', 'PostController@postVeryShortLink')
         ->name('post.single.very-short')

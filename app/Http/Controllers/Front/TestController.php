@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use App\Models\Test\Post as PostOld;
 use Illuminate\Support\Facades\Lang;
+use SoapClient;
 use function Sodium\compare;
 
 
@@ -259,6 +260,38 @@ class TestController extends Controller
             $users = User::where('home_province', $state->id)->count();
             $users = round(($users / $all_users) * 100, 2);
             echo $state->title . ' - ' . $users . ' درصد <br>';
+        }
+    }
+
+    public function payment()
+    {
+        $MerchantID = '465b79d2-8fda-11e7-8975-005056a205be'; //Required
+        $Amount = 1000; //Amount will be based on Toman - Required
+        $Description = 'توضیحات تراکنش تستی'; // Required
+        $CallbackURL = 'http://www.yoursoteaddress.ir/verify.php'; // Required
+
+
+        $client = new SoapClient('https://www.zarinpal.com/pg/services/WebGate/wsdl', ['encoding' => 'UTF-8']);
+
+        $result = $client->PaymentRequest(
+            [
+                'MerchantID' => $MerchantID,
+                'Amount' => $Amount,
+                'Description' => $Description,
+                'CallbackURL' => $CallbackURL,
+            ]
+        );
+
+        ss($result);
+
+//Redirect to URL You can do it also by creating a form
+        if ($result->Status == 100) {
+            return redirect('https://www.zarinpal.com/pg/StartPay/'.$result->Authority.'/ZarinGate');
+//            Header('Location: https://www.zarinpal.com/pg/StartPay/'.$result->Authority.'/ZarinGate');
+//برای استفاده از زرین گیت باید ادرس به صورت زیر تغییر کند:
+//Header('Location: https://www.zarinpal.com/pg/StartPay/'.$result->Authority.'/ZarinGate');
+        } else {
+            echo'ERR: '.$result->Status;
         }
     }
 }
