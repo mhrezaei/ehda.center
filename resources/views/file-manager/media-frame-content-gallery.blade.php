@@ -23,7 +23,9 @@
             <input typle="search" placeholder="جستجو در رسانه ها" class="search"></input>
         </div>
     </div>
-    @include('file-manager.media-frame-content-gallery-images-list')
+    <ul class="thumbnail-container row" id="thumbnail">
+        @include('file-manager.media-frame-content-gallery-images-list')
+    </ul>
     <div class="media-sidebar">
         <div class="close-sidebar">
             <span class="fa fa-chevron-left"></span>
@@ -45,34 +47,7 @@
             </div>
             <span class="upload-errors"></span>
         </div>
-        <div class="file-details">
-            <h2>جزئیات پیوست</h2>
-            <div class="attachment-info">
-                <div class="thumbnail-image">
-                    <img src="img/7_8_oclock-300x152.jpg">
-                </div>
-                <div class="details">
-                    <div class="filename">portrait.jfif</div>
-                    <div class="upload-date">15 مرداد 95</div>
-                    <div class="upload-size">400kb</div>
-                    <div class="dimension">5426 × 3053</div>
-                    <a href="#" class="edit-attachment">ویرایش تصویر</a>
-                    <button type="button" class="delete-btn btn-link">پاک کردن برای همیشه</button>
-                </div>
-            </div>
-            <label class="setting">
-                <span class="name">نام</span>
-                <input type="text"></input>
-            </label>
-            <label class="setting">
-                <span class="name">متن جایگزین</span>
-                <input type="text"></input>
-            </label>
-            <label class="setting">
-                <span class="name">توضیح</span>
-                <textarea></textarea>
-            </label>
-        </div>
+        <div class="file-details"></div>
     </div>
 
 </div>

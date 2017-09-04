@@ -769,6 +769,31 @@ class UploadServiceProvider extends ServiceProvider
         }
     }
 
+
+    /**
+     * Returns fields that should be stored only for this file type
+     *
+     * @param UploadedFile $file
+     *
+     * @return array
+     */
+    public static function getFileTypeRelatedFields($file)
+    {
+        $mimeType = $file->getMimeType();
+        $fileType = substr($mimeType, 0, strpos($mimeType, '/'));
+        $result = [];
+
+        switch ($fileType) {
+            case "image" : {
+                list($result['image_width'], $result['image_height']) = getimagesize($file->getPathname());
+
+                return $result;
+            }
+        }
+
+        return $result;
+    }
+
     /**
      * If a config doesn't exists and it is possible to be read from db, it will be fetched from db.
      *
@@ -914,25 +939,26 @@ class UploadServiceProvider extends ServiceProvider
             $fileObj = self::getFileObject($file->pathname);
             if ($fileObj) {
                 $relatedFilesPathnames = $file->related_files_pathname ?: [];
-                $originalNameWithoutExtension = str_replace(
-                    '.' . $file->extension,
-                    '',
-                    $file->original_name
-                );
+//                $nameWithoutExtension = str_replace(
+//                    '.' . $file->extension,
+//                    '',
+//                    $file->file_name
+//                );
+                $nameWithoutExtension = $file->name;
 
                 if (
                     array_key_exists($version, $relatedFilesPathnames) and // version exists in db
                     self::getFileObject($relatedFilesPathnames[$version]) // version exists in storage
                 ) {
                     $pathname = $relatedFilesPathnames[$version];
-                    $fileNameWithoutExtension = $originalNameWithoutExtension . '_' . $version;
+                    $fileNameWithoutExtension = $nameWithoutExtension . '_' . $version;
                 } else {
                     $pathname = $file->pathname;
-                    $fileNameWithoutExtension = $originalNameWithoutExtension;
+                    $fileNameWithoutExtension = $nameWithoutExtension;
                 }
 
                 $fileUrl = url($pathname);
-                $fileName = $originalNameWithoutExtension . '.' . $file->extension;
+                $fileName = $nameWithoutExtension . '.' . $file->extension;
 
                 return view(
                     'front.frame.widgets.a-element',

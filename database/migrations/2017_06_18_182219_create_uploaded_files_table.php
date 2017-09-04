@@ -18,7 +18,8 @@ class CreateUploadedFilesTable extends Migration
             $table->increments('id')->index();
 
             // Storage Info
-            $table->string('original_name');
+            $table->string('name')->index();
+            $table->string('title')->nullable()->index();
             $table->string('physical_name');
             $table->string('directory');
 

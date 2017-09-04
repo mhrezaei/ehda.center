@@ -741,3 +741,16 @@ function getStringBetween($string, $start, $end)
     $len = strpos($string, $end, $ini) - $ini;
     return substr($string, $ini, $len);
 }
+
+
+function emitisDatabaseConverter()
+{
+    $files = \App\Models\File::withTrashed()->get();
+    foreach ($files as $file) {
+        if (ends_with($file->name, '.' . $file->extension)) {
+            $file->name = pathinfo($file->name, PATHINFO_FILENAME);
+            $file->save();
+        }
+    }
+    echo 'done :)';
+}

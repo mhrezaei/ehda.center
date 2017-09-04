@@ -115,6 +115,16 @@
 
 // ********************* Grids ********************** end
 
+
+// ********************* Directions ********************** start
+.direction-left, .ltr , .text-ltr{
+  direction: ltr;
+}
+.direction-right, .rtl , .text-rtl{
+  direction: rtl;
+}
+// ********************* Directions ********************** end
+
 // ********************* Locale Related ********************** start
 @if variable_exists(localeDirections) {
   @each $side, $direction in $localeDirections {
@@ -128,6 +138,10 @@
 
     .text-#{$side} {
       @extend .text-#{$direction};
+    }
+
+    .direction-#{$side} {
+      @extend .direction-#{$direction};
     }
 
     .pull-#{$side} {

@@ -1,6 +1,11 @@
 <script>
+    var route_prefix = "{{ url('/') }}";
+    var route_preview = "{{ route('fileManager.preview') }}";
+    var lang = {!! json_encode(trans('file-manager')) !!};
     var urls = {
-        getList: '{{ route('fileManager.getList') }}'
+        getList: '{{ route('fileManager.getList') }}',
+        getFileDetails: '{{ route('fileManager.getFileDetails') }}',
+        setFileDetails: '{{ route('fileManager.setFileDetails') }}',
     };
 </script>
 
@@ -9,4 +14,4 @@
 {!! Html::script ('assets/libs/jquery-ui/jquery-ui.min.js') !!}
 {!! Html::script ('assets/libs/bootstrap/js/bootstrap.min.js') !!}
 {!! Html::script ('assets/js/tools.min.js') !!}
-{!! Html::script ('assets/libs/file-manager/file-manager.min.js') !!}
+{!! Html::script ('assets/libs/file-manager/file-manager.js') !!}

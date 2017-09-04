@@ -47,8 +47,7 @@ class TestController extends Controller
 
     public function index()
     {
-        $file = UploadServiceProvider::smartFindFile('Z2WX3');
-        dd($file->id, __FILE__ . " - " . __LINE__);
+        emitisDatabaseConverter();
     }
 
     public function states()

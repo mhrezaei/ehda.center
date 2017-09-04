@@ -368,10 +368,14 @@ Route::group(['prefix' => 'file'], function () {
 Route::group(['prefix' => 'file-manager', 'middleware' => ['auth', 'is:admin']], function () {
     Route::get('/', 'FileManagerController@index')
         ->name('fileManager.index');
-    Route::post('get-list', 'FileManagerController@getList')
+    Route::get('get-list/{instance?}/{key?}', 'FileManagerController@getList')
         ->name('fileManager.getList');
     Route::post('preview', 'FileManagerController@getPreview')
         ->name('fileManager.preview');
+    Route::get('file-details/{fileKey?}', 'FileManagerController@getFileDetails')
+        ->name('fileManager.getFileDetails');
+    Route::post('file-details', 'FileManagerController@setFileDetails')
+        ->name('fileManager.setFileDetails');
 });
 
 

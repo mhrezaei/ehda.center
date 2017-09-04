@@ -1,7 +1,4 @@
-String.prototype.replaceAll = function (search, replacement) {
-    var target = this;
-    return target.replace(new RegExp(search, 'g'), replacement);
-};
+var getListXhr, getFileDetailsXhr;
 
 $.ajaxSetup({
     headers: {
@@ -9,7 +6,12 @@ $.ajaxSetup({
     }
 });
 
+var multiSelect = false;
+
 jQuery(function ($) {
+    if (parent.window.fileManagerModalOptions && parent.window.fileManagerModalOptions.multi) {
+        multiSelect = true;
+    }
     window.fileManagerModalOptions = getValueOf(parent.window.fileManagerModalOptions ? parent.window.fileManagerModalOptions : {});
 
     selectFolder($(".breadcrumb-folders .folder").first())
@@ -81,13 +83,11 @@ jQuery(function ($) {
     /*----Selecting Thumbnails------*/
     $('#thumbnail').selectable({
         selecting: function (event, ui) {
-
             //ul Containing The Whole Thumbnails
             var ul = $(this),
                 //Current li Selected
                 currentEl = $(ui.selecting),
-                imgSrc = currentEl.find('img').attr('src'),
-                imgName = imgSrc.replace('img/', '');
+                hashid = currentEl.find('.thumbnail').data('file');
 
             //Showing Sidebar If Hidden
             if (!detailSidebar.is(':visible')) {
@@ -97,17 +97,32 @@ jQuery(function ($) {
             //Showing Details Inside Sidebar
             detailSidebar.find('.file-details').show();
 
-            //Inserting Image Data To Sidebar (Should Be Done "Dynamically"!)
-            detailSidebar.find('.thumbnail-image img').attr('src', imgSrc);
-            detailSidebar.find('.details .filename').empty().text(imgName);
+            // Getting file details
+            getFileDetailsXhr = $.ajax({
+                url: urls.getFileDetails + '/' + hashid,
+                beforeSend: function () {
+                    if (getFileDetailsXhr && getFileDetailsXhr.readyState != 4) {
+                        getFileDetailsXhr.abort();
+                    }
+                },
+                success: function (response) {
+                    $('.file-details').attr('data-file', hashid);
+                    $('.file-details').html($(response));
+                }
+            });
 
-            //Reseting Active Class To Currently Selected Element
+            // Resetting Active Class To Currently Selected Element
             ul.find('.active').removeClass('active');
             currentEl.addClass('active');
+
+
+            if (!multiSelect) {
+                ul.find('.ui-selected').removeClass('ui-selected');
+            }
         },
         stop: function (event, ui) {
             //All Selected "li"s
-            var selected = $('li.ui-selected').clone().removeClass('active ui-selected'),
+            var selected = $('li.ui-selected').clone().removeAttr('class'),
                 selectedCount = selected.length,
                 PersianCount = pd(selectedCount);
 
@@ -154,12 +169,38 @@ jQuery(function ($) {
     });
     /*-----End Tab Changing Functions-----*/
 
-
     $(document).on({
-        click: function () {
-            useFile($(this).data('file'));
+        change: function () {
+            let file = $(this).closest('.file-details').attr('data-file');
+            let inputName = $(this).attr('name');
+            let inputValue = $(this).val();
+            if (file && (typeof inputName !== 'undefined') && (typeof inputValue !== 'undefined')) {
+                let data = {fileKey: file};
+                inputValue = $.trim(inputValue);
+                data[inputName] = inputValue;
+
+                $.ajax({
+                    url: urls.setFileDetails,
+                    type: 'POST',
+                    data: data,
+                })
+            }
         }
-    }, '.thumbnail');
+    }, '.setting :input');
+
+    $('#add-btn').click(function () {
+        var selected = $('li.ui-selected .thumbnail');
+
+        if (selected.length) {
+            if(multiSelect) {
+                useFiles(selected);
+            } else {
+                useFile(selected.first());
+            }
+        } else {
+            alert(lang['error-file-empty']);
+        }
+    });
 
 }); //End Of Ready!
 
@@ -221,18 +262,15 @@ function selectFolder(folder) {
     });
 
     var listRequest = new FormData();
-    listRequest.append('key', folder.attr('data-key'));
-    listRequest.append('instance', folder.attr('data-instance'));
-    listRequest.append('_token', csrfToken);
-    $.ajax({
-        url: urls.getList,
-        type: 'POST',
-        data: {
-            key: folder.attr('data-key'),
-            instance: folder.attr('data-instance'),
+    getListXhr = $.ajax({
+        url: urls.getList + '/' + folder.attr('data-instance') + '/' + folder.attr('data-key'),
+        beforeSend: function () {
+            if (getListXhr && getListXhr.readyState != 4) {
+                getListXhr.abort();
+            }
         },
         success: function (response) {
-            $('#thumbnail').replaceWith($(response));
+            $('#thumbnail').html($(response));
         }
     });
 }
@@ -258,29 +296,13 @@ function getFilePathname(file) {
     return $("[data-file=\"" + file + "\"]").data('pathname');
 }
 
-function showFile(file) {
-    var preview = window.fileManagerModalOptions.preview;
-    if (preview) {
-        $.ajax({
-            url: route_preview,
-            type: 'post',
-            data: {
-                file: file,
-            },
-            success: function (response) {
-                parent.document.getElementById(preview).innerHTML = response;
-            }
-        });
-    }
-}
-
 function getUrlParam(paramName) {
     var reParam = new RegExp('(?:[\?&]|&)' + paramName + '=([^&]+)', 'i');
     var match = window.location.search.match(reParam);
     return ( match && match.length > 1 ) ? match[1] : null;
 }
 
-function useFile(file) {
+function useFile(thumbEl) {
 
     function useTinymce3(url) {
         var win = tinyMCEPopup.getWindowArg("window");
@@ -328,6 +350,22 @@ function useFile(file) {
         window.opener.SetUrl(p, w, h);
     }
 
+    function showFile(file) {
+        var preview = window.fileManagerModalOptions.preview;
+        if (preview) {
+            $.ajax({
+                url: route_preview,
+                type: 'post',
+                data: {
+                    file: file,
+                },
+                success: function (response) {
+                    parent.document.getElementById(preview).innerHTML = response;
+                }
+            });
+        }
+    }
+
     function useModal(result) {
         let parentWindow = $(parent.document);
 
@@ -338,7 +376,7 @@ function useFile(file) {
         }
 
         // Show file
-        showFile(file);
+        showFile(hashid);
 
         // Run callback
         let callBackValue = window.fileManagerModalOptions.callback;
@@ -350,8 +388,9 @@ function useFile(file) {
         parent.window.closeFileManagerModal()
     }
 
-    var url = getFileUrl(file);
-    var pathname = getFilePathname(file);
+    var hashid = thumbEl.data('file');
+    var url = getFileUrl(hashid);
+    var pathname = getFilePathname(hashid);
     var field_name = getUrlParam('field_name');
     var is_ckeditor = getUrlParam('CKEditor');
     var is_modal = window.fileManagerModalOptions.modal;
@@ -398,3 +437,51 @@ function useFile(file) {
     }
 }
 //end useFile
+
+function useFiles(filesEls) {
+    function showFiles(hashids) {
+        var preview = window.fileManagerModalOptions.preview;
+        if (preview) {
+            $.ajax({
+                url: route_preview,
+                type: 'post',
+                data: {
+                    file: hashids.join('-'),
+                },
+                success: function (response) {
+                    parent.document.getElementById(preview).innerHTML = response;
+                }
+            });
+        }
+    }
+
+    function useModal(hashids) {
+        let parentWindow = $(parent.document);
+
+        // Set value in target element
+        let targetInput = parentWindow.find('#' + window.fileManagerModalOptions.input);
+        if (targetInput.length) {
+            targetInput.val(JSON.stringify(hashids));
+        }
+
+        // Show file
+        showFiles(hashids);
+
+        // Run callback
+        let callBackValue = window.fileManagerModalOptions.callback;
+        if (callBackValue) {
+            parent.window.eval(callBackValue);
+        }
+
+        // Close modal
+        parent.window.closeFileManagerModal()
+    }
+
+    var hashids = [];
+
+    filesEls.each(function () {
+        hashids.push($(this).data('file'));
+    });
+
+    useModal(hashids);
+}

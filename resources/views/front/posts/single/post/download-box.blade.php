@@ -16,7 +16,7 @@
                         @if($fileObj->exists)
                             @php
                                 $fileObj->spreadMeta();
-                                $linkTitle = $downloadingFile['label'] ?: $fileObj->original_name;
+                                $linkTitle = $downloadingFile['label'] ?: $fileObj->file_name;
                                 $url = route('file.download', [$downloadingFile['src'], $downloadingFile['label']]);
                             @endphp
                             @if($key) <br/> @endif

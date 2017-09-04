@@ -319,8 +319,8 @@ input[type=search], input[type=text] {
               position: relative;
               /*float: right;*/
               max-width: 120px;
-              max-height: 120px;
-              margin: 5px 0 10px 5px;
+              //max-height: 120px;
+              margin: 5px auto 10px;
               overflow: hidden;
 
               img {

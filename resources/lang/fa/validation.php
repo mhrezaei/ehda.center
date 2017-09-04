@@ -550,6 +550,8 @@ return [
         'conversions'                => "تبدیلات",
         'comment_submission_message' => "پیام ثبت کامنت",
 
+        'alternative_text' => 'متن جایگزین',
+
         'aparat_hash_code' => 'کد فیلم در آپارات',
 
         'audio_files' => 'فایل‌های صوتی',

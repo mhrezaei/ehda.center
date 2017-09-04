@@ -17,6 +17,7 @@ class File extends Model
         'image_height',
         'resolution', // for images and videos
         'title',
+        'alternative',
         'description',
         'related_files',
     ];
@@ -48,7 +49,7 @@ class File extends Model
     {
         if ($file instanceof UploadedFileIlluminate) {
             $data = array_normalize_keep_originals($data, [
-                'original_name' => $file->getClientOriginalName(),
+                'name'          => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
                 'physical_name' => UploadServiceProvider::generateFileName() .
                     '.'
                     . $file->getClientOriginalExtension(),
@@ -61,6 +62,9 @@ class File extends Model
                 'category'      => null,
                 'folder'        => null,
             ]);
+
+            $fileTypeRelatedFields = UploadServiceProvider::getFileTypeRelatedFields($file);
+            $data = array_merge($data, $fileTypeRelatedFields);
 
             $relatedFiles = UploadServiceProvider::generateRelatedFiles(
                 $file,
@@ -178,6 +182,11 @@ class File extends Model
         }
     }
 
+    public function getFileNameAttribute()
+    {
+        return $this->name . '.' . $this->extension;
+    }
+
 
     /*
     |--------------------------------------------------------------------------
@@ -259,20 +268,24 @@ class File extends Model
      */
     public function can($task)
     {
+        if (auth()->guest()) {
+            return false;
+        }
+
         $postType = $this->posttype_eloquent;
 
-
         $isCreator = $this->creator->id == user()->id;
+        $admin = user()->as('admin');
 
         switch ($task) {
             case 'preview':
                 if (
+                    // Current user owned this file
+                    $isCreator or
                     // Current user has permission to edit files in file-manager
-                    user()->as('admin')->can('file-manager.edit') or
+                    $admin->can('file-manager.edit') or
                     // Current user has permission to delete files in file-manager
-                    user()->as('admin')->can('file-manager.delete') or
-                    // Current user has permission to create files in file-manager and owned this file
-                    (user()->as('admin')->can('file-manager.create') and $isCreator) or
+                    $admin->can('file-manager.delete') or
                     (
                         // This file is uploaded for a posttype, folder or category
                         $postType and
@@ -281,9 +294,7 @@ class File extends Model
                             // Current user has permission to edit in this file's posttype
                             $postType->can('edit') or
                             // Current user has permission to publish in this file's posttype
-                            $postType->can('publish') or
-                            // Current user has permission to create and owned this file in this file's posttype
-                            ($postType->can('create') and $isCreator)
+                            $postType->can('publish')
                         )
                     )
                 ) {
@@ -292,9 +303,50 @@ class File extends Model
                     return false;
                 }
                 break;
+
+            case 'edit':
+                if (
+                    // Current user owned this file
+                    $isCreator or
+                    // Current user has permission to edit files in file-manager
+                    $admin->can('file-manager.edit') or
+                    (
+                        // This file is uploaded for a posttype, folder or category
+                        $postType and
+                        $postType->exists and
+                        (
+                            // Current user has permission to edit in this file's posttype
+                            $postType->can('edit') or
+                            // Current user has permission to publish in this file's posttype
+                            $postType->can('publish')
+                        )
+                    )
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+                break;
+
+            case 'delete':
+                if (
+                    // Current user owned this file
+                    $isCreator or
+                    // Current user has permission to edit files in file-manager
+                    $admin->can('file-manager.delete')
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+                break;
         }
 
-        return true;
+        if ($postType->exists) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /*
@@ -310,8 +362,7 @@ class File extends Model
      *
      * @return integer|string
      */
-    public
-    static function getStatusValue($statusName)
+    public static function getStatusValue($statusName)
     {
         return array_search($statusName, self::$statusesNames);
     }

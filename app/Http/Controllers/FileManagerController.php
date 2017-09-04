@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FileManager\GetFileDetailsRequest;
+use App\Http\Requests\FileManager\GetFilesListRequest;
+use App\Http\Requests\FileManager\SetFileDetails;
 use App\Models\Category;
 use App\Models\File;
 use App\Models\Folder;
-use App\Models\Post;
 use App\Models\Posttype;
 use App\Providers\UploadServiceProvider;
 use App\Traits\ManageControllerTrait;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class FileManagerController extends Controller
 {
@@ -21,7 +22,7 @@ class FileManagerController extends Controller
         $postTypes = $this->getAccessiblePosttypes();
 
         // If current user hasn't permission to any posttype
-        if(!$postTypes->count()) {
+        if (!$postTypes->count()) {
             return $this->abort('403');
         }
 
@@ -44,8 +45,12 @@ class FileManagerController extends Controller
             // we will keep posttype,
             // else we will forget it.
             if (
-                user()->can('file-manager.*') or
-                (!$postType->can('create') and !$postType->can('edit') and !$postType->can('publish')) or
+                (
+                    !user()->can('file-manager.*') and
+                    !$postType->can('create') and
+                    !$postType->can('edit') and
+                    !$postType->can('publish')
+                ) or
                 (!$postType->canUploadFile())
             ) {
                 $postTypes->forget($key);
@@ -55,12 +60,12 @@ class FileManagerController extends Controller
         return $postTypes;
     }
 
-    public function getList(Request $request)
+    public function getList($instance = '', $key = '')
     {
         $files = File::orderBy('created_at', 'DESC');
-        switch ($request->instance) {
+        switch ($instance) {
             case 'posttype':
-                $postType = Posttype::findByHashid($request->key);
+                $postType = Posttype::findByHashid($key);
                 if (!$postType->exists) {
                     return null;
                 }
@@ -69,7 +74,7 @@ class FileManagerController extends Controller
                     ->whereNull('category');
                 break;
             case 'folder':
-                $folder = Folder::findByHashid($request->key);
+                $folder = Folder::findByHashid($key);
                 $postType = $folder->posttype;
                 if (!$folder->exists) {
                     return null;
@@ -79,7 +84,7 @@ class FileManagerController extends Controller
                     ->whereNull('category');
                 break;
             case 'category':
-                $category = Category::findByHashid($request->key);
+                $category = Category::findByHashid($key);
                 $postType = $category->folder->posttype;
                 if (!$category->exists) {
                     return null;
@@ -102,11 +107,17 @@ class FileManagerController extends Controller
 
     public function getPreview(Request $request)
     {
-        return UploadServiceProvider::getFileView($request->file, 'thumbnail', [
-            'style' => [
-                'max-width' => '100%',
-            ]
-        ]);
+        $files = explodeNotEmpty('-', $request->file);
+        $result = '';
+
+        foreach ($files as $file) {
+            $result .= UploadServiceProvider::getFileView($file, 'thumbnail', [
+                'style' => [
+                    'max-width' => '100%',
+                ]
+            ]);
+        }
+        return $result;
     }
 
     public function download($hadhid, $fileName = null)
@@ -121,7 +132,7 @@ class FileManagerController extends Controller
                 $fileName = $fileName . '.' . $file->extension;
             }
         } else {
-            $fileName = $file->original_name;
+            $fileName = $file->file_name;
         }
 
         $headers = array(
@@ -129,5 +140,30 @@ class FileManagerController extends Controller
         );
 
         return response()->download($file->pathname, $fileName, $headers);
+    }
+
+    public function getFileDetails($fileKey = '')
+    {
+        $file = File::findByHashid($fileKey);
+        if (!$file->exists) {
+            return $this->abort(404);
+        }
+        if (!$file->can('preview')) {
+            return $this->abort(403);
+        }
+
+        return view('file-manager.media-frame-content-gallery-file-details', compact('file'));
+    }
+
+    public function setFileDetails(SetFileDetails $request)
+    {
+        $file = File::findByHashid($request->fileKey);
+        if (!$file->exists) {
+            return $this->abort(404);
+        }
+
+        $saveData = array_merge(['id' => $file->id], $request->all());
+
+        File::store($saveData, ['fileKey']);
     }
 }
