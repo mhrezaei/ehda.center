@@ -23,7 +23,7 @@
             class="btn btn-primary">
         {{ trans('forms.button.browse_image') }}
     </button>
-    <input id="txtFeaturedImage" type="text" name="featured_image" value="{{ '' }}">
+    <input id="txtFeaturedImage" type="text" name="featured_image" value="{{ '' }}" style="width: 100%">
 
     <div id="divFeaturedImage"></div>
 
