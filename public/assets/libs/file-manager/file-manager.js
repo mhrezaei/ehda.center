@@ -15,6 +15,10 @@ var $window,
     footer,
     tabs;
 
+var timers = {
+    fileDetails: {}
+};
+
 jQuery(function ($) {
     if (parent.window.fileManagerModalOptions && parent.window.fileManagerModalOptions.multi) {
         multiSelect = true;
@@ -87,7 +91,7 @@ jQuery(function ($) {
 
     /*----Selecting Thumbnails------*/
     $('#thumbnail').selectable({
-        filter: "li",
+        filter: "li:not(.unselectable)",
         selecting: function (event, ui) {
             //ul Containing The Whole Thumbnails
             var ul = $(this),
@@ -100,7 +104,7 @@ jQuery(function ($) {
             }
         },
         stop: function (event, ui) {
-            //All Selected "li"s
+            //All Selected "li"
             var selected = $('li.ui-selected');
 
             if (multiSelect) {
@@ -159,27 +163,80 @@ jQuery(function ($) {
         var pageId = $(this).addClass('active').data('page');
         $('.page').hide();
         $('#' + pageId).show();
-
-
     });
     /*-----End Tab Changing Functions-----*/
 
     $(document).on({
-        change: function () {
-            let file = $(this).closest('.file-details').attr('data-file');
-            let inputName = $(this).attr('name');
-            let inputValue = $(this).val();
-            if (file && (typeof inputName !== 'undefined') && (typeof inputValue !== 'undefined')) {
+        click: function () {
+            let that = $(this);
+            let file = that.closest('.file-details').attr('data-file');
+            if (file) {
                 let data = {fileKey: file};
-                inputValue = $.trim(inputValue);
-                data[inputName] = inputValue;
-
                 $.ajax({
-                    url: urls.setFileDetails,
+                    url: urls.deleteFile,
                     type: 'POST',
                     data: data,
+                    beforeSend: function () {
+                        that.addClass('in-process');
+                        loadingDialog('show', '#sidebar-loading');
+                    },
+                    success: function () {
+                        refreshGallery();
+                        that.removeClass('delete-file-btn');
+                        that.addClass('restore-file-btn');
+                        that.html(lang['menu-restore']);
+                        $('.deletion-message').html(lang['message-file-deleted']).show();
+                    },
+                    complete: function () {
+                        that.removeClass('in-process');
+                        loadingDialog('hide', '#sidebar-loading');
+                    }
                 })
             }
+        }
+    }, '.delete-file-btn:not(.in-process)');
+
+    $(document).on({
+        click: function () {
+            let that = $(this);
+            let file = that.closest('.file-details').attr('data-file');
+            if (file) {
+                let data = {fileKey: file};
+                $.ajax({
+                    url: urls.restoreFile,
+                    type: 'POST',
+                    data: data,
+                    beforeSend: function () {
+                        that.addClass('in-process');
+                        loadingDialog('show', '#sidebar-loading');
+                    },
+                    success: function () {
+                        refreshGallery();
+                        that.removeClass('restore-file-btn');
+                        that.addClass('delete-file-btn');
+                        that.html(lang['menu-delete']);
+                        $('.deletion-message').hide().html();
+                    },
+                    error: function (rs) {
+                        if(rs.status == 404) {
+                            $('.deletion-message').html(lang['error-file-not-found']).show();
+                        }
+                    },
+                    complete: function () {
+                        that.removeClass('in-process');
+                        loadingDialog('hide', '#sidebar-loading');
+                    }
+                })
+            }
+        }
+    }, '.restore-file-btn:not(.in-process)');
+
+    $(document).on({
+        keyup: function () {
+            updateFileDetail($(this))
+        },
+        change: function () {
+            updateFileDetail($(this))
         }
     }, '.setting :input');
 
@@ -263,9 +320,18 @@ function selectFolder(folder) {
             if (getListXhr && getListXhr.readyState != 4) {
                 getListXhr.abort();
             }
+            loadingDialog();
         },
         success: function (response) {
             $('#thumbnail').html($(response));
+
+            $('#thumbnail').find('li').each(function () {
+                let li = $(this);
+                let img = li.find('img')
+                if (img.length && img.hasClass('not-found'))
+                    li.addClass('unselectable');
+            });
+            loadingDialog('hide');
         }
     });
 }
@@ -274,13 +340,21 @@ function refreshGallery() {
     selectFolder($(".breadcrumb-folders .folder.current"));
 }
 
+function switchToGallery() {
+    tabs.filter('[data-page=gallery]').trigger('click');
+}
+
 function getFolderParents(folder) {
     var link = folder.children('a');
     return link.parents('.folder');
 }
 
-function eachUploadCompleter() {
+function eachUploadCompleted() {
     refreshGallery();
+}
+
+function allUploadsCompleted() {
+    setTimeout(switchToGallery, 1000);
 }
 
 function getFileUrl(file) {
@@ -321,12 +395,45 @@ function showFileDetails(li) {
             success: function (response) {
                 $('.file-details').attr('data-file', hashid);
                 $('.file-details').html($(response));
+
+                $('.setting :input').each(function () {
+                    let timerName = $(this).attr('name') + '-' + $.now();
+                    timers.fileDetails[timerName] = new Timer();
+                    $(this).attr('data-timer', timerName);
+                });
             }
         });
 
         // Resetting Active Class To Currently Selected Element
         ul.find('.active').removeClass('active');
         li.addClass('active');
+    }
+}
+
+function updateFileDetail(input) {
+    let file = input.closest('.file-details').attr('data-file');
+    let inputName = input.attr('name');
+    let inputValue = input.val();
+    if (file && (typeof inputName !== 'undefined') && (typeof inputValue !== 'undefined')) {
+        let data = {fileKey: file};
+        let timerName = input.attr('data-timer');
+        let timer = timers.fileDetails[timerName];
+        inputValue = $.trim(inputValue);
+        data[inputName] = inputValue;
+
+        timer.delay(function () {
+            $.ajax({
+                url: urls.setFileDetails,
+                type: 'POST',
+                data: data,
+                beforeSend: function () {
+                    loadingDialog('show', '#sidebar-loading');
+                },
+                complete: function () {
+                    loadingDialog('hide', '#sidebar-loading');
+                }
+            })
+        }, 1);
     }
 }
 
@@ -437,6 +544,9 @@ function useFile(thumbEl) {
     ) {
         if (is_modal) {
             switch (window.fileManagerModalOptions.outputType) {
+                case 'hashid':
+                    useModal(hashid, field_name);
+                    break;
                 case 'url':
                     useModal(url, field_name);
                     break;
@@ -484,16 +594,17 @@ function useFiles(filesEls) {
         }
     }
 
-    function useModal(hashids) {
+    function useModal(result) {
         let parentWindow = $(parent.document);
 
         // Set value in target element
         let targetInput = parentWindow.find('#' + window.fileManagerModalOptions.input);
         if (targetInput.length) {
-            targetInput.val(JSON.stringify(hashids));
+            targetInput.val(JSON.stringify(result));
         }
 
         // Show file
+
         showFiles(hashids);
 
         // Run callback
@@ -507,10 +618,48 @@ function useFiles(filesEls) {
     }
 
     var hashids = [];
+    var is_modal = window.fileManagerModalOptions.modal;
 
     filesEls.each(function () {
         hashids.push($(this).data('file'));
     });
 
-    useModal(hashids);
+    if (is_modal) {
+        let result = [];
+        switch (window.fileManagerModalOptions.outputType) {
+            case 'hashid':
+                result = hashids;
+                break;
+            case 'url':
+                filesEls.each(function () {
+                    result.push($(this).data('url'));
+                });
+                break;
+            default: // Ex: pathname
+                filesEls.each(function () {
+                    result.push($(this).data('pathname'));
+                });
+                break
+        }
+
+        useModal(result);
+    }
+}
+
+function loadingDialog(parameter, dialog) {
+    if (isDefined(dialog)) {
+        if (!(dialog instanceof HTMLCollection) && (typeof dialog == 'string')) {
+            dialog = $(dialog);
+        }
+    } else {
+        dialog = $('#loading-dialog');
+    }
+
+    if (dialog.length) {
+        if ($.inArray(parameter, ['hide', false, 0]) > -1) {
+            dialog.hide();
+        } else {
+            dialog.show();
+        }
+    }
 }

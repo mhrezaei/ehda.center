@@ -10,6 +10,10 @@
     if(is_array($class)) {
         $class = implode(' ', $class);
     }
+
+    if(!$fileExisted) {
+        $class .= ' not-found';
+    }
 @endphp
 
 <img src="{{ $imgUrl }}" style="{{ $style }}"

@@ -18,7 +18,10 @@
         {{--<a href="#" class="edit-attachment">ویرایش تصویر</a>--}}
         {{--@endif--}}
         @if($file->can('delete'))
-            <button type="button" class="delete-btn btn-link">پاک کردن برای همیشه</button>
+            <span class="deletion-message panel-lightRed pl5 pr5 rounded-corners-5" style="display: none"></span>
+            <button type="button" class="delete-btn btn-link delete-file-btn ">
+                {{ trans('file-manager.menu-delete') }}
+            </button>
         @endif
     </div>
 </div>

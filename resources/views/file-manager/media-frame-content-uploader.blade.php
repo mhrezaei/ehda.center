@@ -16,7 +16,8 @@
         @endphp
         {!! \App\Providers\FileManagerServiceProvider::dropzoneUploader($uploaderFilePaths, [
             'directUpload' => true,
-            'callbackOnEachUploadComplete' => 'eachUploadCompleter',
+            'callbackOnEachUploadComplete' => 'eachUploadCompleted',
+            'callbackOnQueueComplete' => 'allUploadsCompleted',
         ]) !!}
     </div>
 </div>

@@ -203,3 +203,12 @@ function getUrlParam(paramName) {
     let match = window.location.search.match(reParam);
     return ( match && match.length > 1 ) ? match[1] : null;
 }
+
+/**
+ * Checks if a variable is defined or not
+ * @param input
+ * @returns {boolean}
+ */
+function isDefined(input) {
+    return !(typeof input == typeof undefined);
+}

@@ -23,10 +23,25 @@
             <input typle="search" placeholder="جستجو در رسانه ها" class="search"></input>
         </div>
     </div>
-    <ul class="thumbnail-container row" id="thumbnail">
-        @include('file-manager.media-frame-content-gallery-images-list')
-    </ul>
+    <div class="file-list-view">
+        <div class="thumbnail-container">
+            <div id="loading-dialog" class="loading-dialog text-center text-blue pt30" style="display: none">
+                <p>
+                    {{ trans('forms.feed.wait') }}
+                </p>
+                <img src="{{ asset('assets/images/template/AjaxLoader.gif') }}">
+            </div>
+            <ul class="" id="thumbnail">
+                @include('file-manager.media-frame-content-gallery-images-list')
+            </ul>
+        </div>
+    </div>
+
     <div class="media-sidebar">
+        <div id="sidebar-loading" class="sidebar-loading" style="display: none;">
+            <img src="{{ asset('assets/images/template/AjaxLoader.gif') }}">
+        </div>
+
         <div class="close-sidebar">
             <span class="fa fa-chevron-left"></span>
         </div>

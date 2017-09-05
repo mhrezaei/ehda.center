@@ -294,7 +294,7 @@ class UploadServiceProvider extends ServiceProvider
     public static function removeFile($file, $onlyTemp = true)
     {
         if (!$file instanceof UploadedFileModel) {
-            $file = UploadedFileModel::findByHashid($file);
+            $file = UploadedFileModel::findByHashid($file, ['with_trashed' => true]);
         }
 
         if ($file->exists and (!$onlyTemp or $file->hasStatus('temp'))
@@ -310,7 +310,7 @@ class UploadServiceProvider extends ServiceProvider
                 }
             }
 
-            $file->delete();
+            $file->forceDelete();
 
             if (FilesFacades::exists($file->pathname)) {
                 FilesFacades::delete($pathname);
@@ -904,11 +904,16 @@ class UploadServiceProvider extends ServiceProvider
             }
         }
 
-        if (!isset($imgUrl)) {
+        if (isset($imgUrl)) {
+            $fileExisted = true;
+        } else {
+            $fileExisted = false;
             $imgUrl = url('assets/images/template/chain-broken.svg');
         }
 
-        return view('front.frame.widgets.img-element', array_merge(compact('imgUrl'), $switches));
+        return view(
+            'front.frame.widgets.img-element',
+            array_merge(compact('imgUrl', 'fileExisted'), $switches));
     }
 
     /**

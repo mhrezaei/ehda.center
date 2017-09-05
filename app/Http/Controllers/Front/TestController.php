@@ -47,7 +47,8 @@ class TestController extends Controller
 
     public function index()
     {
-        emitisDatabaseConverter();
+        $file = File::findByHashid('Zv4Ke', ['with_trashed' => true]);
+        dd($file, __FILE__ . " - " . __LINE__);
     }
 
     public function states()

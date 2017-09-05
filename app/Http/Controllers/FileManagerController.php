@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FileManager\DeleteFileDetails;
 use App\Http\Requests\FileManager\GetFileDetailsRequest;
 use App\Http\Requests\FileManager\GetFilesListRequest;
+use App\Http\Requests\FileManager\RestoreFileDetails;
 use App\Http\Requests\FileManager\SetFileDetails;
 use App\Models\Category;
 use App\Models\File;
@@ -161,9 +163,38 @@ class FileManagerController extends Controller
         if (!$file->exists) {
             return $this->abort(404);
         }
+        if (!$file->can('edit')) {
+            return $this->abort(403);
+        }
 
         $saveData = array_merge(['id' => $file->id], $request->all());
 
         File::store($saveData, ['fileKey']);
+    }
+
+    public function deleteFile(DeleteFileDetails $request)
+    {
+        $file = File::findByHashid($request->fileKey);
+        if (!$file->exists) {
+            return $this->abort(404);
+        }
+        if (!$file->can('delete')) {
+            return $this->abort(403);
+        }
+
+        $file->delete();
+    }
+
+    public function restoreFile(RestoreFileDetails $request)
+    {
+        $file = File::findByHashid($request->fileKey, ['with_trashed' => true]);
+        if (!$file->exists) {
+            return $this->abort(404);
+        }
+        if (!$file->can('delete')) {
+            return $this->abort(403);
+        }
+
+        $file->restore();
     }
 }

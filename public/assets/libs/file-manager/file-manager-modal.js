@@ -29,6 +29,7 @@
         this.on('click', function (e) {
             let that = $(this);
             let route_prefix = (options && options.prefix) ? options.prefix : '/file-manager';
+            let iframe = $("#file-manager-modal").find('.file-manager-iframe');
             let fileManagerOptions = {
                 modal: true,
             };
@@ -45,8 +46,10 @@
 
             // localStorage.setItem('target_input', $(this).data('input'));
             // localStorage.setItem('target_preview', $(this).data('preview'));
-            $("#file-manager-modal").find('.file-manager-iframe').attr('src', route);
-            $("#file-manager-modal").modal()
+            iframe.contents().find('html').html('');
+            iframe.attr('src', route);
+            $("#file-manager-modal").modal();
+
             // window.open(route_prefix + '?type=' + type, 'FileManager', 'width=900,height=600');
             return false;
         });

@@ -376,6 +376,10 @@ Route::group(['prefix' => 'file-manager', 'middleware' => ['auth', 'is:admin']],
         ->name('fileManager.getFileDetails');
     Route::post('file-details', 'FileManagerController@setFileDetails')
         ->name('fileManager.setFileDetails');
+    Route::post('delete-file', 'FileManagerController@deleteFile')
+        ->name('fileManager.deleteFile');
+    Route::post('restore-file', 'FileManagerController@restoreFile')
+        ->name('fileManager.restoreFile');
 });
 
 

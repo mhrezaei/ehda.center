@@ -19,7 +19,8 @@
 
     <button type="button" id="btnFeaturedImage" data-file-manager-input="txtFeaturedImage"
             data-file-manager-preview="divFeaturedImage" data-file-manager-callback="alert('fsdlfjdlskj')"
-            data-file-manager-multi="1" {{--data-file-manager-output-type="url"--}}
+            data-file-manager-multi="1"
+            {{--data-file-manager-output-type="pathname"--}}
             class="btn btn-primary">
         {{ trans('forms.button.browse_image') }}
     </button>

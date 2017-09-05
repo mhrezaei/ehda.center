@@ -21,6 +21,19 @@
 
 // ********************* Borders ********************** end
 
+// Rounded Corner --start
+@for $i from 1 to 21 {
+  $number: $i * 5;
+  $value: $number * 1px;
+  .rounded-corners-#{$number} {
+    -webkit-border-radius: $value;
+    -moz-border-radius: $value;
+    border-radius: $value;
+  }
+}
+
+// Rounded Corner --end
+
 // ********************* Padding, Margins and Sides Borders ********************** start
 @each $directionShort, $directionLong in $directions {
   %border-#{$directionLong}-solid {
@@ -115,14 +128,15 @@
 
 // ********************* Grids ********************** end
 
-
 // ********************* Directions ********************** start
-.direction-left, .ltr , .text-ltr{
+.direction-left, .ltr, .text-ltr {
   direction: ltr;
 }
-.direction-right, .rtl , .text-rtl{
+
+.direction-right, .rtl, .text-rtl {
   direction: rtl;
 }
+
 // ********************* Directions ********************** end
 
 // ********************* Locale Related ********************** start

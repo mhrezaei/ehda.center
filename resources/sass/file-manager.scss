@@ -240,30 +240,44 @@ input[type=search], input[type=text] {
         border:0px solid #ddd;*/
       }
 
-      .thumbnail-container {
+      .file-list-view {
         position: absolute;
         top: 50px;
         left: 300px;
         right: 0;
         bottom: 0;
         overflow: auto;
-        padding: 2px 8px 8px;
-        margin: 0;
-        list-style-type: none;
-        direction: ltr;
 
-        li {
-          @extend .pull-start;
-          &.active {
-            .attachment {
-              border: 4px solid #006799 !important;
-              -webkit-box-shadow: 0 0 4px #006799;
-              box-shadow: 0 0 4px #006799;
-            }
+        .thumbnail-container {
+          @extend .full-height;
+          position: relative;
+
+          .loading-dialog {
+            @extend .full-height, .full-width, .bg-white;
+            position: absolute;
+            z-index: 1;
           }
 
-          &.ui-selected .attachment {
-            border: 4px solid #ccc;
+          ul {
+            padding: 2px 8px 8px;
+            margin: 0;
+            list-style-type: none;
+            direction: ltr;
+
+            li {
+              @extend .pull-start;
+              &.active {
+                .attachment {
+                  border: 4px solid #006799 !important;
+                  -webkit-box-shadow: 0 0 4px #006799;
+                  box-shadow: 0 0 4px #006799;
+                }
+              }
+
+              &.ui-selected .attachment {
+                border: 4px solid #ccc;
+              }
+            }
           }
         }
       }
@@ -348,10 +362,10 @@ input[type=search], input[type=text] {
 
               .delete-btn {
                 padding: 0;
-                color: #bc0b0b;
+                @extend .text-red, .border-1;
 
                 &:focus, &:hover {
-                  color: #ff0000;
+                  text-decoration: none;
                 }
               }
 
@@ -398,6 +412,12 @@ input[type=search], input[type=text] {
 
           }
 
+        }
+
+        .sidebar-loading {
+          position: absolute;
+          top: 15px;
+          left: 15px;
         }
 
         @media(max-width: 768px) {
