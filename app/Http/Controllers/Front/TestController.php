@@ -13,7 +13,6 @@ use App\Models\Transaction;
 use App\Models\User;
 use App\Providers\AjaxFilterServiceProvider;
 use App\Providers\MessagesServiceProvider;
-use App\Providers\PaymentServiceProvider;
 use App\Providers\PostsServiceProvider;
 use App\Providers\UploadServiceProvider;
 use Illuminate\Http\Request;
