@@ -109,21 +109,21 @@ Route::group([
 
     });
 
-	/*-----------------------------------------------
-	| Students
-	*/
-	Route::group(['prefix' => 'students', 'middleware' => "can:users-student",], function () {
-		Route::get('/', 'StudentsController@browseChild');
-		Route::get('/browse/update/{model_id}/{request_role?}', 'StudentsController@update');
-		Route::get('/browse', 'StudentsController@browseChild');
-		Route::get('/browse/search/{keyword?}', 'StudentsController@searchChild');
-		Route::get('/create/', 'StudentsController@createChild');
+    /*-----------------------------------------------
+    | Students
+    */
+    Route::group(['prefix' => 'students', 'middleware' => "can:users-student",], function () {
+        Route::get('/', 'StudentsController@browseChild');
+        Route::get('/browse/update/{model_id}/{request_role?}', 'StudentsController@update');
+        Route::get('/browse', 'StudentsController@browseChild');
+        Route::get('/browse/search/{keyword?}', 'StudentsController@searchChild');
+        Route::get('/create/', 'StudentsController@createChild');
 
-		Route::group(['prefix' => 'save'], function () {
-			Route::post('/', 'StudentsController@attachRole');
-			Route::post('/delete', 'StudentsController@detachRole');
-		});
-	});
+        Route::group(['prefix' => 'save'], function () {
+            Route::post('/', 'StudentsController@attachRole');
+            Route::post('/delete', 'StudentsController@detachRole');
+        });
+    });
 
 
     /*-----------------------------------------------
@@ -383,7 +383,7 @@ Route::group(['prefix' => 'file-manager', 'middleware' => ['auth', 'is:admin']],
 });
 
 // Payment Bank
-Route::group(['prefix' => 'payment', 'namespace' => 'Payment'], function (){
+Route::group(['prefix' => 'payment', 'namespace' => 'Payment'], function () {
     Route::get('/bank-process/{tracking_number}', 'PaymentController@bank_process')->name('bank-process');
 });
 
@@ -507,6 +507,8 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
         Route::group(['prefix' => 'products'], function () {
             Route::get('/', 'ProductsController@archive')->name('products.archive');
             Route::post('purchase', 'ProductsController@purchase')->name('products.purchase');
+            Route::get('payment-result/{order}', 'ProductsController@paymentResult')
+                ->name('education.paymentResult');
         });
 
         // Massages

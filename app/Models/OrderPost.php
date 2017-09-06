@@ -6,7 +6,7 @@ use App\Traits\TahaModelTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class OrderPosts extends Model
+class OrderPost extends Model
 {
     use TahaModelTrait, SoftDeletes;
 

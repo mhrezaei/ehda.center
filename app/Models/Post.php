@@ -1264,6 +1264,5 @@ class Post extends Model implements FeedItem
 		return str_limit($this->text, 200);
 	}
 
-
 }
 

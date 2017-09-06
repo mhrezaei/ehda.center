@@ -6,17 +6,17 @@ use App\Traits\TahaModelTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Order extends Model
+class FileDownloads extends Model
 {
     use TahaModelTrait, SoftDeletes;
 
     protected $guarded = ['id'];
     protected $casts = [
-        'meta'         => 'array',
+        'meta' => 'array',
     ];
 
-    public function posts()
+    public function file()
     {
-        return $this->belongsToMany('App\Models\Post');
+        return $this->belongsTo('App\Models\File');
     }
 }

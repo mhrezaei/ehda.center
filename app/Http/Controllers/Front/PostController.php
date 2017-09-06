@@ -7,6 +7,8 @@ use App\Http\Requests\Front\CommentRequest;
 use App\Http\Requests\Manage\PostSaveRequest;
 use App\Models\Category;
 use App\Models\Comment;
+use App\Models\File;
+use App\Models\FileDownloads;
 use App\Models\Folder;
 use App\Models\Post;
 use App\Models\Posttype;
@@ -374,11 +376,43 @@ JS;
         if ($post->exists and $post->id) { // If the specified $hashid relates on an existed post
             $post->spreadMeta();
 
+            /************************* Set Other Values ********************** START */
+            $innerHTMLVars = [
+                'showSideBar' => false, // @TODO: dynamicate this line
+            ];
+            $files = $post->post_files ? $post->post_files : [];
+            $innerHTMLVars['postFiles'] = $files;
+            $orderSessionName = 'product-order-' . $post->hashid;
+            if (session()->exists($orderSessionName) and count($files)) {
+                $orderId = session($orderSessionName);
+                foreach ($files as $file) {
+                    $file = UploadServiceProvider::smartFindFile($file['src']);
+                    if ($file->exists) {
+                        $filesIds[] = $file->id;
+                    }
+                }
+
+                $undownloadeds = FileDownloads::where([
+                    'order_id' => $orderId,
+                ])->get();
+                if ($undownloadeds and $undownloadeds->count()) {
+                    $undownloadedIds = $undownloadeds->pluck('file_id')->toArray();
+                    foreach ($files as $key => $file) {
+                        $fileObj = File::findByHashid($file['src']);
+                        if ($fileObj->exists and in_array($fileObj->id, $undownloadedIds) === false) {
+                            unset($files[$key]);
+                        }
+                    }
+                    $innerHTMLVars['files'] = $files;
+                }
+
+                session()->forget($orderSessionName);
+            }
+            /************************* Set Other Values ********************** END */
+
             /************************* Generate Html for Post View Part ********************** START */
             $innerHTML = PostsServiceProvider::showPost($post, [
-                'variables' => [
-                    'showSideBar' => false, // @TODO: dynamicate this line
-                ],
+                'variables' => $innerHTMLVars,
             ]);
             /************************* Generate Html for Post View Part ********************** END */
 

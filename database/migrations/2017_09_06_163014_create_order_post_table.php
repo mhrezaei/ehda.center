@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOrderPostsTable extends Migration
+class CreateOrderPostTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateOrderPostsTable extends Migration
      */
     public function up()
     {
-        Schema::create('order_posts', function (Blueprint $table) {
+        Schema::create('order_post', function (Blueprint $table) {
             // Primary Key
             $table->increments('id');
 
@@ -49,6 +49,6 @@ class CreateOrderPostsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('order_posts');
+        Schema::dropIfExists('order_post');
     }
 }

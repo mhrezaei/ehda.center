@@ -351,4 +351,8 @@ return [
     'media' => [
         'playing' => 'در حال پخش',
     ],
+
+    'gateway' => [
+        'disabled' => 'درگاه غیر فعال است.',
+    ]
 ];

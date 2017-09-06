@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Models\Category;
 use App\Models\Folder;
+use App\Models\Order;
 use App\Models\Post;
 use App\Models\Receipt;
 use App\Models\State;
@@ -51,8 +52,7 @@ class TestController extends Controller
 
     public function index()
     {
-        $file = File::findByHashid('Zv4Ke', ['with_trashed' => true]);
-        dd($file, __FILE__ . " - " . __LINE__);
+        dd(Order::find(1)->hashid, __FILE__ . " - " . __LINE__);
     }
 
     public function states()

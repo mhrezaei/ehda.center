@@ -586,9 +586,10 @@ class PostsServiceProvider extends ServiceProvider
         }
     }
 
-    public static function filterActiveCategories($categories) {
+    public static function filterActiveCategories($categories)
+    {
         foreach ($categories as $key => $category) {
-            if(!$category->posts()->count()) {
+            if (!$category->posts()->count()) {
                 $categories->forget($key);
             }
         }
@@ -673,5 +674,7 @@ class PostsServiceProvider extends ServiceProvider
 
         return self::$defaultData;
     }
+
+
 }
 

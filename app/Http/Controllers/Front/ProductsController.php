@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Front;
 use App\Http\Requests\Front\ProductsFilterRequest;
 use App\Http\Requests\Front\PurchaseProductRequest;
 use App\Models\Category;
+use App\Models\File;
+use App\Models\FileDownloads;
 use App\Models\Folder;
 use App\Models\Order;
-use App\Models\OrderPosts;
+use App\Models\OrderPost;
 use App\Models\Post;
 use App\Models\Posttype;
 use App\Providers\PostsServiceProvider;
@@ -15,6 +17,7 @@ use App\Traits\ManageControllerTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Session\Store;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\URL;
 
 class ProductsController extends Controller
@@ -306,6 +309,7 @@ class ProductsController extends Controller
         $postId = $request->post_id;
         $post = Post::findBySlug($postId, 'id');
 
+
         $orderPostData = [
             'post_id'        => $post->id,
             'original_price' => $post->price,
@@ -325,12 +329,74 @@ class ProductsController extends Controller
             'payable_amount' => $orderPostData['total_price'],
             'paid_amount'    => 0,
         ];
-
         $orderId = Order::store($orderData);
+        $order = Order::findBySlug($orderId, 'id');
         $orderPostData['order_id'] = $orderId;
 
-        OrderPosts::store($orderPostData);
+        $trackingNumber = invoice($post->price, route_locale('education.paymentResult', [
+                'order' => $order->hashid
+            ])
+        )->getTracking();
+        $payment = gateway()->fire($trackingNumber);
 
-        return response()->json($request->all());
+        if (!$payment) {
+            return $this->jsonAjaxSaveFeedback(0, [
+                'danger_message' => trans('front.gateway.disabled')
+            ]);
+        }
+
+        $order->tracking_number = $trackingNumber;
+        $order->save();
+
+        OrderPost::store($orderPostData);
+
+        return $this->jsonAjaxSaveFeedback($orderId, [
+            'success_redirect' => $payment,
+            'redirectTime'     => 2000,
+        ]);
+    }
+
+    public function paymentResult($lang, $order)
+    {
+        $order = Order::findByHashid($order);
+        if (!$order->exists) {
+            return $this->abort('404');
+        }
+
+        $trackingNumber = Input::get('tracking');
+
+//        peyment_verify($trackingNumber) @todo: check it!!!
+
+        if ($order->tracking_number != $trackingNumber) {
+            return $this->abort(403);
+        }
+
+        $post = $order->posts()->first();
+        if (!$post->exists) {
+            return $this->abort('404');
+        }
+
+        $post->spreadMeta();
+
+        $files = $post->post_files;
+
+        if ($files and is_array($files) and count($files)) {
+            foreach ($files as $file) {
+                $fileRow = File::findByHashid($file['src']);
+                if ($fileRow->exists) {
+                    FileDownloads::store([
+                        'user_id'            => (auth()->guest()) ? null : user()->id,
+                        'file_id'            => $fileRow->id,
+                        'order_id'           => $order->id,
+                        'downloadable_count' => 1,
+                    ]);
+                }
+            }
+        }
+
+        session(['product-order-' . $post->hashid => $order->id]);
+
+        return redirect($post->direct_url);
+
     }
 }

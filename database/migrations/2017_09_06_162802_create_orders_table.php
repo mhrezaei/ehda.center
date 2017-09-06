@@ -18,6 +18,8 @@ class CreateOrdersTable extends Migration
             // Primary Key
             $table->increments('id');
 
+            $table->string('tracking_number', 50)->index();
+
             // Personal Info
             $table->unsignedInteger('user_id')->nullable()->index() ;
             $table->string('code_melli', 20)->nullable()->index();
