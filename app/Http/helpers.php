@@ -7,6 +7,7 @@
 | These are shortcuts of the site models and modules
 */
 
+use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Contracts\Session\Session;
 use Morilog\Jalali\jDate;
@@ -722,4 +723,68 @@ function getAparatId($link)
     }
 
     return null;
+}
+
+if (! function_exists('number_random')) {
+    /**
+     * Generate a more truly "random" numeric.
+     *
+     * @param  int  $length
+     * @return number
+     *
+     */
+    function number_random($length = 16)
+    {
+        $random = rand(1, 9);
+        for ($i = 0; $i < $length - 1; $i++)
+        {
+            $random .= rand(0,9);
+        }
+
+        return $random;
+    }
+}
+
+/**
+ * a shortcut to fire a chain command to start payment method
+ *
+ *
+ * @return \App\Models\Transaction
+ */
+function gateway()
+{
+    return \App\Models\Transaction::builder();
+}
+
+/**
+ * a shortcut to fire a chain command to payment method
+ *
+ * @param $amount
+ * @param $redirect_url
+ *
+ * @return \App\Models\Transaction
+ */
+function invoice($amount, $redirect_url)
+{
+    return gateway()->invoice($amount, $redirect_url);
+}
+
+/**
+ * a shortcut to verify payment method
+ *
+ * @param $tracking
+ *
+ * @return boolean
+ */
+function peyment_verify($tracking)
+{
+    $transaction = Transaction::findBySlug($tracking, 'tracking_number');
+    if ($transaction)
+    {
+        return $transaction->check();
+    }
+    else
+    {
+        return false;
+    }
 }

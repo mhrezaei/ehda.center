@@ -9,6 +9,7 @@ use App\Models\Receipt;
 use App\Models\State;
 use App\Models\Test\Meta;
 use App\Models\File;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Providers\AjaxFilterServiceProvider;
 use App\Providers\MessagesServiceProvider;
@@ -20,6 +21,7 @@ use Illuminate\Http\Testing\MimeType;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use App\Models\Test\Post as PostOld;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use SoapClient;
 use function Sodium\compare;
@@ -263,35 +265,31 @@ class TestController extends Controller
         }
     }
 
-    public function payment()
+    public function test()
     {
-        $MerchantID = '465b79d2-8fda-11e7-8975-005056a205be'; //Required
-        $Amount = 1000; //Amount will be based on Toman - Required
-        $Description = 'توضیحات تراکنش تستی'; // Required
-        $CallbackURL = 'http://www.yoursoteaddress.ir/verify.php'; // Required
+        // method 1
+//        $payment = invoice(1000, url(''))->getTracking();
+//        $pay = gateway()->fire($payment);
+
+        // method 2
+        $pay = invoice(100, url('/hadi2'))->payment();
 
 
-        $client = new SoapClient('https://www.zarinpal.com/pg/services/WebGate/wsdl', ['encoding' => 'UTF-8']);
+        if ($pay)
+            return redirect($pay);
+    }
 
-        $result = $client->PaymentRequest(
-            [
-                'MerchantID' => $MerchantID,
-                'Amount' => $Amount,
-                'Description' => $Description,
-                'CallbackURL' => $CallbackURL,
-            ]
-        );
-
-        ss($result);
-
-//Redirect to URL You can do it also by creating a form
-        if ($result->Status == 100) {
-            return redirect('https://www.zarinpal.com/pg/StartPay/'.$result->Authority.'/ZarinGate');
-//            Header('Location: https://www.zarinpal.com/pg/StartPay/'.$result->Authority.'/ZarinGate');
-//برای استفاده از زرین گیت باید ادرس به صورت زیر تغییر کند:
-//Header('Location: https://www.zarinpal.com/pg/StartPay/'.$result->Authority.'/ZarinGate');
-        } else {
-            echo'ERR: '.$result->Status;
+    public function test2()
+    {
+        $tracking = Input::get('tracking');
+        $transaction = peyment_verify($tracking);
+        if ($transaction)
+        {
+            echo 'true';
+        }
+        else
+        {
+            echo 'false';
         }
     }
 }
