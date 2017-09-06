@@ -239,6 +239,11 @@ trait EhdaUserTrait
         return $this->hasMany('App\Models\Api_ip');
     }
 
+    public function transactions()
+    {
+        return $this->hasMany('App\Models\Transaction');
+    }
+
 	public function generateCardNo()
 	{
 		return $this->id + 5000 ;

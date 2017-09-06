@@ -382,6 +382,11 @@ Route::group(['prefix' => 'file-manager', 'middleware' => ['auth', 'is:admin']],
         ->name('fileManager.restoreFile');
 });
 
+// Payment Bank
+Route::group(['prefix' => 'payment', 'namespace' => 'Payment'], function (){
+    Route::get('/bank-process/{tracking_number}', 'PaymentController@bank_process')->name('bank-process');
+});
+
 
 Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Setting', 'Subdomain']], function () {
 

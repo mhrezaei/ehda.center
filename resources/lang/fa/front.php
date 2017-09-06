@@ -102,6 +102,7 @@ return [
     'email_has_been_sent_automatically'        => 'توجه : این ایمیل به صورت خودکار فرستاده شده است ، بنابراین به آن پاسخ ندهید. ',
     'unnamed'                                  => 'بی‌نام',
     'download_links'                           => 'لینک‌های دانلود',
+    'invoice_payment'                          => 'پرداخت فاکتور',
 
     'tutorials' => [
         'singular' => 'آموزش',

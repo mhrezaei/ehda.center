@@ -35,6 +35,7 @@ return array(
     'CreateRolesTable' => $baseDir . '/database/migrations/2017_06_18_173324_create_roles_table.php',
     'CreateSettingTable' => $baseDir . '/database/migrations/2017_06_18_173253_create_setting_table.php',
     'CreateStatesTable' => $baseDir . '/database/migrations/2017_06_18_141636_create_states_table.php',
+    'CreateTransactionsTable' => $baseDir . '/database/migrations/2017_09_04_094724_create_transactions_table.php',
     'CreateUnitsTable' => $baseDir . '/database/migrations/2017_06_18_172337_create_units_table.php',
     'CreateUploadedFilesTable' => $baseDir . '/database/migrations/2017_06_18_182219_create_uploaded_files_table.php',
     'CreateUserDrawingTable' => $baseDir . '/database/migrations/2017_06_18_181323_create_user_drawing_table.php',
