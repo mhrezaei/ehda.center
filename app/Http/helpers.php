@@ -7,6 +7,7 @@
 | These are shortcuts of the site models and modules
 */
 
+use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Contracts\Session\Session;
 use Morilog\Jalali\jDate;
@@ -766,4 +767,24 @@ function gateway()
 function invoice($amount, $redirect_url)
 {
     return gateway()->invoice($amount, $redirect_url);
+}
+
+/**
+ * a shortcut to verify payment method
+ *
+ * @param $tracking
+ *
+ * @return boolean
+ */
+function peyment_verify($tracking)
+{
+    $transaction = Transaction::findBySlug($tracking, 'tracking_number');
+    if ($transaction)
+    {
+        return $transaction->check();
+    }
+    else
+    {
+        return false;
+    }
 }

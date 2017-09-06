@@ -283,8 +283,8 @@ class TestController extends Controller
     public function test2()
     {
         $tracking = Input::get('tracking');
-        $transaction = Transaction::findBySlug($tracking, 'tracking_number');
-        if ($transaction->check())
+        $transaction = peyment_verify($tracking);
+        if ($transaction)
         {
             echo 'true';
         }
