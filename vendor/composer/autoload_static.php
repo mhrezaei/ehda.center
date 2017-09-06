@@ -401,7 +401,6 @@ class ComposerStaticInitc163ed33e856e3abf8986dc792906912
     );
 
     public static $classMap = array (
-        'ChangeFilesTable' => __DIR__ . '/../..' . '/database/migrations/2017_09_04_153624_change_files_table.php',
         'CreateActivitiesTable' => __DIR__ . '/../..' . '/database/migrations/2017_07_06_141716_create_activities_table.php',
         'CreateAddressesTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_18_181432_create_addresses_table.php',
         'CreateApiIps' => __DIR__ . '/../..' . '/database/migrations/2017_08_01_120437_create_api_ips.php',
@@ -418,7 +417,8 @@ class ComposerStaticInitc163ed33e856e3abf8986dc792906912
         'CreateFoldersTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_18_174624_create_folders_table.php',
         'CreateGoodsTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_18_181337_create_goods_table.php',
         'CreateMessagesTable' => __DIR__ . '/../..' . '/database/migrations/2017_08_07_182054_create_messages_table.php',
-        'CreateOrdersTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_18_181405_create_orders_table.php',
+        'CreateOrderPostsTable' => __DIR__ . '/../..' . '/database/migrations/2017_09_06_163014_create_order_posts_table.php',
+        'CreateOrdersTable' => __DIR__ . '/../..' . '/database/migrations/2017_09_06_162802_create_orders_table.php',
         'CreatePacksTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_18_181353_create_packs_table.php',
         'CreatePasswordResetsTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
         'CreatePosteventsTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_18_172907_create_postevents_table.php',

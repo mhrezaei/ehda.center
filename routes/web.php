@@ -498,6 +498,12 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
             Route::post('get-posts', 'EducationController@ajaxGetPosts')->name('education.get-posts.ajax');
         });
 
+        // Products
+        Route::group(['prefix' => 'products'], function () {
+            Route::get('/', 'ProductsController@archive')->name('products.archive');
+            Route::post('purchase', 'ProductsController@purchase')->name('products.purchase');
+        });
+
         // Massages
         Route::group(['prefix' => 'messages'], function () {
             Route::get('{limit?}', 'MessagesController@sendMessages')

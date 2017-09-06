@@ -41,6 +41,7 @@ return [
         'undo_changes'         => 'لغو تغییرات',
         'browse_image'         => 'انتخاب عکس',
         'flush_image'          => "تخلیه عکس",
+        'browse_file'          => 'انتخاب فایل',
         'login'                => 'ورود',
         'refresh'              => 'بازخوانی',
         'add'                  => 'افزودن',

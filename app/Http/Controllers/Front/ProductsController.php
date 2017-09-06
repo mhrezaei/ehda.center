@@ -3,13 +3,18 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Requests\Front\ProductsFilterRequest;
+use App\Http\Requests\Front\PurchaseProductRequest;
 use App\Models\Category;
 use App\Models\Folder;
+use App\Models\Order;
+use App\Models\OrderPosts;
 use App\Models\Post;
+use App\Models\Posttype;
 use App\Providers\PostsServiceProvider;
 use App\Traits\ManageControllerTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Session\Store;
 use Illuminate\Support\Facades\URL;
 
 class ProductsController extends Controller
@@ -260,4 +265,72 @@ class ProductsController extends Controller
         }
     }
 
+    public function archive()
+    {
+        /************************* Checking Products Post Type Existence ********************** START */
+        $postType = Posttype::findBySlug('products');
+        if (!$postType->exists) {
+            return $this->abort('404');
+        }
+        /************************* Checking Products Post Type Existence ********************** END */
+
+        /************************* Selecting Slider Data ********************** START */
+        $slideShow = PostsServiceProvider::collectPosts([
+            'type'     => 'slideshows',
+            'category' => 'products-slider',
+        ]);
+        /************************* Selecting Slider Data ********************** END */
+
+        /************************* Generating List View ********************** START */
+        $postsListHtml = PostsServiceProvider::showList([
+            'type' => 'products'
+        ]);
+
+        if (!$postsListHtml) {
+            return redirect(getLocale());
+        }
+        /************************* Generating List View ********************** END */
+
+        /************************* Generating View Data ********************** START */
+        $compactedData = compact('slideShow', 'postType', 'postsListHtml');
+        $otherData = [];
+        $viewData = array_merge($compactedData, $otherData);
+        /************************* Generating View Data ********************** END */
+
+        /************************* Returning View ********************** START */
+        return view('front.products.archive.main', $viewData);
+    }
+
+    public function purchase(PurchaseProductRequest $request)
+    {
+        $postId = $request->post_id;
+        $post = Post::findBySlug($postId, 'id');
+
+        $orderPostData = [
+            'post_id'        => $post->id,
+            'original_price' => $post->price,
+            'offered_price'  => $request->price,
+            'total_price'    => $request->price,
+        ];
+
+        $orderData = [
+            'user_id'        => (auth()->guest()) ? null : user()->id,
+            'code_melli'     => $request->code_melli,
+            'name'           => $request->name,
+            'mobile'         => $request->mobile,
+            'phone'          => $request->phone,
+            'email'          => $request->email,
+            'status'         => 0, // just created
+            'invoice_amount' => $orderPostData['total_price'],
+            'payable_amount' => $orderPostData['total_price'],
+            'paid_amount'    => 0,
+        ];
+
+        $orderId = Order::store($orderData);
+        $orderPostData['order_id'] = $orderId;
+
+        OrderPosts::store($orderPostData);
+
+        return response()->json($request->all());
+    }
 }

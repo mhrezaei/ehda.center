@@ -699,14 +699,11 @@ header {
   }
   .media-right,
   .media-left {
-    min-width: 250px;
     img {
+      min-width: 250px;
       width: 100%;
       height: auto;
     }
-  }
-  .media-body {
-    @extend .p0;
   }
 }
 

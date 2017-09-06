@@ -1076,6 +1076,26 @@ class UploadServiceProvider extends ServiceProvider
     }
 
     /**
+     * Returns file eloquent that matched with $pathname
+     *
+     * @param string $pathname Pathname (starting after public folder)
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null|static
+     */
+    public static function findFileByPathname($pathname)
+    {
+        $conditions['directory'] = pathinfo($pathname, PATHINFO_DIRNAME);
+        $conditions['physical_name'] = pathinfo($pathname, PATHINFO_BASENAME);
+        $file = UploadedFileModel::where($conditions)->first();
+
+        if ($file and $file->exists) {
+            return $file;
+        }
+
+        return null;
+    }
+
+    /**
      * Generates a new image from $sourceFile, in size of $width*$height, at $pathname
      *
      * @param \Symfony\Component\HttpFoundation\File\File $sourceFile File Object to Make Clone From It

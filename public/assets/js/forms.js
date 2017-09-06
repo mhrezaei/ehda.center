@@ -148,6 +148,8 @@ function forms_validate(formData, jqForm, options) {
     }
 
     $('#' + $formId + ' :input').each(function () {
+        console.log($(this));
+
         if (!$(this).prop('disabled')) { // Doesn't validate and submit value of disabled input
             var $val = $(this).val();
             var $name = $(this).attr('name');
@@ -363,6 +365,10 @@ function forms_validate(formData, jqForm, options) {
                         $err_el = $.inArray($name, $errors_el);
                     }
                 }
+            }
+
+            if($err_el < 0) {
+                forms_markError(this, "success");
             }
         }
     });

@@ -23,6 +23,7 @@ return [
     'no_winner_so_far'      => "فعلاً هیچ کس به عنوان برنده انتخاب نشده است.",
     'number'                => 'تعداد',
     'add_to_cart'           => 'افزودن به سبد',
+    'price'                 => 'قیمت',
     'unit_price'            => 'قیمت واحد',
     'total_price'           => 'قیمت کل',
     'settlement'            => 'تسویه حساب',
