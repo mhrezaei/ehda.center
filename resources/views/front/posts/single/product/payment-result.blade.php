@@ -7,6 +7,11 @@
         @endif
         <div class="alert alert-{{ $alertType }}">
             {!! $paymentMsg !!}
+            <br/>
+            @if($trackingNumber)
+                {{ trans('validation.attributes.tracking_number') }}:
+                {{ ad($trackingNumber) }}
+            @endif
         </div>
     </div>
 @endif

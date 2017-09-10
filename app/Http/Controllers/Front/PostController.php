@@ -10,6 +10,7 @@ use App\Models\Comment;
 use App\Models\File;
 use App\Models\FileDownloads;
 use App\Models\Folder;
+use App\Models\Order;
 use App\Models\Post;
 use App\Models\Posttype;
 use App\Providers\DummyServiceProvider;
@@ -386,6 +387,11 @@ JS;
 
             if (session()->exists($orderSessionName) and count($files)) {
                 $orderId = session($orderSessionName);
+                $order = Order::find($orderId);
+                if ($order->exists) {
+                    $innerHTMLVars['trackingNumber'] = $order->tracking_number;
+                }
+
                 foreach ($files as $file) {
                     $file = UploadServiceProvider::smartFindFile($file['src']);
                     if ($file->exists) {
@@ -411,25 +417,24 @@ JS;
                     $innerHTMLVars['files'] = $files;
                 }
 
-            }
+                if (session()->exists('paymentSucceeded')) {
+                    $paymentSucceeded = session('paymentSucceeded');
+                    $innerHTMLVars['paymentSucceeded'] = session('paymentSucceeded');
 
-            if (session()->exists('paymentSucceeded')) {
-                $paymentSucceeded = session('paymentSucceeded');
-                $innerHTMLVars['paymentSucceeded'] = session('paymentSucceeded');
-
-                if ($paymentSucceeded) {
-                    $messagePost = Post::findBySlug('payment-success');
-                    if ($messagePost->exists) {
-                        $innerHTMLVars['paymentMsg'] = $messagePost->text;
+                    if ($paymentSucceeded) {
+                        $messagePost = Post::findBySlug('payment-success');
+                        if ($messagePost->exists) {
+                            $innerHTMLVars['paymentMsg'] = $messagePost->text;
+                        } else {
+                            $innerHTMLVars['paymentMsg'] = trans('cart.messages.payment.succeeded');
+                        }
                     } else {
-                        $innerHTMLVars['paymentMsg'] = trans('cart.messages.payment.succeeded');
-                    }
-                } else {
-                    $messagePost = Post::findBySlug('payment-canceled');
-                    if ($messagePost->exists) {
-                        $innerHTMLVars['paymentMsg'] = $messagePost->text;
-                    } else {
-                        $innerHTMLVars['paymentMsg'] = trans('cart.messages.payment.canceled');
+                        $messagePost = Post::findBySlug('payment-canceled');
+                        if ($messagePost->exists) {
+                            $innerHTMLVars['paymentMsg'] = $messagePost->text;
+                        } else {
+                            $innerHTMLVars['paymentMsg'] = trans('cart.messages.payment.canceled');
+                        }
                     }
                 }
             }

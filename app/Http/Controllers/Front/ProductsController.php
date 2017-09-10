@@ -384,7 +384,8 @@ class ProductsController extends Controller
             }
 
             $redirectUrl = $post->direct_url . '#payment-result';
-            $flashData = [];
+            $flashData = ['trackingNumber'];
+            $flashData['product-order-' . $post->hashid] = $order->id;
 
 //          peyment_verify($trackingNumber) @todo: check it!!!
             if (true or peyment_verify($trackingNumber)) {
@@ -398,7 +399,6 @@ class ProductsController extends Controller
 
                 $this->serveDownload($post, $order);
 
-                $flashData['product-order-' . $post->hashid] = $order->id;
             } else {
                 $flashData['paymentSucceeded'] = false;
 
