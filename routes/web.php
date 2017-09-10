@@ -362,6 +362,8 @@ Route::group(['prefix' => 'file'], function () {
 // File
 Route::group(['prefix' => 'file'], function () {
     Route::get('{hadhid}/{fileName?}', 'FileManagerController@download')->name('file.download');
+    Route::get('disposable/{hashString}/{hadhid}/{fileName?}', 'FileManagerController@disposableDownload')
+        ->name('file.download.disposable');
 });
 
 // File Manager
@@ -427,6 +429,7 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
 //            Route::get('messages/send', 'TestController@messages_send');
             Route::get('file-manager', 'TestController@fileManager');
             Route::get('uploader', 'TestController@uploader');
+            Route::get('payment', 'TestController@test');
         });
 
         // Contact Us Page

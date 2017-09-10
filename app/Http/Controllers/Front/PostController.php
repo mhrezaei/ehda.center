@@ -376,7 +376,7 @@ JS;
         if ($post->exists and $post->id) { // If the specified $hashid relates on an existed post
             $post->spreadMeta();
 
-            /************************* Set Other Values ********************** START */
+            /************************* Set Payment Info ********************** START */
             $innerHTMLVars = [
                 'showSideBar' => false, // @TODO: dynamicate this line
             ];
@@ -401,14 +401,38 @@ JS;
                         $fileObj = File::findByHashid($file['src']);
                         if ($fileObj->exists and in_array($fileObj->id, $undownloadedIds) === false) {
                             unset($files[$key]);
+                        } else {
+                            $files[$key]['hashString'] = $undownloadeds->where('file_id', $fileObj->id)
+                                ->last()
+                                ->hashid;
                         }
                     }
                     $innerHTMLVars['files'] = $files;
                 }
 
-                session()->forget($orderSessionName);
             }
-            /************************* Set Other Values ********************** END */
+
+            if (session()->exists('paymentSucceeded')) {
+                $paymentSucceeded = session('paymentSucceeded');
+                $innerHTMLVars['paymentSucceeded'] = session('paymentSucceeded');
+
+                if ($paymentSucceeded) {
+                    $messagePost = Post::findBySlug('payment-success');
+                    if ($messagePost->exists) {
+                        $innerHTMLVars['paymentMsg'] = $messagePost->text;
+                    } else {
+                        $innerHTMLVars['paymentMsg'] = trans('cart.messages.payment.succeeded');
+                    }
+                } else {
+                    $messagePost = Post::findBySlug('payment-canceled');
+                    if ($messagePost->exists) {
+                        $innerHTMLVars['paymentMsg'] = $messagePost->text;
+                    } else {
+                        $innerHTMLVars['paymentMsg'] = trans('cart.messages.payment.canceled');
+                    }
+                }
+            }
+            /************************* Set Payment Info ********************** END */
 
             /************************* Generate Html for Post View Part ********************** START */
             $innerHTML = PostsServiceProvider::showPost($post, [

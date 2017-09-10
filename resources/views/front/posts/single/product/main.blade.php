@@ -25,3 +25,4 @@
     </div>
 </div>
 
+@include('front.posts.single.product.scripts')

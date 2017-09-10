@@ -311,7 +311,6 @@ class ProductsController extends Controller
 
 
         $orderPostData = [
-            'post_id'        => $post->id,
             'original_price' => $post->price,
             'offered_price'  => $request->price,
             'total_price'    => $request->price,
@@ -333,70 +332,99 @@ class ProductsController extends Controller
         $order = Order::findBySlug($orderId, 'id');
         $orderPostData['order_id'] = $orderId;
 
-        $trackingNumber = invoice($post->price, route_locale('education.paymentResult', [
-                'order' => $order->hashid
-            ])
-        )->getTracking();
-        $payment = gateway()->fire($trackingNumber);
-
-        if (!$payment) {
-            return $this->jsonAjaxSaveFeedback(0, [
-                'danger_message' => trans('front.gateway.disabled')
-            ]);
-        }
+        // @todo: uncomment these lines
+//        $trackingNumber = invoice($post->price, route_locale('education.paymentResult', [
+//                'order' => $order->hashid
+//            ])
+//        )->getTracking();
+//        $payment = gateway()->fire($trackingNumber);
+//
+//        if (!$payment) {
+//            return $this->jsonAjaxSaveFeedback(0, [
+//                'danger_message' => trans('front.gateway.disabled')
+//            ]);
+//        }
+//
+        // @todo: remove this line
+        $trackingNumber = '222222';
 
         $order->tracking_number = $trackingNumber;
         $order->save();
 
-        OrderPost::store($orderPostData);
+        $order->storePosts($post->id, $orderPostData);
 
         return $this->jsonAjaxSaveFeedback($orderId, [
-            'success_redirect' => $payment,
-            'redirectTime'     => 2000,
+//            @todo comment this line
+//            'success_redirect' => $payment,
+            'redirectTime' => 2000,
         ]);
     }
 
     public function paymentResult($lang, $order)
     {
         $order = Order::findByHashid($order);
+        $trackingNumber = Input::get('tracking');
+
+        // If there is no "tracking" query param, we will redirect to home page
+        if (!$trackingNumber) {
+            return redirect(getLocale());
+        }
+
+        // If there is no order with this info we will show 404 error
         if (!$order->exists) {
             return $this->abort('404');
         }
 
-        $trackingNumber = Input::get('tracking');
-
-//        peyment_verify($trackingNumber) @todo: check it!!!
-
-        if ($order->tracking_number != $trackingNumber) {
-            return $this->abort(403);
-        }
-
-        $post = $order->posts()->first();
-        if (!$post->exists) {
-            return $this->abort('404');
-        }
-
-        $post->spreadMeta();
-
-        $files = $post->post_files;
-
-        if ($files and is_array($files) and count($files)) {
-            foreach ($files as $file) {
-                $fileRow = File::findByHashid($file['src']);
-                if ($fileRow->exists) {
-                    FileDownloads::store([
-                        'user_id'            => (auth()->guest()) ? null : user()->id,
-                        'file_id'            => $fileRow->id,
-                        'order_id'           => $order->id,
-                        'downloadable_count' => 1,
-                    ]);
-                }
+        if ($order->status == 0) {
+            // If there is no post with this info we will show 404 error
+            $post = $order->posts()->first();
+            if (!$post->exists) {
+                return $this->abort('404');
             }
+
+            $redirectUrl = $post->direct_url . '#payment-result';
+
+            $flashData = [];
+//          peyment_verify($trackingNumber) @todo: check it!!!
+            if (true or peyment_verify($trackingNumber)) {
+                $order->status = 1; // Succeeded
+                $flashData['paymentSucceeded'] = true;
+
+                // If received tracking number doesn't match with order's tracking number, we will show 403 error
+                if ($order->tracking_number != $trackingNumber) {
+                    return $this->abort(403);
+                }
+
+                $post->spreadMeta();
+
+                $files = $post->post_files;
+
+                if ($files and is_array($files) and count($files)) {
+                    foreach ($files as $file) {
+                        $fileRow = File::findByHashid($file['src']);
+                        if ($fileRow->exists) {
+                            FileDownloads::store([
+                                'user_id'            => (auth()->guest()) ? null : user()->id,
+                                'file_id'            => $fileRow->id,
+                                'order_id'           => $order->id,
+                                'downloadable_count' => 1,
+                            ]);
+                        }
+                    }
+                }
+
+                $flashData['product-order-' . $post->hashid] = $order->id;
+            } else {
+                $order->status = -1; // Canceled
+                $flashData['paymentSucceeded'] = false;
+            }
+
+            $order->save();
+            return redirect($redirectUrl)->with($flashData);
+        } else {
+            return $this->abort(404);
         }
 
-        session(['product-order-' . $post->hashid => $order->id]);
-
-        return redirect($post->direct_url);
 
     }
 }

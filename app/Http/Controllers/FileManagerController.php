@@ -9,6 +9,7 @@ use App\Http\Requests\FileManager\RestoreFileDetails;
 use App\Http\Requests\FileManager\SetFileDetails;
 use App\Models\Category;
 use App\Models\File;
+use App\Models\FileDownloads;
 use App\Models\Folder;
 use App\Models\Posttype;
 use App\Providers\UploadServiceProvider;
@@ -141,6 +142,53 @@ class FileManagerController extends Controller
             'Content-Type: ' . $file->mime_type,
         );
 
+        return response()->download($file->pathname, $fileName, $headers);
+    }
+
+    public function disposableDownload($hashString, $hadhid, $fileName = null)
+    {
+        $fileDownloadRow = FileDownloads::findByHashid($hashString);
+        $file = File::findByHashid($hadhid);
+        if (
+            !$fileDownloadRow->exists or
+            !$file->exists or
+            !UploadServiceProvider::getFileObject($file->pathname)
+        ) {
+            return $this->abort('404');
+        }
+
+        // Check if $fileDownloadRow doesn't belong to $file
+        if ($fileDownloadRow->file_id != $file->id) {
+            return $this->abort(403);
+        }
+
+        // Check if $fileDownloadRow can't be downloaded any more
+        if ($fileDownloadRow->downloaded_count >= $fileDownloadRow->downloadable_count) {
+            return $this->abort(404);
+        }
+
+        // Change $fileDownloadRow to count this download
+        $fileDownloadRow->downloaded_count++;
+        $fileDownloadRow->save();
+        if ($fileDownloadRow->downloaded_count >= $fileDownloadRow->downloadable_count) {
+            $fileDownloadRow->delete();
+        }
+
+        // Set downloading file name
+        if ($fileName) {
+            if (!ends_with($fileName, '.' . $file->extension)) {
+                $fileName = $fileName . '.' . $file->extension;
+            }
+        } else {
+            $fileName = $file->file_name;
+        }
+
+        // Set header
+        $headers = array(
+            'Content-Type: ' . $file->mime_type,
+        );
+
+        // Return response
         return response()->download($file->pathname, $fileName, $headers);
     }
 

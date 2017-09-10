@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" id="download-box">
     <div class="col-xs-12 mt20 well download-box bg-lightGray text-blue">
         <h4 class="text-blue">{{ trans('front.download_links') }}</h4>
             @if($files and count($files))
@@ -11,7 +11,14 @@
                             @php
                                 $fileObj->spreadMeta();
                                 $linkTitle = $downloadingFile['label'] ?: $fileObj->file_name;
-                                $url = route('file.download', [$downloadingFile['src'], $downloadingFile['label']]);
+                                $url = route(
+                                    'file.download.disposable',
+                                    [
+                                        'hashString' => $downloadingFile['hashString'],
+                                        'hadhid' => $downloadingFile['src'],
+                                        'fileName' => $downloadingFile['label']
+                                    ]
+                                );
                             @endphp
                             @if($key) <br/> @endif
                                 <div style="display: inline-block">
