@@ -564,6 +564,8 @@ return [
         'text_files'  => 'فایل‌های متنی',
 
         'guidance_file' => 'فایل راهنما',
+
+        'tracking_number' => 'کد پیگیری',
     ],
 
     "http" => [

@@ -52,7 +52,7 @@ class TestController extends Controller
 
     public function index()
     {
-        dd(Order::find(14)->hashid, __FILE__ . " - " . __LINE__);
+        dd(Order::find(24)->hashid, __FILE__ . " - " . __LINE__);
     }
 
     public function states()

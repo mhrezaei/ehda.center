@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Requests\Front\ProductsFilterRequest;
 use App\Http\Requests\Front\PurchaseProductRequest;
+use App\Http\Requests\Front\TrackPurchasementRequest;
 use App\Models\Category;
 use App\Models\File;
 use App\Models\FileDownloads;
@@ -379,52 +380,104 @@ class ProductsController extends Controller
             // If there is no post with this info we will show 404 error
             $post = $order->posts()->first();
             if (!$post->exists) {
-                return $this->abort('404');
+                return $this->abort('404', request()->ajax());
             }
 
             $redirectUrl = $post->direct_url . '#payment-result';
-
             $flashData = [];
+
 //          peyment_verify($trackingNumber) @todo: check it!!!
             if (true or peyment_verify($trackingNumber)) {
-                $order->status = 1; // Succeeded
-                $flashData['paymentSucceeded'] = true;
-
                 // If received tracking number doesn't match with order's tracking number, we will show 403 error
                 if ($order->tracking_number != $trackingNumber) {
                     return $this->abort(403);
                 }
 
-                $post->spreadMeta();
+                $order->status = 1; // Succeeded
+                $flashData['paymentSucceeded'] = true;
 
-                $files = $post->post_files;
-
-                if ($files and is_array($files) and count($files)) {
-                    foreach ($files as $file) {
-                        $fileRow = File::findByHashid($file['src']);
-                        if ($fileRow->exists) {
-                            FileDownloads::store([
-                                'user_id'            => (auth()->guest()) ? null : user()->id,
-                                'file_id'            => $fileRow->id,
-                                'order_id'           => $order->id,
-                                'downloadable_count' => 1,
-                            ]);
-                        }
-                    }
-                }
+                $this->serveDownload($post, $order);
 
                 $flashData['product-order-' . $post->hashid] = $order->id;
             } else {
-                $order->status = -1; // Canceled
                 $flashData['paymentSucceeded'] = false;
+
+                $order->status = -1; // Canceled
+
             }
 
             $order->save();
             return redirect($redirectUrl)->with($flashData);
+
         } else {
             return $this->abort(404);
         }
+    }
 
+    public function track(TrackPurchasementRequest $request)
+    {
+        $order = Order::where([
+            'tracking_number' => $request->tracking_number,
+            'status'          => 1
+        ])->first();
+
+        if ($order) {
+            // If there is no post with this info we will show 404 error
+            $post = $order->posts()->first();
+            if (!$post->exists) {
+                return $this->abort('404', request()->ajax());
+            }
+
+            $redirectUrl = $post->direct_url . '#payment-result';
+            $flashData = ['paymentSucceeded' => true];
+
+            $this->serveDownload($post, $order);
+
+
+//            // @todo: remove this line
+//            session()->reFlash();
+
+            $flashData['product-order-' . $post->hashid] = $order->id;
+
+//            ss(session()->all()['_flash']);
+            foreach ($flashData as $flashName => $flashValue) {
+                session()->flash($flashName, $flashValue);
+            }
+            session()->reFlash();
+
+            return $this->jsonFeedback([
+                'ok'       => 1,
+                'message'  => trans('forms.feed.wait'),
+                'redirect' => $redirectUrl,
+            ]);
+        }
+    }
+
+    protected function serveDownload($post, $order)
+    {
+        $post->spreadMeta();
+
+        $files = $post->post_files;
+
+        if ($files and is_array($files) and count($files)) {
+            foreach ($files as $file) {
+                $fileRow = File::findByHashid($file['src']);
+                if ($fileRow->exists) {
+                    $similarRow = FileDownloads::where([
+                        'file_id'  => $fileRow->id,
+                        'order_id' => $order->id,
+                    ])->first();
+                    if (!$similarRow or !$similarRow->exists) {
+                        FileDownloads::store([
+                            'user_id'            => (auth()->guest()) ? null : user()->id,
+                            'file_id'            => $fileRow->id,
+                            'order_id'           => $order->id,
+                            'downloadable_count' => 1,
+                        ]);
+                    }
+                }
+            }
+        }
 
     }
 }

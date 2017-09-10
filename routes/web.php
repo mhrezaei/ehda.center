@@ -512,6 +512,7 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
             Route::post('purchase', 'ProductsController@purchase')->name('products.purchase');
             Route::get('payment-result/{order}', 'ProductsController@paymentResult')
                 ->name('education.paymentResult');
+            Route::post('tracking', 'ProductsController@track')->name('products.tracking');
         });
 
         // Massages

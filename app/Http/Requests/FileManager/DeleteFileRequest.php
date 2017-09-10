@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\FileManager;
 
-class SetFileDetails extends FileManagerRequest
+class DeleteFileRequest extends FileManagerRequest
 {
     /**
      * Get the validation rules that apply to the request.

@@ -383,6 +383,7 @@ JS;
             $files = $post->post_files ? $post->post_files : [];
             $innerHTMLVars['postFiles'] = $files;
             $orderSessionName = 'product-order-' . $post->hashid;
+
             if (session()->exists($orderSessionName) and count($files)) {
                 $orderId = session($orderSessionName);
                 foreach ($files as $file) {

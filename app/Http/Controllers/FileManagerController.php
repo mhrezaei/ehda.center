@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\FileManager\DeleteFileDetails;
+use App\Http\Requests\FileManager\DeleteFileRequest;
 use App\Http\Requests\FileManager\GetFileDetailsRequest;
 use App\Http\Requests\FileManager\GetFilesListRequest;
-use App\Http\Requests\FileManager\RestoreFileDetails;
-use App\Http\Requests\FileManager\SetFileDetails;
+use App\Http\Requests\FileManager\RestoreFileRequest;
+use App\Http\Requests\FileManager\SetFileDetailsRequest;
 use App\Models\Category;
 use App\Models\File;
 use App\Models\FileDownloads;
@@ -205,7 +205,7 @@ class FileManagerController extends Controller
         return view('file-manager.media-frame-content-gallery-file-details', compact('file'));
     }
 
-    public function setFileDetails(SetFileDetails $request)
+    public function setFileDetails(SetFileDetailsRequest $request)
     {
         $file = File::findByHashid($request->fileKey);
         if (!$file->exists) {
@@ -220,7 +220,7 @@ class FileManagerController extends Controller
         File::store($saveData, ['fileKey']);
     }
 
-    public function deleteFile(DeleteFileDetails $request)
+    public function deleteFile(DeleteFileRequest $request)
     {
         $file = File::findByHashid($request->fileKey);
         if (!$file->exists) {
@@ -233,7 +233,7 @@ class FileManagerController extends Controller
         $file->delete();
     }
 
-    public function restoreFile(RestoreFileDetails $request)
+    public function restoreFile(RestoreFileRequest $request)
     {
         $file = File::findByHashid($request->fileKey, ['with_trashed' => true]);
         if (!$file->exists) {

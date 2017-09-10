@@ -3,6 +3,8 @@ return [
     'purchases'             => "خریدها",
     'purchase'              => "خرید",
     'pay'                   => "پرداخت",
+    'tracking'              => "پیگیری",
+    'purchase_tracking'     => "پیگیری خرید",
     'receipts'              => "رسیدهای خرید",
     'receipt'               => "رسید خرید",
     'no_receipt'            => "بدون رسید",
