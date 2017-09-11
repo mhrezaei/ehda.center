@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Api_ips;
+use App\Models\Api_ips;
 use App\Http\Controllers\Controller;
 use App\Models\Api_token;
 use App\Models\State;
