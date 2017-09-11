@@ -1,26 +1,26 @@
 <div class="page attachments-browser" id="gallery">
     <div class="media-toolbar">
         <div class="toolbar-right">
-            <select id="media-filters" class="attachment-filters">
-                <option value="all">همه‌ی موارد رسانه‌ای</option>
-                <option value="uploaded">بارگذاری شده در این نوشته</option>
-                <option value="image">تصویرها</option>
-                <option value="audio">صوت</option>
-                <option value="video">ویدیو</option>
-                <option value="unattached">پیوست‌نشده</option>
-            </select>
-            <select id="date-filters" class="attachment-filters">
-                <option value="all">همه تاریخ ها</option>
-                <option value="uploaded">بارگذاری شده در این نوشته</option>
-                <option value="image">تصویرها</option>
-                <option value="audio">صوت</option>
-                <option value="video">ویدیو</option>
-                <option value="unattached">پیوست‌نشده</option>
-            </select>
+            {{--<select id="media-filters" class="attachment-filters">--}}
+                {{--<option value="all">همه‌ی موارد رسانه‌ای</option>--}}
+                {{--<option value="uploaded">بارگذاری شده در این نوشته</option>--}}
+                {{--<option value="image">تصویرها</option>--}}
+                {{--<option value="audio">صوت</option>--}}
+                {{--<option value="video">ویدیو</option>--}}
+                {{--<option value="unattached">پیوست‌نشده</option>--}}
+            {{--</select>--}}
+            {{--<select id="date-filters" class="attachment-filters">--}}
+                {{--<option value="all">همه تاریخ ها</option>--}}
+                {{--<option value="uploaded">بارگذاری شده در این نوشته</option>--}}
+                {{--<option value="image">تصویرها</option>--}}
+                {{--<option value="audio">صوت</option>--}}
+                {{--<option value="video">ویدیو</option>--}}
+                {{--<option value="unattached">پیوست‌نشده</option>--}}
+            {{--</select>--}}
         </div>
         <div class="toolbar-left">
             <button type="button" onclick="refreshGallery()"><i class="fa fa-refresh"></i></button>
-            <input typle="search" placeholder="جستجو در رسانه ها" class="search"></input>
+            {{--<input typle="search" placeholder="جستجو در رسانه ها" class="search"></input>--}}
         </div>
     </div>
     <div class="file-list-view">

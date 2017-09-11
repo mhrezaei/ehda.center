@@ -247,6 +247,17 @@ jQuery(function ($) {
         }
     }, '.btn-open-folder');
 
+    $('.attachments-preview').on({
+        click: function () {
+            let that = $(this);
+            let fileKey = that.data('file');
+
+            if (fileKey) {
+                showFileDetails($(this).closest('li'))
+            }
+        }
+    }, '.thumbnail');
+
     $('#add-btn').click(function () {
         var selected = $('li.ui-selected .thumbnail');
 
@@ -422,42 +433,67 @@ function getUrlParam(paramName) {
 }
 
 function showFileDetails(li) {
-    if (li.is('li')) {
-        let ul = li.closest('ul'),
-            hashid = li.find('.thumbnail').data('file');
-
-        //Showing Sidebar If Hidden
-        if (!detailSidebar.is(':visible')) {
-            detailSidebar.show();
-        }
-
-        //Showing Details Inside Sidebar
-        detailSidebar.find('.file-details').show();
-
-        // Getting file details
-        getFileDetailsXhr = $.ajax({
-            url: urls.getFileDetails + '/' + hashid,
-            beforeSend: function () {
-                if (getFileDetailsXhr && getFileDetailsXhr.readyState != 4) {
-                    getFileDetailsXhr.abort();
-                }
-            },
-            success: function (response) {
-                $('.file-details').attr('data-file', hashid);
-                $('.file-details').html($(response));
-
-                $('.setting :input').each(function () {
-                    let timerName = $(this).attr('name') + '-' + $.now();
-                    timers.fileDetails[timerName] = new Timer();
-                    $(this).attr('data-timer', timerName);
-                });
-            }
-        });
-
-        // Resetting Active Class To Currently Selected Element
-        ul.find('.active').removeClass('active');
-        li.addClass('active');
+    if (!li.is('li')) {
+        console.log('!li.is(\'li\')')
+        return false;
     }
+
+    if (!li.length) {
+        console.log('!li.length')
+        return false;
+    }
+
+    let thumb = li.find('.thumbnail');
+    if (!thumb.length) {
+        console.log('!thumb.length')
+        return false;
+    }
+
+    let hashid = thumb.data('file');
+    if (!hashid) {
+        return false;
+    }
+
+
+    let thumbnail = $('ul.ui-selectable li .thumbnail[data-file=' + hashid + ']');
+    if (!thumbnail.length) {
+        console.log('!li.length')
+        return false;
+    }
+    let ul = thumbnail.closest('ul');
+
+    //Showing Sidebar If Hidden
+    if (!detailSidebar.is(':visible')) {
+        detailSidebar.show();
+    }
+
+    //Showing Details Inside Sidebar
+    detailSidebar.find('.file-details').show();
+
+    // Getting file details
+    getFileDetailsXhr = $.ajax({
+        url: urls.getFileDetails + '/' + hashid,
+        beforeSend: function () {
+            if (getFileDetailsXhr && getFileDetailsXhr.readyState != 4) {
+                getFileDetailsXhr.abort();
+            }
+        },
+        success: function (response) {
+
+            $('.file-details').attr('data-file', hashid);
+            $('.file-details').html($(response));
+
+            $('.setting :input').each(function () {
+                let timerName = $(this).attr('name') + '-' + $.now();
+                timers.fileDetails[timerName] = new Timer();
+                $(this).attr('data-timer', timerName);
+            });
+        }
+    });
+
+    // Resetting Active Class To Currently Selected Element
+    ul.find('.active').removeClass('active');
+    thumbnail.closest('li').addClass('active');
 }
 
 function updateFileDetail(input) {
