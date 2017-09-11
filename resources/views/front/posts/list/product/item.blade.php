@@ -1,7 +1,7 @@
 @php $post->spreadMeta() @endphp
 @php $abstractLimit = 300 @endphp
 
-<div class="col-xs-12 border-1 border-lightGray rounded-corners-5" style="overflow: hidden">
+<div class="col-xs-12 border-1 border-lightGray rounded-corners-5 mb10" style="overflow: hidden">
     <div class="row">
         <div class="media">
                 <div class="media-start">

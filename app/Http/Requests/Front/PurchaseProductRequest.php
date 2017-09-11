@@ -37,7 +37,7 @@ class PurchaseProductRequest extends FormRequest
             'post_id'    => 'exists:posts,id',
             'code_melli' => 'code_melli',
             'name'       => 'persian:60',
-            'mobile'     => 'phone:mobile',
+            'mobile'     => 'required|phone:mobile',
             'phone'      => 'phone',
             'email'      => 'email',
             'price'      => 'required|numeric|min:' . ($post->exists ? $post->price : 0)

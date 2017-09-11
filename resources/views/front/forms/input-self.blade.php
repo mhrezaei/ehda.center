@@ -10,6 +10,13 @@
             @php $placeholder = '' @endphp
         @endif
     @endif
+    @if(!isset($error_value))
+        @if(Lang::has('validation.javascript_validation.' . $name))
+            @php $error_value = trans('validation.javascript_validation.' . $name) @endphp
+        @else
+            @php $error_value = '' @endphp
+        @endif
+    @endif
     @if(isset($addon))
         <div class="input-group {{ $group_class or '' }}">
         @endif
@@ -24,7 +31,7 @@
                     onblur="{{$on_blur or ''}}"
                     onfocus="{{$on_focus or ''}}"
                     aria-valuenow="{{$value or ''}}"
-                    error-value="{{ isset($error_value) ? $error_value : trans('validation.javascript_validation.' . $name)  }}"
+                    error-value="{{ $error_value  }}"
                     @if(isset($dataAttributes) and is_array($dataAttributes))
                         @foreach($dataAttributes as $attributeName => $attributeValue)
                             data-{{ $attributeName }}="{{ $attributeValue }}"

@@ -59,8 +59,9 @@ return [
 
     'messages' => [
         'payment' => [
-            'succeeded' => 'پرداخت با موفقیت به پایان رسید.',
-            'canceled'  => 'پرداخت لغو شد.',
+            'succeeded'         => 'پرداخت با موفقیت به پایان رسید.',
+            'canceled'          => 'پرداخت لغو شد.',
+            'has_been_canceled' => 'پرداخت لغو شده است.',
         ]
     ],
 

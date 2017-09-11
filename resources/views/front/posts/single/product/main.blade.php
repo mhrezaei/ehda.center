@@ -7,8 +7,7 @@
 @endphp
 
 <style>
-    .post-text img,
-    .post-cover {
+    .post-text img {
         max-width: 80% !important;
     }
 </style>

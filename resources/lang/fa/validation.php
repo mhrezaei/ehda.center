@@ -361,6 +361,7 @@ return [
         'allowed_meta'    => 'متاهای مجاز',
         'featured_image'  => 'تصویر شاخص',
         'image'           => 'تصویر',
+        'preview_image'   => 'تصویر نمایشی',
         'card_no'         => 'شماره کارت',
         'organs'          => 'اعضای قابل اهدا',
         'newsletter'      => 'خبرنامه',

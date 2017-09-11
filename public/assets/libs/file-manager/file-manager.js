@@ -25,7 +25,7 @@ jQuery(function ($) {
     }
     window.fileManagerModalOptions = getValueOf(parent.window.fileManagerModalOptions ? parent.window.fileManagerModalOptions : {});
 
-    selectFolder($(".breadcrumb-folders .folder").first())
+    selectFolder($(".breadcrumb-folders .folder").first());
 
     $window = $(window);
     //Details Shown Inside Sidebar (Hidden On Page Load)
@@ -115,16 +115,7 @@ jQuery(function ($) {
                 showFileDetails(selected);
             }
 
-            var selectedClone = selected.clone().removeAttr('class'),
-                selectedCount = selectedClone.length,
-                PersianCount = pd(selectedCount);
-
-            //Adding Selected Items Into Footer Preview
-            footer.find('.attachments-preview').empty().append(selectedClone);
-            footer.find('.count').empty().text("گزینش شده: " + PersianCount);
-
-            //Setting Selected Elements As Button Value
-            $('#add-btn').val(selectedClone);
+            refreshSelection(selected);
         },
     });
 
@@ -135,7 +126,6 @@ jQuery(function ($) {
     });
 
     /*----End Selecting Thumbnails----*/
-
 
     /*-----Clear List And Reseting -----*/
     $('#clear-list').on('click', function () {
@@ -218,7 +208,7 @@ jQuery(function ($) {
                         $('.deletion-message').hide().html();
                     },
                     error: function (rs) {
-                        if(rs.status == 404) {
+                        if (rs.status == 404) {
                             $('.deletion-message').html(lang['error-file-not-found']).show();
                         }
                     },
@@ -239,6 +229,38 @@ jQuery(function ($) {
             updateFileDetail($(this))
         }
     }, '.setting :input');
+
+    $(document).on({
+        click: function (event) {
+            event.preventDefault();
+            let that = $(this);
+            let instance = that.data('instance');
+            let key = that.data('key');
+
+            if (instance && key) {
+                let folder = $('.folder[data-instance="' + instance + '"][data-key="' + key + '"]');
+                if (folder.length == 1) {
+                    selectFolder(folder);
+                }
+            }
+        }
+    }, '.btn-open-folder');
+
+    $('.file-list-view').scroll(function () {
+        let scrolled = $(this).scrollTop();
+        $('#loading-dialog').css('top', scrolled + 'px')
+    });
+
+    $('.attachments-preview').on({
+        click: function () {
+            let that = $(this);
+            let fileKey = that.data('file');
+
+            if (fileKey) {
+                showFileDetails($(this).closest('li'))
+            }
+        }
+    }, '.thumbnail');
 
     $('#add-btn').click(function () {
         var selected = $('li.ui-selected .thumbnail');
@@ -325,19 +347,62 @@ function selectFolder(folder) {
         success: function (response) {
             $('#thumbnail').html($(response));
 
-            $('#thumbnail').find('li').each(function () {
-                let li = $(this);
-                let img = li.find('img')
-                if (img.length && img.hasClass('not-found'))
-                    li.addClass('unselectable');
-            });
+            // $('#thumbnail').find('li').each(function () {
+            //     let li = $(this);
+            //     let img = li.find('img')
+            //     if (img.length && img.hasClass('not-found'))
+            //         li.addClass('unselectable');
+            // });
             loadingDialog('hide');
+            refreshSelection();
         }
     });
 }
 
 function refreshGallery() {
     selectFolder($(".breadcrumb-folders .folder.current"));
+}
+
+function refreshSelection(selected) {
+    if (typeof seleted == 'undefined') {
+        selected = $('li.ui-selected');
+    }
+
+    selected = selected.filter(function (key, obj) {
+        let item = $(obj);
+        if (!item.length) {
+            return false;
+        }
+
+        let img = item.find('img');
+        if (!img.length) {
+            return false;
+        }
+
+        if (img.hasClass('not-found')) {
+            item.removeClass('ui-selected');
+            return false;
+        }
+
+        return true;
+    });
+
+    if (selected.length) {
+        $('#add-btn').removeAttr('disabled');
+    } else {
+        $('#add-btn').attr('disabled', 'disabled');
+    }
+
+    let selectedClone = selected.clone().removeAttr('class'),
+        selectedCount = selectedClone.length,
+        PersianCount = pd(selectedCount);
+
+    //Adding Selected Items Into Footer Preview
+    footer.find('.attachments-preview').empty().append(selectedClone);
+    footer.find('.count').empty().text("گزینش شده: " + PersianCount);
+
+    //Setting Selected Elements As Button Value
+    $('#add-btn').val(selectedClone);
 }
 
 function switchToGallery() {
@@ -372,42 +437,67 @@ function getUrlParam(paramName) {
 }
 
 function showFileDetails(li) {
-    if (li.is('li')) {
-        let ul = li.closest('ul'),
-            hashid = li.find('.thumbnail').data('file');
-
-        //Showing Sidebar If Hidden
-        if (!detailSidebar.is(':visible')) {
-            detailSidebar.show();
-        }
-
-        //Showing Details Inside Sidebar
-        detailSidebar.find('.file-details').show();
-
-        // Getting file details
-        getFileDetailsXhr = $.ajax({
-            url: urls.getFileDetails + '/' + hashid,
-            beforeSend: function () {
-                if (getFileDetailsXhr && getFileDetailsXhr.readyState != 4) {
-                    getFileDetailsXhr.abort();
-                }
-            },
-            success: function (response) {
-                $('.file-details').attr('data-file', hashid);
-                $('.file-details').html($(response));
-
-                $('.setting :input').each(function () {
-                    let timerName = $(this).attr('name') + '-' + $.now();
-                    timers.fileDetails[timerName] = new Timer();
-                    $(this).attr('data-timer', timerName);
-                });
-            }
-        });
-
-        // Resetting Active Class To Currently Selected Element
-        ul.find('.active').removeClass('active');
-        li.addClass('active');
+    if (!li.is('li')) {
+        console.log('!li.is(\'li\')')
+        return false;
     }
+
+    if (!li.length) {
+        console.log('!li.length')
+        return false;
+    }
+
+    let thumb = li.find('.thumbnail');
+    if (!thumb.length) {
+        console.log('!thumb.length')
+        return false;
+    }
+
+    let hashid = thumb.data('file');
+    if (!hashid) {
+        return false;
+    }
+
+
+    let thumbnail = $('ul.ui-selectable li .thumbnail[data-file=' + hashid + ']');
+    if (!thumbnail.length) {
+        console.log('!li.length')
+        return false;
+    }
+    let ul = thumbnail.closest('ul');
+
+    //Showing Sidebar If Hidden
+    if (!detailSidebar.is(':visible')) {
+        detailSidebar.show();
+    }
+
+    //Showing Details Inside Sidebar
+    detailSidebar.find('.file-details').show();
+
+    // Getting file details
+    getFileDetailsXhr = $.ajax({
+        url: urls.getFileDetails + '/' + hashid,
+        beforeSend: function () {
+            if (getFileDetailsXhr && getFileDetailsXhr.readyState != 4) {
+                getFileDetailsXhr.abort();
+            }
+        },
+        success: function (response) {
+
+            $('.file-details').attr('data-file', hashid);
+            $('.file-details').html($(response));
+
+            $('.setting :input').each(function () {
+                let timerName = $(this).attr('name') + '-' + $.now();
+                timers.fileDetails[timerName] = new Timer();
+                $(this).attr('data-timer', timerName);
+            });
+        }
+    });
+
+    // Resetting Active Class To Currently Selected Element
+    ul.find('.active').removeClass('active');
+    thumbnail.closest('li').addClass('active');
 }
 
 function updateFileDetail(input) {

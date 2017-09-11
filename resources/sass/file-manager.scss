@@ -248,15 +248,15 @@ input[type=search], input[type=text] {
         bottom: 0;
         overflow: auto;
 
+        .loading-dialog {
+          @extend .full-height, .full-width, .bg-white;
+          position: absolute;
+          z-index: 1;
+        }
+
         .thumbnail-container {
           @extend .full-height;
           position: relative;
-
-          .loading-dialog {
-            @extend .full-height, .full-width, .bg-white;
-            position: absolute;
-            z-index: 1;
-          }
 
           ul {
             padding: 2px 8px 8px;

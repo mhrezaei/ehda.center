@@ -24,7 +24,8 @@ class TrackPurchasementRequest extends FormRequest
     public function rules()
     {
         return [
-            'tracking_number' => 'required|exists:orders,tracking_number'
+            'tracking_number' => 'required|exists:orders,tracking_number',
+            'mobile'          => 'required|exists:orders,mobile',
         ];
     }
 }
