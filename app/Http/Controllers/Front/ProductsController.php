@@ -423,7 +423,19 @@ class ProductsController extends Controller
     {
         $order = Order::where([
             'tracking_number' => $request->tracking_number,
+            'mobile'          => $request->mobile,
+            ['status', '<>', self::$statusesCodes['temp']]
         ])->first();
+
+
+        if (!$order) {
+            return $this->jsonFeedback([
+                'ok'      => 0,
+                'message' => trans('validation.exists', [
+                    'attribute' => trans('validation.attributes.tracking_number')
+                ]),
+            ]);
+        }
 
         // If there is no post with this info we will show 404 error
         $post = $order->posts()->first();
