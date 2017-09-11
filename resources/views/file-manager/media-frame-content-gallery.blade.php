@@ -2,20 +2,20 @@
     <div class="media-toolbar">
         <div class="toolbar-right">
             {{--<select id="media-filters" class="attachment-filters">--}}
-                {{--<option value="all">همه‌ی موارد رسانه‌ای</option>--}}
-                {{--<option value="uploaded">بارگذاری شده در این نوشته</option>--}}
-                {{--<option value="image">تصویرها</option>--}}
-                {{--<option value="audio">صوت</option>--}}
-                {{--<option value="video">ویدیو</option>--}}
-                {{--<option value="unattached">پیوست‌نشده</option>--}}
+            {{--<option value="all">همه‌ی موارد رسانه‌ای</option>--}}
+            {{--<option value="uploaded">بارگذاری شده در این نوشته</option>--}}
+            {{--<option value="image">تصویرها</option>--}}
+            {{--<option value="audio">صوت</option>--}}
+            {{--<option value="video">ویدیو</option>--}}
+            {{--<option value="unattached">پیوست‌نشده</option>--}}
             {{--</select>--}}
             {{--<select id="date-filters" class="attachment-filters">--}}
-                {{--<option value="all">همه تاریخ ها</option>--}}
-                {{--<option value="uploaded">بارگذاری شده در این نوشته</option>--}}
-                {{--<option value="image">تصویرها</option>--}}
-                {{--<option value="audio">صوت</option>--}}
-                {{--<option value="video">ویدیو</option>--}}
-                {{--<option value="unattached">پیوست‌نشده</option>--}}
+            {{--<option value="all">همه تاریخ ها</option>--}}
+            {{--<option value="uploaded">بارگذاری شده در این نوشته</option>--}}
+            {{--<option value="image">تصویرها</option>--}}
+            {{--<option value="audio">صوت</option>--}}
+            {{--<option value="video">ویدیو</option>--}}
+            {{--<option value="unattached">پیوست‌نشده</option>--}}
             {{--</select>--}}
         </div>
         <div class="toolbar-left">
@@ -24,13 +24,13 @@
         </div>
     </div>
     <div class="file-list-view">
+        <div id="loading-dialog" class="loading-dialog text-center text-blue pt30" style="display: none">
+            <p>
+                {{ trans('forms.feed.wait') }}
+            </p>
+            <img src="{{ asset('assets/images/template/AjaxLoader.gif') }}">
+        </div>
         <div class="thumbnail-container">
-            <div id="loading-dialog" class="loading-dialog text-center text-blue pt30" style="display: none">
-                <p>
-                    {{ trans('forms.feed.wait') }}
-                </p>
-                <img src="{{ asset('assets/images/template/AjaxLoader.gif') }}">
-            </div>
             <ul class="" id="thumbnail">
                 @include('file-manager.media-frame-content-gallery-images-list')
             </ul>

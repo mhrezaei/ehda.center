@@ -127,7 +127,6 @@ jQuery(function ($) {
 
     /*----End Selecting Thumbnails----*/
 
-
     /*-----Clear List And Reseting -----*/
     $('#clear-list').on('click', function () {
 
@@ -246,6 +245,11 @@ jQuery(function ($) {
             }
         }
     }, '.btn-open-folder');
+
+    $('.file-list-view').scroll(function () {
+        let scrolled = $(this).scrollTop();
+        $('#loading-dialog').css('top', scrolled + 'px')
+    });
 
     $('.attachments-preview').on({
         click: function () {
