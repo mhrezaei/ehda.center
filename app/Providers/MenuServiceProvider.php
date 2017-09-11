@@ -386,6 +386,10 @@ class MenuServiceProvider extends ServiceProvider
                         ]
                     ],
                     [
+                        'title' => trans('front.main-menu.sub_menus.achieve.shop'),
+                        'link'  => route_locale('products.archive')
+                    ],
+                    [
                         'title' => trans('front.main-menu.sub_menus.achieve.contact_us'),
                         'link'  => route_locale('contact')
                     ],
