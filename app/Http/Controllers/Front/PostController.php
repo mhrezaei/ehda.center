@@ -304,7 +304,7 @@ JS;
         }
 
         $sendingArea = view('front.test.works.sending_area.main', compact('posts'));
-        $staticPost = PostsServiceProvider::smartFindPost('send-works-text');
+        $staticPost = PostsServiceProvider::smartFindPost('send-works-text')->in(getLocale());
         if ($staticPost->exists) {
 //        $postContentHTML = PostsServiceProvider::showPost('send-works-text', ['externalBlade' => $sendingArea]);
             return view('front.test.works.main', compact('sendingArea', 'staticPost'));
@@ -422,14 +422,14 @@ JS;
                     $innerHTMLVars['paymentSucceeded'] = session('paymentSucceeded');
 
                     if ($paymentSucceeded) {
-                        $messagePost = Post::findBySlug('payment-success');
+                        $messagePost = Post::findBySlug('payment-success')->in(getLocale());
                         if ($messagePost->exists) {
                             $innerHTMLVars['paymentMsg'] = $messagePost->text;
                         } else {
                             $innerHTMLVars['paymentMsg'] = trans('cart.messages.payment.succeeded');
                         }
                     } else {
-                        $messagePost = Post::findBySlug('payment-canceled');
+                        $messagePost = Post::findBySlug('payment-canceled')->in(getLocale());
                         if ($messagePost->exists) {
                             $innerHTMLVars['paymentMsg'] = $messagePost->text;
                         } else {

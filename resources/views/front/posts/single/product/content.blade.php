@@ -12,7 +12,10 @@
                     @endif
                 </div>
                 <div class="col-xs-6">
-                    @php $purchaseFormText = \App\Providers\PostsServiceProvider::smartFindPost('purchase-form') @endphp
+                    @php
+                        $purchaseFormText = \App\Providers\PostsServiceProvider::smartFindPost('purchase-form')
+                            ->in(getLocale());
+                    @endphp
                     @if($purchaseFormText->exists)
                         <div class="row">
                             <div class="col-xs-12">

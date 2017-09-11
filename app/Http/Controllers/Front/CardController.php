@@ -32,7 +32,7 @@ class CardController extends Controller
     public function index()
     {
         $captcha = SecKeyServiceProvider::getQuestion('fa');
-        $post = Post::findBySlug('organ-donation-card');
+        $post = Post::findBySlug('organ-donation-card')->in(getLocale());
         if (!$post or !$post->exists) {
             return redirect(url_locale());
         }

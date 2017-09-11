@@ -13,7 +13,7 @@ class StatesController extends Controller
     public function map()
     {
         $states = Domain::all();
-        $infoPost = Post::findBySlug('states-info');
+        $infoPost = Post::findBySlug('states-info')->in(getLocale());
         if ($infoPost->exists) {
             $infoPost->spreadMeta();
             $positionInfo = [
