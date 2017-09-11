@@ -16,7 +16,7 @@
     @include($viewFolder . '.payment-result')
     @include($viewFolder . '.files')
     @include($viewFolder . '.purchase-form')
-    <small>{{ trans('validation.attributes.publish') }}: {{ ad(echoDate($post->published_at, 'H:i / j F Y')) }}</small>
+{{--    <small>{{ trans('validation.attributes.publish') }}: {{ ad(echoDate($post->published_at, 'H:i / j F Y')) }}</small>--}}
 </div>
 
 {!! $externalBlade or '' !!}

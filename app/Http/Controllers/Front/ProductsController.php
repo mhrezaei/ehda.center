@@ -26,6 +26,11 @@ class ProductsController extends Controller
     use ManageControllerTrait;
 
     private $productPrefix = 'pd-';
+    protected static $statusesCodes = [
+        'canceled'  => -1,
+        'temp'      => 0,
+        'succeeded' => 1,
+    ];
 
     public function index()
     {
@@ -324,7 +329,7 @@ class ProductsController extends Controller
             'mobile'         => $request->mobile,
             'phone'          => $request->phone,
             'email'          => $request->email,
-            'status'         => 0, // just created
+            'status'         => self::$statusesCodes['temp'], // just created
             'invoice_amount' => $orderPostData['total_price'],
             'payable_amount' => $orderPostData['total_price'],
             'paid_amount'    => 0,
@@ -394,7 +399,7 @@ class ProductsController extends Controller
                     return $this->abort(403);
                 }
 
-                $order->status = 1; // Succeeded
+                $order->status = self::$statusesCodes['succeeded'];
                 $flashData['paymentSucceeded'] = true;
 
                 $this->serveDownload($post, $order);
@@ -402,7 +407,7 @@ class ProductsController extends Controller
             } else {
                 $flashData['paymentSucceeded'] = false;
 
-                $order->status = -1; // Canceled
+                $order->status = self::$statusesCodes['canceled'];
 
             }
 
@@ -418,38 +423,50 @@ class ProductsController extends Controller
     {
         $order = Order::where([
             'tracking_number' => $request->tracking_number,
-            'status'          => 1
         ])->first();
 
-        if ($order) {
-            // If there is no post with this info we will show 404 error
-            $post = $order->posts()->first();
-            if (!$post->exists) {
-                return $this->abort('404', request()->ajax());
-            }
+        // If there is no post with this info we will show 404 error
+        $post = $order->posts()->first();
+        if (!$post->exists) {
+            return $this->abort('404', request()->ajax());
+        }
 
-            $redirectUrl = $post->direct_url . '#payment-result';
-            $flashData = ['paymentSucceeded' => true];
+        switch ($order->status) {
+            case self::$statusesCodes['succeeded']:
+                $redirectUrl = $post->direct_url . '#payment-result';
+                $flashData = ['paymentSucceeded' => true];
 
-            $this->serveDownload($post, $order);
+                $this->serveDownload($post, $order);
 
+                $flashData['product-order-' . $post->hashid] = $order->id;
 
-//            // @todo: remove this line
-//            session()->reFlash();
+                foreach ($flashData as $flashName => $flashValue) {
+                    session()->flash($flashName, $flashValue);
+                }
+                session()->reFlash();
 
-            $flashData['product-order-' . $post->hashid] = $order->id;
+                return $this->jsonFeedback([
+                    'ok'       => 1,
+                    'message'  => trans('forms.feed.wait'),
+                    'redirect' => $redirectUrl,
+                ]);
+                break;
 
-//            ss(session()->all()['_flash']);
-            foreach ($flashData as $flashName => $flashValue) {
-                session()->flash($flashName, $flashValue);
-            }
-            session()->reFlash();
+            case self::$statusesCodes['canceled']:
+                return $this->jsonFeedback([
+                    'ok'      => 0,
+                    'message' => trans('cart.messages.payment.has_been_canceled'),
+                ]);
+                break;
 
-            return $this->jsonFeedback([
-                'ok'       => 1,
-                'message'  => trans('forms.feed.wait'),
-                'redirect' => $redirectUrl,
-            ]);
+            default:
+                return $this->jsonFeedback([
+                    'ok'      => 0,
+                    'message' => trans('validation.exists', [
+                        'attribute' => trans('validation.attributes.tracking_number')
+                    ]),
+                ]);
+                break;
         }
     }
 
