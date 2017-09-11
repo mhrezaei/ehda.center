@@ -83,7 +83,7 @@ class State extends Model
 	public function getFullNameAttribute()
 	{
 		if($this->isProvince()) {
-			return trans('manage.devSettings.states.province') . "  " . $this->title;
+			return trans('settings.province') . " " . $this->title;
 		}
 		else {
 			return $this->province()->title . " / " . $this->title;

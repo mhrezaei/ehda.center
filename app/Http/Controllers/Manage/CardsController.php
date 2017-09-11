@@ -372,7 +372,7 @@ class CardsController extends UsersController
 		/*-----------------------------------------------
 		| Send to Print ...
 		*/
-
+		Printer::where('user_id' , $saved_user->id)->delete() ;
 		if($saved and $data['_submit'] == 'print') {
 			$saved = Printing::addTo(Post::find($request->from_event_id), $saved_user);
 		}
@@ -620,6 +620,7 @@ class CardsController extends UsersController
 				continue;
 			}
 
+			Printer::where('user_id' , $user->id)->delete() ;
 			if(Printer::where('user_id', $user->id)->count()) {
 				continue;
 			}
