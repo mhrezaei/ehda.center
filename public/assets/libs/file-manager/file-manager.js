@@ -25,7 +25,7 @@ jQuery(function ($) {
     }
     window.fileManagerModalOptions = getValueOf(parent.window.fileManagerModalOptions ? parent.window.fileManagerModalOptions : {});
 
-    selectFolder($(".breadcrumb-folders .folder").first())
+    selectFolder($(".breadcrumb-folders .folder").first());
 
     $window = $(window);
     //Details Shown Inside Sidebar (Hidden On Page Load)
@@ -115,16 +115,7 @@ jQuery(function ($) {
                 showFileDetails(selected);
             }
 
-            var selectedClone = selected.clone().removeAttr('class'),
-                selectedCount = selectedClone.length,
-                PersianCount = pd(selectedCount);
-
-            //Adding Selected Items Into Footer Preview
-            footer.find('.attachments-preview').empty().append(selectedClone);
-            footer.find('.count').empty().text("گزینش شده: " + PersianCount);
-
-            //Setting Selected Elements As Button Value
-            $('#add-btn').val(selectedClone);
+            refreshSelection(selected);
         },
     });
 
@@ -218,7 +209,7 @@ jQuery(function ($) {
                         $('.deletion-message').hide().html();
                     },
                     error: function (rs) {
-                        if(rs.status == 404) {
+                        if (rs.status == 404) {
                             $('.deletion-message').html(lang['error-file-not-found']).show();
                         }
                     },
@@ -239,6 +230,22 @@ jQuery(function ($) {
             updateFileDetail($(this))
         }
     }, '.setting :input');
+
+    $(document).on({
+        click: function (event) {
+            event.preventDefault();
+            let that = $(this);
+            let instance = that.data('instance');
+            let key = that.data('key');
+
+            if (instance && key) {
+                let folder = $('.folder[data-instance="' + instance + '"][data-key="' + key + '"]');
+                if (folder.length == 1) {
+                    selectFolder(folder);
+                }
+            }
+        }
+    }, '.btn-open-folder');
 
     $('#add-btn').click(function () {
         var selected = $('li.ui-selected .thumbnail');
@@ -325,19 +332,62 @@ function selectFolder(folder) {
         success: function (response) {
             $('#thumbnail').html($(response));
 
-            $('#thumbnail').find('li').each(function () {
-                let li = $(this);
-                let img = li.find('img')
-                if (img.length && img.hasClass('not-found'))
-                    li.addClass('unselectable');
-            });
+            // $('#thumbnail').find('li').each(function () {
+            //     let li = $(this);
+            //     let img = li.find('img')
+            //     if (img.length && img.hasClass('not-found'))
+            //         li.addClass('unselectable');
+            // });
             loadingDialog('hide');
+            refreshSelection();
         }
     });
 }
 
 function refreshGallery() {
     selectFolder($(".breadcrumb-folders .folder.current"));
+}
+
+function refreshSelection(selected) {
+    if (typeof seleted == 'undefined') {
+        selected = $('li.ui-selected');
+    }
+
+    selected = selected.filter(function (key, obj) {
+        let item = $(obj);
+        if (!item.length) {
+            return false;
+        }
+
+        let img = item.find('img');
+        if (!img.length) {
+            return false;
+        }
+
+        if (img.hasClass('not-found')) {
+            item.removeClass('ui-selected');
+            return false;
+        }
+
+        return true;
+    });
+
+    if (selected.length) {
+        $('#add-btn').removeAttr('disabled');
+    } else {
+        $('#add-btn').attr('disabled', 'disabled');
+    }
+
+    let selectedClone = selected.clone().removeAttr('class'),
+        selectedCount = selectedClone.length,
+        PersianCount = pd(selectedCount);
+
+    //Adding Selected Items Into Footer Preview
+    footer.find('.attachments-preview').empty().append(selectedClone);
+    footer.find('.count').empty().text("گزینش شده: " + PersianCount);
+
+    //Setting Selected Elements As Button Value
+    $('#add-btn').val(selectedClone);
 }
 
 function switchToGallery() {

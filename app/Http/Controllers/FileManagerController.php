@@ -202,7 +202,77 @@ class FileManagerController extends Controller
             return $this->abort(403);
         }
 
-        return view('file-manager.media-frame-content-gallery-file-details', compact('file'));
+        $fileObj = UploadServiceProvider::getFileObject($file->pathname);
+
+        if ($fileObj) {
+            $fileExistsOnStorage = true;
+        } else {
+            $fileExistsOnStorage = false;
+        }
+
+        $breadCrumb = [];
+        if ($file->category) {
+            $category = Category::findBySlug($file->category, 'id');
+            if ($category->exists) {
+                $folder = $category->folder;
+                $posttype = $folder->posttype;
+
+                $breadCrumb[] = [
+                    'label'    => $posttype->title,
+                    'instance' => 'posttype',
+                    'key'      => $posttype->hashid,
+                ];
+
+                if ($folder->title) {
+                    $breadCrumb[] = [
+                        'label'    => $folder->title,
+                        'instance' => 'folder',
+                        'key'      => $folder->hashid,
+                    ];
+                }
+
+                $breadCrumb[] = [
+                    'label'    => $category->title,
+                    'instance' => 'category',
+                    'key'      => $category->hashid,
+                ];
+            }
+        } else if ($file->folder) {
+            $folder = Folder::findBySlug($file->folder, 'id');
+            if ($folder->exists) {
+                $posttype = $folder->posttype;
+
+                $breadCrumb[] = [
+                    'label'    => $posttype->title,
+                    'instance' => 'posttype',
+                    'key'      => $posttype->hashid,
+                ];
+
+                if ($folder->title) {
+                    $breadCrumb[] = [
+                        'label'    => $folder->title,
+                        'instance' => 'folder',
+                        'key'      => $folder->hashid,
+                    ];
+                }
+            }
+
+        } else if ($file->posttype) {
+            $posttype = Posttype::findBySlug($file->posttype, 'id');
+            if ($posttype->exists) {
+                $breadCrumb[] = [
+                    'label'    => $posttype->title,
+                    'instance' => 'posttype',
+                    'key'      => $posttype->hashid,
+                ];
+            }
+
+        }
+
+        return view(
+            'file-manager.media-frame-content-gallery-file-details',
+            compact('file', 'fileExistsOnStorage', 'breadCrumb')
+        );
     }
 
     public function setFileDetails(SetFileDetailsRequest $request)

@@ -52,17 +52,17 @@
                 <div></div>
             </div>
             <div class="upload-detail">
-    									<span class="upload-count">
-    										<span class="upload-index">1</span>
-    										/
-    										<span class="upload-total">1</span>
-    									</span>
+                <span class="upload-count">
+                    <span class="upload-index">1</span>
+                    /
+                    <span class="upload-total">1</span>
+                </span>
                 <span class="upload-detail-separator">_</span>
                 <span class="upload-filename">blabla.jpg</span>
             </div>
             <span class="upload-errors"></span>
         </div>
-        <div class="file-details"></div>
+        <div class="file-details pt10"></div>
     </div>
 
 </div>
