@@ -1,25 +1,9 @@
 <div class="row mt20 mb20">
     <div class="col-xs-12">
-        <span class="text-green">
-            {{ trans('cart.price') }}:
-            {{ ad(number_format($post->price)) }} {{ trans('front.toman') }}
-        </span>
-        &nbsp;&nbsp;
-        <button type="button" class="btn btn-success" id="btn-purchase">
-            {{ trans('cart.purchase') }}
-        </button>
     </div>
     <div class="col-xs-12 mt15">
         <div class="row">
             <div class="col-md-8 col-md-offset-2 col-xs-12 col-xs-offset-0" id="purchase-form" style="display: none;">
-                @php $purchaseFormText = \App\Providers\PostsServiceProvider::smartFindPost('purchase-form') @endphp
-                @if($purchaseFormText->exists)
-                    <div class="row">
-                        <div class="col-xs-12">
-                            {!! $purchaseFormText->text !!}
-                        </div>
-                    </div>
-                @endif
                 <div class="row">
                     <div class="col-xs-12">
                         {!! Form::open([
@@ -61,7 +45,7 @@
                                 <div class="row">
                                     @include('front.forms.input', [
                                         'name' => 'mobile',
-                                        'class' => 'form-mobile',
+                                        'class' => 'form-mobile form-required',
                                         'value' => (!auth()->guest() ? user()->mobile : '')
                                     ])
                                 </div>

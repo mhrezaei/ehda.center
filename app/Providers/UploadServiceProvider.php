@@ -464,6 +464,11 @@ class UploadServiceProvider extends ServiceProvider
         if ($newVersion) {
             $newUrl = str_replace($fileName, $newVersion, $url);
             $newPath = str_replace(url('/') . '/', '', $newUrl);
+//
+//            if ($url == 'uploads\default\posts\iran-news\image\1504524575_CHuCN1Z0S8K9WR8bbrhpMqjORLmsw4_original.jpg') {
+//                dd(self::getFileObject($newPath), __FILE__ . " - " . __LINE__);
+//                dd($url, $newPath, __FILE__ . " - " . __LINE__);
+//            }
 
             if (self::getFileObject($newPath)) {
                 return $newUrl;
