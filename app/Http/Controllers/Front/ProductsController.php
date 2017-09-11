@@ -292,7 +292,7 @@ class ProductsController extends Controller
 
         /************************* Generating List View ********************** START */
         $postsListHtml = PostsServiceProvider::showList([
-            'type' => 'products'
+            'type' => 'products',
         ]);
 
         if (!$postsListHtml) {
