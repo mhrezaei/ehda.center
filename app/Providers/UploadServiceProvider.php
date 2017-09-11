@@ -554,43 +554,56 @@ class UploadServiceProvider extends ServiceProvider
         $rules = [];
         foreach ($identifiers as $identifier) {
             $thisRules = self::followUpConfig(self::generateConfigPath($identifier));
+            if (!$thisRules or !is_array($thisRules)) {
+                continue;
+            }
 
             // Merge "acceptedExtensions"
-            if (isset($rules['acceptedExtensions'])) {
-                $rules['acceptedExtensions'] = array_merge($rules['acceptedExtensions'],
-                    $thisRules['acceptedExtensions']);
-            } else {
-                $rules['acceptedExtensions'] = $thisRules['acceptedExtensions'];
+            if (array_key_exists('acceptedExtensions', $thisRules) and is_array($thisRules['acceptedExtensions'])) {
+                if (isset($rules['acceptedExtensions'])) {
+                    $rules['acceptedExtensions'] = array_merge($rules['acceptedExtensions'],
+                        $thisRules['acceptedExtensions']);
+                } else {
+                    $rules['acceptedExtensions'] = $thisRules['acceptedExtensions'];
+                }
             }
 
             // Merge "acceptedFiles"
-            if (isset($rules['acceptedFiles'])) {
-                $rules['acceptedFiles'] = array_merge($rules['acceptedFiles'], $thisRules['acceptedFiles']);
-            } else {
-                $rules['acceptedFiles'] = $thisRules['acceptedFiles'];
+            if (array_key_exists('acceptedFiles', $thisRules) and is_array($thisRules['acceptedFiles'])) {
+                if (isset($rules['acceptedFiles']) and is_array($rules['acceptedFiles'])) {
+                    $rules['acceptedFiles'] = array_merge($rules['acceptedFiles'], $thisRules['acceptedFiles']);
+                } else {
+                    $rules['acceptedFiles'] = $thisRules['acceptedFiles'];
+                }
             }
 
             // Merge "maxFileSize"
-            if (isset($rules['maxFileSize'])) {
-                $rules['maxFileSize'] = max($rules['maxFileSize'], $thisRules['maxFileSize']);
-            } else {
-                $rules['maxFileSize'] = $thisRules['maxFileSize'];
+            if (array_key_exists('maxFileSize', $thisRules)) {
+                if (isset($rules['maxFileSize'])) {
+                    $rules['maxFileSize'] = max($rules['maxFileSize'], $thisRules['maxFileSize']);
+                } else {
+                    $rules['maxFileSize'] = $thisRules['maxFileSize'];
+                }
             }
 
             // Merge "maxFiles"
-            if (isset($rules['maxFiles'])) {
-                $rules['maxFiles'] = max($rules['maxFiles'], $thisRules['maxFiles']);
-            } else {
-                $rules['maxFiles'] = $thisRules['maxFiles'];
+            if (array_key_exists('maxFiles', $thisRules)) {
+                if (isset($rules['maxFiles'])) {
+                    $rules['maxFiles'] = max($rules['maxFiles'], $thisRules['maxFiles']);
+                } else {
+                    $rules['maxFiles'] = $thisRules['maxFiles'];
+                }
             }
 
             // Merge "icon"
-            if (isset($rules['icon'])) {
-                if ($rules['icon'] != $thisRules['icon']) {
-                    $rules['icon'] = 'file';
+            if (array_key_exists('icon', $thisRules)) {
+                if (isset($rules['icon'])) {
+                    if ($rules['icon'] != $thisRules['icon']) {
+                        $rules['icon'] = 'file';
+                    }
+                } else {
+                    $rules['icon'] = $thisRules['icon'];
                 }
-            } else {
-                $rules['icon'] = $thisRules['icon'];
             }
         }
 

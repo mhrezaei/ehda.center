@@ -196,25 +196,29 @@ return [
     ],
 
     'file_types' => [
-        'file'  => [
+        'file'       => [
             'title'         => 'فایل',
             'dropzone_text' => 'فایل خود را اینجا رها کنید'
         ],
-        'image' => [
+        'image'      => [
             'title'         => 'تصویری',
             'dropzone_text' => 'تصویر خود را اینجا رها کنید'
         ],
-        'text'  => [
+        'text'       => [
             'title'         => 'متنی',
             'dropzone_text' => 'فایل متنی خود را اینجا رها کنید'
         ],
-        'video' => [
+        'video'      => [
             'title'         => 'ویدیویی',
             'dropzone_text' => 'ویدیو خود را اینجا رها کنید'
         ],
-        'audio' => [
+        'audio'      => [
             'title'         => 'صوتی',
             'dropzone_text' => 'فایل صوتی خود را اینجا رها کنید'
+        ],
+        'compressed' => [
+            'title'         => 'فشرده',
+            'dropzone_text' => 'فایل فشرده‌‌ی خود را اینجا رها کنید'
         ],
     ],
 

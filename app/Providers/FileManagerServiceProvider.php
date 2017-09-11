@@ -192,7 +192,7 @@ class FileManagerServiceProvider extends ServiceProvider
      */
     public static function posttypeUploader($posttype, $switches = [])
     {
-        $fileTypes = ['video', 'image', 'audio', 'text'];
+        $fileTypes = ['video', 'image', 'audio', 'text', 'compressed'];
         $posttypePrefix = UploadServiceProvider::getPostTypeConfigPrefix();
 
         $posttype = PostsServiceProvider::smartFindPosttype($posttype);

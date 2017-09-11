@@ -12,6 +12,7 @@
                 'manager.__posttype__.video',
                 'manager.__posttype__.audio',
                 'manager.__posttype__.text',
+                'manager.__posttype__.compressed',
             ]
         @endphp
         {!! \App\Providers\FileManagerServiceProvider::dropzoneUploader($uploaderFilePaths, [
