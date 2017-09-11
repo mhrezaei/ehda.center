@@ -44,15 +44,15 @@ return [
     ],
 
     'account' => [
-        'title'                                       => "Account Settings",
-        'profile_save'                                => 'Request to Save Changes',
-        'profile_revert'                              => 'Revert Profile',
-        'profile_save_note'                           => 'Change request has been sent and will be applied to profile after confirmation. Re-edition is possible till checking.',
-        'profile_pending_note'                        => 'Changes are waiting for confirmation. Next editions will update the request.',
-        'profile_reject_note'                         => 'Changes has been rejected. You can edit your request and send it again.',
-        'profile_revert_note'                         => 'Changes have been reverted.',
-        'profile_completions_note_for_new_volunteers' => "Your request to be organ donation volunteer is under investigation. We need your full information to do thah.",
-        'in_profile'                                  => 'In Profile: :v',
+        'title'                                       => "تنظیمات حساب",
+        'profile_save'                                => 'ثبت درخواست ذخیره‌ی تغییرات',
+        'profile_revert'                              => 'انصراف از تغییرات',
+        'profile_save_note'                           => 'درخواست تغییرات ارسال شد و پس از تأیید در پرونده ثبت خواهند شد. تا زمان بررسی، ویرایش مجدد امکان‌پذیر است.',
+        'profile_pending_note'                        => 'تغییرات در انتظار تأیید هستند. ویرایش‌های بعدی، درخواست را به‌روز خواهند کرد.',
+        'profile_reject_note'                         => 'درخواست تغییرات تأیید نشد! می‌توانید درخواست خود را ویرایش و مجدداً ارسال نمایید.',
+        'profile_revert_note'                         => 'تغییرات پاک شدند.',
+        'profile_completions_note_for_new_volunteers' => "درخواست شما برای سفیری اهدای عضو، در دست بررسی است. برای این کار به اطلاعات کامل شما نیاز داریم.",
+        'in_profile'                                  => 'در پرونده: :v',
     ],
 
 ];
