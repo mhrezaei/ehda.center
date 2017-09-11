@@ -10,12 +10,20 @@ String.prototype.camel2kebab = function () {
     return this.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 };
 
+/**
+ * Converts string from kebab-case format to camelCase format
+ * @returns {string}
+ */
 String.prototype.kebab2camel = function () {
     return this.replace(/-([a-z])/g, function (g) {
         return g[1].toUpperCase();
     });
 };
 
+/**
+ * Converts string from Title Case to camelCase
+ * @returns {string|*}
+ */
 String.prototype.title2camel = function () {
     var string = this.toLowerCase();
     var parts = string.split(" ");
@@ -27,32 +35,69 @@ String.prototype.title2camel = function () {
     return parts.join('');
 };
 
+/**
+ * Converts string from Title Case to kebab-case
+ * @returns {string}
+ */
 String.prototype.title2kebab = function () {
     return this.title2camel().camel2kebab();
 };
 
+/**
+ * Makes a string ucfirst
+ * @returns {string}
+ */
 String.prototype.ucfirst = function () {
     return this.replace(/(?:^|\s)\w/g, function (match) {
         return match.toUpperCase();
     });
 };
 
+/**
+ * Makes a string lcfirst
+ * @returns {string}
+ */
 String.prototype.lcfirst = function () {
     return this.replace(/(?:^|\s)\w/g, function (match) {
         return match.toLowerCase();
     });
 };
 
+/**
+ * Guess file name from its url
+ * @param extension
+ * @returns {string}
+ */
 String.prototype.filename = function (extension) {
     var s = this.replace(/\\/g, '/');
     s = s.substring(s.lastIndexOf('/') + 1);
     return extension ? s.replace(/[?#].+$/, '') : s.split('.')[0];
 };
 
+/**
+ * Replaces all occurrences of "search" with "replacement"
+ * @param {string} search
+ * @param {string} replacement
+ * @returns {string}
+ */
+String.prototype.replaceAll = function (search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+};
+
+/**
+ * Returns last item of an array
+ * @returns {*}
+ */
 Array.prototype.last = function () {
     return this[this.length - 1];
 };
 
+/**
+ * Returns a column of an object array
+ * @param columnName
+ * @returns {*}
+ */
 Array.prototype.getColumn = function (columnName) {
     return $.map(this, function (val) {
         return val[columnName] ? val[columnName] : null;
@@ -74,6 +119,10 @@ Object.byString = function (o, s) {
     return o;
 };
 
+/**
+ * Serializes inputs data and makes object
+ * @returns {{}}
+ */
 $.fn.serializeObject = function () {
     var o = {};
     var a = this.serializeArray();
@@ -142,4 +191,24 @@ function getValueOf(data, key) {
 function currentTime() {
     let time = new Date();
     return time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds();
+}
+
+/**
+ * Returns parameters received by url in this page
+ * @param {string} paramName
+ * @returns {null}
+ */
+function getUrlParam(paramName) {
+    let reParam = new RegExp('(?:[\?&]|&)' + paramName + '=([^&]+)', 'i');
+    let match = window.location.search.match(reParam);
+    return ( match && match.length > 1 ) ? match[1] : null;
+}
+
+/**
+ * Checks if a variable is defined or not
+ * @param input
+ * @returns {boolean}
+ */
+function isDefined(input) {
+    return !(typeof input == typeof undefined);
 }

@@ -574,7 +574,7 @@ class Shell extends Application
     /**
      * Reset the current code buffer.
      *
-     * This should be run after evaluating user input, catching exceptions, or
+     * This should be run after evaluating user input, caching exceptions, or
      * on demand by commands such as BufferCommand.
      */
     public function resetCodeBuffer()

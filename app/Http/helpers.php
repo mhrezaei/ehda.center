@@ -725,20 +725,53 @@ function getAparatId($link)
     return null;
 }
 
-if (! function_exists('number_random')) {
+/**
+ * Searches in $string and find anything between $start and $end
+ *
+ * @param string $string
+ * @param string $start
+ * @param string $end
+ *
+ * @return bool|string
+ */
+function getStringBetween($string, $start, $end)
+{
+    $string = ' ' . $string;
+    $ini = strpos($string, $start);
+    if ($ini == 0) return '';
+    $ini += strlen($start);
+    $len = strpos($string, $end, $ini) - $ini;
+    return substr($string, $ini, $len);
+}
+
+
+function emitisDatabaseConverter()
+{
+    $files = \App\Models\File::withTrashed()->get();
+    foreach ($files as $file) {
+        if (ends_with($file->name, '.' . $file->extension)) {
+            $file->name = pathinfo($file->name, PATHINFO_FILENAME);
+            $file->save();
+        }
+    }
+    echo 'done :)';
+}
+
+
+if (!function_exists('number_random')) {
     /**
      * Generate a more truly "random" numeric.
      *
-     * @param  int  $length
+     * @param  int $length
+     *
      * @return number
      *
      */
     function number_random($length = 16)
     {
         $random = rand(1, 9);
-        for ($i = 0; $i < $length - 1; $i++)
-        {
-            $random .= rand(0,9);
+        for ($i = 0; $i < $length - 1; $i++) {
+            $random .= rand(0, 9);
         }
 
         return $random;
@@ -779,12 +812,9 @@ function invoice($amount, $redirect_url)
 function peyment_verify($tracking)
 {
     $transaction = Transaction::findBySlug($tracking, 'tracking_number');
-    if ($transaction)
-    {
+    if ($transaction) {
         return $transaction->check();
-    }
-    else
-    {
+    } else {
         return false;
     }
 }

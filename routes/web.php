@@ -109,21 +109,21 @@ Route::group([
 
     });
 
-	/*-----------------------------------------------
-	| Students
-	*/
-	Route::group(['prefix' => 'students', 'middleware' => "can:users-student",], function () {
-		Route::get('/', 'StudentsController@browseChild');
-		Route::get('/browse/update/{model_id}/{request_role?}', 'StudentsController@update');
-		Route::get('/browse', 'StudentsController@browseChild');
-		Route::get('/browse/search/{keyword?}', 'StudentsController@searchChild');
-		Route::get('/create/', 'StudentsController@createChild');
+    /*-----------------------------------------------
+    | Students
+    */
+    Route::group(['prefix' => 'students', 'middleware' => "can:users-student",], function () {
+        Route::get('/', 'StudentsController@browseChild');
+        Route::get('/browse/update/{model_id}/{request_role?}', 'StudentsController@update');
+        Route::get('/browse', 'StudentsController@browseChild');
+        Route::get('/browse/search/{keyword?}', 'StudentsController@searchChild');
+        Route::get('/create/', 'StudentsController@createChild');
 
-		Route::group(['prefix' => 'save'], function () {
-			Route::post('/', 'StudentsController@attachRole');
-			Route::post('/delete', 'StudentsController@detachRole');
-		});
-	});
+        Route::group(['prefix' => 'save'], function () {
+            Route::post('/', 'StudentsController@attachRole');
+            Route::post('/delete', 'StudentsController@detachRole');
+        });
+    });
 
 
     /*-----------------------------------------------
@@ -214,7 +214,11 @@ Route::group([
             Route::post('/destroyMass', 'CommentsController@destroyMass');
             Route::post('/statusMass', 'CommentsController@statusMass');
         });
+    });
 
+    Route::group(['prefix' => 'commenting'], function () {
+        Route::get('convert-to-post/{model_id}', 'CommentsController@convertToPost')
+            ->name('manage.comments.convert-to-post');
     });
 
 
@@ -358,20 +362,30 @@ Route::group(['prefix' => 'file'], function () {
 // File
 Route::group(['prefix' => 'file'], function () {
     Route::get('{hadhid}/{fileName?}', 'FileManagerController@download')->name('file.download');
+    Route::get('disposable/{hashString}/{hadhid}/{fileName?}', 'FileManagerController@disposableDownload')
+        ->name('file.download.disposable');
 });
 
 // File Manager
 Route::group(['prefix' => 'file-manager', 'middleware' => ['auth', 'is:admin']], function () {
     Route::get('/', 'FileManagerController@index')
         ->name('fileManager.index');
-    Route::post('get-list', 'FileManagerController@getList')
+    Route::get('get-list/{instance?}/{key?}', 'FileManagerController@getList')
         ->name('fileManager.getList');
     Route::post('preview', 'FileManagerController@getPreview')
         ->name('fileManager.preview');
+    Route::get('file-details/{fileKey?}', 'FileManagerController@getFileDetails')
+        ->name('fileManager.getFileDetails');
+    Route::post('file-details', 'FileManagerController@setFileDetails')
+        ->name('fileManager.setFileDetails');
+    Route::post('delete-file', 'FileManagerController@deleteFile')
+        ->name('fileManager.deleteFile');
+    Route::post('restore-file', 'FileManagerController@restoreFile')
+        ->name('fileManager.restoreFile');
 });
 
 // Payment Bank
-Route::group(['prefix' => 'payment', 'namespace' => 'Payment'], function (){
+Route::group(['prefix' => 'payment', 'namespace' => 'Payment'], function () {
     Route::get('/bank-process/{tracking_number}', 'PaymentController@bank_process')->name('bank-process');
 });
 
@@ -415,6 +429,7 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
 //            Route::get('messages/send', 'TestController@messages_send');
             Route::get('file-manager', 'TestController@fileManager');
             Route::get('uploader', 'TestController@uploader');
+            Route::get('payment', 'TestController@test');
         });
 
         // Contact Us Page
@@ -489,6 +504,15 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
         Route::group(['prefix' => 'education'], function () {
             Route::get('/{educationType}', 'EducationController@archive')->name('education.archive');
             Route::post('get-posts', 'EducationController@ajaxGetPosts')->name('education.get-posts.ajax');
+        });
+
+        // Products
+        Route::group(['prefix' => 'products'], function () {
+            Route::get('/', 'ProductsController@archive')->name('products.archive');
+            Route::post('purchase', 'ProductsController@purchase')->name('products.purchase');
+            Route::get('payment-result/{order}', 'ProductsController@paymentResult')
+                ->name('education.paymentResult');
+            Route::post('tracking', 'ProductsController@track')->name('products.tracking');
         });
 
         // Massages

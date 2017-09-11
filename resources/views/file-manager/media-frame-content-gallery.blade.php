@@ -1,29 +1,47 @@
 <div class="page attachments-browser" id="gallery">
     <div class="media-toolbar">
         <div class="toolbar-right">
-            <select id="media-filters" class="attachment-filters">
-                <option value="all">همه‌ی موارد رسانه‌ای</option>
-                <option value="uploaded">بارگذاری شده در این نوشته</option>
-                <option value="image">تصویرها</option>
-                <option value="audio">صوت</option>
-                <option value="video">ویدیو</option>
-                <option value="unattached">پیوست‌نشده</option>
-            </select>
-            <select id="date-filters" class="attachment-filters">
-                <option value="all">همه تاریخ ها</option>
-                <option value="uploaded">بارگذاری شده در این نوشته</option>
-                <option value="image">تصویرها</option>
-                <option value="audio">صوت</option>
-                <option value="video">ویدیو</option>
-                <option value="unattached">پیوست‌نشده</option>
-            </select>
+            {{--<select id="media-filters" class="attachment-filters">--}}
+            {{--<option value="all">همه‌ی موارد رسانه‌ای</option>--}}
+            {{--<option value="uploaded">بارگذاری شده در این نوشته</option>--}}
+            {{--<option value="image">تصویرها</option>--}}
+            {{--<option value="audio">صوت</option>--}}
+            {{--<option value="video">ویدیو</option>--}}
+            {{--<option value="unattached">پیوست‌نشده</option>--}}
+            {{--</select>--}}
+            {{--<select id="date-filters" class="attachment-filters">--}}
+            {{--<option value="all">همه تاریخ ها</option>--}}
+            {{--<option value="uploaded">بارگذاری شده در این نوشته</option>--}}
+            {{--<option value="image">تصویرها</option>--}}
+            {{--<option value="audio">صوت</option>--}}
+            {{--<option value="video">ویدیو</option>--}}
+            {{--<option value="unattached">پیوست‌نشده</option>--}}
+            {{--</select>--}}
         </div>
         <div class="toolbar-left">
-            <input typle="search" placeholder="جستجو در رسانه ها" class="search"></input>
+            <button type="button" onclick="refreshGallery()"><i class="fa fa-refresh"></i></button>
+            {{--<input typle="search" placeholder="جستجو در رسانه ها" class="search"></input>--}}
         </div>
     </div>
-    @include('file-manager.media-frame-content-gallery-images-list')
+    <div class="file-list-view">
+        <div id="loading-dialog" class="loading-dialog text-center text-blue pt30" style="display: none">
+            <p>
+                {{ trans('forms.feed.wait') }}
+            </p>
+            <img src="{{ asset('assets/images/template/AjaxLoader.gif') }}">
+        </div>
+        <div class="thumbnail-container">
+            <ul class="" id="thumbnail">
+                @include('file-manager.media-frame-content-gallery-images-list')
+            </ul>
+        </div>
+    </div>
+
     <div class="media-sidebar">
+        <div id="sidebar-loading" class="sidebar-loading" style="display: none;">
+            <img src="{{ asset('assets/images/template/AjaxLoader.gif') }}">
+        </div>
+
         <div class="close-sidebar">
             <span class="fa fa-chevron-left"></span>
         </div>
@@ -34,44 +52,17 @@
                 <div></div>
             </div>
             <div class="upload-detail">
-    									<span class="upload-count">
-    										<span class="upload-index">1</span>
-    										/
-    										<span class="upload-total">1</span>
-    									</span>
+                <span class="upload-count">
+                    <span class="upload-index">1</span>
+                    /
+                    <span class="upload-total">1</span>
+                </span>
                 <span class="upload-detail-separator">_</span>
                 <span class="upload-filename">blabla.jpg</span>
             </div>
             <span class="upload-errors"></span>
         </div>
-        <div class="file-details">
-            <h2>جزئیات پیوست</h2>
-            <div class="attachment-info">
-                <div class="thumbnail-image">
-                    <img src="img/7_8_oclock-300x152.jpg">
-                </div>
-                <div class="details">
-                    <div class="filename">portrait.jfif</div>
-                    <div class="upload-date">15 مرداد 95</div>
-                    <div class="upload-size">400kb</div>
-                    <div class="dimension">5426 × 3053</div>
-                    <a href="#" class="edit-attachment">ویرایش تصویر</a>
-                    <button type="button" class="delete-btn btn-link">پاک کردن برای همیشه</button>
-                </div>
-            </div>
-            <label class="setting">
-                <span class="name">نام</span>
-                <input type="text"></input>
-            </label>
-            <label class="setting">
-                <span class="name">متن جایگزین</span>
-                <input type="text"></input>
-            </label>
-            <label class="setting">
-                <span class="name">توضیح</span>
-                <textarea></textarea>
-            </label>
-        </div>
+        <div class="file-details pt10"></div>
     </div>
 
 </div>

@@ -3,13 +3,22 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Requests\Front\ProductsFilterRequest;
+use App\Http\Requests\Front\PurchaseProductRequest;
+use App\Http\Requests\Front\TrackPurchasementRequest;
 use App\Models\Category;
+use App\Models\File;
+use App\Models\FileDownloads;
 use App\Models\Folder;
+use App\Models\Order;
+use App\Models\OrderPost;
 use App\Models\Post;
+use App\Models\Posttype;
 use App\Providers\PostsServiceProvider;
 use App\Traits\ManageControllerTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Session\Store;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\URL;
 
 class ProductsController extends Controller
@@ -17,6 +26,11 @@ class ProductsController extends Controller
     use ManageControllerTrait;
 
     private $productPrefix = 'pd-';
+    protected static $statusesCodes = [
+        'canceled'  => -1,
+        'temp'      => 0,
+        'succeeded' => 1,
+    ];
 
     public function index()
     {
@@ -260,4 +274,239 @@ class ProductsController extends Controller
         }
     }
 
+    public function archive()
+    {
+        /************************* Checking Products Post Type Existence ********************** START */
+        $postType = Posttype::findBySlug('products');
+        if (!$postType->exists) {
+            return $this->abort('404');
+        }
+        /************************* Checking Products Post Type Existence ********************** END */
+
+        /************************* Selecting Slider Data ********************** START */
+        $slideShow = PostsServiceProvider::collectPosts([
+            'type'     => 'slideshows',
+            'category' => 'products-slider',
+        ]);
+        /************************* Selecting Slider Data ********************** END */
+
+        /************************* Generating List View ********************** START */
+        $postsListHtml = PostsServiceProvider::showList([
+            'type' => 'products',
+        ]);
+
+        if (!$postsListHtml) {
+            return redirect(getLocale());
+        }
+        /************************* Generating List View ********************** END */
+
+        /************************* Generating View Data ********************** START */
+        $compactedData = compact('slideShow', 'postType', 'postsListHtml');
+        $otherData = [];
+        $viewData = array_merge($compactedData, $otherData);
+        /************************* Generating View Data ********************** END */
+
+        /************************* Returning View ********************** START */
+        return view('front.products.archive.main', $viewData);
+    }
+
+    public function purchase(PurchaseProductRequest $request)
+    {
+        $postId = $request->post_id;
+        $post = Post::findBySlug($postId, 'id');
+
+
+        $orderPostData = [
+            'original_price' => $post->price,
+            'offered_price'  => $request->price,
+            'total_price'    => $request->price,
+        ];
+
+        $orderData = [
+            'user_id'        => (auth()->guest()) ? null : user()->id,
+            'code_melli'     => $request->code_melli,
+            'name'           => $request->name,
+            'mobile'         => $request->mobile,
+            'phone'          => $request->phone,
+            'email'          => $request->email,
+            'status'         => self::$statusesCodes['temp'], // just created
+            'invoice_amount' => $orderPostData['total_price'],
+            'payable_amount' => $orderPostData['total_price'],
+            'paid_amount'    => 0,
+        ];
+        $orderId = Order::store($orderData);
+        $order = Order::findBySlug($orderId, 'id');
+        $orderPostData['order_id'] = $orderId;
+
+        // @todo: uncomment these lines
+//        $trackingNumber = invoice($post->price, route_locale('education.paymentResult', [
+//                'order' => $order->hashid
+//            ])
+//        )->getTracking();
+//        $payment = gateway()->fire($trackingNumber);
+//
+//        if (!$payment) {
+//            return $this->jsonAjaxSaveFeedback(0, [
+//                'danger_message' => trans('front.gateway.disabled')
+//            ]);
+//        }
+//
+        // @todo: remove this line
+        $trackingNumber = '222222';
+
+        $order->tracking_number = $trackingNumber;
+        $order->save();
+
+        $order->storePosts($post->id, $orderPostData);
+
+        return $this->jsonAjaxSaveFeedback($orderId, [
+//            @todo comment this line
+//            'success_redirect' => $payment,
+            'redirectTime' => 2000,
+        ]);
+    }
+
+    public function paymentResult($lang, $order)
+    {
+        $order = Order::findByHashid($order);
+        $trackingNumber = Input::get('tracking');
+
+        // If there is no "tracking" query param, we will redirect to home page
+        if (!$trackingNumber) {
+            return redirect(getLocale());
+        }
+
+        // If there is no order with this info we will show 404 error
+        if (!$order->exists) {
+            return $this->abort('404');
+        }
+
+        if ($order->status == 0) {
+            // If there is no post with this info we will show 404 error
+            $post = $order->posts()->first();
+            if (!$post->exists) {
+                return $this->abort('404', request()->ajax());
+            }
+
+            $redirectUrl = $post->direct_url . '#payment-result';
+            $flashData = ['trackingNumber'];
+            $flashData['product-order-' . $post->hashid] = $order->id;
+
+//          peyment_verify($trackingNumber) @todo: check it!!!
+            if (true or peyment_verify($trackingNumber)) {
+                // If received tracking number doesn't match with order's tracking number, we will show 403 error
+                if ($order->tracking_number != $trackingNumber) {
+                    return $this->abort(403);
+                }
+
+                $order->status = self::$statusesCodes['succeeded'];
+                $flashData['paymentSucceeded'] = true;
+
+                $this->serveDownload($post, $order);
+
+            } else {
+                $flashData['paymentSucceeded'] = false;
+
+                $order->status = self::$statusesCodes['canceled'];
+
+            }
+
+            $order->save();
+            return redirect($redirectUrl)->with($flashData);
+
+        } else {
+            return $this->abort(404);
+        }
+    }
+
+    public function track(TrackPurchasementRequest $request)
+    {
+        $order = Order::where([
+            'tracking_number' => $request->tracking_number,
+            'mobile'          => $request->mobile,
+            ['status', '<>', self::$statusesCodes['temp']]
+        ])->first();
+
+
+        if (!$order) {
+            return $this->jsonFeedback([
+                'ok'      => 0,
+                'message' => trans('validation.exists', [
+                    'attribute' => trans('validation.attributes.tracking_number')
+                ]),
+            ]);
+        }
+
+        // If there is no post with this info we will show 404 error
+        $post = $order->posts()->first();
+        if (!$post->exists) {
+            return $this->abort('404', request()->ajax());
+        }
+
+        switch ($order->status) {
+            case self::$statusesCodes['succeeded']:
+                $redirectUrl = $post->direct_url . '#payment-result';
+                $flashData = ['paymentSucceeded' => true];
+
+                $this->serveDownload($post, $order);
+
+                $flashData['product-order-' . $post->hashid] = $order->id;
+
+                foreach ($flashData as $flashName => $flashValue) {
+                    session()->flash($flashName, $flashValue);
+                }
+                session()->reFlash();
+
+                return $this->jsonFeedback([
+                    'ok'       => 1,
+                    'message'  => trans('forms.feed.wait'),
+                    'redirect' => $redirectUrl,
+                ]);
+                break;
+
+            case self::$statusesCodes['canceled']:
+                return $this->jsonFeedback([
+                    'ok'      => 0,
+                    'message' => trans('cart.messages.payment.has_been_canceled'),
+                ]);
+                break;
+
+            default:
+                return $this->jsonFeedback([
+                    'ok'      => 0,
+                    'message' => trans('validation.exists', [
+                        'attribute' => trans('validation.attributes.tracking_number')
+                    ]),
+                ]);
+                break;
+        }
+    }
+
+    protected function serveDownload($post, $order)
+    {
+        $post->spreadMeta();
+
+        $files = $post->post_files;
+
+        if ($files and is_array($files) and count($files)) {
+            foreach ($files as $file) {
+                $fileRow = File::findByHashid($file['src']);
+                if ($fileRow->exists) {
+                    $similarRow = FileDownloads::where([
+                        'file_id'  => $fileRow->id,
+                        'order_id' => $order->id,
+                    ])->first();
+                    if (!$similarRow or !$similarRow->exists) {
+                        FileDownloads::store([
+                            'user_id'            => (auth()->guest()) ? null : user()->id,
+                            'file_id'            => $fileRow->id,
+                            'order_id'           => $order->id,
+                            'downloadable_count' => 1,
+                        ]);
+                    }
+                }
+            }
+        }
+
+    }
 }

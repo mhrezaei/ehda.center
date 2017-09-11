@@ -10,7 +10,7 @@
 		</div>
 
 		<div class="col-md-8 text-center">
-			<label class="ltr f10 pull-left text-info" style="margin-top: 5px">{{ $file->original_name }}</label>
+			<label class="ltr f10 pull-left text-info" style="margin-top: 5px">{{ $file->file_name }}</label>
 			<input name="_photo_label_{{$key}}" value="{{$label or ''}}" class="-label form-control text-center" placeholder="{{trans('posts.files.label_placeholder')}}" style="margin-top: 5px">
 			<input name="_photo_link_{{$key}}" value="{{$link or ''}}" class="-label form-control text-center ltr" placeholder="{{trans('posts.files.link_placeholder')}}" style="margin-top:5px">
 			<input type="hidden" name="_photo_src_{{$key}}" value="{{ $file->hash_id }}" class="-src form-control">

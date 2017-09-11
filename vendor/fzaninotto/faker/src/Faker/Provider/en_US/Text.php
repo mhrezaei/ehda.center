@@ -409,7 +409,7 @@ take a fancy to cats if you could only see her. She is such a dear quiet
 thing,' Alice went on, half to herself, as she swam lazily about in the
 pool, 'and she sits purring so nicely by the fire, licking her paws and
 washing her face--and she is such a nice soft thing to nurse--and she's
-such a capital one for catching mice--oh, I beg your pardon!' cried
+such a capital one for caching mice--oh, I beg your pardon!' cried
 Alice again, for this time the Mouse was bristling all over, and she
 felt certain it must be really offended. 'We won't talk about her any
 more if you'd rather not.'
@@ -667,7 +667,7 @@ nobody in particular. 'She'd soon fetch it back!'
 Lory.
 
 Alice replied eagerly, for she was always ready to talk about her pet:
-'Dinah's our cat. And she's such a capital one for catching mice you
+'Dinah's our cat. And she's such a capital one for caching mice you
 can't think! And oh, I wish you could see her after the birds! Why,
 she'll eat a little bird as soon as look at it!'
 

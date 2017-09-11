@@ -1,7 +1,4 @@
-String.prototype.replaceAll = function (search, replacement) {
-    var target = this;
-    return target.replace(new RegExp(search, 'g'), replacement);
-};
+var getListXhr, getFileDetailsXhr;
 
 $.ajaxSetup({
     headers: {
@@ -9,18 +6,32 @@ $.ajaxSetup({
     }
 });
 
+var multiSelect = false;
+var caching = {};
+// On Load Variables
+var $window,
+    //Details Shown Inside Sidebar (Hidden On Page Load)
+    detailSidebar,
+    footer,
+    tabs;
+
+var timers = {
+    fileDetails: {}
+};
+
 jQuery(function ($) {
+    if (parent.window.fileManagerModalOptions && parent.window.fileManagerModalOptions.multi) {
+        multiSelect = true;
+    }
     window.fileManagerModalOptions = getValueOf(parent.window.fileManagerModalOptions ? parent.window.fileManagerModalOptions : {});
 
-    selectFolder($(".breadcrumb-folders .folder").first())
+    selectFolder($(".breadcrumb-folders .folder").first());
 
-    // On Load Variables
-    var $window = $(window),
-
-        //Details Shown Inside Sidebar (Hidden On Page Load)
-        detailSidebar = $('.media-sidebar'),
-        footer = $('.media-footer'),
-        tabs = $('.media-router .media-menu-item');
+    $window = $(window);
+    //Details Shown Inside Sidebar (Hidden On Page Load)
+    detailSidebar = $('.media-sidebar');
+    footer = $('.media-footer');
+    tabs = $('.media-router .media-menu-item');
 
 
     /*---Breadcrumb Function----*/
@@ -80,48 +91,41 @@ jQuery(function ($) {
 
     /*----Selecting Thumbnails------*/
     $('#thumbnail').selectable({
+        filter: "li:not(.unselectable)",
         selecting: function (event, ui) {
-
             //ul Containing The Whole Thumbnails
             var ul = $(this),
                 //Current li Selected
-                currentEl = $(ui.selecting),
-                imgSrc = currentEl.find('img').attr('src'),
-                imgName = imgSrc.replace('img/', '');
+                currentEl = $(ui.selecting);
 
-            //Showing Sidebar If Hidden
-            if (!detailSidebar.is(':visible')) {
-                detailSidebar.show();
+            // Deselect other selected items if multi selection is disabled
+            if (!multiSelect) {
+                ul.find('.ui-selected').removeClass('ui-selected');
             }
-
-            //Showing Details Inside Sidebar
-            detailSidebar.find('.file-details').show();
-
-            //Inserting Image Data To Sidebar (Should Be Done "Dynamically"!)
-            detailSidebar.find('.thumbnail-image img').attr('src', imgSrc);
-            detailSidebar.find('.details .filename').empty().text(imgName);
-
-            //Reseting Active Class To Currently Selected Element
-            ul.find('.active').removeClass('active');
-            currentEl.addClass('active');
         },
         stop: function (event, ui) {
-            //All Selected "li"s
-            var selected = $('li.ui-selected').clone().removeClass('active ui-selected'),
-                selectedCount = selected.length,
-                PersianCount = pd(selectedCount);
+            //All Selected "li"
+            var selected = $('li.ui-selected');
 
-            //Adding Selected Items Into Footer Preview
-            footer.find('.attachments-preview').empty().append(selected);
-            footer.find('.count').empty().text("گزینش شده: " + PersianCount);
+            if (multiSelect) {
+                showFileDetails(selected.first());
+            } else {
+                selected.not(':first').removeClass('ui-selected');
+                selected = selected.first();
+                showFileDetails(selected);
+            }
 
-            //Setting Selected Elements As Button Value
-            $('#add-btn').val(selected);
+            refreshSelection(selected);
+        },
+    });
 
+    $('#thumbnail').find('.ui-selectee').each(function () {
+        if (!$(this).is('li')) {
+            $(this).removeClass('.ui-selectee');
         }
     });
-    /*----End Selecting Thumbnails----*/
 
+    /*----End Selecting Thumbnails----*/
 
     /*-----Clear List And Reseting -----*/
     $('#clear-list').on('click', function () {
@@ -149,17 +153,128 @@ jQuery(function ($) {
         var pageId = $(this).addClass('active').data('page');
         $('.page').hide();
         $('#' + pageId).show();
-
-
     });
     /*-----End Tab Changing Functions-----*/
 
+    $(document).on({
+        click: function () {
+            let that = $(this);
+            let file = that.closest('.file-details').attr('data-file');
+            if (file) {
+                let data = {fileKey: file};
+                $.ajax({
+                    url: urls.deleteFile,
+                    type: 'POST',
+                    data: data,
+                    beforeSend: function () {
+                        that.addClass('in-process');
+                        loadingDialog('show', '#sidebar-loading');
+                    },
+                    success: function () {
+                        refreshGallery();
+                        that.removeClass('delete-file-btn');
+                        that.addClass('restore-file-btn');
+                        that.html(lang['menu-restore']);
+                        $('.deletion-message').html(lang['message-file-deleted']).show();
+                    },
+                    complete: function () {
+                        that.removeClass('in-process');
+                        loadingDialog('hide', '#sidebar-loading');
+                    }
+                })
+            }
+        }
+    }, '.delete-file-btn:not(.in-process)');
 
     $(document).on({
         click: function () {
-            useFile($(this).data('file'));
+            let that = $(this);
+            let file = that.closest('.file-details').attr('data-file');
+            if (file) {
+                let data = {fileKey: file};
+                $.ajax({
+                    url: urls.restoreFile,
+                    type: 'POST',
+                    data: data,
+                    beforeSend: function () {
+                        that.addClass('in-process');
+                        loadingDialog('show', '#sidebar-loading');
+                    },
+                    success: function () {
+                        refreshGallery();
+                        that.removeClass('restore-file-btn');
+                        that.addClass('delete-file-btn');
+                        that.html(lang['menu-delete']);
+                        $('.deletion-message').hide().html();
+                    },
+                    error: function (rs) {
+                        if (rs.status == 404) {
+                            $('.deletion-message').html(lang['error-file-not-found']).show();
+                        }
+                    },
+                    complete: function () {
+                        that.removeClass('in-process');
+                        loadingDialog('hide', '#sidebar-loading');
+                    }
+                })
+            }
+        }
+    }, '.restore-file-btn:not(.in-process)');
+
+    $(document).on({
+        keyup: function () {
+            updateFileDetail($(this))
+        },
+        change: function () {
+            updateFileDetail($(this))
+        }
+    }, '.setting :input');
+
+    $(document).on({
+        click: function (event) {
+            event.preventDefault();
+            let that = $(this);
+            let instance = that.data('instance');
+            let key = that.data('key');
+
+            if (instance && key) {
+                let folder = $('.folder[data-instance="' + instance + '"][data-key="' + key + '"]');
+                if (folder.length == 1) {
+                    selectFolder(folder);
+                }
+            }
+        }
+    }, '.btn-open-folder');
+
+    $('.file-list-view').scroll(function () {
+        let scrolled = $(this).scrollTop();
+        $('#loading-dialog').css('top', scrolled + 'px')
+    });
+
+    $('.attachments-preview').on({
+        click: function () {
+            let that = $(this);
+            let fileKey = that.data('file');
+
+            if (fileKey) {
+                showFileDetails($(this).closest('li'))
+            }
         }
     }, '.thumbnail');
+
+    $('#add-btn').click(function () {
+        var selected = $('li.ui-selected .thumbnail');
+
+        if (selected.length) {
+            if (multiSelect) {
+                useFiles(selected);
+            } else {
+                useFile(selected.first());
+            }
+        } else {
+            alert(lang['error-file-empty']);
+        }
+    });
 
 }); //End Of Ready!
 
@@ -221,18 +336,25 @@ function selectFolder(folder) {
     });
 
     var listRequest = new FormData();
-    listRequest.append('key', folder.attr('data-key'));
-    listRequest.append('instance', folder.attr('data-instance'));
-    listRequest.append('_token', csrfToken);
-    $.ajax({
-        url: urls.getList,
-        type: 'POST',
-        data: {
-            key: folder.attr('data-key'),
-            instance: folder.attr('data-instance'),
+    getListXhr = $.ajax({
+        url: urls.getList + '/' + folder.attr('data-instance') + '/' + folder.attr('data-key'),
+        beforeSend: function () {
+            if (getListXhr && getListXhr.readyState != 4) {
+                getListXhr.abort();
+            }
+            loadingDialog();
         },
         success: function (response) {
-            $('#thumbnail').replaceWith($(response));
+            $('#thumbnail').html($(response));
+
+            // $('#thumbnail').find('li').each(function () {
+            //     let li = $(this);
+            //     let img = li.find('img')
+            //     if (img.length && img.hasClass('not-found'))
+            //         li.addClass('unselectable');
+            // });
+            loadingDialog('hide');
+            refreshSelection();
         }
     });
 }
@@ -241,13 +363,63 @@ function refreshGallery() {
     selectFolder($(".breadcrumb-folders .folder.current"));
 }
 
+function refreshSelection(selected) {
+    if (typeof seleted == 'undefined') {
+        selected = $('li.ui-selected');
+    }
+
+    selected = selected.filter(function (key, obj) {
+        let item = $(obj);
+        if (!item.length) {
+            return false;
+        }
+
+        let img = item.find('img');
+        if (!img.length) {
+            return false;
+        }
+
+        if (img.hasClass('not-found')) {
+            item.removeClass('ui-selected');
+            return false;
+        }
+
+        return true;
+    });
+
+    if (selected.length) {
+        $('#add-btn').removeAttr('disabled');
+    } else {
+        $('#add-btn').attr('disabled', 'disabled');
+    }
+
+    let selectedClone = selected.clone().removeAttr('class'),
+        selectedCount = selectedClone.length,
+        PersianCount = pd(selectedCount);
+
+    //Adding Selected Items Into Footer Preview
+    footer.find('.attachments-preview').empty().append(selectedClone);
+    footer.find('.count').empty().text("گزینش شده: " + PersianCount);
+
+    //Setting Selected Elements As Button Value
+    $('#add-btn').val(selectedClone);
+}
+
+function switchToGallery() {
+    tabs.filter('[data-page=gallery]').trigger('click');
+}
+
 function getFolderParents(folder) {
     var link = folder.children('a');
     return link.parents('.folder');
 }
 
-function eachUploadCompleter() {
+function eachUploadCompleted() {
     refreshGallery();
+}
+
+function allUploadsCompleted() {
+    setTimeout(switchToGallery, 1000);
 }
 
 function getFileUrl(file) {
@@ -258,29 +430,104 @@ function getFilePathname(file) {
     return $("[data-file=\"" + file + "\"]").data('pathname');
 }
 
-function showFile(file) {
-    var preview = window.fileManagerModalOptions.preview;
-    if (preview) {
-        $.ajax({
-            url: route_preview,
-            type: 'post',
-            data: {
-                file: file,
-            },
-            success: function (response) {
-                parent.document.getElementById(preview).innerHTML = response;
-            }
-        });
-    }
-}
-
 function getUrlParam(paramName) {
     var reParam = new RegExp('(?:[\?&]|&)' + paramName + '=([^&]+)', 'i');
     var match = window.location.search.match(reParam);
     return ( match && match.length > 1 ) ? match[1] : null;
 }
 
-function useFile(file) {
+function showFileDetails(li) {
+    if (!li.is('li')) {
+        console.log('!li.is(\'li\')')
+        return false;
+    }
+
+    if (!li.length) {
+        console.log('!li.length')
+        return false;
+    }
+
+    let thumb = li.find('.thumbnail');
+    if (!thumb.length) {
+        console.log('!thumb.length')
+        return false;
+    }
+
+    let hashid = thumb.data('file');
+    if (!hashid) {
+        return false;
+    }
+
+
+    let thumbnail = $('ul.ui-selectable li .thumbnail[data-file=' + hashid + ']');
+    if (!thumbnail.length) {
+        console.log('!li.length')
+        return false;
+    }
+    let ul = thumbnail.closest('ul');
+
+    //Showing Sidebar If Hidden
+    if (!detailSidebar.is(':visible')) {
+        detailSidebar.show();
+    }
+
+    //Showing Details Inside Sidebar
+    detailSidebar.find('.file-details').show();
+
+    // Getting file details
+    getFileDetailsXhr = $.ajax({
+        url: urls.getFileDetails + '/' + hashid,
+        beforeSend: function () {
+            if (getFileDetailsXhr && getFileDetailsXhr.readyState != 4) {
+                getFileDetailsXhr.abort();
+            }
+        },
+        success: function (response) {
+
+            $('.file-details').attr('data-file', hashid);
+            $('.file-details').html($(response));
+
+            $('.setting :input').each(function () {
+                let timerName = $(this).attr('name') + '-' + $.now();
+                timers.fileDetails[timerName] = new Timer();
+                $(this).attr('data-timer', timerName);
+            });
+        }
+    });
+
+    // Resetting Active Class To Currently Selected Element
+    ul.find('.active').removeClass('active');
+    thumbnail.closest('li').addClass('active');
+}
+
+function updateFileDetail(input) {
+    let file = input.closest('.file-details').attr('data-file');
+    let inputName = input.attr('name');
+    let inputValue = input.val();
+    if (file && (typeof inputName !== 'undefined') && (typeof inputValue !== 'undefined')) {
+        let data = {fileKey: file};
+        let timerName = input.attr('data-timer');
+        let timer = timers.fileDetails[timerName];
+        inputValue = $.trim(inputValue);
+        data[inputName] = inputValue;
+
+        timer.delay(function () {
+            $.ajax({
+                url: urls.setFileDetails,
+                type: 'POST',
+                data: data,
+                beforeSend: function () {
+                    loadingDialog('show', '#sidebar-loading');
+                },
+                complete: function () {
+                    loadingDialog('hide', '#sidebar-loading');
+                }
+            })
+        }, 1);
+    }
+}
+
+function useFile(thumbEl) {
 
     function useTinymce3(url) {
         var win = tinyMCEPopup.getWindowArg("window");
@@ -328,6 +575,22 @@ function useFile(file) {
         window.opener.SetUrl(p, w, h);
     }
 
+    function showFile(file) {
+        var preview = window.fileManagerModalOptions.preview;
+        if (preview) {
+            $.ajax({
+                url: route_preview,
+                type: 'post',
+                data: {
+                    file: file,
+                },
+                success: function (response) {
+                    parent.document.getElementById(preview).innerHTML = response;
+                }
+            });
+        }
+    }
+
     function useModal(result) {
         let parentWindow = $(parent.document);
 
@@ -338,7 +601,7 @@ function useFile(file) {
         }
 
         // Show file
-        showFile(file);
+        showFile(hashid);
 
         // Run callback
         let callBackValue = window.fileManagerModalOptions.callback;
@@ -350,8 +613,9 @@ function useFile(file) {
         parent.window.closeFileManagerModal()
     }
 
-    var url = getFileUrl(file);
-    var pathname = getFilePathname(file);
+    var hashid = thumbEl.data('file');
+    var url = getFileUrl(hashid);
+    var pathname = getFilePathname(hashid);
     var field_name = getUrlParam('field_name');
     var is_ckeditor = getUrlParam('CKEditor');
     var is_modal = window.fileManagerModalOptions.modal;
@@ -370,6 +634,9 @@ function useFile(file) {
     ) {
         if (is_modal) {
             switch (window.fileManagerModalOptions.outputType) {
+                case 'hashid':
+                    useModal(hashid, field_name);
+                    break;
                 case 'url':
                     useModal(url, field_name);
                     break;
@@ -397,4 +664,92 @@ function useFile(file) {
         window.opener.SetUrl(url, file_path);
     }
 }
+
 //end useFile
+
+function useFiles(filesEls) {
+    function showFiles(hashids) {
+        var preview = window.fileManagerModalOptions.preview;
+        if (preview) {
+            $.ajax({
+                url: route_preview,
+                type: 'post',
+                data: {
+                    file: hashids.join('-'),
+                },
+                success: function (response) {
+                    parent.document.getElementById(preview).innerHTML = response;
+                }
+            });
+        }
+    }
+
+    function useModal(result) {
+        let parentWindow = $(parent.document);
+
+        // Set value in target element
+        let targetInput = parentWindow.find('#' + window.fileManagerModalOptions.input);
+        if (targetInput.length) {
+            targetInput.val(JSON.stringify(result));
+        }
+
+        // Show file
+
+        showFiles(hashids);
+
+        // Run callback
+        let callBackValue = window.fileManagerModalOptions.callback;
+        if (callBackValue) {
+            parent.window.eval(callBackValue);
+        }
+
+        // Close modal
+        parent.window.closeFileManagerModal()
+    }
+
+    var hashids = [];
+    var is_modal = window.fileManagerModalOptions.modal;
+
+    filesEls.each(function () {
+        hashids.push($(this).data('file'));
+    });
+
+    if (is_modal) {
+        let result = [];
+        switch (window.fileManagerModalOptions.outputType) {
+            case 'hashid':
+                result = hashids;
+                break;
+            case 'url':
+                filesEls.each(function () {
+                    result.push($(this).data('url'));
+                });
+                break;
+            default: // Ex: pathname
+                filesEls.each(function () {
+                    result.push($(this).data('pathname'));
+                });
+                break
+        }
+
+        useModal(result);
+    }
+}
+
+function loadingDialog(parameter, dialog) {
+    if (isDefined(dialog)) {
+        if (!(dialog instanceof HTMLCollection) && (typeof dialog == 'string')) {
+            dialog = $(dialog);
+        }
+    } else {
+        dialog = $('#loading-dialog');
+    }
+
+    if (dialog.length) {
+        if ($.inArray(parameter, ['hide', false, 0]) > -1) {
+            dialog.hide();
+        } else {
+            dialog.show();
+        }
+    }
+}

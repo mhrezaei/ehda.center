@@ -1,18 +1,27 @@
-{{ '' , $post->spreadMeta() }}
-<div class="row">
-    <div class="col-sm-5">
-        @include($viewFolder . '.image')
-    </div>
-    <div class="col-sm-7 product-detials">
-        <h2 class="product-name"> {{ $post->title }} </h2>
-        <div class="excerpt"> {!! $post->abstract !!}</div>
-        <hr>
-        @include($viewFolder . '.price')
-        @include($viewFolder . '.add_to_cart')
-        <hr>
-        @include($viewFolder . '.meta')
+@php
+
+    $aparatLinkPrefix = 'http://www.aparat.com/v/';
+
+    $showSideBar = isset($showSideBar) ? $showSideBar : false;
+    $downloadingFiles = $post->post_files;
+@endphp
+
+<style>
+    .post-text img {
+        max-width: 80% !important;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="article @if($showSideBar) col-xs-12 col-md-8 @endif">
+            @include($viewFolder . '.content')
+            @include($viewFolder . '.post_footer')
+        </div>
+        @if($showSideBar)
+            @include($viewFolder . '.sidebar')
+        @endif
     </div>
 </div>
-<hr>
-@include($viewFolder . '.content')
-@include($viewFolder . '.similar_posts')
+
+@include('front.posts.single.product.scripts')

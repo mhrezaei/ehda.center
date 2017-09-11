@@ -18,41 +18,52 @@
      * @returns {jQuery}
      */
     $.fn.fileManagerModal = function (type, options) {
-        type = type || 'image';
+        $(this).each(function () {
+            if($(this).hasClass('has-file-manager-modal')) {
+                return true;
+            }
 
-        if (type === 'image' || type === 'images') {
-            type = 'Images';
-        } else {
-            type = 'Files';
-        }
+            type = type || 'image';
 
-        this.on('click', function (e) {
-            let that = $(this);
-            let route_prefix = (options && options.prefix) ? options.prefix : '/file-manager';
-            let fileManagerOptions = {
-                modal: true,
-            };
-            let data = that.dataStartsWith('file-manager');
-            fileManagerOptions = $.extend(fileManagerOptions, data);
+            if (type === 'image' || type === 'images') {
+                type = 'Images';
+            } else {
+                type = 'Files';
+            }
 
-            // if (fileManagerOptions) {
-            //     var route = route_prefix + '?' + queryString;
-            // } else {
-            var route = route_prefix;
-            // }
+            $(this).on('click', function (e) {
+                let that = $(this);
+                let route_prefix = (options && options.prefix) ? options.prefix : '/file-manager';
+                let iframe = $("#file-manager-modal").find('.file-manager-iframe');
+                let fileManagerOptions = {
+                    modal: true,
+                };
+                let data = that.dataStartsWith('file-manager');
+                fileManagerOptions = $.extend(fileManagerOptions, data);
 
-            window.fileManagerModalOptions = fileManagerOptions;
+                // if (fileManagerOptions) {
+                //     var route = route_prefix + '?' + queryString;
+                // } else {
+                var route = route_prefix;
+                // }
 
-            // localStorage.setItem('target_input', $(this).data('input'));
-            // localStorage.setItem('target_preview', $(this).data('preview'));
-            $("#file-manager-modal").find('.file-manager-iframe').attr('src', route);
-            $("#file-manager-modal").modal()
-            // window.open(route_prefix + '?type=' + type, 'FileManager', 'width=900,height=600');
-            return false;
+                window.fileManagerModalOptions = fileManagerOptions;
+
+                // localStorage.setItem('target_input', $(this).data('input'));
+                // localStorage.setItem('target_preview', $(this).data('preview'));
+                iframe.contents().find('html').html('');
+                iframe.attr('src', route);
+                $("#file-manager-modal").modal();
+
+                // window.open(route_prefix + '?type=' + type, 'FileManager', 'width=900,height=600');
+                return false;
+            });
+
+            $(this).addClass('has-file-manager-modal');
         });
 
         return this;
-    }
+    };
 
 })(jQuery);
 

@@ -2,6 +2,9 @@
 return [
     'purchases'             => "خریدها",
     'purchase'              => "خرید",
+    'pay'                   => "پرداخت",
+    'tracking'              => "پیگیری",
+    'purchase_tracking'     => "پیگیری خرید",
     'receipts'              => "رسیدهای خرید",
     'receipt'               => "رسید خرید",
     'no_receipt'            => "بدون رسید",
@@ -23,6 +26,7 @@ return [
     'no_winner_so_far'      => "فعلاً هیچ کس به عنوان برنده انتخاب نشده است.",
     'number'                => 'تعداد',
     'add_to_cart'           => 'افزودن به سبد',
+    'price'                 => 'قیمت',
     'unit_price'            => 'قیمت واحد',
     'total_price'           => 'قیمت کل',
     'settlement'            => 'تسویه حساب',
@@ -52,6 +56,15 @@ return [
         'delete_warn_for_multi_locale'  => "این قیمت در زبان‌های دیگر هم برای همیشه پاک می‌شود. اگر تصمیم حذف موقت دارید، از گزینه غیرفعال کردن استفاده کنید.",
         'changes_effect_instantly'      => "تغییر روی قیمت‌ها، بدون نیاز به ذخیره‌ی مطلب، اعمال می‌شوند. مراقب باشید.",
     ],
+
+    'messages' => [
+        'payment' => [
+            'succeeded'         => 'پرداخت با موفقیت به پایان رسید.',
+            'canceled'          => 'پرداخت لغو شد.',
+            'has_been_canceled' => 'پرداخت لغو شده است.',
+        ]
+    ],
+
 ];
 
 /*  Drawing Sequence

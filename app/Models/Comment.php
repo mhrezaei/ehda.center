@@ -23,9 +23,9 @@ class Comment extends Model
         'name',
         'city',
         'donation_date',
+        'donor_name',
         'submitter_name',
         'submitter_phone',
-        'image_files',
     ];
     protected $guarded = ['id'];
     protected $casts = [
@@ -126,6 +126,35 @@ class Comment extends Model
     public function getIsPublicAttribute()
     {
         return boolval($this->published_at) and !$this->is_private;
+    }
+
+    /**
+     * Returns viewable name of comment sender
+     *
+     * @return string
+     */
+    public function getSenderNameAttribute()
+    {
+        $this->spreadMeta();
+        if ($this->user) {
+            return $this->user->full_name;
+        } else if (!is_null($this->submitter_name)) {
+            return $this->submitter_name;
+        } else if (!is_null($this->name)) {
+            return $this->name;
+        } else {
+            return trans('people.deleted_user');
+        }
+    }
+
+    public function getCityNameAttribute()
+    {
+        $this->spreadMeta();
+        $city = State::findBySlug($this->city, 'id');
+        if ($city->exists and !$city->isProvince()) {
+            return $city->province->title . ' - ' . $city->title;
+        }
+        return '';
     }
 
     /*

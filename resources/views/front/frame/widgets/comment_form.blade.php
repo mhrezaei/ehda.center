@@ -8,12 +8,14 @@
     @php
         $availableFields = [
             'name',
+            'name_title',
             'email',
             'mobile',
             'subject',
             'text',
             'donation_date',
             'city',
+            'donor_name',
             'submitter_name',
             'submitter_phone',
             'image',
@@ -80,6 +82,25 @@
                         $inputSize = 12
                     @endphp
                 @endif
+                @if(!auth()->guest())
+                    @php
+                        switch ($fieldName) {
+                            case 'email':
+                                $inputData['value'] = user()->email;
+                                break;
+
+                            case 'name':
+                            case 'submitter_name':
+                                $inputData['value'] = user()->full_name;
+                                break;
+
+                            case 'mobile':
+                            case 'submitter_phone':
+                                $inputData['value'] = user()->mobile;
+                                break;
+                        }
+                    @endphp
+                @endif
 
 
                 {{-- Generating view of field --}}
@@ -94,10 +115,25 @@
                         </div>
                     </div>
 
+                @elseif($fieldName == 'name_title')
+                    {{-- We've added this part fo preview a field as name and store it as title --}}
+                    @php $fieldName = 'title' @endphp
+                    <div class="col-xs-{{ $inputSize }}">
+                        <div class="row">
+                            @include('front.forms.input', [
+                                'name' => $fieldName,
+                                'class' => $inputClass,
+                                'placeholder' => trans('validation.attributes.first_and_last_name'),
+                                'label' => trans('validation.attributes.first_and_last_name'),
+                            ] + $inputData)
+                        </div>
+                    </div>
+
                 @elseif(in_array($fieldName, [
                     'email',
                     'mobile',
                     'subject',
+                    'donor_name',
                     'submitter_name',
                     'submitter_phone',
                 ]))
@@ -130,6 +166,7 @@
                                 'options' => [
                                     'maxDate' => 0,
                                     'changeYear' => true,
+                                    'changeMonth' => true,
                                     'yearRange' => '-100,0',
                                 ]
                             ] + $inputData)

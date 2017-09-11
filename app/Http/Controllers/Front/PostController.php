@@ -7,7 +7,10 @@ use App\Http\Requests\Front\CommentRequest;
 use App\Http\Requests\Manage\PostSaveRequest;
 use App\Models\Category;
 use App\Models\Comment;
+use App\Models\File;
+use App\Models\FileDownloads;
 use App\Models\Folder;
+use App\Models\Order;
 use App\Models\Post;
 use App\Models\Posttype;
 use App\Providers\DummyServiceProvider;
@@ -68,24 +71,30 @@ class PostController extends Controller
         if (!$post) {
             return $this->abort(410, true);
         }
+        $post->spreadMeta();
 
-        $request = $request->all();
-        $request['ip'] = request()->ip();
-        $request['user_id'] = user()->id;
-        $request['type'] = $post->type;
+        $data = $request->all();
+        $data['ip'] = request()->ip();
+        $data['user_id'] = user()->id;
+        $data['type'] = $post->type;
+        $data['locale'] = getLocale();
 
-        $callbackFn = <<<JS
+        $feedBackData = ['success_feed_timeout' => 3000];
+
+        $feedBackData['success_callback'] = <<<JS
         if((typeof customResetForm !== "undefined") && $.isFunction(customResetForm)) {
             customResetForm();
         }
         
 JS;
 
+        if ($message = $post->getAttribute('comment_submission_message_' . getLocale())) {
+            $feedBackData['success_message'] = $message;
+        } else if ($message = $post->getAttribute('comment_submission_message')) {
+            $feedBackData['success_message'] = $message;
+        }
 
-        return $this->jsonAjaxSaveFeedback(Comment::store($request), [
-            'success_callback'     => $callbackFn,
-            'success_feed_timeout' => 3000,
-        ]);
+        return $this->jsonAjaxSaveFeedback(Comment::store($data), $feedBackData);
     }
 
     public function search(Request $request)
@@ -368,11 +377,72 @@ JS;
         if ($post->exists and $post->id) { // If the specified $hashid relates on an existed post
             $post->spreadMeta();
 
+            /************************* Set Payment Info ********************** START */
+            $innerHTMLVars = [
+                'showSideBar' => false, // @TODO: dynamicate this line
+            ];
+            $files = $post->post_files ? $post->post_files : [];
+            $innerHTMLVars['postFiles'] = $files;
+            $orderSessionName = 'product-order-' . $post->hashid;
+
+            if (session()->exists($orderSessionName) and count($files)) {
+                $orderId = session($orderSessionName);
+                $order = Order::find($orderId);
+                if ($order->exists) {
+                    $innerHTMLVars['trackingNumber'] = $order->tracking_number;
+                }
+
+                foreach ($files as $file) {
+                    $file = UploadServiceProvider::smartFindFile($file['src']);
+                    if ($file->exists) {
+                        $filesIds[] = $file->id;
+                    }
+                }
+
+                $undownloadeds = FileDownloads::where([
+                    'order_id' => $orderId,
+                ])->get();
+                if ($undownloadeds and $undownloadeds->count()) {
+                    $undownloadedIds = $undownloadeds->pluck('file_id')->toArray();
+                    foreach ($files as $key => $file) {
+                        $fileObj = File::findByHashid($file['src']);
+                        if ($fileObj->exists and in_array($fileObj->id, $undownloadedIds) === false) {
+                            unset($files[$key]);
+                        } else {
+                            $files[$key]['hashString'] = $undownloadeds->where('file_id', $fileObj->id)
+                                ->last()
+                                ->hashid;
+                        }
+                    }
+                    $innerHTMLVars['files'] = $files;
+                }
+
+                if (session()->exists('paymentSucceeded')) {
+                    $paymentSucceeded = session('paymentSucceeded');
+                    $innerHTMLVars['paymentSucceeded'] = session('paymentSucceeded');
+
+                    if ($paymentSucceeded) {
+                        $messagePost = Post::findBySlug('payment-success');
+                        if ($messagePost->exists) {
+                            $innerHTMLVars['paymentMsg'] = $messagePost->text;
+                        } else {
+                            $innerHTMLVars['paymentMsg'] = trans('cart.messages.payment.succeeded');
+                        }
+                    } else {
+                        $messagePost = Post::findBySlug('payment-canceled');
+                        if ($messagePost->exists) {
+                            $innerHTMLVars['paymentMsg'] = $messagePost->text;
+                        } else {
+                            $innerHTMLVars['paymentMsg'] = trans('cart.messages.payment.canceled');
+                        }
+                    }
+                }
+            }
+            /************************* Set Payment Info ********************** END */
+
             /************************* Generate Html for Post View Part ********************** START */
             $innerHTML = PostsServiceProvider::showPost($post, [
-                'variables' => [
-                    'showSideBar' => false, // @TODO: dynamicate this line
-                ],
+                'variables' => $innerHTMLVars,
             ]);
             /************************* Generate Html for Post View Part ********************** END */
 

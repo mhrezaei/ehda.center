@@ -31,7 +31,7 @@ class UploadServiceProvider extends ServiceProvider
     private static $rootUploadDir = 'uploads'; // Root Directory
     private static $randomNameLength = 30; // Length of Random Name to Be Generated for Uploading Files
     private static $fileNameSeparator = '_';
-    private static $temporaryFolderName = 'temp';
+    private static $temporaryFolderName = 'temp'; // Folder name to save file before move
     private static $versionsPostfixes = [
         'original' => 'original',
     ]; // Postfixes that should be added at the end of names of any version of any file
@@ -294,7 +294,7 @@ class UploadServiceProvider extends ServiceProvider
     public static function removeFile($file, $onlyTemp = true)
     {
         if (!$file instanceof UploadedFileModel) {
-            $file = UploadedFileModel::findByHashid($file);
+            $file = UploadedFileModel::findByHashid($file, ['with_trashed' => true]);
         }
 
         if ($file->exists and (!$onlyTemp or $file->hasStatus('temp'))
@@ -310,7 +310,7 @@ class UploadServiceProvider extends ServiceProvider
                 }
             }
 
-            $file->delete();
+            $file->forceDelete();
 
             if (FilesFacades::exists($file->pathname)) {
                 FilesFacades::delete($pathname);
@@ -425,6 +425,14 @@ class UploadServiceProvider extends ServiceProvider
         return implode(self::$fileNameSeparator, array_merge($basementPart, [$version]));
     }
 
+    /**
+     * Returns specified $fileName in requested version
+     *
+     * @param string $fileName Source File Name
+     * @param string $newVersion
+     *
+     * @return null|string
+     */
     public static function changeFileNameVersion($fileName, $newVersion)
     {
         // remove extension
@@ -440,6 +448,14 @@ class UploadServiceProvider extends ServiceProvider
         return null;
     }
 
+    /**
+     * Returns specified $url in requested version
+     *
+     * @param string $url Source File UrL
+     * @param string $version
+     *
+     * @return mixed
+     */
     public static function changeFileUrlVersion($url, $version)
     {
         $fileName = pathinfo($url)['basename'];
@@ -448,6 +464,11 @@ class UploadServiceProvider extends ServiceProvider
         if ($newVersion) {
             $newUrl = str_replace($fileName, $newVersion, $url);
             $newPath = str_replace(url('/') . '/', '', $newUrl);
+//
+//            if ($url == 'uploads\default\posts\iran-news\image\1504524575_CHuCN1Z0S8K9WR8bbrhpMqjORLmsw4_original.jpg') {
+//                dd(self::getFileObject($newPath), __FILE__ . " - " . __LINE__);
+//                dd($url, $newPath, __FILE__ . " - " . __LINE__);
+//            }
 
             if (self::getFileObject($newPath)) {
                 return $newUrl;
@@ -517,6 +538,13 @@ class UploadServiceProvider extends ServiceProvider
         return $sectionParts;
     }
 
+    /**
+     * Returns upload rules for list of identifiers
+     *
+     * @param string|array $identifiers If string could be comma (,) separated
+     *
+     * @return array
+     */
     public static function getCompleteRules($identifiers)
     {
         if (is_string($identifiers)) {
@@ -746,6 +774,31 @@ class UploadServiceProvider extends ServiceProvider
         }
     }
 
+
+    /**
+     * Returns fields that should be stored only for this file type
+     *
+     * @param UploadedFile $file
+     *
+     * @return array
+     */
+    public static function getFileTypeRelatedFields($file)
+    {
+        $mimeType = $file->getMimeType();
+        $fileType = substr($mimeType, 0, strpos($mimeType, '/'));
+        $result = [];
+
+        switch ($fileType) {
+            case "image" : {
+                list($result['image_width'], $result['image_height']) = getimagesize($file->getPathname());
+
+                return $result;
+            }
+        }
+
+        return $result;
+    }
+
     /**
      * If a config doesn't exists and it is possible to be read from db, it will be fetched from db.
      *
@@ -780,11 +833,25 @@ class UploadServiceProvider extends ServiceProvider
         return 'upload.' . implode('.', $parts);
     }
 
+    /**
+     * Returns $postTypeConfigPrefix (static variable of this class)
+     *
+     * @return string
+     */
     public static function getPostTypeConfigPrefix()
     {
         return self::$postTypeConfigPrefix;
     }
 
+    /**
+     * Returns an <img /> element containing proper image file
+     *
+     * @param string|UploadedFileModel $file     File Identifier
+     * @param string                   $version  Version of file to be shown
+     * @param array                    $switches Switches to be user in showing file
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public static function getFileView($file, $version = 'original', $switches = [])
     {
         $switches = array_normalize($switches, [
@@ -842,13 +909,85 @@ class UploadServiceProvider extends ServiceProvider
             }
         }
 
-        if (!isset($imgUrl)) {
+        if (isset($imgUrl)) {
+            $fileExisted = true;
+        } else {
+            $fileExisted = false;
             $imgUrl = url('assets/images/template/chain-broken.svg');
         }
 
-        return view('front.frame.widgets.img-element', array_merge(compact('imgUrl'), $switches));
+        return view(
+            'front.frame.widgets.img-element',
+            array_merge(compact('imgUrl', 'fileExisted'), $switches));
     }
 
+    /**
+     * Returns an <a /> element containing proper file link
+     * If file doesn't exist in db or in storage, it will return "null"
+     *
+     * @param string|UploadedFileModel $file     File Identifier
+     * @param string                   $version  Version of file to be reached by <a /> element
+     * @param array                    $switches Switches to be user in showing <a /> element
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|null
+     */
+    public static function getFileAnchor($file, $version = 'original', $switches = [])
+    {
+        $switches = array_normalize($switches, [
+            'style'           => [],
+            'width'           => null,
+            'height'          => null,
+            'class'           => [],
+            'otherAttributes' => [],
+            'dataAttributes'  => [],
+            'extra'           => '',
+        ]);
+
+        $file = self::smartFindFile($file, true);
+        if ($file->exists) {
+            $file->spreadMeta();
+            $fileObj = self::getFileObject($file->pathname);
+            if ($fileObj) {
+                $relatedFilesPathnames = $file->related_files_pathname ?: [];
+//                $nameWithoutExtension = str_replace(
+//                    '.' . $file->extension,
+//                    '',
+//                    $file->file_name
+//                );
+                $nameWithoutExtension = $file->name;
+
+                if (
+                    array_key_exists($version, $relatedFilesPathnames) and // version exists in db
+                    self::getFileObject($relatedFilesPathnames[$version]) // version exists in storage
+                ) {
+                    $pathname = $relatedFilesPathnames[$version];
+                    $fileNameWithoutExtension = $nameWithoutExtension . '_' . $version;
+                } else {
+                    $pathname = $file->pathname;
+                    $fileNameWithoutExtension = $nameWithoutExtension;
+                }
+
+                $fileUrl = url($pathname);
+                $fileName = $nameWithoutExtension . '.' . $file->extension;
+
+                return view(
+                    'front.frame.widgets.a-element',
+                    array_merge(compact('fileUrl', 'fileName'), $switches)
+                );
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns file url
+     * If the file doesn't exist on db, it will be return "null"
+     *
+     * @param string|UploadedFileModel $file File Identifier
+     *
+     * @return \Illuminate\Contracts\Routing\UrlGenerator|null|string
+     */
     public static function getFileUrl($file)
     {
         $file = self::smartFindFile($file, true);
@@ -858,6 +997,14 @@ class UploadServiceProvider extends ServiceProvider
         return null;
     }
 
+    /**
+     * Returns \Symfony\Component\HttpFoundation\File\File which exists on $pathname
+     * If there isn't any file in specified pathname, it will be return "null"
+     *
+     * @param string $pathname Pathname of file to create file object
+     *
+     * @return null|\Symfony\Component\HttpFoundation\File\File
+     */
     public static function getFileObject($pathname)
     {
         if (FilesFacades::exists($pathname)) {
@@ -867,6 +1014,13 @@ class UploadServiceProvider extends ServiceProvider
         return null;
     }
 
+    /**
+     * Checks if specified file is an object
+     *
+     * @param string|UploadedFileModel $file File Identifier
+     *
+     * @return bool
+     */
     public static function isImage($file)
     {
         $validator = Validator::make([
@@ -926,6 +1080,34 @@ class UploadServiceProvider extends ServiceProvider
         return preg_replace("/\/|\\\\/", DIRECTORY_SEPARATOR, $directory);
     }
 
+    /**
+     * Returns file eloquent that matched with $pathname
+     *
+     * @param string $pathname Pathname (starting after public folder)
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null|static
+     */
+    public static function findFileByPathname($pathname)
+    {
+        $conditions['directory'] = pathinfo($pathname, PATHINFO_DIRNAME);
+        $conditions['physical_name'] = pathinfo($pathname, PATHINFO_BASENAME);
+        $file = UploadedFileModel::where($conditions)->first();
+
+        if ($file and $file->exists) {
+            return $file;
+        }
+
+        return null;
+    }
+
+    /**
+     * Generates a new image from $sourceFile, in size of $width*$height, at $pathname
+     *
+     * @param \Symfony\Component\HttpFoundation\File\File $sourceFile File Object to Make Clone From It
+     * @param string                                      $pathname   Pathname to save new image at it
+     * @param integer                                     $width      Width of Result Image
+     * @param integer                                     $height     Height of Result Image
+     */
     private static function createRelatedImage($sourceFile, $pathname, $width, $height)
     {
         $newFile = Image::make($sourceFile->getPathname());

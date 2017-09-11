@@ -27,6 +27,7 @@ class CreateCommentsTable extends Migration
             $table->string('email')->index();
             $table->string('mobile');
             $table->string('subject');
+            $table->string('locale', 2)->index();
             $table->longText('text');
 
             $table->longText('meta')->nullable() ;

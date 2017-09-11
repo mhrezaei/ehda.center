@@ -11,6 +11,7 @@ use App\Models\Post;
 use App\Models\Posttype;
 use App\Models\Receipt;
 use App\Models\User;
+use App\Providers\CommentServiceProvider;
 use App\Providers\UploadServiceProvider;
 use App\Traits\ManageControllerTrait;
 use App\Http\Controllers\Controller;
@@ -182,13 +183,28 @@ class PostsController extends Controller
 		$db = $this->Model;
 
 
+        /*-----------------------------------------------
+        | Reveal People Submissions ...
+        */
+        $peopleSubmissions = CommentServiceProvider::getPostTypeComments($posttype , [
+            'locale' => $selector_switches['locale'],
+        ]);
+
+
 		/*-----------------------------------------------
 		| View ...
 		*/
 
 		//return 'T' ;
 
-		return view($this->view_folder . ".browse", compact('page', 'models', 'db', 'locale', 'posttype'));
+        return view($this->view_folder . ".browse", compact(
+            'page',
+            'models',
+            'db',
+            'locale',
+            'posttype',
+            'peopleSubmissions'
+        ));
 
 	}
 

@@ -239,6 +239,7 @@
                             'label' => trans('validation.attributes.submission_work_owner_name'),
                             'required' => true,
                             'class' => 'form-persian',
+                            'value' => (!auth()->guest()) ? user()->full_name : ''
                         ])
                     </div>
                 </div>
@@ -251,6 +252,7 @@
                             'placeholder' => trans('validation.attributes.mobile'),
                             'label' => trans('validation.attributes.submission_work_owner_mobile'),
                             'required' => true,
+                            'value' => (!auth()->guest()) ? user()->mobile : ''
                         ])
                     </div>
                 </div>
@@ -263,6 +265,7 @@
                             'placeholder' => trans('validation.attributes.email'),
                             'label' => trans('validation.attributes.submission_work_owner_email'),
                             'required' => true,
+                            'value' => (!auth()->guest()) ? user()->email : ''
                         ])
                     </div>
                 </div>

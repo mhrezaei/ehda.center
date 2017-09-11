@@ -406,18 +406,54 @@ trait TahaModelTrait
 
 	}
 
-    public static function findByHashid($hash, $connection = 'ids')
+    public static function findByHashid($hashid, $connection = true, $options = [])
     {
-        if ($hash) {
-            $ids = hashid_decrypt($hash, $connection);
-            if (count($ids)) {
-                $id = $ids[0];
-                $model = self::where('id', $id)->first();
-                if ($model) {
-                    return $model;
-                }
+        /*-----------------------------------------------
+        | Solving a probable common mistake ...
+        | (In case an options array is passed as the second argument.)
+        */
+        if(is_array($connection)) {
+            $options = $connection ;
+            $connection = true ;
+        }
+
+        /*-----------------------------------------------
+        | Options ...
+        */
+        $options = array_normalize($options, [
+            'with_trashed' => false,
+            'trashed_only' => false,
+        ]);
+        if($connection===true) {
+            $connection = 'ids' ;
+        }
+
+        /*-----------------------------------------------
+        | Safe Decryption ...
+        */
+        $id = intval(hashid($hashid , $connection));
+
+        /*-----------------------------------------------
+        | Model ...
+        */
+        if($id) {
+            $model = self::where('id', $id);
+
+            if($options['with_trashed']) {
+                $model = $model->withTrashed();
+            }
+            if($options['trashed_only']) {
+                $model = $model->trashedOnly();
+            }
+            $model = $model->first();
+            if($model and $model->id) {
+                return $model;
             }
         }
+
+        /*-----------------------------------------------
+        | Safe Return ...
+        */
 
         return new self();
     }

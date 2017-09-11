@@ -5,11 +5,7 @@
 		<div class="{{ $comment->trashed()? 'noContent' : '' }}">
 			@include("manage.comments.show-sender")
 			@include("manage.comments.show-post")
-			@include("manage.frame.widgets.grid-text" , [
-				'text' => $comment->text ,
-				'size' => "12" ,
-				'class' => "text-align" ,
-			])
+			@include("manage.comments.show-one-content")
 			@include("manage.frame.widgets.grid-date" , [
 				'date' => $comment->created_at,
 			])

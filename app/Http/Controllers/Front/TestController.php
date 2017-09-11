@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Models\Category;
 use App\Models\Folder;
+use App\Models\Order;
 use App\Models\Post;
 use App\Models\Receipt;
 use App\Models\State;
@@ -51,10 +52,7 @@ class TestController extends Controller
 
     public function index()
     {
-        $link = 'http://www.aparat.com/v/cy1jP';
-        $link = 'www.aparat.com/v/cy1jP';
-        $link = 'aparat.com/v/cy1jP';
-        dd(getAparatId($link), __FILE__ . " - " . __LINE__);
+        dd(Order::find(24)->hashid, __FILE__ . " - " . __LINE__);
     }
 
     public function states()
@@ -268,15 +266,17 @@ class TestController extends Controller
     public function test()
     {
         // method 1
-//        $payment = invoice(1000, url(''))->getTracking();
-//        $pay = gateway()->fire($payment);
+        $payment = invoice(1000, url(''))->getTracking();
+//        dd($payment, __FILE__ . " - " . __LINE__);
+        $pay = gateway()->fire($payment);
+        dd($pay, __FILE__ . " - " . __LINE__);
 
         // method 2
-        $pay = invoice(100, url('/hadi2'))->payment();
-
-
-        if ($pay)
-            return redirect($pay);
+//        $pay = invoice(100, url('/hadi2'))->payment();
+//
+//
+//        if ($pay)
+//            return redirect($pay);
     }
 
     public function test2()

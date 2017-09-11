@@ -6,11 +6,16 @@ use App\Http\Requests\Manage\CommentMassStatusRequest;
 use App\Http\Requests\Manage\CommentProcessRequest;
 use App\Http\Requests\Manage\CommentSaveRequest;
 use App\Models\Comment;
+use App\Models\Post;
 use App\Models\Posttype;
+use App\Providers\CommentServiceProvider;
+use App\Providers\PostsServiceProvider;
+use App\Providers\UploadServiceProvider;
 use App\Traits\ManageControllerTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Vinkla\Hashids\Facades\Hashids;
 
 
 class CommentsController extends Controller
@@ -316,5 +321,99 @@ class CommentsController extends Controller
 		]);
 
 	}
+
+    public function convertToPost($comment)
+    {
+        $comment = CommentServiceProvider::smartFindComment($comment);
+
+        if ($comment->exists) {
+            $comment->spreadMeta();
+            $post = $comment->post;
+            if (
+                $post->exists and
+                $post->spreadMeta()->target_post_type and
+                ($targetPosttype = Posttype::findBySlug($post->target_post_type)) and
+                $targetPosttype->exists
+            ) {
+                $fields = CommentServiceProvider::translateFields($post->fields);
+
+                if (
+                    $post->conversions and
+                    ($conversions = CommentServiceProvider::translateConversions($post->conversions)) and
+                    is_array($conversions) and
+                    count($conversions)
+                ) {
+                    foreach ($conversions as $from => $to) {
+                        $comment->$to = $comment->$from;
+                    }
+                    $comment->__unset($from);
+
+                    $fields[$to] = $fields[$from];
+                    unset($fields[$from]);
+                }
+
+                $newPostData = [
+                    'type'           => $post->target_post_type,
+                    'source_comment' => $comment->id,
+                    'sisterhood' => Hashids::encode(time()),
+                    'is_draft' => 1,
+                    'owned_by' => user()->id,
+                    'created_by' => user()->id,
+                    'locale' => $comment->locale,
+                ];
+
+                foreach ($comment->meta() as $key => $value) {
+                    if (
+                        ends_with($key, '_files') and
+                        ($filesArray = json_decode($value, true)) and
+                        is_array($filesArray)
+                    ) {
+                        if($key == 'image_files' and count($filesArray == 1)) {
+                            $fileObj = UploadServiceProvider::smartFindFile($filesArray[0]);
+                            if($fileObj->exists) {
+                                $newPostData['featured_image'] = $fileObj->pathname;
+                                unset($filesArray[0]);
+                                $filesArray = array_values($filesArray);
+                            }
+                        }
+                        if(count($filesArray)) {
+                            if(!isset($newPostData['post_files'])) {
+                                $newPostData['post_files'] = [];
+                            }
+                            foreach ($filesArray as $fileHashid) {
+                                $newPostData['post_files'][] = [
+                                    'src'   => $fileHashid,
+                                    'label' => '',
+                                    'link'  => '',
+                                ];
+                            }
+                        }
+                    }
+                    unset($filesArray);
+                }
+
+                if ($targetPosttype->has('domains')) {
+                    $newPostData['domains'] = '|' . implode('|', getUsableDomains()) . '|';
+                } else {
+                    $newPostData['domains'] = '|global|';
+                }
+
+                foreach (array_keys($fields) as $fieldName) {
+                    $newPostData[$fieldName] = $comment->$fieldName;
+                }
+
+                $id = Post::store($newPostData);
+                $newPost = Post::findBySlug($id, 'id');
+                if ($newPost->exists) {
+                    $comment->saveStatus('published');
+                    return redirect("manage/posts/" . $newPost->type . "/edit/" . $newPost->hashid);
+                }
+            }
+
+            return $this->abort('404');
+        }
+
+        return $this->abort('403');
+    }
 }
 

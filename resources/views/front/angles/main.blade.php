@@ -14,7 +14,7 @@
 @endsection
 
 @if(!isset($positionInfo))
-    {{ null, $positionInfo = [] }}
+    @php $positionInfo = []  @endphp
 @endif
 
 @section('content')
