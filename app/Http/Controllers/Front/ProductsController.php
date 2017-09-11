@@ -356,8 +356,7 @@ class ProductsController extends Controller
         $order->storePosts($post->id, $orderPostData);
 
         return $this->jsonAjaxSaveFeedback($orderId, [
-//            @todo comment this line
-//            'success_redirect' => $payment,
+            'success_redirect' => $payment,
             'redirectTime' => 2000,
         ]);
     }
