@@ -334,20 +334,20 @@ class ProductsController extends Controller
         $orderPostData['order_id'] = $orderId;
 
         // @todo: uncomment these lines
-//        $trackingNumber = invoice($post->price, route_locale('education.paymentResult', [
-//                'order' => $order->hashid
-//            ])
-//        )->getTracking();
-//        $payment = gateway()->fire($trackingNumber);
-//
-//        if (!$payment) {
-//            return $this->jsonAjaxSaveFeedback(0, [
-//                'danger_message' => trans('front.gateway.disabled')
-//            ]);
-//        }
+        $trackingNumber = invoice($post->price, route_locale('education.paymentResult', [
+                'order' => $order->hashid
+            ])
+        )->getTracking();
+        $payment = gateway()->fire($trackingNumber);
+
+        if (!$payment) {
+            return $this->jsonAjaxSaveFeedback(0, [
+                'danger_message' => trans('front.gateway.disabled')
+            ]);
+        }
 //
         // @todo: remove this line
-        $trackingNumber = '222222';
+//        $trackingNumber = '222222';
 
         $order->tracking_number = $trackingNumber;
         $order->save();
@@ -356,7 +356,7 @@ class ProductsController extends Controller
 
         return $this->jsonAjaxSaveFeedback($orderId, [
 //            @todo comment this line
-//            'success_redirect' => $payment,
+            'success_redirect' => $payment,
             'redirectTime' => 2000,
         ]);
     }
@@ -387,7 +387,7 @@ class ProductsController extends Controller
             $flashData = [];
 
 //          peyment_verify($trackingNumber) @todo: check it!!!
-            if (true or peyment_verify($trackingNumber)) {
+            if (peyment_verify($trackingNumber)) {
                 // If received tracking number doesn't match with order's tracking number, we will show 403 error
                 if ($order->tracking_number != $trackingNumber) {
                     return $this->abort(403);
