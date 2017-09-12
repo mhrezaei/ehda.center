@@ -372,7 +372,7 @@ class CardsController extends UsersController
 		/*-----------------------------------------------
 		| Send to Print ...
 		*/
-		Printer::where('user_id' , $saved_user->id)->delete() ;
+		Printer::where('user_id', $saved_user->id)->delete();
 		if($saved and $data['_submit'] == 'print') {
 			$saved = Printing::addTo(Post::find($request->from_event_id), $saved_user);
 		}
@@ -620,7 +620,7 @@ class CardsController extends UsersController
 				continue;
 			}
 
-			Printer::where('user_id' , $user->id)->delete() ;
+			Printer::where('user_id', $user->id)->delete();
 			if(Printer::where('user_id', $user->id)->count()) {
 				continue;
 			}
@@ -789,6 +789,49 @@ class CardsController extends UsersController
 		*/
 
 		return view('manage.users.cards-event-stats', compact('model', 'total_count', 'daily_registers'));
+
+	}
+
+	public function deleteChild(Request $request)
+	{
+		/*-----------------------------------------------
+		| Model ...
+		*/
+		$model = User::find($request->user_id);
+		if(!$model or !$model->exists or $model->is_not_a('card-holder')) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+
+		/*-----------------------------------------------
+		| Security ...
+		*/
+		if(user()->cannot('users-card-holder.delete')) {
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+		}
+
+		/*-----------------------------------------------
+		| Deletion ...
+		*/
+		if(count($model->rolesArray()) > 1) {
+			$model->detachRole('card-holder');
+			$ok = User::store([
+				'id'                 => $model->id,
+				'card_registered_at' => null,
+				'card_no'            => 0,
+			]);
+		}
+		else {
+			$ok = $model->delete();
+		}
+
+		/*-----------------------------------------------
+		| Feedback ...
+		*/
+
+		return $this->jsonAjaxSaveFeedback($ok, [
+			'success_callback' => "rowHide('tblUsers','$model->id')",
+		]);
+
 
 	}
 

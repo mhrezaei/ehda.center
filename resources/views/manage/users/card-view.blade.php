@@ -100,6 +100,13 @@
 					<span>
 						{{ trans('forms.general.by'). ' ' . $model->creator->full_name }}
 					</span>
+					<span class="btn btn-link">
+						@if(user()->as('admin')->can('users-card-holder.delete'))
+							<span class="text-danger text-red f10" onclick="$('#divCardDelete').slideToggle('fast')">
+								[{{ trans("forms.button.delete") }}]
+							</span>
+						@endif
+					</span>
 				@endif
 			</td>
 		</tr>
@@ -159,6 +166,10 @@
 	@include("manage.printings.send-to-panel" , [
 		'user_id' => $model->id ,
 	]     )
+	@include("manage.users.card-delete" , [
+		'user_id' => $model->id ,
+	]     )
+
 
 </div>
 
