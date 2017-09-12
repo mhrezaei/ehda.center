@@ -2,7 +2,10 @@
 <div class="media-list-item {{ $itemsColorClass }}">
     <a href="{{ $post->direct_url }}">
         <div class="media-list-item-image">
-            <img src="{{ url($post->viewable_featured_image) }}" class="media-object">
+            @php
+                $thumbImage = UploadServiceProvider::changeFileUrlVersion($post->viewable_featured_image, 'thumb')
+            @endphp
+            <img src="{{ url($thumbImage) }}" class="media-object">
         </div>
         <div class="media-list-item-body">
             <h5 class="media-list-item-heading">

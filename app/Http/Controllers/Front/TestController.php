@@ -52,7 +52,7 @@ class TestController extends Controller
 
     public function index()
     {
-        dd(Order::find(24)->hashid, __FILE__ . " - " . __LINE__);
+        UploadServiceProvider::hardDeleteSoftDeletedFiles();
     }
 
     public function states()

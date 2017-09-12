@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Http\Controllers\DropzoneController;
 use App\Models\Posttype;
+use Carbon\Carbon;
 use function GuzzleHttp\Promise\is_settled;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Config;
@@ -714,17 +715,28 @@ class UploadServiceProvider extends ServiceProvider
      */
     private static function safeResizeImage($image, $width, $height)
     {
-        if ($width == $height) {
-            if ($image->getWidth() >= $image->getHeight()) {
-                $widthBased = false;
-            } else {
-                $widthBased = true;
-            }
-        } else if ($width < $height) {
-            $widthBased = false;
-        } else {
+        $ratioHeight = $height * $image->width() / $width;
+        if($ratioHeight <= $image->height()) {
             $widthBased = true;
+        } else {
+            $widthBased = false;
         }
+//        if ($width == $height) {
+//            if ($image->getWidth() >= $image->getHeight()) {
+//                $widthBased = false;
+//            } else {
+//                $widthBased = true;
+//            }
+//        } else if ($width < $height) {
+//            if ($image->getWidth() >= $image->getHeight()) {
+//                $widthBased = false;
+//            } else {
+//                $widthBased = true;
+//            }
+////            $widthBased = false;
+//        } else {
+//            $widthBased = true;
+//        }
 
         if ($widthBased) {
             $cropWidth = $image->getWidth();
@@ -1111,6 +1123,23 @@ class UploadServiceProvider extends ServiceProvider
         }
 
         return null;
+    }
+
+    /**
+     * Removes file that has been soft deleted for more than 30 minutes
+     *
+     * @param int $limit Limit the soft deleted file that will be removed in every request
+     */
+    public static function hardDeleteSoftDeletedFiles($limit = 100)
+    {
+        $deletedFiles = UploadedFileModel::withTrashed()
+            ->where('deleted_at', '<', Carbon::now()->subMinutes(30)->toDateTimeString())
+            ->limit($limit)
+            ->get();
+
+        foreach ($deletedFiles as $deletedFile) {
+            self::removeFile($deletedFile);
+        }
     }
 
     /**

@@ -14,11 +14,14 @@
                 <div class="col-xs-12">
                     <div class="row">
                         @foreach($relatedPosts as $relatedPost)
-                            {{ null, $relatedPost->spreadMeta() }}
+                            @php
+                                $relatedPost->spreadMeta();
+                                $thumbImage = UploadServiceProvider::changeFileUrlVersion($relatedPost->viewable_featured_image, 'thumb');
+                            @endphp
                             <div class="col-md-3 col-sm-6 col-xs-12">
                                 <div class="post-card">
                                     <a href="{{ $relatedPost->direct_url }}" target="_blank">
-                                        <img src="{{ $relatedPost->viewable_featured_image }}" class="post-card-image">
+                                        <img src="{{ $thumbImage }}" class="post-card-image">
                                         <div class="post-card-text">
                                             <h4>{{ $relatedPost->title }}</h4>
                                             @if($relatedPost->abstract)
