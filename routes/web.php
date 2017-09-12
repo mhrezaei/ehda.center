@@ -157,7 +157,7 @@ Route::group([
 
             Route::post('/add_to_print', 'CardsController@addToPrintings');
             Route::post('/add_to_print_mass', 'CardsController@addToPrintingsMass');
-            //Route::post('/delete', 'CardsController@delete');
+            Route::post('/delete', 'CardsController@deleteChild');
             //Route::post('/bulk_delete', 'CardsController@bulk_delete');
             //Route::post('/sms', 'CardsController@sms');
             //Route::post('/email', 'CardsController@email');
