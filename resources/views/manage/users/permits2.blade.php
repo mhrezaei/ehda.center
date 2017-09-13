@@ -31,7 +31,8 @@
 				{{ '' , array_forget($modules , 'users') }}
 				@if( in_array( $request_role->slug , model('role')::adminRoles()) and user()->as_any()->can("users"))
 					<li role="presentation">
-						<a href="#divPeoplePermits" aria-controls="divPeoplePermits" role="tab" data-toggle="tab">{{ trans("people.people_management") }}</a>
+						<a href="#divPeoplePermits" aria-controls="divPeoplePermits" role="tab"
+						   data-toggle="tab">{{ trans("people.people_management") }}</a>
 					</li>
 				@endif
 			@endif
@@ -44,7 +45,18 @@
 				@if( in_array( $request_role->slug , model('role')::adminRoles()) and user()->as_any()->can("posts"))
 
 					<li role="presentation"><a href="#divPostsPermits" aria-controls="divPostsPermits" role="tab"
-										   data-toggle="tab">{{ trans("manage.modules.posts") }}</a></li>
+											   data-toggle="tab">{{ trans("manage.modules.posts") }}</a></li>
+				@endif
+			@endif
+
+			{{-- Comments -------------------------------}}
+			@if(isset($modules['comments']))
+				{{ '' , $module_comments = $modules['comments'] }}
+				{{ '' , array_forget($modules , 'comments') }}
+				@if( in_array( $request_role->slug , model('role')::adminRoles()) and user()->as_any()->can("comments"))
+
+					<li role="presentation"><a href="#divCommentsPermits" aria-controls="divCommentsPermits" role="tab"
+											   data-toggle="tab">{{ trans("manage.modules.comments") }}</a></li>
 				@endif
 			@endif
 
@@ -91,6 +103,17 @@
 				@endforeach
 			</div>
 
+			<div role="tabpanel" class="tab-pane" id="divCommentsPermits">
+				@foreach($comment_posttypes as $posttype)
+					@include("manage.users.permits2-module" , [
+						'title' => $posttype->title,
+						'module' => "comments-$posttype->slug" ,
+						'permits' => $module_comments ,
+						'locales' => $posttype->locales_array,
+					]     )
+				@endforeach
+			</div>
+
 			<div role="tabpanel" class="tab-pane" id="divOtherPermits">
 				@foreach($modules as $module => $permits)
 					@include("manage.users.permits2-module" , [
@@ -120,13 +143,13 @@
 	]     )
 
 	{{--@include("forms.select" , [--}}
-		{{--'name' => "status" ,--}}
-		{{--'id' => "cmbStatus-$request_role->id",--}}
-		{{--'options' => $request_role->statusCombo() ,--}}
-		{{--'value_field' => "0" ,--}}
-		{{--'caption_field' => "1" ,--}}
-		{{--'value' => $model->as($request_role->slug)->status() ,--}}
-		{{--'condition' => $request_role->has_status_rules ,--}}
+	{{--'name' => "status" ,--}}
+	{{--'id' => "cmbStatus-$request_role->id",--}}
+	{{--'options' => $request_role->statusCombo() ,--}}
+	{{--'value_field' => "0" ,--}}
+	{{--'caption_field' => "1" ,--}}
+	{{--'value' => $model->as($request_role->slug)->status() ,--}}
+	{{--'condition' => $request_role->has_status_rules ,--}}
 	{{--]     )--}}
 
 	{{--
@@ -136,16 +159,16 @@
 	|
 	--}}
 	@include("forms.sep")
-		@include('forms.button' , [
-			'label' => trans('forms.button.save'),
-			'shape' => 'primary',
-			'type' => 'submit' ,
-		])
-		@include('forms.button' , [
-			'label' => trans('forms.button.cancel'),
-			'shape' => 'link',
-			'link' => '$(".modal").modal("hide")',
-		])
+	@include('forms.button' , [
+		'label' => trans('forms.button.save'),
+		'shape' => 'primary',
+		'type' => 'submit' ,
+	])
+	@include('forms.button' , [
+		'label' => trans('forms.button.cancel'),
+		'shape' => 'link',
+		'link' => '$(".modal").modal("hide")',
+	])
 
 	<div class="m5"></div>
 	@include('forms.feed')

@@ -70,13 +70,13 @@ class UsersController extends Controller
 			'mass_actions'      => [
 				['mobile', trans('people.commands.send_sms'), "modal:manage/users/act/0/sms/$request_role", user()->as('admin')->can("users-$request_role.send")],
 			],
-			'more_mass_actions' => [] ,
+			'more_mass_actions' => [],
 			'toolbar_buttons'   => [],
-		     'browse_tabs' => 'auto' ,
-		     'free_toolbar_view' => "NO" ,
+			'browse_tabs'       => 'auto',
+			'free_toolbar_view' => "NO",
 		]);
 
-		$switches['mass_actions'] = array_merge( $switches['mass_actions'] , $switches['more_mass_actions']) ;
+		$switches['mass_actions'] = array_merge($switches['mass_actions'], $switches['more_mass_actions']);
 
 		return $switches;
 	}
@@ -100,10 +100,10 @@ class UsersController extends Controller
 		/*-----------------------------------------------
 		| Revealing the Role...
 		*/
-		if($request_role=='admin') {
-			$role = Role::where('is_admin' , 1)->first() ;
+		if($request_role == 'admin') {
+			$role = Role::where('is_admin', 1)->first();
 		}
-		elseif($request_role != 'all' and $request_role!='auto') {
+		elseif($request_role != 'all' and $request_role != 'auto') {
 			$role = Role::findBySlug($request_role);
 			if(!$role->exists) {
 				return view('errors.404');
@@ -190,15 +190,15 @@ class UsersController extends Controller
 		/*-----------------------------------------------
 		| Revealing the Role...
 		*/
-		if($request_role=='all') {
-			$role = new Role() ;
-			$role->slug = 'all' ;
-			$role->plural_title = trans("people.commands.all_users") ;
+		if($request_role == 'all') {
+			$role               = new Role();
+			$role->slug         = 'all';
+			$role->plural_title = trans("people.commands.all_users");
 		}
-		elseif($request_role=='admin') {
-			$role = new Role() ;
-			$role->slug = 'admin' ;
-			$role->plural_title = trans("ehda.volunteers.plural") ;
+		elseif($request_role == 'admin') {
+			$role               = new Role();
+			$role->slug         = 'admin';
+			$role->plural_title = trans("ehda.volunteers.plural");
 		}
 		else {
 			$role = Role::findBySlug($request_role);
@@ -226,9 +226,9 @@ class UsersController extends Controller
 		| Model ...
 		*/
 		$selector_switches = [
-			'roleString' => "$request_role.$request_tab" ,
+			'roleString' => "$request_role.$request_tab",
 			//'role'   => $request_role,
-			'status' => $request_tab,
+			'status'     => $request_tab,
 		];
 
 		$models = User::selector($selector_switches)->orderBy('created_at', 'desc')->simplePaginate(20 /*user()->preference('max_rows_per_page')*/);
@@ -258,10 +258,11 @@ class UsersController extends Controller
 		}
 		$modules = $request_role->modules_array;
 
-		$posttypes = Posttype::all();
-		$roles     = Role::all();
+		$posttypes         = Posttype::all();
+		$comment_posttypes = Posttype::whereIn('slug', Posttype::withFeature('comment'))->get();
+		$roles             = Role::all();
 
-		return view("manage.users.permits2", compact('model', 'request_role', 'roles', 'posttypes', 'modules'));
+		return view("manage.users.permits2", compact('model', 'request_role', 'roles', 'posttypes', 'modules' , 'comment_posttypes'));
 
 	}
 
@@ -299,21 +300,21 @@ class UsersController extends Controller
 		/*-----------------------------------------------
 		| Save Status ...
 		*/
-		$ok = $this->saveRoleStatus($model , $request->role_slug , $request->status) ;
+		$ok = $this->saveRoleStatus($model, $request->role_slug, $request->status);
 
 		/*-----------------------------------------------
 		| Save Support Roles ...
 		*/
 		foreach(Role::supportRoles() as $support_role) {
-			$model_value = $model->is_a($support_role->slug) ;
-			$input_value = $request->toArray()[$support_role->slug] ;
+			$model_value = $model->is_a($support_role->slug);
+			$input_value = $request->toArray()[ $support_role->slug ];
 
 			if($model_value != $input_value) {
 				if($input_value) {
-					$model->attachRole($support_role->slug) ;
+					$model->attachRole($support_role->slug);
 				}
 				else {
-					$model->detachRole($support_role->slug) ;
+					$model->detachRole($support_role->slug);
 				}
 			}
 
@@ -429,7 +430,7 @@ class UsersController extends Controller
 		/*-----------------------------------------------
 		| Save ...
 		*/
-		$ok = $this->saveRoleStatus($user , $role_slug , $new_status) ;
+		$ok = $this->saveRoleStatus($user, $role_slug, $new_status);
 		//if($new_status == 'detach') {
 		//	$user->detachRole($role_slug);
 		//}
@@ -455,7 +456,7 @@ class UsersController extends Controller
 
 	}
 
-	private function saveRoleStatus($user , $role_slug, $new_status)
+	private function saveRoleStatus($user, $role_slug, $new_status)
 	{
 		if($new_status == 'detach') {
 			$ok = $user->detachRole($role_slug);
@@ -471,10 +472,10 @@ class UsersController extends Controller
 				$ok = $user->enableRole($role_slug);
 			}
 
-			$ok = $user->as($role_slug)->setStatus($new_status) ;
+			$ok = $user->as($role_slug)->setStatus($new_status);
 		}
 
-		return $ok ;
+		return $ok;
 
 	}
 
@@ -578,8 +579,8 @@ class UsersController extends Controller
 		/*-----------------------------------------------
 		| Models ...
 		*/
-		$user = User::find($request->id) ;
-		$role = Role::findBySlug($request->role_slug) ;
+		$user = User::find($request->id);
+		$role = Role::findBySlug($request->role_slug);
 
 		if(!$user or !$user->id or !$role or !$role->id) {
 			return $this->jsonFeedback(trans('validation.http.Error410'));
@@ -606,13 +607,14 @@ class UsersController extends Controller
 		/*-----------------------------------------------
 		| Process ...
 		*/
-		$ok = $user->attachRole($role->slug , $request->status) ;
+		$ok = $user->attachRole($role->slug, $request->status);
 
 		/*-----------------------------------------------
 		| Feedback ...
 		*/
-		return $this->jsonAjaxSaveFeedback( $ok , [
-				'success_refresh' => true,
+
+		return $this->jsonAjaxSaveFeedback($ok, [
+			'success_refresh' => true,
 		]);
 
 	}
@@ -623,7 +625,7 @@ class UsersController extends Controller
 		/*-----------------------------------------------
 		| Role Model ...
 		*/
-		$role = Role::findByHashid($request->role_id) ;
+		$role = Role::findByHashid($request->role_id);
 		if(!$role or !$role->id) {
 			return $this->jsonFeedback(trans('validation.http.Error410'));
 		}
@@ -634,7 +636,7 @@ class UsersController extends Controller
 		/*-----------------------------------------------
 		| User ...
 		*/
-		$user = User::find($request->id) ;
+		$user = User::find($request->id);
 		if(!$user or !$user->id) {
 			return $this->jsonFeedback(trans('validation.http.Error410'));
 		}
@@ -645,15 +647,15 @@ class UsersController extends Controller
 		/*-----------------------------------------------
 		| Action ...
 		*/
-		$done = $user->as($role->slug)->setStatus($request->new_status) ;
+		$done = $user->as($role->slug)->setStatus($request->new_status);
 
 		/*-----------------------------------------------
 		| Feedback ...
 		*/
-		return $this->jsonAjaxSaveFeedback( $done , [
-				'success_callback' => "rowUpdate('tblUsers','$user->id')",
+
+		return $this->jsonAjaxSaveFeedback($done, [
+			'success_callback' => "rowUpdate('tblUsers','$user->id')",
 		]);
-		
 
 
 	}
@@ -663,7 +665,7 @@ class UsersController extends Controller
 		/*-----------------------------------------------
 		| Role Model ...
 		*/
-		$role = Role::findByHashid($request->role_id) ;
+		$role = Role::findByHashid($request->role_id);
 		if(!$role) {
 			return $this->jsonFeedback(trans('validation.http.Error410'));
 		}
@@ -674,8 +676,8 @@ class UsersController extends Controller
 		/*-----------------------------------------------
 		| Action ...
 		*/
-		$users = User::whereIn('id' , explode(',', $request->ids) )->get() ;
-		$count = 0 ;
+		$users = User::whereIn('id', explode(',', $request->ids))->get();
+		$count = 0;
 		foreach($users as $user) {
 			if($user->canEdit()) {
 				$count += $user->as($role->slug)->setStatus($request->new_status);
@@ -685,14 +687,14 @@ class UsersController extends Controller
 		/*-----------------------------------------------
 		| Feedback ...
 		*/
+
 		return $this->jsonAjaxSaveFeedback($count, [
 			'success_message' => trans('forms.feed.mass_done', [
 				'count' => pd($count),
 			]),
-			'success_refresh' => true ,
+			'success_refresh' => true,
 			'danger_message'  => trans('forms.feed.error'),
 		]);
-
 
 
 	}
