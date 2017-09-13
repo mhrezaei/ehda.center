@@ -32,22 +32,16 @@ var dropzoneOptions = {
             $(file.previewElement).hide();
             $(file.previewElement).closest('.uploader-container').find('.dz-message').show();
 
-            // Append external fields (if needed)
-            var externalFields = {};
-            var currentFolder = $(".breadcrumb-folders li.current");
-            if (currentFolder.length && (typeof getFolderParents != undefined) && $.isFunction(getFolderParents)) {
-                var parents = getFolderParents(currentFolder);
-                parents.each(function () {
-                    externalFields[$(this).attr('data-instance')] = $(this).attr('data-key');
-                });
-            }
-            formData.append('externalFields', JSON.stringify(externalFields));
-
             // Append elements inside of dorpzone element self
             var inElementData = $(this.element).find(':input').serializeArray();
             $.each(inElementData, function (index, node) {
                 formData.append(node.name, node.value);
             });
+
+            // Append external fields (if needed)
+            let currentExternalFields = $(this.element).find('#externalFields');
+            let externalFields = currentExternalFields.length ? $.parseJSON(currentExternalFields.val()) : {};
+            formData.append('externalFields', JSON.stringify(externalFields));
 
 
             // Show File Progress Info

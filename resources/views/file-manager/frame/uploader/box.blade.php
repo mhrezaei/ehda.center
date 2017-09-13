@@ -56,11 +56,14 @@
             'name' => '_directUpload',
             'value' => $directUpload,
         ])
-        {{--@include('front.forms.hidden', [--}}
-            {{--'id' => 'externalFields',--}}
-            {{--'name' => 'externalFields',--}}
-            {{--'value' => (isset($externalFields) and $externalFields) ? json_encode($externalFields) : '',--}}
-        {{--])--}}
+        @if(!isset($externalFields) or !$externalFields or !is_array($externalFields))
+            @php $externalFields = [] @endphp
+        @endif
+        @include('front.forms.hidden', [
+            'id' => 'externalFields',
+            'name' => 'externalFields',
+            'value' => json_encode($externalFields),
+        ])
     </div>
 
 </div>

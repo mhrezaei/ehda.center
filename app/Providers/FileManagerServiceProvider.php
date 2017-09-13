@@ -37,6 +37,7 @@ class FileManagerServiceProvider extends ServiceProvider
         'callbackOnEachUploadSuccess'  => '', // Name of function that will be called after uploading of each file success (get "file" as parameter)
         'callbackOnEachUploadError'    => '', // Name of function that will be called after uploading of each file failed (get "file" as parameter)
         'callbackOnQueueComplete'      => '', // Name of function that will be called after uploading of all files in a queue complete
+        'externalFields'               => [], // Extra Fields to be posted while uploading file
     ];
 
     /**
@@ -198,6 +199,7 @@ class FileManagerServiceProvider extends ServiceProvider
         $posttype = PostsServiceProvider::smartFindPosttype($posttype);
         if ($posttype->exists and $posttype->canUploadFile()) {
             $posttypeSlug = $posttype->slug;
+            $switches['externalFields']['posttype'] = $posttype->hashid;
 
             foreach ($fileTypes as $key => $fileType) {
                 $fileTypes[$key] = 'manager.' . $posttypePrefix . $posttypeSlug . '.' . $fileType;

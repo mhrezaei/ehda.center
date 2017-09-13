@@ -15,7 +15,7 @@
                         {{ trans('front.price') }}
                         :
                         {{ ad(number_format($post->price)) }}
-                        {{ trans('front.rials') }}
+                        {{ trans('front.toman') }}
                     </p>
                 </div>
                 <div class="media-end text-center pr15 pl15 pt70 border-right-1 border-right-lightGray">

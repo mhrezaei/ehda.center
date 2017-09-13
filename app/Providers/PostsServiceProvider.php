@@ -484,7 +484,8 @@ class PostsServiceProvider extends ServiceProvider
             $post = Post::findBySlug($identifier);
         }
 
-        if ($post->exists and
+        if ($post and
+            $post->exists and
             (
                 !$post->domain or
                 // Domain isn't specified
@@ -523,7 +524,7 @@ class PostsServiceProvider extends ServiceProvider
             $posttype = Posttype::findBySlug($identifier);
         }
 
-        if ($posttype->exists) {
+        if ($posttype and $posttype->exists) {
             return $posttype;
         }
 

@@ -320,8 +320,16 @@ function pd(enDigit) {
 }
 
 function selectFolder(folder) {
+    var currentFolder = $(".breadcrumb-folders li.current");
+
     //Finds Activated Folders And Changes Icons
-    var parents = getFolderParents(folder);
+    let parents = getFolderParents(folder);
+
+    let externalFields = {};
+    parents.each(function () {
+        externalFields[$(this).attr('data-instance')] = $(this).attr('data-key');
+    });
+    $('.uploader-container').find('#externalFields').val(JSON.stringify(externalFields));
 
     //Reseting Folder Icons
     $(".breadcrumb-folders .folder").removeClass("active");

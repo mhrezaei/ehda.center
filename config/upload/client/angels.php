@@ -24,5 +24,21 @@ return [
             'maxFiles'           => 1,
             'icon'               => 'picture-o',
         ],
+
+        'video' => [
+            'status'             => false,
+        ],
+
+        'audio' => [
+            'status'             => false,
+        ],
+
+        'text' => [
+            'status'             => false,
+        ],
+
+        'compressed' => [
+            'status'             => false,
+        ],
     ]
 ];

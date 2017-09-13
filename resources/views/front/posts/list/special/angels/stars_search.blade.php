@@ -3,4 +3,5 @@
     <input type="search" name="angels_name" id="angels_name" value="" placeholder="{{ trans('front.angels.search') }}"
            autocomplete="off"
            style="width: 80%">
+    @include('front.posts.list.special.angels.stars_not_found_alert')
 </div>

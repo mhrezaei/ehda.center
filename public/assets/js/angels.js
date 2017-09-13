@@ -56,7 +56,7 @@ function showStar(circleIndex, name, imgSrc, donation_date) {
     //     userCard.find('.angel-time').text(donation_date);
     // }
     $('.stars').prepend(userCard);
-    console.log(userCard)
+    // console.log(userCard)
     $('.user-card').fadeIn();
     var cardWidth = 140;
     var cardHeight = 160;
@@ -65,7 +65,9 @@ function showStar(circleIndex, name, imgSrc, donation_date) {
         top: circleParent.offset().top + parseInt(circle.attr('cy')) - (cardHeight / 2) - $('.stars-bg').offset().top
     });
 }
+
 var angles_slide;
+
 function random_angles(angels) {
     if (typeof window.reservedAngels != 'undefined' && window.reservedAngels.length) {
         // check if there is a queue to be shown
@@ -147,26 +149,39 @@ $(document).ready(function () {
         select: function (event, ui) {
             ui.item.value = ""; // to clear text inside of input after selecting one item
 
-            var angel = ui.item;
-            var angelsIds = jQuery.map(angels, function (n, i) {
+            let angel = ui.item;
+            let angelsIds = jQuery.map(angels, function (n, i) {
                 return n.id;
             });
-            var itemIndex = $.inArray(angel.id, angelsIds);
+            let itemIndex = $.inArray(angel.id, angelsIds);
 
             if (itemIndex == -1) {
                 itemIndex = angels.length;
                 angels.push(angel);
             }
 
-            var circlesNo = $('circle').length;
-            var circleIndex = itemIndex % circlesNo;
+            let circlesNo = $('circle').length;
+            let circleIndex = itemIndex % circlesNo;
 
-            var circle = $('.circle' + circleIndex);
+            let circle = $('.circle' + circleIndex);
             circle.addClass('active');
 
             stopPlayingAngels();
 
             showStar(circleIndex, angel.name, angel.picture_url, angel.donation_date);
+
+            $(event.target).val(ui.item.label);
+
+            // To don't empty input field
+            return false;
+        },
+        search: function (event, ui) {
+            $('#alertNotFound').slideUp();
+        },
+        response: function (event, ui) {
+            if (!ui.content || !$.isArray(ui.content)) {
+                $('#alertNotFound').slideDown();
+            }
         },
     });
 
