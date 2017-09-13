@@ -5,7 +5,8 @@ function hideActiveStar() {
     });
 }
 
-function showNewAngelForm() {
+function showNewAngelForm(event) {
+    event.preventDefault();
     var bottomOfStars = $('.stars-bg').offset().top + $('.stars-bg').height();
     var mainMenuHeight = $('.main-menu').height();
 
@@ -127,6 +128,7 @@ $(document).ready(function () {
     var searchMinLength = 3;
 
     $('#angels_name').autocomplete({
+        delay: 1000,
         source: function (request, response) {
             var term = request.term;
             term = term.trim().replace(/\s{2,}/g, ' '); // remove extra whitespaces
@@ -185,7 +187,7 @@ $(document).ready(function () {
         },
     });
 
-    $('.show-form-btn-container button').click(showNewAngelForm);
+    $('.show-form-btn-container button, .open-new-angel-form').click(showNewAngelForm);
 
     // $(window).scroll(function () {
     //     var bottomOfPage = $('html').scrollTop() + $(window).height();

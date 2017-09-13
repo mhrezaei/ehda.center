@@ -49,7 +49,8 @@ class File extends Model
     {
         if ($file instanceof UploadedFileIlluminate) {
             $data = array_normalize_keep_originals($data, [
-                'name'          => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
+//                'name'          => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
+                'name'          => implode('.',array_splice(preg_split('/\.(?=[^\.]*$)/', $file->getClientOriginalName()), 0,1)),
                 'physical_name' => UploadServiceProvider::generateFileName() .
                     '.'
                     . $file->getClientOriginalExtension(),
