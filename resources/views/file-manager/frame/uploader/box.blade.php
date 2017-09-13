@@ -122,25 +122,25 @@
 
             @if(isset($callbackOnEachUploadComplete) and $callbackOnEachUploadComplete)
                 {{ $varName }}. on("complete", function (file) {
-                    {{ $callbackOnEachUploadComplete }}(file);
+                    {{ $callbackOnEachUploadComplete }}(file, this);
                 });
             @endif
 
             @if(isset($callbackOnEachUploadSuccess) and $callbackOnEachUploadSuccess)
                 {{ $varName }}. on("success", function (file) {
-                    {{ $callbackOnEachUploadSuccess }}(file);
+                    {{ $callbackOnEachUploadSuccess }}(file, this);
                 });
             @endif
 
             @if(isset($callbackOnEachUploadError) and $callbackOnEachUploadError)
                 {{ $varName }}. on("error", function (file) {
-                    {{ $callbackOnEachUploadError }}(file);
+                    {{ $callbackOnEachUploadError }}(file, this);
                 });
             @endif
 
             @if(isset($callbackOnQueueComplete) and $callbackOnQueueComplete)
             {{ $varName }}. on("queuecomplete", function () {
-                {{ $callbackOnQueueComplete }}(this.getAcceptedFiles());
+                {{ $callbackOnQueueComplete }}(this.getAcceptedFiles(), this.files, this);
             });
             @endif
 

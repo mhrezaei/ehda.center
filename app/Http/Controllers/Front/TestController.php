@@ -55,7 +55,7 @@ class TestController extends Controller
 //        $t = 'eyJpdiI6ImZQK3dybXQyeTVteHhkTTRmZVBcL0l3PT0iLCJ2YWx1ZSI6IldWbis2TUJPMTJcLzg1UlplajQyZ0RJbHlORTI0dFE4bE5sU3RDT292QW93WHZkVzVEdW1zSXUrN3ZwcnZEclwvVllkY2dFcEFsbk9QcHdLVWxcL29ySDU3Y21aVVkzWHd0bEs1aHhUcUkwYytscGdmNlQ5QkFQSGQzOTRcL1p4Ukh3cmsyNHJmMmM4WjNhclJ1RjZORFozYmlsemdhZ0pBNDU0MG03Y2pBSG1hbnB6dFd5MnpOdEFCOVVJS0dFd05PWlMiLCJtYWMiOiI4OGM2ZDQ4ZjMyYzc2YWMyNTBkZDA5NmEzMDNhMmM5YWVlYmU0OWZlYjI1M2MxYmE0ODUwMjg4NjgxNDFmZTE4In0=';
 //        dd(decrypt($t), __FILE__ . " - " . __LINE__);
 
-        die(json_encode(\config('upload.client.angels')));
+//        UploadServiceProvider::hardDeleteSoftDeletedFiles();
     }
 
     public function states()

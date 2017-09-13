@@ -16,7 +16,7 @@
         {!! \App\Providers\UploadServiceProvider::getFileView($file) !!}
     </div>
     <div class="details text-start">
-            <div class="filename ltr">{{ $file->file_name }}</div>
+        <div class="filename ltr">{{ $file->file_name }}</div>
         @if($fileExistsOnStorage)
             <div class="upload-date">{{ ad(echoDate($file->created_at, 'j F Y')) }}</div>
             <div class="upload-size">{{ formatBytes($file->size) }}</div>
@@ -25,13 +25,20 @@
                     {{ ad($file->image_width) }} x {{ ad($file->image_height) }}
                 </div>
             @endif
+            <a class="link-green" href="{{ route('file.download', ['hashid' => $file->hashid]) }}">
+                <i class="fa fa-download"></i>
+                {{ trans('front.download') }}
+            </a>
+            <br />
         @endif
         {{--@if($file->can('edit'))--}}
         {{--<a href="#" class="edit-attachment">ویرایش تصویر</a>--}}
         {{--@endif--}}
+        {{--<br />--}}
         @if($file->can('delete'))
             <span class="deletion-message panel-lightRed pl5 pr5 rounded-corners-5" style="display: none"></span>
             <button type="button" class="delete-btn btn-link delete-file-btn ">
+                <i class="fa fa-trash"></i>
                 {{ trans('file-manager.menu-delete') }}
             </button>
         @endif

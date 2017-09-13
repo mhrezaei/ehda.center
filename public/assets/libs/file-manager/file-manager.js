@@ -246,6 +246,11 @@ jQuery(function ($) {
         }
     }, '.btn-open-folder');
 
+    $(document).on({
+        click: function (event) {
+        }
+    }, '.delete-upload-info');
+
     $('.file-list-view').scroll(function () {
         let scrolled = $(this).scrollTop();
         $('#loading-dialog').css('top', scrolled + 'px')
@@ -422,12 +427,20 @@ function getFolderParents(folder) {
     return link.parents('.folder');
 }
 
-function eachUploadCompleted() {
+function eachUploadCompleted(file, dropzoneEl) {
+    if(file.status == 'success') {
+        setTimeout(function () {
+            dropzoneEl.removeFile(file);
+        }, 2000)
+    }
+
     refreshGallery();
 }
 
-function allUploadsCompleted() {
-    setTimeout(switchToGallery, 1000);
+function allUploadsCompleted(acceptedFiles, files, dropzoneEl) {
+    if($.inArray('error', files.getColumn('status')) == -1) {
+        setTimeout(switchToGallery, 1000);
+    }
 }
 
 function getFileUrl(file) {

@@ -25,6 +25,8 @@ let maxQueueLength = 40;
 var dropzoneOptions = {
     init: {
         sending: function (file, xhr, formData) {
+            var dropzoneSelf = this;
+
             // Append csrf token
             formData.append('_token', csrfToken);
 
@@ -39,7 +41,7 @@ var dropzoneOptions = {
             });
 
             // Append external fields (if needed)
-            let currentExternalFields = $(this.element).find('#externalFields');
+            let currentExternalFields = $(dropzoneSelf.element).find('#externalFields');
             let externalFields = currentExternalFields.length ? $.parseJSON(currentExternalFields.val()) : {};
             formData.append('externalFields', JSON.stringify(externalFields));
 
@@ -49,6 +51,9 @@ var dropzoneOptions = {
 
             fileInfoEl.find('.media-uploader-status-text').html(messages.statuses.uploading);
             fileInfoEl.find('.upload-filename').html(file.name);
+            fileInfoEl.find('.delete-upload-info').click(function () {
+                dropzoneSelf.removeFile(file);
+            });
             var fileInfoImg = fileInfoEl.find('.media-uploader-status-image').children('img');
             fileInfoImg.attr('src', dropzoneRoutes.images + '/template/file-o.svg');
 

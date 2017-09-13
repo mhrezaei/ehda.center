@@ -92,9 +92,9 @@ class FileManagerController extends Controller
         return $result;
     }
 
-    public function download($hadhid, $fileName = null)
+    public function download($hashid, $fileName = null)
     {
-        $file = File::findByHashid($hadhid);
+        $file = File::findByHashid($hashid);
         if (!$file->exists or !UploadServiceProvider::getFileObject($file->pathname)) {
             return $this->abort('404');
         }
@@ -114,10 +114,10 @@ class FileManagerController extends Controller
         return response()->download($file->pathname, $fileName, $headers);
     }
 
-    public function disposableDownload($hashString, $hadhid, $fileName = null)
+    public function disposableDownload($hashString, $hashid, $fileName = null)
     {
         $fileDownloadRow = FileDownloads::findByHashid($hashString);
-        $file = File::findByHashid($hadhid);
+        $file = File::findByHashid($hashid);
         if (
             !$fileDownloadRow->exists or
             !$file->exists or
