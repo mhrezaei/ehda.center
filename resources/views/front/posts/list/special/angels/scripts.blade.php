@@ -20,5 +20,5 @@
             random_angles(angels);
         })
     </script>
-    {!! Html::script ('assets/js/angels.js') !!}
+    {!! Html::script ('assets/js/angels.min.js') !!}
 @append

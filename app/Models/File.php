@@ -48,8 +48,10 @@ class File extends Model
     public static function saveFile($file, $data = [])
     {
         if ($file instanceof UploadedFileIlluminate) {
+            $clientNameParts = preg_split('/\.(?=[^\.]*$)/', $file->getClientOriginalName());
             $data = array_normalize_keep_originals($data, [
-                'name'          => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
+//                'name'          => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
+                'name'          => implode('.', array_splice($clientNameParts, 0, 1)),
                 'physical_name' => UploadServiceProvider::generateFileName() .
                     '.'
                     . $file->getClientOriginalExtension(),
