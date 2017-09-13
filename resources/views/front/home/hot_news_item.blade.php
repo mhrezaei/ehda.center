@@ -1,7 +1,10 @@
 {{ null, $post->spreadMeta() }}
 <div class="item text-start">
     <a href="{{ $post->direct_url }}" target="_blank">
-        <img src="{{ url($post->viewable_featured_image) }}">
+        @php
+            $thumbImage = UploadServiceProvider::changeFileUrlVersion($post->viewable_featured_image, 'slider-small')
+        @endphp
+        <img src="{{ url($thumbImage) }}">
         @if($post->title or $post->abstract)
             <div class="slide-text">
                 @if($post->title)

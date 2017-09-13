@@ -32,37 +32,6 @@ class FileManagerController extends Controller
         return view('file-manager.main', compact('postTypes'));
     }
 
-    /**
-     * Returns all postypes that current user can do "create", "edit" or "submit" on theme
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    private function getAccessiblePosttypes()
-    {
-        $postTypes = Posttype::orderBy('order')->orderBy('title')->get();
-
-        $postTypes->each(function ($postType, $key) use ($postTypes) {
-            $postType->spreadMeta();
-            // If current user can do any of "create", "edit" or "publish"
-            // and postType has "upload_configs" meta
-            // we will keep posttype,
-            // else we will forget it.
-            if (
-                (
-                    !user()->can('file-manager.*') and
-                    !$postType->can('create') and
-                    !$postType->can('edit') and
-                    !$postType->can('publish')
-                ) or
-                (!$postType->canUploadFile())
-            ) {
-                $postTypes->forget($key);
-            }
-        });
-
-        return $postTypes;
-    }
-
     public function getList($instance = '', $key = '')
     {
         $files = File::orderBy('created_at', 'DESC');
@@ -123,9 +92,9 @@ class FileManagerController extends Controller
         return $result;
     }
 
-    public function download($hadhid, $fileName = null)
+    public function download($hashid, $fileName = null)
     {
-        $file = File::findByHashid($hadhid);
+        $file = File::findByHashid($hashid);
         if (!$file->exists or !UploadServiceProvider::getFileObject($file->pathname)) {
             return $this->abort('404');
         }
@@ -145,10 +114,10 @@ class FileManagerController extends Controller
         return response()->download($file->pathname, $fileName, $headers);
     }
 
-    public function disposableDownload($hashString, $hadhid, $fileName = null)
+    public function disposableDownload($hashString, $hashid, $fileName = null)
     {
         $fileDownloadRow = FileDownloads::findByHashid($hashString);
-        $file = File::findByHashid($hadhid);
+        $file = File::findByHashid($hashid);
         if (
             !$fileDownloadRow->exists or
             !$file->exists or
@@ -314,5 +283,37 @@ class FileManagerController extends Controller
         }
 
         $file->restore();
+    }
+
+    /**
+     * Returns all postypes that current user can do "create", "edit" or "submit" on theme
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    private function getAccessiblePosttypes()
+    {
+        $postTypes = Posttype::orderBy('title')
+            ->get();
+
+        $postTypes->each(function ($postType, $key) use ($postTypes) {
+            $postType->spreadMeta();
+            // If current user can do any of "create", "edit" or "publish"
+            // and postType has "upload_configs" meta
+            // we will keep posttype,
+            // else we will forget it.
+            if (
+                (
+                    !user()->can('file-manager.*') and
+                    !$postType->can('create') and
+                    !$postType->can('edit') and
+                    !$postType->can('publish')
+                ) or
+                (!$postType->canUploadFile())
+            ) {
+                $postTypes->forget($key);
+            }
+        });
+
+        return $postTypes;
     }
 }

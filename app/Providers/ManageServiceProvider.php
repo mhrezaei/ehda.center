@@ -114,46 +114,6 @@ class ManageServiceProvider extends ServiceProvider
 
     public static function sidebarCommentingPostsMenu($folded = true)
     {
-        $array2 = [];
-
-        if ($folded) {
-            $groups = Posttype::groups()->get();
-            foreach ($groups as $group) {
-                $posttypes = Posttype::where('order', '>', '0')->where('header_title', $group->header_title)->orderBy('order')->orderBy('order')->get();
-                $sub_menus = [];
-
-                foreach ($posttypes as $posttype) {
-                    if (user()->as('admin')->can("posts-" . $posttype->slug)) {
-                        array_push($sub_menus, [
-                            'posts/' . $posttype->slug,
-                            $posttype->title,
-                            $posttype->spreadMeta()->icon,
-                        ]);
-                    }
-                }
-
-                array_push($array2, [
-                    'icon'       => "dot-circle-o",
-                    'caption'    => $group->header_title ? $group->header_title : trans('manage.global'),
-                    'link'       => "asd",
-                    'sub_menus'  => $sub_menus,
-                    'permission' => sizeof($sub_menus) ? '' : 'dev',
-                ]);
-            }
-        } else {
-            $posttypes = Posttype::where('order', '>', '0')->orderBy('order')->get();
-            $sub_menus = [];
-
-            foreach ($posttypes as $posttype) {
-                array_push($array2, [
-                    'icon'       => $posttype->spreadMeta()->icon,
-                    'caption'    => $posttype->title,
-                    'link'       => "posts/" . $posttype->slug,
-                    'permission' => "posts-" . $posttype->slug,
-                ]);
-            }
-        }
-        
         $array = [];
 
         if ($folded) {
@@ -163,39 +123,44 @@ class ManageServiceProvider extends ServiceProvider
              */
             // Find posttypes which have slugs starting with "commenting" and continuing with another characters
             // Note
-            $posttypes = Posttype::where('slug', 'like', 'commenting%_')
-                ->get();
-            if ($posttype->count()) {
+            $posttypes = Posttype::where('slug', 'like', 'commenting%_') ->get();
+            if ($posttypes->count()) {
                 $sub_menus = [];
                 foreach ($posttypes as $posttype) {
-                    $switches = 'type=' . $posttype->slug;
-                    array_push($sub_menus, [
-                        'comments/all/' . $switches,
-                        $posttype->title,
-                        $posttype->spreadMeta()->icon,
-                    ]);
+                    if (user()->as('admin')->can("comments-" . $posttype->slug)) {
+                        $switches = 'type=' . $posttype->slug;
+                        array_push($sub_menus, [
+                            'comments/all/' . $switches,
+                            $posttype->title,
+                            $posttype->spreadMeta()->icon,
+                        ]);
+                    }
                 }
 
-                array_push($array, [
-                    'icon'       => "comment-o",
-                    'caption'    => trans('manage.people_submissions'),
-                    'link'       => "#",
-                    'sub_menus'  => $sub_menus,
-                    'permission' => sizeof($sub_menus) ? '' : 'dev',
-                ]);
+                if (count($sub_menus)) {
+                    array_push($array, [
+                        'icon'       => "comment-o",
+                        'caption'    => trans('manage.people_submissions'),
+                        'link'       => "#",
+                        'sub_menus'  => $sub_menus,
+                        'permission' => sizeof($sub_menus) ? '' : 'dev',
+                    ]);
+                }
             }
 
         } else {
-            $posttypes = Posttype::where('order', '>', '0')->orderBy('order')->get();
+            $posttypes = Posttype::where('slug', 'like', 'commenting%_') ->get();
             $sub_menus = [];
 
             foreach ($posttypes as $posttype) {
-                array_push($array, [
-                    'icon'       => $posttype->spreadMeta()->icon,
-                    'caption'    => $posttype->title,
-                    'link'       => "posts/" . $posttype->slug,
-                    'permission' => "posts-" . $posttype->slug,
-                ]);
+                if (user()->as('admin')->can("comments-" . $posttype->slug)) {
+                    array_push($array, [
+                        'icon'       => $posttype->spreadMeta()->icon,
+                        'caption'    => $posttype->title,
+                        'link'       => "posts/" . $posttype->slug,
+                        'permission' => "posts-" . $posttype->slug,
+                    ]);
+                }
             }
         }
 

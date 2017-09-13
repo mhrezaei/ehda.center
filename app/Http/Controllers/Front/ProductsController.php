@@ -439,8 +439,7 @@ class ProductsController extends Controller
 
         switch ($order->status) {
             case self::$statusesCodes['succeeded']:
-                $redirectUrl = $post->direct_url . '#payment-result';
-                $flashData = ['paymentSucceeded' => true];
+                $redirectUrl = $post->direct_url . '#download-box';
 
                 $this->serveDownload($post, $order);
 

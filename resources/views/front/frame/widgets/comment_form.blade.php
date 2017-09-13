@@ -190,7 +190,7 @@
                                 'name' => $fieldName,
                                 'class' => $inputClass,
                                 'rows' => 4,
-                                'placeholder' => trans('validation.attributes_placeholder.your_comment'),
+                                'placeholder' => trans('validation.attributes_placeholder.message_text'),
                             ] + $inputData)
                         </div>
                     </div>

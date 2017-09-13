@@ -11,7 +11,7 @@
 @section('content')
     <div class="container-fluid">
         @include('front.frame.position_info', [
-            'group' => trans('front.tutorials.singular'),
+            'group' => $postType->header_title,
             'groupColor' => 'green',
             'categoryColor' => 'green',
         ])

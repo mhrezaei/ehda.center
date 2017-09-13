@@ -15,7 +15,7 @@
                                     'file.download.disposable',
                                     [
                                         'hashString' => $downloadingFile['hashString'],
-                                        'hadhid' => $downloadingFile['src'],
+                                        'hashid' => $downloadingFile['src'],
                                         'fileName' => $downloadingFile['label']
                                     ]
                                 );
