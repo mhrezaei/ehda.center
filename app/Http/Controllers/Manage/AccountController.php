@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Models\State;
 use App\Models\User;
 use App\Traits\ManageControllerTrait;
+use Illuminate\Support\Facades\Hash;
 
 
 class AccountController extends Controller
