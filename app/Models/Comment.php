@@ -358,19 +358,19 @@ class Comment extends Model
 
             case 'published' :
                 $this->published_at = Carbon::now()->toDateTimeString();
-                $this->publised_by = user()->id;
+                $this->published_by = user()->id;
                 $this->is_private = false;
                 break;
 
             case 'private' :
                 $this->published_at = Carbon::now()->toDateTimeString();
-                $this->publised_by = user()->id;
+                $this->published_by = user()->id;
                 $this->is_private = true;
                 break;
 
             case 'approve' :
                 $this->published_at = Carbon::now()->toDateTimeString();
-                $this->publised_by = user()->id;
+                $this->published_by = user()->id;
                 break;
 
             default :

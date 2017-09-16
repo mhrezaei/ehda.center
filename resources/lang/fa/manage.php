@@ -27,6 +27,7 @@ return [
         'files'         => "مدیرفایل",
         'comments'      => "دیدگاه‌ها",
         'file-manager'  => "مدیریت فایل‌ها",
+        'orders'        => "سفارشات",
     ],
 
     'permissions' => [

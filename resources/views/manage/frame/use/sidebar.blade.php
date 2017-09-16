@@ -79,6 +79,19 @@
 	'icon' => "comment",
 ])
 
+{{--
+|--------------------------------------------------------------------------
+| Orders
+|--------------------------------------------------------------------------
+|
+--}}
+@include("manage.frame.widgets.sidebar-link" , [
+	'caption' => trans('front.orders') ,
+	'link' => "orders" ,
+	'permission' => "orders",
+	'icon' => "shopping-cart",
+])
+
 
 
 {{--

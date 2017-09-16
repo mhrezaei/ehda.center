@@ -29,6 +29,7 @@ return [
     'price'                 => 'قیمت',
     'unit_price'            => 'قیمت واحد',
     'total_price'           => 'قیمت کل',
+    'invoice_amount'        => 'مبلغ فاکتور',
     'settlement'            => 'تسویه حساب',
     'empty_cart'            => 'خالی کردن سبد',
     'you_have_a_coupon?'    => 'بن تخفیف دارید؟',
@@ -36,6 +37,7 @@ return [
     'invalid_discount_code' => 'کد تخفیف شما معتبر نیست',
     'your_total_payable'    => ' جمع کل خرید شما:',
     'payable'               => 'قابل پرداخت',
+    'paid'                  => 'پرداخت شده',
     'cart_is_empty'         => 'سبد خرید خالی‌ست',
     'back_to_market'        => 'بازگشت به فروشگاه',
 
