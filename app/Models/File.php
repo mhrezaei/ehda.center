@@ -58,6 +58,7 @@ class File extends Model
                 'directory'     => 'uploads',
                 'mime_type'     => $file->getClientMimeType(),
                 'extension'     => $file->getClientOriginalExtension(),
+                'type'          => UploadServiceProvider::guessTypeFromMimeType($file->getClientMimeType()),
                 'size'          => $file->getSize(),
                 'status'        => self::getStatusValue('temp'),
                 'posttype'      => null,

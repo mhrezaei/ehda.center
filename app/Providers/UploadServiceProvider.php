@@ -716,7 +716,7 @@ class UploadServiceProvider extends ServiceProvider
     private static function safeResizeImage($image, $width, $height)
     {
         $ratioHeight = $height * $image->width() / $width;
-        if($ratioHeight <= $image->height()) {
+        if ($ratioHeight <= $image->height()) {
             $widthBased = true;
         } else {
             $widthBased = false;
@@ -1140,6 +1140,18 @@ class UploadServiceProvider extends ServiceProvider
         foreach ($deletedFiles as $deletedFile) {
             self::removeFile($deletedFile);
         }
+    }
+
+    public static function guessTypeFromMimeType($mimeType)
+    {
+        $groups = config('file-types.groups-mimes');
+        foreach ($groups as $group => $mimes) {
+            if (in_array($mimeType, $mimes) !== false) {
+                return $group;
+            }
+        }
+
+        return null;
     }
 
     /**

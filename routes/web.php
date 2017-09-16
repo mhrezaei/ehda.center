@@ -434,8 +434,8 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
         Route::get('/', 'FrontController@index')->name('site');
 
         // tests
-//        Route::group(['prefix' => 'test'], function () {
-//            Route::get('/', 'TestController@index');
+        Route::group(['prefix' => 'test'], function () {
+            Route::get('/', 'TestController@index');
 ////            Route::get('states', 'TestController@states');
 ////            Route::get('gallery/archive', 'TestController@gallery_archive');
 ////            Route::get('gallery/single', 'TestController@gallery_single');
@@ -447,10 +447,10 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
 ////            Route::get('mail-view', 'TestController@mail_view');
 //            Route::get('messages', 'TestController@messages');
 ////            Route::get('messages/send', 'TestController@messages_send');
-//            Route::get('file-manager', 'TestController@fileManager');
+            Route::get('file-manager', 'TestController@fileManager');
 //            Route::get('uploader', 'TestController@uploader');
 //            Route::get('payment', 'TestController@test');
-//        });
+        });
 
         // Contact Us Page
         Route::get('contact', 'FrontController@contact')->name('contact');

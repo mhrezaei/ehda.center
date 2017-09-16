@@ -1,14 +1,14 @@
 <div class="page attachments-browser" id="gallery">
     <div class="media-toolbar">
         <div class="toolbar-right">
-            {{--<select id="media-filters" class="attachment-filters">--}}
-            {{--<option value="all">همه‌ی موارد رسانه‌ای</option>--}}
-            {{--<option value="uploaded">بارگذاری شده در این نوشته</option>--}}
-            {{--<option value="image">تصویرها</option>--}}
-            {{--<option value="audio">صوت</option>--}}
-            {{--<option value="video">ویدیو</option>--}}
-            {{--<option value="unattached">پیوست‌نشده</option>--}}
-            {{--</select>--}}
+            <select id="media-filters" class="attachment-filters" name="fileType">
+                <option value="all">همه‌ی موارد رسانه‌ای</option>
+                <option value="image">{{ trans('front.file_types.image.title') }}</option>
+                <option value="audio">{{ trans('front.file_types.audio.title') }}</option>
+                <option value="video">{{ trans('front.file_types.video.title') }}</option>
+                <option value="text">{{ trans('front.file_types.text.title') }}</option>
+                <option value="compressed">{{ trans('front.file_types.compressed.title') }}</option>
+            </select>
             {{--<select id="date-filters" class="attachment-filters">--}}
             {{--<option value="all">همه تاریخ ها</option>--}}
             {{--<option value="uploaded">بارگذاری شده در این نوشته</option>--}}
