@@ -172,6 +172,9 @@ return [
         'unknown'         => "نامشخص",
         'so_far_absent'   => "فعلاً وجود ندارد",
         'action_required' => "منتظر اقدام",
+        'succeeded'       => 'موفق',
+        'canceled'        => 'لغو شده',
+        'on_hold'         => 'در انتظار',
     ],
 
     'status_color' => [
@@ -187,8 +190,12 @@ return [
         'pending'   => "orange",
         'private'   => "green",
         'unknown'   => "danger",
+        'succeeded' => 'success',
+        'canceled'  => 'danger',
+        'on_hold'   => 'orange',
     ],
-    'status_icon'  => [
+
+    'status_icon' => [
         'without'   => "times",
         'active'    => "check",
         'blocked'   => "ban",
@@ -201,6 +208,9 @@ return [
         'pending'   => "legal",
         'private'   => "eye-slash",
         'unknown'   => "exclamation-triangle",
+        'succeeded' => 'check',
+        'canceled'  => 'times',
+        'on_hold'   => 'hourglass-half',
     ],
 
     'lang' => [

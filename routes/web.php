@@ -216,6 +216,26 @@ Route::group([
         });
     });
 
+    /*-----------------------------------------------
+    | Orders ...
+    */
+    Route::group(['prefix' => 'orders', /*'middleware' => 'can:comments'*/], function () {
+        Route::get('update/{item_id}', 'OrdersController@update');
+        Route::get('act/{model_id}/{action}', 'OrdersController@singleAction');
+        Route::get('{request_tab?}/{switches?}', 'OrdersController@browse');
+        Route::group(['prefix' => 'save'], function () {
+            Route::post('/', 'OrdersController@save');
+//            Route::post('/process', 'OrdersController@process');
+//            Route::post('/delete', 'OrdersController@delete');
+//            Route::post('/deleteMass', 'OrdersController@deleteMass');
+//            Route::post('/undelete', 'OrdersController@undelete');
+//            Route::post('/undeleteMass', 'OrdersController@undeleteMass');
+//            Route::post('/destroy', 'OrdersController@destroy');
+//            Route::post('/destroyMass', 'OrdersController@destroyMass');
+//            Route::post('/statusMass', 'OrdersController@statusMass');
+        });
+    });
+
     Route::group(['prefix' => 'commenting'], function () {
         Route::get('convert-to-post/{model_id}', 'CommentsController@convertToPost')
             ->name('manage.comments.convert-to-post');

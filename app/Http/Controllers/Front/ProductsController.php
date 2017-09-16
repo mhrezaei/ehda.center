@@ -28,7 +28,7 @@ class ProductsController extends Controller
     private $productPrefix = 'pd-';
     protected static $statusesCodes = [
         'canceled'  => -1,
-        'temp'      => 0,
+        'on_hold'      => 0,
         'succeeded' => 1,
     ];
 
@@ -329,7 +329,7 @@ class ProductsController extends Controller
             'mobile'         => $request->mobile,
             'phone'          => $request->phone,
             'email'          => $request->email,
-            'status'         => self::$statusesCodes['temp'], // just created
+            'status'         => self::$statusesCodes['on_hold'], // just created
             'invoice_amount' => $orderPostData['total_price'],
             'payable_amount' => $orderPostData['total_price'],
             'paid_amount'    => 0,
@@ -418,7 +418,7 @@ class ProductsController extends Controller
         $order = Order::where([
             'tracking_number' => $request->tracking_number,
             'mobile'          => $request->mobile,
-            ['status', '<>', self::$statusesCodes['temp']]
+            ['status', '<>', self::$statusesCodes['on_hold']]
         ])->first();
 
 
