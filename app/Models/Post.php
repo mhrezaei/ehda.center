@@ -716,7 +716,7 @@ class Post extends Model implements FeedItem
 
 	public function isScheduled()
 	{
-		return ($this->published_by and $this->published_at and $this->published_at > Carbon::now());
+		return (!$this->published_by and $this->published_at and $this->published_at > Carbon::now());
 	}
 
 	public function isApproved()
@@ -930,7 +930,7 @@ class Post extends Model implements FeedItem
 				break;
 
 			case 'scheduled' :
-				$table = $table->whereDate('published_at', '>', $now)->where('published_by', '>', '0');
+				$table = $table->whereDate('published_at', '>', $now)->where('published_by', '0');
 				break;
 
 			case 'pending':
