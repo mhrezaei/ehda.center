@@ -281,6 +281,10 @@ jQuery(function ($) {
         }
     });
 
+    $('#filters').find(':input').change(function () {
+        refreshGallery();
+    });
+
 }); //End Of Ready!
 
 function forms_pd($string) {
@@ -325,8 +329,6 @@ function pd(enDigit) {
 }
 
 function selectFolder(folder) {
-    var currentFolder = $(".breadcrumb-folders li.current");
-
     //Finds Activated Folders And Changes Icons
     let parents = getFolderParents(folder);
 
@@ -348,9 +350,42 @@ function selectFolder(folder) {
         $(this).find('span.folder-icon').first().removeClass('fa-folder').addClass("fa-folder-open");
     });
 
-    var listRequest = new FormData();
+    let fileTypes = acceptedFilesCategories[folder.data('instance') + '__' + folder.data('key')];
+    $('#filter-file-type option').each(function () {
+        let opt = $(this);
+        if(opt.val() && ($.inArray(opt.val(), fileTypes) == -1)) {
+            opt.hide();
+        } else {
+            opt.show();
+        }
+    });
+
+    resetFilters();
+    refreshGallery();
+}
+
+function resetFilters() {
+    $('#filters').find(':input').each(function () {
+        let that = $(this);
+        if(that.is('select')) {
+            let firstVisibleOpt = that.find('option:visible').first();
+            that.val(firstVisibleOpt.val()).change();
+        } else {
+            that.val('');
+        }
+    });
+}
+
+function refreshGallery() {
+    // selectFolder($(".breadcrumb-folders .folder.current"));
+    let folder = $(".breadcrumb-folders li.current");
+    let listRequest = $('#filters').find(':input').serializeObject();
+    listRequest['instance'] = folder.attr('data-instance');
+    listRequest['key'] = folder.attr('data-key');
     getListXhr = $.ajax({
-        url: urls.getList + '/' + folder.attr('data-instance') + '/' + folder.attr('data-key'),
+        url: urls.getList,
+        type: 'POST',
+        data: listRequest,
         beforeSend: function () {
             if (getListXhr && getListXhr.readyState != 4) {
                 getListXhr.abort();
@@ -370,10 +405,7 @@ function selectFolder(folder) {
             refreshSelection();
         }
     });
-}
 
-function refreshGallery() {
-    selectFolder($(".breadcrumb-folders .folder.current"));
 }
 
 function refreshSelection(selected) {
@@ -428,7 +460,7 @@ function getFolderParents(folder) {
 }
 
 function eachUploadCompleted(file, dropzoneEl) {
-    if(file.status == 'success') {
+    if (file.status == 'success') {
         setTimeout(function () {
             dropzoneEl.removeFile(file);
         }, 2000)
@@ -438,7 +470,7 @@ function eachUploadCompleted(file, dropzoneEl) {
 }
 
 function allUploadsCompleted(acceptedFiles, files, dropzoneEl) {
-    if($.inArray('error', files.getColumn('status')) == -1) {
+    if ($.inArray('error', files.getColumn('status')) == -1) {
         setTimeout(switchToGallery, 1000);
     }
 }

@@ -29,6 +29,7 @@ return [
     'title-file-details' => 'جزئیات فایل',
 
     'type-folder' => 'پوشه',
+    'type-all'    => 'همه',
 
     'message-empty'               => 'پوشه خالی است.',
     'message-file-deleted'        => 'فایل حذف شد.',
@@ -68,4 +69,11 @@ return [
     'resize-new-width'  => 'پهنا:',
 
     'locale-bootbox' => 'fa',
+
+    'sort-time' => 'زمان',
+    'sort-name' => 'نام',
+    'sort-size' => 'حجم',
+
+    'sort-descending' => 'نزولی',
+    'sort-ascending'  => 'صعودی',
 ];
