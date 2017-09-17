@@ -3,9 +3,11 @@ function farsiDigits(txt) {
         txt = (txt + '').replace(new RegExp(i + '', 'g'), String.fromCharCode((i + '').charCodeAt(0) + (0x06f0 - 0x0030)));
     return txt;
 }
+
 function twoDigits(number) {
     return number = ('0' + number).slice(-2);
 }
+
 function selectCity() {
     var ci = '<option value="0">انتخاب کنید...</option>';
     var selectSt = $('#cbRegisterState');
@@ -133,7 +135,20 @@ $(document).ready(function () {
     $(window).trigger('resize');
     $(window).on('resize', function () {
         $(window).trigger('scroll');
-    })
+        if($(window).width() > 999) {
+            $('#menu-tree').removeAttr('style');
+        }
+    });
+
+    $('.toggle-menu').click(function () {
+        let menuEl = $('#menu-tree');
+        if (menuEl.is(':visible')) {
+            menuEl.slideUp();
+        } else {
+            menuEl.slideDown();
+        }
+    });
+
 });
 (function ($) {
     $.fn.fitText = function (kompressor, options) {
