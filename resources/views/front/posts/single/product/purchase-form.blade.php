@@ -1,9 +1,7 @@
 <div class="row mt20 mb20">
-    <div class="col-xs-12">
-    </div>
     <div class="col-xs-12 mt15">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2 col-xs-12 col-xs-offset-0" id="purchase-form" style="display: none;">
+            <div class="col-xs-12 col-xs-offset-0" id="purchase-form" style="display: none;">
                 <div class="row">
                     <div class="col-xs-12">
                         {!! Form::open([
@@ -22,7 +20,7 @@
                         ])
 
                         <div class="row">
-                            <div class="col-md-6 col-xs-12">
+                            <div class="col-sm-6 col-xs-12">
                                 <div class="row">
                                     @include('front.forms.input', [
                                         'name' => 'name',
@@ -32,7 +30,7 @@
                                     ])
                                 </div>
                             </div>
-                            <div class="col-md-6 col-xs-12">
+                            <div class="col-sm-6 col-xs-12">
                                 <div class="row">
                                     @include('front.forms.input', [
                                         'name' => 'code_melli',
@@ -41,7 +39,7 @@
                                     ])
                                 </div>
                             </div>
-                            <div class="col-md-6 col-xs-12">
+                            <div class="col-sm-6 col-xs-12">
                                 <div class="row">
                                     @include('front.forms.input', [
                                         'name' => 'mobile',
@@ -50,7 +48,7 @@
                                     ])
                                 </div>
                             </div>
-                            <div class="col-md-6 col-xs-12">
+                            <div class="col-sm-6 col-xs-12">
                                 <div class="row">
                                     @include('front.forms.input', [
                                         'name' => 'phone',
@@ -59,7 +57,7 @@
                                     ])
                                 </div>
                             </div>
-                            <div class="col-md-6 col-xs-12">
+                            <div class="col-sm-6 col-xs-12">
                                 <div class="row">
                                     @include('front.forms.input', [
                                         'name' => 'email',
@@ -68,7 +66,7 @@
                                     ])
                                 </div>
                             </div>
-                            <div class="col-md-6 col-xs-12">
+                            <div class="col-sm-6 col-xs-12">
                                 <div class="row">
                                     @include('front.forms.input', [
                                         'name' => 'price',
