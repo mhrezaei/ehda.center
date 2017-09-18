@@ -147,6 +147,7 @@ $(document).ready(function () {
         } else {
             menuEl.slideDown();
         }
+        $('.main-menu').css('height', 'auto');
     });
 
 });
