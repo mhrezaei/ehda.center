@@ -10,7 +10,7 @@
 --}}
 
 <td>
-	@include('manage.orders.show-orderer')
+	@include('manage.orders.show-client')
 	@include('manage.orders.show-posts')
 
 	@include("manage.frame.widgets.grid-date" , [

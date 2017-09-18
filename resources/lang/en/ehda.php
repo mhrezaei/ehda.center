@@ -6,6 +6,8 @@ return [
         'edit'                      => "Edit Card",
         'browse'                    => "Browse Cards",
         'print'                     => "Print Cards",
+        'delete'                    => "Delete Card.",
+        'delete_warning_in_manage'  => "Deleting card is irreversible, but the person can register again later.",
         'register'                  => "Register Card",
         'register_full'             => "Register Organ Donation Card",
         'inquiry'                   => "Code Melli Inquiry",

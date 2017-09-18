@@ -169,7 +169,7 @@ function count(elm, mins, down) {
         startAngle: 4.7
         // reverse: true
     });
-    $(window).trigger('resize');
+    // $(window).trigger('resize');
 }
 
 $(document).ready(function () {

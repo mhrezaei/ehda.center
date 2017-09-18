@@ -1,26 +1,51 @@
 <div class="page attachments-browser" id="gallery">
-    <div class="media-toolbar">
-        <div class="toolbar-right">
-            {{--<select id="media-filters" class="attachment-filters">--}}
-            {{--<option value="all">همه‌ی موارد رسانه‌ای</option>--}}
-            {{--<option value="uploaded">بارگذاری شده در این نوشته</option>--}}
-            {{--<option value="image">تصویرها</option>--}}
-            {{--<option value="audio">صوت</option>--}}
-            {{--<option value="video">ویدیو</option>--}}
-            {{--<option value="unattached">پیوست‌نشده</option>--}}
-            {{--</select>--}}
-            {{--<select id="date-filters" class="attachment-filters">--}}
-            {{--<option value="all">همه تاریخ ها</option>--}}
-            {{--<option value="uploaded">بارگذاری شده در این نوشته</option>--}}
-            {{--<option value="image">تصویرها</option>--}}
-            {{--<option value="audio">صوت</option>--}}
-            {{--<option value="video">ویدیو</option>--}}
-            {{--<option value="unattached">پیوست‌نشده</option>--}}
-            {{--</select>--}}
+    <div id="filters" class="media-toolbar">
+        <div class="toolbar-right col-xs-6">
+            <div class="row">
+                <div class="col-xs-6 pull-start">
+                    <select id="filter-file-type" class="attachment-filters full-width" name="fileType">
+                        <option value="">{{ trans('file-manager.type-all') }}</option>
+                        <option value="image">{{ trans('front.file_types.image.title') }}</option>
+                        <option value="audio">{{ trans('front.file_types.audio.title') }}</option>
+                        <option value="video">{{ trans('front.file_types.video.title') }}</option>
+                        <option value="text">{{ trans('front.file_types.text.title') }}</option>
+                        <option value="compressed">{{ trans('front.file_types.compressed.title') }}</option>
+                    </select>
+                </div>
+                <div class="col-xs-6 pull-start">
+                    <select class="attachment-filters full-width" name="sort">
+                        <option value="time.desc" selected>
+                            {{ trans('file-manager.sort-time') }} - {{ trans('file-manager.sort-descending') }}
+                        </option>
+                        <option value="time.asc">
+                            {{ trans('file-manager.sort-time') }} - {{ trans('file-manager.sort-ascending') }}
+                        </option>
+                        <option value="name.asc">
+                            {{ trans('file-manager.sort-name') }} - {{ trans('file-manager.sort-ascending') }}
+                        </option>
+                        <option value="name.desc">
+                            {{ trans('file-manager.sort-name') }} - {{ trans('file-manager.sort-descending') }}
+                        </option>
+                        <option value="size.asc">
+                            {{ trans('file-manager.sort-size') }} - {{ trans('file-manager.sort-ascending') }}
+                        </option>
+                        <option value="size.desc">
+                            {{ trans('file-manager.sort-size') }} - {{ trans('file-manager.sort-descending') }}
+                        </option>
+                    </select>
+                </div>
+            </div>
         </div>
-        <div class="toolbar-left">
-            <button type="button" onclick="refreshGallery()"><i class="fa fa-refresh"></i></button>
-            {{--<input typle="search" placeholder="جستجو در رسانه ها" class="search"></input>--}}
+        <div class="toolbar-left col-xs-6">
+            <div class="row">
+                <div class="col-xs-9 pull-start">
+                    <input typle="search" placeholder="جستجو در رسانه ها" class="search full-width" name="search"/>
+                </div>
+                <div class="col-xs-3 pull-start">
+                    <button type="button" class="refresh" onclick="refreshGallery()"><i class="fa fa-refresh"></i>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
     <div class="file-list-view">

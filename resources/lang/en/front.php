@@ -102,6 +102,7 @@ return [
     'email_has_been_sent_automatically'        => 'Note: This email has been sent automatically. So don\'t reply to it.',
     'unnamed'                                  => 'Unnamed',
     'download_links'                           => 'Download Links',
+    'invoice_payment'                          => 'Invoice Payment',
 
     'tutorials' => [
         'singular' => 'Tutorial',
@@ -173,11 +174,16 @@ Your Oragn Donation Card has been registered with :membershipNumber membership n
     ],
 
     'angels' => [
-        'plural'    => 'Angels',
-        'singular'  => 'Angel',
-        'not_found' => 'Angel not found.',
-        'search'    => 'Search Angel',
-        'new'       => 'New Angel',
+        'plural'              => 'Angels',
+        'singular'            => 'Angel',
+        'not_found'           => 'Angel not found.',
+        'search'              => 'Search Angel',
+        'new'                 => 'New Angel',
+        'register_your_angel' => [
+            'part1' => 'Register your angel',
+            'part2' => 'here',
+            'part3' => '.',
+        ],
     ],
 
     'member_section' => [
@@ -195,25 +201,29 @@ Your Oragn Donation Card has been registered with :membershipNumber membership n
     ],
 
     'file_types' => [
-        'file'  => [
+        'file'       => [
             'title'         => 'File',
             'dropzone_text' => 'Drop your file here.'
         ],
-        'image' => [
+        'image'      => [
             'title'         => 'Image',
             'dropzone_text' => 'Drop your image here.'
         ],
-        'text'  => [
+        'text'       => [
             'title'         => 'Text',
             'dropzone_text' => 'Drop your text file here.'
         ],
-        'video' => [
+        'video'      => [
             'title'         => 'Video',
             'dropzone_text' => 'Drop your video file here.'
         ],
-        'audio' => [
+        'audio'      => [
             'title'         => 'Audio',
             'dropzone_text' => 'Drop your audio file here.'
+        ],
+        'compressed' => [
+            'title'         => 'Compressed',
+            'dropzone_text' => 'Drop your compressed file here.'
         ],
     ],
 
@@ -342,6 +352,7 @@ Your Oragn Donation Card has been registered with :membershipNumber membership n
                 'pictures'             => 'Pictures',
                 'films'                => 'Videos',
                 'photo_donors'         => 'Lasting Angels',
+                'shop'                 => 'Shop',
                 'contact_us'           => 'Contact Us',
 
             ],
@@ -351,4 +362,8 @@ Your Oragn Donation Card has been registered with :membershipNumber membership n
     'media' => [
         'playing' => 'Playing',
     ],
+
+    'gateway' => [
+        'disabled' => 'Gateway disabled.',
+    ]
 ];

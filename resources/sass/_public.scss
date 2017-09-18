@@ -145,35 +145,64 @@ header {
     height: auto;
     max-height: 45px;
   }
+  #logo-small {
+    max-width: 100%;
+    display: none;
+    max-height: 45px;
+  }
 
   .main-menu {
     position: relative;
     min-height: 76px;
     z-index: 20;
-    @media (max-width: 600px) {
-      margin-left: -15px;
-      margin-right: -15px;
-    }
     .list-inline {
       margin-left: 0;
       margin-right: 0;
+    }
+    .toggle-menu {
+      display: none;
+      cursor: pointer;
+    }
+    @media (max-width: 999px) {
+      #menu-tree {
+        display: none;
+        width: 100%;
+        float: #{$startSide};
+
+        li {
+          > ul {
+            top: 100%;
+          }
+        }
+
+        a {
+          width: auto;
+          padding: 8px;
+          margin-left: 0;
+          font-size: 18px;
+        }
+      }
+      .toggle-menu {
+        display: inline-block;
+      }
     }
     > a {
       position: relative;
       z-index: 1;
     }
     .ehda-card-menu {
-      @extend .bg-green;
-      position: absolute;
-      z-index: 2;
+      @extend .bg-green, .pull-end;
       color: #fff;
       border-radius: 5px;
       padding: 5px 10px;
       text-align: right;
-      bottom: 15px;
       font-size: 12px;
       font-weight: 500;
       white-space: nowrap;
+      width: auto;
+      min-height: 53px;
+      display: inline-block;
+      margin-top: 12px;
       &, & svg {
         transition: all 0.2s 0s;
       }
@@ -191,7 +220,7 @@ header {
           left: 10px;
         }
         svg {
-          width: 20px;
+          width: 17px;
         }
       }
     }
@@ -216,14 +245,6 @@ header {
         display: block;
         margin-top: 10px;
         text-align: center;
-        .ehda-card-menu {
-          font-size: 10px;
-          top: 15px;
-          left: 15px;
-          svg {
-            width: 17px;
-          }
-        }
         > li a {
           font-size: 1em;
           width: auto;
@@ -317,6 +338,7 @@ header {
     overflow: hidden;
     #{$endSide}: 0;
     top: 0;
+    bottom: 0;
     span {
       padding: 10px 15px;
       display: inline-block;
@@ -325,7 +347,7 @@ header {
       float: #{$startSide};
       @media(max-width: 500px) {
         font-size: 0.8em;
-        padding: 12px 8px;
+        padding: 30px 10px;
       }
     }
     &:before {
@@ -358,11 +380,15 @@ header {
 @media (max-width: 650px) {
   .main-logo {
     overflow: hidden;
-    width: 90px;
+    //width: 90px;
   }
   header #logo {
-    max-width: none;
-    width: 300px;
+    display: none;
+    //width: 300px;
+  }
+  header #logo-small {
+    display: inline;
+    //width: 300px;
   }
   header .main-menu > ul {
     margin-left: 13%;
@@ -377,14 +403,10 @@ header {
 
 @media (max-width: 600px) {
   .main-menu > a {
-    width: 100%;
+    //width: 100%;
   }
   header .main-menu > ul {
     margin-left: 0;
-  }
-  header .main-menu a.ehda-card-menu {
-    left: 15px;
-    top: 15px;
   }
 }
 

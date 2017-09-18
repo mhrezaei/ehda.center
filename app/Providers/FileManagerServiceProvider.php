@@ -115,11 +115,36 @@ class FileManagerServiceProvider extends ServiceProvider
         return $output;
     }
 
+
+    private static function getPointAcceptedFilesCategories($point)
+    {
+        if ($point instanceof Posttype) {
+            $point->spreadMeta();
+            $uploadConfigs = json_decode($point->upload_configs, true);
+            if (
+                $uploadConfigs and
+                is_array($uploadConfigs) and
+                array_key_exists('fileTypes', $uploadConfigs) and
+                is_array($fileTypesArray = $uploadConfigs['fileTypes']) and
+                is_array($fileTypesArray)
+            ) {
+                return array_keys($fileTypesArray);
+            } else {
+                return [];
+            }
+        } else if ($point instanceof Folder) {
+            return self::getPointAcceptedFilesCategories($point->posttype);
+        } else if ($point instanceof Category) {
+            return self::getPointAcceptedFilesCategories($point->folder);
+        }
+    }
+
     private static function getPointSelfInfo($point, $instance)
     {
         $output = [];
         $output['instance'] = $instance;
         $output['key'] = $point->hashid;
+        $output['acceptedFilesCategories'] = self::getPointAcceptedFilesCategories($point);
 
         switch ($instance) {
             case 'posttype':

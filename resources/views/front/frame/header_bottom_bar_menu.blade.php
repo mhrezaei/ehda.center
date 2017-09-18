@@ -1,7 +1,9 @@
 {{--{{ null, $menu = \App\Providers\MenuServiceProvider::getMenuArray() }}--}}
 {{ null, $menu = \App\Providers\MenuServiceProvider::getStaticMenuArray() }}
 
-<ul class="list-inline">
+@include('front.frame.register_card_btn_top')
+<span class="text-blue f30 mt15 ml20 toggle-menu pull-end"><i class="fa fa-bars"></i></span>
+<ul class="list-inline" id="menu-tree" >
     @if($menu and is_array($menu) and count($menu))
         @foreach($menu as $group)
             <li class="has-child">
@@ -90,5 +92,4 @@
     {{--</ul>--}}
     {{--</ul>--}}
     {{--</li>--}}
-    @include('front.frame.register_card_btn_top')
 </ul>

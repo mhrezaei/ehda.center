@@ -32,12 +32,17 @@ class FileManagerController extends Controller
         return view('file-manager.main', compact('postTypes'));
     }
 
-    public function getList($instance = '', $key = '')
+    public function getList(Request $request)
     {
-        $files = File::orderBy('created_at', 'DESC');
-        switch ($instance) {
+//        $files = File::orderBy('created_at', 'DESC');
+        $files = File::select();
+
+        /*
+         * Apply Folder
+         */
+        switch ($request->instance) {
             case 'posttype':
-                $postType = Posttype::findByHashid($key);
+                $postType = Posttype::findByHashid($request->key);
                 if (!$postType->exists) {
                     return null;
                 }
@@ -46,7 +51,7 @@ class FileManagerController extends Controller
                     ->whereNull('category');
                 break;
             case 'folder':
-                $folder = Folder::findByHashid($key);
+                $folder = Folder::findByHashid($request->key);
                 $postType = $folder->posttype;
                 if (!$folder->exists) {
                     return null;
@@ -56,7 +61,7 @@ class FileManagerController extends Controller
                     ->whereNull('category');
                 break;
             case 'category':
-                $category = Category::findByHashid($key);
+                $category = Category::findByHashid($request->key);
                 $postType = $category->folder->posttype;
                 if (!$category->exists) {
                     return null;
@@ -67,6 +72,43 @@ class FileManagerController extends Controller
                 break;
             default:
                 return null;
+        }
+
+        /**
+         * Apply Filters
+         */
+        if ($request->fileType) {
+            $files->where('type', $request->fileType);
+        }
+        if ($request->search) {
+            $files->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        /**
+         * Apply Sort
+         */
+        if ($request->sort) {
+            $sortOrders = ['asc', 'desc'];
+            $sortParts = explode('.', $request->sort);
+            if ((count($sortParts) == 2) and (in_array($sortParts[1], $sortOrders) !== false)) {
+                switch ($sortParts[0]) {
+                    case 'time':
+                        $files->orderBy('created_at', $sortParts[1]);
+                        break;
+
+                    case 'name':
+                        $files->orderBy('name', $sortParts[1]);
+                        break;
+
+                    case 'size':
+                        $files->orderBy('size', $sortParts[1]);
+                        break;
+
+                    default:
+                        $files->orderBy('created_at', 'DESC');
+                        break;
+                }
+            }
         }
 
         $files = $files->get();

@@ -559,16 +559,16 @@ input[type=search], input[type=text] {
       @extend %file-manager-input;
       margin-top: 11px;
       margin-left: 2%;
-      width: 42%;
-      width: -webkit-calc(48% - 12px);
-      width: calc(48% - 12px);
+      //width: 42%;
+      //width: -webkit-calc(48% - 12px);
+      //width: calc(48% - 12px);
     }
   }
 
   .toolbar-left {
     float: left;
     height: 100%;
-    max-width: 33%;
+    //max-width: 33%;
 
     .search {
       @extend %file-manager-input;
@@ -576,6 +576,10 @@ input[type=search], input[type=text] {
       margin-top: 11px;
       padding: 4px;
       color: #444;
+    }
+
+    .refresh {
+      margin-top: 11px;
     }
   }
 

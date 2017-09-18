@@ -70,5 +70,16 @@ return [
             'maxFiles'           => 5,
             'icon'               => 'file-text-o',
         ],
+
+        'compressed' => [
+            'status'             => true,
+            'acceptedExtensions' => ['zip'],
+            'acceptedFiles'      => [
+                'application/zip',
+            ],
+            'maxFileSize'        => 100,
+            'maxFiles'           => 5,
+            'icon'               => 'file-archive-o',
+        ],
     ]
 ];

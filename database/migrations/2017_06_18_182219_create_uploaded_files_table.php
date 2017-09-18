@@ -26,6 +26,7 @@ class CreateUploadedFilesTable extends Migration
             // File Info
             $table->string('mime_type');
             $table->string('extension');
+            $table->string('type')->nullable();
             $table->bigInteger('size'); // in bytes
             $table->longText('hash_file')->nullable();
 
