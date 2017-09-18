@@ -394,6 +394,9 @@ class ProductsController extends Controller
                 }
 
                 $order->status = self::$statusesCodes['succeeded'];
+                // @todo: should check paid amount on gateway
+                $order->paid_amount += $order->payable_amount;
+
                 $flashData['paymentSucceeded'] = true;
 
                 $this->serveDownload($post, $order);

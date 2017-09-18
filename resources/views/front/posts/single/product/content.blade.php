@@ -1,6 +1,6 @@
 <div class="col-xs-12">
     @php
-        $featuredImageUrl = \App\Providers\UploadServiceProvider::changeFileUrlVersion($post->preview_image, 'single');
+        $featuredImageUrl = \App\Providers\UploadServiceProvider::changeFileUrlVersion($post->preview_image, 'original');
     @endphp
     <div class="row">
         <div class="col-xs-12">
@@ -58,12 +58,12 @@
                     </div>
 
                     @include($viewFolder . '.purchase-form')
+                    @include($viewFolder . '.payment-result')
+                    @include($viewFolder . '.files')
                 </div>
             </div>
         </div>
     </div>
-    @include($viewFolder . '.payment-result')
-    @include($viewFolder . '.files')
     {{--    <small>{{ trans('validation.attributes.publish') }}: {{ ad(echoDate($post->published_at, 'H:i / j F Y')) }}</small>--}}
 </div>
 
