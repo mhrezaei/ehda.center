@@ -31,6 +31,6 @@
         </li>
     @endif
     <li>
-        <a href="{{ route_locale('states.index') }}">{{ trans('front.community_branches') }}</a>
+        <a href="{{ route_locale('states.index') }}">{{ trans('front.provinces_portals') }}</a>
     </li>
 </ul>
