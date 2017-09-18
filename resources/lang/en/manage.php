@@ -8,6 +8,7 @@ return [
     'login_again'            => "Login anain.",
     'global'                 => "Global",
     'search-people'          => "Search People",
+    'people_submissions'     => "People Submissions",
 
     'tabs' => [
         'actives'   => "Actives",
@@ -25,6 +26,8 @@ return [
         'receipts'      => "Receipts",
         'files'         => "Files",
         'comments'      => "Comments",
+        'file-manager'  => "File Manager",
+        'orders'        => "Orders",
     ],
 
     'permissions' => [

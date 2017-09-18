@@ -41,6 +41,7 @@ return [
         'undo_changes'         => 'Undo Changes',
         'browse_image'         => 'Browse Image',
         'flush_image'          => "Flush Image",
+        'browse_file'          => 'Browse File',
         'login'                => 'Login',
         'refresh'              => 'Refresh',
         'add'                  => 'Add',
@@ -170,6 +171,9 @@ return [
         'unknown'         => "Unknown",
         'so_far_absent'   => "Not Exists Yet",
         'action_required' => "Waiting for Action",
+        'succeeded'       => 'Succeeded',
+        'canceled'        => 'Canceled',
+        'on_hold'         => 'On Hold',
     ],
 
     'status_color' => [
@@ -185,6 +189,9 @@ return [
         'pending'   => "orange",
         'private'   => "green",
         'unknown'   => "danger",
+        'succeeded' => 'success',
+        'canceled'  => 'danger',
+        'on_hold'   => 'orange',
     ],
     'status_icon'  => [
         'without'   => "times",
@@ -199,6 +206,9 @@ return [
         'pending'   => "legal",
         'private'   => "eye-slash",
         'unknown'   => "exclamation-triangle",
+        'succeeded' => 'check',
+        'canceled'  => 'times',
+        'on_hold'   => 'hourglass-half',
     ],
 
     'lang' => [

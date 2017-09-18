@@ -91,11 +91,11 @@ class Order extends Model
     }
 
     /**
-     * Returns viewable name of order orderer
+     * Returns viewable name of order client
      *
      * @return string
      */
-    public function getOrdererNameAttribute()
+    public function getClientNameAttribute()
     {
         $this->spreadMeta();
         if ($this->user) {

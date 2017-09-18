@@ -131,6 +131,7 @@ return [
         "edu_field"            => "Enter education field with english characters.",
         'edu_city'             => 'Enter education city with english characters.',
         "mobile"               => 'Enter mobile number in 11 digits.',
+        "phone"                => 'Enter phone number in 11 digits.',
         "tel_emergency"        => 'Enter emergency telephone number in 11 digits.',
         "home_city"            => "Select home city.",
         "home_address"         => "Enter home address with english characters.",
@@ -155,11 +156,14 @@ return [
         'name'                 => 'Enter name with english characters.',
         'min'                  => 'The length of phrase is not suitable.',
 
-        "donation_date"   => "Insert donation date properly",
-        "city"            => "Select city.",
-        "submitter_name"  => "Insert submitter name properly",
-        "submitter_phone" => "Insert submitter phone properly",
-        "text"            => "Insert text properly",
+        "donation_date"   => "Enter donation date properly.",
+        "donor_name"      => "Enter donor name properly.",
+        "city"            => "Enter city.",
+        "submitter_name"  => "Enter submitter name properly.",
+        "submitter_phone" => "Enter submitter phone properly.",
+        "text"            => "Enter text properly",
+
+        'tracking_number' => 'Enter your tracking number.',
     ],
 
     'attributes_example' => [
@@ -182,6 +186,7 @@ return [
         "edu_field"           => "Example: Mechanical Engineering",
         'edu_city'            => 'Example: Shiraz',
         "mobile"              => 'Example: 09121234567',
+        "phone"               => 'Example: 02122334455',
         "tel_emergency"       => 'Example: 02122334455',
         "home_city"           => "Example: Tehran",
         "home_address"        => "Example: No 77, Ahmadi St, Darband",
@@ -221,6 +226,7 @@ return [
         "edu_field"           => "(English Characters)",
         'edu_city'            => '(English Characters)',
         "mobile"              => '(11 digits with no dash)',
+        "phone"               => '(11 digits with no dash)',
         "tel_emergency"       => '(11 digits with no dash)',
         "home_city"           => "(English Characters)",
         "home_address"        => "(English Characters)",
@@ -239,10 +245,13 @@ return [
         "time"                => 'Hour and Minute. In common format "hour:minute". Example 20:42',
 
         'your_comment'          => 'Your Comment',
+        'message_text'          => '(Message Text)',
         'max_per_page'          => "How many posts should be in a page? Enter the number here. Specifying zero (0) will disable this option.",
         'fresh_time_duration'   => "How much time after publication a post it is fresh? Enter in days.",
         'featured_image_width'  => "Enter width of featured image in pixels.",
         'featured_image_height' => "Enter height of featured image in pixels.",
+
+        'tracking_number' => '(10 digits with no dash)',
     ],
 
     /*
@@ -311,6 +320,7 @@ return [
         "edu_field"           => "Education Field",
         'edu_city'            => 'Education City',
         "mobile"              => 'Mobile Number',
+        "phone"               => 'Phone Number',
         "telephone"           => 'Telephone',
         "tel_emergency"       => 'Emergency Phone Number',
         "home_city"           => "Home City",
@@ -322,6 +332,7 @@ return [
         "postal_code"         => "Postal Code",
         "icon"                => "Icon",
         "donation_date"       => "Donation Date",
+        "donor_name"          => "Donor Name",
 
         "work_city"    => "Work City",
         "work_address" => "Work Address",
@@ -352,6 +363,7 @@ return [
         'allowed_meta'    => 'Allowed Meta',
         'featured_image'  => 'Featured Image',
         'image'           => 'Image',
+        'preview_image'   => 'Preview Image',
         'card_no'         => 'Card Number',
         'organs'          => 'Organs',
         'newsletter'      => 'Newsletter',
@@ -469,6 +481,7 @@ return [
         'payment_datetime'                => "Payment Datetime",
         'receiver'                        => "Receiver",
         'sender'                          => "Sender",
+        'client'                          => "Client",
         'order_id'                        => "Order",
         'order_no'                        => "Order Number",
         'cheque_no'                       => "Cheque Number",
@@ -535,19 +548,25 @@ return [
         'has_medal'        => 'Has medal.',
         'target_post_type' => 'Target Post Type',
 
-        'domains'           => "Domains",
-        'source'            => "Source",
-        'role_slug'         => "Role",
-        'activity'          => "Activity",
-        'activities'        => "Activity Fields",
-        'can_register_card' => "Possibility of Registering Organ Donation Card",
-
-        'aparat_hash_code' => 'Video Code in Aparat',
+        'domains'                    => "Domains",
+        'source'                     => "Source",
+        'role_slug'                  => "Role",
+        'activity'                   => "Activity",
+        'activities'                 => "Activity Fields",
+        'can_register_card'          => "Possibility of Registering Organ Donation Card",
+        'unanswerable'               => "Unanswerable",
+        'conversions'                => "Conversions",
+        'comment_submission_message' => "Comment Submission Message",
 
         'audio_files' => 'Audion Files',
         'image_files' => 'Image Files',
         'video_files' => 'Video Files',
         'text_files'  => 'Text Files',
+
+        'alternative_text' => 'Alternative Text',
+        'aparat_hash_code' => 'Video Code in Aparat',
+        'guidance_file'    => 'Guidance File',
+        'tracking_number'  => 'Tracking Number',
     ],
 
     "http" => [

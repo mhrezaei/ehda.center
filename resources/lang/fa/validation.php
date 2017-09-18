@@ -484,7 +484,7 @@ return [
         'payment_datetime'                => "زمان پرداخت",
         'receiver'                        => "دریافت‌کننده",
         'sender'                          => "ارسال‌کننده",
-        'orderer'                         => "سفارش‌دهنده",
+        'client'                          => "سفارش‌دهنده",
         'order_id'                        => "سفارش",
         'order_no'                        => "شماره سفارش",
         'cheque_no'                       => "شماره چک",
@@ -561,18 +561,15 @@ return [
         'conversions'                => "تبدیلات",
         'comment_submission_message' => "پیام ثبت کامنت",
 
-        'alternative_text' => 'متن جایگزین',
-
-        'aparat_hash_code' => 'کد فیلم در آپارات',
-
         'audio_files' => 'فایل‌های صوتی',
         'image_files' => 'فایل‌های تصویری',
         'video_files' => 'فایل‌های ویدیویی',
         'text_files'  => 'فایل‌های متنی',
 
-        'guidance_file' => 'فایل راهنما',
-
-        'tracking_number' => 'کد پیگیری',
+        'alternative_text' => 'متن جایگزین',
+        'aparat_hash_code' => 'کد فیلم در آپارات',
+        'guidance_file'    => 'فایل راهنما',
+        'tracking_number'  => 'کد پیگیری',
     ],
 
     "http" => [

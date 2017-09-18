@@ -18,11 +18,11 @@
 	]])
 
 	@include("forms.group-start" , [
-		'label' => trans('validation.attributes.orderer'),
+		'label' => trans('validation.attributes.client'),
 	])
 
 		<div class="form-control pv10">
-			@include("manage.orders.show-orderer")
+			@include("manage.orders.show-client")
 		</div>
 
 	@include("forms.group-end")

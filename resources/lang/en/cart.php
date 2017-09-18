@@ -2,6 +2,9 @@
 return [
     'purchases'             => "Purchases",
     'purchase'              => "Purchase",
+    'pay'                   => "Pay",
+    'tracking'              => "Tracking",
+    'purchase_tracking'     => "Purchase Tracking",
     'receipts'              => "Receipts",
     'receipt'               => "Receipt",
     'no_receipt'            => "No Receipt",
@@ -20,12 +23,13 @@ return [
     'take_number_between'   => "Take a number from 1 to :number.",
     'random_number'         => "Random Number",
     'user_already_won'      => "This user has already won in this event.",
-    'no_winner_so_far'      => "فعلاً هیچ کس به عنوان برنده انتخاب نشده است.",
     'no_winner_so_far'      => "No Winners Yet",
     'number'                => 'number',
     'add_to_cart'           => 'Add To Cart',
+    'price'                 => 'Price',
     'unit_price'            => 'Unit Price',
     'total_price'           => 'Total Price',
+    'invoice_amount'        => 'Invoice Amount',
     'settlement'            => 'Settlement',
     'empty_cart'            => 'Empty Cart',
     'you_have_a_coupon?'    => 'You have a coupon?',
@@ -33,6 +37,7 @@ return [
     'invalid_discount_code' => 'Invalid Code',
     'your_total_payable'    => 'Your Total Payment',
     'payable'               => 'Payable',
+    'paid'                  => 'Paid',
     'cart_is_empty'         => 'Cart is empty.',
     'back_to_market'        => 'Back to Market',
 
@@ -52,6 +57,14 @@ return [
         'delete_warn_for_single_locale' => "Delete is irreversible. If you want to delete temporary use deactivate option.",
         'delete_warn_for_multi_locale'  => "This price will be deleted in other languages too. If you want to delete temporary use deactivate option.",
         'changes_effect_instantly'      => "Changes on prices will be applied without saving. Be careful.",
+    ],
+
+    'messages' => [
+        'payment' => [
+            'succeeded'         => 'Payment succeeded.',
+            'canceled'          => 'Payment canceled.',
+            'has_been_canceled' => 'Payment has been canceled.',
+        ]
     ],
 ];
 

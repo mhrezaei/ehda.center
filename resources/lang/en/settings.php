@@ -19,6 +19,7 @@ return [
     'artisan'     => "Artisan",
 
     'city'                       => "City",
+    'province'                   => "Province",
     'cities_of'                  => "Cities of :province",
     'province_edit'              => "Edit Province",
     'province_new'               => "New Province",
