@@ -47,7 +47,7 @@ return [
          'ids' => [
              'salt' => "o,ah-ngd-;i-lnhl-hc-md-kzv-kv,n" ,
              'length' => "5" ,
-             'alphabet' => "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" ,
+             'alphabet' => "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" ,
          ],
 
         'ehda_card_mini' => [
