@@ -135,13 +135,18 @@ $(document).ready(function () {
     $(window).trigger('resize');
     $(window).on('resize', function () {
         $(window).trigger('scroll');
-        if($(window).width() > 999) {
+        if ($(window).width() > 999) {
             $('#menu-tree').removeAttr('style');
         }
     });
 
     $('.toggle-menu').click(function () {
         let menuEl = $('#menu-tree');
+
+        if($('.main-menu')[0].style.height != 'auto') {
+            $('.main-menu').css('height', 'auto');
+        }
+        
         if (menuEl.is(':visible')) {
             menuEl.slideUp();
         } else {
