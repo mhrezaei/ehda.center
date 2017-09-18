@@ -6,7 +6,8 @@
 
 		<div class="m10 text-center" style="">
 			<button type="button" id="btnFeaturedImage" data-file-manager-input="txtFeaturedImage" data-file-manager-preview="divFeaturedImageInside"
-					data-file-manager-callback="featuredImage('inserted')" 
+					data-file-manager-callback="featuredImage('inserted')"
+					data-file-manager-default-folder="posttype___{{ $model->posttype->hashid }}"
 					class="btn btn-{{ $model->featured_image? 'default' : 'primary' }}">
 				{{ trans('forms.button.browse_image') }}
 			</button>
