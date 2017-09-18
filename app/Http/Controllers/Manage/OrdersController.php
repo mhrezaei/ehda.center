@@ -102,7 +102,7 @@ class OrdersController extends Controller
         */
 
         return $this->jsonAjaxSaveFeedback($ok, [
-            'success_callback' => "rowUpdate('tblComments','$request->id')",
+            'success_callback' => "rowUpdate('tblOrders','$request->id')",
         ]);
 
     }

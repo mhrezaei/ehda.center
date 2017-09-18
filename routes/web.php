@@ -409,6 +409,8 @@ Route::group(['prefix' => 'payment', 'namespace' => 'Payment'], function () {
     Route::get('/bank-process/{tracking_number}', 'PaymentController@bank_process')->name('bank-process');
 });
 
+Route::get('fonts', 'Front\ProductsController@archive');
+
 
 Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Setting', 'Subdomain']], function () {
 
@@ -534,7 +536,6 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
                 ->name('education.paymentResult');
             Route::post('tracking', 'ProductsController@track')->name('products.tracking');
         });
-        Route::get('fonts', 'ProductsController@archive');
 
         // Massages
         Route::group(['prefix' => 'messages'], function () {
@@ -543,7 +544,6 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
                 ->name('messages.send');
         });
     });
-
 
     // ECG
     Route::group(['prefix' => 'ecg'], function () {
