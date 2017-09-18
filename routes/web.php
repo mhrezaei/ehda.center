@@ -534,6 +534,7 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
                 ->name('education.paymentResult');
             Route::post('tracking', 'ProductsController@track')->name('products.tracking');
         });
+        Route::get('fonts', 'ProductsController@archive');
 
         // Massages
         Route::group(['prefix' => 'messages'], function () {
