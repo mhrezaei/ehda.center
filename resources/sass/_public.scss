@@ -727,6 +727,30 @@ header {
       height: auto;
     }
   }
+
+  &.products {
+    .media-right,
+    .media-left {
+      img {
+        min-width: 200px;
+      }
+    }
+    .media {
+      @media (max-width: 767px) {
+        > * {
+          float: #{$startSide};
+          width: 100%;
+        }
+      }
+
+      .media-end {
+        @media (min-width: 768px) {
+          padding-top: 70px;
+        }
+      }
+
+    }
+  }
 }
 
 // Archive --end

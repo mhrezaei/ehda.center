@@ -1,5 +1,4 @@
 @php
-
     $aparatLinkPrefix = 'http://www.aparat.com/v/';
 
     $showSideBar = isset($showSideBar) ? $showSideBar : false;
