@@ -99,6 +99,7 @@ return [
     'share'                                    => 'اشتراک',
     'powered_by_yasna'                         => 'طراحی و اجرا: گروه یسنا',
     'community_branches'                       => 'شعب انجمن',
+    'provinces_portals'                        => 'پرتال استان‌ها',
     'email_has_been_sent_automatically'        => 'توجه : این ایمیل به صورت خودکار فرستاده شده است ، بنابراین به آن پاسخ ندهید. ',
     'unnamed'                                  => 'بی‌نام',
     'download_links'                           => 'لینک‌های دانلود',

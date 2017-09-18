@@ -25,7 +25,20 @@ jQuery(function ($) {
     }
     window.fileManagerModalOptions = getValueOf(parent.window.fileManagerModalOptions ? parent.window.fileManagerModalOptions : {});
 
-    selectFolder($(".breadcrumb-folders .folder").first());
+    // Select default folder
+    let defaultFolder = $(".breadcrumb-folders .folder").first();
+    if (parent.window.fileManagerModalOptions && parent.window.fileManagerModalOptions.defaultFolder) {
+        let defaultFolderParts = parent.window.fileManagerModalOptions.defaultFolder.split('___');
+        console.log(defaultFolderParts)
+        if ($.isArray(defaultFolderParts) && (defaultFolderParts.length == 2)) {
+            let tmpDefaultFolder =
+                $('.breadcrumb-folders .folder[data-instance="' + defaultFolderParts[0] + '"][data-key="' + defaultFolderParts[1] + '"]');
+            if (tmpDefaultFolder.length) {
+                defaultFolder = tmpDefaultFolder;
+            }
+        }
+    }
+    selectFolder(defaultFolder);
 
     $window = $(window);
     //Details Shown Inside Sidebar (Hidden On Page Load)
@@ -353,7 +366,7 @@ function selectFolder(folder) {
     let fileTypes = acceptedFilesCategories[folder.data('instance') + '__' + folder.data('key')];
     $('#filter-file-type option').each(function () {
         let opt = $(this);
-        if(opt.val() && ($.inArray(opt.val(), fileTypes) == -1)) {
+        if (opt.val() && ($.inArray(opt.val(), fileTypes) == -1)) {
             opt.hide();
         } else {
             opt.show();
@@ -367,7 +380,7 @@ function selectFolder(folder) {
 function resetFilters() {
     $('#filters').find(':input').each(function () {
         let that = $(this);
-        if(that.is('select')) {
+        if (that.is('select')) {
             let firstVisibleOpt = that.find('option:visible').first();
             that.val(firstVisibleOpt.val()).change();
         } else {

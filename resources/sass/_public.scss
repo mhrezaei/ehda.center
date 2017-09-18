@@ -127,13 +127,13 @@ header {
         &:focus,
         &:link,
         &:visited {
-          @extend .text-blue, .bg-white, .border-1, .border-white, .rounded-corners-5, .f12;
+          @extend .text-white, .bg-transparent, .border-1, .border-white, .rounded-corners-5, .f12;
           outline: none;
           padding: 0 5px;
           line-height: 10px;
 
           &.selected {
-            @extend .text-white, .bg-transparent;
+            @extend .text-blue, .bg-white;
           }
         }
       }

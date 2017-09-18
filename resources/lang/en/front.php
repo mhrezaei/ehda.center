@@ -99,6 +99,7 @@ return [
     'share'                                    => 'Share',
     'powered_by_yasna'                         => 'Powered by Yasna Team',
     'community_branches'                       => 'Community Branches',
+    'provinces_portals'                        => 'Provinces Portals',
     'email_has_been_sent_automatically'        => 'Note: This email has been sent automatically. So don\'t reply to it.',
     'unnamed'                                  => 'Unnamed',
     'download_links'                           => 'Download Links',

@@ -145,7 +145,7 @@ class Order extends Model
         }
 
         if (array_key_exists('status_name', $data) and !array_key_exists('status', $data)) {
-            $statusCode = in_array($data['status_name'], self::$statusesNames);
+            $statusCode = array_search($data['status_name'], self::$statusesNames);
             if ($statusCode !== false) {
                 $data['status'] = $statusCode;
             }
