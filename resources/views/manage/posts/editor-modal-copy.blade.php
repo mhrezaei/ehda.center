@@ -5,7 +5,7 @@
 
 @include("templates.modal.start" , [
 	'partial' => false,
-	'modal_title' => trans('posts.form.refer_back'),
+	'modal_title' => trans('posts.form.published_post'),
 	'no_validation' => "1",
 	'modal_id' => "modalSuggestCopy",
 	'modal_size' => "m",

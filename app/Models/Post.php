@@ -350,7 +350,7 @@ class Post extends Model implements FeedItem
 			return 'published';
 		}
 
-		if($this->isScheduled()) {
+		if($this->isScheduled() and $this->published_by) {
 			return 'scheduled';
 		}
 
@@ -641,7 +641,7 @@ class Post extends Model implements FeedItem
 		| Considering Languages ...
 		*/
 		$full_permit = "posts-$this->type.$permit" ;
-		if($this->has('locales')) {
+		if($this->has('locales') and !str_contains($full_permit , '.')) {
 			$full_permit .= ".$this->locale" ;
 		}
 
@@ -716,7 +716,7 @@ class Post extends Model implements FeedItem
 
 	public function isScheduled()
 	{
-		return ($this->published_by and $this->published_at and $this->published_at > Carbon::now());
+		return ($this->published_at and $this->published_at > Carbon::now());
 	}
 
 	public function isApproved()

@@ -125,7 +125,7 @@ trait PermitsTrait2
 	 * Mixes all available permissions, considering the requested role via $this->rolesQuery() and disabled roles via the chain methods.
 	 * @return string
 	 */
-	private function rolesPermits()
+	public function rolesPermits()
 	{
 
 		return implode(' ', $this->min(8)->rolesQuery()->pluck('pivot.permissions')->toArray());
