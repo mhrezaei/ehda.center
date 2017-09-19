@@ -497,7 +497,7 @@ class Posttype extends Model
     public function normalizeRequestLocale($request_locale)
     {
         if (!$request_locale or !in_array($request_locale, $this->locales_array)) {
-            $locale = $this->locales_array[0];
+            return $this->locales_array[0];
         } else {
             return $request_locale;
         }

@@ -641,7 +641,7 @@ class Post extends Model implements FeedItem
 		| Considering Languages ...
 		*/
 		$full_permit = "posts-$this->type.$permit" ;
-		if($this->has('locales')) {
+		if($this->has('locales') and !str_contains($full_permit , '.')) {
 			$full_permit .= ".$this->locale" ;
 		}
 

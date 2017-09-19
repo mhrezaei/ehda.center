@@ -45,41 +45,42 @@
 
 	@include('forms.group-start')
 
+	@include('forms.button' , [
+		'id' => 'btnSave' ,
+		'label' => trans('forms.button.save'),
+		'shape' => 'success',
+		'type' => 'submit' ,
+		'value' => 'save' ,
+		'class' => '-delHandle'
+	])
+
+	@if($model->id)
 		@include('forms.button' , [
-			'id' => 'btnSave' ,
-			'label' => trans('forms.button.save'),
-			'shape' => 'success',
+			'id' => 'btnDeleteWarning' ,
+			'label' => trans('forms.button.delete'),
+			'shape' => 'warning',
+			'link' => '$(".-delHandle").toggle()' ,
+			'type' => "button",
+			'class' => '-delHandle' ,
+		])
+		@include('forms.button' , [
+			'id' => 'btnDelete' ,
+			'label' => trans('forms.button.sure_hard_delete'),
+			'shape' => 'danger',
+			'value' => 'delete' ,
 			'type' => 'submit' ,
-			'value' => 'save' ,
-			'class' => '-delHandle'
+			'class' => 'noDisplay -delHandle' ,
 		])
 
-		@if($model->id)
-			@include('forms.button' , [
-				'id' => 'btnDeleteWarning' ,
-				'label' => trans('forms.button.delete'),
-				'shape' => 'warning',
-				'link' => '$(".-delHandle").toggle()' ,
-				'type' => "button",
-				'class' => '-delHandle' ,
-			])
-			@include('forms.button' , [
-				'id' => 'btnDelete' ,
-				'label' => trans('forms.button.sure_hard_delete'),
-				'shape' => 'danger',
-				'value' => 'delete' ,
-				'type' => 'submit' ,
-				'class' => 'noDisplay -delHandle' ,
-			])
-
-		@endif
+	@endif
 
 
-		@include('forms.button' , [
-			'label' => trans('forms.button.cancel'),
-			'shape' => 'link',
-			'link' => '$(".modal").modal("hide")',
-		])
+	@include('forms.button' , [
+		'label' => trans('forms.button.cancel'),
+		'shape' => 'link',
+		'type' => "button" ,
+		'link' => '$(".modal").modal("hide")',
+	])
 
 	@include('forms.group-end')
 
