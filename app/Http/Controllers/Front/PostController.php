@@ -328,10 +328,11 @@ JS;
 
     public function angels_find(AngelsSearchRequest $request)
     {
+        list($textToSearch) = explode('،', $request->angel_name);
         $foundAngels = Post::selector([
             'type'   => 'angels',
             'domain' => getUsableDomains(),
-        ])->where('title', 'LIKE', "%{$request->angel_name}%")
+        ])->where('title', 'LIKE', "%{$textToSearch}%")
             ->limit(100)// limit data in query
             ->get();
 

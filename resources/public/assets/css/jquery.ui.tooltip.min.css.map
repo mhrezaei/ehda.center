@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AAAA;;;;;;;GAOG,AAEH,WAAY,CACX,OAAO,CAAE,GAAG,CACZ,QAAQ,CAAE,QAAQ,CAClB,OAAO,CAAE,IAAI,CACb,SAAS,CAAE,KAAK,CAChB,kBAAkB,CAAE,YAAY,CAChC,UAAU,CAAE,YAAY,CAEzB,gBAAiB,CAChB,YAAY,CAAE,GAAG",
-"sources": ["../../../sass/jquery-ui/jquery.ui.tooltip.scss"],
-"names": [],
-"file": "jquery.ui.tooltip.min.css"
-}

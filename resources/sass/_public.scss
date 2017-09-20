@@ -98,6 +98,24 @@ header {
             vertical-align: middle;
             border-radius: 50%;
             background-color: #fff;
+            @media (max-width: 767px) {
+              display: none;
+            }
+          }
+        }
+
+        a {
+          .menu-text {
+            @media (max-width: 767px) {
+              display: none;
+            }
+          }
+          .menu-icon {
+            @extend .f14;
+            padding-#{$startSide}: 10px;
+            @media (min-width: 768px) {
+              display: none;
+            }
           }
         }
         li {
@@ -109,7 +127,7 @@ header {
       a {
         @extend .pt10, .pb10, .pr15, .pl10;
         display: inline-block;
-        @media(max-width: 500px) {
+        @media(max-width: 767px) {
           padding: 12px 5px;
           font-size: 0.8em;
         }
@@ -117,26 +135,75 @@ header {
     }
 
     .select-lang-btn {
-      @extend .rounded-corners-5;
+      @extend .rounded-corners-5, .pull-end;
       margin-#{$endSide}: 240px;
       margin-top: 8px;
+      @media (max-width: 767px) {
+        margin-#{$endSide}: 0;
+        float: #{$startSide} !important;
+      }
 
-      > a {
-        &,
-        &:active,
-        &:focus,
-        &:link,
-        &:visited {
-          @extend .text-white, .bg-transparent, .border-1, .border-white, .rounded-corners-5, .f12;
-          outline: none;
-          padding: 0 5px;
-          line-height: 10px;
+      .globe-list-btn {
+        @extend .f14;
+        padding-#{$startSide}: 15px;
+        padding-#{$endSide}: 5px;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        display: inline-block;
+        cursor: pointer;
+        @media (min-width: 768px) {
+          display: none;
+        }
+      }
 
-          &.selected {
-            @extend .text-blue, .bg-white;
+      ul {
+        li {
+          > a {
+            &,
+            &:active,
+            &:focus,
+            &:link,
+            &:visited {
+              @extend .text-white, .bg-transparent, .border-1, .border-white, .rounded-corners-5, .f12;
+              outline: none;
+              padding: 0 5px;
+              line-height: 10px;
+
+              &.selected {
+                @extend .text-blue, .bg-white;
+              }
+            }
+          }
+        }
+
+        @media (max-width: 767px) {
+          display: none;
+          position: absolute;
+          z-index: 21;
+          text-align: center;
+          background-color: map_get($colors, 'blue');
+          padding-bottom: 5px;
+          padding-top: 5px;
+
+          li {
+            width: 100%;
+            padding-left: 0;
+            padding-right: 0;
+            > a {
+              border: none !important;
+              -webkit-border-radius: 0 !important;
+              -moz-border-radius: 0 !important;
+              border-radius: 0 !important;
+            }
           }
         }
       }
+
+      @media (max-width: 767px) {
+        padding-bottom: 0;
+        margin-top: 0;
+      }
+
     }
 
   }
@@ -162,6 +229,7 @@ header {
     .toggle-menu {
       display: none;
       cursor: pointer;
+      margin-#{$endSide}: 20px;
     }
     @media (max-width: 999px) {
       #menu-tree {
@@ -252,11 +320,6 @@ header {
           padding: 8px;
         }
       }
-      > li:hover {
-        > a {
-          @extend .link-darkGray;
-        }
-      }
       @media (min-width: 1000px) {
         position: absolute;
         left: -15px;
@@ -266,45 +329,66 @@ header {
         margin: 0;
       }
       .mega-menu {
+        $boxShadow: 0px 10px 15px -10px rgba(0, 0, 0, 0.75);
         height: 330px;
-        &:after {
-          $backgroundImageName: "menu-ribbon";
+        -webkit-box-shadow: #{$boxShadow};
+        -moz-box-shadow: #{$boxShadow};
+        box-shadow: #{$boxShadow};
+        background-image: url(#{$imagesDir}sprout.png);
+        background-repeat: no-repeat;
+        background-position: 70px 100px;
+        background-size: contain;
 
-          @if not $rtl {
-            $backgroundImageName: $backgroundImageName + "-ltr";
-          }
-
-          content: "";
-          left: 0;
-          right: 0;
-          top: 0;
-          bottom: 0;
-          background: url(#{$imagesDir}#{$backgroundImageName}.png) no-repeat #{$endSide} 122px;
-          background-attachment: fixed;
-          position: absolute;
-          pointer-events: none;
-          z-index: 1;
-          @media(max-width: 1000px) {
-            background-position: left top !important;
+        //&:after {
+        //  $backgroundImageName: "menu-ribbon";
+        //
+        //  @if not $rtl {
+        //    $backgroundImageName: $backgroundImageName + "-ltr";
+        //  }
+        //
+        //  content: "";
+        //  left: 0;
+        //  right: 0;
+        //  top: 0;
+        //  bottom: 0;
+        //  //background: url(#{$imagesDir}#{$backgroundImageName}.png) no-repeat #{$endSide} 122px;
+        //  background-attachment: fixed;
+        //  position: absolute;
+        //  pointer-events: none;
+        //  z-index: 1;
+        //  @media(max-width: 1000px) {
+        //    background-position: left top !important;
+        //  }
+        //}
+        > ul {
+          > li {
+            > a {
+              @extend .pl10, .pr10;
+              border-#{$startSide}: 2px solid map_get($colors, 'blue');
+              display: block;
+              padding-top: 3px;
+              padding-bottom: 3px;
+            }
           }
         }
       }
     }
     > ul > li {
       display: inline-block;
-      @media(min-width: 1000px) {
-        &:hover > a, &.active > a {
-          &:before {
-            content: "";
-            position: absolute;
-            #{$startSide}: -58px;
-            #{$endSide}: 0;
-            top: -20px;
-            transform: skew(($rtlRatio) * 45deg);
-            bottom: 0;
-            background: #000;
-            opacity: 0.1;
-          }
+      &:hover > a, &.active > a {
+        @extend .text-green;
+        @media(min-width: 1000px) {
+          //&:before {
+          //  content: "";
+          //  position: absolute;
+          //  #{$startSide}: -58px;
+          //  #{$endSide}: 0;
+          //  top: -20px;
+          //  transform: skew(($rtlRatio) * 45deg);
+          //  bottom: 0;
+          //  background: #000;
+          //  opacity: 0.1;
+          //}
         }
         //&.active > a {
         //  &:before {
@@ -318,14 +402,14 @@ header {
         //}
       }
       > a {
-        @extend .link-darkGray;
+        @extend .text-darkGray;
         display: block;
         font-size: 20px;
         font-weight: 500;
         padding: 10px 0 10px 20px;
         position: relative;
         margin-#{$endSide}: 24px;
-        width: 87px;
+        width: auto;
         &:before {
           content: "";
         }
@@ -345,26 +429,25 @@ header {
       position: relative;
       z-index: 2;
       float: #{$startSide};
-      @media(max-width: 500px) {
-        font-size: 0.8em;
-        padding: 30px 10px;
-      }
     }
     &:before {
       @extend .bg-green;
       content: "";
       position: absolute;
       width: 100%;
-      height: 100%;
+      height: calc(100% + 40px);
       #{$endSide}: -50%;
-      top: 0px;
-      transform: skew(-30deg);
+      top: -20px;
+      //transform: skew(-30deg);
       z-index: 1;
       border-#{$startSide}: 5px solid #fff;
       @media(max-width: 500px) {
         border-width: 2px;
       }
-      box-shadow: 0 1px #fff;
+      //box-shadow: 0 1px #fff;
+      -webkit-border-radius: 100px;
+      -moz-border-radius: 100px;
+      border-radius: 100px;
     }
   }
 }
@@ -685,19 +768,23 @@ header {
     margin-bottom: 15px;
   }
   &:before {
+    @extend .bg-green;
+    $borderRadius: 35px;
     content: "";
-    //background-color: #5d962a;
-    @if $rtl {
-      transform: skew(-45deg);
-    } @else {
-      transform: skew(45deg);
-    }
+    //@if $rtl {
+    //  transform: skew(-45deg);
+    //} @else {
+    //  transform: skew(45deg);
+    //}
     position: absolute;
     #{$startSide}: -100px;
     width: 40%;
     min-width: 300px;
     height: 100%;
     z-index: -1;
+    -webkit-border-radius: #{$borderRadius};
+    -moz-border-radius: #{$borderRadius};
+    border-radius: #{$borderRadius};
   }
 }
 
@@ -735,21 +822,39 @@ header {
         min-width: 200px;
       }
     }
-    .media {
-      @media (max-width: 767px) {
-        > * {
-          float: #{$startSide};
-          width: 100%;
-        }
-      }
+  }
 
-      .media-end {
-        @media (min-width: 768px) {
-          padding-top: 70px;
-        }
-      }
+  .archive-item {
+    overflow: hidden;
+  }
 
+  .media {
+    > a {
+      padding-left: 0;
     }
+    @media (max-width: 767px) {
+      > div,
+      a > div {
+        float: #{$startSide};
+        width: 100%;
+      }
+    }
+    .media-start {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .media-end {
+      @media (min-width: 768px) {
+        padding-top: 70px;
+      }
+    }
+
+    .media-body {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
   }
 }
 

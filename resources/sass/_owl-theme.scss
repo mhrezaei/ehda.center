@@ -124,7 +124,6 @@
   border-radius: 10px;
   left: 50%;
   transform: translateX(-50%);
-  width: calc(100% - 30px);
   * {
     display: block;
     margin: 10px 0;
@@ -135,11 +134,10 @@
     width: 100%;
     white-space: normal;
   }
-  h3 {
-    white-space: initial;
-  }
   @media(max-width: 800px) {
+    width: calc(100% - 30px);
     h3 {
+      white-space: initial;
       font-size: 1.2em;
     }
     span {
