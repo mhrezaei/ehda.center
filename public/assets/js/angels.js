@@ -125,10 +125,13 @@ $('.stars-bg').on('click', function (event) {
 var notFoundAlert = $('#alertNotFound');
 
 $(document).ready(function () {
-    var searchMinLength = 3;
-    let searchBox = $('#angels_name');
+    let searchAngelOptions = {
+        element: $('#angels_name'),
+        minLength: 3,
+        isSelectingWithEnter: false,
+    };
 
-    searchBox.autocomplete({
+    searchAngelOptions.element.autocomplete({
         delay: 1000,
         source: function (request, response) {
             var term = request.term;
@@ -137,7 +140,7 @@ $(document).ready(function () {
             if ((/\s+$/.test(request.term) || // if the last character entered is "space"
                     (term.split(" ").length > 1) // if cleared term has more than one word
                 ) &&
-                (term.length >= searchMinLength) // if length of cleared term is enough
+                (term.length >= searchAngelOptions.minLength) // if length of cleared term is enough
             ) {
                 var newRequest = {
                     angel_name: term,
@@ -147,8 +150,14 @@ $(document).ready(function () {
                 $.post(searchUrl, newRequest, response);
             }
         },
-        minLength: searchMinLength,
+        minLength: searchAngelOptions.minLength,
         select: function (event, ui) {
+
+            // If enter key is pressed and select method is triggered, search method should not be triggered this time.
+            if (event.keyCode == 13) {
+                searchAngelOptions.isSelectingWithEnter = true;
+            }
+
             ui.item.value = ""; // to clear text inside of input after selecting one item
 
             let angel = ui.item;
@@ -187,15 +196,19 @@ $(document).ready(function () {
         },
     });
 
-    searchBox.keyup(function (event) {
+    searchAngelOptions.element.keyup(function (event) {
         // If enter key was pressed
         if (event.keyCode == 13) {
-            searchBox.autocomplete('search');
+            if (searchAngelOptions.isSelectingWithEnter) {
+                searchAngelOptions.isSelectingWithEnter = false;
+            } else {
+                searchAngelOptions.element.autocomplete('search');
+            }
         }
     });
 
     $('.btn-search').click(function () {
-        searchBox.autocomplete('search');
+        searchAngelOptions.element.autocomplete('search');
     });
 
     $('.show-form-btn-container button, .open-new-angel-form').click(showNewAngelForm);
