@@ -126,13 +126,13 @@ var notFoundAlert = $('#alertNotFound');
 
 $(document).ready(function () {
     var searchMinLength = 3;
+    let searchBox = $('#angels_name');
 
-    $('#angels_name').autocomplete({
+    searchBox.autocomplete({
         delay: 1000,
         source: function (request, response) {
             var term = request.term;
             term = term.trim().replace(/\s{2,}/g, ' '); // remove extra whitespaces
-
 
             if ((/\s+$/.test(request.term) || // if the last character entered is "space"
                     (term.split(" ").length > 1) // if cleared term has more than one word
@@ -185,6 +185,17 @@ $(document).ready(function () {
                 $('#alertNotFound').slideDown();
             }
         },
+    });
+
+    searchBox.keyup(function (event) {
+        // If enter key was pressed
+        if (event.keyCode == 13) {
+            searchBox.autocomplete('search');
+        }
+    });
+
+    $('.btn-search').click(function () {
+        searchBox.autocomplete('search');
     });
 
     $('.show-form-btn-container button, .open-new-angel-form').click(showNewAngelForm);
