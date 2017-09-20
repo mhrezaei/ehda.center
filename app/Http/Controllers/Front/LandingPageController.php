@@ -77,4 +77,31 @@ class LandingPageController extends Controller
             'count' => $count,
         ]);
     }
+
+    public function football($event)
+    {
+        $post = PostsServiceProvider::smartFindPost('football');
+        if (!$post or !$post->exists) {
+            return $this->abort('404');
+        }
+
+        return PostsServiceProvider::showPost($post);
+    }
+
+    public function football_counter()
+    {
+        $post = PostsServiceProvider::smartFindPost('football');
+        if (!$post or !$post->exists) {
+            return $this->abort('404', true);
+        }
+
+        $count = User::where([
+            ['created_at', '>=', $post->starts_at],
+            ['created_at', '<=', $post->ends_at],
+        ])->count();
+
+        return response()->json([
+            'count' => $count,
+        ]);
+    }
 }
