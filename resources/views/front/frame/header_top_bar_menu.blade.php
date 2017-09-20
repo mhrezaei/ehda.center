@@ -8,8 +8,21 @@
     @endif
     @if(user()->exists)
         <li class="has-child pull-start">
-            <a href="/">{{ str_replace('::user', user()->name_first, trans('front.profile_phrases.welcome_user')) }}</a>
+            <a href="#">
+                @php
+                    $userWelcomeText = str_replace('::user', user()->name_first, trans('front.profile_phrases.welcome_user'))
+                @endphp
+                <span class="menu-text">
+                    {{ $userWelcomeText }}
+                </span>
+                <span class="menu-icon">
+                    <i class="fa fa-user"></i>
+                </span>
+            </a>
             <ul class="list-unstyled bg-blue">
+                <li class="visible-xs">
+                    <a>{{ $userWelcomeText }}</a>
+                </li>
                 @if(user()->is_admin()) {{-- This user is a volunteer --}}
                 <li><a href="{{ url('/manage') }}">{{ trans('front.volunteer_section.section') }}</a></li>
                 @endif
@@ -27,10 +40,24 @@
         </li>
     @else
         <li class="pull-start">
-            <a href="{{ url('/login') }}">{{ trans('front.member_section.sign_in') }}</a>
+            <a href="{{ url('/login') }}">
+                <span class="menu-text">
+                    {{ trans('front.member_section.sign_in') }}
+                </span>
+                <span class="menu-icon">
+                    <i class="fa fa-user"></i>
+                </span>
+            </a>
         </li>
     @endif
     <li>
-        <a href="{{ route_locale('states.index') }}">{{ trans('front.provinces_portals') }}</a>
+        <a href="{{ route_locale('states.index') }}">
+            <span class="menu-text">
+                {{ trans('front.provinces_portals') }}
+            </span>
+            <span class="menu-icon">
+                <i class="fa fa-map-marker"></i>
+            </span>
+        </a>
     </li>
 </ul>

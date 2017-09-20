@@ -98,6 +98,24 @@ header {
             vertical-align: middle;
             border-radius: 50%;
             background-color: #fff;
+            @media (max-width: 767px) {
+              display: none;
+            }
+          }
+        }
+
+        a {
+          .menu-text {
+            @media (max-width: 767px) {
+              display: none;
+            }
+          }
+          .menu-icon {
+            @extend .f14;
+            padding-#{$startSide}: 10px;
+            @media (min-width: 768px) {
+              display: none;
+            }
           }
         }
         li {
@@ -109,7 +127,7 @@ header {
       a {
         @extend .pt10, .pb10, .pr15, .pl10;
         display: inline-block;
-        @media(max-width: 500px) {
+        @media(max-width: 767px) {
           padding: 12px 5px;
           font-size: 0.8em;
         }
@@ -117,26 +135,75 @@ header {
     }
 
     .select-lang-btn {
-      @extend .rounded-corners-5;
+      @extend .rounded-corners-5, .pull-end;
       margin-#{$endSide}: 240px;
       margin-top: 8px;
+      @media (max-width: 767px) {
+        margin-#{$endSide}: 0;
+        float: #{$startSide} !important;
+      }
 
-      > a {
-        &,
-        &:active,
-        &:focus,
-        &:link,
-        &:visited {
-          @extend .text-white, .bg-transparent, .border-1, .border-white, .rounded-corners-5, .f12;
-          outline: none;
-          padding: 0 5px;
-          line-height: 10px;
+      .globe-list-btn {
+        @extend .f14;
+        padding-#{$startSide}: 15px;
+        padding-#{$endSide}: 5px;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        display: inline-block;
+        cursor: pointer;
+        @media (min-width: 768px) {
+          display: none;
+        }
+      }
 
-          &.selected {
-            @extend .text-blue, .bg-white;
+      ul {
+        li {
+          > a {
+            &,
+            &:active,
+            &:focus,
+            &:link,
+            &:visited {
+              @extend .text-white, .bg-transparent, .border-1, .border-white, .rounded-corners-5, .f12;
+              outline: none;
+              padding: 0 5px;
+              line-height: 10px;
+
+              &.selected {
+                @extend .text-blue, .bg-white;
+              }
+            }
+          }
+        }
+
+        @media (max-width: 767px) {
+          display: none;
+          position: absolute;
+          z-index: 21;
+          text-align: center;
+          background-color: map_get($colors, 'blue');
+          padding-bottom: 5px;
+          padding-top: 5px;
+
+          li {
+            width: 100%;
+            padding-left: 0;
+            padding-right: 0;
+            > a {
+              border: none !important;
+              -webkit-border-radius: 0 !important;
+              -moz-border-radius: 0 !important;
+              border-radius: 0 !important;
+            }
           }
         }
       }
+
+      @media (max-width: 767px) {
+        padding-bottom: 0;
+        margin-top: 0;
+      }
+
     }
 
   }
@@ -162,6 +229,7 @@ header {
     .toggle-menu {
       display: none;
       cursor: pointer;
+      margin-#{$endSide}: 20px;
     }
     @media (max-width: 999px) {
       #menu-tree {
@@ -345,26 +413,25 @@ header {
       position: relative;
       z-index: 2;
       float: #{$startSide};
-      @media(max-width: 500px) {
-        font-size: 0.8em;
-        padding: 30px 10px;
-      }
     }
     &:before {
       @extend .bg-green;
       content: "";
       position: absolute;
       width: 100%;
-      height: 100%;
+      height: calc(100% + 40px);
       #{$endSide}: -50%;
-      top: 0px;
-      transform: skew(-30deg);
+      top: -20px;
+      //transform: skew(-30deg);
       z-index: 1;
       border-#{$startSide}: 5px solid #fff;
       @media(max-width: 500px) {
         border-width: 2px;
       }
-      box-shadow: 0 1px #fff;
+      //box-shadow: 0 1px #fff;
+      -webkit-border-radius: 100px;
+      -moz-border-radius: 100px;
+      border-radius: 100px;
     }
   }
 }
@@ -735,21 +802,39 @@ header {
         min-width: 200px;
       }
     }
-    .media {
-      @media (max-width: 767px) {
-        > * {
-          float: #{$startSide};
-          width: 100%;
-        }
-      }
+  }
 
-      .media-end {
-        @media (min-width: 768px) {
-          padding-top: 70px;
-        }
-      }
+  .archive-item {
+    overflow: hidden;
+  }
 
+  .media {
+    > a {
+      padding-left: 0;
     }
+    @media (max-width: 767px) {
+      > div,
+      a > div {
+        float: #{$startSide};
+        width: 100%;
+      }
+    }
+    .media-start {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .media-end {
+      @media (min-width: 768px) {
+        padding-top: 70px;
+      }
+    }
+
+    .media-body {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
   }
 }
 
