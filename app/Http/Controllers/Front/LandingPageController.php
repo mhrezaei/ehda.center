@@ -78,7 +78,7 @@ class LandingPageController extends Controller
         ]);
     }
 
-    public function football($event)
+    public function football()
     {
         $post = PostsServiceProvider::smartFindPost('football');
         if (!$post or !$post->exists) {
