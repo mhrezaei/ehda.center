@@ -320,11 +320,6 @@ header {
           padding: 8px;
         }
       }
-      > li:hover {
-        > a {
-          @extend .link-darkGray;
-        }
-      }
       @media (min-width: 1000px) {
         position: absolute;
         left: -15px;
@@ -334,45 +329,66 @@ header {
         margin: 0;
       }
       .mega-menu {
+        $boxShadow: 0px 10px 15px -10px rgba(0, 0, 0, 0.75);
         height: 330px;
-        &:after {
-          $backgroundImageName: "menu-ribbon";
+        -webkit-box-shadow: #{$boxShadow};
+        -moz-box-shadow: #{$boxShadow};
+        box-shadow: #{$boxShadow};
+        background-image: url(#{$imagesDir}sprout.png);
+        background-repeat: no-repeat;
+        background-position: 70px 100px;
+        background-size: contain;
 
-          @if not $rtl {
-            $backgroundImageName: $backgroundImageName + "-ltr";
-          }
-
-          content: "";
-          left: 0;
-          right: 0;
-          top: 0;
-          bottom: 0;
-          background: url(#{$imagesDir}#{$backgroundImageName}.png) no-repeat #{$endSide} 122px;
-          background-attachment: fixed;
-          position: absolute;
-          pointer-events: none;
-          z-index: 1;
-          @media(max-width: 1000px) {
-            background-position: left top !important;
+        //&:after {
+        //  $backgroundImageName: "menu-ribbon";
+        //
+        //  @if not $rtl {
+        //    $backgroundImageName: $backgroundImageName + "-ltr";
+        //  }
+        //
+        //  content: "";
+        //  left: 0;
+        //  right: 0;
+        //  top: 0;
+        //  bottom: 0;
+        //  //background: url(#{$imagesDir}#{$backgroundImageName}.png) no-repeat #{$endSide} 122px;
+        //  background-attachment: fixed;
+        //  position: absolute;
+        //  pointer-events: none;
+        //  z-index: 1;
+        //  @media(max-width: 1000px) {
+        //    background-position: left top !important;
+        //  }
+        //}
+        > ul {
+          > li {
+            > a {
+              @extend .pl10, .pr10;
+              border-#{$startSide}: 2px solid map_get($colors, 'blue');
+              display: block;
+              padding-top: 3px;
+              padding-bottom: 3px;
+            }
           }
         }
       }
     }
     > ul > li {
       display: inline-block;
-      @media(min-width: 1000px) {
-        &:hover > a, &.active > a {
-          &:before {
-            content: "";
-            position: absolute;
-            #{$startSide}: -58px;
-            #{$endSide}: 0;
-            top: -20px;
-            transform: skew(($rtlRatio) * 45deg);
-            bottom: 0;
-            background: #000;
-            opacity: 0.1;
-          }
+      &:hover > a, &.active > a {
+        @extend .text-green;
+        @media(min-width: 1000px) {
+          //&:before {
+          //  content: "";
+          //  position: absolute;
+          //  #{$startSide}: -58px;
+          //  #{$endSide}: 0;
+          //  top: -20px;
+          //  transform: skew(($rtlRatio) * 45deg);
+          //  bottom: 0;
+          //  background: #000;
+          //  opacity: 0.1;
+          //}
         }
         //&.active > a {
         //  &:before {
@@ -386,14 +402,14 @@ header {
         //}
       }
       > a {
-        @extend .link-darkGray;
+        @extend .text-darkGray;
         display: block;
         font-size: 20px;
         font-weight: 500;
         padding: 10px 0 10px 20px;
         position: relative;
         margin-#{$endSide}: 24px;
-        width: 87px;
+        width: auto;
         &:before {
           content: "";
         }
@@ -752,19 +768,23 @@ header {
     margin-bottom: 15px;
   }
   &:before {
+    @extend .bg-green;
+    $borderRadius: 35px;
     content: "";
-    //background-color: #5d962a;
-    @if $rtl {
-      transform: skew(-45deg);
-    } @else {
-      transform: skew(45deg);
-    }
+    //@if $rtl {
+    //  transform: skew(-45deg);
+    //} @else {
+    //  transform: skew(45deg);
+    //}
     position: absolute;
     #{$startSide}: -100px;
     width: 40%;
     min-width: 300px;
     height: 100%;
     z-index: -1;
+    -webkit-border-radius: #{$borderRadius};
+    -moz-border-radius: #{$borderRadius};
+    border-radius: #{$borderRadius};
   }
 }
 

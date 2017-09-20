@@ -94,7 +94,7 @@ body.sticky-header {
       right: 0;
       > ul {
         position: relative;
-        float: left;
+        float: right;
         text-align: right;
       }
     }
@@ -139,7 +139,6 @@ body.sticky-header {
       display: block;
       margin-right: 20px;
       > a {
-        @extend .right-bordered-link;
         &:hover {
           border-color: color(#fff);
         }

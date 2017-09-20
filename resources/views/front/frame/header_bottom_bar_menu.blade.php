@@ -2,7 +2,7 @@
 {{ null, $menu = \App\Providers\MenuServiceProvider::getStaticMenuArray() }}
 
 @include('front.frame.register_card_btn_top')
-<span class="text-blue f30 mt15 ml20 toggle-menu pull-end"><i class="fa fa-bars"></i></span>
+<span class="text-blue f30 mt15 toggle-menu pull-end"><i class="fa fa-bars"></i></span>
 <ul class="list-inline" id="menu-tree" >
     @if($menu and is_array($menu) and count($menu))
         @foreach($menu as $group)
@@ -13,7 +13,7 @@
                     is_array($group['children']) and
                     count($group['children'])
                 )
-                    <ul class="bg-blue text-white-deep mega-menu col-xs-12">
+                    <ul class="bg-white text-darkGray-deep mega-menu col-xs-12 border-top-3 border-top-green">
                         @foreach($group['children'] as $postType)
                             <ul class="list-unstyled">
                                 <h3>
