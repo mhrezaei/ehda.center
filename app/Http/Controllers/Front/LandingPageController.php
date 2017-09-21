@@ -95,9 +95,14 @@ class LandingPageController extends Controller
             return $this->abort('404', true);
         }
 
+//        $count = User::where([
+//            ['card_registered_at', '>=', $post->starts_at],
+//            ['card_registered_at', '<=', $post->ends_at],
+//        ])->count();
+
         $count = User::where([
-            ['created_at', '>=', $post->starts_at],
-            ['created_at', '<=', $post->ends_at],
+            ['card_registered_at', '>=', '2017-09-20 19:45:00'],
+//            ['card_registered_at', '<=', '2017-09-20 22:00:00'],
         ])->count();
 
         return response()->json([

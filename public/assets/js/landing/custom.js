@@ -111,7 +111,7 @@ jQuery(function ($) {
     }); //End of on load and resize functions
 
     // Changing timer digits
-    translate();
+    // translate();
 
     function translate() {
         var day = $('.textDiv_Days span').text(),

@@ -6,7 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>ehda summer</title>
+    <title>{{ $post->title }}</title>
+
+    <meta property="og:title" content="{{ $post->title }}" />
+    <meta property="og:url" content="https://telegram.me/Ehdayeozv_bot" />
+    <meta property="og:image" content="https://ehda.center/uploads/posts/gallery/image/1503245565_WjUjs1TOPnBiXyybrEF3v21xD8Q0tw_original.png" />
+    <meta property="og:description" content="ثبت حماسه ای دیگر از نوعدوستی ایرانیان - هر ایرانی یک سفیر اهدای عضو" />
 
     <!-- Bootstrap -->
     {{ Html::style('assets/css/landing/bootstrap.min.css') }}
@@ -22,12 +27,27 @@
     {{--<link rel="stylesheet" href="css/style.min.css">--}}
 
     <style>
+        *:not(.fa), html, body{
+            font-family: "IRANSans" !important;
+            /*direction: rtl;*/
+        }
+        .textDiv_Days span, .textDiv_Days h4,
+        .textDiv_Hours span, .textDiv_Hours h4,
+        .textDiv_Minutes span, .textDiv_Minutes h4,
+        .textDiv_Seconds span, .textDiv_Seconds h4{
+            font-weight: normal !important;
+            font-style: normal !important;
+            line-height: 40px !important;
+            font-family: 'IRANSans' !important;
+        }
         @php
             $featuredImageUrl = \App\Providers\UploadServiceProvider::changeFileUrlVersion($post->viewable_featured_image, 'original');
         @endphp
         .main {
 {{--            background: url("{{ url('assets/images/template/landing/summer-hand.png') }}"), url("{{ url('assets/images/template/landing/summer.jpg') }}");--}}
-            background: url("{{ $featuredImageUrl }}");
+{{--            background: url("{{ $featuredImageUrl }}");--}}
+                        background: url(), url("{{ $featuredImageUrl }}");
+
             background-position: right bottom, center;
             background-repeat: no-repeat, no-repeat;
             background-size: 20% auto, cover;
@@ -66,7 +86,7 @@
                                 <a href="https://ehda.center" class="telegram-link" target="_blank">www.ehda.center</a>
                             </p>
                             @php $sentences = explode("\n", $post->sentences) @endphp
-                            @if($sentences and is_array($sentences) and count($sentences))
+                            @if(trim($post->sentences) and $sentences and is_array($sentences) and count($sentences))
                                 <h3 class="headline shutter-slide">
                                     <div class="word-wrapper">
                                         <span class="shutter">
@@ -80,14 +100,6 @@
                                     </div>
                                 </h3>
                             @endif
-                            @if($post->ends_at)
-                                <div class="container-fluid">
-                                    <div class="timer countdown-time bounceIn" data-date="{{ $post->ends_at }}"
-                                         data-timer="1000">
-
-                                    </div>
-                                </div>
-                            @endif
                             <div class="count-wrapper">
                                 <h2>
                                     تا کنون
@@ -95,6 +107,15 @@
                                     نفر در این کمپین شرکت کرده اند.
                                 </h2>
                             </div>
+                            @if($post->ends_at)
+                                <div class="container-fluid">
+                                    {{--                                    <div class="timer countdown-time bounceIn" data-date="{{ $post->ends_at }}"--}}
+                                    <div class="timer countdown-time bounceIn" data-date="2017-09-20 19:45:00"
+                                         data-timer="1000">
+
+                                    </div>
+                                </div>
+                            @endif
                             {{--<div class="btn-wrapper">--}}
                                 {{--<a href="https://telegram.me/Ehdayeozv_bot"--}}
                                    {{--class="btn btn-lg btn-subscribe btn-custom"--}}
@@ -107,22 +128,22 @@
                         <nav class="footbar">
                             <ul class="socials">
                                 <li>
-                                    <a href="" class="social-link facebook">
+                                    <a href="https://www.facebook.com/ehdapage" class="social-link facebook">
                                         <i class="fa fa-facebook" aria-hidden="true"></i>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="" class="social-link telegram">
+                                    <a href="https://telegram.me/ehda_center" class="social-link telegram">
                                         <i class="fa fa-telegram" aria-hidden="true"></i>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="" class="social-link instagram">
+                                    <a href="https://www.instagram.com/ehda.center" class="social-link instagram">
                                         <i class="fa fa-instagram" aria-hidden="true"></i>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="" class="social-link site">
+                                    <a href="https://ehda.center/" class="social-link site">
                                         <i class="fa fa-sitemap" aria-hidden="true"></i>
                                     </a>
                                 </li>
@@ -146,22 +167,22 @@
         <nav class="sidebar">
             <ul class="socials">
                 <li>
-                    <a href="" class="social-link facebook">
+                    <a href="https://www.facebook.com/ehdapage" class="social-link facebook">
                         <i class="fa fa-facebook" aria-hidden="true"></i>
                     </a>
                 </li>
                 <li>
-                    <a href="" class="social-link telegram">
+                    <a href="https://telegram.me/ehda_center" class="social-link telegram">
                         <i class="fa fa-telegram" aria-hidden="true"></i>
                     </a>
                 </li>
                 <li>
-                    <a href="" class="social-link instagram">
+                    <a href="https://www.instagram.com/ehda.center" class="social-link instagram">
                         <i class="fa fa-instagram" aria-hidden="true"></i>
                     </a>
                 </li>
                 <li>
-                    <a href="" class="social-link site">
+                    <a href="https://ehda.center/" class="social-link site">
                         <i class="fa fa-sitemap" aria-hidden="true"></i>
                     </a>
                 </li>
