@@ -1,4 +1,4 @@
-@if(isset($paymentSucceeded) and isset($paymentSucceeded))
+@if(isset($paymentSucceeded))
     <div class="row" id="payment-result">
         @if($paymentSucceeded)
             @php $alertType = 'success' @endphp

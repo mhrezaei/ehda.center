@@ -386,36 +386,38 @@ JS;
             $innerHTMLVars['postFiles'] = $files;
             $orderSessionName = 'product-order-' . $post->hashid;
 
-            if (session()->exists($orderSessionName) and count($files)) {
+            if (session()->exists($orderSessionName)) {
                 $orderId = session($orderSessionName);
                 $order = Order::find($orderId);
                 if ($order->exists) {
                     $innerHTMLVars['trackingNumber'] = $order->tracking_number;
                 }
 
-                foreach ($files as $file) {
-                    $file = UploadServiceProvider::smartFindFile($file['src']);
-                    if ($file->exists) {
-                        $filesIds[] = $file->id;
-                    }
-                }
-
-                $undownloadeds = FileDownloads::where([
-                    'order_id' => $orderId,
-                ])->get();
-                if ($undownloadeds and $undownloadeds->count()) {
-                    $undownloadedIds = $undownloadeds->pluck('file_id')->toArray();
-                    foreach ($files as $key => $file) {
-                        $fileObj = File::findByHashid($file['src']);
-                        if ($fileObj->exists and in_array($fileObj->id, $undownloadedIds) === false) {
-                            unset($files[$key]);
-                        } else {
-                            $files[$key]['hashString'] = $undownloadeds->where('file_id', $fileObj->id)
-                                ->last()
-                                ->hashid;
+                if (count($files)) {
+                    foreach ($files as $file) {
+                        $file = UploadServiceProvider::smartFindFile($file['src']);
+                        if ($file->exists) {
+                            $filesIds[] = $file->id;
                         }
                     }
-                    $innerHTMLVars['files'] = $files;
+
+                    $undownloadeds = FileDownloads::where([
+                        'order_id' => $orderId,
+                    ])->get();
+                    if ($undownloadeds and $undownloadeds->count()) {
+                        $undownloadedIds = $undownloadeds->pluck('file_id')->toArray();
+                        foreach ($files as $key => $file) {
+                            $fileObj = File::findByHashid($file['src']);
+                            if ($fileObj->exists and in_array($fileObj->id, $undownloadedIds) === false) {
+                                unset($files[$key]);
+                            } else {
+                                $files[$key]['hashString'] = $undownloadeds->where('file_id', $fileObj->id)
+                                    ->last()
+                                    ->hashid;
+                            }
+                        }
+                        $innerHTMLVars['files'] = $files;
+                    }
                 }
 
                 if (session()->exists('paymentSucceeded')) {

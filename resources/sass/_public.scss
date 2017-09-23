@@ -2983,6 +2983,38 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
 // Post Template --end
 
+// Font Page --start
+.btn-with-image {
+  position: relative;
+
+  &:after {
+    $width: 40;
+    content: ' ';
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: #{$startSide};
+    left: -#{($width + 5)}px;
+    top: 0;
+    width: #{$width}px;
+    height: 30px;
+  }
+
+  &.btn-with-image-font {
+    &:after {
+      background-image: url(#{$imagesDir}download-link-icon-font.png);
+    }
+  }
+
+  &.btn-with-image-pdf {
+    &:after {
+      background-image: url(#{$imagesDir}download-link-icon-pdf.png);
+    }
+  }
+}
+
+// Font Page --end
+
 // Loading Dialogue --start
 
 // Loading Dialogue --end

@@ -23,9 +23,7 @@
             'categoryColor' => 'green',
         ])
         <div class="container content">
-            <div class="row">
-                {!! $innerHTML !!}
-            </div>
+            {!! $innerHTML !!}
         </div>
     </div>
 @endsection

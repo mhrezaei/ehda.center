@@ -352,7 +352,7 @@ return [
                 'pictures'             => 'تصویر',
                 'films'                => 'فیلم',
                 'photo_donors'         => 'فرشتگان ماندگار',
-                'shop'                 => 'فروشگاه',
+                'font_shop'            => 'فروشگاه فونت',
                 'contact_us'           => 'تماس با ما',
             ],
         ],

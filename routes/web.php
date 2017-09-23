@@ -409,7 +409,7 @@ Route::group(['prefix' => 'payment', 'namespace' => 'Payment'], function () {
     Route::get('/bank-process/{tracking_number}', 'PaymentController@bank_process')->name('bank-process');
 });
 
-Route::get('fonts', 'Front\ProductsController@archive');
+Route::get('fonts', 'Front\ProductsController@fonts_public')->name('fonts');
 
 
 Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Setting', 'Subdomain']], function () {

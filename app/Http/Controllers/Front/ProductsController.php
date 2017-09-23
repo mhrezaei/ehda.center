@@ -28,7 +28,7 @@ class ProductsController extends Controller
     private $productPrefix = 'pd-';
     protected static $statusesCodes = [
         'canceled'  => -1,
-        'on_hold'      => 0,
+        'on_hold'   => 0,
         'succeeded' => 1,
     ];
 
@@ -324,11 +324,10 @@ class ProductsController extends Controller
 
         $orderData = [
             'user_id'        => (auth()->guest()) ? null : user()->id,
-            'code_melli'     => $request->code_melli,
             'name'           => $request->name,
-            'mobile'         => $request->mobile,
-            'phone'          => $request->phone,
             'email'          => $request->email,
+            'mobile'         => $request->mobile,
+            'job'            => $request->job,
             'status'         => self::$statusesCodes['on_hold'], // just created
             'invoice_amount' => $orderPostData['total_price'],
             'payable_amount' => $orderPostData['total_price'],
@@ -357,7 +356,8 @@ class ProductsController extends Controller
 
         return $this->jsonAjaxSaveFeedback($orderId, [
             'success_redirect' => $payment,
-            'redirectTime' => 2000,
+            'redirectTime'     => 2000,
+            'success_message'  => trans('forms.feed.wait')
         ]);
     }
 
@@ -384,7 +384,7 @@ class ProductsController extends Controller
             }
 
             $redirectUrl = $post->direct_url . '#payment-result';
-            $flashData = ['trackingNumber'];
+            $flashData = ['trackingNumber' => $trackingNumber];
             $flashData['product-order-' . $post->hashid] = $order->id;
 
             if (peyment_verify($trackingNumber)) {
@@ -405,7 +405,6 @@ class ProductsController extends Controller
                 $flashData['paymentSucceeded'] = false;
 
                 $order->status = self::$statusesCodes['canceled'];
-
             }
 
             $order->save();
@@ -420,7 +419,7 @@ class ProductsController extends Controller
     {
         $order = Order::where([
             'tracking_number' => $request->tracking_number,
-            'mobile'          => $request->mobile,
+            'email'           => $request->email,
             ['status', '<>', self::$statusesCodes['on_hold']]
         ])->first();
 
@@ -476,6 +475,34 @@ class ProductsController extends Controller
                 ]);
                 break;
         }
+    }
+
+    public function fonts_public()
+    {
+        // Read static post to show in main data
+        $staticPost = PostsServiceProvider::smartFindPost('fonts-daftar-and-studio-static');
+        if (!$staticPost->exists) {
+            return $this->abort('404');
+        }
+        $staticPost->spreadMeta();
+
+        // Read static post to show in top of purchase form
+        $purchaseFormText = PostsServiceProvider::smartFindPost('purchase-form');
+
+        // Read related products posts
+        $fontPosts = [
+            'daftarFont'          => PostsServiceProvider::smartFindPost('font-daftar'),
+            'studioFont'          => PostsServiceProvider::smartFindPost('font-studio'),
+            'daftarAndStudioFont' => PostsServiceProvider::smartFindPost('font-daftar-and-studio')
+        ];
+
+        // Generate view data
+        $viewData = compact(
+            'staticPost',
+            'purchaseFormText',
+            'fontPosts'
+        );
+        return view('front.fonts.daftar-and-studio.main', $viewData);
     }
 
     protected function serveDownload($post, $order)

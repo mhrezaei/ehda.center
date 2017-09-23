@@ -148,8 +148,6 @@ function forms_validate(formData, jqForm, options) {
     }
 
     $('#' + $formId + ' :input').each(function () {
-        console.log($(this));
-
         if (!$(this).prop('disabled')) { // Doesn't validate and submit value of disabled input
             var $val = $(this).val();
             var $name = $(this).attr('name');

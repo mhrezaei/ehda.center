@@ -40,6 +40,7 @@ return [
     'paid'                  => 'پرداخت شده',
     'cart_is_empty'         => 'سبد خرید خالی‌ست',
     'back_to_market'        => 'بازگشت به فروشگاه',
+    'buy_thing'             => 'خرید :thing',
 
     'units' => [
         'kilogram' => 'کیلوگرم',

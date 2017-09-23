@@ -1,7 +1,12 @@
+@if(!isset($purchaseFormIsHidden))
+    @php $purchaseFormIsHidden = true @endphp
+@endif
+
 <div class="row mt20 mb20">
     <div class="col-xs-12 mt15">
         <div class="row">
-            <div class="col-xs-12 col-xs-offset-0" id="purchase-form" style="display: none;">
+            <div class="col-xs-12 col-xs-offset-0" id="purchase-form"
+                 @if($purchaseFormIsHidden) style="display: none;" @endif>
                 <div class="row">
                     <div class="col-xs-12">
                         {!! Form::open([
@@ -33,9 +38,9 @@
                             <div class="col-sm-6 col-xs-12">
                                 <div class="row">
                                     @include('front.forms.input', [
-                                        'name' => 'code_melli',
-                                        'class' => 'form-national',
-                                        'value' => (!auth()->guest() ? user()->code_melli : '')
+                                        'name' => 'email',
+                                        'class' => 'form-email form-required',
+                                        'value' => (!auth()->guest() ? user()->email : '')
                                     ])
                                 </div>
                             </div>
@@ -43,7 +48,7 @@
                                 <div class="row">
                                     @include('front.forms.input', [
                                         'name' => 'mobile',
-                                        'class' => 'form-mobile form-required',
+                                        'class' => 'form-mobile',
                                         'value' => (!auth()->guest() ? user()->mobile : '')
                                     ])
                                 </div>
@@ -51,18 +56,18 @@
                             <div class="col-sm-6 col-xs-12">
                                 <div class="row">
                                     @include('front.forms.input', [
-                                        'name' => 'phone',
-                                        'class' => 'form-phone',
-                                        'value' => (!auth()->guest() ? user()->tel_emergency : '')
+                                        'name' => 'job',
+                                        'value' => (!auth()->guest() ? user()->job : '')
                                     ])
                                 </div>
                             </div>
                             <div class="col-sm-6 col-xs-12">
                                 <div class="row">
                                     @include('front.forms.input', [
-                                        'name' => 'email',
-                                        'class' => 'form-email',
-                                        'value' => (!auth()->guest() ? user()->email : '')
+                                        'name' => 'title',
+                                        'class' => 'form-number',
+                                        'value' => $post->title,
+                                        'disabled' => true,
                                     ])
                                 </div>
                             </div>
