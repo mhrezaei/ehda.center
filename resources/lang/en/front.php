@@ -353,7 +353,9 @@ Your Oragn Donation Card has been registered with :membershipNumber membership n
                 'pictures'             => 'Pictures',
                 'films'                => 'Videos',
                 'photo_donors'         => 'Lasting Angels',
-                'font_shop'            => 'Font Shop',
+                'shop'                 => 'Shop',
+                'fonts'                => 'Fonts',
+                'purchase_tracking'    => 'Purchase Tracking',
                 'contact_us'           => 'Contact Us',
 
             ],

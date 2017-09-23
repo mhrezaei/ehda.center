@@ -377,7 +377,7 @@ class MenuServiceProvider extends ServiceProvider
                             ],
                             [
                                 'title' => trans('front.angels.plural'),
-                                'link' => route_locale('angels.list')
+                                'link'  => route_locale('angels.list')
                             ],
 //                            [
 //                                'title' => trans('front.main-menu.sub_menus.achieve.photo_donors'),
@@ -386,8 +386,17 @@ class MenuServiceProvider extends ServiceProvider
                         ]
                     ],
                     [
-                        'title' => trans('front.main-menu.sub_menus.achieve.font_shop'),
-                        'link'  => route('fonts')
+                        'title'    => trans('front.main-menu.sub_menus.achieve.shop'),
+                        'children' => [
+                            [
+                                'title' => trans('front.main-menu.sub_menus.achieve.fonts'),
+                                'link'  => route('fonts'),
+                            ],
+                            [
+                                'title' => trans('front.main-menu.sub_menus.achieve.purchase_tracking'),
+                                'link'  => route_locale('products.archive'),
+                            ],
+                        ],
                     ],
                     [
                         'title' => trans('front.main-menu.sub_menus.achieve.contact_us'),
