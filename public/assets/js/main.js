@@ -14,7 +14,6 @@ function selectCity() {
     var selectCi = $('#cbRegisterCity');
     selectCi.html(ci);
     var city = window['city'];
-    //console.log(city);
     if (selectSt.val() > 0 && selectSt.val() < 32) {
         city = city[selectSt.val()];
         for (var c in city) {
@@ -68,7 +67,6 @@ $(document).on('click', '.has-child', function (event) {
     if (target.is('a') && target.parent().is('.has-child')) {
         elm = target.parent();
     }
-    console.log(elm)
     if (elm) {
         event.preventDefault();
         elm.addClass('active');
