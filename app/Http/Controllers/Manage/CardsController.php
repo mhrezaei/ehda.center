@@ -805,7 +805,7 @@ class CardsController extends UsersController
 		/*-----------------------------------------------
 		| Security ...
 		*/
-		if(user()->cannot('users-card-holder.delete')) {
+		if(user()->as('admin')->cannot('users-card-holder.delete')) {
 			return $this->jsonFeedback(trans('validation.http.Error403'));
 		}
 
