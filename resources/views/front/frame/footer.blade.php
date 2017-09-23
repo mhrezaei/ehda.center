@@ -6,6 +6,7 @@
         </div>
         <div class="row" style="text-align: center; color: #FFFAAA; font-size: 12px; padding-top: 20px;">
             <a href="https://yasnateam.com" target="_blank" style="color: #FFFAAA;">{{ trans('front.powered_by_yasna') }}</a>
+            <img  src="//sstatic1.histats.com/0.gif?3905330&101" alt="site stats" border="0">
         </div>
     </div>
 </footer>
