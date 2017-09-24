@@ -104,6 +104,7 @@ return [
     'unnamed'                                  => 'Unnamed',
     'download_links'                           => 'Download Links',
     'invoice_payment'                          => 'Invoice Payment',
+    'follow_us_in_social'                      => 'Follow us in social networks',
 
     'tutorials' => [
         'singular' => 'Tutorial',

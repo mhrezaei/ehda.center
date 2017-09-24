@@ -104,6 +104,7 @@ return [
     'unnamed'                                  => 'بی‌نام',
     'download_links'                           => 'لینک‌های دانلود',
     'invoice_payment'                          => 'پرداخت فاکتور',
+    'follow_us_in_social'                      => 'ما را در شبکه‌های اجتماعی دنبال کنید',
 
     'tutorials' => [
         'singular' => 'آموزش',

@@ -319,8 +319,9 @@ JS;
 
         $innerHTML = PostsServiceProvider::showList([
             'type'         => 'angels',
-            'random'       => true,
+//            'random'       => true,
             'max_per_page' => 19,
+            'locale'       => 'fa',
         ]);
 
         return view('front.angles.main', compact('innerHTML'));

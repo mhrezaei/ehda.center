@@ -236,8 +236,9 @@ class MenuServiceProvider extends ServiceProvider
                 'title'    => trans('front.main-menu.items.will'),
                 'children' => [
                     [
-                        'title' => trans('front.main-menu.sub_menus.will.donations'),
-                        'link'  => route_locale('post.single', [
+                        'title'     => trans('front.main-menu.sub_menus.will.donations'),
+                        'condition' => (getLocale() != 'en'),
+                        'link'      => route_locale('post.single', [
                             'identifier' => 'donations',
                             'url'        => urlencode(trans('front.main-menu.sub_menus.will.donations')),
                         ]),
@@ -394,7 +395,6 @@ class MenuServiceProvider extends ServiceProvider
                             ],
                             [
                                 'title' => trans('front.main-menu.sub_menus.achieve.purchase_tracking'),
-                                'link'  => route_locale('products.archive'),
                             ],
                         ],
                     ],

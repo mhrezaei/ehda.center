@@ -12,7 +12,7 @@
     </style>
     <div class="container-fluid">
         @include('front.frame.position_info', [
-            'group' => 'تماس با ما',
+            'group' => trans('front.contact_us'),
             'groupColor' => 'green',
         ])
         <div class="container content">
