@@ -41,7 +41,8 @@ return [
 
          'main' => [
               'salt' => 'khosha-deli-ke-modam-az-pay-nazar-naravad',
-              'length' => 5,
+              'length' => 10,
+              'alphabet' => "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" ,
          ],
 
          'ids' => [
