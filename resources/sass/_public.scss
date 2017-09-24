@@ -607,6 +607,12 @@ header {
 
     .heart-item {
       font-size: 6em; /* change it */
+      @media (max-width: 767px) {
+        font-size: 5em;
+      }
+      @media (max-width: 500px) {
+        font-size: 4em;
+      }
       color: #e80000;
       transform: scale(1, 1);
       transition: all 1s;
