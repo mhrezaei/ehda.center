@@ -68,6 +68,12 @@ return [
         'already_volunteer' => "This person is already volunteer.",
     ],
 
+    'header_title' => [
+        'learn'   => 'to Know',
+        'will'    => 'to Desire',
+        'achieve' => 'to Do',
+    ],
+
     'from_domain'           => "From Domain",
     'without_donation_card' => "Without Organ Donation Card",
     'donation_card'         => "Organ Donation Card",

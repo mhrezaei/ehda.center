@@ -45,7 +45,7 @@ class GalleryController extends Controller
                 $positionInfo['group'] = $postType->header_title;
             }
 
-            $positionInfo['title'] = $postType->title;
+            $positionInfo['title'] = $postType->titleIn(getLocale());
         } else {
             $positionInfo['title'] = $postTypeSlug;
         }

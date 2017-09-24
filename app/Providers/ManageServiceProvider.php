@@ -7,6 +7,7 @@ use App\Models\Posttype;
 use App\Models\Printing;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\ServiceProvider;
 
 
@@ -85,9 +86,16 @@ class ManageServiceProvider extends ServiceProvider
 					}
 				}
 
+
+				$caption = $group->header_title ?: trans('manage.global');
+                if (isset($caption) and $caption) {
+                    if (Lang::has('ehda.header_title.' . $caption)) {
+                        $caption = trans('ehda.header_title.' . $caption);
+                    }
+                }
 				array_push($array, [
 					'icon'       => "dot-circle-o",
-					'caption'    => $group->header_title ? $group->header_title : trans('manage.global'),
+					'caption'    => $caption,
 					'link'       => "asd",
 					'sub_menus'  => $sub_menus,
 					'permission' => sizeof($sub_menus) ? '' : 'dev',
