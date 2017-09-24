@@ -1,17 +1,23 @@
 @if(!isset($groupColor) or !$groupColor)
-    {{ null, $groupColor = 'darkGray' }}
+    @php $groupColor = 'darkGray' @endphp
 @endif
 @if(!isset($categoryColor) or !$categoryColor)
-    {{ null, $categoryColor = 'darkGray' }}
+    @php $categoryColor = 'darkGray' @endphp
 @endif
 @if(!isset($titleColor) or !$titleColor)
-    {{ null, $titleColor = 'darkGray' }}
+    @php $titleColor = 'darkGray' @endphp
 @endif
 @if(!isset($descriptionColor) or !$descriptionColor)
-    {{ null, $descriptionColor = 'darkGray' }}
+    @php $descriptionColor = 'darkGray' @endphp
 @endif
 
+
 @if((isset($group) and $group) or (isset($title) and $title) or (isset($description) and $description))
+    @if (isset($group) and  $group)
+        @if(\Illuminate\Support\Facades\Lang::has('ehda.header_title.' . $group))
+            @php $group = trans('ehda.header_title.' . $group) @endphp
+        @endif
+    @endif
 
     <div class="row mb20">
 

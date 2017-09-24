@@ -326,11 +326,11 @@ function echoDate($date, $foramt = 'default', $language = 'auto', $pd = false)
             break;
 
         case 'en':
-            $date = $date->format($foramt);
+            $date = Carbon::parse($date)->format($foramt);
             break;
 
         default:
-            $date = $date->format($foramt);
+            $date = Carbon::parse($date)->format($foramt);
     }
 
     if ($pd) {

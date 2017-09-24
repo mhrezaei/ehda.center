@@ -68,6 +68,12 @@ return [
         'already_volunteer' => "ایشان پرونده‌ی سفیری اهدای عضو دارد.",
     ],
 
+    'header_title' => [
+        'learn'   => 'دانستن',
+        'will'    => 'خواستن',
+        'achieve' => 'توانستن',
+    ],
+
     'from_domain'           => "از دامنه‌ی",
     'without_donation_card' => "بدون کارت اهدا",
     'donation_card'         => "کارت اهدای عضو",

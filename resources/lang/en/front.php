@@ -104,6 +104,7 @@ return [
     'unnamed'                                  => 'Unnamed',
     'download_links'                           => 'Download Links',
     'invoice_payment'                          => 'Invoice Payment',
+    'follow_us_in_social'                      => 'Follow us in social networks',
 
     'tutorials' => [
         'singular' => 'Tutorial',
@@ -354,6 +355,8 @@ Your Oragn Donation Card has been registered with :membershipNumber membership n
                 'films'                => 'Videos',
                 'photo_donors'         => 'Lasting Angels',
                 'shop'                 => 'Shop',
+                'fonts'                => 'Fonts',
+                'purchase_tracking'    => 'Purchase Tracking',
                 'contact_us'           => 'Contact Us',
 
             ],

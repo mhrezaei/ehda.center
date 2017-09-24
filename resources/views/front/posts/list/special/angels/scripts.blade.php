@@ -1,4 +1,6 @@
 @section('endOfBody')
+    @php
+            @endphp
     @foreach($posts as $post)
         @php
             $post->spreadMeta();

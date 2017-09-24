@@ -34,13 +34,11 @@ class PurchaseProductRequest extends FormRequest
         $post = Post::find($input['post_id']);
 
         return [
-            'post_id'    => 'exists:posts,id',
-            'code_melli' => 'code_melli',
-            'name'       => 'persian:60',
-            'mobile'     => 'required|phone:mobile',
-            'phone'      => 'phone',
-            'email'      => 'email',
-            'price'      => 'required|numeric|min:' . ($post->exists ? $post->price : 0)
+            'post_id' => 'exists:posts,id',
+            'name'    => 'persian:60',
+            'email'   => 'required|email',
+            'mobile'  => 'phone:mobile',
+            'price'   => 'required|numeric|min:' . ($post->exists ? $post->price : 0)
         ];
     }
 
@@ -51,9 +49,7 @@ class PurchaseProductRequest extends FormRequest
         $purified = ValidationServiceProvider::purifier($input, [
             'post_id'    => 'dehash',
             'name'       => 'pd',
-            'code_melli' => 'ed',
             'mobile'     => 'ed',
-            'phone'      => 'ed',
         ]);
 
         return $purified;

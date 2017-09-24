@@ -33,8 +33,8 @@
                     <div class="col-xs-12">
                         <div class="row">
                             @include('front.forms.input', [
-                                'name' => 'mobile',
-                                'class' => 'form-mobile form-required'
+                                'name' => 'email',
+                                'class' => 'form-email form-required'
                             ])
                         </div>
                     </div>

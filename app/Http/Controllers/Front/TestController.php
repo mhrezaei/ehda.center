@@ -52,8 +52,23 @@ class TestController extends Controller
 
     public function index()
     {
-        $p = UploadServiceProvider::guessTypeFromMimeType('application/pdf');
-        dd($p, __FILE__ . " - " . __LINE__);
+        $post = Post::find('2696');
+        $posts = Post::limit(1000)
+//            ->where('type', 'angels')
+//            ->where('id', 2696)
+            ->orderBy('id', 'desc')
+            ->get();
+        foreach ($posts as $post) {
+            $meta = $post->meta();
+            if ($meta and is_array($meta)) {
+                if(isset($meta['featured_image'])) {
+                    unset($meta['featured_image']);
+                }
+                $post->meta = json_encode($meta);
+            }
+            $post->save();
+        }
+        dd($posts, __FILE__ . " - " . __LINE__);
     }
 
     public function states()
@@ -256,8 +271,7 @@ class TestController extends Controller
         $states = State::where('parent_id', 0)->get();
         $all_users = User::count();
 
-        foreach($states as $state)
-        {
+        foreach ($states as $state) {
             $users = User::where('home_province', $state->id)->count();
             $users = round(($users / $all_users) * 100, 2);
             echo $state->title . ' - ' . $users . ' درصد <br>';
@@ -284,12 +298,9 @@ class TestController extends Controller
     {
         $tracking = Input::get('tracking');
         $transaction = peyment_verify($tracking);
-        if ($transaction)
-        {
+        if ($transaction) {
             echo 'true';
-        }
-        else
-        {
+        } else {
             echo 'false';
         }
     }

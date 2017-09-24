@@ -65,6 +65,7 @@ function showStar(circleIndex, name, imgSrc, donation_date) {
         left: ((circleParent.offset().left + parseInt(circle.attr('cx'))) * circleParent.outerWidth() / 873.296875) - (cardWidth / 2),
         top: circleParent.offset().top + parseInt(circle.attr('cy')) - (cardHeight / 2) - $('.stars-bg').offset().top
     });
+    console.log(userCard)
 }
 
 var angles_slide;
@@ -88,9 +89,9 @@ function random_angles(angels) {
     var circle = $('.circle' + circleIndex);
     circle.addClass('active');
     showStar(circleIndex, angel.name, angel.picture_url, angel.donation_date);
-    // angles_slide = setTimeout(function () {
-    //     random_angles(angels);
-    // }, 3000);
+    angles_slide = setTimeout(function () {
+        random_angles(angels);
+    }, 3000);
 }
 
 function stopPlayingAngels() {

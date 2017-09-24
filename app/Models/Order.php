@@ -22,6 +22,9 @@ class Order extends Model
         0  => 'on_hold',
         1  => 'succeeded',
     ];
+    public static $meta_fields = [
+        'job',
+    ];
 
     public function storePosts($postIds, $attributes = [])
     {

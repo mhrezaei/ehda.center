@@ -197,7 +197,6 @@ class PostsServiceProvider extends ServiceProvider
             $viewFolder = "front.posts.list.$template";
         }
 
-
         return self::generateView($viewFolder . '.main', compact(
                 'posts',
                 'viewFolder',

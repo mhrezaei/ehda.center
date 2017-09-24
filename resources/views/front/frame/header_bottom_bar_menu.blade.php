@@ -3,7 +3,7 @@
 
 @include('front.frame.register_card_btn_top')
 <span class="text-blue f30 mt15 toggle-menu pull-end"><i class="fa fa-bars"></i></span>
-<ul class="list-inline" id="menu-tree" >
+<ul class="list-inline" id="menu-tree">
     @if($menu and is_array($menu) and count($menu))
         @foreach($menu as $group)
             <li class="has-child">
@@ -15,26 +15,28 @@
                 )
                     <ul class="bg-white text-darkGray-deep mega-menu col-xs-12 border-top-3 border-top-green">
                         @foreach($group['children'] as $postType)
-                            <ul class="list-unstyled">
-                                <h3>
-                                    <a @isset($postType['link']) href="{{ $postType['link'] }}" @endisset>
-                                        {{ $postType['title'] }}
-                                    </a>
-                                </h3>
-                                @if(isset($postType['children']) and
-                                    $postType['children'] and
-                                    is_array($postType['children']) and
-                                    count($postType['children'])
-                                )
-                                    @foreach($postType['children'] as $category)
-                                        <li>
-                                            <a href="{{ $category['link'] or '#' }}">
-                                                {{ $category['title'] }}
-                                            </a>
-                                        </li>
-                                    @endforeach
-                                @endif
-                            </ul>
+                            @if(!isset($postType['condition']) or $postType['condition'])
+                                <ul class="list-unstyled">
+                                    <h3>
+                                        <a @isset($postType['link']) href="{{ $postType['link'] }}" @endisset>
+                                            {{ $postType['title'] }}
+                                        </a>
+                                    </h3>
+                                    @if(isset($postType['children']) and
+                                        $postType['children'] and
+                                        is_array($postType['children']) and
+                                        count($postType['children'])
+                                    )
+                                        @foreach($postType['children'] as $category)
+                                            <li>
+                                                <a href="{{ $category['link'] or '#' }}">
+                                                    {{ $category['title'] }}
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    @endif
+                                </ul>
+                            @endif
                         @endforeach
                     </ul>
                 @endif

@@ -1,7 +1,7 @@
 <div class="col-md-6 col-sm-12">
     <p>
     </p>
-    {{ null, $address = setting()->ask('address')->in(getLocale())->gain() }}
+    @php $address = setting()->ask('address')->in(getLocale())->gain() @endphp
     @if($address)
         <h5>{{ trans('validation.attributes.address') }}:</h5>
         {{ $address }}
@@ -9,10 +9,10 @@
     <p></p>
     <p>
     </p>
-    {{ null, $tels = setting()->ask('telephone')->gain() }}
+    @php $tels = setting()->ask('telephone')->gain() @endphp
     @if($tels)
         @if(!is_array($tels))
-            {{ null, $tels = [$tels ] }}
+            @php $tels = [$tels] @endphp
         @endif
         <h5>
             {{ trans('validation.attributes.tel') }}:
@@ -46,7 +46,7 @@
     <p></p>
     <p>
     <ul class="social-links list-inline">
-        <h5>در شبکه&zwnj;های اجتماعی ما را دنبال کنید</h5>
+        <h5>{{ trans('front.follow_us_in_social') }}</h5>
         {{ null, $telegram = setting()->ask('telegram_link')->gain() }}
         @if($telegram)
             <li><a href="{{ $telegram }}" target="_blank"><i class="icon icon-telegram dark"></i></a></li>

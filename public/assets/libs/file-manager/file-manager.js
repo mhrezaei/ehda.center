@@ -29,7 +29,6 @@ jQuery(function ($) {
     let defaultFolder = $(".breadcrumb-folders .folder").first();
     if (parent.window.fileManagerModalOptions && parent.window.fileManagerModalOptions.defaultFolder) {
         let defaultFolderParts = parent.window.fileManagerModalOptions.defaultFolder.split('___');
-        console.log(defaultFolderParts)
         if ($.isArray(defaultFolderParts) && (defaultFolderParts.length == 2)) {
             let tmpDefaultFolder =
                 $('.breadcrumb-folders .folder[data-instance="' + defaultFolderParts[0] + '"][data-key="' + defaultFolderParts[1] + '"]');
