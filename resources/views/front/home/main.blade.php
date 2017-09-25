@@ -9,7 +9,6 @@
 @include('front.frame.open_graph_meta_tags')
 
 @section('content')
-    {!! Html::script ('assets/libs/owl.carousel/js/owl.carousel.min.js') !!}
     <div class="container-fluid">
         @include('front.home.main_carousel')
         @include('front.home.pending_organ_transplant')

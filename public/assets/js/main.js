@@ -44,6 +44,48 @@ function selectEditCity(id) {
     }
 }
 
+function moveHeartBeat() {
+    var pointsArray = $('.heart-line polyline').attr('points').split(" ");
+    var xArray = [];
+    var yArray = [];
+    var arrayLength = pointsArray.length;
+    var points = "";
+    var x = [];
+
+    heartBeatInit();
+    heartBeatIncrease();
+
+    function heartBeatInit() {
+        xArray = [];
+        for (i = 0; i < arrayLength; i++) {
+            var cordinate = pointsArray[i].split(",");
+            xArray.push(eval(cordinate[0]));
+            yArray.push(eval(cordinate[1]));
+        }
+        for (i = 0; i < arrayLength - 1; i++) {
+            xArray[i] = xArray[i] - 110.473;
+        }
+    }
+
+    function heartBeatIncrease() {
+
+        for (i = 1; i < arrayLength - 1; i++) {
+            xArray[i] = xArray[i] + 1;
+        }
+
+        if (xArray[2] >= 150) {
+            heartBeatInit();
+        }
+
+        // Updating SVG tag
+        for (i = 0; i < arrayLength; i++) {
+            points = points + " " + xArray[i] + "," + yArray[i];
+        }
+        $('.heart-line polyline').attr('points', points);
+        points = "";
+        setTimeout(heartBeatIncrease, 10);
+    }
+}
 
 var openMenu = null;
 $(document).on('click', function (event) {
@@ -60,7 +102,7 @@ $(document).on('click', '.has-child', function (event) {
     if (target.is('.has-child')) {
         elm = target;
     } else {
-        if(target.closest('a').length) {
+        if (target.closest('a').length) {
             target = target.closest('a');
         }
     }
@@ -87,6 +129,8 @@ $(document).on('click', '.has-child', function (event) {
 
 
 $(document).ready(function () {
+    moveHeartBeat();
+
     $('[data-toggle="tooltip"]').tooltip();
     $(window).scroll(function () {
         var winTop = $(window).scrollTop();
@@ -147,10 +191,10 @@ $(document).ready(function () {
     $('.toggle-menu').click(function () {
         let menuEl = $('#menu-tree');
 
-        if($('.main-menu')[0].style.height != 'auto') {
+        if ($('.main-menu')[0].style.height != 'auto') {
             $('.main-menu').css('height', 'auto');
         }
-        
+
         if (menuEl.is(':visible')) {
             menuEl.slideUp();
         } else {
