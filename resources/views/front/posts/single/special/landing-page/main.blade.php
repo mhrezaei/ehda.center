@@ -102,9 +102,13 @@
                             @endif
                             <div class="count-wrapper">
                                 <h2>
-                                    تا کنون
-                                    <strong class="s_counter" style=" color: #5A9B20;"></strong>
-                                    نفر در این کمپین شرکت کرده اند.
+                                    تاکنون
+                                    <strong class="s_counter_total" style=" color: #5A9B20;"></strong>
+                                    نفر در این کمپین شرکت کرده‌اند.
+                                </h2>
+                                <h2>
+                                    امروز:
+                                    <strong class="s_counter_today" style=" color: #5A9B20;"></strong>
                                 </h2>
                             </div>
                             @if($post->ends_at)

@@ -10,7 +10,7 @@
 {{--</a>--}}
 
 <a class="ehda-card-heart" href="{{ url_locale('organ_donation_card') }}">
-  <span class="ehda-card-heart heart-container" title="{{ trans('front.organ_donation_card_section.singular') }}">
+  <span class="heart-container" title="{{ trans('front.organ_donation_card_section.singular') }}">
     <span class="heart-item fa fa-heart">
 
            <svg class="heart-line" version="1.0" xmlns="http://www.w3.org/2000/svg"

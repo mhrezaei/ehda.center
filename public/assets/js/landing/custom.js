@@ -139,6 +139,7 @@ jQuery(function ($) {
     // Counter
     let tok = $('meta[name=csrf-token]').attr('content');
     let counter = 0;
+    let counter2 = 0;
 
     function number_format(number, decimals, decPoint, thousandsSep) {
         number = (number + '').replace(/[^0-9+\-Ee.]/g, '')
@@ -164,16 +165,15 @@ jQuery(function ($) {
         return s.join(dec)
     }
 
-    function changeCounter(newCounter) {
+    function changeCounter(targetEl, oldCounter, newCounter) {
         if (counter != newCounter) {
-            let current = counter;
+            let current = oldCounter;
             let target = newCounter;
-            countUp(current, target);
-            counter = newCounter;
+            countUp(targetEl, current, target);
         }
     }
 
-    function countUp(current, target) {
+    function countUp(targetEl, current, target) {
         let g = 100;
         let remained = target - current;
 
@@ -191,15 +191,16 @@ jQuery(function ($) {
             }
 
             current += step;
-            $('.s_counter').html(number_format(current));
+            targetEl.html(number_format(current));
 
             setTimeout(function () {
-                countUp(current, target) ;
+                countUp(targetEl, current, target);
             }, 5);
         }
     }
 
     updateCount();
+
     function updateCount() {
         $.ajax({
             type: "POST",
@@ -209,7 +210,13 @@ jQuery(function ($) {
                 _token: tok,
             },
             success: function (rs) {
-                changeCounter(rs.count);
+                changeCounter($('.s_counter_total'), counter, rs.total_count);
+                counter = rs.total_count;
+                $('.s_counter_total').html(number_format(counter));
+                changeCounter($('.s_counter_today'), counter2, rs.count);
+                counter2 = rs.count;
+                $('.s_counter_today').html(number_format(counter2));
+                
                 setTimeout(updateCount, 5000);
             }
         });

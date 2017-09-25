@@ -9,6 +9,7 @@
     .post-text img,
     .post-cover {
         max-width: 80% !important;
+        height: auto;
     }
 </style>
 
