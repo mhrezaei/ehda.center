@@ -423,7 +423,10 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
         ->where('identifier', '^' . config('prefix.routes.post.short') . '(\w|)+$');
 
     // organ donation card
-    Route::get('/card/show_card/{type}/{user_hash_id}/{mode?}', 'OrganDonationCardController@index');
+    Route::get('/card/show_card/{type}/{user_hash_id}/{mode?}/{hash_type?}', 'OrganDonationCardController@index');
+
+    // organ donation card process for set server
+    Route::get('/card/process/{type}/{user_hash_id}/{mode?}/{hash_type?}', 'OrganDonationCardController@serverProcess');
 
     // events custom landing page
     Route::get('/ramazan', 'LandingPageController@ramazan');

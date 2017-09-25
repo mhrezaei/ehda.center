@@ -225,8 +225,49 @@ trait EhdaUserTrait
 			$mode = 'show';
 		}
 
-		return url('/card/show_card/' . $type . '/' . hashid_encrypt($this->id, 'ehda_card_' . $type) . '/' . $mode);
+		return url('/card/process/' . $type . '/' . hashid_encrypt($this->id, 'ehda_card_' . $type) . '/' . $mode);
+//		return url('/card/' . $this->setGenerateCardServer() . '/' . $type . '/' . hashid_encrypt($this->id, 'ehda_card_' . $type) . '/' . $mode);
 
+	}
+
+    public function setGenerateCardServer()
+    {
+        $last_id_number = substr($this->id, -1);
+
+        $internal_url = false;
+        $external_server_url = true;
+
+        // show and download card
+        switch ($last_id_number)
+        {
+            case 0:
+                return $external_server_url;
+                break;
+            case 1:
+                return $external_server_url;
+                break;
+            case 2:
+                return $external_server_url;
+                break;
+            default:
+                return $internal_url;
+        }
+	}
+
+    public function generateCardData()
+    {
+        return [
+            'id' => $this->id,
+            'card_no' => $this->card_no,
+            'name_first' => $this->name_first,
+            'name_last' => $this->name_last,
+            'name_father' => $this->name_father,
+            'birth_date' => $this->birth_date,
+            'card_registered_at' => $this->card_registered_at,
+            'code_melli' => $this->code_melli,
+            'mobile' => $this->mobile,
+            'email' => $this->email,
+        ];
 	}
 
     public function api_tokens()

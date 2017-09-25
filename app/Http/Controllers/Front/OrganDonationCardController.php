@@ -9,10 +9,11 @@ use App\Http\Controllers\Controller;
 
 class OrganDonationCardController extends Controller
 {
-    public function index($type, $user_hash_id, $mode = null)
+    public function index($type, $user_hash_id, $mode = null, $hash_type = 'id')
     {
         $card_type = ['mini', 'single', 'social', 'full'];
         $card_mode = ['show', 'download', 'print'];
+        $hash_types = ['id', 'st'];
 
         if (!in_array($type, $card_type))
         {
@@ -24,14 +25,36 @@ class OrganDonationCardController extends Controller
             $mode = 'show';
         }
 
-        $user = User::findByHashid($user_hash_id, 'ehda_card_' . $type);
-        if (!$user or !$user->is_an('card-holder'))
+        if (!in_array($hash_type, $hash_types))
+        {
+            $hash_type = 'id';
+        }
+
+
+        if ($hash_type == 'id')
+        {
+            $user = User::findByHashid($user_hash_id, 'ehda_card_' . $type);
+            if (!$user or !$user->is_an('card-holder'))
+            {
+                return view('errors.404');
+            }
+        }
+        elseif ($hash_type == 'st')
+        {
+            $user = decrypt($user_hash_id);
+        }
+        else
         {
             return view('errors.404');
         }
 
+
+
         if ($mode == 'print')
         {
+            if ($hash_type == 'st')
+                $user = json_decode(json_encode($user), false);
+
             // print card
             return view('front.members.print_my_card.0', compact('type', 'user', 'mode'));
         }
@@ -58,11 +81,44 @@ class OrganDonationCardController extends Controller
         }
     }
 
+    public function serverProcess($type, $user_hash_id, $mode = null)
+    {
+        $card_type = ['mini', 'single', 'social', 'full'];
+        $card_mode = ['show', 'download', 'print'];
+        $external_server = 'https://s2.ehda.center/card/show_card/';
+
+        if (!in_array($type, $card_type))
+        {
+            $type = 'mini';
+        }
+
+        if (!in_array($mode, $card_mode))
+        {
+            $mode = 'show';
+        }
+
+        $user = User::findByHashid($user_hash_id, 'ehda_card_' . $type);
+        if (!$user or !$user->is_an('card-holder'))
+        {
+            return view('errors.404');
+        }
+
+        if (setting('external_server')->gain() and $user->setGenerateCardServer())
+        {
+            $url = $external_server . $type . '/' . encrypt($user->generateCardData()) . '/' . $mode . '/' . 'st';
+            return redirect($url);
+        }
+        else
+        {
+            return $this->index($type, $user_hash_id, $mode);
+        }
+    }
+
     public function card_mini($user, $mode)
     {
         ini_set("error_reporting","E_ALL & ~E_NOTICE & ~E_STRICT");
 
-        $user = $user->toArray();
+        $user = $this->preUser($user);
 
         // load persian font
         $font = $this->getPersianFont();
@@ -121,7 +177,7 @@ class OrganDonationCardController extends Controller
     {
         ini_set("error_reporting","E_ALL & ~E_NOTICE & ~E_STRICT");
 
-        $user = $user->toArray();
+        $user = $this->preUser($user);
 
         // load persian font
         $font = $this->getPersianFont();
@@ -180,7 +236,7 @@ class OrganDonationCardController extends Controller
     {
         ini_set("error_reporting","E_ALL & ~E_NOTICE & ~E_STRICT");
 
-        $user = $user->toArray();
+        $user = $this->preUser($user);
 
         // load persian font
         $font = $this->getPersianFont();
@@ -227,7 +283,7 @@ class OrganDonationCardController extends Controller
     {
         ini_set("error_reporting","E_ALL & ~E_NOTICE & ~E_STRICT");
 
-        $user = $user->toArray();
+        $user = $this->preUser($user);
 
         // load persian font
         $font = $this->getPersianFont();
@@ -270,7 +326,7 @@ class OrganDonationCardController extends Controller
         $email_position = imagettfbbox(40, 0, $font, $user['email']);
         $email_position = $email_position[2] - $email_position[0];
 
-        $mobile_position = imagettfbbox(40, 0, $enFont, $user['tel_mobile']);
+        $mobile_position = imagettfbbox(40, 0, $enFont, $user['mobile']);
         $mobile_position = $mobile_position[2] - $mobile_position[0];
 
         // Create some colors
@@ -283,7 +339,7 @@ class OrganDonationCardController extends Controller
         imagettftext($img, $font_size, 0, (850 - $national_position), 720, $black, $font, $user['code_melli']);
         imagettftext($img, $font_size, 0, (850 - $birth_date_position), 772, $black, $font, $birth_date);
         imagettftext($img, $font_size, 0, (850 - $register_date_position), 822, $black, $font, $register_date);
-        imagettftext($img, 40, 0, (1850 - $mobile_position), 2115, $black, $font, $user['tel_mobile']);
+        imagettftext($img, 40, 0, (1850 - $mobile_position), 2115, $black, $font, $user['mobile']);
         imagettftext($img, 40, 0, (1850 - $email_position), 2190, $black, $enFont, $user['email']);
 
         // Using imagepng() results in clearer text compared with imagejpeg()
@@ -327,5 +383,17 @@ class OrganDonationCardController extends Controller
     public function getEnglishFont()
     {
         return public_path('assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'php' . DIRECTORY_SEPARATOR . 'calibri.ttf');
+    }
+
+    public function preUser($user)
+    {
+        if (is_object($user))
+        {
+            return $user->toArray();
+        }
+        else
+        {
+            return $user;
+        }
     }
 }
