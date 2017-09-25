@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Front;
 use App\Models\User;
 use App\Providers\PostsServiceProvider;
 use App\Traits\ManageControllerTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -95,18 +96,23 @@ class LandingPageController extends Controller
             return $this->abort('404', true);
         }
 
-//        $count = User::where([
-//            ['card_registered_at', '>=', $post->starts_at],
-//            ['card_registered_at', '<=', $post->ends_at],
-//        ])->count();
+        $post->spreadMeta();
+        $start = Carbon::parse($post->starts_at)->toDateString() . ' ' . $post->start_time;
+        $end = Carbon::parse($post->ends_at)->toDateString() . ' ' . $post->end_time;
 
         $count = User::where([
+            ['card_registered_at', '>=', $start],
+            ['card_registered_at', '<=', $end],
+        ])->count();
+
+        $total_count = User::where([
             ['card_registered_at', '>=', '2017-09-20 19:45:00'],
 //            ['card_registered_at', '<=', '2017-09-20 22:00:00'],
         ])->count();
 
         return response()->json([
             'count' => $count,
+            'total_count' => $total_count,
         ]);
     }
 }
