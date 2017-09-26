@@ -1,4 +1,4 @@
-<a href="{{ url_locale('organ_donation_card') }}" class="top-menu-btn ehda-volunteer-menu">
+<a href="{{ route_locale('volunteer.register.step.1.get') }}" class="top-menu-btn ehda-volunteer-menu">
     <span>{{ trans('front.volunteer_section.partial.part1') }}</span>
     {{ trans('front.volunteer_section.partial.part2') }}
     {{ trans('front.volunteer_section.partial.part3') }}
