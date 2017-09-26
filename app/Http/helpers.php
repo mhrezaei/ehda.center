@@ -818,3 +818,9 @@ function peyment_verify($tracking)
         return false;
     }
 }
+
+function landingPageTimer($post)
+{
+    $post->spreadMeta();
+    return Carbon::parse($post->starts_at)->toDateString() . ' ' . $post->start_time;
+}

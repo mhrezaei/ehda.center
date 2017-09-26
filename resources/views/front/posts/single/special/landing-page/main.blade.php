@@ -113,8 +113,8 @@
                             </div>
                             @if($post->ends_at)
                                 <div class="container-fluid">
-                                    {{--                                    <div class="timer countdown-time bounceIn" data-date="{{ $post->ends_at }}"--}}
-                                    <div class="timer countdown-time bounceIn" data-date="2017-09-20 19:45:00"
+                                        <div class="timer countdown-time bounceIn" data-date="{{ landingPageTimer($post) }}"
+                                    {{--<div class="timer countdown-time bounceIn" data-date="2017-09-20 19:45:00"--}}
                                          data-timer="1000">
 
                                     </div>
