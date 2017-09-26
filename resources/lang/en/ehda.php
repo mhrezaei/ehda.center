@@ -80,4 +80,5 @@ return [
     'donation_cards'        => "Organ Donation Cards",
     'newsletter'            => "Organ Donation NGO Mail Newsletter",
     'newsletter_membership' => "Join to Organ Donation NGO Mail Newsletter",
+    'get_fonts_catalog'     => 'Get Fonts Catalog',
 ];
