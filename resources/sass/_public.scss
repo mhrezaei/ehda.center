@@ -303,6 +303,11 @@ header {
 
       &.ehda-volunteer-menu {
         @extend .bg-blue;
+        &:hover {
+          svg {
+            fill: map_get($colors, 'blue');
+          }
+        }
       }
 
       &:last-of-type {
