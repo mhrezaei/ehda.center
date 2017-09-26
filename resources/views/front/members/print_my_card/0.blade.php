@@ -19,8 +19,8 @@
     <title>{{ trans('forms.button.card_print') }}</title>
 </head>
 <body onload="window.print();">
-
-<img src="{{ url('/card/show_card/' . $type . '/' . hashid_encrypt($user->id, 'ehda_card_' . $type)) }}" alt="{{ trans('forms.button.card_print') }}">
+{{--@TODO: server address should set dynamic --}}
+<img src="{{ 'https://ehda.center/card/show_card/' . $type . '/' . hashid_encrypt($user->id, 'ehda_card_' . $type) }}" alt="{{ trans('forms.button.card_print') }}">
 
 </body>
 </html>

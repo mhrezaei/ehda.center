@@ -243,10 +243,13 @@ trait EhdaUserTrait
             case 0:
                 return $external_server_url;
                 break;
-            case 1:
+            case 2:
                 return $external_server_url;
                 break;
-            case 2:
+            case 6:
+                return $external_server_url;
+                break;
+            case 8:
                 return $external_server_url;
                 break;
             default:
