@@ -119,6 +119,11 @@ return [
         'go_section'               => 'Go to Organ Donation Volunteers Section',
         'register'                 => 'Register Volunteer',
         'register_success'         => 'Volunteer registered successfully.',
+        'partial'                  => [
+            'part1' => 'Organ',
+            'part2' => 'Donation',
+            'part3' => 'Volunteer',
+        ],
         'special'                  => [
             'singular' => 'Celebrity',
             'plural'   => 'Celebrities',
