@@ -13,7 +13,7 @@
 @include('front.frame.open_graph_meta_tags')
 
 @if(!isset($positionInfo))
-    {{ null, $positionInfo = [] }}
+    @php $positionInfo = [] @endphp
 @endif
 
 @section('content')

@@ -457,7 +457,7 @@ JS;
             $categories = $post->categories;
             $positionInfo = [
                 'group'    => $post->header_title ?: $postType->header_title,
-                'category' => $post->category_title ?: $postType->title,
+                'category' => $post->category_title ?: $postType->titleIn(getLocale()),
                 'title'    => $categories->first() ? $categories->first()->title : '',
             ];
 
