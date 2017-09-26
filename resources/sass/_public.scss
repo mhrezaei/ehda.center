@@ -262,8 +262,8 @@ header {
       position: relative;
       z-index: 1;
     }
-    .ehda-card-menu {
-      @extend .bg-green, .pull-end;
+    .top-menu-btn {
+      @extend .pull-end;
       color: #fff;
       border-radius: 5px;
       padding: 5px 10px;
@@ -275,6 +275,7 @@ header {
       min-height: 53px;
       display: inline-block;
       margin-top: 12px;
+      margin-#{$startSide}: 10px;
       &, & svg {
         transition: all 0.2s 0s;
       }
@@ -294,6 +295,18 @@ header {
         svg {
           width: 17px;
         }
+      }
+
+      &.ehda-card-menu {
+        @extend .bg-green;
+      }
+
+      &.ehda-volunteer-menu {
+        @extend .bg-blue;
+      }
+
+      &:last-of-type {
+        margin-#{$startSide}: 0;
       }
     }
     li {
