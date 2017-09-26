@@ -101,15 +101,15 @@
                                 </h3>
                             @endif
                             <div class="count-wrapper">
-                                <h2>
-                                    تاکنون
-                                    <strong class="s_counter_total" style=" color: #5A9B20;"></strong>
-                                    نفر در این کمپین شرکت کرده‌اند.
-                                </h2>
-                                <h2>
-                                    امروز:
+                                <h2 style="font-size: 2.5em;">
+                                    {{ $post->title2 }}:
                                     <strong class="s_counter_today" style=" color: #5A9B20;"></strong>
                                 </h2>
+                                <h3>
+                                    از ابتدای برنامه
+                                    <strong class="s_counter_total" style=" color: #5A9B20;"></strong>
+                                    نفر در این کمپین شرکت کرده‌اند.
+                                </h3>
                             </div>
                             @if($post->ends_at)
                                 <div class="container-fluid">
