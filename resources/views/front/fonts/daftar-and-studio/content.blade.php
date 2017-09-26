@@ -52,7 +52,7 @@
                             @isset($guidanceFile)
                                 @include('front.fonts.daftar-and-studio.button-with-image', [
                                     'buttonOptions' => [
-                                        'buttonText' => trans('validation.attributes.hint'),
+                                        'buttonText' => trans('ehda.get_fonts_catalog'),
                                         'buttonColor' => 'info',
                                         'buttonIcon' => 'pdf',
                                         'buttonLink' => route('file.download', ['hashid' => $guidanceFileTmp->hashid])
