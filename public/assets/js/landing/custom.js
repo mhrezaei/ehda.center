@@ -132,7 +132,7 @@ jQuery(function ($) {
         $('.textDiv_Seconds span').text(sec); // not working !!!!
 
 
-        setTimeout(translate, 500);
+        //setTimeout(translate, 500);
     }
 
 
