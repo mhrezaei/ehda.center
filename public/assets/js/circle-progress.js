@@ -1,3 +1,5 @@
+var firstResizeTriggered = false;
+
 !function (i) {
     function t(i) {
         this.init(i)
@@ -145,7 +147,7 @@ function count(elm, mins, down) {
     var currentTime = Date.parse(new Date());
     var delta = ((currentTime - baseTime) / 1000) % (mins * 60);
 
-    if(isDefined(down) && down) {
+    if (isDefined(down) && down) {
         delta = (mins * 60) - delta;
     }
 
@@ -169,18 +171,22 @@ function count(elm, mins, down) {
         startAngle: 4.7
         // reverse: true
     });
-    // $(window).trigger('resize');
+
+    if (!firstResizeTriggered) {
+        $(window).trigger('resize');
+        firstResizeTriggered = true;
+    }
 }
 
 $(document).ready(function () {
-
-    var timers = new Object;
     if ($('.timer').length) {
         $('.timer').each(function (index) {
             eval("timer" + index + " = " + setInterval(function () {
                 var elem = $($('.timer')[index]);
-                    count(elem, parseInt($($('.timer')[index]).attr('data-minutes')), elem.hasClass('count-down'))
-                }, 1000));
+                count(elem, parseInt($($('.timer')[index]).attr('data-minutes')), elem.hasClass('count-down'))
+            }, 1000));
         });
     }
+
+    $(window).resize();
 });

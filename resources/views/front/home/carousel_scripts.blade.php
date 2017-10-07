@@ -3,7 +3,7 @@
     <script>
         $(document).ready(function () {
             $(".home-slider").owlCarousel({
-//            autoPlay: 3000,
+                autoPlay: 3000,
                 stopOnHover: false,
                 navigation: true,
                 paginationSpeed: 1000,
