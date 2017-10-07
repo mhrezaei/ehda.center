@@ -567,6 +567,7 @@ return [
         'aparat_hash_code' => 'Video Code in Aparat',
         'guidance_file'    => 'Guidance File',
         'tracking_number'  => 'Tracking Number',
+        'biography'        => 'بیوگرافی',
     ],
 
     "http" => [

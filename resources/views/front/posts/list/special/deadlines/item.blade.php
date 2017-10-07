@@ -5,8 +5,11 @@
             @php $countingClass = $post->increasing ? 'count-up' : 'count-down' @endphp
             <div dir="ltr" class="timer pull-right {{ $countingClass }}"
                  data-minutes="{{ ((is_numeric($post->period_time) and is_int((int) $post->period_time)) ? $post->period_time : 10) }}">
-                <span class="hours"></span><span class="minutes"></span><span
-                        class="secconds"></span>
+                <span class="hours"></span>
+                &nbsp;
+                <span class="minutes"></span>
+                &nbsp;
+                <span class="secconds"></span>
             </div>
             @php
                 $fillColor = validateColorCode($post->losed_color_code)

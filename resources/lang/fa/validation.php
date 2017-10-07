@@ -570,6 +570,7 @@ return [
         'aparat_hash_code' => 'کد فیلم در آپارات',
         'guidance_file'    => 'فایل راهنما',
         'tracking_number'  => 'کد پیگیری',
+        'biography'        => 'بیوگرافی',
     ],
 
     "http" => [
