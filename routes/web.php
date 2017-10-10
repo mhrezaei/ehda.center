@@ -138,6 +138,8 @@ Route::group([
         Route::get('/browse/{request_tab}/{volunteer?}/{post?}', 'CardsController@browseChild');
         Route::get('/search', 'CardsController@search');
 
+        Route::get('/stats' , 'CardsController@stats');
+
         Route::get('event-stats/{post_id}', 'CardsController@eventStats');
         Route::get('/view/{model_id}', 'CardsController@view');
 

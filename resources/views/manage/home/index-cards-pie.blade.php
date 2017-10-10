@@ -53,7 +53,7 @@
 
 			<div class="text-center w100 p5" style="margin-top: 10px">
 				{{ '' , $can_link = user()->as('admin')->can('users-card-holder.browse') }}
-				<a class="btn btn-default" {{ $can_link? '' : 'disabled' }} href="{{$can_link? url('manage/cards') : v0()}}">
+				<a class="btn btn-default" {{ $can_link? '' : 'disabled' }} href="{{ v0() }}" onclick="masterModal('{{ url("manage/cards/stats") }}')">
 					{{ pd(number_format($total)) }}
 					&nbsp;
 					{{ trans("ehda.donation_card") }}

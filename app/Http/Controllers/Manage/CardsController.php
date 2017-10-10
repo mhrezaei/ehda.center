@@ -835,4 +835,10 @@ class CardsController extends UsersController
 
 	}
 
+
+	public function stats()
+	{
+		return 'hello' ;
+	}
+
 }
