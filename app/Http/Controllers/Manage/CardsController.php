@@ -801,7 +801,13 @@ class CardsController extends UsersController
 
 	}
 
-	public function registerStats($date = false, $days = 60)
+	public function registerStatsPanel()
+	{
+		return view('manage.users.cards-register-stats') ;
+	}
+
+
+	public function registerStatsResult($date = false, $days = 10)
 	{
 		$daily_registers = [];
 		$total_registers = [
@@ -818,7 +824,7 @@ class CardsController extends UsersController
 			$last_date = Carbon::now()->setTime(0, 0);
 		}
 		else {
-			$last_date = Carbon::now();
+			$last_date = Carbon::createFromFormat("Y-m-d" , $date) ;
 		}
 
 		$first_date = clone $last_date;
@@ -830,20 +836,20 @@ class CardsController extends UsersController
 		*/
 		$pointer = clone $last_date;
 		while ($pointer >= $first_date) {
-			$day_before_pointer = clone $pointer;
-			$day_before_pointer->subDay(1);
+			$day_after_pointer = clone $pointer;
+			$day_after_pointer->addDay(1);
 
-			$count_total     = User::where('card_registered_at', '<=', $pointer)
-			                       ->where('card_registered_at', '>', $day_before_pointer)
+			$count_total     = User::where('card_registered_at', '>=', $pointer)
+			                       ->where('card_registered_at', '<', $day_after_pointer)
 			                       ->count()
 			;
-			$count_site      = User::where('card_registered_at', '<=', $pointer)
-			                       ->where('card_registered_at', '>', $day_before_pointer)
+			$count_site      = User::where('card_registered_at', '>=', $pointer)
+			                       ->where('card_registered_at', '<', $day_after_pointer)
 			                       ->where('created_by', 0)
 			                       ->count()
 			;
-			$count_bot       = User::where('card_registered_at', '<=', $pointer)
-			                       ->where('card_registered_at', '>', $day_before_pointer)
+			$count_bot       = User::where('card_registered_at', '>=', $pointer)
+			                       ->where('card_registered_at', '<', $day_after_pointer)
 			                       ->whereIn('created_by', model('user')::apiBots())
 			                       ->count()
 			;
@@ -862,7 +868,7 @@ class CardsController extends UsersController
 		/*-----------------------------------------------
 		| Return ...
 		*/
-		return view('manage.users.cards-register-stats', compact('first_date', 'last_date', 'daily_registers' , 'total_registers'));
+		return view('manage.users.cards-register-stats-result', compact('first_date', 'last_date', 'daily_registers' , 'total_registers'));
 
 
 	}

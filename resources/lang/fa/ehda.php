@@ -26,6 +26,8 @@ return [
         'bot_users'                 => "کاربران بات",
         'web_users'                 => "کاربران وب",
         'register_via_telegram'     => "ثبت نام از راه بات تلگرام",
+        'stats' => "آمار ثبت نام کارت اهدای عضو" ,
+        'stats_duration' => "ده روز قبل از آن" ,
     ],
 
     'printings' => [
@@ -64,8 +66,10 @@ return [
         'edit'              => "ویرایش اطلاعات سفیر",
         'add_role'          => "نقش جدید",
         'actives'           => "سفیران فعال",
+        'pendings' => "سفیران منتظر تأیید" ,
         'inquiry_success'   => 'ادامه‌ی فرم را تکمیل کنید.',
         'already_volunteer' => "ایشان پرونده‌ی سفیری اهدای عضو دارد.",
+        'excel_export' => "خروجی اکسل" ,
     ],
 
     'header_title' => [
