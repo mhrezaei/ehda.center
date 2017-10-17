@@ -380,7 +380,7 @@ Route::group(['prefix' => 'file'], function () {
 });
 
 // File
-Route::group(['prefix' => 'file'], function () {
+Route::group(['prefix' => 'download'], function () {
     Route::get('{hashid}/{fileName?}', 'FileManagerController@download')->name('file.download');
     Route::get('disposable/{hashString}/{hashid}/{fileName?}', 'FileManagerController@disposableDownload')
         ->name('file.download.disposable');

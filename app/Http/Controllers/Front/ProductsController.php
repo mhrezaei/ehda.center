@@ -15,6 +15,7 @@ use App\Models\Post;
 use App\Models\Posttype;
 use App\Providers\PostsServiceProvider;
 use App\Traits\ManageControllerTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Session\Store;
@@ -24,6 +25,9 @@ use Illuminate\Support\Facades\URL;
 class ProductsController extends Controller
 {
     use ManageControllerTrait;
+
+    protected static $downloadValidNo = 10;
+    protected static $downloadValidMin = 15;
 
     private $productPrefix = 'pd-';
     protected static $statusesCodes = [
@@ -337,7 +341,7 @@ class ProductsController extends Controller
         $order = Order::findBySlug($orderId, 'id');
         $orderPostData['order_id'] = $orderId;
 
-        $trackingNumber = invoice($post->price, route_locale('education.paymentResult', [
+        $trackingNumber = invoice($request->price, route_locale('education.paymentResult', [
                 'order' => $order->hashid
             ])
         )->getTracking();
@@ -524,7 +528,8 @@ class ProductsController extends Controller
                             'user_id'            => (auth()->guest()) ? null : user()->id,
                             'file_id'            => $fileRow->id,
                             'order_id'           => $order->id,
-                            'downloadable_count' => 1,
+                            'downloadable_count' => self::$downloadValidNo,
+                            'expire_Date'        => Carbon::now()->addMinutes(self::$downloadValidMin),
                         ]);
                     }
                 }

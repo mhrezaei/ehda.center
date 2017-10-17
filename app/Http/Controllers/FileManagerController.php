@@ -14,6 +14,7 @@ use App\Models\Folder;
 use App\Models\Posttype;
 use App\Providers\UploadServiceProvider;
 use App\Traits\ManageControllerTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class FileManagerController extends Controller
@@ -174,7 +175,10 @@ class FileManagerController extends Controller
         }
 
         // Check if $fileDownloadRow can't be downloaded any more
-        if ($fileDownloadRow->downloaded_count >= $fileDownloadRow->downloadable_count) {
+        if (
+            $fileDownloadRow->downloaded_count >= $fileDownloadRow->downloadable_count or
+            Carbon::now()->greaterThan($fileDownloadRow->expire_date)
+        ) {
             return $this->abort(404);
         }
 

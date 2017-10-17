@@ -12,7 +12,8 @@ class FileDownloads extends Model
 
     protected $guarded = ['id'];
     protected $casts = [
-        'meta' => 'array',
+        'meta'        => 'array',
+        'expire_date' => 'datetime',
     ];
 
     public function file()
