@@ -116,7 +116,6 @@ trait EhdaUserTrait
 	}
 
 
-
 	public function getFromDomainNameAttribute()
 	{
 		if($this->from_domain) {
@@ -200,6 +199,12 @@ trait EhdaUserTrait
 	{
 		return Activity::slugToCaption($this->activities_array);
 	}
+
+	public function getActivityCaptionsAttribute()
+	{
+		return implode(trans("forms.general.comma").' ' , $this->activity_captions_array) ;
+	}
+
 
 
 

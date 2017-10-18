@@ -100,6 +100,8 @@ Route::group([
         Route::get('/edit/{model_id?}', 'VolunteersController@editorChild');
         Route::get('/view/{model_id}', 'VolunteersController@view');
 
+        Route::get('/excel/{type?}' , 'VolunteersController@excel');
+
         Route::group(['prefix' => 'save'], function () {
             Route::post('/', 'VolunteersController@saveChild');
             Route::post('/inquiry', 'VolunteersController@inquiry');
@@ -137,6 +139,9 @@ Route::group([
         Route::get('/browse/search/{keyword?}', 'CardsController@searchChild');
         Route::get('/browse/{request_tab}/{volunteer?}/{post?}', 'CardsController@browseChild');
         Route::get('/search', 'CardsController@search');
+
+        Route::get('/stats/' , 'CardsController@registerStatsPanel')->name('card-stats');
+        Route::get('/stats/{date}' , 'CardsController@registerStatsResult')->name('card-stats-result');
 
         Route::get('event-stats/{post_id}', 'CardsController@eventStats');
         Route::get('/view/{model_id}', 'CardsController@view');

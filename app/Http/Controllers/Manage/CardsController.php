@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
+use Morilog\Jalali\jDate;
 
 
 class CardsController extends UsersController
@@ -775,8 +776,16 @@ class CardsController extends UsersController
 		$tomorrow = min($first_card->created_at->startOfDay(), $first_print->created_at->startOfDay())->addDay();
 
 		while ($today < max($last_card->created_at, $last_print->created_at)) {
-			$count1            = $model->registers()->where('created_at', '>=', $today)->where('created_at', '<', $tomorrow)->count();
-			$count2            = $model->printings()->where('created_at', '>=', $today)->where('created_at', '<', $tomorrow)->count();
+			$count1            = $model->registers()
+			                           ->where('created_at', '>=', $today)
+			                           ->where('created_at', '<', $tomorrow)
+			                           ->count()
+			;
+			$count2            = $model->printings()
+			                           ->where('created_at', '>=', $today)
+			                           ->where('created_at', '<', $tomorrow)
+			                           ->count()
+			;
 			$daily_registers[] = [$today->toDateTimeString(), $count1, $count2];
 
 			$today->addDay();
@@ -791,6 +800,79 @@ class CardsController extends UsersController
 		return view('manage.users.cards-event-stats', compact('model', 'total_count', 'daily_registers'));
 
 	}
+
+	public function registerStatsPanel()
+	{
+		return view('manage.users.cards-register-stats') ;
+	}
+
+
+	public function registerStatsResult($date = false, $days = 10)
+	{
+		$daily_registers = [];
+		$total_registers = [
+			'count_total' => 0 ,
+		     'count_site' => 0 ,
+		     'count_bot' => 0 ,
+		     'count_volunteer' => 0 ,
+		];
+
+		/*-----------------------------------------------
+		| Dates...
+		*/
+		if(!$date) {
+			$last_date = Carbon::now()->setTime(0, 0);
+		}
+		else {
+			$last_date = Carbon::createFromFormat("Y-m-d" , $date) ;
+		}
+
+		$first_date = clone $last_date;
+		$first_date->subDay($days);
+
+
+		/*-----------------------------------------------
+		| Loop ...
+		*/
+		$pointer = clone $last_date;
+		while ($pointer >= $first_date) {
+			$day_after_pointer = clone $pointer;
+			$day_after_pointer->addDay(1);
+
+			$count_total     = User::where('card_registered_at', '>=', $pointer)
+			                       ->where('card_registered_at', '<', $day_after_pointer)
+			                       ->count()
+			;
+			$count_site      = User::where('card_registered_at', '>=', $pointer)
+			                       ->where('card_registered_at', '<', $day_after_pointer)
+			                       ->where('created_by', 0)
+			                       ->count()
+			;
+			$count_bot       = User::where('card_registered_at', '>=', $pointer)
+			                       ->where('card_registered_at', '<', $day_after_pointer)
+			                       ->whereIn('created_by', model('user')::apiBots())
+			                       ->count()
+			;
+			$count_volunteer = $count_total - $count_site - $count_bot;
+			$date            = jDate::forge($pointer)->format('j F Y');
+
+			$pointer->subDay(1);
+			$daily_registers[] = compact('date', 'count_total', 'count_site', 'count_bot', 'count_volunteer');
+			$total_registers['count_total'] += $count_total;
+			$total_registers['count_site'] += $count_site;
+			$total_registers['count_bot'] += $count_bot;
+			$total_registers['count_volunteer'] += $count_volunteer;
+		}
+
+
+		/*-----------------------------------------------
+		| Return ...
+		*/
+		return view('manage.users.cards-register-stats-result', compact('first_date', 'last_date', 'daily_registers' , 'total_registers'));
+
+
+	}
+
 
 	public function deleteChild(Request $request)
 	{
@@ -834,5 +916,6 @@ class CardsController extends UsersController
 
 
 	}
+
 
 }

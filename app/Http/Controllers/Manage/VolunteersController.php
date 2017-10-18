@@ -16,6 +16,7 @@ use App\Models\User;
 use App\Traits\ManageControllerTrait;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class VolunteersController extends UsersController
@@ -527,5 +528,47 @@ class VolunteersController extends UsersController
 
 	}
 
+	public function excel($type = null)
+	{
+		/*-----------------------------------------------
+		| Type Process ...
+		*/
 
+
+		switch($type) {
+			case 'all' :
+				$type_caption = "all" ;
+				break;
+
+			case '8' :
+				$type_caption = "actives" ;
+				break;
+
+			case '3' :
+				$type_caption = "pendings" ;
+				break;
+
+			default:
+				return view("manage.users.volunteer-excel");
+
+		}
+
+		/*-----------------------------------------------
+		| Excel Return ...
+		*/
+
+		session()->put('volunteer_excel_export', $type);
+
+		Excel::create("Ehda-Volunteers-$type_caption", function ($excel) {
+			$excel->sheet('print', function ($sheet) {
+
+				$sheet->loadView('manage.users.volunteer-excel-file');
+
+			});
+
+		})->download('xls') ;
+
+
+
+	}
 }

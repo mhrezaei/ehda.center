@@ -50,7 +50,8 @@
 			])
 			<div class="text-center w100 p5" style="margin-top: 10px">
 				{{ '' , $can_link = count(user()->userRolesArray('browse' , [] , model('role')::adminRoles())) }}
-				<a class="btn btn-default" {{ $can_link? '' : 'disabled' }} href="{{$can_link? url('manage/volunteers/browse/all') : v0()}}">
+				<a class="btn btn-default" {{ $can_link? '' : 'disabled' }} href="{{ v0() }}" onclick="masterModal('{{ url("manage/volunteers/excel") }}')">
+				{{--<a class="btn btn-default" {{ $can_link? '' : 'disabled' }} href="{{$can_link? url('manage/volunteers/browse/all') : v0()}}">--}}
 					{{ pd(number_format($active_count)) }}
 					&nbsp;
 					{{ trans("ehda.volunteers.single_active") }}
