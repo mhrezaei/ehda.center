@@ -105,6 +105,10 @@ return [
     'download_links'                           => 'لینک‌های دانلود',
     'invoice_payment'                          => 'پرداخت فاکتور',
     'follow_us_in_social'                      => 'ما را در شبکه‌های اجتماعی دنبال کنید',
+    'day'                                      => 'روز',
+    'month'                                    => 'ماه',
+    'year'                                     => 'سال',
+    'useful_links'                             => 'لینک‌های مفید',
 
     'tutorials' => [
         'singular' => 'آموزش',

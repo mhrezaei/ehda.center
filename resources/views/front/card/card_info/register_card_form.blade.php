@@ -111,8 +111,20 @@
         {{--])--}}
         {{--</div>--}}
 
+        {{--<div class="col-xs-12">--}}
+            {{--@include('forms._birthdate-datepicker', [--}}
+                {{--'class' => 'form-datepicker form-required',--}}
+                {{--'dataAttributes' => [--}}
+                    {{--'toggle' => 'tooltip',--}}
+                    {{--'placement' => 'top',--}}
+                {{--],--}}
+                {{--'otherAttributes' => [--}}
+                    {{--'title' => trans('validation.attributes_example.birth_date'),--}}
+                {{--],--}}
+            {{--])--}}
+        {{--</div>--}}
         <div class="col-xs-12">
-            @include('forms._birthdate-datepicker', [
+            @include('forms._birthdate_3_selects', [
                 'class' => 'form-datepicker form-required',
                 'dataAttributes' => [
                     'toggle' => 'tooltip',
