@@ -1,6 +1,10 @@
 <div class="col-xs-12 col-md-4">
     @php
-        $links = \App\Providers\PostsServiceProvider::selectPosts(['type' => 'useful-links'])->get();
+        $links = \App\Providers\PostsServiceProvider::selectPosts([
+            'type' => 'useful-links',
+            'limit' => 6,
+            'random' => true,
+        ])->get();
     @endphp
     @if($links and $links->count())
         <h5>{{ trans('front.useful_links') }}</h5>
