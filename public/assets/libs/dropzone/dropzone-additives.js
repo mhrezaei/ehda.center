@@ -78,12 +78,19 @@ var dropzoneOptions = {
         },
 
         error: function (file, response, xhr) {
+            console.log('----------------------------------------------------------')
+            console.log(file)
+            console.log(response)
+            console.log(xhr.status)
+            console.log('----------------------------------------------------------')
             $(file.previewElement).find('.dz-error-message').remove();
+            console.log('-------------------------------------line------------------------------------')
             let uploadResultElement = file.uploadResultElement.find('.media-uploader-status-info');
 
             if (xhr.status == 422) {
                 let errorsContainer = $('<div class="upload-errors"></div>');
                 let ul = $('<ul></ul>');
+                console.log(response.file)
                 if (response.file) {
                     $.each(response.file, function (index, error) {
                         ul.append($('<li></li>').html(pd(error)));

@@ -4,6 +4,7 @@ namespace App\Http\Requests\Front\Volunteer;
 
 use App\Http\Requests\Request;
 use App\Providers\ValidationServiceProvider;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
 
@@ -46,7 +47,10 @@ class VolunteerThirdStepRequest extends Request
                     ->whereNull('deleted_at')// Not soft deleted
                     ->whereNotNull('id'), // Not logged in
             ],
-            'birth_date'  => 'required|min:6',
+            'birth_date'  => 'required|date|min:6|before_or_equal:'
+                . Carbon::now()->toDateString()
+                . '|after_or_equal:'
+                . Carbon::now()->subYears(100)->toDateString(),
             'birth_city'  => 'required|numeric|min:1',
             'marital'     => 'required|numeric|min:1|max:2',
             'email'       => 'email',

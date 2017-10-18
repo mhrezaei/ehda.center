@@ -124,7 +124,7 @@ class DropzoneController extends Controller
                 $currentUploaded[$itemIndex] = [
                     'name'   => $file->getClientOriginalName(),
                     'number' => (count($currentUploaded) + 1),
-                    'done'   => false,
+                    'status' => 0, // temp
                 ];
                 session()->put($sessionName, $currentUploaded);
             } else {
@@ -132,7 +132,7 @@ class DropzoneController extends Controller
                     $itemIndex => [
                         'name'   => $file->getClientOriginalName(),
                         'number' => 1,
-                        'done'   => false,
+                        'status' => 0, // temp
                     ],
                 ]);
             }
@@ -150,14 +150,14 @@ class DropzoneController extends Controller
             $uploadResult = UploadServiceProvider::uploadFile($file, $uploadDir, $externalFields);
             $dbRow = UploadedFileModel::findBySlug($uploadResult, 'id');
 
-            if ($dbRow->exists()) {
+            if ($dbRow->exists) {
                 /**
                  * This condition is for synchronous uploading.
                  * If files number has reached the limit while uploading this file, this should be deleted.
                  */
-                if (UploadServiceProvider::validateFileNumbers($sectionName, $typeString)) {
+                if (UploadServiceProvider::validateFileNumbers($request, $sessionName)) {
 
-                    $currentUploaded[$itemIndex]['done'] = true;
+                    $currentUploaded[$itemIndex]['status'] = 1; // done
                     $currentUploaded[$dbRow->hash_id] = $currentUploaded[$itemIndex];
                     unset($currentUploaded[$itemIndex]);
 
@@ -169,11 +169,16 @@ class DropzoneController extends Controller
                         'file'    => $dbRow->hash_id,
                     ]);
                 } else {
+                    $currentUploaded[$itemIndex]['status'] = -1; // undone
+                    session()->put($sessionName, $currentUploaded);
+                    session()->save();
                     UploadServiceProvider::removeFile($dbRow);
+
+                    return response()->json(['file' => [trans('front.upload.errors.limit')]], 422);
                 }
             }
         } else {
-            return response()->json($validationResponse->toArray(), 422);
+            return response()->json($validationResponse, 422);
         }
 
         return response()->make('', 400);

@@ -124,15 +124,32 @@
                     </div>
                     <div class="col-lg-4 col-sm-6 col-xs-12">
                         <div class="row">
-                            @if($currentValues['birth_date'])
-                                {{ null, $jbd = \Morilog\Jalali\jDate::forge($currentValues['birth_date'])->format('Y/m/d') }}
+                            @if(user()->birth_date)
+                                @if(getLocale() == 'fa')
+                                    @php $bd = \Morilog\Jalali\jDate::forge(user()->birth_date) @endphp
+                                @else
+                                    @php $bd = user()->birth_date @endphp
+                                @endif
+                                @php $bdVal = $bd->format('Y/m/d') @endphp
                             @else
-                                {{ null, $jbd = '' }}
+                                @php $bdVal = '' @endphp
                             @endif
-                            @include('forms._birthdate-datepicker', [
+                            {{--@include('forms._birthdate-datepicker', [--}}
+                                {{--'name' => 'birth_date',--}}
+                                {{--'class' => 'form-datepicker form-required',--}}
+                                {{--'value' => $bdVal,--}}
+                                {{--'dataAttributes' => [--}}
+                                    {{--'toggle' => 'tooltip',--}}
+                                    {{--'placement' => 'top',--}}
+                                {{--],--}}
+                                {{--'otherAttributes' => [--}}
+                                    {{--'title' => trans('validation.attributes_example.birth_date'),--}}
+                                {{--]--}}
+                            {{--])--}}
+                            @include('forms._birthdate_3_selects', [
                                 'name' => 'birth_date',
                                 'class' => 'form-datepicker form-required',
-                                'value' => $jbd,
+                                'value' => $bdVal,
                                 'dataAttributes' => [
                                     'toggle' => 'tooltip',
                                     'placement' => 'top',

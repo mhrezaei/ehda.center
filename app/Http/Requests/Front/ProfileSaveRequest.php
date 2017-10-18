@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Front;
 
 use App\Providers\ValidationServiceProvider;
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
@@ -32,7 +33,10 @@ class ProfileSaveRequest extends FormRequest
             'gender'      => 'required|numeric|min:1|max:3',
             'name_father' => 'required|persian:60',
             'code_id'     => 'numeric',
-            'birth_date'  => 'required|min:6',
+            'birth_date'  => 'required|date|min:6|before_or_equal:'
+                . Carbon::now()->toDateString()
+                . '|after_or_equal:'
+                . Carbon::now()->subYears(100)->toDateString(),
             'birth_city'  => 'required|numeric|min:1',
             'edu_level'   => 'required|numeric|min:1|max:6',
             'job'         => 'required|persian:60',

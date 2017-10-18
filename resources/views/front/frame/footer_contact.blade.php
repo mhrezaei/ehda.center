@@ -1,4 +1,4 @@
-<div class="col-xs-12 col-md-8">
+<div class="col-xs-12 col-md-4">
     <h5>{{ trans('front.notes.follow_us_in_social') }}</h5>
     <ul class="social-links list-inline">
         {{ null, $telegram = setting()->ask('telegram_link')->gain() }}

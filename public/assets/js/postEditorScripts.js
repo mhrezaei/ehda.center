@@ -268,7 +268,12 @@ function filemanagerUploadFinish(uploaded_files) {
         let counter = 0;
         let result = $last_key_input.val() + "-";
         let current = uploaded_files.splice(0, 50);
+
         $.each(current, function (index, item) {
+            if(item.status == 'error') {
+                return false;
+            }
+
             result += $.parseJSON(item.xhr.response).file + "-";
             counter++;
         });

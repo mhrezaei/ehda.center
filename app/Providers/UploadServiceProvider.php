@@ -219,14 +219,19 @@ class UploadServiceProvider extends ServiceProvider
             ],
         ]);
 
+        $numberValidationResult = self::validateFileNumbers($request, $sessionName);
         if (!$validator->fails() and
-            self::validateFileNumbers($sessionName, $typeString)
+            $numberValidationResult
         ) {
             return true;
         }
 
         if ($returnErrors) {
-            return $validator->errors();
+            $response = $validator->errors()->toArray();
+            if (!$numberValidationResult) {
+                $response = array_merge_recursive($response, ['file' => [trans('front.upload.errors.limit')]]);
+            }
+            return $response;
         }
 
         return false;
@@ -235,16 +240,19 @@ class UploadServiceProvider extends ServiceProvider
     /**
      * Checks if files number for an uploader reached the limit
      *
+     * @param Request      $request
      * @param string|array $sessionName
-     * @param string       $typeString
      */
-    public static function validateFileNumbers($sessionName, $fileType)
+    public static function validateFileNumbers($request, $sessionName)
     {
-        $maxFiles = self::getCompleteRules($fileType)['maxFiles'];
+        $maxFiles = self::getCompleteRules($request->_uploadIdentifier)['maxFiles'];
         if (!session()->has($sessionName) or
             ($maxFiles === null) or
-            (count(array_filter(session()->get($sessionName), function ($item) {
-                    return $item['done'];
+            (is_array(session()->get($sessionName)) and count(array_filter(session()->get($sessionName), function ($item) {
+                    return (
+                        ($item['status'] === 1) or // done
+                        ($item['status'] === 0) // temp
+                    );
                 })) < $maxFiles)
         ) {
             return true;
@@ -561,7 +569,7 @@ class UploadServiceProvider extends ServiceProvider
 
             // Merge "acceptedExtensions"
             if (array_key_exists('acceptedExtensions', $thisRules) and is_array($thisRules['acceptedExtensions'])) {
-                if (isset($rules['acceptedExtensions'])) {
+                if (array_key_exists('acceptedExtensions', $rules)) {
                     $rules['acceptedExtensions'] = array_merge($rules['acceptedExtensions'],
                         $thisRules['acceptedExtensions']);
                 } else {
@@ -571,7 +579,7 @@ class UploadServiceProvider extends ServiceProvider
 
             // Merge "acceptedFiles"
             if (array_key_exists('acceptedFiles', $thisRules) and is_array($thisRules['acceptedFiles'])) {
-                if (isset($rules['acceptedFiles']) and is_array($rules['acceptedFiles'])) {
+                if (array_key_exists('acceptedFiles', $rules) and is_array($rules['acceptedFiles'])) {
                     $rules['acceptedFiles'] = array_merge($rules['acceptedFiles'], $thisRules['acceptedFiles']);
                 } else {
                     $rules['acceptedFiles'] = $thisRules['acceptedFiles'];
@@ -580,7 +588,7 @@ class UploadServiceProvider extends ServiceProvider
 
             // Merge "maxFileSize"
             if (array_key_exists('maxFileSize', $thisRules)) {
-                if (isset($rules['maxFileSize'])) {
+                if (array_key_exists('maxFileSize', $rules)) {
                     $rules['maxFileSize'] = max($rules['maxFileSize'], $thisRules['maxFileSize']);
                 } else {
                     $rules['maxFileSize'] = $thisRules['maxFileSize'];
@@ -589,8 +597,12 @@ class UploadServiceProvider extends ServiceProvider
 
             // Merge "maxFiles"
             if (array_key_exists('maxFiles', $thisRules)) {
-                if (isset($rules['maxFiles'])) {
-                    $rules['maxFiles'] = max($rules['maxFiles'], $thisRules['maxFiles']);
+                if (array_key_exists('maxFiles', $rules)) {
+                    if (is_null($rules['maxFiles']) or is_null($thisRules['maxFiles'])) {
+                        $rules['maxFiles'] = null;
+                    } else {
+                        $rules['maxFiles'] = max($rules['maxFiles'], $thisRules['maxFiles']);
+                    }
                 } else {
                     $rules['maxFiles'] = $thisRules['maxFiles'];
                 }
@@ -598,7 +610,7 @@ class UploadServiceProvider extends ServiceProvider
 
             // Merge "icon"
             if (array_key_exists('icon', $thisRules)) {
-                if (isset($rules['icon'])) {
+                if (array_key_exists('icon', $rules)) {
                     if ($rules['icon'] != $thisRules['icon']) {
                         $rules['icon'] = 'file';
                     }

@@ -105,6 +105,10 @@ return [
     'download_links'                           => 'Download Links',
     'invoice_payment'                          => 'Invoice Payment',
     'follow_us_in_social'                      => 'Follow us in social networks',
+    'day'                                      => 'Day',
+    'month'                                    => 'Month',
+    'year'                                     => 'Year',
+    'useful_links'                             => 'Useful Links',
 
     'tutorials' => [
         'singular' => 'Tutorial',
