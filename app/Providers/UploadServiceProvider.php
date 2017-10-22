@@ -978,6 +978,7 @@ class UploadServiceProvider extends ServiceProvider
             'otherAttributes' => [],
             'dataAttributes'  => [],
             'extra'           => '',
+            'download'        => true
         ]);
 
         $file = self::smartFindFile($file, true);
@@ -1004,7 +1005,11 @@ class UploadServiceProvider extends ServiceProvider
                     $fileNameWithoutExtension = $nameWithoutExtension;
                 }
 
-                $fileUrl = url($pathname);
+                if ($switches['download']) {
+                    $fileUrl = route('file.download', ['hashid' => $file->hashid]);
+                } else {
+                    $fileUrl = url($pathname);
+                }
                 $fileName = $nameWithoutExtension . '.' . $file->extension;
 
                 return view(

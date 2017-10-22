@@ -1,17 +1,30 @@
 $(function () {
-    $(".iran-map svg g path").hover(function () {
-        var t = $(this).attr("data-name"),
-            l = ($(this).parent("g").attr("class"), $(".states-list ." + t + " a").html());
-        l && ($(this).attr("disabled") ? $(".iran-map .show-title").html(l + " <small>(غیرفعال)</small>").css({
-            display: "block"
-        }) : $(".iran-map .show-title").html(l).css({
-            display: "block"
-        }))
+    $(".iran-map svg g.province path").hover(function () {
+        let that = $(this);
+        let n = that.data('persianName');
+        let titleContainer = $(".iran-map .show-title");
+        if (n) {
+            if (that.attr("disabled")) {
+                titleContainer.html(n + " <small>(غیرفعال)</small>");
+            } else {
+                titleContainer.html(n);
+            }
+
+            titleContainer.show();
+        } else {
+            titleContainer.hide();
+        }
+        // l && ( ? $(".iran-map .show-title").html(l + " <small>(غیرفعال)</small>").css({
+        //     display: "block"
+        // }) : $(".iran-map .show-title").html(l).css({
+        //     display: "block"
+        // }));
     }, function () {
         $(".iran-map .show-title").html("").css({
             display: "none"
         })
-    }), $(".iran-map").mousemove(function (t) {
+    });
+    $(".iran-map").mousemove(function (t) {
         var l = 0,
             a = 0;
         if (!t) var t = window.event;

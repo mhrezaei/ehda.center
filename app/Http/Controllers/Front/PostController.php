@@ -291,6 +291,11 @@ JS;
         $posts = Post::selector(['type' => 'commenting'])
             ->where('slug', 'like', "$postsPrefix%")
             ->get();
+        // get related posts
+        $posts = Post::selector(['type' => 'commentingworks'])
+            ->where('slug', 'like', "$postsPrefix%")
+            ->get();
+
 
 
         // remove posts that are related to inactive file types (in config/upload.php)
@@ -301,6 +306,10 @@ JS;
             } else {
                 $posts->forget($key);
             }
+        }
+
+        if(!$posts->count()) {
+            return $this->abort(404);
         }
 
         $sendingArea = view('front.test.works.sending_area.main', compact('posts'));
