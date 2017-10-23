@@ -531,6 +531,8 @@ function setDomain($domain = 'global')
  */
 function getDomain()
 {
+    // @todo: remove it
+    return 'isfahan';
     if (session()->has('domain')) {
         $domain = session()->get('domain');
         if ($domain == 'global') {
