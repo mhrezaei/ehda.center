@@ -116,6 +116,7 @@ return [
         'adjust_publish_time'                 => "تنظیم زمان انتشار",
         'refer_back'                          => "بازگشت به نویسنده (رد)",
         'refer_to'                            => "ارجاع به شخص دیگر",
+        'referred_to_target'                  => "ارجاع داده شد به «:target».",
         'unpublish'                           => "لغو انتشار",
         'delete'                              => "انتقال به زباله‌دان",
         'history'                             => "تاریخچه",

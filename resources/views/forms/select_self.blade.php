@@ -3,7 +3,6 @@
 	@if(isset($top_label))
 		<label for="{{$name}}" class="control-label text-gray {{$top_label_class or ''}}" >{{ $top_label }}...</label>
 	@endif
-
 	<select
 		id="{{$id or ''}}"
 		name="{{$name}}" value="{{$value or ''}}"
@@ -13,7 +12,7 @@
 		data-live-search = "{{$search or false}}"
 		data-live-search-placeholder= "{{$search_placeholder or trans('forms.button.search')}}..."
 		onchange="{{$on_change or ''}}"
-		{{$extra or ''}}
+		{!! $extra or '' !!}
 	>
 		@if(isset($blank_value) and $blank_value!='NO')
 			<option value="{{$blank_value}}"

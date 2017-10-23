@@ -206,6 +206,7 @@ Route::group([
     */
     Route::group(['prefix' => 'comments', 'middleware' => 'can:comments'], function () {
         Route::get('/update/{item_id}', 'CommentsController@update');
+        Route::get('show/{model_hashid}', 'CommentsController@show')->name('manage.comments.show');
         Route::get('/act/{model_id}/{action}', 'CommentsController@singleAction');
         Route::get('{request_tab?}/{switches?}', 'CommentsController@browse');
         Route::group(['prefix' => 'save'], function () {

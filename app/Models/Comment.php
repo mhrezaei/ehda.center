@@ -44,6 +44,11 @@ class Comment extends Model
         return $this->belongsTo('App\Models\Post');
     }
 
+    public function department()
+    {
+        return $this->belongsTo('App\Models\Role', 'department_id');
+    }
+
     public function user()
     {
         return $this->belongsTo('App\Models\User');
@@ -321,7 +326,9 @@ class Comment extends Model
                 break;
 
             case 'published' :
-            case 'privates' :
+            case 'approved' :
+            case 'private' :
+            case 'all' :
                 $permit = '*';
                 break;
 
@@ -336,6 +343,7 @@ class Comment extends Model
     public static function checkManagePermission($posttype, $criteria)
     {
         $permit = self::tab2permit($criteria);
+
 
         if ($posttype) {
             return user()->as('admin')->can("comments-$posttype.$permit");

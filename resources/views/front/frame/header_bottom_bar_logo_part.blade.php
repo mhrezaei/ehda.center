@@ -8,6 +8,13 @@
         @if($smallLog)
             <img src="{{ url($smallLog) }}" alt="انجمن اهدای عضو ایرانیان" id="logo-small">
         @endif
+
+        @php
+            $stateLogoPost = model('post')::selector(['type' => 'states-logos'])->whereSlug(getDomain() . '-logo')->first();
+        @endphp
+        @if($stateLogoPost and $stateLogoPost->exists and $stateLogoPost->featured_image)
+            <img src="{{ url($stateLogoPost->featured_image) }}">
+        @endif
         <span class="hidden">انجمن اهدای عضو ایرانیان</span>
     </h1>
 </a>

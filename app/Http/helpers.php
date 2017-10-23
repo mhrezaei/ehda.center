@@ -626,7 +626,9 @@ function localeLink($locale)
 function addSubDomain($url, $subDomain)
 {
     $parts = parse_url($url);
-    $hotsParts = explode('.', $parts['host']);
+    $domain = preg_replace('/^www\./', '', $parts['host']);
+    $hotsParts = explode('.', $domain);
+    $hotsParts = array_splice($hotsParts, -2); // Remove current sub domain
     array_unshift($hotsParts, $subDomain);
     $parts['host'] = implode('.', $hotsParts);
     return unparse_url($parts);
