@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AddDepartmentToComments' => $baseDir . '/database/migrations/2017_10_22_163854_add_department_to_comments.php',
     'CreateActivitiesTable' => $baseDir . '/database/migrations/2017_07_06_141716_create_activities_table.php',
     'CreateAddressesTable' => $baseDir . '/database/migrations/2017_06_18_181432_create_addresses_table.php',
     'CreateApiIps' => $baseDir . '/database/migrations/2017_08_01_120437_create_api_ips.php',
@@ -23,7 +24,7 @@ return array(
     'CreateFoldersTable' => $baseDir . '/database/migrations/2017_06_18_174624_create_folders_table.php',
     'CreateGoodsTable' => $baseDir . '/database/migrations/2017_06_18_181337_create_goods_table.php',
     'CreateMessagesTable' => $baseDir . '/database/migrations/2017_08_07_182054_create_messages_table.php',
-    'CreateOrderPostsTable' => $baseDir . '/database/migrations/2017_09_06_163014_create_order_posts_table.php',
+    'CreateOrderPostTable' => $baseDir . '/database/migrations/2017_09_06_163014_create_order_post_table.php',
     'CreateOrdersTable' => $baseDir . '/database/migrations/2017_09_06_162802_create_orders_table.php',
     'CreatePacksTable' => $baseDir . '/database/migrations/2017_06_18_181353_create_packs_table.php',
     'CreatePasswordResetsTable' => $baseDir . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',

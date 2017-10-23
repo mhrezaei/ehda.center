@@ -32,11 +32,13 @@
 |--------------------------------------------------------------------------
 |
 --}}
-@foreach($parent->children()->orderBy('created_at')->get() as $child)
-	@include("manage.comments.show-one" , [
+@php $children = $parent->children()->orderBy('created_at')->get() @endphp
+@foreach($children as $key => $child)
+	@include("manage.comments.show-reply-one" , [
 		'comment' => $child,
 		'parent' => false ,
-	]     )
+		'previewComment' => ($key == 0) ? null : $children[$key - 1]
+	])
 @endforeach
 
 {{--

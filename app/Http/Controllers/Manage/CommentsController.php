@@ -8,6 +8,7 @@ use App\Http\Requests\Manage\CommentSaveRequest;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\Posttype;
+use App\Models\Role;
 use App\Providers\CommentServiceProvider;
 use App\Providers\PostsServiceProvider;
 use App\Providers\UploadServiceProvider;
@@ -84,7 +85,7 @@ class CommentsController extends Controller
         | Model ...
         */
         $models = Comment::selector($switches)
-            ->whereHas('post', function($query){
+            ->whereHas('post', function ($query) {
                 $query->where('type', 'not like', 'commenting%_');
             })
             ->orderBy($switches['order_by'], $switches['order_type'])
@@ -155,24 +156,46 @@ class CommentsController extends Controller
         /*-----------------------------------------------
         | Save Status ...
         */
-        $ok = $model->saveStatus($request->status);
+        $ok = true;
+        if ($request->status) {
+            $ok = $model->saveStatus($request->status) and $ok;
+        }
+
 
         /*-----------------------------------------------
-        | Save Reply ...
+        | Save Reply and Department
         */
+        $newCommentData = [
+            'user_id'       => user()->id,
+            'post_id'       => $model->post_id,
+            'type'          => $model->type,
+            'replied_on'    => $model->id,
+            'ip'            => request()->ip(),
+            'department_id' => $model->department_id,
+            'is_by_admin'   => "1",
+            'published_at'  => Carbon::now()->toDateTimeString(),
+            'published_by'  => user()->id,
+        ];
+        $newCommentToAdd = false;
         if ($request->reply) {
-            $ok = Comment::store([
-                'user_id'      => user()->id,
-                'post_id'      => $model->post_id,
-                'type'         => $model->type,
-                'replied_on'   => $model->id,
-                'ip'           => request()->ip(),
-                'text'         => $request->reply,
-                'is_by_admin'  => "1",
-                'published_at' => Carbon::now()->toDateTimeString(),
-                'published_by' => user()->id,
+            $newCommentData = array_merge($newCommentData, [
+                'text' => $request->reply,
             ]);
+
+            $newCommentToAdd = true;
+
         }
+        if ($request->department_id != $model->department_id) {
+            $newCommentData['department_id'] = $request->department_id;
+            $model->department_id = $request->department_id;
+            $model->save();
+            $newCommentToAdd = true;
+        }
+
+        if ($newCommentToAdd) {
+            $ok = Comment::store($newCommentData) and $ok;
+        }
+
 
         /*-----------------------------------------------
         | Send Email if Requested ...
@@ -419,6 +442,17 @@ class CommentsController extends Controller
         }
 
         return $this->abort('403');
+    }
+
+    public function show(Request $request)
+    {
+        if (!($model = Comment::findByHashid($request->model_hashid)) or !$model->exists) {
+            return $this->abort(403);
+        }
+
+        $supportRoles = Role::supportRoles();
+
+        return view('manage.comments.show', compact('model', 'supportRoles'));
     }
 }
 

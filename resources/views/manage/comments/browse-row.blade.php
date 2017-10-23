@@ -48,14 +48,14 @@
 	@include("manage.frame.widgets.grid-text" , [
 		'text' => trans("forms.status_text.$model->status") ,
 		'color' => trans("forms.status_color.$model->status") ,
-		'link' => $model->trashed()? '' : "modal:manage/comments/act/-id-/show",
+		'link' => $model->trashed() ? '' : "masterModal(url('" . route('manage.comments.show', ['model_hashid' => $model->hashid], false) . "'))",
 		'icon' => trans("forms.status_icon.$model->status") ,
 	])
 
 	@include("manage.frame.widgets.grid-tiny" , [
 		'icon' => $model->replied_on? "comments-o" : "comment-o",
 		'text' => pd($model->parent()->children()->count()) . ' ' . trans('posts.comments.reply')  ,
-		'link' => $model->trashed()? '' : "modal:manage/comments/act/-id-/show",
+		'link' => $model->trashed() ? '' : "modal:manage/comments/act/-id-/show",
 //		'condition' => $model->published_at != null ,
 	]   )
 </td>
