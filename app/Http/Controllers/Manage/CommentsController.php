@@ -88,11 +88,15 @@ class CommentsController extends Controller
         if(user()->hasRole('support-main')) {
             $acceptedDepartments[] = '';
         }
-        $models = Comment::selector($switches)
-            ->whereHas('post', function ($query) {
+
+        $models = Comment::selector($switches);
+        if(!array_key_exists('type', array_maker($switch)) or ($switches['type'] == 'all')) {
+            $models = $models->whereHas('post', function ($query) {
                 $query->where('type', 'not like', 'commenting%_');
-            })
-            ->whereIn('department_id', $acceptedDepartments)
+            });
+        }
+
+        $models = $models->whereIn('department_id', $acceptedDepartments)
             ->orderBy($switches['order_by'], $switches['order_type'])
             ->paginate(user()->preference('max_rows_per_page'));
         $db = $this->Model;

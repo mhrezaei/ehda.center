@@ -358,11 +358,11 @@ JS
                 'site'             => setting()->ask('site_url')->gain(),
             ]);
 
-            MessagesServiceProvider::storeMessages([
-                'type'     => 'sms',
-                'receiver' => $user->mobile,
-                'content'  => $smsText,
-            ]);
+//            MessagesServiceProvider::storeMessages([
+//                'type'     => 'sms',
+//                'receiver' => $user->mobile,
+//                'content'  => $smsText,
+//            ]);
 
         }
 
