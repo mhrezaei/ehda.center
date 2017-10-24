@@ -184,6 +184,8 @@ class ValidationServiceProvider extends ServiceProvider
                         $gDate = jDateTime::toGregorian($jDate[0], $jDate[1], $jDate[2]);
                         $carbon = new Carbon(implode('/', $gDate));
                         $data = $carbon->toDateTimeString();
+                    } else {
+                        $data = '-';
                     }
                 } else {
                     $data = null;
@@ -316,7 +318,7 @@ class ValidationServiceProvider extends ServiceProvider
 
     private static function validatePhoneNo($attribute, $value, $parameters, $validator)
     {
-	    $mood = isset($parameters[0]) ? $parameters[0] : '';
+        $mood = isset($parameters[0]) ? $parameters[0] : '';
 
         if (strlen($value) != 11)
             return false;
