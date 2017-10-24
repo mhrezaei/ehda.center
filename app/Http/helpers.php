@@ -554,7 +554,16 @@ function getUsableDomains()
 
     $currentDomain = getDomain();
     if ($currentDomain) {
-        $domains[] = $currentDomain;
+        $adminChoice = setting('showing_posts_domains')->gain();
+
+        // If setting has been set in manage panel
+        if ($adminChoice) {
+            $adminChoice = str_replace('{{currentDomain}}', $currentDomain, $adminChoice);
+            return explodeNotEmpty('|', $adminChoice);
+        } else {
+            $domFains[] = $currentDomain;
+        }
+
     }
 
     return $domains;
