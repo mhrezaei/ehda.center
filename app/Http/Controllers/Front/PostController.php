@@ -288,9 +288,9 @@ JS;
 
 
         // get related posts
-        $posts = Post::selector(['type' => 'commenting'])
-            ->where('slug', 'like', "$postsPrefix%")
-            ->get();
+//        $posts = Post::selector(['type' => 'commenting'])
+//            ->where('slug', 'like', "$postsPrefix%")
+//            ->get();
         // get related posts
         $posts = Post::selector(['type' => 'commentingworks'])
             ->where('slug', 'like', "$postsPrefix%")
