@@ -26,7 +26,7 @@
                             @if($fontPost and $fontPost->exists)
                                 @include('front.fonts.daftar-and-studio.button-with-image', [
                                     'buttonOptions' => [
-                                        'buttonText' => trans('cart.buy_thing', ['thing' => $fontPost->title ]),
+                                        'buttonText' => trans('cart.buy_thing', ['thing' => $fontPost->title . ' ' . pd(number_format($fontPost->price)) . ' ' . trans('front.toman')]),
                                         'buttonClass' => 'btn-buy-post',
                                         'dataAttributes' => [
                                             'post-key' => $fontPost->hashid,
