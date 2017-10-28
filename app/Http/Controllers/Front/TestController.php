@@ -304,4 +304,68 @@ class TestController extends Controller
             echo 'false';
         }
     }
+
+    public function prepare()
+    {
+        $config = array();
+        $config['card_config'][] = [
+            'order' => '1',
+            'slug' => 'register_no',
+            'font' => 'B Nazanin',
+            'font_size' => '14',
+            'position_right' => '50',
+            'position_top' => '50',
+        ];
+
+        $config['card_config'][] = [
+            'order' => '2',
+            'slug' => 'full_name',
+            'font' => 'B Nazanin',
+            'font_size' => '14',
+            'position_right' => '50',
+            'position_top' => '80',
+        ];
+
+        $config['card_config'][] = [
+            'order' => '3',
+            'slug' => 'father_name',
+            'font' => 'B Nazanin',
+            'font_size' => '14',
+            'position_right' => '50',
+            'position_top' => '110',
+        ];
+
+        $config['card_config'][] = [
+            'order' => '4',
+            'slug' => 'code_melli',
+            'font' => 'B Nazanin',
+            'font_size' => '14',
+            'position_right' => '50',
+            'position_top' => '140',
+        ];
+
+        $config['card_config'][] = [
+            'order' => '5',
+            'slug' => 'birth_date',
+            'font' => 'B Nazanin',
+            'font_size' => '14',
+            'position_right' => '50',
+            'position_top' => '170',
+        ];
+
+        $config['card_config'][] = [
+            'order' => '6',
+            'slug' => 'registered_at',
+            'font' => 'B Nazanin',
+            'font_size' => '14',
+            'position_right' => '50',
+            'position_top' => '200',
+        ];
+
+
+        $config['device_config']['password'] = 2589;
+
+        echo json_encode($config);
+
+    }
 }

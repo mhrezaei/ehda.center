@@ -96,6 +96,8 @@ return [
         'waiting_for_data_completion' => "در انتظار تکمیل مدارک",
         'under_examination'           => "در انتظار آزمون",
         'changes_request'             => "درخواست ویرایش",
+        'auth_with_ip'                => "اعتبار سنجی با آی پی",
+        'auth_without_ip'             => "اعتبار سنجی بدون آی پی",
     ],
 
     'criteria_icon' => [
@@ -105,6 +107,8 @@ return [
         'bin'                         => "trash",
         'waiting_for_data_completion' => "hourglass-end",
         'under_examination'           => "hourglass-start",
+        'auth_with_ip'                => "lock",
+        'auth_without_ip'             => "unlock-alt",
     ],
 
     'criteria_color' => [
@@ -114,6 +118,8 @@ return [
         'bin'                         => "danger",
         'waiting_for_data_completion' => "warning",
         'under_examination'           => "warning",
+        'auth_with_ip'                => "success",
+        'auth_without_ip'             => "success",
     ],
 
     "edu_level_full"  => [

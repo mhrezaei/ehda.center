@@ -23,4 +23,6 @@ Route::group(['namespace' => 'Api'], function (){
     Route::post('/ehda/province/get', 'ApiController@get_province');
     Route::post('/ehda/cities/get', 'ApiController@get_cities');
     Route::post('/ehda/education/get', 'ApiController@get_education');
+    Route::post('/ehda/config/get', 'ApiController@get_prepare_config');
+    Route::post('/ehda/slideshow/get', 'ApiController@get_printers_slideshow');
 });

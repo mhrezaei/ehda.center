@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Api_ips;
 use App\Http\Controllers\Controller;
 use App\Models\Api_token;
+use App\Models\Post;
 use App\Models\State;
 use App\Models\User;
 use Carbon\Carbon;
@@ -200,7 +201,7 @@ class ApiController extends Controller
                         {
                             // validation success and card attach
                             $result['status'] = 3;
-                            $result = array_merge($result, self::create_ehda_card_link($request->code_melli));
+                            $result = array_merge($result, self::create_ehda_card_link($request->code_melli), self::create_ehda_card_detail($user));
                         }
                         else
                         {
@@ -306,7 +307,7 @@ class ApiController extends Controller
             {
                 $user_id = User::store($input);
 
-                // card register failed
+                // card register failed if store not complete
                 $result['status'] = -16;
             }
             else
@@ -341,7 +342,7 @@ class ApiController extends Controller
 
             // card register success and ehda card attach
             $result['status'] = 3;
-            $result = array_merge($result, self::create_ehda_card_link($request->code_melli));
+            $result = array_merge($result, self::create_ehda_card_link($request->code_melli), self::create_ehda_card_detail($user));
         }
 
         return json_encode($result);
@@ -431,6 +432,90 @@ class ApiController extends Controller
         return json_encode($result);
     }
 
+    public function get_prepare_config(Requests\Api\PrepareConfigRequest $request)
+    {
+        $data = $request->toArray();
+        $result = array();
+
+        if (! isset($data['token']))
+            // token not send
+            $result['status'] = -5;
+
+        // token check
+        $token = self::validateToken($request->token, $request->ip());
+        if (is_numeric($token) and $token <= 0)
+        {
+            // token not valid
+            $result['status'] = $token;
+        }
+        else
+        {
+            // prepare portable printer config
+            $config = setting('prepare_portable_printer_config')->gain();
+            if ($config)
+            {
+                // prepare config success return
+                $result['status'] = 7;
+                $result['config'] = json_decode($config, true);
+            }
+            else
+            {
+                // prepare config can't be return
+                $result['status'] = -17;
+            }
+        }
+
+        return json_encode($result);
+    }
+
+    public function get_printers_slideshow(Requests\Api\SlideShowRequest $request)
+    {
+        $data = $request->toArray();
+        $result = array();
+
+        if (! isset($data['token']))
+            // token not send
+            $result['status'] = -5;
+
+        // token check
+        $token = self::validateToken($request->token, $request->ip());
+        if (is_numeric($token) and $token <= 0)
+        {
+            // token not valid
+            $result['status'] = $token;
+        }
+        else
+        {
+            // load printers slideshows
+            $slideshows = Post::selector([
+                'category' => 'printers-slideshow',
+                'type' => 'slideshows',
+            ])->get();
+//            dd($slideshows->toArray());
+            if ($slideshows)
+            {
+                // generate content to return
+                $result['status'] = 8;
+                $result['slideshow'] = array();
+
+                $i = 0;
+                foreach ($slideshows as $slideshow)
+                {
+                    $result['slideshow'][$i]['picture'] = url($slideshow->featured_image);
+                    $result['slideshow'][$i]['title'] = $slideshow->title;
+                    $i++;
+                }
+            }
+            else
+            {
+                // content for return not fund
+                $result['status'] = -18;
+            }
+        }
+
+        return json_encode($result);
+    }
+
     // code_melli_validation
     private static function validateCodeMelli($code_melli)
     {
@@ -460,7 +545,7 @@ class ApiController extends Controller
             }
             else
             {
-                if (self::validationIpAddress($token->user->id, $request_ip) and $token->user->hasRole('api'))
+                if (self::validationIpAddress($token->user->id, $request_ip))
                 {
                     // token is valid
                     return $token;
@@ -482,9 +567,25 @@ class ApiController extends Controller
     // user ip address validation
     private static function validationIpAddress($user_id, $request_ip)
     {
-         $ip = Api_ips::where('user_id', $user_id)
-             ->where('slug', $request_ip)
-             ->first();
+        $user = User::find($user_id);
+
+        if ($user->as('api')->status() == 1)
+        {
+            // user ip validation request ip should equal to stored ip for user
+            $ip = Api_ips::where('user_id', $user_id)
+                ->where('slug', $request_ip)
+                ->first();
+        }
+        elseif ($user->as('api')->status() == 2)
+        {
+            // user don't need validation with ip address
+            $ip = true;
+        }
+        else
+        {
+            // user have not permission
+            $ip = false;
+        }
 
          if ($ip)
          {
@@ -510,5 +611,34 @@ class ApiController extends Controller
         $cards['ehda_card_print'] = $user->cards('full', 'print');
         $cards['ehda_card_download'] = $user->cards('mini', 'download');
         return $cards;
+    }
+
+    // create ehda card details for remote print
+    private static function create_ehda_card_detail($user)
+    {
+        $cards_detail = array();
+        if (is_object($user)) {
+            $user = $user;
+        }
+
+        if (is_numeric($user)) {
+            $user = find($user);
+        }
+
+        if ($user)
+        {
+            $cards_detail['ehda_card_details']['register_no'] = $user->card_no;
+            $cards_detail['ehda_card_details']['full_name'] = $user->name_first . ' ' . $user->name_last;
+            $cards_detail['ehda_card_details']['father_name'] = $user->name_father;
+            $cards_detail['ehda_card_details']['code_melli'] = $user->code_melli;
+            $cards_detail['ehda_card_details']['birth_date'] = echoDate($user->birth_date, 'Y/m/d', 'fa', false);
+            $cards_detail['ehda_card_details']['registered_at'] = echoDate($user->card_registered_at, 'Y/m/d', 'fa', false);
+
+            return $cards_detail;
+        }
+        else
+        {
+            return [];
+        }
     }
 }
