@@ -422,10 +422,18 @@ class ApiController extends Controller
         {
             // education successfully listed
             $result['status'] = 6;
-            $education = trans('people.education');
-            foreach ($education as $key => $value)
+            $education = trans('people.edu_level_full');
+            if (is_array($education))
             {
-                $result['education'][] = ['id' => $key, 'title' => $value];
+                foreach ($education as $key => $value)
+                {
+                    $result['education'][] = ['id' => $key, 'title' => $value];
+                }
+            }
+            else
+            {
+                // education not listed
+                $result['status'] = -19;
             }
         }
 
