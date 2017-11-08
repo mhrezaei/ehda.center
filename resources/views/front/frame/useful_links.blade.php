@@ -15,4 +15,6 @@
         @endforeach
     @endif
 </div>
+
+{{--samandehi logo--}}
 <img id='sizpjzpeoeukesgtsizp' style='cursor:pointer' onclick='window.open("https://logo.samandehi.ir/Verify.aspx?id=97809&p=pfvljyoemcsiobpdpfvl", "Popup","toolbar=no, scrollbars=no, location=no, statusbar=no, menubar=no, resizable=0, width=450, height=630, top=30")' alt='logo-samandehi' src='https://logo.samandehi.ir/logo.aspx?id=97809&p=bsiyyndtaqgwlymabsiy'/>
