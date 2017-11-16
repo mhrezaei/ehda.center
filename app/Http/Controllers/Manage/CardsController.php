@@ -824,7 +824,7 @@ class CardsController extends UsersController
 			$last_date = Carbon::now()->setTime(0, 0);
 		}
 		else {
-			$last_date = Carbon::createFromFormat("Y-m-d" , $date) ;
+			$last_date = Carbon::createFromFormat("Y-m-d" , $date)->setTime(0,0) ;
 		}
 
 		$first_date = clone $last_date;
