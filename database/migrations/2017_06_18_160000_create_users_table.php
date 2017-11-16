@@ -45,46 +45,46 @@ class CreateUsersTable extends Migration
 			$table->date('marriage_date')->nullable()->index();
 
 			// Roles Registered Time
-			$table->timestamp('volunteer_registered_at')->nullable();
-			$table->timestamp('card_registered_at')->nullable();
+			$table->timestamp('volunteer_registered_at')->nullable()->index();
+			$table->timestamp('card_registered_at')->nullable()->index();
 
 			// Contact Info
 			$table->string('mobile')->nullable()->index();
 			$table->string('tel_emergency')->nullable()->index();
 			$table->longText('home_address')->nullable();
-			$table->unsignedInteger('home_province')->nullable();
+			$table->unsignedInteger('home_province')->nullable()->index();
 			//$table->foreign('home_province')
 			//    ->references('id')
 			//    ->on('states')
 			//    ->onDelete('NO ACTION')
 			//    ->onUpdate('CASCADE');
-			$table->unsignedInteger('home_city')->nullable();
+			$table->unsignedInteger('home_city')->nullable()->index();
 			//$table->foreign('home_city')
 			//    ->references('id')
 			//    ->on('states')
 			//    ->onDelete('NO ACTION')
 			//    ->onUpdate('CASCADE');
-			$table->string('home_tel')->nullable();
-			$table->string('home_postal')->nullable();
+			$table->string('home_tel')->nullable()->index();
+			$table->string('home_postal')->nullable()->index();
 			$table->longText('work_address')->nullable();
-			$table->unsignedInteger('work_province')->nullable();
+			$table->unsignedInteger('work_province')->nullable()->index();
 			//$table->foreign('work_province')
 			//    ->references('id')
 			//    ->on('states')
 			//    ->onDelete('NO ACTION')
 			//    ->onUpdate('CASCADE');
-			$table->unsignedInteger('work_city')->nullable();
+			$table->unsignedInteger('work_city')->nullable()->index();
 			//$table->foreign('work_city')
 			//    ->references('id')
 			//    ->on('states')
 			//    ->onDelete('NO ACTION')
 			//    ->onUpdate('CASCADE');
-			$table->string('work_tel')->nullable();
-			$table->string('work_postal')->nullable();
+			$table->string('work_tel')->nullable()->index();
+			$table->string('work_postal')->nullable()->index();
 
 			// Education Info
-			$table->tinyInteger('edu_level')->nullable();
-			$table->unsignedInteger('edu_city')->nullable();
+			$table->tinyInteger('edu_level')->nullable()->index();
+			$table->unsignedInteger('edu_city')->nullable()->index();
 			//$table->foreign('edu_city')
 			//    ->references('id')
 			//    ->on('states')
@@ -109,12 +109,12 @@ class CreateUsersTable extends Migration
 			$table->tinyInteger('unverified_flag')->nullable();
 
 			// Exam
-			$table->timestamp('exam_passed_at')->nullable();
+			$table->timestamp('exam_passed_at')->nullable()->index();
 			$table->longText('exam_sheet')->nullable();
 			$table->integer('exam_result')->nullalbe();
 
 			// Familiarization
-			$table->tinyInteger('familiarization')->nullable();
+			$table->tinyInteger('familiarization')->nullable()->index();
 			$table->string('motivation')->nullable();
 
 			// Activation
@@ -128,18 +128,18 @@ class CreateUsersTable extends Migration
 			//    ->on('domains')
 			//    ->onDelete('NO ACTION')
 			//    ->onUpdate('CASCADE');
-			$table->unsignedInteger('from_domain')->nullable();
-			//$table->foreign('from_domain')
-			//    ->references('id')
-			//    ->on('domains')
-			//    ->onDelete('NO ACTION')
-			//    ->onUpdate('CASCADE');
+			$table->unsignedInteger('from_domain')->nullable()->index();
+//			$table->foreign('from_domain')
+//			    ->references('id')
+//			    ->on('domains')
+//			    ->onDelete('NO ACTION')
+//			    ->onUpdate('CASCADE');
 
 			// NewsLetter
 			$table->boolean('newsletter')->default(0);
 
 			// Event
-			$table->unsignedInteger('from_event_id');
+			$table->unsignedInteger('from_event_id')->index();
 
 			// Default Role
 			$table->string('default_role_key')->nullable();
@@ -151,11 +151,11 @@ class CreateUsersTable extends Migration
 			$table->timestamps();
 			$table->index('created_at');
 			$table->softDeletes();
-			$table->timestamp('published_at')->nullable();
+			$table->timestamp('published_at')->nullable()->index();
 			$table->unsignedInteger('created_by')->default(0)->index();
-			$table->unsignedInteger('updated_by')->default(0);
-			$table->unsignedInteger('deleted_by')->default(0);
-			$table->unsignedInteger('published_by')->default(0);
+			$table->unsignedInteger('updated_by')->default(0)->index();
+			$table->unsignedInteger('deleted_by')->default(0)->index();
+			$table->unsignedInteger('published_by')->default(0)->index();
 
 			// Cache Management...
 			$table->text('cache_roles')->nullable();
