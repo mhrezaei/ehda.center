@@ -444,6 +444,9 @@ Route::group(['namespace' => 'Front', 'middleware' => ['DetectLanguage', 'Settin
     Route::get('/football', 'LandingPageController@football');
     Route::post('/football', 'LandingPageController@football_counter');
 
+    Route::get('/medal', 'LandingPageController@medal');
+    Route::post('/medal', 'LandingPageController@medal_counter');
+
     Route::group(['prefix' => 'l'], function () {
         Route::get('{event}', 'LandingPageController@event');
         Route::post('{event}', 'LandingPageController@event_counter');

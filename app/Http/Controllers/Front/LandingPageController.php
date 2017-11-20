@@ -80,16 +80,55 @@ class LandingPageController extends Controller
     }
 
     public function football()
+{
+    $post = PostsServiceProvider::smartFindPost('football');
+    if (!$post or !$post->exists) {
+        return $this->abort('404');
+    }
+
+    return PostsServiceProvider::showPost($post);
+}
+
+    public function football_counter()
     {
         $post = PostsServiceProvider::smartFindPost('football');
+        if (!$post or !$post->exists) {
+            return $this->abort('404', true);
+        }
+
+        $post->spreadMeta();
+        $start = Carbon::parse($post->starts_at)->toDateString() . ' ' . $post->start_time;
+        $end = Carbon::parse($post->ends_at)->toDateString() . ' ' . $post->end_time;
+
+        $count = User::where([
+            ['card_registered_at', '>=', $start],
+            ['card_registered_at', '<=', $end],
+        ])->count();
+
+        $total_count = User::where([
+            ['card_registered_at', '>=', '2017-09-20 19:45:00'],
+//            ['card_registered_at', '<=', '2017-09-20 22:00:00'],
+        ])->count();
+
+        return response()->json([
+            'count' => $count,
+            'total_count' => $total_count,
+        ]);
+    }
+
+    public function medal()
+    {
+        $post = PostsServiceProvider::smartFindPost('medal');
         if (!$post or !$post->exists) {
             return $this->abort('404');
         }
 
-        return PostsServiceProvider::showPost($post);
+        return view('front.landing.events.medal.0', compact('post'));
+
+//        return PostsServiceProvider::showPost($post);
     }
 
-    public function football_counter()
+    public function medal_counter()
     {
         $post = PostsServiceProvider::smartFindPost('football');
         if (!$post or !$post->exists) {

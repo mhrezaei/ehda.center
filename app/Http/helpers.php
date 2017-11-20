@@ -830,8 +830,15 @@ function peyment_verify($tracking)
     }
 }
 
-function landingPageTimer($post)
+function landingPageTimer($post, $sort = 'asc')
 {
     $post->spreadMeta();
-    return Carbon::parse($post->starts_at)->toDateString() . ' ' . $post->start_time;
+    if ($sort == 'asc' or $sort == 'ASC')
+    {
+        return Carbon::parse($post->starts_at)->toDateString() . ' ' . $post->start_time;
+    }
+    else
+    {
+        return Carbon::parse($post->ends_at)->toDateString() . ' ' . $post->end_time;
+    }
 }
