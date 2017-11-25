@@ -169,13 +169,17 @@ class ApiController extends Controller
         $data = $request->toArray();
         $result = array();
 
-        if (! isset($data['token'])
-            or ! isset($data['code_melli'])
-            or ! isset($data['birth_date'])
-            or ! isset($data['tel_mobile'])
-        )
-            // code_melli or token or birth_date or tel_mobile not send
+        $rules = [
+            'token' => 'required',
+            'code_melli' => 'required|code_melli',
+            'birth_date' => 'required',
+            'tel_mobile' => 'phone:mobile', // optional
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            // data validation failed
             $result['status'] = -11;
+        }
 
         // token check
         $token = self::validateToken($request->token, $request->ip());
@@ -195,17 +199,32 @@ class ApiController extends Controller
                 {
                     if ($user->is_an('card-holder'))
                     {
-                        if ($user->mobile == $data['tel_mobile']
-                            and $user->birth_date->toDateString() == Carbon::createFromTimestamp($data['birth_date'])->toDateString()
-                        )
+                        if ($user->birth_date->toDateString() == Carbon::createFromTimestamp($data['birth_date'])->toDateString())
                         {
-                            // validation success and card attach
-                            $result['status'] = 3;
-                            $result = array_merge($result, self::create_ehda_card_link($request->code_melli), self::create_ehda_card_detail($user));
+                            if (isset($data['tel_mobile']))
+                            {
+                                if ($user->mobile == $data['tel_mobile'])
+                                {
+                                    // validation success and card attach
+                                    $result['status'] = 3;
+                                    $result = array_merge($result, self::create_ehda_card_link($request->code_melli), self::create_ehda_card_detail($user));
+                                }
+                                else
+                                {
+                                    // tel_mobile not match with user data
+                                    $result['status'] = -12;
+                                }
+                            }
+                            else
+                            {
+                                // validation success and card attach
+                                $result['status'] = 3;
+                                $result = array_merge($result, self::create_ehda_card_link($request->code_melli), self::create_ehda_card_detail($user));
+                            }
                         }
                         else
                         {
-                            // birth_date and tel_mobile not match with user data
+                            // birth_date not match with user data
                             $result['status'] = -12;
                         }
                     }
