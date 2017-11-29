@@ -306,7 +306,7 @@ class ApiController extends Controller
                             {
                                 // validation success and card attach
                                 $result['status'] = 3;
-                                $result = array_merge($result, self::create_ehda_card_link($request->code_melli), self::create_ehda_card_detail($user));
+                                $result = array_merge($result, self::create_ehda_card_link_new($request->code_melli), self::create_ehda_card_detail($user));
                             }
                         }
                         else
@@ -881,6 +881,7 @@ class ApiController extends Controller
             $cards_detail['ehda_card_details']['code_melli'] = $user->code_melli;
             $cards_detail['ehda_card_details']['birth_date'] = echoDate($user->birth_date, 'Y/m/d', 'fa', false);
             $cards_detail['ehda_card_details']['registered_at'] = echoDate($user->card_registered_at, 'Y/m/d', 'fa', false);
+            $cards_detail['ehda_card_details']['full_data'] = $user->name_first . ' ' . $user->name_last . ' - ' . $user->card_no;
 
             return $cards_detail;
         }
