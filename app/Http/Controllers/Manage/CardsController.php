@@ -807,7 +807,7 @@ class CardsController extends UsersController
 	}
 
 
-	public function registerStatsResult($date = false, $days = 10)
+	public function registerStatsResult($date = false, $days = 31)
 	{
 		$daily_registers = [];
 		$total_registers = [

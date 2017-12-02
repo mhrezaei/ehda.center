@@ -27,7 +27,7 @@ return [
         'web_users'                 => "کاربران وب",
         'register_via_telegram'     => "ثبت نام از راه بات تلگرام",
         'stats' => "آمار ثبت نام کارت اهدای عضو" ,
-        'stats_duration' => "ده روز قبل از آن" ,
+        'stats_duration' => "یک ماه قبل از آن" ,
     ],
 
     'printings' => [
