@@ -217,20 +217,22 @@ trait EhdaUserTrait
 	*/
 	public function cards($type = 'mini', $mode = 'show')
 	{
-		$card_type = ['mini', 'single', 'social', 'full'];
-		$card_mode = ['show', 'download', 'print'];
+		return $this->newCards($type, $mode);
 
-		if (!in_array($type, $card_type))
-		{
-			$type = 'mini';
-		}
-
-		if (!in_array($mode, $card_mode))
-		{
-			$mode = 'show';
-		}
-
-		return url('/card/process/' . $type . '/' . hashid_encrypt($this->id, 'ehda_card_' . $type) . '/' . $mode);
+//	    $card_type = ['mini', 'single', 'social', 'full'];
+//		$card_mode = ['show', 'download', 'print'];
+//
+//		if (!in_array($type, $card_type))
+//		{
+//			$type = 'mini';
+//		}
+//
+//		if (!in_array($mode, $card_mode))
+//		{
+//			$mode = 'show';
+//		}
+//
+//		return url('/card/process/' . $type . '/' . hashid_encrypt($this->id, 'ehda_card_' . $type) . '/' . $mode);
 //		return url('/card/' . $this->setGenerateCardServer() . '/' . $type . '/' . hashid_encrypt($this->id, 'ehda_card_' . $type) . '/' . $mode);
 
 	}
