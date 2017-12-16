@@ -20,11 +20,13 @@ Route::group(['namespace' => 'Api'], function (){
     Route::post('/ehda/card/search', 'ApiController@ehda_card_search');
     Route::post('/ehda/card/register', 'ApiController@ehda_card_register_new');
     Route::post('/ehda/card/get', 'ApiController@get_card_new');
+    Route::post('/ehda/card/print', 'ApiController@save_print_request');
     Route::post('/ehda/province/get', 'ApiController@get_province');
     Route::post('/ehda/cities/get', 'ApiController@get_cities');
     Route::post('/ehda/education/get', 'ApiController@get_education');
     Route::post('/ehda/config/get', 'ApiController@get_prepare_config');
     Route::post('/ehda/slideshow/get', 'ApiController@get_printers_slideshow');
+    Route::post('/ehda/events/list', 'ApiController@get_active_events_list');
 });
 
 // test api

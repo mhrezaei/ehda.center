@@ -6,6 +6,7 @@ use App\Models\Api_ips;
 use App\Http\Controllers\Controller;
 use App\Models\Api_token;
 use App\Models\Post;
+use App\Models\Printing;
 use App\Models\State;
 use App\Models\User;
 use Carbon\Carbon;
@@ -363,6 +364,7 @@ class ApiController extends Controller
                 'edu_level' => 'numeric|min:1|max:6', // optional
                 'tel_mobile' => 'required|phone:mobile',
                 'home_city' => 'required|numeric|min:1',
+                'event' => 'string',
             ];
             $validator = Validator::make($request->all(), $rules);
             if ($validator->fails()) {
@@ -374,6 +376,13 @@ class ApiController extends Controller
                 // validation success full
                 $result['status'] = 1;
             }
+
+
+            // event id check
+            if ($request->event)
+                $event_id = hashid($request->event);
+            else
+                $event_id = 0;
         }
 
         if ($result['status'] > 0)
@@ -390,6 +399,7 @@ class ApiController extends Controller
             $input['password_force_change'] = 1;
             $input['card_registered_at'] = Carbon::now()->toDateTimeString();
             $input['created_by'] = $token->user->id;
+            $input['from_event_id'] = $event_id;
 
             // check birth date range
             $minimum = -1539449865;
@@ -481,6 +491,7 @@ class ApiController extends Controller
                 'edu_level' => 'numeric|min:1|max:6', // optional
                 'tel_mobile' => 'required|phone:mobile',
                 'home_city' => 'required|numeric|min:1',
+                'event' => 'string',
             ];
             $validator = Validator::make($request->all(), $rules);
             if ($validator->fails()) {
@@ -492,6 +503,12 @@ class ApiController extends Controller
                 // validation success full
                 $result['status'] = 1;
             }
+
+            // event id check
+            if ($request->event)
+                $event_id = hashid($request->event);
+            else
+                $event_id = 0;
         }
 
         if ($result['status'] > 0)
@@ -508,6 +525,7 @@ class ApiController extends Controller
             $input['password_force_change'] = 1;
             $input['card_registered_at'] = Carbon::now()->toDateTimeString();
             $input['created_by'] = $token->user->id;
+            $input['from_event_id'] = $event_id;
 
             // check birth date range
             $minimum = -1539449865;
@@ -567,6 +585,85 @@ class ApiController extends Controller
             // card register success and ehda card attach
             $result['status'] = 3;
             $result = array_merge($result, self::create_ehda_card_link_new($request->code_melli), self::create_ehda_card_detail($user));
+        }
+
+        return json_encode($result);
+    }
+
+
+    // save print request
+    public function save_print_request(Request $request)
+    {
+        $data = $request->toArray();
+        $result = array();
+
+        $rules = [
+            'token' => 'required',
+            'code_melli' => 'required|code_melli',
+            'event' => 'string',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails())
+        {
+            // data validation failed
+            $result['status'] = -20;
+        }
+
+        // check event id
+        if ($request->event)
+            $event_id = hashid($request->event);
+        else
+            $event_id = 0;
+
+
+        // token check
+        $token = self::validateToken($request->token, $request->ip());
+        if (is_numeric($token) and $token <= 0)
+        {
+            // token not valid
+            $result['status'] = $token;
+        }
+        else
+        {
+            $user = User::findBySlug($request->code_melli, 'code_melli');
+            if ($user and $user->id)
+            {
+                if (!$user->is_an('card-holder'))
+                {
+                    // user don't have a card
+                    $result['status'] = -21;
+                }
+                else
+                {
+                    $now = Carbon::now()->toDateTimeString();
+                    $insert = array(
+                        'user_id' => $user->id,
+                        'event_id' => $event_id,
+                        'queued_at' => $now,
+                        'queued_by' => $token->user_id,
+                        'printed_at' => $now,
+                        'printed_by' => $token->user_id,
+                        'verified_at' => $now,
+                        'verified_by' => $token->user_id,
+                        'dispatched_at' => $now,
+                        'dispatched_by' => $token->user_id,
+                        'delivered_at' => $now,
+                        'delivered_by' => $token->user_id,
+                        'created_by' => $token->user_id,
+                        'updated_by' => $token->user_id,
+                    );
+                    Printing::store($insert);
+
+                    // user print request inserted
+                    $result['status'] = 9;
+                }
+            }
+            else
+            {
+                // user not found
+                $result['status'] = -21;
+            }
         }
 
         return json_encode($result);
@@ -748,6 +845,56 @@ class ApiController extends Controller
         return json_encode($result);
     }
 
+    // get active events list
+    public function get_active_events_list(Requests\Api\GetProvinceListRequest $request)
+    {
+        $data = $request->toArray();
+        $result = array();
+
+        if (! isset($data['token']))
+            // token not send
+            $result['status'] = -13;
+
+        // token check
+        $token = self::validateToken($request->token, $request->ip());
+        if (is_numeric($token) and $token <= 0)
+        {
+            // token not valid
+            $result['status'] = $token;
+        }
+        else
+        {
+            $events = Post::selector([
+                'type' => 'event'
+            ])
+                ->where('starts_at', '<=', Carbon::now()->toDateTimeString())
+                ->where('ends_at', '>=', Carbon::now()->toDateTimeString())
+                ->orderByDesc('published_at')
+                ->get();
+
+            if ($events and $events->count())
+            {
+                // events successfully listed
+                $result['status'] = 9;
+                foreach ($events as $event)
+                {
+                    $me = [
+                        'title' => $event->title,
+                        'unique_id' => hashid($event->id)
+                    ];
+                    $result['events_list'][] = $me;
+                }
+            }
+            else
+            {
+                // events not found
+                $result['status'] = -22;
+            }
+        }
+
+        return json_encode($result);
+    }
+
     // code_melli_validation
     private static function validateCodeMelli($code_melli)
     {
@@ -882,6 +1029,7 @@ class ApiController extends Controller
             $cards_detail['ehda_card_details']['birth_date'] = echoDate($user->birth_date, 'Y/m/d', 'fa', false);
             $cards_detail['ehda_card_details']['registered_at'] = echoDate($user->card_registered_at, 'Y/m/d', 'fa', false);
             $cards_detail['ehda_card_details']['full_data'] = $user->name_first . ' ' . $user->name_last . ' - ' . $user->card_no;
+            $cards_detail['ehda_card_details']['unique_id'] = hashid($user->id);
 
             return $cards_detail;
         }
