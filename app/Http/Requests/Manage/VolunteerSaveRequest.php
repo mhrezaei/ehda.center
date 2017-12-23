@@ -42,7 +42,7 @@ class VolunteerSaveRequest extends Request
 			'home_city'     => 'required',
 			'birth_date'    => 'required|date',
 			'mobile'        => 'required|phone:mobile',
-			'tel_emergency' => 'required|phone:mobile',
+			'tel_emergency' => 'required',
 			'home_tel'      => 'phone:fixed',
 			'work_tel'      => 'phone:fixed',
 			'status'        => "required",
