@@ -36,7 +36,7 @@ class VolunteerModerateChangesRequest extends Request
 			return [
 				'email'         => 'email|unique:users,email,' . $input['id'],
 				'tel_mobile'    => 'phone:mobile',
-				'tel_emergency' => 'different:tel_mobile|phone:mobile',
+				'tel_emergency' => '',
 				'home_tel'      => 'phone:fixed',
 				'work_tel'      => 'phone:fixed',
 			];
