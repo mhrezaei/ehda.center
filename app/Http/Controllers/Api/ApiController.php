@@ -417,6 +417,7 @@ class ApiController extends Controller
             // unset additional data
             unset($input['token']);
             unset($input['tel_mobile']);
+            unset($input['event']);
 
             $user = User::findBySlug($request->code_melli, 'code_melli');
             if (! $user)
@@ -543,6 +544,7 @@ class ApiController extends Controller
             // unset additional data
             unset($input['token']);
             unset($input['tel_mobile']);
+            unset($input['event']);
 
             $user = User::findBySlug($request->code_melli, 'code_melli');
             if (! $user)
@@ -592,9 +594,8 @@ class ApiController extends Controller
 
 
     // save print request
-    public function save_print_request(Request $request)
+    public function save_print_request(Requests\Api\SavePrintRequest $request)
     {
-        $data = $request->toArray();
         $result = array();
 
         $rules = [
@@ -609,60 +610,63 @@ class ApiController extends Controller
             // data validation failed
             $result['status'] = -20;
         }
-
-        // check event id
-        if ($request->event)
-            $event_id = hashid($request->event);
-        else
-            $event_id = 0;
-
-
-        // token check
-        $token = self::validateToken($request->token, $request->ip());
-        if (is_numeric($token) and $token <= 0)
-        {
-            // token not valid
-            $result['status'] = $token;
-        }
         else
         {
-            $user = User::findBySlug($request->code_melli, 'code_melli');
-            if ($user and $user->id)
+            // check event id
+            if ($request->event)
+                $event_id = hashid($request->event);
+            else
+                $event_id = 0;
+
+
+            // token check
+            $token = self::validateToken($request->token, $request->ip());
+
+            if (is_numeric($token) and $token <= 0)
             {
-                if (!$user->is_an('card-holder'))
-                {
-                    // user don't have a card
-                    $result['status'] = -21;
-                }
-                else
-                {
-                    $now = Carbon::now()->toDateTimeString();
-                    $insert = array(
-                        'user_id' => $user->id,
-                        'event_id' => $event_id,
-                        'queued_at' => $now,
-                        'queued_by' => $token->user_id,
-                        'printed_at' => $now,
-                        'printed_by' => $token->user_id,
-                        'verified_at' => $now,
-                        'verified_by' => $token->user_id,
-                        'dispatched_at' => $now,
-                        'dispatched_by' => $token->user_id,
-                        'delivered_at' => $now,
-                        'delivered_by' => $token->user_id,
-                        'created_by' => $token->user_id,
-                        'updated_by' => $token->user_id,
-                    );
-                    Printing::store($insert);
-
-                    // user print request inserted
-                    $result['status'] = 9;
-                }
+                // token not valid
+                $result['status'] = $token;
             }
             else
             {
-                // user not found
-                $result['status'] = -21;
+                $user = User::findBySlug($request->code_melli, 'code_melli');
+                if ($user and $user->id)
+                {
+                    if (!$user->is_an('card-holder'))
+                    {
+                        // user don't have a card
+                        $result['status'] = -21;
+                    }
+                    else
+                    {
+                        $now = Carbon::now()->toDateTimeString();
+                        $insert = array(
+                            'user_id' => $user->id,
+                            'event_id' => $event_id,
+                            'queued_at' => $now,
+                            'queued_by' => $token->user_id,
+                            'printed_at' => $now,
+                            'printed_by' => $token->user_id,
+                            'verified_at' => $now,
+                            'verified_by' => $token->user_id,
+                            'dispatched_at' => $now,
+                            'dispatched_by' => $token->user_id,
+                            'delivered_at' => $now,
+                            'delivered_by' => $token->user_id,
+                            'created_by' => $token->user_id,
+                            'updated_by' => $token->user_id,
+                        );
+                        Printing::store($insert);
+
+                        // user print request inserted
+                        $result['status'] = 10;
+                    }
+                }
+                else
+                {
+                    // user not found
+                    $result['status'] = -21;
+                }
             }
         }
 
