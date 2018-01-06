@@ -1,5 +1,12 @@
-{{ null, $post->spreadMeta() }}
+@php
+    $post->spreadMeta();
+    $files = $post->files;
+@endphp
 @include($viewFolder . '.head')
+
+@foreach($files as $key => $file)
+    @php $files[$key]['link'] = getAparatId($file['link']) @endphp
+@endforeach
 
 <div class="row">
     <div class="col-md-8 col-md-offset-2 col-xs-12 col-xs-offset-0">
