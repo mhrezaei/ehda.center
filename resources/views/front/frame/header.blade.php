@@ -14,5 +14,4 @@
     @endif
     @include('front.frame.scripts')
     @yield('head')
-    <script>!function(e,t,a){"use strict";  var s=t.head||t.getElementsByTagName( "head" )[ 0 ], p=t.createElement( "script" ); e.iwmfBadge=a, p.async=true, p.src= "https://c.iwmf.ir/get-code/people-vote-4-2.js?v=10.1", s.appendChild(p) }(this,document,"b-bottom-left");</script>
 </head>
