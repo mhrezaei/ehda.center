@@ -101,6 +101,7 @@ class ApiController extends Controller
             if (Api_token::store($insert))
             {
                 $result['token'] = encrypt($result['token']);
+                $result['created_at'] = Carbon::now('UTC')->toW3cString();
             }
             else
             {
