@@ -561,7 +561,7 @@ function getUsableDomains()
             $adminChoice = str_replace('{{currentDomain}}', $currentDomain, $adminChoice);
             return explodeNotEmpty('|', $adminChoice);
         } else {
-            $domFains[] = $currentDomain;
+            $domains[] = $currentDomain;
         }
 
     }
